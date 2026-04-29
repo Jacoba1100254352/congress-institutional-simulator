@@ -334,6 +334,26 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> CITIZEN_PANEL_SCENARIOS = List.of(
+            "simple-majority",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-citizen-certificate",
+            "default-pass-citizen-active-routing",
+            "default-pass-citizen-threshold",
+            "default-pass-citizen-agenda",
+            "default-pass-informed-guarded",
+            "default-pass-public-interest-screen",
+            "default-pass-lobby-channel-bundle",
+            "default-pass-alternatives-pairwise",
+            "default-pass-law-registry",
+            "default-pass-compensation",
+            "default-pass-challenge",
+            "default-pass-cross-bloc",
+            "default-pass-adaptive-track",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -631,6 +651,26 @@ public final class CampaignRunner {
                 outputDir,
                 v8Cases(legislators, bills),
                 LOBBYING_DEPTH_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV15(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v15",
+                "simulation-campaign-v15",
+                outputDir,
+                v8Cases(legislators, bills),
+                CITIZEN_PANEL_SCENARIOS,
                 runs,
                 legislators,
                 bills,
@@ -1119,7 +1159,8 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
-        if (aggregateByScenario.containsKey("default-pass-lobby-channel-bundle")) {
+        if (aggregateByScenario.containsKey("default-pass-lobby-channel-bundle")
+                && aggregateByScenario.containsKey("default-pass-budgeted-lobbying")) {
             builder.append("## Lobbying-Channel Deltas\n\n");
             builder.append("Delta values compare channel-specific lobbying safeguards against explicit budgeted lobbying. Spend-share columns show where lobby budgets are going after each scenario's constraints.\n\n");
             builder.append("| Scenario | Productivity delta | Welfare delta | Capture delta | Public-benefit/lobby dollar | Anti-lobby pass delta | Direct | Agenda | Info | Public | Litigation |\n");
@@ -1146,6 +1187,34 @@ public final class CampaignRunner {
                             .append(format(summary.informationLobbySpendShare())).append(" | ")
                             .append(format(summary.publicCampaignSpendShare())).append(" | ")
                             .append(format(summary.litigationThreatSpendShare())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
+
+        if (aggregateByScenario.containsKey("default-pass-citizen-certificate")) {
+            builder.append("## Citizen-Panel Deltas\n\n");
+            builder.append("Delta values compare deliberative mini-public review variants against open `default-pass`. Review rate is the share of potential bills reviewed by the synthetic panel; certification rate is the share of reviews receiving a positive certificate.\n\n");
+            builder.append("| Scenario | Productivity delta | Welfare delta | Low-support delta | Legitimacy delta | Review rate | Certification | Citizen legitimacy |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            ScenarioAggregate open = aggregateByScenario.get("default-pass");
+            for (String scenarioKey : List.of(
+                    "default-pass-citizen-certificate",
+                    "default-pass-citizen-active-routing",
+                    "default-pass-citizen-threshold",
+                    "default-pass-citizen-agenda"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary != null) {
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - open.productivity())).append(" | ")
+                            .append(format(summary.welfare() - open.welfare())).append(" | ")
+                            .append(format(summary.lowSupport() - open.lowSupport())).append(" | ")
+                            .append(format(summary.legitimacy() - open.legitimacy())).append(" | ")
+                            .append(format(summary.citizenReviewRate())).append(" | ")
+                            .append(format(summary.citizenCertificationRate())).append(" | ")
+                            .append(format(summary.citizenLegitimacy())).append(" |\n");
                 }
             }
             builder.append('\n');
@@ -1293,7 +1362,10 @@ public final class CampaignRunner {
             builder.append("- Anti-capture scenarios test whether lobbying pressure can be reduced through vote firewalls, transparency, public-interest screens, audit sanctions, or combined safeguards.\n");
         }
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        if (aggregateByScenario.containsKey("default-pass-lobby-channel-bundle")) {
+        if (aggregateByScenario.containsKey("default-pass-citizen-certificate")) {
+            builder.append("- Citizen-panel scenarios test whether an independent mini-public can add information and legitimacy without reproducing standing committee control.\n");
+            builder.append("- The next model extension should add agenda-scarcity variants, because the simulator now has independent review but still needs non-committee ways to ration floor attention and public objection capacity.\n\n");
+        } else if (aggregateByScenario.containsKey("default-pass-lobby-channel-bundle")) {
             builder.append("- Lobbying-depth scenarios split organized-interest influence into direct pressure, agenda access, information distortion, public campaigns, litigation threats, and defensive spending against reform.\n");
             builder.append("- The next model extension should add deliberative citizen review, because the simulator now has richer organized-interest pressure but still lacks an independent public legitimacy screen.\n\n");
         } else if (aggregateByScenario.containsKey("default-pass-alternatives-pairwise")) {
@@ -1355,6 +1427,7 @@ public final class CampaignRunner {
         ScenarioAggregate antiCaptureBundle = aggregateByScenario.get("default-pass-anti-capture-bundle");
         ScenarioAggregate budgetedLobbying = aggregateByScenario.get("default-pass-budgeted-lobbying");
         ScenarioAggregate channelBundle = aggregateByScenario.get("default-pass-lobby-channel-bundle");
+        ScenarioAggregate citizenCertificate = aggregateByScenario.get("default-pass-citizen-certificate");
         ScenarioAggregate pairwiseAlternatives = aggregateByScenario.get("default-pass-alternatives-pairwise");
         ScenarioAggregate simpleMajority = aggregateByScenario.get("simple-majority");
         ScenarioAggregate bestWelfare = aggregateByScenario.values()
@@ -1458,6 +1531,15 @@ public final class CampaignRunner {
                     .append(" and anti-lobbying reform passage by ")
                     .append(format(channelBundle.antiLobbyingSuccess() - budgetedLobbying.antiLobbyingSuccess()))
                     .append(" relative to budgeted lobbying.\n");
+        }
+        if (citizenCertificate != null) {
+            builder.append("- Citizen certificate review certified ")
+                    .append(format(citizenCertificate.citizenCertificationRate()))
+                    .append(" of reviewed bills, changed low-support passage by ")
+                    .append(format(citizenCertificate.lowSupport() - openDefault.lowSupport()))
+                    .append(", and changed legitimacy by ")
+                    .append(format(citizenCertificate.legitimacy() - openDefault.legitimacy()))
+                    .append(" relative to open default-pass.\n");
         }
         if (pairwiseAlternatives != null) {
             builder.append("- Pairwise policy tournaments changed proposer agenda advantage by ")

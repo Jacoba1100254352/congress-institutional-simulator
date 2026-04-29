@@ -15,6 +15,8 @@ import congresssim.institution.Chamber;
 import congresssim.institution.ChallengeEscalationProcess;
 import congresssim.institution.ChallengeTokenAllocation;
 import congresssim.institution.ChallengeVoucherProcess;
+import congresssim.institution.CitizenPanelMode;
+import congresssim.institution.CitizenPanelReviewProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.CompetingAlternativesProcess;
@@ -65,6 +67,7 @@ public final class SimulatorTests {
         distributionalHarmProcessCompensatesAffectedGroups();
         lawRegistryReviewsAndRepealsBadActiveLaws();
         competingAlternativesSelectCompromiseBeforeFinalVote();
+        citizenPanelRoutesUncertifiedBillsToReview();
         publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
         lobbyAuditCanReverseCapturedEnactments();
         challengeVouchersRouteHighRiskBillsToActiveVote();
@@ -497,6 +500,50 @@ public final class SimulatorTests {
         assertTrue(outcome.signals().alternativesConsidered() == 2, "Original bill plus generated alternative should be counted.");
     }
 
+    private static void citizenPanelRoutesUncertifiedBillsToReview() {
+        LegislativeProcess certified = labeledProcess("certified default lane");
+        LegislativeProcess uncertified = labeledProcess("uncertified active lane");
+        CitizenPanelReviewProcess process = new CitizenPanelReviewProcess(
+                "citizen panel test",
+                certified,
+                uncertified,
+                CitizenPanelMode.DEFAULT_PASS_ELIGIBILITY,
+                75,
+                0.0,
+                1.0,
+                0.0,
+                0.60
+        );
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        Bill weakBill = new Bill(
+                "B-jury",
+                "Weak Bill",
+                "L-1",
+                0.0,
+                0.80,
+                0.15,
+                0.10,
+                0.40,
+                0.80,
+                0.70,
+                false,
+                "housing",
+                0.0,
+                0.0,
+                "low-income",
+                0.10,
+                0.80,
+                0.20
+        );
+
+        BillOutcome outcome = process.consider(weakBill, context);
+
+        assertTrue(outcome.finalReason().equals("uncertified active lane"), "Uncertified bills should route to the configured review lane.");
+        assertTrue(outcome.signals().citizenReviews() == 1, "Citizen panels should record review activity.");
+        assertTrue(outcome.signals().citizenCertifications() == 0, "Low-legitimacy bills should not be certified.");
+        assertFalse(outcome.bill().citizenCertified(), "The revised bill should retain the certification result.");
+    }
+
     private static void publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms() {
         VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
         Bill capturedBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.10, 0.30, 0.18, 0.95, 0.80, 0.95, false);
@@ -794,6 +841,10 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-lobby-channel-bundle"),
                 "Scenario catalog should expose lobbying-channel scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-citizen-certificate"),
+                "Scenario catalog should expose citizen-panel scenario keys."
         );
     }
 

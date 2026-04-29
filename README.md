@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v14.csv`
-- `reports/simulation-campaign-v14.md`
+- `reports/simulation-campaign-v15.csv`
+- `reports/simulation-campaign-v15.md`
 
 Earlier campaigns remain available:
 
@@ -68,6 +68,7 @@ make campaign-v11
 make campaign-v12
 make campaign-v13
 make campaign-v14
+make campaign-v15
 ```
 
 You can override the campaign defaults:
@@ -102,6 +103,10 @@ The default CLI compares:
 - `default-pass-blind-lobby-review`: budgeted lobbying with reduced agenda and information effectiveness before origin disclosure
 - `default-pass-defensive-lobby-cap`: budgeted lobbying with an explicit cap on defensive anti-reform spending
 - `default-pass-lobby-channel-bundle`: public financing, public advocate access, blind review, and defensive caps together
+- `default-pass-citizen-certificate`: default passage only for bills certified by a synthetic citizen panel
+- `default-pass-citizen-active-routing`: uncertified citizen-panel bills route to active majority voting
+- `default-pass-citizen-threshold`: uncertified citizen-panel bills require a stronger affirmative threshold
+- `default-pass-citizen-agenda`: citizen-panel results adjust agenda priority/public signals without changing the final lane
 - `default-pass-harm-threshold`: default passage for ordinary bills, but concentrated-harm bills require affirmative supermajority support
 - `default-pass-compensation`: default passage with compensation amendments for high concentrated-harm bills
 - `default-pass-affected-consent`: default passage with compensation plus affected-group consent screening
@@ -158,7 +163,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0` through `v14`
+- `--campaign`: run a named campaign, currently `v0` through `v15`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -220,6 +225,9 @@ The first metric set is deliberately simple, but it separates throughput from le
 - `proposerAgendaAdvantage`: average selected-alternative movement toward the original proposer's ideal point
 - `alternativeDiversity`: average number of alternatives/status quo options considered per tournament
 - `statusQuoWinRate`: share of policy tournaments where the status quo blocks final ratification
+- `citizenReviewRate`: share of potential bills reviewed by a synthetic citizen panel
+- `citizenCertificationRate`: share of reviewed bills receiving a positive citizen-panel certificate
+- `citizenLegitimacy`: average legitimacy estimate from citizen-panel review
 
 These are not claims about real-world validity. They are hooks for comparing rule sets under shared assumptions.
 
@@ -329,9 +337,16 @@ The v13 campaign adds competing alternatives and policy tournaments:
 - `default-pass-obstruction-substitute` models a limited constructive opposition right: opposition can force a substitute into the comparison instead of only blocking.
 - Campaign reports now include selected-alternative median distance, proposer agenda advantage, alternative diversity, and status-quo win rate.
 
-The current v14 campaign deepens lobbying:
+The v14 campaign deepens lobbying:
 
 - `LobbyGroup` actors now have richer issue-preference maps, capture strategies, and public-support mismatch tolerance.
 - `BudgetedLobbyingProcess` allocates spending across direct pressure, agenda access, information distortion, public campaigns, litigation/delay threats, and defensive anti-reform pressure.
 - New scenarios test democracy vouchers/public financing, equal-access public advocates, blind sponsor/lobby-origin review, defensive lobbying caps, and a combined channel anti-capture bundle.
 - Campaign reports now include public benefit per lobby dollar and channel-specific spend shares.
+
+The current v15 campaign adds citizen mini-public review:
+
+- `CitizenPanelReviewProcess` inserts a synthetic deliberative citizen panel before final routing.
+- Panel review models sampling noise, information quality, manipulation risk, public support, public benefit, affected-group support, and concentrated harm.
+- New scenarios test certificate-gated default passage, active-vote routing for uncertified bills, threshold adjustment, and softer agenda-priority review.
+- Campaign reports now include citizen review rate, certification rate, and panel legitimacy.

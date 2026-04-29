@@ -125,6 +125,12 @@ Run the v14 lobbying-depth campaign:
 make campaign-v14
 ```
 
+Run the v15 citizen-mini-public campaign:
+
+```sh
+make campaign-v15
+```
+
 Remove generated build output:
 
 ```sh
@@ -177,7 +183,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0..v14>`: run a named campaign.
+- `--campaign <v0..v15>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -206,6 +212,10 @@ The default CLI scenario set includes:
 - `default-pass-blind-lobby-review`: budgeted lobbying with reduced agenda and information influence before sponsor/lobby origin is visible.
 - `default-pass-defensive-lobby-cap`: budgeted lobbying with an explicit cap on anti-reform defensive spend.
 - `default-pass-lobby-channel-bundle`: public financing, public advocate access, blind review, and defensive caps together.
+- `default-pass-citizen-certificate`: default passage only for bills certified by a synthetic citizen panel.
+- `default-pass-citizen-active-routing`: uncertified citizen-panel bills route to active majority voting.
+- `default-pass-citizen-threshold`: uncertified citizen-panel bills require a stronger affirmative threshold.
+- `default-pass-citizen-agenda`: citizen-panel results adjust agenda priority/public signals without changing the final lane.
 - `default-pass-harm-threshold`: default passage for ordinary bills, but concentrated-harm bills require affirmative supermajority support.
 - `default-pass-compensation`: default passage with compensation amendments for high concentrated-harm bills.
 - `default-pass-affected-consent`: default passage with compensation plus affected-group consent screening.
@@ -258,8 +268,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v14.csv`
-- `reports/simulation-campaign-v14.md`
+- `reports/simulation-campaign-v15.csv`
+- `reports/simulation-campaign-v15.md`
 
 Earlier campaigns:
 
@@ -291,6 +301,8 @@ Earlier campaigns:
 - `reports/simulation-campaign-v12.md`
 - `reports/simulation-campaign-v13.csv`
 - `reports/simulation-campaign-v13.md`
+- `reports/simulation-campaign-v14.csv`
+- `reports/simulation-campaign-v14.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -340,6 +352,9 @@ The simulator reports several metrics because passage volume alone is not enough
 - `informationLobbySpendShare`: share of explicit lobbying spent on information distortion.
 - `publicCampaignSpendShare`: share of explicit lobbying spent on public campaigns.
 - `litigationThreatSpendShare`: share of explicit lobbying spent on litigation or delay threats.
+- `citizenReviewRate`: share of potential bills reviewed by a synthetic citizen panel.
+- `citizenCertificationRate`: share of reviewed bills receiving a positive citizen-panel certificate.
+- `citizenLegitimacy`: average legitimacy estimate from citizen-panel review.
 - `vetoes`: presidential veto count.
 - `overrides`: veto override count.
 

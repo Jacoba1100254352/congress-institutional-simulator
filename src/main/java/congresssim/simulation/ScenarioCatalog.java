@@ -12,6 +12,8 @@ import congresssim.institution.Chamber;
 import congresssim.institution.ChallengeEscalationProcess;
 import congresssim.institution.ChallengeTokenAllocation;
 import congresssim.institution.ChallengeVoucherProcess;
+import congresssim.institution.CitizenPanelMode;
+import congresssim.institution.CitizenPanelReviewProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.CompetingAlternativesProcess;
@@ -121,6 +123,22 @@ public final class ScenarioCatalog {
                         0.62,
                         0.62,
                         0.05
+                )),
+                new ScenarioEntry("default-pass-citizen-certificate", defaultPassWithCitizenPanel(
+                        "Default pass + citizen certificate",
+                        CitizenPanelMode.DEFAULT_PASS_ELIGIBILITY
+                )),
+                new ScenarioEntry("default-pass-citizen-active-routing", defaultPassWithCitizenPanel(
+                        "Default pass + citizen active-vote routing",
+                        CitizenPanelMode.ACTIVE_VOTE_ROUTING
+                )),
+                new ScenarioEntry("default-pass-citizen-threshold", defaultPassWithCitizenPanel(
+                        "Default pass + citizen threshold adjustment",
+                        CitizenPanelMode.THRESHOLD_ADJUSTMENT
+                )),
+                new ScenarioEntry("default-pass-citizen-agenda", defaultPassWithCitizenPanel(
+                        "Default pass + citizen agenda priority",
+                        CitizenPanelMode.AGENDA_PRIORITY
                 )),
                 new ScenarioEntry("default-pass-harm-threshold", defaultPassWithHarmWeightedThreshold()),
                 new ScenarioEntry("default-pass-compensation", defaultPassWithDistributionalCompensation(false)),
@@ -548,6 +566,37 @@ public final class ScenarioCatalog {
                         publicAdvocateStrength,
                         blindReviewStrength,
                         defensiveCapShare
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithCitizenPanel(String scenarioName, CitizenPanelMode mode) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return scenarioName;
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess certifiedProcess = defaultPassFloorProcess(name(), world, strategy);
+                LegislativeProcess uncertifiedProcess = switch (mode) {
+                    case AGENDA_PRIORITY -> certifiedProcess;
+                    case DEFAULT_PASS_ELIGIBILITY, ACTIVE_VOTE_ROUTING -> simpleMajorityFloorProcess(name(), world, strategy);
+                    case THRESHOLD_ADJUSTMENT -> supermajorityFloorProcess(name(), world, strategy, 0.60);
+                };
+                return new CitizenPanelReviewProcess(
+                        name(),
+                        certifiedProcess,
+                        uncertifiedProcess,
+                        mode,
+                        mode == CitizenPanelMode.AGENDA_PRIORITY ? 41 : 73,
+                        0.18,
+                        mode == CitizenPanelMode.ACTIVE_VOTE_ROUTING ? 0.78 : 0.68,
+                        mode == CitizenPanelMode.THRESHOLD_ADJUSTMENT ? 0.18 : 0.24,
+                        mode == CitizenPanelMode.AGENDA_PRIORITY ? 0.56 : 0.60
                 );
             }
         };
@@ -1028,6 +1077,21 @@ public final class ScenarioCatalog {
                 world.legislators(),
                 strategy,
                 AffirmativeThresholdRule.simpleMajority()
+        );
+        return new UnicameralProcess(name, chamber);
+    }
+
+    private static LegislativeProcess supermajorityFloorProcess(
+            String name,
+            SimulationWorld world,
+            VotingStrategy strategy,
+            double threshold
+    ) {
+        Chamber chamber = new Chamber(
+                "Congress",
+                world.legislators(),
+                strategy,
+                AffirmativeThresholdRule.supermajority(threshold)
         );
         return new UnicameralProcess(name, chamber);
     }
