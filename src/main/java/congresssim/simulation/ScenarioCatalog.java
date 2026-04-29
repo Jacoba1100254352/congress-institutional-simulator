@@ -61,6 +61,21 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
                 new ScenarioEntry("default-pass-challenge", defaultPassWithChallengeVouchers()),
                 new ScenarioEntry("default-pass-challenge-info", defaultPassWithChallengeVouchersAndInformation()),
+                new ScenarioEntry("default-pass-cross-bloc", defaultPassWithCrossBlocCosponsorship(
+                        "Default pass + cross-bloc cosponsors",
+                        2,
+                        1,
+                        0.12,
+                        0.52
+                )),
+                new ScenarioEntry("default-pass-cross-bloc-strong", defaultPassWithCrossBlocCosponsorship(
+                        "Default pass + strong cross-bloc cosponsors",
+                        6,
+                        1,
+                        0.20,
+                        0.58
+                )),
+                new ScenarioEntry("default-pass-cross-bloc-challenge", defaultPassWithCrossBlocCosponsorshipAndChallenge()),
                 new ScenarioEntry("default-pass-challenge-party-t3-s082", defaultPassWithChallengeVouchers(
                         "Default pass + party challenge vouchers t=3 s=.82",
                         ChallengeTokenAllocation.PARTY,
@@ -318,6 +333,83 @@ public final class ScenarioCatalog {
                         new UnicameralProcess(name(), activeVoteChamber)
                 );
                 return new CommitteeInformationProcess(name(), committeeMembers, 0.85, 0.45, challengeProcess);
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithCrossBlocCosponsorship(
+            String scenarioName,
+            int minimumCosponsors,
+            int minimumOutsideBlocs,
+            double minimumIdeologicalDistance,
+            double cosponsorThreshold
+    ) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return scenarioName;
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                Chamber chamber = new Chamber(
+                        "Congress",
+                        world.legislators(),
+                        strategy,
+                        new DefaultPassUnlessVetoedRule(2.0 / 3.0)
+                );
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.crossBlocCosponsorship(
+                                world.legislators(),
+                                minimumCosponsors,
+                                minimumOutsideBlocs,
+                                minimumIdeologicalDistance,
+                                cosponsorThreshold
+                        ),
+                        new UnicameralProcess(name(), chamber)
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithCrossBlocCosponsorshipAndChallenge() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + cross-bloc cosponsors + challenge";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                Chamber activeVoteChamber = new Chamber(
+                        "Congress",
+                        world.legislators(),
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                LegislativeProcess challengeProcess = new ChallengeVoucherProcess(
+                        name(),
+                        world.legislators(),
+                        strategy,
+                        ChallengeTokenAllocation.PARTY,
+                        10,
+                        0.82,
+                        new UnicameralProcess(name(), activeVoteChamber)
+                );
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.crossBlocCosponsorship(
+                                world.legislators(),
+                                2,
+                                1,
+                                0.12,
+                                0.52
+                        ),
+                        challengeProcess
+                );
             }
         };
     }

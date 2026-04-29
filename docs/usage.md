@@ -53,6 +53,12 @@ Run the v2 challenge-voucher campaign:
 make campaign-v2
 ```
 
+Run the v3 challenge-sweep campaign:
+
+```sh
+make campaign-v3
+```
+
 Remove generated build output:
 
 ```sh
@@ -105,7 +111,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0|v1|v2|v3>`: run a named campaign.
+- `--campaign <v0|v1|v2|v3|v4>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -119,6 +125,9 @@ The default CLI scenario set includes:
 - `default-pass`: default passage unless two-thirds vote to block.
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers.
 - `default-pass-challenge-info`: default passage with committee information before challenge-voucher decisions.
+- `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate.
+- `default-pass-cross-bloc-strong`: default passage with a stricter cross-bloc cosponsorship gate.
+- `default-pass-cross-bloc-challenge`: cross-bloc cosponsorship before challenge-voucher review.
 - `default-pass-challenge-party-t3-s082`: party-held challenge voucher sweep point with 3 tokens per party and challenge threshold 0.82.
 - `default-pass-challenge-party-t25-s082`: party-held challenge voucher sweep point with 25 tokens per party and challenge threshold 0.82.
 - `default-pass-challenge-party-t10-s050`: party-held challenge voucher sweep point with 10 tokens per party and challenge threshold 0.50.
@@ -149,8 +158,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v3.csv`
-- `reports/simulation-campaign-v3.md`
+- `reports/simulation-campaign-v4.csv`
+- `reports/simulation-campaign-v4.md`
 
 Earlier campaign:
 
@@ -160,6 +169,8 @@ Earlier campaign:
 - `reports/simulation-campaign-v1.md`
 - `reports/simulation-campaign-v2.csv`
 - `reports/simulation-campaign-v2.md`
+- `reports/simulation-campaign-v3.csv`
+- `reports/simulation-campaign-v3.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 

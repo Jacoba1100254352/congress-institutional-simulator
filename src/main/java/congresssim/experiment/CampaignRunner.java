@@ -73,6 +73,30 @@ public final class CampaignRunner {
             "default-pass-escalation-q12-s082",
             "default-pass-escalation-q20-s082"
     );
+    private static final List<String> CROSS_BLOC_SCENARIOS = List.of(
+            "simple-majority",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-informed-guarded",
+            "default-pass-challenge",
+            "default-pass-cross-bloc",
+            "default-pass-cross-bloc-strong",
+            "default-pass-cross-bloc-challenge",
+            "default-pass-challenge-party-t3-s082",
+            "default-pass-challenge-party-t6-s082",
+            "default-pass-challenge-party-t15-s082",
+            "default-pass-challenge-party-t25-s082",
+            "default-pass-challenge-party-t10-s050",
+            "default-pass-challenge-party-t10-s065",
+            "default-pass-challenge-party-t10-s100",
+            "default-pass-challenge-party-t10-s125",
+            "default-pass-challenge-member-t1-s082",
+            "default-pass-challenge-member-t2-s082",
+            "default-pass-challenge-member-t3-s082",
+            "default-pass-escalation-q6-s082",
+            "default-pass-escalation-q12-s082",
+            "default-pass-escalation-q20-s082"
+    );
 
     private CampaignRunner() {
     }
@@ -150,6 +174,26 @@ public final class CampaignRunner {
                 outputDir,
                 v1Cases(legislators, bills),
                 CHALLENGE_SWEEP_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV4(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v4",
+                "simulation-campaign-v4",
+                outputDir,
+                v1Cases(legislators, bills),
+                CROSS_BLOC_SCENARIOS,
                 runs,
                 legislators,
                 bills,
@@ -397,6 +441,33 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
+        if (aggregateByScenario.containsKey("default-pass-cross-bloc")) {
+            builder.append("## Cross-Bloc Cosponsorship Deltas\n\n");
+            builder.append("Delta values compare each cross-bloc agenda gate against open `default-pass` across all cases. Access-denial deltas expose the direct agenda-screening cost.\n\n");
+            builder.append("| Scenario | Productivity delta | Floor delta | Access-denial delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Challenge rate |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            for (String scenarioKey : List.of(
+                    "default-pass-cross-bloc",
+                    "default-pass-cross-bloc-strong",
+                    "default-pass-cross-bloc-challenge"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary != null) {
+                    ScenarioAggregate open = aggregateByScenario.get("default-pass");
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - open.productivity())).append(" | ")
+                            .append(format(summary.floor() - open.floor())).append(" | ")
+                            .append(format(summary.accessDenied() - open.accessDenied())).append(" | ")
+                            .append(format(summary.lowSupport() - open.lowSupport())).append(" | ")
+                            .append(format(summary.policyShift() - open.policyShift())).append(" | ")
+                            .append(format(summary.proposerGain() - open.proposerGain())).append(" | ")
+                            .append(format(summary.challengeRate())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
+
         if (aggregateByScenario.containsKey("default-pass-cost")) {
             builder.append("## Proposal-Cost Deltas\n\n");
             builder.append("Delta values compare `default-pass-cost` against open `default-pass` in the same case. Negative enacted-per-run, floor-per-run, low-support, and policy-shift deltas show the proposal-cost screen reducing flooding and volatility.\n\n");
@@ -468,7 +539,12 @@ public final class CampaignRunner {
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
         if (aggregateByScenario.containsKey("default-pass-challenge-party-t3-s082")) {
             builder.append("- The challenge sweep compares token budgets, challenge thresholds, party-held tokens, member-held tokens, and tokenless q-member escalation.\n");
-            builder.append("- The next model extension should add coalition-breadth proposal access, because challenge mechanics still operate after a bill enters the agenda.\n\n");
+            if (aggregateByScenario.containsKey("default-pass-cross-bloc")) {
+                builder.append("- Cross-bloc cosponsorship tests coalition breadth as a pre-floor agenda gate, before default-pass or challenge mechanics can operate.\n");
+                builder.append("- The next model extension should add adaptive procedural tracks, because the agenda system now needs to route bills by risk rather than screening every bill with one rule.\n\n");
+            } else {
+                builder.append("- The next model extension should add coalition-breadth proposal access, because challenge mechanics still operate after a bill enters the agenda.\n\n");
+            }
         } else {
             builder.append("- The next model extension should sweep challenge-token budgets, challenge thresholds, and proposal-cost mechanisms, because agenda screening is now the central default-pass tradeoff.\n\n");
         }
@@ -486,6 +562,7 @@ public final class CampaignRunner {
         ScenarioAggregate informedGuarded = aggregateByScenario.get("default-pass-informed-guarded");
         ScenarioAggregate proposalCost = aggregateByScenario.get("default-pass-cost");
         ScenarioAggregate challenge = aggregateByScenario.get("default-pass-challenge");
+        ScenarioAggregate crossBloc = aggregateByScenario.get("default-pass-cross-bloc");
         ScenarioAggregate simpleMajority = aggregateByScenario.get("simple-majority");
         ScenarioAggregate bestWelfare = aggregateByScenario.values()
                 .stream()
@@ -528,6 +605,15 @@ public final class CampaignRunner {
                     .append(format(challenge.productivity() - openDefault.productivity()))
                     .append(", and changed low-support passage by ")
                     .append(format(challenge.lowSupport() - openDefault.lowSupport()))
+                    .append(" relative to open default-pass.\n");
+        }
+        if (crossBloc != null) {
+            builder.append("- Cross-bloc cosponsorship changed productivity by ")
+                    .append(format(crossBloc.productivity() - openDefault.productivity()))
+                    .append(", floor consideration by ")
+                    .append(format(crossBloc.floor() - openDefault.floor()))
+                    .append(", and low-support passage by ")
+                    .append(format(crossBloc.lowSupport() - openDefault.lowSupport()))
                     .append(" relative to open default-pass.\n");
         }
         builder.append("- Best average welfare in this campaign came from ")
@@ -622,6 +708,7 @@ public final class CampaignRunner {
         private double proposerGain;
         private double challengeRate;
         private double floor;
+        private double accessDenied;
         private double enactedPerRun;
         private double floorPerRun;
 
@@ -639,6 +726,7 @@ public final class CampaignRunner {
             proposerGain += report.averageProposerGain();
             challengeRate += report.challengeRate();
             floor += report.floorConsiderationRate();
+            accessDenied += report.accessDenialRate();
             enactedPerRun += (double) report.enactedBills() / runs;
             floorPerRun += (report.totalBills() * report.floorConsiderationRate()) / runs;
         }
@@ -677,6 +765,10 @@ public final class CampaignRunner {
 
         private double floor() {
             return floor / count;
+        }
+
+        private double accessDenied() {
+            return accessDenied / count;
         }
 
         private double enactedPerRun() {

@@ -1,5 +1,9 @@
 package congresssim.institution;
 
+import congresssim.model.Legislator;
+
+import java.util.List;
+
 public final class ProposalAccessRules {
     private ProposalAccessRules() {
     }
@@ -14,5 +18,21 @@ public final class ProposalAccessRules {
 
     public static ProposalAccessRule proposalCost(double baseCost, double publicCreditWeight, double lobbyCreditWeight) {
         return new ProposalCostAccessRule(baseCost, publicCreditWeight, lobbyCreditWeight);
+    }
+
+    public static ProposalAccessRule crossBlocCosponsorship(
+            List<Legislator> legislators,
+            int minimumCosponsors,
+            int minimumOutsideBlocs,
+            double minimumIdeologicalDistance,
+            double cosponsorThreshold
+    ) {
+        return new CrossBlocCosponsorshipAccessRule(
+                legislators,
+                minimumCosponsors,
+                minimumOutsideBlocs,
+                minimumIdeologicalDistance,
+                cosponsorThreshold
+        );
     }
 }

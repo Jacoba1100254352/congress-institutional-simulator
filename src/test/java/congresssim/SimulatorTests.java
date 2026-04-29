@@ -41,6 +41,7 @@ public final class SimulatorTests {
         defaultPassRequiresBlockingSupermajority();
         proposalAccessCanDenyLowViabilityBills();
         proposalCostsCanDenyLowValueBills();
+        crossBlocCosponsorshipRequiresOutsideSupport();
         challengeVouchersRouteHighRiskBillsToActiveVote();
         challengeEscalationRoutesBroadlyContestedBillsToActiveVote();
         committeeGateBlocksBillsBeforeFloor();
@@ -80,6 +81,32 @@ public final class SimulatorTests {
         assertFalse(
                 ProposalAccessRules.proposalCost(0.34, 0.22, 0.18).evaluate(bill, context).granted(),
                 "Low-value proposals should fail the proposal-cost screen."
+        );
+    }
+
+    private static void crossBlocCosponsorshipRequiresOutsideSupport() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Left", -0.45, 0.7, 0.6, 0.8, 0.2, 0.8),
+                new Legislator("L-2", "Left", -0.35, 0.7, 0.6, 0.8, 0.2, 0.8),
+                new Legislator("L-3", "Center", -0.05, 0.9, 0.4, 0.9, 0.1, 0.9),
+                new Legislator("L-4", "Center", 0.10, 0.9, 0.4, 0.9, 0.1, 0.9),
+                new Legislator("L-5", "Right", 0.45, 0.7, 0.6, 0.8, 0.2, 0.8)
+        );
+        VoteContext context = new VoteContext(Map.of("Left", -0.40, "Center", 0.02, "Right", 0.45), new Random(1L), 0.0);
+        Bill bridgeBill = new Bill("B-bridge", "Bridge Bill", "L-1", -0.45, 0.02, 0.75, 0.80, 0.0, 0.50);
+        Bill narrowBill = new Bill("B-narrow", "Narrow Bill", "L-1", -0.45, -0.55, 0.35, 0.35, 0.6, 0.50);
+
+        assertTrue(
+                ProposalAccessRules.crossBlocCosponsorship(legislators, 2, 1, 0.18, 0.58)
+                        .evaluate(bridgeBill, context)
+                        .granted(),
+                "Broad, moderate bills should be able to earn cross-bloc access."
+        );
+        assertFalse(
+                ProposalAccessRules.crossBlocCosponsorship(legislators, 2, 1, 0.18, 0.58)
+                        .evaluate(narrowBill, context)
+                        .granted(),
+                "Narrow, low-support bills should fail the cross-bloc gate."
         );
     }
 
@@ -292,6 +319,10 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-escalation-q12-s082"),
                 "Scenario catalog should expose tokenless escalation sweep keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-cross-bloc"),
+                "Scenario catalog should expose cross-bloc cosponsorship keys."
         );
     }
 

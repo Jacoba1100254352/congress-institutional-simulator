@@ -57,31 +57,40 @@ Still not implemented:
 - token exhaustion by party or bloc
 - false-negative pass rate once a welfare/legitimacy classifier exists
 
-## Immediate Priority
-
 ### 2. Cross-Bloc Cosponsorship Gate
 
 Purpose: test whether proposal access based on coalition breadth reduces proposer gain without relying on committee gatekeeping or scalar costs.
 
-Add scenarios:
+Implemented campaign `simulation-campaign-v4` with:
 
 - `default-pass-cross-bloc`
-- `default-pass-cross-bloc-soft`
+- `default-pass-cross-bloc-strong`
 - `default-pass-cross-bloc-challenge`
 
-Report:
+Reported:
 
 - floor/run
 - productivity
-- cross-party or cross-bloc admission rate
+- access-denial rate
 - low-support passage
 - policy shift
 - proposer gain
 - public welfare
+- challenge rate for the combined gate/challenge scenario
 
-Decision target:
+Current finding:
 
-- identify whether requiring at least one ideologically distant or cross-party sponsor screens the agenda more cleanly than proposal costs.
+- cross-bloc cosponsorship is a strong upstream screen. The default gate reduced floor consideration by 0.789 and low-support passage by 0.240 relative to open default-pass, while improving enacted-bill welfare from 0.469 to 0.646. The strong gate raised welfare further to 0.740 but admitted only 0.069 productivity, so coalition breadth needs either softer parameters or adaptive routing.
+
+Still not implemented:
+
+- explicit cosponsor lists on bills
+- cross-party or cross-bloc admission-rate metric separate from access denial
+- reciprocity or fake cosponsorship trading
+- agenda-credit discounts for broader sponsorship
+- affected-group sponsorship as distinct from party-bloc sponsorship
+
+## Immediate Priority
 
 ### 3. Adaptive Procedural Tracks
 
@@ -144,7 +153,7 @@ Report:
 
 Purpose: determine whether the current proposal-cost finding is robust or an artifact of one cost formula.
 
-Add campaign `v4-cost-sweep` with:
+Add campaign `v5-cost-sweep` with:
 
 - `baseCost`: 0.05, 0.15, 0.25, 0.34, 0.45, 0.60
 - `publicCreditWeight`: 0.00, 0.15, 0.30, 0.50
@@ -168,7 +177,7 @@ Decision target:
 
 - identify cost settings that reduce floor load without increasing low-support passage or proposer gain.
 
-### 3. Proposal-Cost Mechanism Variants
+### 7. Proposal-Cost Mechanism Variants
 
 Purpose: compare different definitions of "cost" instead of only tuning one threshold.
 
@@ -192,7 +201,7 @@ Add scenarios:
 - `default-pass-refundable-deposit`
 - `default-pass-calendar-scarcity`
 
-### 4. Proposal-Flooding Severity Sweep
+### 8. Proposal-Flooding Severity Sweep
 
 Purpose: separate rule behavior at normal proposal volume from behavior under flood conditions.
 
