@@ -48,30 +48,30 @@ public final class Main {
                 options.seed
         );
 
-        System.out.printf("%-48s %8s %10s %8s %10s %8s %10s %10s %12s %10s%n",
+        System.out.printf("%-48s %8s %8s %10s %8s %9s %9s %10s %10s %10s%n",
                 "Scenario",
                 "Prod",
+                "Floor",
                 "AvgSupport",
-                "Coop",
                 "Compromise",
-                "Gridlock",
+                "AccessD",
+                "CmteRej",
                 "LowSupport",
-                "PopularFail",
                 "PolicyShift",
                 "PropGain"
         );
-        System.out.println("-".repeat(143));
+        System.out.println("-".repeat(132));
 
         for (ScenarioReport report : reports) {
-            System.out.printf("%-48s %8.3f %10.3f %8.3f %10.3f %8.3f %10.3f %10.3f %12.3f %10.3f%n",
+            System.out.printf("%-48s %8.3f %8.3f %10.3f %8.3f %9.3f %9.3f %10.3f %10.3f %10.3f%n",
                     report.scenarioName(),
                     report.productivity(),
+                    report.floorConsiderationRate(),
                     report.averageEnactedSupport(),
-                    report.cooperationScore(),
                     report.compromiseScore(),
-                    report.gridlockRate(),
+                    report.accessDenialRate(),
+                    report.committeeRejectionRate(),
                     report.controversialPassageRate(),
-                    report.popularBillFailureRate(),
                     report.averagePolicyShift(),
                     report.averageProposerGain()
             );

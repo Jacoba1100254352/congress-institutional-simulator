@@ -1,6 +1,7 @@
 package congresssim.simulation;
 
 import congresssim.institution.BillOutcome;
+import congresssim.institution.AgendaDisposition;
 
 final class MetricsAccumulator {
     private int totalBills;
@@ -8,6 +9,9 @@ final class MetricsAccumulator {
     private int controversialEnactedBills;
     private int popularBills;
     private int failedPopularBills;
+    private int floorConsideredBills;
+    private int accessDeniedBills;
+    private int committeeRejectedBills;
     private int vetoes;
     private int overriddenVetoes;
     private double enactedSupportSum;
@@ -18,6 +22,14 @@ final class MetricsAccumulator {
     void add(BillOutcome outcome) {
         totalBills++;
         policyShiftSum += Math.abs(outcome.statusQuoAfter() - outcome.statusQuoBefore());
+        if (outcome.agendaDisposition() == AgendaDisposition.FLOOR_CONSIDERED) {
+            floorConsideredBills++;
+        } else if (outcome.agendaDisposition() == AgendaDisposition.ACCESS_DENIED) {
+            accessDeniedBills++;
+        } else if (outcome.agendaDisposition() == AgendaDisposition.COMMITTEE_REJECTED) {
+            committeeRejectedBills++;
+        }
+
         if (outcome.bill().publicSupport() >= 0.60) {
             popularBills++;
             if (!outcome.enacted()) {
@@ -66,6 +78,9 @@ final class MetricsAccumulator {
                 ratio(failedPopularBills, popularBills),
                 totalBills == 0 ? 0.0 : policyShiftSum / totalBills,
                 enactedBills == 0 ? 0.0 : proposerGainSum / enactedBills,
+                ratio(floorConsideredBills, totalBills),
+                ratio(accessDeniedBills, totalBills),
+                ratio(committeeRejectedBills, totalBills),
                 vetoes,
                 overriddenVetoes
         );

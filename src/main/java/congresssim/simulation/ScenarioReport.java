@@ -13,6 +13,9 @@ public record ScenarioReport(
         double popularBillFailureRate,
         double averagePolicyShift,
         double averageProposerGain,
+        double floorConsiderationRate,
+        double accessDenialRate,
+        double committeeRejectionRate,
         int vetoes,
         int overriddenVetoes
 ) {

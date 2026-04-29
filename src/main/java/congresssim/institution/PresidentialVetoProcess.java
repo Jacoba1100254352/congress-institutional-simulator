@@ -47,6 +47,8 @@ public final class PresidentialVetoProcess implements LegislativeProcess {
                     preliminary.statusQuoBefore(),
                     bill.ideologyPosition(),
                     true,
+                    preliminary.agendaDisposition(),
+                    preliminary.gateResults(),
                     preliminary.chamberResults(),
                     PresidentialAction.none(),
                     "enacted without veto"
@@ -61,6 +63,8 @@ public final class PresidentialVetoProcess implements LegislativeProcess {
                 preliminary.statusQuoBefore(),
                 overridden ? bill.ideologyPosition() : preliminary.statusQuoBefore(),
                 overridden,
+                preliminary.agendaDisposition(),
+                preliminary.gateResults(),
                 preliminary.chamberResults(),
                 new PresidentialAction(true, true, overridden),
                 overridden ? "veto overridden" : "presidential veto sustained"
