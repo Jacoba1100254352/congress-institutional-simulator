@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v10.csv`
-- `reports/simulation-campaign-v10.md`
+- `reports/simulation-campaign-v11.csv`
+- `reports/simulation-campaign-v11.md`
 
 Earlier campaigns remain available:
 
@@ -64,6 +64,7 @@ make campaign-v7
 make campaign-v8
 make campaign-v9
 make campaign-v10
+make campaign-v11
 ```
 
 You can override the campaign defaults:
@@ -93,6 +94,9 @@ The default CLI compares:
 - `default-pass-budgeted-lobbying-transparency`: budgeted lobbying followed by transparency backlash
 - `default-pass-budgeted-lobbying-bundle`: budgeted lobbying with transparency, public-interest screening, audits, and lower direct lobby vote influence
 - `default-pass-budgeted-lobbying-mediation`: budgeted lobbying followed by bounded amendment mediation
+- `default-pass-harm-threshold`: default passage for ordinary bills, but concentrated-harm bills require affirmative supermajority support
+- `default-pass-compensation`: default passage with compensation amendments for high concentrated-harm bills
+- `default-pass-affected-consent`: default passage with compensation plus affected-group consent screening
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers that divert contested bills to active majority vote
 - `default-pass-challenge-info`: default passage with committee information review before challenge-voucher decisions
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate
@@ -138,7 +142,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`, `v8`, `v9`, or `v10`
+- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`, `v8`, `v9`, `v10`, or `v11`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -277,8 +281,16 @@ The v9 campaign adds explicit lobbying actors:
 - `BudgetedLobbyingProcess` lets groups spend limited budgets to boost favored private-gain bills and spend defensively against anti-lobbying reform.
 - Campaign reports now distinguish ordinary capture pressure from explicit spending, defensive spending, capture return on spend, and public-preference distortion.
 
-The current v10 campaign adds structured amendment mediation:
+The v10 campaign adds structured amendment mediation:
 
 - `AmendmentMediationProcess` wraps a floor process and, when bills are risky or weakly supported, moves the bill toward a weighted target based on the chamber median, current status quo, and proposer position.
 - Mediation variants test simple majority, open default-pass, and budgeted-lobbying default-pass against their non-mediated counterparts.
 - Campaign reports now include amendment rate and amendment movement so compromise can be measured as pre-vote content change, not only final yes/no support.
+
+The current v11 campaign adds distributional harm and affected groups:
+
+- Bills now include an affected group, affected-group support, concentrated-harm score, and compensation cost.
+- `default-pass-harm-threshold` routes concentrated-harm bills to a higher affirmative threshold.
+- `default-pass-compensation` lets high-harm bills receive compensation amendments that reduce concentrated harm at some public-benefit cost.
+- `default-pass-affected-consent` adds an affected-group support requirement after compensation.
+- Campaign reports now include minority harm, concentrated-harm passage, compensation rate, and legitimacy.

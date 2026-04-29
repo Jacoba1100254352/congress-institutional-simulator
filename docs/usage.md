@@ -101,6 +101,12 @@ Run the v10 mediation campaign:
 make campaign-v10
 ```
 
+Run the v11 distributional-harm campaign:
+
+```sh
+make campaign-v11
+```
+
 Remove generated build output:
 
 ```sh
@@ -153,7 +159,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0|v1|v2|v3|v4|v5|v6|v7|v8|v9|v10>`: run a named campaign.
+- `--campaign <v0|v1|v2|v3|v4|v5|v6|v7|v8|v9|v10|v11>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -177,6 +183,9 @@ The default CLI scenario set includes:
 - `default-pass-budgeted-lobbying-transparency`: budgeted lobbying followed by transparency backlash.
 - `default-pass-budgeted-lobbying-bundle`: budgeted lobbying with transparency, public-interest screening, audits, and lower direct lobby vote influence.
 - `default-pass-budgeted-lobbying-mediation`: budgeted lobbying followed by bounded amendment mediation.
+- `default-pass-harm-threshold`: default passage for ordinary bills, but concentrated-harm bills require affirmative supermajority support.
+- `default-pass-compensation`: default passage with compensation amendments for high concentrated-harm bills.
+- `default-pass-affected-consent`: default passage with compensation plus affected-group consent screening.
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers.
 - `default-pass-challenge-info`: default passage with committee information before challenge-voucher decisions.
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate.
@@ -218,8 +227,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v10.csv`
-- `reports/simulation-campaign-v10.md`
+- `reports/simulation-campaign-v11.csv`
+- `reports/simulation-campaign-v11.md`
 
 Earlier campaigns:
 
@@ -243,6 +252,8 @@ Earlier campaigns:
 - `reports/simulation-campaign-v8.md`
 - `reports/simulation-campaign-v9.csv`
 - `reports/simulation-campaign-v9.md`
+- `reports/simulation-campaign-v10.csv`
+- `reports/simulation-campaign-v10.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -274,6 +285,10 @@ The simulator reports several metrics because passage volume alone is not enough
 - `publicPreferenceDistortion`: average gap between enacted yes-share and generated public support.
 - `amendmentRate`: share of potential bills whose policy position moved during mediation.
 - `amendmentMovement`: average absolute policy movement created by mediation per potential bill.
+- `minorityHarm`: average enacted concentrated harm weighted by affected-group opposition.
+- `concentratedHarmPassage`: share of high concentrated-harm bills that are enacted.
+- `compensationRate`: share of potential bills receiving compensation amendments.
+- `legitimacy`: enacted-bill legitimacy proxy combining public support, chamber support, affected-group support, and harm penalties.
 - `vetoes`: presidential veto count.
 - `overrides`: veto override count.
 

@@ -23,6 +23,15 @@ public final class WorldGenerator {
             "housing",
             "democracy"
     );
+    private static final List<String> AFFECTED_GROUPS = List.of(
+            "rural",
+            "urban",
+            "workers",
+            "small-business",
+            "low-income",
+            "future-generations",
+            "regional-minority"
+    );
 
     public SimulationWorld generate(WorldSpec spec, long seed) {
         Random random = new Random(seed);
@@ -74,6 +83,10 @@ public final class WorldGenerator {
             double publicBenefit;
             double publicSupport;
             double salience;
+            String affectedGroup = AFFECTED_GROUPS.get(random.nextInt(AFFECTED_GROUPS.size()));
+            double concentratedHarm;
+            double affectedGroupSupport;
+            double compensationCost;
 
             if (antiLobbyingReform) {
                 lobbyPressure = -Values.clamp(
@@ -93,6 +106,11 @@ public final class WorldGenerator {
                         1.0
                 );
                 salience = Values.clamp(0.50 + random.nextDouble() * 0.50, 0.0, 1.0);
+                concentratedHarm = Values.clamp(
+                        0.08 + (Math.max(0.0, -lobbyPressure) * 0.08) + random.nextGaussian() * 0.06,
+                        0.0,
+                        0.35
+                );
             } else {
                 lobbyPressure = Values.clamp(random.nextGaussian() * spec.lobbyingSusceptibility(), -1.0, 1.0);
                 privateGain = Values.clamp(
@@ -111,7 +129,30 @@ public final class WorldGenerator {
                         1.0
                 );
                 salience = Values.clamp(0.20 + random.nextDouble() * 0.80, 0.0, 1.0);
+                concentratedHarm = Values.clamp(
+                        (Math.abs(ideology - proposer.ideology()) * 0.10)
+                                + (Math.abs(ideology) * 0.22)
+                                + (privateGain * 0.22)
+                                + (salience * 0.12)
+                                + random.nextGaussian() * 0.14,
+                        0.0,
+                        1.0
+                );
             }
+            affectedGroupSupport = Values.clamp(
+                    publicSupport
+                            - (concentratedHarm * 0.48)
+                            + (publicBenefit * 0.12)
+                            - (Math.max(0.0, lobbyPressure) * 0.06)
+                            + random.nextGaussian() * 0.12,
+                    0.0,
+                    1.0
+            );
+            compensationCost = Values.clamp(
+                    concentratedHarm * (0.18 + random.nextDouble() * 0.34),
+                    0.0,
+                    0.55
+            );
 
             bills.add(new Bill(
                     "B-" + (i + 1),
@@ -127,7 +168,11 @@ public final class WorldGenerator {
                     antiLobbyingReform,
                     issueDomain,
                     0.0,
-                    0.0
+                    0.0,
+                    affectedGroup,
+                    affectedGroupSupport,
+                    concentratedHarm,
+                    compensationCost
             ));
         }
         return bills;

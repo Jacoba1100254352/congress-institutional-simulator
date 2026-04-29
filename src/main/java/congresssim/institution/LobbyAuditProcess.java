@@ -98,6 +98,7 @@ public final class LobbyAuditProcess implements LegislativeProcess {
                 outcome.chamberResults(),
                 outcome.presidentialAction(),
                 outcome.challenged(),
+                outcome.signals(),
                 "anti-capture audit reversed captured enactment; " + outcome.finalReason()
         );
     }

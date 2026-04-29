@@ -242,6 +242,27 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> DISTRIBUTIONAL_HARM_SCENARIOS = List.of(
+            "simple-majority",
+            "simple-majority-mediation",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-mediation",
+            "default-pass-harm-threshold",
+            "default-pass-compensation",
+            "default-pass-affected-consent",
+            "default-pass-budgeted-lobbying",
+            "default-pass-budgeted-lobbying-mediation",
+            "default-pass-anti-capture-bundle",
+            "default-pass-informed-guarded",
+            "default-pass-challenge",
+            "default-pass-cross-bloc",
+            "default-pass-adaptive-track",
+            "default-pass-sunset-trial",
+            "default-pass-earned-credits",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -466,6 +487,26 @@ public final class CampaignRunner {
         );
     }
 
+    public static CampaignResult runV11(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v11",
+                "simulation-campaign-v11",
+                outputDir,
+                v8Cases(legislators, bills),
+                DISTRIBUTIONAL_HARM_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
     private static CampaignResult run(
             String name,
             String fileStem,
@@ -596,7 +637,7 @@ public final class CampaignRunner {
 
     private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,vetoes,overriddenVetoes\n");
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
@@ -633,6 +674,30 @@ public final class CampaignRunner {
                     .append(format(report.publicPreferenceDistortion())).append(',')
                     .append(format(report.amendmentRate())).append(',')
                     .append(format(report.averageAmendmentMovement())).append(',')
+                    .append(format(report.minorityHarmIndex())).append(',')
+                    .append(format(report.concentratedHarmPassageRate())).append(',')
+                    .append(format(report.compensationRate())).append(',')
+                    .append(format(report.legitimacyScore())).append(',')
+                    .append(format(report.activeLawWelfare())).append(',')
+                    .append(format(report.reversalRate())).append(',')
+                    .append(format(report.statusQuoVolatility())).append(',')
+                    .append(format(report.lowSupportActiveLawShare())).append(',')
+                    .append(format(report.selectedAlternativeMedianDistance())).append(',')
+                    .append(format(report.proposerAgendaAdvantage())).append(',')
+                    .append(format(report.alternativeDiversity())).append(',')
+                    .append(format(report.statusQuoWinRate())).append(',')
+                    .append(format(report.publicBenefitPerLobbyDollar())).append(',')
+                    .append(format(report.directLobbySpendShare())).append(',')
+                    .append(format(report.agendaLobbySpendShare())).append(',')
+                    .append(format(report.informationLobbySpendShare())).append(',')
+                    .append(format(report.publicCampaignSpendShare())).append(',')
+                    .append(format(report.litigationThreatSpendShare())).append(',')
+                    .append(format(report.citizenReviewRate())).append(',')
+                    .append(format(report.citizenCertificationRate())).append(',')
+                    .append(format(report.citizenLegitimacy())).append(',')
+                    .append(format(report.attentionSpendPerBill())).append(',')
+                    .append(format(report.objectionWindowRate())).append(',')
+                    .append(format(report.repealWindowReversalRate())).append(',')
                     .append(report.vetoes()).append(',')
                     .append(report.overriddenVetoes()).append('\n');
         }
@@ -663,8 +728,8 @@ public final class CampaignRunner {
         appendHeadlineFindings(builder, result.rows(), aggregateByScenario);
 
         builder.append("## Scenario Averages Across Cases\n\n");
-        builder.append("| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Policy shift | Proposer gain | Capture | Lobby spend | Defensive spend | Amend rate | Amend move | Anti-lobby pass | Challenge | Floor |\n");
-        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+        builder.append("| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Minority harm | Legitimacy | Policy shift | Proposer gain | Capture | Lobby spend | Defensive spend | Amend rate | Compensation | Anti-lobby pass | Challenge | Floor |\n");
+        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
         aggregateByScenario.values()
                 .stream()
                 .sorted(Comparator.comparing(ScenarioAggregate::scenarioKey))
@@ -675,13 +740,15 @@ public final class CampaignRunner {
                         .append(format(summary.floorPerRun())).append(" | ")
                         .append(format(summary.welfare())).append(" | ")
                         .append(format(summary.lowSupport())).append(" | ")
+                        .append(format(summary.minorityHarm())).append(" | ")
+                        .append(format(summary.legitimacy())).append(" | ")
                         .append(format(summary.policyShift())).append(" | ")
                         .append(format(summary.proposerGain())).append(" | ")
                         .append(format(summary.lobbyCapture())).append(" | ")
                         .append(format(summary.lobbySpendPerBill())).append(" | ")
                         .append(format(summary.defensiveLobbyingShare())).append(" | ")
                         .append(format(summary.amendmentRate())).append(" | ")
-                        .append(format(summary.amendmentMovement())).append(" | ")
+                        .append(format(summary.compensationRate())).append(" | ")
                         .append(format(summary.antiLobbyingSuccess())).append(" | ")
                         .append(format(summary.challengeRate())).append(" | ")
                         .append(format(summary.floor())).append(" |\n"));
@@ -902,6 +969,33 @@ public final class CampaignRunner {
             appendMediationDelta(builder, aggregateByScenario, "default-pass-mediation", "default-pass");
             appendMediationDelta(builder, aggregateByScenario, "default-pass-budgeted-lobbying-mediation", "default-pass-budgeted-lobbying");
             appendMediationDelta(builder, aggregateByScenario, "simple-majority-mediation", "simple-majority");
+            builder.append('\n');
+        }
+
+        if (aggregateByScenario.containsKey("default-pass-compensation")) {
+            builder.append("## Distributional-Harm Deltas\n\n");
+            builder.append("Delta values compare harm guardrails against open `default-pass` across all cases. Lower minority harm and higher legitimacy are desirable; compensation rate measures how often the proposal content was amended to reduce concentrated loss.\n\n");
+            builder.append("| Scenario | Productivity delta | Welfare delta | Minority-harm delta | Legitimacy delta | Concentrated-harm passage | Compensation rate | Low-support delta |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            for (String scenarioKey : List.of(
+                    "default-pass-harm-threshold",
+                    "default-pass-compensation",
+                    "default-pass-affected-consent"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary != null) {
+                    ScenarioAggregate open = aggregateByScenario.get("default-pass");
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - open.productivity())).append(" | ")
+                            .append(format(summary.welfare() - open.welfare())).append(" | ")
+                            .append(format(summary.minorityHarm() - open.minorityHarm())).append(" | ")
+                            .append(format(summary.legitimacy() - open.legitimacy())).append(" | ")
+                            .append(format(summary.concentratedHarmPassage())).append(" | ")
+                            .append(format(summary.compensationRate())).append(" | ")
+                            .append(format(summary.lowSupport() - open.lowSupport())).append(" |\n");
+                }
+            }
             builder.append('\n');
         }
 
@@ -1261,6 +1355,29 @@ public final class CampaignRunner {
         private double publicPreferenceDistortion;
         private double amendmentRate;
         private double amendmentMovement;
+        private double minorityHarm;
+        private double concentratedHarmPassage;
+        private double compensationRate;
+        private double legitimacy;
+        private double activeLawWelfare;
+        private double reversalRate;
+        private double lowSupportActiveLawShare;
+        private double selectedAlternativeMedianDistance;
+        private double proposerAgendaAdvantage;
+        private double alternativeDiversity;
+        private double statusQuoWinRate;
+        private double publicBenefitPerLobbyDollar;
+        private double directLobbySpendShare;
+        private double agendaLobbySpendShare;
+        private double informationLobbySpendShare;
+        private double publicCampaignSpendShare;
+        private double litigationThreatSpendShare;
+        private double citizenReviewRate;
+        private double citizenCertificationRate;
+        private double citizenLegitimacy;
+        private double attentionSpendPerBill;
+        private double objectionWindowRate;
+        private double repealWindowReversalRate;
         private double challengeRate;
         private double floor;
         private double accessDenied;
@@ -1291,6 +1408,29 @@ public final class CampaignRunner {
             publicPreferenceDistortion += report.publicPreferenceDistortion();
             amendmentRate += report.amendmentRate();
             amendmentMovement += report.averageAmendmentMovement();
+            minorityHarm += report.minorityHarmIndex();
+            concentratedHarmPassage += report.concentratedHarmPassageRate();
+            compensationRate += report.compensationRate();
+            legitimacy += report.legitimacyScore();
+            activeLawWelfare += report.activeLawWelfare();
+            reversalRate += report.reversalRate();
+            lowSupportActiveLawShare += report.lowSupportActiveLawShare();
+            selectedAlternativeMedianDistance += report.selectedAlternativeMedianDistance();
+            proposerAgendaAdvantage += report.proposerAgendaAdvantage();
+            alternativeDiversity += report.alternativeDiversity();
+            statusQuoWinRate += report.statusQuoWinRate();
+            publicBenefitPerLobbyDollar += report.publicBenefitPerLobbyDollar();
+            directLobbySpendShare += report.directLobbySpendShare();
+            agendaLobbySpendShare += report.agendaLobbySpendShare();
+            informationLobbySpendShare += report.informationLobbySpendShare();
+            publicCampaignSpendShare += report.publicCampaignSpendShare();
+            litigationThreatSpendShare += report.litigationThreatSpendShare();
+            citizenReviewRate += report.citizenReviewRate();
+            citizenCertificationRate += report.citizenCertificationRate();
+            citizenLegitimacy += report.citizenLegitimacy();
+            attentionSpendPerBill += report.attentionSpendPerBill();
+            objectionWindowRate += report.objectionWindowRate();
+            repealWindowReversalRate += report.repealWindowReversalRate();
             challengeRate += report.challengeRate();
             floor += report.floorConsiderationRate();
             accessDenied += report.accessDenialRate();
@@ -1369,6 +1509,98 @@ public final class CampaignRunner {
 
         private double amendmentMovement() {
             return amendmentMovement / count;
+        }
+
+        private double minorityHarm() {
+            return minorityHarm / count;
+        }
+
+        private double concentratedHarmPassage() {
+            return concentratedHarmPassage / count;
+        }
+
+        private double compensationRate() {
+            return compensationRate / count;
+        }
+
+        private double legitimacy() {
+            return legitimacy / count;
+        }
+
+        private double activeLawWelfare() {
+            return activeLawWelfare / count;
+        }
+
+        private double reversalRate() {
+            return reversalRate / count;
+        }
+
+        private double lowSupportActiveLawShare() {
+            return lowSupportActiveLawShare / count;
+        }
+
+        private double selectedAlternativeMedianDistance() {
+            return selectedAlternativeMedianDistance / count;
+        }
+
+        private double proposerAgendaAdvantage() {
+            return proposerAgendaAdvantage / count;
+        }
+
+        private double alternativeDiversity() {
+            return alternativeDiversity / count;
+        }
+
+        private double statusQuoWinRate() {
+            return statusQuoWinRate / count;
+        }
+
+        private double publicBenefitPerLobbyDollar() {
+            return publicBenefitPerLobbyDollar / count;
+        }
+
+        private double directLobbySpendShare() {
+            return directLobbySpendShare / count;
+        }
+
+        private double agendaLobbySpendShare() {
+            return agendaLobbySpendShare / count;
+        }
+
+        private double informationLobbySpendShare() {
+            return informationLobbySpendShare / count;
+        }
+
+        private double publicCampaignSpendShare() {
+            return publicCampaignSpendShare / count;
+        }
+
+        private double litigationThreatSpendShare() {
+            return litigationThreatSpendShare / count;
+        }
+
+        private double citizenReviewRate() {
+            return citizenReviewRate / count;
+        }
+
+        private double citizenCertificationRate() {
+            return citizenCertificationRate / count;
+        }
+
+        private double citizenLegitimacy() {
+            return citizenLegitimacy / count;
+        }
+
+        private double attentionSpendPerBill() {
+            return attentionSpendPerBill / count;
+        }
+
+        private double objectionWindowRate() {
+            return objectionWindowRate / count;
+        }
+
+        private double repealWindowReversalRate() {
+            return repealWindowReversalRate / count;
         }
 
         private double challengeRate() {

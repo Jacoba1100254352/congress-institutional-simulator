@@ -81,6 +81,7 @@ public final class SunsetTrialProcess implements LegislativeProcess {
                 outcome.chamberResults(),
                 outcome.presidentialAction(),
                 outcome.challenged(),
+                outcome.signals(),
                 reason
         );
     }

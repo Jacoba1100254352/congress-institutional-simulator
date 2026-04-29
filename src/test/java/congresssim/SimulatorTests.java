@@ -17,6 +17,7 @@ import congresssim.institution.ChallengeVoucherProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
+import congresssim.institution.DistributionalHarmProcess;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
 import congresssim.institution.LobbyTransparencyProcess;
@@ -56,6 +57,7 @@ public final class SimulatorTests {
         lobbyTransparencyReducesCapturedBillPressure();
         budgetedLobbyingSpendsDefensivelyAgainstAntiLobbyingReforms();
         amendmentMediationMovesRiskyBillsTowardMedian();
+        distributionalHarmProcessCompensatesAffectedGroups();
         publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
         lobbyAuditCanReverseCapturedEnactments();
         challengeVouchersRouteHighRiskBillsToActiveVote();
@@ -318,6 +320,47 @@ public final class SimulatorTests {
                 0.20,
                 0.10
         ).consider(riskyBill, context);
+    }
+
+    private static void distributionalHarmProcessCompensatesAffectedGroups() {
+        Bill harmfulBill = new Bill(
+                "B-harm",
+                "Harmful Bill",
+                "L-1",
+                0.0,
+                0.35,
+                0.70,
+                0.72,
+                0.0,
+                0.60,
+                0.10,
+                false,
+                "housing",
+                0.0,
+                0.0,
+                "low-income",
+                0.18,
+                0.80,
+                0.20
+        );
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        LegislativeProcess captureBill = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "capture compensated bill";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                assertTrue(bill.compensationAdded(), "High-harm bills should receive compensation amendments.");
+                assertTrue(bill.concentratedHarm() < harmfulBill.concentratedHarm(), "Compensation should reduce concentrated harm.");
+                assertTrue(bill.affectedGroupSupport() > harmfulBill.affectedGroupSupport(), "Compensation should improve affected-group support.");
+                return BillOutcome.accessDenied(bill, context.currentPolicyPosition(), "captured");
+            }
+        };
+
+        new DistributionalHarmProcess("distribution test", captureBill, 0.40, 0.40, 0.60, 0.25, false)
+                .consider(harmfulBill, context);
     }
 
     private static void publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms() {

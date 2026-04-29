@@ -71,11 +71,27 @@ public final class AmendmentMediationProcess implements LegislativeProcess {
         double capturePenalty = LobbyCaptureScoring.captureRisk(bill) * 0.10;
         double supportGain = movement * (0.24 + (0.20 * bill.publicBenefit())) - capturePenalty;
         double benefitGain = movement * 0.10 * (1.0 - Math.max(0.0, bill.lobbyPressure()));
-        return bill.withAmendment(
+        Bill amended = bill.withAmendment(
                 revisedPosition,
                 Values.clamp(bill.publicSupport() + supportGain, 0.0, 1.0),
                 Values.clamp(bill.publicBenefit() + benefitGain, 0.0, 1.0)
         );
+        if (bill.concentratedHarm() < 0.42 || bill.affectedGroupSupport() >= 0.50) {
+            return amended;
+        }
+        double harmReduction = Values.clamp(0.24 + (0.32 * movementRate), 0.0, 0.62);
+        double revisedHarm = Values.clamp(amended.concentratedHarm() * (1.0 - harmReduction), 0.0, 1.0);
+        double revisedAffectedSupport = Values.clamp(
+                amended.affectedGroupSupport() + ((amended.concentratedHarm() - revisedHarm) * 0.70),
+                0.0,
+                1.0
+        );
+        double revisedBenefit = Values.clamp(
+                amended.publicBenefit() - (amended.compensationCost() * 0.25),
+                0.0,
+                1.0
+        );
+        return amended.withCompensation(revisedBenefit, revisedAffectedSupport, revisedHarm);
     }
 
     private double targetPosition(Bill bill, VoteContext context) {
@@ -94,11 +110,13 @@ public final class AmendmentMediationProcess implements LegislativeProcess {
         double policyShift = Math.abs(bill.ideologyPosition() - context.currentPolicyPosition()) / 2.0;
         double proposerDistance = Math.abs(bill.ideologyPosition() - bill.proposerIdeology()) / 2.0;
         double captureRisk = LobbyCaptureScoring.captureRisk(bill);
+        double harmRisk = AffectedGroupScoring.minorityHarm(bill);
         return Values.clamp(
                 (0.34 * lowSupport)
                         + (0.28 * policyShift)
-                        + (0.18 * (1.0 - proposerDistance))
-                        + (0.20 * captureRisk),
+                        + (0.14 * (1.0 - proposerDistance))
+                        + (0.16 * captureRisk)
+                        + (0.08 * harmRisk),
                 0.0,
                 1.0
         );

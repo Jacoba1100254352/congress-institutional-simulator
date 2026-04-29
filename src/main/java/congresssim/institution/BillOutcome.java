@@ -15,6 +15,7 @@ public record BillOutcome(
         List<ChamberVoteResult> chamberResults,
         PresidentialAction presidentialAction,
         boolean challenged,
+        OutcomeSignals signals,
         String finalReason
 ) {
     public BillOutcome {
@@ -41,6 +42,7 @@ public record BillOutcome(
                 chamberResults,
                 presidentialAction,
                 false,
+                OutcomeSignals.none(),
                 finalReason
         );
     }
@@ -56,6 +58,7 @@ public record BillOutcome(
                 List.of(),
                 PresidentialAction.none(),
                 false,
+                OutcomeSignals.none(),
                 reason
         );
     }
@@ -76,6 +79,7 @@ public record BillOutcome(
                 List.of(),
                 PresidentialAction.none(),
                 false,
+                OutcomeSignals.none(),
                 reason
         );
     }
@@ -93,6 +97,7 @@ public record BillOutcome(
                 chamberResults,
                 presidentialAction,
                 challenged,
+                signals,
                 finalReason
         );
     }
@@ -108,7 +113,40 @@ public record BillOutcome(
                 chamberResults,
                 presidentialAction,
                 true,
+                signals,
                 reason
+        );
+    }
+
+    public BillOutcome withSignals(OutcomeSignals addedSignals) {
+        return new BillOutcome(
+                bill,
+                statusQuoBefore,
+                statusQuoAfter,
+                enacted,
+                agendaDisposition,
+                gateResults,
+                chamberResults,
+                presidentialAction,
+                challenged,
+                signals.plus(addedSignals),
+                finalReason
+        );
+    }
+
+    public BillOutcome withBill(Bill revisedBill) {
+        return new BillOutcome(
+                revisedBill,
+                statusQuoBefore,
+                statusQuoAfter,
+                enacted,
+                agendaDisposition,
+                gateResults,
+                chamberResults,
+                presidentialAction,
+                challenged,
+                signals,
+                finalReason
         );
     }
 

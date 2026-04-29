@@ -14,6 +14,8 @@ import congresssim.institution.ChallengeVoucherProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
+import congresssim.institution.DistributionalHarmProcess;
+import congresssim.institution.HarmWeightedThresholdProcess;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
 import congresssim.institution.LobbyTransparencyProcess;
@@ -82,6 +84,9 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-budgeted-lobbying-transparency", defaultPassWithBudgetedLobbying(true, false)),
                 new ScenarioEntry("default-pass-budgeted-lobbying-bundle", defaultPassWithBudgetedLobbying(true, true)),
                 new ScenarioEntry("default-pass-budgeted-lobbying-mediation", defaultPassWithBudgetedLobbyingAndMediation()),
+                new ScenarioEntry("default-pass-harm-threshold", defaultPassWithHarmWeightedThreshold()),
+                new ScenarioEntry("default-pass-compensation", defaultPassWithDistributionalCompensation(false)),
+                new ScenarioEntry("default-pass-affected-consent", defaultPassWithDistributionalCompensation(true)),
                 new ScenarioEntry("default-pass-challenge", defaultPassWithChallengeVouchers()),
                 new ScenarioEntry("default-pass-challenge-info", defaultPassWithChallengeVouchersAndInformation()),
                 new ScenarioEntry("default-pass-cross-bloc", defaultPassWithCrossBlocCosponsorship(
@@ -432,6 +437,58 @@ public final class ScenarioCatalog {
                         0.22,
                         0.44,
                         0.35
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithHarmWeightedThreshold() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + harm-weighted threshold";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                Chamber ordinary = new Chamber(
+                        "Legislature",
+                        world.legislators(),
+                        strategy,
+                        new DefaultPassUnlessVetoedRule(2.0 / 3.0)
+                );
+                Chamber highHarm = new Chamber(
+                        "Legislature harm review",
+                        world.legislators(),
+                        strategy,
+                        AffirmativeThresholdRule.supermajority(0.60)
+                );
+                return new HarmWeightedThresholdProcess(name(), ordinary, highHarm, 0.48);
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithDistributionalCompensation(boolean requireConsent) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return requireConsent
+                        ? "Default pass + affected-group consent"
+                        : "Default pass + compensation amendments";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new DistributionalHarmProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        0.42,
+                        requireConsent ? 0.48 : 0.42,
+                        requireConsent ? 0.72 : 0.58,
+                        requireConsent ? 0.42 : 0.30,
+                        requireConsent
                 );
             }
         };
