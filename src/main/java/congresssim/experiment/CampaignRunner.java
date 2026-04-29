@@ -221,6 +221,27 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> MEDIATION_SCENARIOS = List.of(
+            "simple-majority",
+            "simple-majority-mediation",
+            "simple-majority-lobby-firewall",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-mediation",
+            "default-pass-budgeted-lobbying",
+            "default-pass-budgeted-lobbying-mediation",
+            "default-pass-budgeted-lobbying-transparency",
+            "default-pass-budgeted-lobbying-bundle",
+            "default-pass-anti-capture-bundle",
+            "default-pass-informed-guarded",
+            "default-pass-challenge",
+            "default-pass-cross-bloc",
+            "default-pass-adaptive-track",
+            "default-pass-sunset-trial",
+            "default-pass-earned-credits",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -425,6 +446,26 @@ public final class CampaignRunner {
         );
     }
 
+    public static CampaignResult runV10(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v10",
+                "simulation-campaign-v10",
+                outputDir,
+                v8Cases(legislators, bills),
+                MEDIATION_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
     private static CampaignResult run(
             String name,
             String fileStem,
@@ -555,7 +596,7 @@ public final class CampaignRunner {
 
     private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,vetoes,overriddenVetoes\n");
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
@@ -590,6 +631,8 @@ public final class CampaignRunner {
                     .append(format(report.defensiveLobbyingShare())).append(',')
                     .append(format(report.captureReturnOnSpend())).append(',')
                     .append(format(report.publicPreferenceDistortion())).append(',')
+                    .append(format(report.amendmentRate())).append(',')
+                    .append(format(report.averageAmendmentMovement())).append(',')
                     .append(report.vetoes()).append(',')
                     .append(report.overriddenVetoes()).append('\n');
         }
@@ -620,8 +663,8 @@ public final class CampaignRunner {
         appendHeadlineFindings(builder, result.rows(), aggregateByScenario);
 
         builder.append("## Scenario Averages Across Cases\n\n");
-        builder.append("| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Policy shift | Proposer gain | Capture | Lobby spend | Defensive spend | Anti-lobby pass | Challenge | Floor |\n");
-        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+        builder.append("| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Policy shift | Proposer gain | Capture | Lobby spend | Defensive spend | Amend rate | Amend move | Anti-lobby pass | Challenge | Floor |\n");
+        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
         aggregateByScenario.values()
                 .stream()
                 .sorted(Comparator.comparing(ScenarioAggregate::scenarioKey))
@@ -637,6 +680,8 @@ public final class CampaignRunner {
                         .append(format(summary.lobbyCapture())).append(" | ")
                         .append(format(summary.lobbySpendPerBill())).append(" | ")
                         .append(format(summary.defensiveLobbyingShare())).append(" | ")
+                        .append(format(summary.amendmentRate())).append(" | ")
+                        .append(format(summary.amendmentMovement())).append(" | ")
                         .append(format(summary.antiLobbyingSuccess())).append(" | ")
                         .append(format(summary.challengeRate())).append(" | ")
                         .append(format(summary.floor())).append(" |\n"));
@@ -849,6 +894,17 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
+        if (aggregateByScenario.containsKey("default-pass-mediation")) {
+            builder.append("## Mediation Deltas\n\n");
+            builder.append("Delta values compare structured amendment mediation against the matching non-mediated scenario. Amendment rate is the share of potential bills whose policy position moved before final voting.\n\n");
+            builder.append("| Scenario | Baseline | Productivity delta | Welfare delta | Compromise delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Amendment rate | Amendment movement |\n");
+            builder.append("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            appendMediationDelta(builder, aggregateByScenario, "default-pass-mediation", "default-pass");
+            appendMediationDelta(builder, aggregateByScenario, "default-pass-budgeted-lobbying-mediation", "default-pass-budgeted-lobbying");
+            appendMediationDelta(builder, aggregateByScenario, "simple-majority-mediation", "simple-majority");
+            builder.append('\n');
+        }
+
         if (aggregateByScenario.containsKey("default-pass-cost")) {
             builder.append("## Proposal-Cost Deltas\n\n");
             builder.append("Delta values compare `default-pass-cost` against open `default-pass` in the same case. Negative enacted-per-run, floor-per-run, low-support, and policy-shift deltas show the proposal-cost screen reducing flooding and volatility.\n\n");
@@ -921,7 +977,10 @@ public final class CampaignRunner {
             builder.append("- Anti-capture scenarios test whether lobbying pressure can be reduced through vote firewalls, transparency, public-interest screens, audit sanctions, or combined safeguards.\n");
         }
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        if (aggregateByScenario.containsKey("default-pass-budgeted-lobbying")) {
+        if (aggregateByScenario.containsKey("default-pass-mediation")) {
+            builder.append("- Structured mediation scenarios let a bounded amendment stage move bills toward the chamber median/status quo before the final yes/no vote.\n");
+            builder.append("- The next model extension should add richer constituent and affected-group structure, because compromise quality should be judged against public will and concentrated harms rather than only chamber support.\n\n");
+        } else if (aggregateByScenario.containsKey("default-pass-budgeted-lobbying")) {
             builder.append("- Budgeted lobbying scenarios make organized interests explicit actors with budgets, issue targets, and defensive spending against anti-lobbying reform.\n");
             builder.append("- The next model extension should add structured amendment or mediation, because capture controls and agenda screens still rarely turn narrow bills into better compromises before the final yes/no choice.\n\n");
         } else if (aggregateByScenario.containsKey("default-pass-anti-capture-bundle")) {
@@ -1069,11 +1128,43 @@ public final class CampaignRunner {
                     .append(format(budgetedLobbying.defensiveLobbyingShare()))
                     .append(" of spend aimed defensively at anti-lobbying reform bills.\n");
         }
+        ScenarioAggregate mediation = aggregateByScenario.get("default-pass-mediation");
+        if (mediation != null) {
+            builder.append("- Mediated default-pass amended ")
+                    .append(format(mediation.amendmentRate()))
+                    .append(" of potential bills and changed compromise by ")
+                    .append(format(mediation.compromise() - openDefault.compromise()))
+                    .append(" relative to open default-pass.\n");
+        }
         builder.append("- Best average welfare in this campaign came from ")
                 .append(bestWelfare.scenarioName())
                 .append(" at ")
                 .append(format(bestWelfare.welfare()))
                 .append(".\n\n");
+    }
+
+    private static void appendMediationDelta(
+            StringBuilder builder,
+            Map<String, ScenarioAggregate> aggregateByScenario,
+            String mediatedKey,
+            String baselineKey
+    ) {
+        ScenarioAggregate mediated = aggregateByScenario.get(mediatedKey);
+        ScenarioAggregate baseline = aggregateByScenario.get(baselineKey);
+        if (mediated == null || baseline == null) {
+            return;
+        }
+        builder.append("| ")
+                .append(mediated.scenarioName()).append(" | ")
+                .append(baseline.scenarioName()).append(" | ")
+                .append(format(mediated.productivity() - baseline.productivity())).append(" | ")
+                .append(format(mediated.welfare() - baseline.welfare())).append(" | ")
+                .append(format(mediated.compromise() - baseline.compromise())).append(" | ")
+                .append(format(mediated.lowSupport() - baseline.lowSupport())).append(" | ")
+                .append(format(mediated.policyShift() - baseline.policyShift())).append(" | ")
+                .append(format(mediated.proposerGain() - baseline.proposerGain())).append(" | ")
+                .append(format(mediated.amendmentRate())).append(" | ")
+                .append(format(mediated.amendmentMovement())).append(" |\n");
     }
 
     private static Map<String, ScenarioAggregate> aggregateByScenario(List<CampaignRow> rows, int runs) {
@@ -1156,6 +1247,7 @@ public final class CampaignRunner {
         private int count;
         private double productivity;
         private double welfare;
+        private double compromise;
         private double lowSupport;
         private double policyShift;
         private double proposerGain;
@@ -1167,6 +1259,8 @@ public final class CampaignRunner {
         private double defensiveLobbyingShare;
         private double captureReturnOnSpend;
         private double publicPreferenceDistortion;
+        private double amendmentRate;
+        private double amendmentMovement;
         private double challengeRate;
         private double floor;
         private double accessDenied;
@@ -1183,6 +1277,7 @@ public final class CampaignRunner {
             count++;
             productivity += report.productivity();
             welfare += report.averagePublicBenefit();
+            compromise += report.compromiseScore();
             lowSupport += report.controversialPassageRate();
             policyShift += report.averagePolicyShift();
             proposerGain += report.averageProposerGain();
@@ -1194,6 +1289,8 @@ public final class CampaignRunner {
             defensiveLobbyingShare += report.defensiveLobbyingShare();
             captureReturnOnSpend += report.captureReturnOnSpend();
             publicPreferenceDistortion += report.publicPreferenceDistortion();
+            amendmentRate += report.amendmentRate();
+            amendmentMovement += report.averageAmendmentMovement();
             challengeRate += report.challengeRate();
             floor += report.floorConsiderationRate();
             accessDenied += report.accessDenialRate();
@@ -1246,6 +1343,10 @@ public final class CampaignRunner {
             return privateGainRatio / count;
         }
 
+        private double compromise() {
+            return compromise / count;
+        }
+
         private double lobbySpendPerBill() {
             return lobbySpendPerBill / count;
         }
@@ -1260,6 +1361,14 @@ public final class CampaignRunner {
 
         private double publicPreferenceDistortion() {
             return publicPreferenceDistortion / count;
+        }
+
+        private double amendmentRate() {
+            return amendmentRate / count;
+        }
+
+        private double amendmentMovement() {
+            return amendmentMovement / count;
         }
 
         private double challengeRate() {

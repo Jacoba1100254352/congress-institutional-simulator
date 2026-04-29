@@ -12,6 +12,7 @@ final class MetricsAccumulator {
     private int failedPopularBills;
     private int antiLobbyingBills;
     private int enactedAntiLobbyingBills;
+    private int amendedBills;
     private int floorConsideredBills;
     private int accessDeniedBills;
     private int committeeRejectedBills;
@@ -29,11 +30,16 @@ final class MetricsAccumulator {
     private double totalLobbySpendSum;
     private double defensiveLobbySpendSum;
     private double publicPreferenceDistortionSum;
+    private double amendmentMovementSum;
 
     void add(BillOutcome outcome) {
         totalBills++;
         totalLobbySpendSum += outcome.bill().lobbySpend();
         defensiveLobbySpendSum += outcome.bill().defensiveLobbySpend();
+        amendmentMovementSum += outcome.bill().amendmentMovement();
+        if (outcome.bill().amendmentMovement() > 0.000001) {
+            amendedBills++;
+        }
         policyShiftSum += Math.abs(outcome.statusQuoAfter() - outcome.statusQuoBefore());
         if (outcome.agendaDisposition() == AgendaDisposition.FLOOR_CONSIDERED) {
             floorConsideredBills++;
@@ -100,6 +106,7 @@ final class MetricsAccumulator {
         double defensiveLobbyingShare = totalLobbySpendSum == 0.0 ? 0.0 : defensiveLobbySpendSum / totalLobbySpendSum;
         double captureReturnOnSpend = totalLobbySpendSum == 0.0 ? 0.0 : lobbyCaptureSum / totalLobbySpendSum;
         double publicPreferenceDistortion = enactedBills == 0 ? 0.0 : publicPreferenceDistortionSum / enactedBills;
+        double averageAmendmentMovement = totalBills == 0 ? 0.0 : amendmentMovementSum / totalBills;
         return new ScenarioReport(
                 scenarioName,
                 totalBills,
@@ -122,6 +129,8 @@ final class MetricsAccumulator {
                 defensiveLobbyingShare,
                 captureReturnOnSpend,
                 publicPreferenceDistortion,
+                ratio(amendedBills, totalBills),
+                averageAmendmentMovement,
                 ratio(floorConsideredBills, totalBills),
                 ratio(accessDeniedBills, totalBills),
                 ratio(committeeRejectedBills, totalBills),
@@ -141,7 +150,7 @@ final class MetricsAccumulator {
         if (before < 0.000001) {
             return 1.0;
         }
-        return Math.max(0.0, Math.min(1.0, after / before));
+        return Math.clamp(after / before, 0.0, 1.0);
     }
 
     private static double proposerGain(BillOutcome outcome) {

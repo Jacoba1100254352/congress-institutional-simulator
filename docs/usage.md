@@ -4,7 +4,7 @@ This document is the project-facing guide for running and extending the simulato
 
 ## Requirements
 
-- Java 17 or newer
+- Java 21 or newer
 - `make`
 
 The project has no external Java dependencies.
@@ -95,6 +95,12 @@ Run the v9 budgeted-lobbying campaign:
 make campaign-v9
 ```
 
+Run the v10 mediation campaign:
+
+```sh
+make campaign-v10
+```
+
 Remove generated build output:
 
 ```sh
@@ -147,7 +153,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0|v1|v2|v3|v4|v5|v6|v7|v8|v9>`: run a named campaign.
+- `--campaign <v0|v1|v2|v3|v4|v5|v6|v7|v8|v9|v10>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -157,9 +163,11 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 The default CLI scenario set includes:
 
 - `simple-majority`: unicameral simple majority.
+- `simple-majority-mediation`: unicameral simple majority with a structured amendment/mediation stage.
 - `simple-majority-lobby-firewall`: unicameral simple majority with reduced direct lobby vote influence.
 - `supermajority-60`: unicameral 60 percent passage threshold.
 - `default-pass`: default passage unless two-thirds vote to block.
+- `default-pass-mediation`: default passage after a bounded mediation stage can move risky bills toward the median/status quo.
 - `default-pass-lobby-firewall`: default passage with reduced direct lobby vote influence.
 - `default-pass-lobby-transparency`: default passage after disclosure weakens effective lobby pressure and creates backlash against capture-risk bills.
 - `default-pass-public-interest-screen`: default passage with an anti-capture public-interest access screen.
@@ -168,6 +176,7 @@ The default CLI scenario set includes:
 - `default-pass-budgeted-lobbying`: default passage after explicit lobby groups spend limited budgets by issue domain.
 - `default-pass-budgeted-lobbying-transparency`: budgeted lobbying followed by transparency backlash.
 - `default-pass-budgeted-lobbying-bundle`: budgeted lobbying with transparency, public-interest screening, audits, and lower direct lobby vote influence.
+- `default-pass-budgeted-lobbying-mediation`: budgeted lobbying followed by bounded amendment mediation.
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers.
 - `default-pass-challenge-info`: default passage with committee information before challenge-voucher decisions.
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate.
@@ -209,10 +218,10 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v9.csv`
-- `reports/simulation-campaign-v9.md`
+- `reports/simulation-campaign-v10.csv`
+- `reports/simulation-campaign-v10.md`
 
-Earlier campaign:
+Earlier campaigns:
 
 - `reports/simulation-campaign-v0.csv`
 - `reports/simulation-campaign-v0.md`
@@ -232,6 +241,8 @@ Earlier campaign:
 - `reports/simulation-campaign-v7.md`
 - `reports/simulation-campaign-v8.csv`
 - `reports/simulation-campaign-v8.md`
+- `reports/simulation-campaign-v9.csv`
+- `reports/simulation-campaign-v9.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -261,6 +272,8 @@ The simulator reports several metrics because passage volume alone is not enough
 - `defensiveLobbyingShare`: share of lobby spend aimed at defeating anti-lobbying reform bills.
 - `captureReturnOnSpend`: enacted capture risk per unit of explicit lobby spend.
 - `publicPreferenceDistortion`: average gap between enacted yes-share and generated public support.
+- `amendmentRate`: share of potential bills whose policy position moved during mediation.
+- `amendmentMovement`: average absolute policy movement created by mediation per potential bill.
 - `vetoes`: presidential veto count.
 - `overrides`: veto override count.
 

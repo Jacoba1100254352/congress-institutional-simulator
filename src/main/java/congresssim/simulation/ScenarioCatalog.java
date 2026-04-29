@@ -4,6 +4,7 @@ import congresssim.behavior.VotingStrategies;
 import congresssim.behavior.VotingStrategy;
 import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
+import congresssim.institution.AmendmentMediationProcess;
 import congresssim.institution.BicameralProcess;
 import congresssim.institution.BudgetedLobbyingProcess;
 import congresssim.institution.Chamber;
@@ -63,6 +64,7 @@ public final class ScenarioCatalog {
     private static List<ScenarioEntry> entries() {
         return List.of(
                 new ScenarioEntry("simple-majority", unicameral("Unicameral simple majority", AffirmativeThresholdRule.simpleMajority())),
+                new ScenarioEntry("simple-majority-mediation", simpleMajorityWithMediation()),
                 new ScenarioEntry("simple-majority-lobby-firewall", unicameral(
                         "Unicameral majority + lobby firewall",
                         AffirmativeThresholdRule.simpleMajority(),
@@ -70,6 +72,7 @@ public final class ScenarioCatalog {
                 )),
                 new ScenarioEntry("supermajority-60", unicameral("Unicameral 60 percent passage", AffirmativeThresholdRule.supermajority(0.60))),
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
+                new ScenarioEntry("default-pass-mediation", defaultPassWithMediation()),
                 new ScenarioEntry("default-pass-lobby-firewall", defaultPassWithLobbyFirewall()),
                 new ScenarioEntry("default-pass-lobby-transparency", defaultPassWithLobbyTransparency()),
                 new ScenarioEntry("default-pass-public-interest-screen", defaultPassWithPublicInterestScreen()),
@@ -78,6 +81,7 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-budgeted-lobbying", defaultPassWithBudgetedLobbying(false, false)),
                 new ScenarioEntry("default-pass-budgeted-lobbying-transparency", defaultPassWithBudgetedLobbying(true, false)),
                 new ScenarioEntry("default-pass-budgeted-lobbying-bundle", defaultPassWithBudgetedLobbying(true, true)),
+                new ScenarioEntry("default-pass-budgeted-lobbying-mediation", defaultPassWithBudgetedLobbyingAndMediation()),
                 new ScenarioEntry("default-pass-challenge", defaultPassWithChallengeVouchers()),
                 new ScenarioEntry("default-pass-challenge-info", defaultPassWithChallengeVouchersAndInformation()),
                 new ScenarioEntry("default-pass-cross-bloc", defaultPassWithCrossBlocCosponsorship(
@@ -227,6 +231,44 @@ public final class ScenarioCatalog {
         );
     }
 
+    private static Scenario simpleMajorityWithMediation() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Unicameral majority + mediation";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return mediationProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        world
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithMediation() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + mediated amendments";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return mediationProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        world
+                );
+            }
+        };
+    }
+
     private static Scenario defaultPassWithLobbyFirewall() {
         return new Scenario() {
             @Override
@@ -366,6 +408,50 @@ public final class ScenarioCatalog {
                 );
             }
         };
+    }
+
+    private static Scenario defaultPassWithBudgetedLobbyingAndMediation() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + budgeted lobbying + mediation";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess process = mediationProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        world
+                );
+                return new BudgetedLobbyingProcess(
+                        name(),
+                        process,
+                        world.lobbyGroups(),
+                        0.22,
+                        0.44,
+                        0.35
+                );
+            }
+        };
+    }
+
+    private static LegislativeProcess mediationProcess(
+            String name,
+            LegislativeProcess innerProcess,
+            SimulationWorld world
+    ) {
+        return new AmendmentMediationProcess(
+                name,
+                innerProcess,
+                world.legislators(),
+                0.22,
+                0.72,
+                0.58,
+                0.28,
+                0.14
+        );
     }
 
     private static Scenario defaultPassWithProposalAccess() {
@@ -1000,7 +1086,7 @@ public final class ScenarioCatalog {
             senate.add(legislators.get(i));
         }
         if (senate.isEmpty()) {
-            senate.add(legislators.get(0));
+            senate.add(legislators.getFirst());
         }
         return senate;
     }

@@ -22,7 +22,7 @@ public final class CommitteeFactory {
         if (legislators.isEmpty()) {
             throw new IllegalArgumentException("legislators must not be empty.");
         }
-        int size = Math.min(Math.max(1, targetSize), legislators.size());
+        int size = Math.clamp(targetSize, 1, legislators.size());
         return switch (composition) {
             case REPRESENTATIVE -> representative(legislators, size);
             case MAJORITY_CONTROLLED -> majorityControlled(legislators, size);
@@ -70,7 +70,7 @@ public final class CommitteeFactory {
                 .stream()
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
-                .orElse(legislators.get(0).party());
+                .orElse(legislators.getFirst().party());
 
         List<Legislator> majorityMembers = legislators.stream()
                 .filter(legislator -> legislator.party().equals(majorityParty))

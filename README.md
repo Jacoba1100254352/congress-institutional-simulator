@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v9.csv`
-- `reports/simulation-campaign-v9.md`
+- `reports/simulation-campaign-v10.csv`
+- `reports/simulation-campaign-v10.md`
 
 Earlier campaigns remain available:
 
@@ -63,6 +63,7 @@ make campaign-v6
 make campaign-v7
 make campaign-v8
 make campaign-v9
+make campaign-v10
 ```
 
 You can override the campaign defaults:
@@ -78,9 +79,11 @@ Full usage documentation lives in [docs/usage.md](docs/usage.md).
 The default CLI compares:
 
 - `simple-majority`: unicameral simple majority
+- `simple-majority-mediation`: unicameral simple majority with a structured amendment/mediation stage
 - `simple-majority-lobby-firewall`: unicameral majority with reduced direct lobby vote influence
 - `supermajority-60`: unicameral 60 percent passage threshold
 - `default-pass`: default passage unless 2/3 vote to block
+- `default-pass-mediation`: default passage after a bounded mediation stage can move risky bills toward the median/status quo
 - `default-pass-lobby-firewall`: default passage with reduced direct lobby vote influence
 - `default-pass-lobby-transparency`: default passage after disclosure weakens effective lobby pressure and creates backlash against capture-risk bills
 - `default-pass-public-interest-screen`: default passage with an anti-capture public-interest access screen
@@ -89,6 +92,7 @@ The default CLI compares:
 - `default-pass-budgeted-lobbying`: default passage after explicit lobby groups spend limited budgets by issue domain
 - `default-pass-budgeted-lobbying-transparency`: budgeted lobbying followed by transparency backlash
 - `default-pass-budgeted-lobbying-bundle`: budgeted lobbying with transparency, public-interest screening, audits, and lower direct lobby vote influence
+- `default-pass-budgeted-lobbying-mediation`: budgeted lobbying followed by bounded amendment mediation
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers that divert contested bills to active majority vote
 - `default-pass-challenge-info`: default passage with committee information review before challenge-voucher decisions
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate
@@ -134,7 +138,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`, `v8`, or `v9`
+- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`, `v8`, `v9`, or `v10`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -190,6 +194,8 @@ The first metric set is deliberately simple, but it separates throughput from le
 - `defensiveLobbyingShare`: share of lobby spend aimed at defeating anti-lobbying reform bills
 - `captureReturnOnSpend`: enacted capture risk per unit of explicit lobby spend
 - `publicPreferenceDistortion`: average gap between enacted yes-share and generated public support
+- `amendmentRate`: share of potential bills whose policy position moved during mediation
+- `amendmentMovement`: average absolute policy movement created by mediation per potential bill
 
 These are not claims about real-world validity. They are hooks for comparing rule sets under shared assumptions.
 
@@ -265,8 +271,14 @@ The v8 campaign adds anti-capture stress tests:
 - `default-pass-lobby-audit` randomly audits enacted high-capture bills, can reverse failed audits, and sanctions repeat sponsors.
 - `default-pass-anti-capture-bundle` combines transparency, public-interest screening, audit sanctions, and a lower-lobby voting strategy.
 
-The current v9 campaign adds explicit lobbying actors:
+The v9 campaign adds explicit lobbying actors:
 
 - `LobbyGroup` actors have issue domains, budgets, preferred policy positions, influence intensity, defensive multipliers, information bias, and public-campaign skill.
 - `BudgetedLobbyingProcess` lets groups spend limited budgets to boost favored private-gain bills and spend defensively against anti-lobbying reform.
 - Campaign reports now distinguish ordinary capture pressure from explicit spending, defensive spending, capture return on spend, and public-preference distortion.
+
+The current v10 campaign adds structured amendment mediation:
+
+- `AmendmentMediationProcess` wraps a floor process and, when bills are risky or weakly supported, moves the bill toward a weighted target based on the chamber median, current status quo, and proposer position.
+- Mediation variants test simple majority, open default-pass, and budgeted-lobbying default-pass against their non-mediated counterparts.
+- Campaign reports now include amendment rate and amendment movement so compromise can be measured as pre-vote content change, not only final yes/no support.

@@ -22,6 +22,8 @@ public record ScenarioReport(
         double defensiveLobbyingShare,
         double captureReturnOnSpend,
         double publicPreferenceDistortion,
+        double amendmentRate,
+        double averageAmendmentMovement,
         double floorConsiderationRate,
         double accessDenialRate,
         double committeeRejectionRate,

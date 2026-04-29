@@ -7,6 +7,7 @@ import congresssim.experiment.CampaignRunner;
 import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.AgendaDisposition;
+import congresssim.institution.AmendmentMediationProcess;
 import congresssim.institution.BillOutcome;
 import congresssim.institution.BudgetedLobbyingProcess;
 import congresssim.institution.Chamber;
@@ -54,6 +55,7 @@ public final class SimulatorTests {
         proposalCreditsLearnFromProposalQuality();
         lobbyTransparencyReducesCapturedBillPressure();
         budgetedLobbyingSpendsDefensivelyAgainstAntiLobbyingReforms();
+        amendmentMediationMovesRiskyBillsTowardMedian();
         publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
         lobbyAuditCanReverseCapturedEnactments();
         challengeVouchersRouteHighRiskBillsToActiveVote();
@@ -275,6 +277,47 @@ public final class SimulatorTests {
 
         new BudgetedLobbyingProcess("budgeted lobbying test", capturePressuredBill, groups, 0.30, 0.50, 0.25)
                 .consider(antiLobbyingBill, context);
+    }
+
+    private static void amendmentMediationMovesRiskyBillsTowardMedian() {
+        Bill riskyBill = new Bill("B-mediate", "Risky Bill", "L-3", 0.9, 0.95, 0.18, 0.32, 0.70, 0.90);
+        VoteContext context = new VoteContext(Map.of("Left", -0.6, "Center", 0.0, "Right", 0.6), new Random(1L), 0.0);
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Left", -0.6, 0.7, 0.4, 0.8, 0.2, 0.8),
+                new Legislator("L-2", "Center", 0.0, 0.9, 0.4, 0.9, 0.1, 0.9),
+                new Legislator("L-3", "Right", 0.6, 0.7, 0.4, 0.8, 0.2, 0.8)
+        );
+        LegislativeProcess captureBill = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "capture mediated bill";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                assertTrue(bill.amendmentMovement() > 0.0, "Mediation should record policy movement.");
+                assertTrue(
+                        Math.abs(bill.ideologyPosition()) < Math.abs(riskyBill.ideologyPosition()),
+                        "Mediation should move risky bills toward the chamber median/status quo."
+                );
+                assertTrue(
+                        bill.publicSupport() >= riskyBill.publicSupport(),
+                        "Mediation should not reduce the public-support signal for a moderated bill."
+                );
+                return BillOutcome.accessDenied(bill, context.currentPolicyPosition(), "captured");
+            }
+        };
+
+        new AmendmentMediationProcess(
+                "mediation test",
+                captureBill,
+                legislators,
+                0.0,
+                0.90,
+                0.70,
+                0.20,
+                0.10
+        ).consider(riskyBill, context);
     }
 
     private static void publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms() {
@@ -558,6 +601,14 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-budgeted-lobbying"),
                 "Scenario catalog should expose budgeted-lobbying scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-mediation"),
+                "Scenario catalog should expose mediation scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-budgeted-lobbying-mediation"),
+                "Scenario catalog should expose budgeted lobbying plus mediation scenario keys."
         );
     }
 

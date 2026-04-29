@@ -16,7 +16,9 @@ public record Bill(
         boolean antiLobbyingReform,
         String issueDomain,
         double lobbySpend,
-        double defensiveLobbySpend
+        double defensiveLobbySpend,
+        double originalIdeologyPosition,
+        double amendmentMovement
 ) {
     public Bill {
         Values.requireRange("proposerIdeology", proposerIdeology, -1.0, 1.0);
@@ -28,6 +30,8 @@ public record Bill(
         Values.requireRange("privateGain", privateGain, 0.0, 1.0);
         Values.requireRange("lobbySpend", lobbySpend, 0.0, 100.0);
         Values.requireRange("defensiveLobbySpend", defensiveLobbySpend, 0.0, 100.0);
+        Values.requireRange("originalIdeologyPosition", originalIdeologyPosition, -1.0, 1.0);
+        Values.requireRange("amendmentMovement", amendmentMovement, 0.0, 10.0);
     }
 
     public Bill(
@@ -55,6 +59,8 @@ public record Bill(
                 false,
                 "general",
                 0.0,
+                0.0,
+                ideologyPosition,
                 0.0
         );
     }
@@ -86,6 +92,44 @@ public record Bill(
                 antiLobbyingReform,
                 antiLobbyingReform ? "democracy" : "general",
                 0.0,
+                0.0,
+                ideologyPosition,
+                0.0
+        );
+    }
+
+    public Bill(
+            String id,
+            String title,
+            String proposerId,
+            double proposerIdeology,
+            double ideologyPosition,
+            double publicSupport,
+            double publicBenefit,
+            double lobbyPressure,
+            double salience,
+            double privateGain,
+            boolean antiLobbyingReform,
+            String issueDomain,
+            double lobbySpend,
+            double defensiveLobbySpend
+    ) {
+        this(
+                id,
+                title,
+                proposerId,
+                proposerIdeology,
+                ideologyPosition,
+                publicSupport,
+                publicBenefit,
+                lobbyPressure,
+                salience,
+                privateGain,
+                antiLobbyingReform,
+                issueDomain,
+                lobbySpend,
+                defensiveLobbySpend,
+                ideologyPosition,
                 0.0
         );
     }
@@ -105,7 +149,9 @@ public record Bill(
                 antiLobbyingReform,
                 issueDomain,
                 lobbySpend,
-                defensiveLobbySpend
+                defensiveLobbySpend,
+                originalIdeologyPosition,
+                amendmentMovement
         );
     }
 
@@ -124,7 +170,9 @@ public record Bill(
                 antiLobbyingReform,
                 issueDomain,
                 lobbySpend,
-                defensiveLobbySpend
+                defensiveLobbySpend,
+                originalIdeologyPosition,
+                amendmentMovement
         );
     }
 
@@ -149,7 +197,34 @@ public record Bill(
                 antiLobbyingReform,
                 issueDomain,
                 lobbySpend + addedLobbySpend,
-                defensiveLobbySpend + addedDefensiveLobbySpend
+                defensiveLobbySpend + addedDefensiveLobbySpend,
+                originalIdeologyPosition,
+                amendmentMovement
+        );
+    }
+
+    public Bill withAmendment(
+            double revisedIdeologyPosition,
+            double revisedPublicSupport,
+            double revisedPublicBenefit
+    ) {
+        return new Bill(
+                id,
+                title,
+                proposerId,
+                proposerIdeology,
+                revisedIdeologyPosition,
+                revisedPublicSupport,
+                revisedPublicBenefit,
+                lobbyPressure,
+                salience,
+                privateGain,
+                antiLobbyingReform,
+                issueDomain,
+                lobbySpend,
+                defensiveLobbySpend,
+                originalIdeologyPosition,
+                amendmentMovement + Math.abs(revisedIdeologyPosition - ideologyPosition)
         );
     }
 }

@@ -5,13 +5,7 @@ public final class Values {
     }
 
     public static double clamp(double value, double min, double max) {
-        if (value < min) {
-            return min;
-        }
-        if (value > max) {
-            return max;
-        }
-        return value;
+        return Math.clamp(value, min, max);
     }
 
     public static void requireRange(String name, double value, double min, double max) {
@@ -20,4 +14,3 @@ public final class Values {
         }
     }
 }
-
