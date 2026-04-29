@@ -53,6 +53,7 @@ import congresssim.model.LobbyGroup;
 import congresssim.model.SimulationWorld;
 import congresssim.model.Vote;
 import congresssim.calibration.CalibrationTarget;
+import congresssim.calibration.CalibrationBenchmark;
 import congresssim.calibration.CalibrationTargetCatalog;
 
 import java.nio.file.Files;
@@ -274,6 +275,7 @@ final class WorldGenerationTests {
 
     private static void calibrationTargetCatalogDocumentsExternalValidationWork() {
         List<CalibrationTarget> targets = CalibrationTargetCatalog.standardTargets();
+        List<CalibrationBenchmark> benchmarks = CalibrationTargetCatalog.benchmarkRanges();
         Set<String> keys = new HashSet<>();
 
         assertTrue(targets.size() >= 6, "Calibration catalog should cover the major external validation targets.");
@@ -282,6 +284,20 @@ final class WorldGenerationTests {
             assertTrue(!target.empiricalDataset().isBlank(), "Calibration targets should name an empirical dataset.");
             assertTrue(!target.simulatorMetric().isBlank(), "Calibration targets should name simulator metrics.");
             assertTrue(!target.validationUse().isBlank(), "Calibration targets should explain how they will be used.");
+        }
+
+        keys.clear();
+        assertTrue(benchmarks.size() >= 6, "Executable calibration should include empirical benchmark ranges.");
+        assertTrue(
+                Files.exists(CalibrationTargetCatalog.benchmarkFile()),
+                "Calibration benchmark ranges should be backed by a tracked empirical benchmark extract."
+        );
+        for (CalibrationBenchmark benchmark : benchmarks) {
+            assertTrue(keys.add(benchmark.key()), "Calibration benchmark keys should be unique.");
+            assertTrue(!benchmark.empiricalDataset().isBlank(), "Calibration benchmarks should name a dataset.");
+            assertTrue(!benchmark.scenarioKey().isBlank(), "Calibration benchmarks should name a scenario.");
+            assertTrue(!benchmark.simulatorMetric().isBlank(), "Calibration benchmarks should name a simulator metric.");
+            assertTrue(benchmark.minimum() <= benchmark.maximum(), "Calibration benchmark ranges should be ordered.");
         }
     }
 

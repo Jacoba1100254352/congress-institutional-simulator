@@ -1,5 +1,7 @@
 package congresssim;
 
+import congresssim.calibration.CalibrationRunner;
+import congresssim.calibration.CalibrationRunner.CalibrationRunResult;
 import congresssim.experiment.CampaignResult;
 import congresssim.experiment.CampaignRunner;
 import congresssim.simulation.ScenarioCatalog;
@@ -23,6 +25,10 @@ public final class Main {
         Options options = Options.parse(args);
         if (options.help) {
             Options.printUsage();
+            return;
+        }
+        if (options.calibrate) {
+            runCalibration(options);
             return;
         }
         if (options.campaignName != null) {
@@ -53,6 +59,23 @@ public final class Main {
         );
 
         printReports(options, reports, worldSpec);
+    }
+
+    private static void runCalibration(Options options) {
+        try {
+            CalibrationRunResult result = CalibrationRunner.run(
+                    options.outputDir,
+                    options.runs,
+                    options.legislators,
+                    options.bills,
+                    options.seed
+            );
+            System.out.println("Calibration baseline complete.");
+            System.out.println("CSV: " + result.csvPath());
+            System.out.println("Markdown: " + result.markdownPath());
+        } catch (IOException exception) {
+            throw new IllegalStateException("Unable to write calibration output.", exception);
+        }
     }
 
     private static void runCampaign(Options options) {
@@ -192,6 +215,13 @@ public final class Main {
                         options.seed
                 );
                 case "v19" -> CampaignRunner.runV19(
+                        options.outputDir,
+                        options.runs,
+                        options.legislators,
+                        options.bills,
+                        options.seed
+                );
+                case "v20" -> CampaignRunner.runV20(
                         options.outputDir,
                         options.runs,
                         options.legislators,
@@ -399,6 +429,7 @@ public final class Main {
         private final List<String> scenarioKeys;
         private final OutputFormat outputFormat;
         private final boolean charts;
+        private final boolean calibrate;
         private final String campaignName;
         private final Path outputDir;
         private final long seed;
@@ -417,6 +448,7 @@ public final class Main {
                 List<String> scenarioKeys,
                 OutputFormat outputFormat,
                 boolean charts,
+                boolean calibrate,
                 String campaignName,
                 Path outputDir,
                 long seed,
@@ -434,6 +466,7 @@ public final class Main {
             this.scenarioKeys = List.copyOf(scenarioKeys);
             this.outputFormat = outputFormat;
             this.charts = charts;
+            this.calibrate = calibrate;
             this.campaignName = campaignName;
             this.outputDir = outputDir;
             this.seed = seed;
@@ -453,6 +486,7 @@ public final class Main {
             List<String> scenarioKeys = new ArrayList<>();
             OutputFormat outputFormat = OutputFormat.TABLE;
             boolean charts = false;
+            boolean calibrate = false;
             String campaignName = null;
             Path outputDir = Path.of("reports");
             long seed = 20260428L;
@@ -473,6 +507,7 @@ public final class Main {
                     case "--scenarios" -> scenarioKeys = parseScenarioKeys(args, ++i, arg);
                     case "--format" -> outputFormat = parseOutputFormat(args, ++i, arg);
                     case "--charts" -> charts = true;
+                    case "--calibrate" -> calibrate = true;
                     case "--campaign" -> campaignName = parseString(args, ++i, arg);
                     case "--output-dir" -> outputDir = Path.of(parseString(args, ++i, arg));
                     case "--seed" -> seed = parseLong(args, ++i, arg);
@@ -497,6 +532,7 @@ public final class Main {
                     scenarioKeys,
                     outputFormat,
                     charts,
+                    calibrate,
                     campaignName,
                     outputDir,
                     seed,
@@ -576,7 +612,8 @@ public final class Main {
                       --scenarios <keys>  Comma-separated scenario keys
                       --format <kind>     table, csv, or bars
                       --charts            Add ASCII bar charts after the table
-                      --campaign <name>   Run a named campaign, currently v0 through v19
+                      --calibrate         Run empirical benchmark screening instead of scenario comparison
+                      --campaign <name>   Run a named campaign, currently v0 through v20
                       --output-dir <path> Campaign output directory
                       --seed <n>          Reproducible random seed
                       --help              Show this message

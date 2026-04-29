@@ -37,7 +37,7 @@ Scenarios share generated worlds but receive independent deterministic random st
 
 **Emergence:** Aggregate productivity, compromise, capture, and volatility emerge from bill-by-bill interactions with institutional rules.
 
-**Adaptation:** Proposal credits, proposal bonds, and law review carry state across bills. Optional strategy wrappers add explicit proposer adaptation and lobby channel learning: proposers can moderate, seek cosponsors, or withdraw after low-quality outcomes, while lobby groups can reallocate channel strategy after observing returns.
+**Adaptation:** Proposal credits, proposal bonds, and law review carry state across bills. Optional strategy wrappers add explicit proposer adaptation and lobby channel learning: proposers can adjust proposal volume, delay timing, moderate risky bills, seek cosponsors, reduce lobby exposure, add harm-reducing amendments, or withdraw after low-quality outcomes. Lobby groups can reallocate channel strategy, adjust issue-specific spending intensity, raise or lower overall budget intensity, and escalate defensive spending when anti-lobbying reform appears threatening.
 
 **Objectives:** Legislators vote according to weighted ideological, party, constituency, lobbying, reputational, and compromise influences. Institutions do not optimize one global objective; they produce measurable tradeoffs.
 
@@ -53,7 +53,7 @@ Party-system profiles currently include ideological bins, two major parties with
 
 ## Input Data
 
-The exploratory model does not yet consume external datasets. Calibration targets are listed in `docs/calibration.md`; future calibrated runs should use those targets to fit baseline generation parameters.
+Normal scenario runs generate synthetic worlds from explicit parameters. Calibration screening reads the tracked empirical benchmark extract at `data/calibration/empirical-benchmarks.csv`, which maps named real-world data sources to simulator metric ranges. Calibration targets and workflow details are listed in `docs/calibration.md`. The full ODD+D appendix is in `docs/odd-d-appendix.md`.
 
 ## Submodels
 

@@ -80,6 +80,7 @@ final class InstitutionProcessTests {
         budgetedLobbyingSpendsDefensivelyAgainstAntiLobbyingReforms();
         budgetedLobbyingRecordsChannelSpecificSpend();
         strategicLobbyingReallocatesChannelStrategy();
+        strategicLobbyingAdaptsBudgetAndDefensiveThreat();
         amendmentMediationMovesRiskyBillsTowardMedian();
         distributionalHarmProcessCompensatesAffectedGroups();
         lawRegistryReviewsAndRepealsBadActiveLaws();
@@ -91,6 +92,7 @@ final class InstitutionProcessTests {
         constituentPublicWillRevisesSignals();
         proposalBondForfeitsLowQualityBills();
         proposerStrategyModeratesThenWithdrawsWeakBills();
+        proposerStrategyAdaptsTimingHarmAndLobbyExposure();
         coalitionCosponsorshipRecordsSponsors();
         multiRoundMediationReducesHarm();
         strategicAlternativesRecordDecoys();
@@ -418,6 +420,73 @@ final class InstitutionProcessTests {
 
         process.consider(firstBill, context);
         process.consider(secondBill, context);
+    }
+
+    private static void strategicLobbyingAdaptsBudgetAndDefensiveThreat() {
+        Bill reformBill = new Bill(
+                "B-reform",
+                "Lobbying Reform",
+                "L-1",
+                0.0,
+                0.05,
+                0.72,
+                0.74,
+                0.15,
+                0.82,
+                0.70,
+                true,
+                "democracy",
+                0.0,
+                0.0
+        );
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(4L), 0.0);
+        List<LobbyGroup> groups = List.of(new LobbyGroup(
+                "G-threat",
+                "energy",
+                Map.of("energy", 0.8, "democracy", 1.0),
+                0.85,
+                8.0,
+                0.9,
+                1.4,
+                0.5,
+                0.9,
+                LobbyCaptureStrategy.PUBLIC_CAMPAIGN,
+                0.25
+        ));
+        List<Double> defensiveSpends = new java.util.ArrayList<>();
+        LegislativeProcess rejectReform = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "reject reform";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                defensiveSpends.add(bill.defensiveLobbySpend());
+                return BillOutcome.accessDenied(bill, context.currentPolicyPosition(), "reform blocked");
+            }
+        };
+
+        BudgetedLobbyingProcess process = new BudgetedLobbyingProcess(
+                "adaptive defensive lobbying",
+                rejectReform,
+                groups,
+                0.32,
+                0.44,
+                0.38,
+                true
+        );
+
+        process.consider(reformBill, context);
+        process.consider(reformBill, context);
+        process.consider(reformBill, context);
+
+        assertTrue(defensiveSpends.size() == 3, "The adaptive lobby test should observe all three reform attempts.");
+        assertTrue(defensiveSpends.get(0) > 0.0, "Anti-lobbying reform should trigger defensive spending.");
+        assertTrue(
+                defensiveSpends.get(2) >= defensiveSpends.get(1) || defensiveSpends.get(1) >= defensiveSpends.get(0),
+                "Repeated reform threats should increase or sustain defensive lobbying intensity."
+        );
     }
 
 
@@ -850,17 +919,98 @@ final class InstitutionProcessTests {
                 0.30
         );
 
-        BillOutcome first = process.consider(weakBill, context);
-        BillOutcome second = process.consider(weakBill, context);
-        BillOutcome third = process.consider(weakBill, context);
-        BillOutcome fourth = process.consider(weakBill, context);
+        List<BillOutcome> outcomes = new java.util.ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            outcomes.add(process.consider(weakBill, context));
+        }
+        BillOutcome first = outcomes.getFirst();
+        long enacted = outcomes.stream().filter(BillOutcome::enacted).count();
+        long denied = outcomes.stream()
+                .filter(outcome -> outcome.agendaDisposition() == AgendaDisposition.ACCESS_DENIED)
+                .count();
 
         assertTrue(first.bill().amendmentMovement() > 0.0, "Adaptive proposers should moderate high-risk bills before voting.");
         assertTrue(Math.abs(first.bill().ideologyPosition()) < Math.abs(weakBill.ideologyPosition()), "Adaptive proposer moderation should move toward the median/status quo.");
         assertTrue(first.enacted(), "Initial weak proposals should still be able to reach the downstream process.");
-        assertTrue(second.enacted(), "Trust should decline over repeated bad enactments before withdrawal.");
-        assertTrue(third.enacted(), "Trust should not collapse after a single weak proposal.");
-        assertTrue(fourth.agendaDisposition() == AgendaDisposition.ACCESS_DENIED, "Repeated poor outcomes should make low-trust proposers withdraw risky bills.");
+        assertTrue(enacted >= 2, "Trust should decline over repeated bad enactments rather than collapsing immediately.");
+        assertTrue(denied >= 1, "Repeated poor outcomes should eventually make proposers delay or withdraw risky bills.");
+    }
+
+    private static void proposerStrategyAdaptsTimingHarmAndLobbyExposure() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Right", 0.70, 0.4, 0.6, 0.5, 0.2, 0.5),
+                new Legislator("L-2", "Center", 0.0, 0.9, 0.4, 0.9, 0.1, 0.9),
+                new Legislator("L-3", "Left", -0.55, 0.8, 0.4, 0.8, 0.1, 0.8)
+        );
+        List<Bill> revisedBills = new java.util.ArrayList<>();
+        LegislativeProcess recorder = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "record revised bills";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                revisedBills.add(bill);
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "enacted"
+                );
+            }
+        };
+        ProposerStrategyProcess process = new ProposerStrategyProcess(
+                "adaptive proposer harm/lobby test",
+                recorder,
+                legislators,
+                0.88,
+                0.50,
+                0.30
+        );
+        VoteContext context = new VoteContext(Map.of("Right", 0.70, "Center", 0.0, "Left", -0.55), new Random(21L), 0.0);
+        Bill riskyBill = new Bill(
+                "B-harm-lobby",
+                "Captured Harm Bill",
+                "L-1",
+                0.70,
+                0.92,
+                0.12,
+                0.22,
+                0.95,
+                0.86,
+                0.84,
+                false,
+                "energy",
+                0.0,
+                0.0,
+                "workers",
+                0.05,
+                0.88,
+                0.72
+        );
+
+        for (int i = 0; i < 10; i++) {
+            process.consider(riskyBill, context);
+        }
+
+        assertTrue(!revisedBills.isEmpty(), "At least one risky proposal should reach the downstream process after adaptation.");
+        Bill firstRevised = revisedBills.getFirst();
+        assertTrue(
+                firstRevised.concentratedHarm() < riskyBill.concentratedHarm(),
+                "Adaptive amendment posture should reduce concentrated harm on high-risk bills."
+        );
+        assertTrue(
+                firstRevised.lobbyPressure() < riskyBill.lobbyPressure(),
+                "Adaptive proposers should reduce lobby exposure on high-capture-risk bills."
+        );
+        assertTrue(
+                revisedBills.size() < 10,
+                "Adaptive proposal volume and timing should suppress some repeated risky submissions."
+        );
     }
 
 

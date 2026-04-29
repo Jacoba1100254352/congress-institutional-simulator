@@ -157,6 +157,18 @@ Run the v19 timeline stress campaign:
 make campaign-v19
 ```
 
+Run the v20 strategy/calibration campaign:
+
+```sh
+make campaign-v20
+```
+
+Run the empirical benchmark screening report:
+
+```sh
+make calibrate
+```
+
 Remove generated build output:
 
 ```sh
@@ -165,8 +177,9 @@ make clean
 
 ## Research Documentation
 
-- [Calibration plan](calibration.md): external validation targets and the intended calibration workflow.
+- [Calibration and validation](calibration.md): tracked benchmark extract, external validation targets, and the executable calibration workflow.
 - [ODD model description](odd-model.md): entities, state variables, scheduling, design concepts, initialization, and submodels.
+- [Full ODD+D appendix](odd-d-appendix.md): submission-ready model documentation covering data, adaptation, submodels, assumptions, and outputs.
 
 ## CLI Examples
 
@@ -214,7 +227,8 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0..v19>`: run a named campaign.
+- `--calibrate`: run empirical benchmark screening from `data/calibration/empirical-benchmarks.csv`.
+- `--campaign <v0..v20>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -331,8 +345,13 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v19.csv`
-- `reports/simulation-campaign-v19.md`
+- `reports/simulation-campaign-v20.csv`
+- `reports/simulation-campaign-v20.md`
+
+Calibration report:
+
+- `reports/calibration-baseline.csv`
+- `reports/calibration-baseline.md`
 
 Earlier campaigns:
 
@@ -374,6 +393,8 @@ Earlier campaigns:
 - `reports/simulation-campaign-v17.md`
 - `reports/simulation-campaign-v18.csv`
 - `reports/simulation-campaign-v18.md`
+- `reports/simulation-campaign-v19.csv`
+- `reports/simulation-campaign-v19.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 

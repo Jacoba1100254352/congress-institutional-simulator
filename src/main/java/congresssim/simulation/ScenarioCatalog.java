@@ -180,6 +180,7 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-adaptive-proposers", defaultPassWithAdaptiveProposers(false)),
                 new ScenarioEntry("default-pass-adaptive-proposers-lobbying", defaultPassWithAdaptiveProposers(true)),
                 new ScenarioEntry("default-pass-strategic-lobbying", defaultPassWithStrategicLobbying()),
+                new ScenarioEntry("default-pass-deep-strategy-bundle", defaultPassWithDeepStrategyBundle()),
                 new ScenarioEntry("default-pass-adaptive-track-lenient", defaultPassWithAdaptiveTrack(false, 0.42, 0.68, "Default pass + adaptive tracks lenient")),
                 new ScenarioEntry("default-pass-adaptive-track-strict", defaultPassWithAdaptiveTrack(false, 0.24, 0.48, "Default pass + adaptive tracks strict")),
                 new ScenarioEntry("default-pass-adaptive-track-citizen-high-risk", defaultPassWithAdaptiveTrackCitizenHighRisk()),
@@ -677,6 +678,50 @@ public final class ScenarioCatalog {
                         0.72,
                         0.56,
                         0.42
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithDeepStrategyBundle() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + adaptive strategy bundle";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess process = new MultiRoundAmendmentProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        world.legislators(),
+                        3,
+                        0.024,
+                        1.18,
+                        0.07
+                );
+                process = new BudgetedLobbyingProcess(
+                        name(),
+                        process,
+                        world.lobbyGroups(),
+                        0.24,
+                        0.46,
+                        0.38,
+                        0.42,
+                        0.40,
+                        0.30,
+                        0.08,
+                        true
+                );
+                return new ProposerStrategyProcess(
+                        name(),
+                        process,
+                        world.legislators(),
+                        0.80,
+                        0.52,
+                        0.36
                 );
             }
         };

@@ -2,7 +2,7 @@ MAIN_SOURCES := $(shell find src/main/java -name '*.java')
 TEST_SOURCES := $(shell find src/test/java -name '*.java')
 JAVA_RELEASE ?= 21
 
-.PHONY: build run campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 paper paper-clean test clean
+.PHONY: build run calibrate campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 paper paper-clean test clean
 
 build:
 	mkdir -p out/main
@@ -11,8 +11,14 @@ build:
 run: build
 	java -cp out/main congresssim.Main $(ARGS)
 
+calibrate: build
+	java -cp out/main congresssim.Main --calibrate --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+
 campaign: build
-	java -cp out/main congresssim.Main --campaign v19 --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+	java -cp out/main congresssim.Main --campaign v20 --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+
+campaign-v20: build
+	java -cp out/main congresssim.Main --campaign v20 --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
 
 campaign-v19: build
 	java -cp out/main congresssim.Main --campaign v19 --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
@@ -77,10 +83,13 @@ campaign-v0: build
 paper:
 	python3 paper/scripts/generate_figures.py
 	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
+	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build appendix-odd-d.tex
 	cp paper/build/main.pdf paper/main.pdf
+	cp paper/build/appendix-odd-d.pdf paper/appendix-odd-d.pdf
 
 paper-clean:
 	cd paper && latexmk -C -outdir=build main.tex
+	cd paper && latexmk -C -outdir=build appendix-odd-d.tex
 	rm -rf paper/build
 
 test: build

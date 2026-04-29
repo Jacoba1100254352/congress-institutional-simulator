@@ -2,6 +2,8 @@ package congresssim;
 
 import congresssim.behavior.VoteContext;
 import congresssim.behavior.VotingStrategy;
+import congresssim.calibration.CalibrationRunner;
+import congresssim.calibration.CalibrationRunner.CalibrationRunResult;
 import congresssim.experiment.CampaignResult;
 import congresssim.experiment.CampaignRunner;
 import congresssim.experiment.CampaignRow;
@@ -73,6 +75,8 @@ final class CampaignRunnerTests {
         tinyCampaignGoldenMetricsStayStable();
         campaignRunnerWritesWeightedCsvWithStableSchema();
         timelineCampaignHasOrderedContentionCases();
+        strategyCampaignIncludesDeepAdaptiveSystems();
+        calibrationRunnerWritesEmpiricalScreeningReports();
         allPredefinedCampaignScenarioListsIncludeCurrentBenchmark();
     }
 
@@ -211,6 +215,52 @@ final class CampaignRunnerTests {
             assertTrue(markdown.contains("Era 6 Crisis"), "Timeline Markdown should include the crisis-era case.");
         } catch (Exception exception) {
             throw new AssertionError("Timeline campaign report generation failed.", exception);
+        }
+    }
+
+    private static void strategyCampaignIncludesDeepAdaptiveSystems() {
+        try {
+            Path outputDir = Path.of("out", "test-campaign-v20");
+            Files.createDirectories(outputDir);
+            Files.deleteIfExists(outputDir.resolve("simulation-campaign-v20.csv"));
+            Files.deleteIfExists(outputDir.resolve("simulation-campaign-v20.md"));
+
+            CampaignResult result = CampaignRunner.runV20(outputDir, 1, 17, 4, 94L);
+            Set<String> scenarios = new HashSet<>();
+            for (CampaignRow row : result.rows()) {
+                scenarios.add(row.scenarioKey());
+            }
+
+            assertTrue(scenarios.contains("current-system"), "v20 should include the current-system benchmark.");
+            assertTrue(scenarios.contains("default-pass-adaptive-proposers-lobbying"), "v20 should include adaptive proposers with strategic lobbying.");
+            assertTrue(scenarios.contains("default-pass-deep-strategy-bundle"), "v20 should include the combined deep-strategy bundle.");
+            assertTrue(Files.readString(result.markdownPath()).contains("Simulation Campaign v20"), "v20 Markdown should identify the report.");
+        } catch (Exception exception) {
+            throw new AssertionError("Strategy campaign report generation failed.", exception);
+        }
+    }
+
+    private static void calibrationRunnerWritesEmpiricalScreeningReports() {
+        try {
+            Path outputDir = Path.of("out", "test-calibration");
+            Files.createDirectories(outputDir);
+            Files.deleteIfExists(outputDir.resolve("calibration-baseline.csv"));
+            Files.deleteIfExists(outputDir.resolve("calibration-baseline.md"));
+
+            CalibrationRunResult result = CalibrationRunner.run(outputDir, 2, 17, 6, 93L);
+            assertTrue(Files.exists(result.csvPath()), "Calibration runner should write a CSV report.");
+            assertTrue(Files.exists(result.markdownPath()), "Calibration runner should write a Markdown report.");
+            assertTrue(result.rows().size() >= 6, "Calibration runner should evaluate every benchmark range.");
+
+            String csv = Files.readString(result.csvPath());
+            assertTrue(csv.contains("observed"), "Calibration CSV should include observed simulator values.");
+            assertTrue(csv.contains("current-system-enactment-rate"), "Calibration CSV should include current-system attrition.");
+
+            String markdown = Files.readString(result.markdownPath());
+            assertTrue(markdown.contains("Calibration Baseline"), "Calibration Markdown should identify the report.");
+            assertTrue(markdown.contains("passed checks"), "Calibration Markdown should summarize pass/fail results.");
+        } catch (Exception exception) {
+            throw new AssertionError("Calibration report generation failed.", exception);
         }
     }
 

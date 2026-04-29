@@ -24,6 +24,10 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
     private final double defensiveCapShare;
     private final boolean adaptiveStrategies;
     private final Map<String, LobbyCaptureStrategy> strategyByGroup = new HashMap<>();
+    private final Map<String, Double> budgetMultiplierByGroup = new HashMap<>();
+    private final Map<String, Map<String, Double>> issueMultiplierByGroup = new HashMap<>();
+    private final Map<String, Map<LobbyCaptureStrategy, Double>> channelReturnByGroup = new HashMap<>();
+    private final Map<String, Double> reformThreatByGroup = new HashMap<>();
 
     public BudgetedLobbyingProcess(
             String name,
@@ -132,6 +136,7 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
         for (LobbyGroup group : lobbyGroups) {
             remainingBudgetByGroup.put(group.id(), group.budget());
             strategyByGroup.put(group.id(), group.captureStrategy());
+            budgetMultiplierByGroup.put(group.id(), 1.0);
         }
     }
 
@@ -176,12 +181,17 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
                 continue;
             }
 
+            double issueMultiplier = issueMultiplierByGroup
+                    .getOrDefault(group.id(), Map.of())
+                    .getOrDefault(bill.issueDomain(), 1.0);
+            double budgetMultiplier = budgetMultiplierByGroup.getOrDefault(group.id(), 1.0);
             double spendIntent = bill.antiLobbyingReform()
                     ? defensiveSpendIntent(group, bill)
                     : supportiveSpendIntent(group, bill, preference);
-            double spend = Math.min(remainingBudget, spendIntent * spendScale);
+            double spend = Math.min(remainingBudget, spendIntent * spendScale * issueMultiplier * budgetMultiplier);
             if (bill.antiLobbyingReform()) {
-                spend = Math.min(spend, group.budget() * defensiveCapShare);
+                double reformThreat = reformThreatByGroup.getOrDefault(group.id(), 1.0);
+                spend = Math.min(spend * reformThreat, group.budget() * defensiveCapShare * budgetMultiplier);
             }
             if (spend <= 0.000001) {
                 continue;
@@ -261,15 +271,20 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
                 continue;
             }
             LobbyCaptureStrategy current = strategyByGroup.getOrDefault(group.id(), group.captureStrategy());
-            strategyByGroup.put(group.id(), nextStrategy(current, bill, outcome));
+            double returnSignal = returnSignal(group, current, bill, outcome);
+            recordChannelReturn(group.id(), current, returnSignal);
+            updateBudgetAdaptation(group, bill, returnSignal);
+            strategyByGroup.put(group.id(), nextStrategy(group.id(), current, bill, outcome));
         }
     }
 
-    private static LobbyCaptureStrategy nextStrategy(
+    private LobbyCaptureStrategy nextStrategy(
+            String groupId,
             LobbyCaptureStrategy current,
             Bill bill,
             BillOutcome outcome
     ) {
+        LobbyCaptureStrategy learnedBest = bestLearnedStrategy(groupId);
         if (bill.antiLobbyingReform()) {
             if (!outcome.enacted()) {
                 return bill.litigationThreatSpend() >= bill.publicCampaignSpend()
@@ -282,7 +297,7 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
         double captureRisk = LobbyCaptureScoring.captureRisk(bill);
         double publicMismatch = Math.max(0.0, bill.publicBenefit() - bill.publicSupport());
         if (outcome.enacted() && captureRisk >= 0.45) {
-            return current;
+            return learnedBest == null ? current : learnedBest;
         }
         if (!outcome.enacted() && bill.salience() >= 0.65) {
             return LobbyCaptureStrategy.PUBLIC_CAMPAIGN;
@@ -296,7 +311,88 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
         if (bill.privateGain() >= 0.55) {
             return LobbyCaptureStrategy.DIRECT_PRESSURE;
         }
-        return LobbyCaptureStrategy.BALANCED;
+        return learnedBest == null ? LobbyCaptureStrategy.BALANCED : learnedBest;
+    }
+
+    private double returnSignal(
+            LobbyGroup group,
+            LobbyCaptureStrategy strategy,
+            Bill bill,
+            BillOutcome outcome
+    ) {
+        double preference = bill.antiLobbyingReform()
+                ? Math.max(0.45, group.preferenceFor("democracy"))
+                : group.preferenceFor(bill.issueDomain());
+        if (preference <= 0.000001) {
+            return 0.0;
+        }
+        if (bill.antiLobbyingReform()) {
+            double reformThreat = (0.45 * bill.publicBenefit()) + (0.35 * bill.publicSupport()) + (0.20 * bill.salience());
+            return outcome.enacted() ? -reformThreat : reformThreat;
+        }
+        double captureRisk = LobbyCaptureScoring.captureRisk(bill);
+        double privateUpside = bill.privateGain() * policyFit(group, bill) * preference;
+        double publicBacklash = Math.max(0.0, bill.publicBenefit() - bill.publicSupport());
+        double result = outcome.enacted()
+                ? privateUpside + (0.45 * captureRisk) - (0.28 * publicBacklash)
+                : -0.35 * privateUpside - (0.20 * bill.salience());
+        if (strategy == LobbyCaptureStrategy.INFORMATION_DISTORTION && publicBacklash > group.publicSupportMismatchTolerance()) {
+            result -= 0.12 * publicBacklash;
+        }
+        return Values.clamp(result, -1.0, 1.0);
+    }
+
+    private void recordChannelReturn(String groupId, LobbyCaptureStrategy strategy, double returnSignal) {
+        Map<LobbyCaptureStrategy, Double> channelReturns = channelReturnByGroup.computeIfAbsent(groupId, ignored -> new HashMap<>());
+        double current = channelReturns.getOrDefault(strategy, 0.0);
+        channelReturns.put(strategy, (0.72 * current) + (0.28 * returnSignal));
+    }
+
+    private void updateBudgetAdaptation(LobbyGroup group, Bill bill, double returnSignal) {
+        double currentBudgetMultiplier = budgetMultiplierByGroup.getOrDefault(group.id(), 1.0);
+        double updatedBudgetMultiplier = Values.clamp(
+                currentBudgetMultiplier + (0.10 * returnSignal),
+                0.45,
+                2.40
+        );
+        budgetMultiplierByGroup.put(group.id(), updatedBudgetMultiplier);
+
+        Map<String, Double> issueMultipliers = issueMultiplierByGroup.computeIfAbsent(group.id(), ignored -> new HashMap<>());
+        double currentIssueMultiplier = issueMultipliers.getOrDefault(bill.issueDomain(), 1.0);
+        issueMultipliers.put(
+                bill.issueDomain(),
+                Values.clamp(currentIssueMultiplier + (0.12 * returnSignal), 0.35, 2.70)
+        );
+
+        if (bill.antiLobbyingReform()) {
+            double currentThreat = reformThreatByGroup.getOrDefault(group.id(), 1.0);
+            double threatChange = bill.publicSupport() >= 0.55 || bill.publicBenefit() >= 0.55
+                    ? 0.16
+                    : -0.06;
+            reformThreatByGroup.put(group.id(), Values.clamp(currentThreat + threatChange, 0.50, 2.50));
+        }
+
+        if (returnSignal > 0.08) {
+            double remaining = remainingBudgetByGroup.getOrDefault(group.id(), group.budget());
+            double topUp = group.budget() * 0.08 * returnSignal * updatedBudgetMultiplier;
+            remainingBudgetByGroup.put(group.id(), Math.min(group.budget() * 3.0, remaining + topUp));
+        }
+    }
+
+    private LobbyCaptureStrategy bestLearnedStrategy(String groupId) {
+        Map<LobbyCaptureStrategy, Double> channelReturns = channelReturnByGroup.get(groupId);
+        if (channelReturns == null || channelReturns.isEmpty()) {
+            return null;
+        }
+        LobbyCaptureStrategy best = null;
+        double bestReturn = -Double.MAX_VALUE;
+        for (Map.Entry<LobbyCaptureStrategy, Double> entry : channelReturns.entrySet()) {
+            if (entry.getValue() > bestReturn) {
+                best = entry.getKey();
+                bestReturn = entry.getValue();
+            }
+        }
+        return bestReturn > 0.05 ? best : null;
     }
 
     private static double supportiveSpendIntent(LobbyGroup group, Bill bill, double preference) {

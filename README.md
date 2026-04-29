@@ -13,6 +13,7 @@ The current model intentionally includes only the parts needed to compare instit
 - pluggable institutional rules such as simple majority, supermajority passage, and default passage unless a veto bloc forms
 - proposal-access screens, proposal-cost screens, refundable proposal bonds, earned proposal credits, committee information review, and committee gatekeeping
 - legislative processes such as unicameral Congress, bicameral Congress, and a basic presidential veto wrapper
+- explicit proposer and lobby-group adaptation over repeated bills, including proposal pacing, timing delay, risk tolerance, amendment posture, channel learning, issue-specific budget adaptation, and defensive anti-reform lobbying
 - aggregate metrics over many randomized runs
 
 ## Run
@@ -47,8 +48,19 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v19.csv`
-- `reports/simulation-campaign-v19.md`
+- `reports/simulation-campaign-v20.csv`
+- `reports/simulation-campaign-v20.md`
+
+Run empirical benchmark screening:
+
+```sh
+make calibrate
+```
+
+This writes:
+
+- `reports/calibration-baseline.csv`
+- `reports/calibration-baseline.md`
 
 Earlier campaigns remain available:
 
@@ -73,6 +85,7 @@ make campaign-v16
 make campaign-v17
 make campaign-v18
 make campaign-v19
+make campaign-v20
 ```
 
 You can override the campaign defaults:
@@ -82,7 +95,7 @@ make campaign ARGS="--runs 300 --seed 12345"
 ```
 
 Full usage documentation lives in [docs/usage.md](docs/usage.md).
-Calibration planning lives in [docs/calibration.md](docs/calibration.md), and the current ODD-style model description lives in [docs/odd-model.md](docs/odd-model.md).
+Calibration and validation details live in [docs/calibration.md](docs/calibration.md), the concise ODD-style model description lives in [docs/odd-model.md](docs/odd-model.md), and the full ODD+D appendix lives in [docs/odd-d-appendix.md](docs/odd-d-appendix.md).
 
 ## Current Scenarios
 
@@ -200,7 +213,8 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0` through `v19`
+- `--calibrate`: run empirical benchmark screening from `data/calibration/empirical-benchmarks.csv`
+- `--campaign`: run a named campaign, currently `v0` through `v20`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -427,9 +441,16 @@ The v18 campaign adds weighted party-system sensitivity:
 - Campaign rows include `caseWeight`, and scenario averages are weighted when the campaign defines non-unit case likelihoods.
 - The tracked v18 sensitivity mix is 0.25 two-party, 0.40 two-major-plus-minors, 0.20 fragmented multiparty, and 0.15 dominant party.
 
-The current v19 campaign adds timeline stress comparisons:
+The v19 campaign adds timeline stress comparisons:
 
 - Six stylized eras raise polarization, party loyalty, lobbying pressure, and proposal pressure while lowering compromise culture and constituency responsiveness.
 - The campaign includes the current U.S.-style benchmark alongside conventional affirmative systems, open default-pass, challenge vouchers, public panels, adaptive tracks, policy tournaments, public objection, and law-registry review.
 - The generated report includes a contention path using `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * lowSupport`.
 - The timeline is a stress test, not a historical calibration; it asks which institutional systems degrade gracefully as background politics become more contentious.
+
+The current v20 campaign adds focused strategy and calibration comparisons:
+
+- It carries forward the current-system benchmark and conventional affirmative baselines.
+- It compares strategic lobbying, adaptive proposers, adaptive proposers with strategic lobbying, and the combined deep strategy bundle.
+- The deep strategy bundle combines proposer pacing/risk adaptation, lobby-channel learning, issue-budget adaptation, defensive anti-reform behavior, and multi-round mediation.
+- Use it with `make campaign` or `make campaign-v20`.

@@ -1,9 +1,143 @@
 package congresssim.calibration;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 public final class CalibrationTargetCatalog {
+    private static final Path BENCHMARK_FILE = Path.of("data", "calibration", "empirical-benchmarks.csv");
+
     private CalibrationTargetCatalog() {
+    }
+
+    public static List<CalibrationBenchmark> benchmarkRanges() {
+        if (Files.exists(BENCHMARK_FILE)) {
+            try {
+                return benchmarkRangesFromCsv(BENCHMARK_FILE);
+            } catch (IOException exception) {
+                throw new IllegalStateException("Unable to read calibration benchmark file: " + BENCHMARK_FILE, exception);
+            }
+        }
+        return embeddedBenchmarkRanges();
+    }
+
+    public static Path benchmarkFile() {
+        return BENCHMARK_FILE;
+    }
+
+    private static List<CalibrationBenchmark> benchmarkRangesFromCsv(Path path) throws IOException {
+        List<String> lines = Files.readAllLines(path).stream()
+                .map(String::trim)
+                .filter(line -> !line.isEmpty() && !line.startsWith("#"))
+                .toList();
+        if (lines.size() < 2) {
+            throw new IllegalArgumentException("Calibration benchmark file must include a header and at least one row.");
+        }
+        return lines.stream()
+                .skip(1)
+                .map(CalibrationTargetCatalog::parseBenchmarkCsvRow)
+                .toList();
+    }
+
+    private static CalibrationBenchmark parseBenchmarkCsvRow(String line) {
+        String[] columns = line.split(",", -1);
+        if (columns.length != 9) {
+            throw new IllegalArgumentException("Calibration benchmark row must have 9 columns: " + line);
+        }
+        return new CalibrationBenchmark(
+                columns[0],
+                columns[1],
+                columns[2],
+                columns[3],
+                columns[4],
+                Double.parseDouble(columns[5]),
+                Double.parseDouble(columns[6]),
+                columns[7],
+                columns[8]
+        );
+    }
+
+    private static List<CalibrationBenchmark> embeddedBenchmarkRanges() {
+        return List.of(
+                new CalibrationBenchmark(
+                        "current-system-enactment-rate",
+                        "Congress.gov and govinfo bill histories",
+                        "share of introduced bills that become law in recent U.S. Congresses",
+                        "current-system",
+                        "productivity",
+                        0.01,
+                        0.12,
+                        "Congress.gov bill-status bulk data and govinfo BILLS/BILLSTATUS collections",
+                        "Broad screening range for ordinary U.S.-style attrition; exact Congress-specific targets should be fitted from raw bill histories."
+                ),
+                new CalibrationBenchmark(
+                        "current-system-floor-load",
+                        "Congress.gov and govinfo bill histories",
+                        "share of introduced bills receiving floor consideration or final chamber action",
+                        "current-system",
+                        "floor",
+                        0.05,
+                        0.45,
+                        "Congress.gov bill-status bulk data and govinfo BILLS/BILLSTATUS collections",
+                        "Used to keep the benchmark from treating every introduced bill as a floor bill."
+                ),
+                new CalibrationBenchmark(
+                        "party-unity-support-band",
+                        "Voteview roll-call votes",
+                        "ordinary enacted-bill coalition support range under a polarized Congress",
+                        "current-system",
+                        "averageEnactedSupport",
+                        0.50,
+                        0.82,
+                        "Voteview roll-call and party-unity data",
+                        "Screens whether party loyalty and polarization generate plausible winning coalition support."
+                ),
+                new CalibrationBenchmark(
+                        "veto-frequency-band",
+                        "Congress.gov veto actions and CRS presidential veto summaries",
+                        "vetoes per simulated run under bicameral presidential-veto baseline",
+                        "presidential-veto",
+                        "vetoesPerRun",
+                        0.00,
+                        8.00,
+                        "Congress.gov action histories and CRS presidential veto summaries",
+                        "Loose range because run length is abstract; failures here indicate a wildly implausible veto model."
+                ),
+                new CalibrationBenchmark(
+                        "sponsor-success-concentration",
+                        "Center for Effective Lawmaking",
+                        "concentration in member-level legislative advancement and sponsor success",
+                        "current-system",
+                        "proposerAccessGini",
+                        0.05,
+                        0.75,
+                        "Center for Effective Lawmaking member-level effectiveness scores",
+                        "Screens whether proposer access is neither perfectly equal nor fully concentrated."
+                ),
+                new CalibrationBenchmark(
+                        "lobbying-spend-observable",
+                        "U.S. Senate Lobbying Disclosure Act data",
+                        "organized-interest spending should be visible in explicit lobbying scenarios",
+                        "default-pass-budgeted-lobbying",
+                        "lobbySpendPerBill",
+                        0.01,
+                        1.50,
+                        "U.S. Senate Lobbying Disclosure Act filings",
+                        "The simulator uses abstract budget units; this validates observability and relative scale, not dollar calibration."
+                ),
+                new CalibrationBenchmark(
+                        "topic-throughput-yield",
+                        "Comparative Agendas Project",
+                        "policy-topic throughput should not collapse to zero in conventional baselines",
+                        "simple-majority",
+                        "welfarePerSubmittedBill",
+                        0.05,
+                        0.45,
+                        "Comparative Agendas Project topic coding",
+                        "A coarse screen for generated issue-domain throughput before topic-specific calibration."
+                )
+        );
     }
 
     public static List<CalibrationTarget> standardTargets() {

@@ -450,6 +450,25 @@ public final class CampaignRunner {
             "default-pass-public-objection",
             "default-pass-law-registry"
     );
+    private static final List<String> STRATEGY_CALIBRATION_SCENARIOS = List.of(
+            "current-system",
+            "simple-majority",
+            "supermajority-60",
+            "bicameral-majority",
+            "presidential-veto",
+            "default-pass",
+            "default-pass-budgeted-lobbying",
+            "default-pass-strategic-lobbying",
+            "default-pass-adaptive-proposers",
+            "default-pass-adaptive-proposers-lobbying",
+            "default-pass-deep-strategy-bundle",
+            "default-pass-multiround-mediation",
+            "default-pass-multiround-mediation-challenge",
+            "default-pass-constituent-citizen-panel",
+            "default-pass-alternatives-pairwise",
+            "default-pass-public-objection",
+            "default-pass-law-registry"
+    );
 
     private CampaignRunner() {
     }
@@ -847,6 +866,26 @@ public final class CampaignRunner {
                 outputDir,
                 v19Cases(legislators, bills),
                 TIMELINE_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV20(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v20 Strategy and Calibration",
+                "simulation-campaign-v20",
+                outputDir,
+                v8Cases(legislators, bills),
+                STRATEGY_CALIBRATION_SCENARIOS,
                 runs,
                 legislators,
                 bills,
