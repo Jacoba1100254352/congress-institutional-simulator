@@ -166,6 +166,10 @@ final class ScenarioCatalogTests {
                 "Scenario catalog should expose strategic lobbying scenario keys."
         );
         assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("current-system"),
+                "Scenario catalog should expose the current-system benchmark key."
+        );
+        assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-challenge-minority-bonus"),
                 "Scenario catalog should expose challenge allocation variant keys."
         );

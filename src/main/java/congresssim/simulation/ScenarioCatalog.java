@@ -86,6 +86,7 @@ public final class ScenarioCatalog {
                         VotingStrategies.antiCapture()
                 )),
                 new ScenarioEntry("supermajority-60", unicameral("Unicameral 60 percent passage", AffirmativeThresholdRule.supermajority(0.60))),
+                new ScenarioEntry("current-system", currentSystem()),
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
                 new ScenarioEntry("default-pass-mediation", defaultPassWithMediation()),
                 new ScenarioEntry("default-pass-lobby-firewall", defaultPassWithLobbyFirewall()),
@@ -1940,6 +1941,40 @@ public final class ScenarioCatalog {
                 return new PresidentialVetoProcess(
                         bicameral,
                         president,
+                        strategy,
+                        0.68,
+                        AffirmativeThresholdRule.supermajority(2.0 / 3.0)
+                );
+            }
+        };
+    }
+
+    private static Scenario currentSystem() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Current U.S.-style system";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                Chamber house = new Chamber(
+                        "House",
+                        world.legislators(),
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                Chamber senate = new Chamber(
+                        "Senate",
+                        senateSubset(world.legislators()),
+                        strategy,
+                        AffirmativeThresholdRule.supermajority(0.60)
+                );
+                LegislativeProcess bicameral = new BicameralProcess(name(), house, senate);
+                return new PresidentialVetoProcess(
+                        bicameral,
+                        presidentFromWorld(world),
                         strategy,
                         0.68,
                         AffirmativeThresholdRule.supermajority(2.0 / 3.0)

@@ -8,7 +8,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 - legislators: 101
 - base bills per run: 60
 - base seed: 20260428
-- scenarios per case: 38
+- scenarios per case: 39
 - experiment cases: 18
 
 ## Headline Findings
@@ -28,6 +28,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 | Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Minority harm | Legitimacy | Policy shift | Proposer gain | Capture | Lobby spend | Defensive spend | Amend rate | Compensation | Anti-lobby pass | Challenge | Floor |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Bicameral simple majority | 0.175 | 16.869 | 103.333 | 0.665 | 0.000 | 0.077 | 0.594 | 0.053 | 0.229 | 0.235 | 0.000 | 0.000 | 0.000 | 0.000 | 0.462 | 0.000 | 1.000 |
+| Current U.S.-style system | 0.067 | 6.360 | 103.333 | 0.704 | 0.000 | 0.060 | 0.657 | 0.015 | 0.155 | 0.251 | 0.000 | 0.000 | 0.000 | 0.000 | 0.179 | 0.000 | 1.000 |
 | Default pass unless 2/3 block | 0.843 | 86.979 | 103.333 | 0.497 | 0.448 | 0.168 | 0.393 | 0.664 | 0.656 | 0.265 | 0.000 | 0.000 | 0.000 | 0.000 | 0.992 | 0.000 | 1.000 |
 | Default pass + adaptive proposers | 0.863 | 88.983 | 103.310 | 0.493 | 0.446 | 0.171 | 0.395 | 0.577 | 0.597 | 0.268 | 0.000 | 0.000 | 1.000 | 0.000 | 0.993 | 0.000 | 1.000 |
 | Default pass + adaptive proposers + strategic lobbying | 0.863 | 89.040 | 103.310 | 0.492 | 0.447 | 0.171 | 0.394 | 0.577 | 0.597 | 0.269 | 0.111 | 0.618 | 1.000 | 0.000 | 0.991 | 0.000 | 1.000 |
@@ -188,18 +189,18 @@ Delta values compare `default-pass-cost` against open `default-pass` in the same
 | Case | Best welfare | Most productive | Lowest low-support passage |
 | --- | --- | --- | --- |
 | Baseline | Default pass + affected-group sponsor gate (0.719) | Default pass + multi-round mediation (0.959) | Unicameral simple majority (0.000) |
-| Low Polarization | Default pass + strategic policy tournament (0.700) | Default pass + multi-round mediation (0.982) | Unicameral simple majority (0.000) |
+| Low Polarization | Current U.S.-style system (0.701) | Default pass + multi-round mediation (0.982) | Unicameral simple majority (0.000) |
 | High Polarization | Default pass + affected-group sponsor gate (0.750) | Default pass + multi-round mediation (0.956) | Unicameral simple majority (0.000) |
 | Low Party Loyalty | Default pass + affected-group sponsor gate (0.724) | Default pass + multi-round mediation (0.969) | Unicameral simple majority (0.000) |
 | High Party Loyalty | Unicameral 60 percent passage (0.721) | Default pass + multi-round mediation (0.961) | Unicameral simple majority (0.000) |
 | Low Compromise Culture | Default pass + affected-group sponsor gate (0.737) | Default pass + multi-round mediation (0.942) | Unicameral simple majority (0.000) |
-| High Compromise Culture | Unicameral 60 percent passage (0.701) | Default pass + multi-round mediation (0.978) | Unicameral simple majority (0.000) |
+| High Compromise Culture | Current U.S.-style system (0.712) | Default pass + multi-round mediation (0.978) | Unicameral simple majority (0.000) |
 | Low Lobbying Pressure | Unicameral 60 percent passage (0.733) | Default pass + multi-round mediation (0.972) | Unicameral simple majority (0.000) |
 | High Lobbying Pressure | Default pass + affected-group sponsor gate (0.747) | Default pass + multi-round mediation (0.934) | Unicameral simple majority (0.000) |
 | Weak Constituency Pressure | Default pass + affected-group sponsor gate (0.737) | Default pass + multi-round mediation (0.975) | Unicameral simple majority (0.000) |
 | Two-Party System | Default pass + affected-group sponsor gate (0.742) | Default pass + multi-round mediation (0.965) | Unicameral simple majority (0.000) |
 | Multi-Party System | Unicameral 60 percent passage (0.714) | Default pass + multi-round mediation (0.969) | Unicameral simple majority (0.000) |
-| High Proposal Pressure | Unicameral 60 percent passage (0.719) | Default pass + multi-round mediation (0.965) | Unicameral simple majority (0.000) |
+| High Proposal Pressure | Current U.S.-style system (0.719) | Default pass + multi-round mediation (0.965) | Unicameral simple majority (0.000) |
 | Extreme Proposal Pressure | Default pass + affected-group sponsor gate (0.715) | Default pass + multi-round mediation (0.962) | Unicameral simple majority (0.000) |
 | Lobby-Fueled Flooding | Default pass + affected-group sponsor gate (0.747) | Default pass + multi-round mediation (0.937) | Unicameral simple majority (0.000) |
 | Low-Compromise Flooding | Default pass + affected-group sponsor gate (0.752) | Default pass + multi-round mediation (0.944) | Unicameral simple majority (0.000) |

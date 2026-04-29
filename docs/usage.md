@@ -317,6 +317,7 @@ The default CLI scenario set includes:
 - `default-pass-informed-guarded`: default passage with access screening, committee information, and committee gatekeeping.
 - `bicameral-majority`: bicameral simple majority.
 - `presidential-veto`: bicameral majority with presidential veto and two-thirds override.
+- `current-system`: stylized current U.S. benchmark with House majority, Senate 60 percent threshold, presidential veto, and two-thirds override.
 
 ## Campaign Reports
 

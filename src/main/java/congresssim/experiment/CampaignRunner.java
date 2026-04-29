@@ -27,7 +27,8 @@ public final class CampaignRunner {
             "default-pass-guarded",
             "default-pass-informed-guarded",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> FLOODING_SCENARIOS = List.of(
             "simple-majority",
@@ -40,7 +41,8 @@ public final class CampaignRunner {
             "default-pass-informed-guarded",
             "default-pass-cost-guarded",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> CHALLENGE_SCENARIOS = List.of(
             "simple-majority",
@@ -51,7 +53,8 @@ public final class CampaignRunner {
             "default-pass-cost",
             "default-pass-informed-guarded",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> CHALLENGE_SWEEP_SCENARIOS = List.of(
             "simple-majority",
@@ -72,7 +75,8 @@ public final class CampaignRunner {
             "default-pass-challenge-member-t3-s082",
             "default-pass-escalation-q6-s082",
             "default-pass-escalation-q12-s082",
-            "default-pass-escalation-q20-s082"
+            "default-pass-escalation-q20-s082",
+            "current-system"
     );
     private static final List<String> CROSS_BLOC_SCENARIOS = List.of(
             "simple-majority",
@@ -96,7 +100,8 @@ public final class CampaignRunner {
             "default-pass-challenge-member-t3-s082",
             "default-pass-escalation-q6-s082",
             "default-pass-escalation-q12-s082",
-            "default-pass-escalation-q20-s082"
+            "default-pass-escalation-q20-s082",
+            "current-system"
     );
     private static final List<String> ADAPTIVE_TRACK_SCENARIOS = List.of(
             "simple-majority",
@@ -122,7 +127,8 @@ public final class CampaignRunner {
             "default-pass-challenge-member-t3-s082",
             "default-pass-escalation-q6-s082",
             "default-pass-escalation-q12-s082",
-            "default-pass-escalation-q20-s082"
+            "default-pass-escalation-q20-s082",
+            "current-system"
     );
     private static final List<String> SUNSET_TRIAL_SCENARIOS = List.of(
             "simple-majority",
@@ -150,7 +156,8 @@ public final class CampaignRunner {
             "default-pass-challenge-member-t3-s082",
             "default-pass-escalation-q6-s082",
             "default-pass-escalation-q12-s082",
-            "default-pass-escalation-q20-s082"
+            "default-pass-escalation-q20-s082",
+            "current-system"
     );
     private static final List<String> PROPOSAL_CREDIT_SCENARIOS = List.of(
             "simple-majority",
@@ -180,7 +187,8 @@ public final class CampaignRunner {
             "default-pass-challenge-member-t3-s082",
             "default-pass-escalation-q6-s082",
             "default-pass-escalation-q12-s082",
-            "default-pass-escalation-q20-s082"
+            "default-pass-escalation-q20-s082",
+            "current-system"
     );
     private static final List<String> ANTI_CAPTURE_SCENARIOS = List.of(
             "simple-majority",
@@ -199,7 +207,8 @@ public final class CampaignRunner {
             "default-pass-sunset-trial",
             "default-pass-earned-credits",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> BUDGETED_LOBBYING_SCENARIOS = List.of(
             "simple-majority",
@@ -220,7 +229,8 @@ public final class CampaignRunner {
             "default-pass-sunset-trial",
             "default-pass-earned-credits",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> MEDIATION_SCENARIOS = List.of(
             "simple-majority",
@@ -241,7 +251,8 @@ public final class CampaignRunner {
             "default-pass-sunset-trial",
             "default-pass-earned-credits",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> DISTRIBUTIONAL_HARM_SCENARIOS = List.of(
             "simple-majority",
@@ -262,7 +273,8 @@ public final class CampaignRunner {
             "default-pass-sunset-trial",
             "default-pass-earned-credits",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> LAW_REGISTRY_SCENARIOS = List.of(
             "simple-majority",
@@ -282,7 +294,8 @@ public final class CampaignRunner {
             "default-pass-adaptive-track",
             "default-pass-earned-credits",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> POLICY_TOURNAMENT_SCENARIOS = List.of(
             "simple-majority",
@@ -305,7 +318,8 @@ public final class CampaignRunner {
             "default-pass-adaptive-track",
             "default-pass-earned-credits",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> LOBBYING_DEPTH_SCENARIOS = List.of(
             "simple-majority",
@@ -333,7 +347,8 @@ public final class CampaignRunner {
             "default-pass-cross-bloc",
             "default-pass-adaptive-track",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> CITIZEN_PANEL_SCENARIOS = List.of(
             "simple-majority",
@@ -353,7 +368,8 @@ public final class CampaignRunner {
             "default-pass-cross-bloc",
             "default-pass-adaptive-track",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> AGENDA_SCARCITY_SCENARIOS = List.of(
             "simple-majority",
@@ -374,7 +390,8 @@ public final class CampaignRunner {
             "default-pass-alternatives-pairwise",
             "default-pass-law-registry",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
     private static final List<String> ROADMAP_COMPLETION_SCENARIOS = List.of(
             "simple-majority",
@@ -414,7 +431,8 @@ public final class CampaignRunner {
             "default-pass-weighted-agenda-lottery",
             "default-pass-public-objection",
             "bicameral-majority",
-            "presidential-veto"
+            "presidential-veto",
+            "current-system"
     );
 
     private CampaignRunner() {

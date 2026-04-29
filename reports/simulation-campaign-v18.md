@@ -8,7 +8,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 - legislators: 101
 - base bills per run: 60
 - base seed: 20260428
-- scenarios per case: 38
+- scenarios per case: 39
 - experiment cases: 4
 
 ## Case Weights
@@ -32,13 +32,14 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 - Weighted agenda lotteries changed floor consideration by -0.533, productivity by -0.430, and welfare by 0.052 relative to open default-pass.
 - Public objection windows triggered on 0.645 of potential bills and changed low-support passage by -0.195 relative to open default-pass.
 - Pairwise policy tournaments changed proposer agenda advantage by 0.003, policy shift by -0.652, and status-quo wins averaged 0.444 relative to open default-pass.
-- Best average welfare in this campaign came from Unicameral 60 percent passage at 0.717.
+- Best average welfare in this campaign came from Current U.S.-style system at 0.717.
 
 ## Scenario Averages Across Cases
 
 | Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Minority harm | Legitimacy | Policy shift | Proposer gain | Capture | Lobby spend | Defensive spend | Amend rate | Compensation | Anti-lobby pass | Challenge | Floor |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Bicameral simple majority | 0.186 | 11.160 | 60.000 | 0.668 | 0.000 | 0.070 | 0.604 | 0.059 | 0.246 | 0.206 | 0.000 | 0.000 | 0.000 | 0.000 | 0.536 | 0.000 | 1.000 |
+| Current U.S.-style system | 0.072 | 4.297 | 60.000 | 0.717 | 0.000 | 0.050 | 0.671 | 0.016 | 0.159 | 0.202 | 0.000 | 0.000 | 0.000 | 0.000 | 0.230 | 0.000 | 1.000 |
 | Default pass unless 2/3 block | 0.835 | 50.072 | 60.000 | 0.497 | 0.448 | 0.163 | 0.398 | 0.657 | 0.652 | 0.254 | 0.000 | 0.000 | 0.000 | 0.000 | 0.993 | 0.000 | 1.000 |
 | Default pass + adaptive proposers | 0.861 | 51.637 | 60.000 | 0.492 | 0.442 | 0.166 | 0.398 | 0.575 | 0.595 | 0.257 | 0.000 | 0.000 | 1.000 | 0.000 | 0.994 | 0.000 | 1.000 |
 | Default pass + adaptive proposers + strategic lobbying | 0.862 | 51.726 | 60.000 | 0.491 | 0.443 | 0.166 | 0.398 | 0.577 | 0.596 | 0.258 | 0.145 | 0.593 | 1.000 | 0.000 | 0.996 | 0.000 | 1.000 |
@@ -171,7 +172,7 @@ Delta values compare `default-pass-cost` against open `default-pass` in the same
 | Case | Best welfare | Most productive | Lowest low-support passage |
 | --- | --- | --- | --- |
 | Weighted Two-Party Baseline | Default pass + affected-group sponsor gate (0.739) | Default pass + multi-round mediation (0.963) | Unicameral simple majority (0.000) |
-| Weighted Two Major Plus Minors | Unicameral 60 percent passage (0.711) | Default pass + multi-round mediation (0.967) | Unicameral simple majority (0.000) |
+| Weighted Two Major Plus Minors | Current U.S.-style system (0.723) | Default pass + multi-round mediation (0.967) | Unicameral simple majority (0.000) |
 | Weighted Fragmented Multiparty | Unicameral 60 percent passage (0.714) | Default pass + multi-round mediation (0.969) | Unicameral simple majority (0.000) |
 | Weighted Dominant-Party Legislature | Unicameral 60 percent passage (0.727) | Default pass + multi-round mediation (0.961) | Unicameral simple majority (0.000) |
 

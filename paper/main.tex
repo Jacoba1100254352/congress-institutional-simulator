@@ -23,7 +23,7 @@
 \begin{abstract}
 Modern legislatures should be productive enough to act while remaining representative enough to convert competing public interests into legitimate compromise. This paper presents a computational framework for searching a broad legislative design space rather than defending one constitutional reform. The simulator compares Congress-style institutions under shared generated worlds, including majority rule, supermajority rule, default enactment unless blocked, challenge vouchers, cross-bloc cosponsorship, adaptive tracks, proposal credits, affected-group harm guardrails, active-law review, competing policy alternatives, lobbying safeguards, citizen mini-public review, and agenda-scarcity mechanisms.
 
-The framework separates productivity from compromise, public responsiveness, agenda control, and legitimacy-related risk. Across 18 baseline assumption cases and 38 current-campaign scenarios, open default enactment produces high throughput but also high low-support passage, large policy shifts, and greater proposer gain. Guardrails, coalition-breadth gates, citizen panels, proposal bonds, adaptive tracks, public objection windows, mediation, policy tournaments, and early adaptive-strategy wrappers reduce different risks at different productivity costs. The contribution is a reproducible mechanism-search framework for identifying institutional designs that can improve compromise and productivity while remaining responsive to public support, generated public benefit, and concentrated harm.
+The framework separates productivity from compromise, public responsiveness, agenda control, and legitimacy-related risk. Across 18 baseline assumption cases and 39 current-campaign scenarios, including a stylized current U.S.-style benchmark, open default enactment produces high throughput but also high low-support passage, large policy shifts, and greater proposer gain. Guardrails, coalition-breadth gates, citizen panels, proposal bonds, adaptive tracks, public objection windows, mediation, policy tournaments, and early adaptive-strategy wrappers reduce different risks at different productivity costs. The contribution is a reproducible mechanism-search framework for identifying institutional designs that can improve compromise and productivity while remaining responsive to public support, generated public benefit, and concentrated harm.
 \end{abstract}
 
 \begin{CCSXML}
@@ -170,15 +170,16 @@ The most important distinction is between productivity and compromise. A high-th
 
 \section{Experimental Design}
 
-The current baseline campaign, \texttt{simulation-campaign-v17}, runs 80 simulations per case, with 101 legislators, 60 base bills per run, base seed 20260428, 18 assumption cases, and 38 institutional scenarios per case. The assumption cases vary polarization, party loyalty, compromise culture, lobbying pressure, constituency pressure, party count, proposal pressure, flooding conditions, capture pressure, and public appetite for anti-lobbying reform.
+The current baseline campaign, \texttt{simulation-campaign-v17}, runs 80 simulations per case, with 101 legislators, 60 base bills per run, base seed 20260428, 18 assumption cases, and 39 institutional scenarios per case. The assumption cases vary polarization, party loyalty, compromise culture, lobbying pressure, constituency pressure, party count, proposal pressure, flooding conditions, capture pressure, and public appetite for anti-lobbying reform.
 
-The party-system sensitivity campaign, \texttt{simulation-campaign-v18}, reuses the same 38 scenarios across four weighted legislature profiles: two-party baseline (0.25), two major parties plus minors (0.40), fragmented multiparty (0.20), and dominant-party (0.15). These profiles assign party seats from profile-specific statistical shares before sorting parties along the ideological range, so party count and party spread affect the generated representative body rather than only labeling ideology bins.
+The party-system sensitivity campaign, \texttt{simulation-campaign-v18}, reuses the same 39 scenarios across four weighted legislature profiles: two-party baseline (0.25), two major parties plus minors (0.40), fragmented multiparty (0.20), and dominant-party (0.15). These profiles assign party seats from profile-specific statistical shares before sorting parties along the ideological range, so party count and party spread affect the generated representative body rather than only labeling ideology bins.
 
 The institutional scenarios are:
 
 \begin{itemize}
   \item unicameral simple majority;
   \item unicameral 60 percent passage;
+  \item a stylized current U.S.-style benchmark with House majority, Senate 60 percent threshold, presidential veto, and two-thirds override;
   \item default pass unless two-thirds block;
   \item default pass plus scarce challenge vouchers;
   \item default pass plus cross-bloc cosponsorship gates;
@@ -224,6 +225,7 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
     \toprule
     Label & Scenario & Prod. & Enacted/run & Welfare & Low-sup. & Shift & Prop. gain & Challenge \\
     \midrule
+    \textcolor{red}{Current} & \textcolor{red}{Current U.S.-style system} & \textcolor{red}{0.067} & \textcolor{red}{6.360} & \textcolor{red}{0.704} & \textcolor{red}{0.000} & \textcolor{red}{0.015} & \textcolor{red}{0.155} & \textcolor{red}{0.000} \\
     DP & Default pass unless 2/3 block & 0.843 & 86.980 & 0.497 & 0.448 & 0.664 & 0.656 & 0.000 \\
     Public+Panel & Default pass + constituent public will + citizen panel & 0.407 & 41.313 & 0.629 & 0.249 & 0.213 & 0.435 & 0.000 \\
     Bond & Default pass + proposal bonds & 0.832 & 85.022 & 0.499 & 0.448 & 0.653 & 0.653 & 0.000 \\
@@ -242,13 +244,13 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
     \bottomrule
   \end{tabular}%
   }
-  \par\smallskip\footnotesize \emph{Note:} The \emph{Label} column matches the point labels in Figure~\ref{fig:productivity-low-support}. \emph{Enacted/run} is an absolute count. All other reported columns are normalized rates or scores.
+  \par\smallskip\footnotesize \emph{Note:} The \emph{Label} column matches the point labels in Figure~\ref{fig:productivity-low-support}. The red \emph{Current} row is the stylized current U.S.-style benchmark and matches the red benchmark points and bars in Figures~\ref{fig:productivity-low-support}--\ref{fig:default-pass-deltas}. \emph{Enacted/run} is an absolute count. All other reported columns are normalized rates or scores.
 \end{table*}
 
 \begin{figure*}
   \centering
   \input{figures/productivity_low_support}
-  \caption{Productivity versus low-support passage for selected v17 scenarios. The figure makes the main scale distinction visible: productivity and low-support passage are normalized rates, while Table~\ref{tab:scenario-averages} also reports enacted bills per run as an absolute load measure.}
+  \caption{Productivity versus low-support passage for selected v17 scenarios. The red point marks the stylized current U.S.-style benchmark. The figure makes the main scale distinction visible: productivity and low-support passage are normalized rates, while Table~\ref{tab:scenario-averages} also reports enacted bills per run as an absolute load measure.}
   \label{fig:productivity-low-support}
   \Description{A scatter plot with productivity on the x-axis and low-support passage on the y-axis. Open default-pass is high on both axes; simple majority and supermajority are low on low-support passage; cross-bloc, adaptive, guarded, policy-tournament, and law-registry scenarios reduce low-support passage at different productivity levels.}
 \end{figure*}
@@ -256,7 +258,7 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
 \begin{figure*}
   \centering
   \input{figures/compromise_productivity}
-  \caption{Compromise versus productivity for every scenario in the weighted v18 party-system sensitivity campaign. Each point is one institutional system; labels mark representative systems.}
+  \caption{Compromise versus productivity for every scenario in the weighted v18 party-system sensitivity campaign. Each point is one institutional system; labels mark representative systems, with the stylized current U.S.-style benchmark shown in red.}
   \label{fig:compromise-productivity}
   \Description{A scatter plot with productivity on the x-axis and compromise score on the y-axis. Each institutional scenario is plotted under weighted two-party, two-major-with-minors, fragmented multiparty, and dominant-party assumptions.}
 \end{figure*}
@@ -264,14 +266,16 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
 \begin{figure*}
   \centering
   \input{figures/default_pass_deltas}
-  \caption{Productivity, policy-shift, and proposer-gain deltas relative to open default-pass. Negative shift and proposer-gain deltas are desirable; productivity deltas show the throughput cost or gain.}
+  \caption{Productivity, policy-shift, and proposer-gain deltas relative to open default-pass. The stylized current U.S.-style benchmark is shown in red. Negative shift and proposer-gain deltas are desirable; productivity deltas show the throughput cost or gain.}
   \label{fig:default-pass-deltas}
   \Description{A horizontal bar chart showing that guarded, cross-bloc, adaptive, law-registry, challenge, and policy-tournament scenarios change productivity, policy shift, and proposer gain relative to open default-pass.}
 \end{figure*}
 
 \subsection{Open Default Enactment}
 
-Open default enactment is consistently the broad throughput leader among baseline institutions. Across v17, it averages 0.843 productivity and 86.980 enacted bills per run. By comparison, unicameral simple majority averages 0.268 productivity and 26.268 enacted bills per run, while the 60 percent supermajority rule averages 0.090 productivity and 8.543 enacted bills per run.
+Open default enactment is consistently the broad throughput leader among baseline institutions. Across v17, it averages 0.843 productivity and 86.980 enacted bills per run. By comparison, unicameral simple majority averages 0.268 productivity and 26.268 enacted bills per run, the 60 percent supermajority rule averages 0.090 productivity and 8.543 enacted bills per run, and the stylized current U.S.-style benchmark averages 0.067 productivity and 6.360 enacted bills per run.
+
+The current-system benchmark is intentionally conservative: it combines House majority passage, a Senate 60 percent threshold, presidential veto, and two-thirds override. It averages 0.704 welfare, 0.000 low-support passage, 0.015 policy shift, and 0.155 proposer gain. That makes it useful as a visible reference point: it is protective against weak-support enactment in this model, but it is also the lowest-throughput benchmark shown in Table~\ref{tab:scenario-averages}.
 
 The throughput gain comes with risk signals. Open default enactment averages 0.448 low-support passage, 0.664 policy shift, and 0.656 proposer gain. In this model, the rule is not merely reducing gridlock; it is also allowing many proposals to take effect without majority support and moving policy substantially toward proposers.
 
@@ -287,17 +291,18 @@ Proposal-cost screening reduces institutional load but does not automatically im
 
 Challenge vouchers are a promising middle path. Default pass plus challenge vouchers averages 0.671 productivity, 77.963 enacted bills per run, 0.510 welfare, 0.393 low-support passage, 0.456 policy shift, 0.541 proposer gain, and 0.397 challenge use. Relative to open default enactment, it reduces productivity by 0.172, low-support passage by 0.055, policy shift by 0.208, and proposer gain by 0.115. The v17 minority-bonus allocation pushes challenge use to 0.442 and further reduces low-support passage to 0.372, at additional productivity cost.
 
-Table~\ref{tab:challenge-deltas} summarizes selected deltas from the earlier challenge sweep. The important failure mode is visible under proposal flooding: fixed token budgets are diluted as proposal volume rises.
+Table~\ref{tab:challenge-deltas} summarizes selected deltas from the earlier challenge sweep, with the all-case current-system benchmark included in red for reference. The important failure mode is visible under proposal flooding: fixed token budgets are diluted as proposal volume rises.
 
 \begin{table}
-  \caption{Selected challenge-voucher deltas relative to open default enactment.}
+  \caption{Selected challenge-voucher and benchmark deltas relative to open default enactment.}
   \label{tab:challenge-deltas}
-  \Description{A table showing that challenge vouchers reduce risk metrics in ordinary cases but become diluted under proposal flooding.}
+  \Description{A table showing that challenge vouchers reduce risk metrics in ordinary cases but become diluted under proposal flooding, with the current-system benchmark shown in red.}
   \small
   \begin{tabular}{lrrrr}
     \toprule
-    Case & Prod. & Low-sup. & Shift & Challenge \\
+    Comparison & Prod. & Low-sup. & Shift & Challenge \\
     \midrule
+    \textcolor{red}{Current benchmark} & \textcolor{red}{-0.776} & \textcolor{red}{-0.448} & \textcolor{red}{-0.649} & \textcolor{red}{0.000} \\
     Baseline & -0.262 & -0.065 & -0.305 & 0.500 \\
     Low polarization & -0.182 & -0.136 & -0.142 & 0.499 \\
     High polarization & -0.294 & -0.025 & -0.361 & 0.500 \\

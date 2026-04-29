@@ -53,6 +53,8 @@ import congresssim.model.LobbyGroup;
 import congresssim.model.SimulationWorld;
 import congresssim.model.Vote;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
@@ -70,6 +72,7 @@ final class CampaignRunnerTests {
         campaignRunnerWritesReports();
         tinyCampaignGoldenMetricsStayStable();
         campaignRunnerWritesWeightedCsvWithStableSchema();
+        allPredefinedCampaignScenarioListsIncludeCurrentBenchmark();
     }
 
 
@@ -139,7 +142,8 @@ final class CampaignRunnerTests {
             }
             assertTrue(cases.size() == 4, "v18 should include the four weighted party-system cases.");
             assertTrue(Math.abs(caseWeightSum - 1.0) < 0.000001, "v18 case weights should sum to one.");
-            assertTrue(scenarios.size() == 38, "v18 should exercise the full current roadmap-completion scenario set.");
+            assertTrue(scenarios.size() == 39, "v18 should exercise the full current roadmap-completion scenario set.");
+            assertTrue(scenarios.contains("current-system"), "v18 should include the current-system benchmark.");
             assertTrue(scenarios.contains("default-pass-adaptive-proposers"), "v18 should include adaptive proposer behavior.");
             assertTrue(scenarios.contains("default-pass-strategic-lobbying"), "v18 should include strategic lobbying behavior.");
 
@@ -160,6 +164,28 @@ final class CampaignRunnerTests {
             assertTrue(markdown.contains("Weighted Two Major Plus Minors"), "Markdown should include party-system case names.");
         } catch (Exception exception) {
             throw new AssertionError("Weighted campaign report generation failed.", exception);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void allPredefinedCampaignScenarioListsIncludeCurrentBenchmark() {
+        try {
+            for (Field field : CampaignRunner.class.getDeclaredFields()) {
+                if (!field.getName().endsWith("_SCENARIOS")) {
+                    continue;
+                }
+                if (!Modifier.isStatic(field.getModifiers()) || !List.class.isAssignableFrom(field.getType())) {
+                    continue;
+                }
+                field.setAccessible(true);
+                List<String> scenarios = (List<String>) field.get(null);
+                assertTrue(
+                        scenarios.contains("current-system"),
+                        field.getName() + " should include the current-system benchmark."
+                );
+            }
+        } catch (IllegalAccessException exception) {
+            throw new AssertionError("Could not inspect campaign scenario lists.", exception);
         }
     }
 
