@@ -184,6 +184,13 @@ public final class Main {
                         options.bills,
                         options.seed
                 );
+                case "v18" -> CampaignRunner.runV18(
+                        options.outputDir,
+                        options.runs,
+                        options.legislators,
+                        options.bills,
+                        options.seed
+                );
                 default -> throw new IllegalArgumentException("Unknown campaign: " + options.campaignName);
             };
             System.out.println(result.name() + " complete.");
@@ -208,8 +215,9 @@ public final class Main {
                 options.seed
         );
         System.out.printf(
-                "assumptions: parties=%d polarization=%.2f partyLoyalty=%.2f compromise=%.2f constituency=%.2f lobbying=%.2f%n%n",
+                "assumptions: parties=%d partyProfile=%s polarization=%.2f partyLoyalty=%.2f compromise=%.2f constituency=%.2f lobbying=%.2f%n%n",
                 worldSpec.partyCount(),
+                worldSpec.partySystemProfile(),
                 worldSpec.polarization(),
                 worldSpec.partyLoyalty(),
                 worldSpec.compromiseCulture(),
@@ -561,7 +569,7 @@ public final class Main {
                       --scenarios <keys>  Comma-separated scenario keys
                       --format <kind>     table, csv, or bars
                       --charts            Add ASCII bar charts after the table
-                      --campaign <name>   Run a named campaign, currently v0 through v17
+                      --campaign <name>   Run a named campaign, currently v0 through v18
                       --output-dir <path> Campaign output directory
                       --seed <n>          Reproducible random seed
                       --help              Show this message

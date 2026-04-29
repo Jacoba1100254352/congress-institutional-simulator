@@ -9,6 +9,7 @@ import congresssim.model.SimulationWorld;
 import congresssim.util.Values;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +75,7 @@ public final class WorldGenerator {
                     Values.clamp(0.34 + random.nextDouble() * 0.58, 0.0, 1.0)
             ));
         }
-        return legislators;
+        return assignPartySystem(legislators, spec, random);
     }
 
     private List<Bill> generateBills(WorldSpec spec, List<Legislator> legislators, Random random) {
@@ -254,6 +255,189 @@ public final class WorldGenerator {
         double normalized = (ideology + 1.0) / 2.0;
         int partyIndex = Math.min(partyCount - 1, (int) Math.floor(normalized * partyCount));
         return "Party-" + (partyIndex + 1);
+    }
+
+    private static List<Legislator> assignPartySystem(List<Legislator> legislators, WorldSpec spec, Random random) {
+        if (spec.partySystemProfile() == PartySystemProfile.IDEOLOGICAL_BINS) {
+            return legislators;
+        }
+
+        int[] targets = partySeatTargets(spec, random);
+        List<Legislator> ordered = new ArrayList<>(legislators);
+        ordered.sort(Comparator.comparingDouble(Legislator::ideology));
+
+        Map<String, String> partyByLegislatorId = new HashMap<>();
+        int cursor = 0;
+        for (int partyIndex = 0; partyIndex < targets.length; partyIndex++) {
+            String party = partyLabel(spec.partySystemProfile(), partyIndex, targets.length);
+            for (int seat = 0; seat < targets[partyIndex] && cursor < ordered.size(); seat++) {
+                partyByLegislatorId.put(ordered.get(cursor).id(), party);
+                cursor++;
+            }
+        }
+        while (cursor < ordered.size()) {
+            partyByLegislatorId.put(
+                    ordered.get(cursor).id(),
+                    partyLabel(spec.partySystemProfile(), targets.length - 1, targets.length)
+            );
+            cursor++;
+        }
+
+        List<Legislator> assigned = new ArrayList<>();
+        for (Legislator legislator : legislators) {
+            String party = partyByLegislatorId.getOrDefault(legislator.id(), legislator.party());
+            assigned.add(new Legislator(
+                    legislator.id(),
+                    party,
+                    legislator.ideology(),
+                    legislator.compromisePreference(),
+                    legislator.partyLoyalty(),
+                    legislator.constituencySensitivity(),
+                    legislator.lobbySensitivity(),
+                    legislator.reputationSensitivity(),
+                    legislator.districtPreference(),
+                    legislator.districtIntensity(),
+                    legislator.affectedGroupSensitivity()
+            ));
+        }
+        return assigned;
+    }
+
+    private static int[] partySeatTargets(WorldSpec spec, Random random) {
+        double[] shares = partyShares(spec.partySystemProfile(), spec.partyCount(), random);
+        int[] seats = new int[shares.length];
+        double[] remainders = new double[shares.length];
+        int total = spec.legislatorCount();
+        int assigned = 0;
+
+        if (total >= shares.length) {
+            for (int i = 0; i < seats.length; i++) {
+                seats[i] = 1;
+                assigned++;
+            }
+        }
+
+        int remaining = total - assigned;
+        for (int i = 0; i < shares.length; i++) {
+            double raw = shares[i] * remaining;
+            int additional = (int) Math.floor(raw);
+            seats[i] += additional;
+            assigned += additional;
+            remainders[i] = raw - additional;
+        }
+
+        while (assigned < total) {
+            int bestIndex = 0;
+            for (int i = 1; i < remainders.length; i++) {
+                if (remainders[i] > remainders[bestIndex]) {
+                    bestIndex = i;
+                }
+            }
+            seats[bestIndex]++;
+            remainders[bestIndex] = -1.0;
+            assigned++;
+        }
+        return seats;
+    }
+
+    private static double[] partyShares(PartySystemProfile profile, int partyCount, Random random) {
+        double[] shares = new double[partyCount];
+        if (partyCount == 1) {
+            shares[0] = 1.0;
+            return shares;
+        }
+
+        switch (profile) {
+            case TWO_MAJOR_WITH_MINOR_PARTIES -> {
+                if (partyCount == 2) {
+                    shares[0] = Values.clamp(0.52 + random.nextGaussian() * 0.03, 0.45, 0.58);
+                    shares[1] = 1.0 - shares[0];
+                } else {
+                    double leftMajor = Values.clamp(0.42 + random.nextGaussian() * 0.03, 0.34, 0.48);
+                    double rightMajor = Values.clamp(0.39 + random.nextGaussian() * 0.03, 0.32, 0.46);
+                    double majorTotal = leftMajor + rightMajor;
+                    if (majorTotal > 0.86) {
+                        leftMajor *= 0.86 / majorTotal;
+                        rightMajor *= 0.86 / majorTotal;
+                    }
+                    shares[0] = leftMajor;
+                    shares[partyCount - 1] = rightMajor;
+                    distributeRemaining(shares, random, 1.0 - leftMajor - rightMajor, 1, partyCount - 1);
+                }
+            }
+            case DOMINANT_PARTY -> {
+                int dominantIndex = partyCount / 2;
+                shares[dominantIndex] = Values.clamp(0.58 + random.nextGaussian() * 0.04, 0.48, 0.66);
+                distributeRemaining(shares, random, 1.0 - shares[dominantIndex], 0, partyCount);
+            }
+            case FRAGMENTED_MULTIPARTY -> {
+                double total = 0.0;
+                for (int i = 0; i < partyCount; i++) {
+                    shares[i] = Values.clamp(1.0 + random.nextGaussian() * 0.22, 0.45, 1.55);
+                    total += shares[i];
+                }
+                for (int i = 0; i < partyCount; i++) {
+                    shares[i] /= total;
+                }
+            }
+            case IDEOLOGICAL_BINS -> {
+                for (int i = 0; i < partyCount; i++) {
+                    shares[i] = 1.0 / partyCount;
+                }
+            }
+        }
+        return shares;
+    }
+
+    private static void distributeRemaining(
+            double[] shares,
+            Random random,
+            double remainingShare,
+            int startInclusive,
+            int endExclusive
+    ) {
+        double totalWeight = 0.0;
+        double[] weights = new double[shares.length];
+        for (int i = startInclusive; i < endExclusive; i++) {
+            if (shares[i] == 0.0) {
+                weights[i] = Values.clamp(1.0 + random.nextGaussian() * 0.18, 0.55, 1.45);
+                totalWeight += weights[i];
+            }
+        }
+        if (totalWeight == 0.0) {
+            return;
+        }
+        for (int i = startInclusive; i < endExclusive; i++) {
+            if (weights[i] > 0.0) {
+                shares[i] = remainingShare * weights[i] / totalWeight;
+            }
+        }
+    }
+
+    private static String partyLabel(PartySystemProfile profile, int partyIndex, int partyCount) {
+        if (partyCount == 1) {
+            return "Unified";
+        }
+        if (partyCount == 2) {
+            return partyIndex == 0 ? "Left" : "Right";
+        }
+        return switch (profile) {
+            case TWO_MAJOR_WITH_MINOR_PARTIES -> {
+                if (partyIndex == 0) {
+                    yield "Major-Left";
+                }
+                if (partyIndex == partyCount - 1) {
+                    yield "Major-Right";
+                }
+                if (partyIndex == partyCount / 2) {
+                    yield "Center-Minor";
+                }
+                yield partyIndex < partyCount / 2 ? "Left-Minor-" + partyIndex : "Right-Minor-" + (partyCount - partyIndex);
+            }
+            case DOMINANT_PARTY -> partyIndex == partyCount / 2 ? "Dominant-Center" : "Minor-" + (partyIndex + 1);
+            case FRAGMENTED_MULTIPARTY -> "Fragment-" + (partyIndex + 1);
+            case IDEOLOGICAL_BINS -> "Party-" + (partyIndex + 1);
+        };
     }
 
     private static Map<String, Double> partyPositions(List<Legislator> legislators) {

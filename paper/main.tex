@@ -170,7 +170,9 @@ The most important distinction is between productivity and compromise. A high-th
 
 \section{Experimental Design}
 
-The current campaign, \texttt{simulation-campaign-v17}, runs 80 simulations per case, with 101 legislators, 60 base bills per run, base seed 20260428, 18 assumption cases, and 35 institutional scenarios per case. The assumption cases vary polarization, party loyalty, compromise culture, lobbying pressure, constituency pressure, party count, proposal pressure, flooding conditions, capture pressure, and public appetite for anti-lobbying reform. The lower run count keeps the expanded v17 campaign practical while still comparing all scenarios across the same assumption cases.
+The current baseline campaign, \texttt{simulation-campaign-v17}, runs 80 simulations per case, with 101 legislators, 60 base bills per run, base seed 20260428, 18 assumption cases, and 35 institutional scenarios per case. The assumption cases vary polarization, party loyalty, compromise culture, lobbying pressure, constituency pressure, party count, proposal pressure, flooding conditions, capture pressure, and public appetite for anti-lobbying reform.
+
+The party-system sensitivity campaign, \texttt{simulation-campaign-v18}, reuses the same 35 scenarios across four weighted legislature profiles: two-party baseline (0.25), two major parties plus minors (0.40), fragmented multiparty (0.20), and dominant-party (0.15). These profiles assign party seats from profile-specific statistical shares before sorting parties along the ideological range, so party count and party spread affect the generated representative body rather than only labeling ideology bins.
 
 The institutional scenarios are:
 
@@ -201,7 +203,7 @@ The institutional scenarios are:
 
 The proposal-cost result reported below comes from the v17 lobby-surcharge cost variant, while earlier campaigns include the original scalar cost, bicameralism, and presidential veto comparisons. Challenge-token sweeps over party budgets, member tokens, and q-member escalation come from earlier campaigns. Lobbying-channel variants come from v14 and are carried forward through the current comparison.
 
-The campaign is deterministic and reproducible from the repository with \texttt{make campaign}. The paper is generated with \texttt{make paper}.
+Both campaigns are deterministic: reproduce the baseline with \texttt{make campaign-v17}, the party-system sensitivity run with \texttt{make campaign} or \texttt{make campaign-v18}, and the paper with \texttt{make paper}.
 
 \section{Code Availability}
 
@@ -210,7 +212,7 @@ The simulator source code, LaTeX manuscript source, generated campaign reports, 
 
 \section{Results}
 
-Table~\ref{tab:scenario-averages} summarizes selected scenario averages across all v17 assumption cases. The table mixes one absolute load measure with normalized metrics: \emph{Enacted/run} is a count of enacted bills per simulated run, while the other columns are rates or scores on a 0--1 scale. Figures~\ref{fig:productivity-low-support} and~\ref{fig:default-pass-deltas} visualize the same tradeoff space.
+Table~\ref{tab:scenario-averages} summarizes selected scenario averages across all v17 assumption cases. The table mixes one absolute load measure with normalized metrics: \emph{Enacted/run} is a count of enacted bills per simulated run, while the other columns are rates or scores on a 0--1 scale. Figures~\ref{fig:productivity-low-support}, \ref{fig:compromise-productivity}, and~\ref{fig:default-pass-deltas} visualize the same tradeoff space.
 
 \begin{table*}
   \caption{Selected scenario averages across 18 assumption cases in \texttt{simulation-campaign-v17}.}
@@ -249,6 +251,14 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
   \caption{Productivity versus low-support passage for selected v17 scenarios. The figure makes the main scale distinction visible: productivity and low-support passage are normalized rates, while Table~\ref{tab:scenario-averages} also reports enacted bills per run as an absolute load measure.}
   \label{fig:productivity-low-support}
   \Description{A scatter plot with productivity on the x-axis and low-support passage on the y-axis. Open default-pass is high on both axes; simple majority and supermajority are low on low-support passage; cross-bloc, adaptive, guarded, policy-tournament, and law-registry scenarios reduce low-support passage at different productivity levels.}
+\end{figure*}
+
+\begin{figure*}
+  \centering
+  \input{figures/compromise_productivity}
+  \caption{Compromise versus productivity for every scenario in the weighted v18 party-system sensitivity campaign. Each point is one institutional system; labels mark representative systems.}
+  \label{fig:compromise-productivity}
+  \Description{A scatter plot with productivity on the x-axis and compromise score on the y-axis. Each institutional scenario is plotted under weighted two-party, two-major-with-minors, fragmented multiparty, and dominant-party assumptions.}
 \end{figure*}
 
 \begin{figure*}

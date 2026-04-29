@@ -143,6 +143,12 @@ Run the v17 roadmap-completion campaign:
 make campaign-v17
 ```
 
+Run the v18 party-system sensitivity campaign:
+
+```sh
+make campaign-v18
+```
+
 Remove generated build output:
 
 ```sh
@@ -195,7 +201,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0..v17>`: run a named campaign.
+- `--campaign <v0..v18>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -308,8 +314,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v17.csv`
-- `reports/simulation-campaign-v17.md`
+- `reports/simulation-campaign-v18.csv`
+- `reports/simulation-campaign-v18.md`
 
 Earlier campaigns:
 
@@ -345,6 +351,10 @@ Earlier campaigns:
 - `reports/simulation-campaign-v14.md`
 - `reports/simulation-campaign-v15.csv`
 - `reports/simulation-campaign-v15.md`
+- `reports/simulation-campaign-v16.csv`
+- `reports/simulation-campaign-v16.md`
+- `reports/simulation-campaign-v17.csv`
+- `reports/simulation-campaign-v17.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -353,6 +363,7 @@ Use CSV output for analysis and Markdown output for quick review.
 The simulator reports several metrics because passage volume alone is not enough to evaluate an institution.
 
 - `productivity`: share of potential bills enacted.
+- `caseWeight`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`.
 - `floor`: share of potential bills reaching floor consideration.
 - `avgSupport`: average yes-vote share for enacted bills.
 - `welfare`: average public-benefit score for enacted bills.

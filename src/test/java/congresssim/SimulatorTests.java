@@ -38,14 +38,17 @@ import congresssim.institution.QuadraticAttentionBudgetProcess;
 import congresssim.institution.SunsetTrialProcess;
 import congresssim.simulation.CommitteeComposition;
 import congresssim.simulation.CommitteeFactory;
+import congresssim.simulation.PartySystemProfile;
 import congresssim.simulation.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
+import congresssim.simulation.WorldGenerator;
 import congresssim.simulation.WorldSpec;
 import congresssim.model.Bill;
 import congresssim.model.Legislator;
 import congresssim.model.LobbyCaptureStrategy;
 import congresssim.model.LobbyGroup;
+import congresssim.model.SimulationWorld;
 import congresssim.model.Vote;
 
 import java.nio.file.Files;
@@ -91,6 +94,7 @@ public final class SimulatorTests {
         committeeGateBlocksBillsBeforeFloor();
         committeeInformationMovesPublicSignalTowardBenefit();
         committeeCompositionPresetsSelectDifferentMembers();
+        partySystemProfilesRepresentMajorAndMinorParties();
         scenarioKeysSelectExpectedScenarios();
         campaignRunnerWritesReports();
         simulatorProducesOneReportPerScenario();
@@ -1093,6 +1097,49 @@ public final class SimulatorTests {
 
         assertTrue(expert.stream().anyMatch(legislator -> legislator.id().equals("L-3")), "Expert committee should select public-interest members.");
         assertTrue(captured.stream().anyMatch(legislator -> legislator.id().equals("L-5")), "Captured committee should select lobby-sensitive members.");
+    }
+
+    private static void partySystemProfilesRepresentMajorAndMinorParties() {
+        WorldSpec twoMajorWithMinors = new WorldSpec(
+                101,
+                4,
+                5,
+                0.70,
+                0.65,
+                0.45,
+                0.60,
+                0.50,
+                PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES,
+                0.40
+        );
+        SimulationWorld world = new WorldGenerator().generate(twoMajorWithMinors, 88L);
+        Map<String, Long> counts = world.legislators()
+                .stream()
+                .collect(java.util.stream.Collectors.groupingBy(Legislator::party, java.util.stream.Collectors.counting()));
+        long majorSeats = counts.getOrDefault("Major-Left", 0L) + counts.getOrDefault("Major-Right", 0L);
+
+        assertTrue(counts.size() == 5, "Two-major-with-minors profile should represent all configured parties.");
+        assertTrue(majorSeats > 65, "Two largest parties should hold most seats while minor parties remain present.");
+
+        WorldSpec fragmented = new WorldSpec(
+                101,
+                4,
+                7,
+                0.60,
+                0.55,
+                0.45,
+                0.60,
+                0.60,
+                PartySystemProfile.FRAGMENTED_MULTIPARTY,
+                0.20
+        );
+        SimulationWorld fragmentedWorld = new WorldGenerator().generate(fragmented, 99L);
+        long representedParties = fragmentedWorld.legislators()
+                .stream()
+                .map(Legislator::party)
+                .distinct()
+                .count();
+        assertTrue(representedParties == 7, "Fragmented multiparty profile should keep each party represented.");
     }
 
     private static void simulatorProducesOneReportPerScenario() {

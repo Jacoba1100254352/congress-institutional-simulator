@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v17.csv`
-- `reports/simulation-campaign-v17.md`
+- `reports/simulation-campaign-v18.csv`
+- `reports/simulation-campaign-v18.md`
 
 Earlier campaigns remain available:
 
@@ -71,6 +71,7 @@ make campaign-v14
 make campaign-v15
 make campaign-v16
 make campaign-v17
+make campaign-v18
 ```
 
 You can override the campaign defaults:
@@ -193,7 +194,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0` through `v17`
+- `--campaign`: run a named campaign, currently `v0` through `v18`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -228,6 +229,7 @@ The first metric set is deliberately simple, but it separates throughput from le
 
 - `productivity`: share of introduced bills enacted
 - `floor`: share of potential bills that reached floor consideration
+- `caseWeight`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`
 - campaign reports also track `enactedPerRun` and `floorPerRun` so proposal flooding is visible as institutional load, not only as percentages
 - `challengeRate`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member challenge escalation
 - `avgSupport`: average yay share for enacted bills
@@ -409,3 +411,10 @@ The current v17 campaign completes the planned roadmap layer:
 - Challenge vouchers now include proportional and minority-bonus party allocation plus supermajority, committee, and information-active challenged paths.
 - Adaptive tracks now report fast/middle/high route rates and include lenient, strict, citizen high-risk, and supermajority high-risk variants.
 - Proposal-cost variants include public-value waivers, lobby-pressure surcharges, and stateful member quotas.
+
+The current v18 campaign adds weighted party-system sensitivity:
+
+- `PartySystemProfile` lets generated worlds use ideological bins, two major parties with minor parties, dominant-party legislatures, or fragmented multiparty legislatures.
+- `WorldGenerator` assigns profile-specific party seat shares before sorting parties along the ideological range.
+- Campaign rows include `caseWeight`, and scenario averages are weighted when the campaign defines non-unit case likelihoods.
+- The tracked v18 sensitivity mix is 0.25 two-party, 0.40 two-major-plus-minors, 0.20 fragmented multiparty, and 0.15 dominant party.

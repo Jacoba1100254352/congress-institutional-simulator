@@ -4,6 +4,7 @@ import congresssim.simulation.Scenario;
 import congresssim.simulation.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
+import congresssim.simulation.PartySystemProfile;
 import congresssim.simulation.WorldSpec;
 
 import java.io.IOException;
@@ -776,6 +777,26 @@ public final class CampaignRunner {
         );
     }
 
+    public static CampaignResult runV18(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v18",
+                "simulation-campaign-v18",
+                outputDir,
+                v18Cases(legislators, bills),
+                ROADMAP_COMPLETION_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
     private static CampaignResult run(
             String name,
             String fileStem,
@@ -806,6 +827,7 @@ public final class CampaignRunner {
                         experimentCase.key(),
                         experimentCase.name(),
                         experimentCase.description(),
+                        experimentCase.caseWeight(),
                         scenarioKeys.get(scenarioIndex),
                         reports.get(scenarioIndex)
                 ));
@@ -874,6 +896,27 @@ public final class CampaignRunner {
         return cases;
     }
 
+    private static List<ExperimentCase> v18Cases(int legislators, int bills) {
+        return List.of(
+                experiment("party-system-two-party", "Weighted Two-Party Baseline",
+                        "Classic two-party legislature with ideological left/right sorting.",
+                        legislators, bills, 2, 0.72, 0.72, 0.48, 0.64, 0.52,
+                        PartySystemProfile.IDEOLOGICAL_BINS, 0.25),
+                experiment("party-system-two-major-minors", "Weighted Two Major Plus Minors",
+                        "Five-party legislature with two large ideological parties and smaller minor parties.",
+                        legislators, bills, 5, 0.72, 0.66, 0.48, 0.64, 0.55,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 0.40),
+                experiment("party-system-fragmented", "Weighted Fragmented Multiparty",
+                        "Seven-party legislature with more even fragmentation across the ideological range.",
+                        legislators, bills, 7, 0.64, 0.54, 0.48, 0.66, 0.60,
+                        PartySystemProfile.FRAGMENTED_MULTIPARTY, 0.20),
+                experiment("party-system-dominant", "Weighted Dominant-Party Legislature",
+                        "Four-party legislature with one large center-weighted party and smaller opposition parties.",
+                        legislators, bills, 4, 0.66, 0.70, 0.48, 0.62, 0.48,
+                        PartySystemProfile.DOMINANT_PARTY, 0.15)
+        );
+    }
+
     private static ExperimentCase experiment(
             String key,
             String name,
@@ -887,10 +930,43 @@ public final class CampaignRunner {
             double constituency,
             double compromise
     ) {
+        return experiment(
+                key,
+                name,
+                description,
+                legislators,
+                bills,
+                parties,
+                polarization,
+                partyLoyalty,
+                lobbying,
+                constituency,
+                compromise,
+                PartySystemProfile.IDEOLOGICAL_BINS,
+                1.0
+        );
+    }
+
+    private static ExperimentCase experiment(
+            String key,
+            String name,
+            String description,
+            int legislators,
+            int bills,
+            int parties,
+            double polarization,
+            double partyLoyalty,
+            double lobbying,
+            double constituency,
+            double compromise,
+            PartySystemProfile partySystemProfile,
+            double caseWeight
+    ) {
         return new ExperimentCase(
                 key,
                 name,
                 description,
+                caseWeight,
                 new WorldSpec(
                         legislators,
                         bills,
@@ -899,19 +975,22 @@ public final class CampaignRunner {
                         partyLoyalty,
                         lobbying,
                         constituency,
-                        compromise
+                        compromise,
+                        partySystemProfile,
+                        caseWeight
                 )
         );
     }
 
     private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,fastLaneRate,middleLaneRate,highRiskLaneRate,challengeExhaustionRate,falseNegativePassRate,publicWillReviewRate,publicSignalMovement,districtAlignment,crossBlocAdmissionRate,affectedGroupSponsorshipRate,averageCosponsors,proposalBondForfeiture,strategicDecoyRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,caseWeight,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,fastLaneRate,middleLaneRate,highRiskLaneRate,challengeExhaustionRate,falseNegativePassRate,publicWillReviewRate,publicSignalMovement,districtAlignment,crossBlocAdmissionRate,affectedGroupSponsorshipRate,averageCosponsors,proposalBondForfeiture,strategicDecoyRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes\n");
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
                     .append(csvValue(row.caseName())).append(',')
                     .append(csvValue(row.caseDescription())).append(',')
+                    .append(format(row.caseWeight())).append(',')
                     .append(csvValue(row.scenarioKey())).append(',')
                     .append(csvValue(report.scenarioName())).append(',')
                     .append(report.totalBills()).append(',')
@@ -1008,6 +1087,19 @@ public final class CampaignRunner {
         builder.append("- base seed: ").append(seed).append('\n');
         builder.append("- scenarios per case: ").append(scenarioCount).append('\n');
         builder.append("- experiment cases: ").append(caseCount(result.rows())).append("\n\n");
+        if (hasWeightedCases(result.rows())) {
+            builder.append("## Case Weights\n\n");
+            builder.append("Scenario averages in this campaign are weighted by the case likelihood column below.\n\n");
+            builder.append("| Case | Weight | Description |\n");
+            builder.append("| --- | ---: | --- |\n");
+            for (CampaignRow row : firstRowsByCase(result.rows())) {
+                builder.append("| ")
+                        .append(row.caseName()).append(" | ")
+                        .append(format(row.caseWeight())).append(" | ")
+                        .append(row.caseDescription()).append(" |\n");
+            }
+            builder.append('\n');
+        }
 
         builder.append("## Headline Findings\n\n");
         appendHeadlineFindings(builder, result.rows(), aggregateByScenario);
@@ -1873,9 +1965,26 @@ public final class CampaignRunner {
             byScenario.computeIfAbsent(
                     row.scenarioKey(),
                     key -> new ScenarioAggregate(key, row.report().scenarioName())
-            ).add(row.report(), runs);
+            ).add(row.report(), runs, row.caseWeight());
         }
         return byScenario;
+    }
+
+    private static boolean hasWeightedCases(List<CampaignRow> rows) {
+        for (CampaignRow row : rows) {
+            if (Math.abs(row.caseWeight() - 1.0) > 0.000_001) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<CampaignRow> firstRowsByCase(List<CampaignRow> rows) {
+        Map<String, CampaignRow> byCase = new LinkedHashMap<>();
+        for (CampaignRow row : rows) {
+            byCase.putIfAbsent(row.caseKey(), row);
+        }
+        return new ArrayList<>(byCase.values());
     }
 
     private static int caseCount(List<CampaignRow> rows) {
@@ -1938,13 +2047,13 @@ public final class CampaignRunner {
         return String.format(Locale.ROOT, "%.3f", value);
     }
 
-    private record ExperimentCase(String key, String name, String description, WorldSpec worldSpec) {
+    private record ExperimentCase(String key, String name, String description, double caseWeight, WorldSpec worldSpec) {
     }
 
     private static final class ScenarioAggregate {
         private final String scenarioKey;
         private final String scenarioName;
-        private int count;
+        private double weightTotal;
         private double productivity;
         private double welfare;
         private double compromise;
@@ -2012,69 +2121,69 @@ public final class CampaignRunner {
             this.scenarioName = scenarioName;
         }
 
-        private void add(ScenarioReport report, int runs) {
-            count++;
-            productivity += report.productivity();
-            welfare += report.averagePublicBenefit();
-            compromise += report.compromiseScore();
-            lowSupport += report.controversialPassageRate();
-            policyShift += report.averagePolicyShift();
-            proposerGain += report.averageProposerGain();
-            lobbyCapture += report.lobbyCaptureIndex();
-            publicAlignment += report.publicAlignmentScore();
-            antiLobbyingSuccess += report.antiLobbyingSuccessRate();
-            privateGainRatio += report.privateGainRatio();
-            lobbySpendPerBill += report.lobbySpendPerBill();
-            defensiveLobbyingShare += report.defensiveLobbyingShare();
-            captureReturnOnSpend += report.captureReturnOnSpend();
-            publicPreferenceDistortion += report.publicPreferenceDistortion();
-            amendmentRate += report.amendmentRate();
-            amendmentMovement += report.averageAmendmentMovement();
-            minorityHarm += report.minorityHarmIndex();
-            concentratedHarmPassage += report.concentratedHarmPassageRate();
-            compensationRate += report.compensationRate();
-            legitimacy += report.legitimacyScore();
-            activeLawWelfare += report.activeLawWelfare();
-            reversalRate += report.reversalRate();
-            timeToCorrectBadLaw += report.timeToCorrectBadLaw();
-            lowSupportActiveLawShare += report.lowSupportActiveLawShare();
-            selectedAlternativeMedianDistance += report.selectedAlternativeMedianDistance();
-            proposerAgendaAdvantage += report.proposerAgendaAdvantage();
-            alternativeDiversity += report.alternativeDiversity();
-            statusQuoWinRate += report.statusQuoWinRate();
-            publicBenefitPerLobbyDollar += report.publicBenefitPerLobbyDollar();
-            directLobbySpendShare += report.directLobbySpendShare();
-            agendaLobbySpendShare += report.agendaLobbySpendShare();
-            informationLobbySpendShare += report.informationLobbySpendShare();
-            publicCampaignSpendShare += report.publicCampaignSpendShare();
-            litigationThreatSpendShare += report.litigationThreatSpendShare();
-            citizenReviewRate += report.citizenReviewRate();
-            citizenCertificationRate += report.citizenCertificationRate();
-            citizenLegitimacy += report.citizenLegitimacy();
-            attentionSpendPerBill += report.attentionSpendPerBill();
-            objectionWindowRate += report.objectionWindowRate();
-            repealWindowReversalRate += report.repealWindowReversalRate();
-            fastLaneRate += report.fastLaneRate();
-            middleLaneRate += report.middleLaneRate();
-            highRiskLaneRate += report.highRiskLaneRate();
-            challengeExhaustionRate += report.challengeExhaustionRate();
-            falseNegativePassRate += report.falseNegativePassRate();
-            publicWillReviewRate += report.publicWillReviewRate();
-            publicSignalMovement += report.publicSignalMovement();
-            districtAlignment += report.districtAlignment();
-            crossBlocAdmissionRate += report.crossBlocAdmissionRate();
-            affectedGroupSponsorshipRate += report.affectedGroupSponsorshipRate();
-            averageCosponsors += report.averageCosponsors();
-            proposalBondForfeiture += report.proposalBondForfeiture();
-            strategicDecoyRate += report.strategicDecoyRate();
-            proposerAccessGini += report.proposerAccessGini();
-            welfarePerSubmittedBill += report.welfarePerSubmittedBill();
-            challengeRate += report.challengeRate();
-            floor += report.floorConsiderationRate();
-            accessDenied += report.accessDenialRate();
-            committeeRejected += report.committeeRejectionRate();
-            enactedPerRun += (double) report.enactedBills() / runs;
-            floorPerRun += (report.totalBills() * report.floorConsiderationRate()) / runs;
+        private void add(ScenarioReport report, int runs, double weight) {
+            weightTotal += weight;
+            productivity += report.productivity() * weight;
+            welfare += report.averagePublicBenefit() * weight;
+            compromise += report.compromiseScore() * weight;
+            lowSupport += report.controversialPassageRate() * weight;
+            policyShift += report.averagePolicyShift() * weight;
+            proposerGain += report.averageProposerGain() * weight;
+            lobbyCapture += report.lobbyCaptureIndex() * weight;
+            publicAlignment += report.publicAlignmentScore() * weight;
+            antiLobbyingSuccess += report.antiLobbyingSuccessRate() * weight;
+            privateGainRatio += report.privateGainRatio() * weight;
+            lobbySpendPerBill += report.lobbySpendPerBill() * weight;
+            defensiveLobbyingShare += report.defensiveLobbyingShare() * weight;
+            captureReturnOnSpend += report.captureReturnOnSpend() * weight;
+            publicPreferenceDistortion += report.publicPreferenceDistortion() * weight;
+            amendmentRate += report.amendmentRate() * weight;
+            amendmentMovement += report.averageAmendmentMovement() * weight;
+            minorityHarm += report.minorityHarmIndex() * weight;
+            concentratedHarmPassage += report.concentratedHarmPassageRate() * weight;
+            compensationRate += report.compensationRate() * weight;
+            legitimacy += report.legitimacyScore() * weight;
+            activeLawWelfare += report.activeLawWelfare() * weight;
+            reversalRate += report.reversalRate() * weight;
+            timeToCorrectBadLaw += report.timeToCorrectBadLaw() * weight;
+            lowSupportActiveLawShare += report.lowSupportActiveLawShare() * weight;
+            selectedAlternativeMedianDistance += report.selectedAlternativeMedianDistance() * weight;
+            proposerAgendaAdvantage += report.proposerAgendaAdvantage() * weight;
+            alternativeDiversity += report.alternativeDiversity() * weight;
+            statusQuoWinRate += report.statusQuoWinRate() * weight;
+            publicBenefitPerLobbyDollar += report.publicBenefitPerLobbyDollar() * weight;
+            directLobbySpendShare += report.directLobbySpendShare() * weight;
+            agendaLobbySpendShare += report.agendaLobbySpendShare() * weight;
+            informationLobbySpendShare += report.informationLobbySpendShare() * weight;
+            publicCampaignSpendShare += report.publicCampaignSpendShare() * weight;
+            litigationThreatSpendShare += report.litigationThreatSpendShare() * weight;
+            citizenReviewRate += report.citizenReviewRate() * weight;
+            citizenCertificationRate += report.citizenCertificationRate() * weight;
+            citizenLegitimacy += report.citizenLegitimacy() * weight;
+            attentionSpendPerBill += report.attentionSpendPerBill() * weight;
+            objectionWindowRate += report.objectionWindowRate() * weight;
+            repealWindowReversalRate += report.repealWindowReversalRate() * weight;
+            fastLaneRate += report.fastLaneRate() * weight;
+            middleLaneRate += report.middleLaneRate() * weight;
+            highRiskLaneRate += report.highRiskLaneRate() * weight;
+            challengeExhaustionRate += report.challengeExhaustionRate() * weight;
+            falseNegativePassRate += report.falseNegativePassRate() * weight;
+            publicWillReviewRate += report.publicWillReviewRate() * weight;
+            publicSignalMovement += report.publicSignalMovement() * weight;
+            districtAlignment += report.districtAlignment() * weight;
+            crossBlocAdmissionRate += report.crossBlocAdmissionRate() * weight;
+            affectedGroupSponsorshipRate += report.affectedGroupSponsorshipRate() * weight;
+            averageCosponsors += report.averageCosponsors() * weight;
+            proposalBondForfeiture += report.proposalBondForfeiture() * weight;
+            strategicDecoyRate += report.strategicDecoyRate() * weight;
+            proposerAccessGini += report.proposerAccessGini() * weight;
+            welfarePerSubmittedBill += report.welfarePerSubmittedBill() * weight;
+            challengeRate += report.challengeRate() * weight;
+            floor += report.floorConsiderationRate() * weight;
+            accessDenied += report.accessDenialRate() * weight;
+            committeeRejected += report.committeeRejectionRate() * weight;
+            enactedPerRun += ((double) report.enactedBills() / runs) * weight;
+            floorPerRun += ((report.totalBills() * report.floorConsiderationRate()) / runs) * weight;
         }
 
         private String scenarioKey() {
@@ -2086,247 +2195,247 @@ public final class CampaignRunner {
         }
 
         private double productivity() {
-            return productivity / count;
+            return productivity / weightTotal;
         }
 
         private double welfare() {
-            return welfare / count;
+            return welfare / weightTotal;
         }
 
         private double lowSupport() {
-            return lowSupport / count;
+            return lowSupport / weightTotal;
         }
 
         private double policyShift() {
-            return policyShift / count;
+            return policyShift / weightTotal;
         }
 
         private double proposerGain() {
-            return proposerGain / count;
+            return proposerGain / weightTotal;
         }
 
         private double lobbyCapture() {
-            return lobbyCapture / count;
+            return lobbyCapture / weightTotal;
         }
 
         private double publicAlignment() {
-            return publicAlignment / count;
+            return publicAlignment / weightTotal;
         }
 
         private double antiLobbyingSuccess() {
-            return antiLobbyingSuccess / count;
+            return antiLobbyingSuccess / weightTotal;
         }
 
         private double privateGainRatio() {
-            return privateGainRatio / count;
+            return privateGainRatio / weightTotal;
         }
 
         private double compromise() {
-            return compromise / count;
+            return compromise / weightTotal;
         }
 
         private double lobbySpendPerBill() {
-            return lobbySpendPerBill / count;
+            return lobbySpendPerBill / weightTotal;
         }
 
         private double defensiveLobbyingShare() {
-            return defensiveLobbyingShare / count;
+            return defensiveLobbyingShare / weightTotal;
         }
 
         private double captureReturnOnSpend() {
-            return captureReturnOnSpend / count;
+            return captureReturnOnSpend / weightTotal;
         }
 
         private double publicPreferenceDistortion() {
-            return publicPreferenceDistortion / count;
+            return publicPreferenceDistortion / weightTotal;
         }
 
         private double amendmentRate() {
-            return amendmentRate / count;
+            return amendmentRate / weightTotal;
         }
 
         private double amendmentMovement() {
-            return amendmentMovement / count;
+            return amendmentMovement / weightTotal;
         }
 
         private double minorityHarm() {
-            return minorityHarm / count;
+            return minorityHarm / weightTotal;
         }
 
         private double concentratedHarmPassage() {
-            return concentratedHarmPassage / count;
+            return concentratedHarmPassage / weightTotal;
         }
 
         private double compensationRate() {
-            return compensationRate / count;
+            return compensationRate / weightTotal;
         }
 
         private double legitimacy() {
-            return legitimacy / count;
+            return legitimacy / weightTotal;
         }
 
         private double activeLawWelfare() {
-            return activeLawWelfare / count;
+            return activeLawWelfare / weightTotal;
         }
 
         private double reversalRate() {
-            return reversalRate / count;
+            return reversalRate / weightTotal;
         }
 
         private double timeToCorrectBadLaw() {
-            return timeToCorrectBadLaw / count;
+            return timeToCorrectBadLaw / weightTotal;
         }
 
         private double lowSupportActiveLawShare() {
-            return lowSupportActiveLawShare / count;
+            return lowSupportActiveLawShare / weightTotal;
         }
 
         private double selectedAlternativeMedianDistance() {
-            return selectedAlternativeMedianDistance / count;
+            return selectedAlternativeMedianDistance / weightTotal;
         }
 
         private double proposerAgendaAdvantage() {
-            return proposerAgendaAdvantage / count;
+            return proposerAgendaAdvantage / weightTotal;
         }
 
         private double alternativeDiversity() {
-            return alternativeDiversity / count;
+            return alternativeDiversity / weightTotal;
         }
 
         private double statusQuoWinRate() {
-            return statusQuoWinRate / count;
+            return statusQuoWinRate / weightTotal;
         }
 
         private double publicBenefitPerLobbyDollar() {
-            return publicBenefitPerLobbyDollar / count;
+            return publicBenefitPerLobbyDollar / weightTotal;
         }
 
         private double directLobbySpendShare() {
-            return directLobbySpendShare / count;
+            return directLobbySpendShare / weightTotal;
         }
 
         private double agendaLobbySpendShare() {
-            return agendaLobbySpendShare / count;
+            return agendaLobbySpendShare / weightTotal;
         }
 
         private double informationLobbySpendShare() {
-            return informationLobbySpendShare / count;
+            return informationLobbySpendShare / weightTotal;
         }
 
         private double publicCampaignSpendShare() {
-            return publicCampaignSpendShare / count;
+            return publicCampaignSpendShare / weightTotal;
         }
 
         private double litigationThreatSpendShare() {
-            return litigationThreatSpendShare / count;
+            return litigationThreatSpendShare / weightTotal;
         }
 
         private double citizenReviewRate() {
-            return citizenReviewRate / count;
+            return citizenReviewRate / weightTotal;
         }
 
         private double citizenCertificationRate() {
-            return citizenCertificationRate / count;
+            return citizenCertificationRate / weightTotal;
         }
 
         private double citizenLegitimacy() {
-            return citizenLegitimacy / count;
+            return citizenLegitimacy / weightTotal;
         }
 
         private double attentionSpendPerBill() {
-            return attentionSpendPerBill / count;
+            return attentionSpendPerBill / weightTotal;
         }
 
         private double objectionWindowRate() {
-            return objectionWindowRate / count;
+            return objectionWindowRate / weightTotal;
         }
 
         private double repealWindowReversalRate() {
-            return repealWindowReversalRate / count;
+            return repealWindowReversalRate / weightTotal;
         }
 
         private double fastLaneRate() {
-            return fastLaneRate / count;
+            return fastLaneRate / weightTotal;
         }
 
         private double middleLaneRate() {
-            return middleLaneRate / count;
+            return middleLaneRate / weightTotal;
         }
 
         private double highRiskLaneRate() {
-            return highRiskLaneRate / count;
+            return highRiskLaneRate / weightTotal;
         }
 
         private double challengeExhaustionRate() {
-            return challengeExhaustionRate / count;
+            return challengeExhaustionRate / weightTotal;
         }
 
         private double falseNegativePassRate() {
-            return falseNegativePassRate / count;
+            return falseNegativePassRate / weightTotal;
         }
 
         private double publicWillReviewRate() {
-            return publicWillReviewRate / count;
+            return publicWillReviewRate / weightTotal;
         }
 
         private double publicSignalMovement() {
-            return publicSignalMovement / count;
+            return publicSignalMovement / weightTotal;
         }
 
         private double districtAlignment() {
-            return districtAlignment / count;
+            return districtAlignment / weightTotal;
         }
 
         private double crossBlocAdmissionRate() {
-            return crossBlocAdmissionRate / count;
+            return crossBlocAdmissionRate / weightTotal;
         }
 
         private double affectedGroupSponsorshipRate() {
-            return affectedGroupSponsorshipRate / count;
+            return affectedGroupSponsorshipRate / weightTotal;
         }
 
         private double averageCosponsors() {
-            return averageCosponsors / count;
+            return averageCosponsors / weightTotal;
         }
 
         private double proposalBondForfeiture() {
-            return proposalBondForfeiture / count;
+            return proposalBondForfeiture / weightTotal;
         }
 
         private double strategicDecoyRate() {
-            return strategicDecoyRate / count;
+            return strategicDecoyRate / weightTotal;
         }
 
         private double proposerAccessGini() {
-            return proposerAccessGini / count;
+            return proposerAccessGini / weightTotal;
         }
 
         private double welfarePerSubmittedBill() {
-            return welfarePerSubmittedBill / count;
+            return welfarePerSubmittedBill / weightTotal;
         }
 
         private double challengeRate() {
-            return challengeRate / count;
+            return challengeRate / weightTotal;
         }
 
         private double floor() {
-            return floor / count;
+            return floor / weightTotal;
         }
 
         private double accessDenied() {
-            return accessDenied / count;
+            return accessDenied / weightTotal;
         }
 
         private double committeeRejected() {
-            return committeeRejected / count;
+            return committeeRejected / weightTotal;
         }
 
         private double enactedPerRun() {
-            return enactedPerRun / count;
+            return enactedPerRun / weightTotal;
         }
 
         private double floorPerRun() {
-            return floorPerRun / count;
+            return floorPerRun / weightTotal;
         }
     }
 }
