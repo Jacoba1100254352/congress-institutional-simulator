@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v13.csv`
-- `reports/simulation-campaign-v13.md`
+- `reports/simulation-campaign-v14.csv`
+- `reports/simulation-campaign-v14.md`
 
 Earlier campaigns remain available:
 
@@ -67,6 +67,7 @@ make campaign-v10
 make campaign-v11
 make campaign-v12
 make campaign-v13
+make campaign-v14
 ```
 
 You can override the campaign defaults:
@@ -96,6 +97,11 @@ The default CLI compares:
 - `default-pass-budgeted-lobbying-transparency`: budgeted lobbying followed by transparency backlash
 - `default-pass-budgeted-lobbying-bundle`: budgeted lobbying with transparency, public-interest screening, audits, and lower direct lobby vote influence
 - `default-pass-budgeted-lobbying-mediation`: budgeted lobbying followed by bounded amendment mediation
+- `default-pass-democracy-vouchers`: budgeted lobbying with public-financing pressure that moves public signals back toward public benefit
+- `default-pass-public-advocate`: budgeted lobbying with an equal-access public advocate counterweight
+- `default-pass-blind-lobby-review`: budgeted lobbying with reduced agenda and information effectiveness before origin disclosure
+- `default-pass-defensive-lobby-cap`: budgeted lobbying with an explicit cap on defensive anti-reform spending
+- `default-pass-lobby-channel-bundle`: public financing, public advocate access, blind review, and defensive caps together
 - `default-pass-harm-threshold`: default passage for ordinary bills, but concentrated-harm bills require affirmative supermajority support
 - `default-pass-compensation`: default passage with compensation amendments for high concentrated-harm bills
 - `default-pass-affected-consent`: default passage with compensation plus affected-group consent screening
@@ -152,7 +158,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0` through `v13`
+- `--campaign`: run a named campaign, currently `v0` through `v14`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -316,9 +322,16 @@ The v12 campaign adds a multi-session law registry:
 - Repealed laws roll back part of their status-quo movement, making correction and instability measurable.
 - Campaign reports now include active-law welfare, reversal rate, time to correction, and low-support active-law share.
 
-The current v13 campaign adds competing alternatives and policy tournaments:
+The v13 campaign adds competing alternatives and policy tournaments:
 
 - `CompetingAlternativesProcess` generates same-domain alternatives before final yes/no ratification.
 - Selection variants choose alternatives by public benefit, public support, chamber-median distance, or pairwise majority performance.
 - `default-pass-obstruction-substitute` models a limited constructive opposition right: opposition can force a substitute into the comparison instead of only blocking.
 - Campaign reports now include selected-alternative median distance, proposer agenda advantage, alternative diversity, and status-quo win rate.
+
+The current v14 campaign deepens lobbying:
+
+- `LobbyGroup` actors now have richer issue-preference maps, capture strategies, and public-support mismatch tolerance.
+- `BudgetedLobbyingProcess` allocates spending across direct pressure, agenda access, information distortion, public campaigns, litigation/delay threats, and defensive anti-reform pressure.
+- New scenarios test democracy vouchers/public financing, equal-access public advocates, blind sponsor/lobby-origin review, defensive lobbying caps, and a combined channel anti-capture bundle.
+- Campaign reports now include public benefit per lobby dollar and channel-specific spend shares.

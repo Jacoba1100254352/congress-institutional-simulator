@@ -35,6 +35,7 @@ import congresssim.simulation.Simulator;
 import congresssim.simulation.WorldSpec;
 import congresssim.model.Bill;
 import congresssim.model.Legislator;
+import congresssim.model.LobbyCaptureStrategy;
 import congresssim.model.LobbyGroup;
 import congresssim.model.Vote;
 
@@ -59,6 +60,7 @@ public final class SimulatorTests {
         proposalCreditsLearnFromProposalQuality();
         lobbyTransparencyReducesCapturedBillPressure();
         budgetedLobbyingSpendsDefensivelyAgainstAntiLobbyingReforms();
+        budgetedLobbyingRecordsChannelSpecificSpend();
         amendmentMediationMovesRiskyBillsTowardMedian();
         distributionalHarmProcessCompensatesAffectedGroups();
         lawRegistryReviewsAndRepealsBadActiveLaws();
@@ -284,6 +286,51 @@ public final class SimulatorTests {
 
         new BudgetedLobbyingProcess("budgeted lobbying test", capturePressuredBill, groups, 0.30, 0.50, 0.25)
                 .consider(antiLobbyingBill, context);
+    }
+
+    private static void budgetedLobbyingRecordsChannelSpecificSpend() {
+        Bill captureBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.55, 0.28, 0.30, 0.45, 0.80, 0.80, false, "energy", 0.0, 0.0);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        List<LobbyGroup> groups = List.of(new LobbyGroup(
+                "G-info",
+                "energy",
+                Map.of("energy", 1.0),
+                0.50,
+                2.0,
+                0.9,
+                1.0,
+                0.9,
+                0.4,
+                LobbyCaptureStrategy.INFORMATION_DISTORTION,
+                0.05
+        ));
+        LegislativeProcess capturePressuredBill = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "capture channel bill";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                assertTrue(bill.lobbySpend() > 0.0, "Channel lobbying should spend on aligned bills.");
+                assertTrue(bill.informationLobbySpend() > bill.directLobbySpend(), "Information strategy should allocate most spending to information distortion.");
+                assertTrue(bill.publicBenefit() < captureBill.publicBenefit(), "Information distortion should lower perceived public benefit.");
+                return BillOutcome.accessDenied(bill, context.currentPolicyPosition(), "captured");
+            }
+        };
+
+        new BudgetedLobbyingProcess(
+                "channel lobbying test",
+                capturePressuredBill,
+                groups,
+                0.35,
+                0.50,
+                0.25,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+        ).consider(captureBill, context);
     }
 
     private static void amendmentMediationMovesRiskyBillsTowardMedian() {
@@ -743,6 +790,10 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-alternatives-pairwise"),
                 "Scenario catalog should expose competing-alternatives scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-lobby-channel-bundle"),
+                "Scenario catalog should expose lobbying-channel scenario keys."
         );
     }
 

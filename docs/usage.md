@@ -119,6 +119,12 @@ Run the v13 policy-tournament campaign:
 make campaign-v13
 ```
 
+Run the v14 lobbying-depth campaign:
+
+```sh
+make campaign-v14
+```
+
 Remove generated build output:
 
 ```sh
@@ -171,7 +177,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0..v13>`: run a named campaign.
+- `--campaign <v0..v14>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -195,6 +201,11 @@ The default CLI scenario set includes:
 - `default-pass-budgeted-lobbying-transparency`: budgeted lobbying followed by transparency backlash.
 - `default-pass-budgeted-lobbying-bundle`: budgeted lobbying with transparency, public-interest screening, audits, and lower direct lobby vote influence.
 - `default-pass-budgeted-lobbying-mediation`: budgeted lobbying followed by bounded amendment mediation.
+- `default-pass-democracy-vouchers`: budgeted lobbying with a public-financing counterweight.
+- `default-pass-public-advocate`: budgeted lobbying with an equal-access public advocate.
+- `default-pass-blind-lobby-review`: budgeted lobbying with reduced agenda and information influence before sponsor/lobby origin is visible.
+- `default-pass-defensive-lobby-cap`: budgeted lobbying with an explicit cap on anti-reform defensive spend.
+- `default-pass-lobby-channel-bundle`: public financing, public advocate access, blind review, and defensive caps together.
 - `default-pass-harm-threshold`: default passage for ordinary bills, but concentrated-harm bills require affirmative supermajority support.
 - `default-pass-compensation`: default passage with compensation amendments for high concentrated-harm bills.
 - `default-pass-affected-consent`: default passage with compensation plus affected-group consent screening.
@@ -247,8 +258,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v13.csv`
-- `reports/simulation-campaign-v13.md`
+- `reports/simulation-campaign-v14.csv`
+- `reports/simulation-campaign-v14.md`
 
 Earlier campaigns:
 
@@ -278,6 +289,8 @@ Earlier campaigns:
 - `reports/simulation-campaign-v11.md`
 - `reports/simulation-campaign-v12.csv`
 - `reports/simulation-campaign-v12.md`
+- `reports/simulation-campaign-v13.csv`
+- `reports/simulation-campaign-v13.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -321,6 +334,12 @@ The simulator reports several metrics because passage volume alone is not enough
 - `proposerAgendaAdvantage`: average selected-alternative movement toward the original proposer's ideal point.
 - `alternativeDiversity`: average number of alternatives/status quo options considered per tournament.
 - `statusQuoWinRate`: share of policy tournaments where the status quo blocks final ratification.
+- `publicBenefitPerLobbyDollar`: enacted public benefit per unit of explicit lobby spend.
+- `directLobbySpendShare`: share of explicit lobbying spent on direct pressure.
+- `agendaLobbySpendShare`: share of explicit lobbying spent on agenda access.
+- `informationLobbySpendShare`: share of explicit lobbying spent on information distortion.
+- `publicCampaignSpendShare`: share of explicit lobbying spent on public campaigns.
+- `litigationThreatSpendShare`: share of explicit lobbying spent on litigation or delay threats.
 - `vetoes`: presidential veto count.
 - `overrides`: veto override count.
 

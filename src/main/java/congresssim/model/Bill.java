@@ -327,6 +327,7 @@ public record Bill(
     public Bill withLobbyActivity(
             double revisedLobbyPressure,
             double revisedPublicSupport,
+            double revisedPublicBenefit,
             double revisedPrivateGain,
             double addedLobbySpend,
             double addedDefensiveLobbySpend,
@@ -339,7 +340,7 @@ public record Bill(
         return copy(
                 ideologyPosition,
                 revisedPublicSupport,
-                publicBenefit,
+                revisedPublicBenefit,
                 revisedLobbyPressure,
                 salience,
                 revisedPrivateGain,
@@ -359,6 +360,33 @@ public record Bill(
                 citizenPanelLegitimacy,
                 citizenCertified,
                 attentionSpend
+        );
+    }
+
+    public Bill withLobbyActivity(
+            double revisedLobbyPressure,
+            double revisedPublicSupport,
+            double revisedPrivateGain,
+            double addedLobbySpend,
+            double addedDefensiveLobbySpend,
+            double addedDirectSpend,
+            double addedAgendaSpend,
+            double addedInformationSpend,
+            double addedPublicCampaignSpend,
+            double addedLitigationThreatSpend
+    ) {
+        return withLobbyActivity(
+                revisedLobbyPressure,
+                revisedPublicSupport,
+                publicBenefit,
+                revisedPrivateGain,
+                addedLobbySpend,
+                addedDefensiveLobbySpend,
+                addedDirectSpend,
+                addedAgendaSpend,
+                addedInformationSpend,
+                addedPublicCampaignSpend,
+                addedLitigationThreatSpend
         );
     }
 

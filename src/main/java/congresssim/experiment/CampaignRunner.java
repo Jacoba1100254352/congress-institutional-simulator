@@ -306,6 +306,34 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> LOBBYING_DEPTH_SCENARIOS = List.of(
+            "simple-majority",
+            "simple-majority-lobby-firewall",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-mediation",
+            "default-pass-budgeted-lobbying",
+            "default-pass-budgeted-lobbying-transparency",
+            "default-pass-budgeted-lobbying-bundle",
+            "default-pass-democracy-vouchers",
+            "default-pass-public-advocate",
+            "default-pass-blind-lobby-review",
+            "default-pass-defensive-lobby-cap",
+            "default-pass-lobby-channel-bundle",
+            "default-pass-anti-capture-bundle",
+            "default-pass-compensation",
+            "default-pass-affected-consent",
+            "default-pass-alternatives-benefit",
+            "default-pass-alternatives-median",
+            "default-pass-alternatives-pairwise",
+            "default-pass-law-registry",
+            "default-pass-informed-guarded",
+            "default-pass-challenge",
+            "default-pass-cross-bloc",
+            "default-pass-adaptive-track",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -583,6 +611,26 @@ public final class CampaignRunner {
                 outputDir,
                 v8Cases(legislators, bills),
                 POLICY_TOURNAMENT_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV14(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v14",
+                "simulation-campaign-v14",
+                outputDir,
+                v8Cases(legislators, bills),
+                LOBBYING_DEPTH_SCENARIOS,
                 runs,
                 legislators,
                 bills,
@@ -1071,6 +1119,38 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
+        if (aggregateByScenario.containsKey("default-pass-lobby-channel-bundle")) {
+            builder.append("## Lobbying-Channel Deltas\n\n");
+            builder.append("Delta values compare channel-specific lobbying safeguards against explicit budgeted lobbying. Spend-share columns show where lobby budgets are going after each scenario's constraints.\n\n");
+            builder.append("| Scenario | Productivity delta | Welfare delta | Capture delta | Public-benefit/lobby dollar | Anti-lobby pass delta | Direct | Agenda | Info | Public | Litigation |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            ScenarioAggregate baseLobbying = aggregateByScenario.get("default-pass-budgeted-lobbying");
+            for (String scenarioKey : List.of(
+                    "default-pass-democracy-vouchers",
+                    "default-pass-public-advocate",
+                    "default-pass-blind-lobby-review",
+                    "default-pass-defensive-lobby-cap",
+                    "default-pass-lobby-channel-bundle"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary != null) {
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - baseLobbying.productivity())).append(" | ")
+                            .append(format(summary.welfare() - baseLobbying.welfare())).append(" | ")
+                            .append(format(summary.lobbyCapture() - baseLobbying.lobbyCapture())).append(" | ")
+                            .append(format(summary.publicBenefitPerLobbyDollar())).append(" | ")
+                            .append(format(summary.antiLobbyingSuccess() - baseLobbying.antiLobbyingSuccess())).append(" | ")
+                            .append(format(summary.directLobbySpendShare())).append(" | ")
+                            .append(format(summary.agendaLobbySpendShare())).append(" | ")
+                            .append(format(summary.informationLobbySpendShare())).append(" | ")
+                            .append(format(summary.publicCampaignSpendShare())).append(" | ")
+                            .append(format(summary.litigationThreatSpendShare())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
+
         if (aggregateByScenario.containsKey("default-pass-mediation")) {
             builder.append("## Mediation Deltas\n\n");
             builder.append("Delta values compare structured amendment mediation against the matching non-mediated scenario. Amendment rate is the share of potential bills whose policy position moved before final voting.\n\n");
@@ -1213,7 +1293,10 @@ public final class CampaignRunner {
             builder.append("- Anti-capture scenarios test whether lobbying pressure can be reduced through vote firewalls, transparency, public-interest screens, audit sanctions, or combined safeguards.\n");
         }
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        if (aggregateByScenario.containsKey("default-pass-alternatives-pairwise")) {
+        if (aggregateByScenario.containsKey("default-pass-lobby-channel-bundle")) {
+            builder.append("- Lobbying-depth scenarios split organized-interest influence into direct pressure, agenda access, information distortion, public campaigns, litigation threats, and defensive spending against reform.\n");
+            builder.append("- The next model extension should add deliberative citizen review, because the simulator now has richer organized-interest pressure but still lacks an independent public legitimacy screen.\n\n");
+        } else if (aggregateByScenario.containsKey("default-pass-alternatives-pairwise")) {
             builder.append("- Policy-tournament scenarios test whether agenda-setter power falls when multiple alternatives compete before a final yes/no ratification vote.\n");
             builder.append("- The next model extension should add deliberative citizen review or richer lobbying channels, because the simulator now has agenda competition, harm guardrails, law review, and mediation but still lacks an independent public legitimacy screen.\n\n");
         } else if (aggregateByScenario.containsKey("default-pass-mediation")) {
@@ -1271,6 +1354,7 @@ public final class CampaignRunner {
         ScenarioAggregate credits = aggregateByScenario.get("default-pass-earned-credits");
         ScenarioAggregate antiCaptureBundle = aggregateByScenario.get("default-pass-anti-capture-bundle");
         ScenarioAggregate budgetedLobbying = aggregateByScenario.get("default-pass-budgeted-lobbying");
+        ScenarioAggregate channelBundle = aggregateByScenario.get("default-pass-lobby-channel-bundle");
         ScenarioAggregate pairwiseAlternatives = aggregateByScenario.get("default-pass-alternatives-pairwise");
         ScenarioAggregate simpleMajority = aggregateByScenario.get("simple-majority");
         ScenarioAggregate bestWelfare = aggregateByScenario.values()
@@ -1367,6 +1451,13 @@ public final class CampaignRunner {
                     .append(" per potential bill, with ")
                     .append(format(budgetedLobbying.defensiveLobbyingShare()))
                     .append(" of spend aimed defensively at anti-lobbying reform bills.\n");
+        }
+        if (channelBundle != null && budgetedLobbying != null) {
+            builder.append("- The channel anti-capture bundle changed public benefit per lobby dollar by ")
+                    .append(format(channelBundle.publicBenefitPerLobbyDollar() - budgetedLobbying.publicBenefitPerLobbyDollar()))
+                    .append(" and anti-lobbying reform passage by ")
+                    .append(format(channelBundle.antiLobbyingSuccess() - budgetedLobbying.antiLobbyingSuccess()))
+                    .append(" relative to budgeted lobbying.\n");
         }
         if (pairwiseAlternatives != null) {
             builder.append("- Pairwise policy tournaments changed proposer agenda advantage by ")

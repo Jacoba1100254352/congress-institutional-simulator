@@ -87,6 +87,41 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-budgeted-lobbying-transparency", defaultPassWithBudgetedLobbying(true, false)),
                 new ScenarioEntry("default-pass-budgeted-lobbying-bundle", defaultPassWithBudgetedLobbying(true, true)),
                 new ScenarioEntry("default-pass-budgeted-lobbying-mediation", defaultPassWithBudgetedLobbyingAndMediation()),
+                new ScenarioEntry("default-pass-democracy-vouchers", defaultPassWithDeepLobbying(
+                        "Default pass + democracy vouchers",
+                        0.72,
+                        0.00,
+                        0.00,
+                        1.00
+                )),
+                new ScenarioEntry("default-pass-public-advocate", defaultPassWithDeepLobbying(
+                        "Default pass + equal-access public advocate",
+                        0.00,
+                        0.74,
+                        0.00,
+                        1.00
+                )),
+                new ScenarioEntry("default-pass-blind-lobby-review", defaultPassWithDeepLobbying(
+                        "Default pass + blind sponsor/lobby review",
+                        0.00,
+                        0.00,
+                        0.78,
+                        1.00
+                )),
+                new ScenarioEntry("default-pass-defensive-lobby-cap", defaultPassWithDeepLobbying(
+                        "Default pass + defensive lobbying cap",
+                        0.00,
+                        0.00,
+                        0.00,
+                        0.025
+                )),
+                new ScenarioEntry("default-pass-lobby-channel-bundle", defaultPassWithDeepLobbying(
+                        "Default pass + channel anti-capture bundle",
+                        0.58,
+                        0.62,
+                        0.62,
+                        0.05
+                )),
                 new ScenarioEntry("default-pass-harm-threshold", defaultPassWithHarmWeightedThreshold()),
                 new ScenarioEntry("default-pass-compensation", defaultPassWithDistributionalCompensation(false)),
                 new ScenarioEntry("default-pass-affected-consent", defaultPassWithDistributionalCompensation(true)),
@@ -478,6 +513,41 @@ public final class ScenarioCatalog {
                         0.22,
                         0.44,
                         0.35
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithDeepLobbying(
+            String scenarioName,
+            double publicFinancingStrength,
+            double publicAdvocateStrength,
+            double blindReviewStrength,
+            double defensiveCapShare
+    ) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return scenarioName;
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = publicAdvocateStrength > 0.0 || publicFinancingStrength > 0.0
+                        ? VotingStrategies.antiCapture()
+                        : VotingStrategies.standard();
+                LegislativeProcess process = defaultPassFloorProcess(name(), world, strategy);
+                return new BudgetedLobbyingProcess(
+                        name(),
+                        process,
+                        world.lobbyGroups(),
+                        0.24,
+                        0.46,
+                        0.38,
+                        publicFinancingStrength,
+                        publicAdvocateStrength,
+                        blindReviewStrength,
+                        defensiveCapShare
                 );
             }
         };

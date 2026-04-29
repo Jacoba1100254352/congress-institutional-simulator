@@ -2,6 +2,7 @@ package congresssim.simulation;
 
 import congresssim.model.Bill;
 import congresssim.model.Legislator;
+import congresssim.model.LobbyCaptureStrategy;
 import congresssim.model.LobbyGroup;
 import congresssim.model.PolicyState;
 import congresssim.model.SimulationWorld;
@@ -181,8 +182,12 @@ public final class WorldGenerator {
     private List<LobbyGroup> generateLobbyGroups(WorldSpec spec, Random random) {
         List<LobbyGroup> groups = new ArrayList<>();
         int count = Math.max(6, spec.partyCount() + 4);
+        LobbyCaptureStrategy[] strategies = LobbyCaptureStrategy.values();
         for (int i = 0; i < count; i++) {
             String domain = ISSUE_DOMAINS.get(i % ISSUE_DOMAINS.size());
+            Map<String, Double> issuePreferences = new HashMap<>();
+            issuePreferences.put(domain, Values.clamp(0.72 + random.nextDouble() * 0.28, 0.0, 1.0));
+            issuePreferences.put(ISSUE_DOMAINS.get(random.nextInt(ISSUE_DOMAINS.size())), Values.clamp(0.20 + random.nextDouble() * 0.40, 0.0, 1.0));
             double budget = Values.clamp(
                     0.40 + (spec.lobbyingSusceptibility() * 1.85) + random.nextDouble() * 1.20,
                     0.0,
@@ -191,12 +196,15 @@ public final class WorldGenerator {
             groups.add(new LobbyGroup(
                     "G-" + (i + 1),
                     domain,
+                    issuePreferences,
                     Values.clamp(random.nextGaussian() * 0.70, -1.0, 1.0),
                     budget,
                     Values.clamp(0.35 + (spec.lobbyingSusceptibility() * 0.45) + random.nextGaussian() * 0.10, 0.0, 1.0),
                     Values.clamp(0.70 + (spec.lobbyingSusceptibility() * 1.15) + random.nextGaussian() * 0.18, 0.0, 3.0),
                     Values.clamp(0.30 + random.nextDouble() * 0.55, 0.0, 1.0),
-                    Values.clamp(0.28 + random.nextDouble() * 0.60, 0.0, 1.0)
+                    Values.clamp(0.28 + random.nextDouble() * 0.60, 0.0, 1.0),
+                    strategies[Math.floorMod(i + random.nextInt(strategies.length), strategies.length)],
+                    Values.clamp(0.18 + random.nextDouble() * 0.42, 0.0, 1.0)
             ));
         }
         return groups;
