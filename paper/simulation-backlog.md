@@ -1,8 +1,8 @@
 # Simulation Roadmap
 
-This file tracks simulator increments that were planned for the paper and the current status after `simulation-campaign-v18`.
+This file tracks simulator increments that were planned for the paper and the current status after `simulation-campaign-v19`.
 
-## Implemented Through v18
+## Implemented Through v19
 
 The following planned increments are now represented in code, tests, campaign reports, and the LaTeX paper workflow:
 
@@ -20,15 +20,16 @@ The following planned increments are now represented in code, tests, campaign re
 - constituent/public-will modeling, including generated district preference, district intensity, affected-group sensitivity, public-will signal revision, public signal movement, and district-alignment diagnostics
 - weighted party-system sensitivity, including two-party, two-major-plus-minors, fragmented multiparty, and dominant-party legislature profiles with case likelihood weights
 - initial endogenous strategy, including proposer moderation/cosponsorship/withdrawal behavior and lobby-group influence-channel learning after outcomes
+- stylized timeline stress comparisons, including rising polarization, party loyalty, lobbying pressure, proposal pressure, lower compromise culture, lower constituency responsiveness, and a derived contention index
 
 ## Current Campaign
 
-`simulation-campaign-v18` is the current default campaign. It runs 120 simulations per case, four weighted party-system cases, 101 legislators, 60 base bills per run, and the roadmap-completion scenario set. It pairs the v17 mechanism coverage with party-system sensitivity and the first adaptive-strategy wrappers.
+`simulation-campaign-v19` is the current default campaign. It runs 120 simulations per case, six stylized timeline eras, 101 legislators, 60 base bills per run, and a selected broad scenario set. It uses rising-contention assumptions to compare how conventional affirmative systems, default-pass variants, guardrails, public-review systems, policy tournaments, and the current U.S.-style benchmark degrade over time.
 
 Generated artifacts:
 
-- `reports/simulation-campaign-v18.csv`
-- `reports/simulation-campaign-v18.md`
+- `reports/simulation-campaign-v19.csv`
+- `reports/simulation-campaign-v19.md`
 - `paper/main.pdf`
 
 ## Remaining Research Work

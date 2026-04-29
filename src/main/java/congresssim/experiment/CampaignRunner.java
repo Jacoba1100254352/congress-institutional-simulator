@@ -434,6 +434,22 @@ public final class CampaignRunner {
             "presidential-veto",
             "current-system"
     );
+    private static final List<String> TIMELINE_SCENARIOS = List.of(
+            "current-system",
+            "simple-majority",
+            "supermajority-60",
+            "bicameral-majority",
+            "presidential-veto",
+            "default-pass",
+            "default-pass-challenge",
+            "default-pass-multiround-mediation-challenge",
+            "default-pass-constituent-citizen-panel",
+            "default-pass-adaptive-track-strict",
+            "default-pass-alternatives-pairwise",
+            "default-pass-affected-sponsor-gate",
+            "default-pass-public-objection",
+            "default-pass-law-registry"
+    );
 
     private CampaignRunner() {
     }
@@ -818,6 +834,26 @@ public final class CampaignRunner {
         );
     }
 
+    public static CampaignResult runV19(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v19 Timeline",
+                "simulation-campaign-v19",
+                outputDir,
+                v19Cases(legislators, bills),
+                TIMELINE_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
     private static CampaignResult run(
             String name,
             String fileStem,
@@ -935,6 +971,35 @@ public final class CampaignRunner {
                         "Four-party legislature with one large center-weighted party and smaller opposition parties.",
                         legislators, bills, 4, 0.66, 0.70, 0.48, 0.62, 0.48,
                         PartySystemProfile.DOMINANT_PARTY, 0.15)
+        );
+    }
+
+    private static List<ExperimentCase> v19Cases(int legislators, int bills) {
+        return List.of(
+                experiment("era-1-low-contention", "Era 1 Low Contention",
+                        "Stylized low-contention legislature with several parties, high compromise culture, lower lobbying, and stronger constituency responsiveness.",
+                        legislators, bills, 4, 0.35, 0.45, 0.30, 0.74, 0.82,
+                        PartySystemProfile.FRAGMENTED_MULTIPARTY, 1.0),
+                experiment("era-2-normal", "Era 2 Normal Contention",
+                        "Stylized ordinary-contention legislature with two major parties plus minors and moderate party loyalty.",
+                        legislators, bills, 5, 0.50, 0.55, 0.40, 0.68, 0.70,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0),
+                experiment("era-3-polarizing", "Era 3 Polarizing",
+                        "Stylized rising-contention legislature with stronger ideological clustering, party loyalty, and lobbying pressure.",
+                        legislators, bills, 5, 0.65, 0.66, 0.52, 0.62, 0.56,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0),
+                experiment("era-4-high-contention", "Era 4 High Contention",
+                        "Stylized high-contention legislature with more proposal pressure, higher polarization, and weaker compromise culture.",
+                        legislators, Math.max(1, bills * 5 / 4), 3, 0.78, 0.78, 0.64, 0.55, 0.40,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0),
+                experiment("era-5-capture-contention", "Era 5 Capture Contention",
+                        "Stylized capture-contention legislature with two-party sorting, higher proposal pressure, strong lobbying, and lower public responsiveness.",
+                        legislators, Math.max(1, bills * 3 / 2), 2, 0.88, 0.86, 0.78, 0.46, 0.28,
+                        PartySystemProfile.IDEOLOGICAL_BINS, 1.0),
+                experiment("era-6-crisis", "Era 6 Crisis",
+                        "Stylized crisis-contention legislature with severe polarization, high party loyalty, intense lobbying, weak constituency responsiveness, and doubled proposal pressure.",
+                        legislators, Math.max(1, bills * 2), 2, 0.94, 0.92, 0.90, 0.38, 0.18,
+                        PartySystemProfile.IDEOLOGICAL_BINS, 1.0)
         );
     }
 
@@ -1151,6 +1216,10 @@ public final class CampaignRunner {
                         .append(format(summary.challengeRate())).append(" | ")
                         .append(format(summary.floor())).append(" |\n"));
         builder.append('\n');
+
+        if (hasTimelineCases(result.rows())) {
+            appendTimelineSection(builder, result.rows());
+        }
 
         if (aggregateByScenario.containsKey("default-pass-challenge")) {
             builder.append("## Challenge-Voucher Deltas\n\n");
@@ -1687,6 +1756,9 @@ public final class CampaignRunner {
         if (aggregateByScenario.containsKey("default-pass-constituent-public-will")) {
             builder.append("- Roadmap-completion scenarios add district-grounded public signals, refundable proposal bonds, richer cosponsorship diagnostics, multi-round mediation, strategic alternatives, adaptive proposer behavior, strategic lobby-channel learning, challenge allocation/path variants, adaptive-route rates, and proposal-cost variants.\n");
             builder.append("- The next model extension should deepen endogeneity: challengers, amendment coalitions, constituent publics, and alternative drafters should adapt to the institutional rules over repeated sessions.\n\n");
+        } else if (hasTimelineCases(result.rows())) {
+            builder.append("- Timeline scenarios are stylized stress paths, not historical calibration. They increase polarization, party loyalty, lobbying pressure, and proposal pressure while reducing compromise culture and constituency responsiveness.\n");
+            builder.append("- The timeline comparison should be read as a degradation test: institutions that preserve compromise and productivity under later-era assumptions are more robust than systems that only work in low-contention settings.\n\n");
         } else if (aggregateByScenario.containsKey("default-pass-weighted-agenda-lottery")) {
             builder.append("- Agenda-scarcity variants test non-committee ways to ration floor attention, including weighted/random lotteries, quadratic credits, and public objection or repeal windows.\n");
             builder.append("- The next model extension should add richer constituent and affected-group structure so public objection and citizen-panel signals are grounded in represented districts rather than generated bill fields.\n\n");
@@ -1737,6 +1809,38 @@ public final class CampaignRunner {
         builder.append("## Reproduction\n\n");
         builder.append("```sh\nmake campaign\n```\n");
         return builder.toString();
+    }
+
+    private static void appendTimelineSection(StringBuilder builder, List<CampaignRow> rows) {
+        builder.append("## Timeline Contention Path\n\n");
+        builder.append("This campaign is a stylized longitudinal stress path, not a calibrated history. The contention index is computed as `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * lowSupport`, so it rises when a system blocks more, compromises less, or passes more weak-support bills.\n\n");
+        builder.append("| Era | Scenario | Productivity | Compromise | Gridlock | Low-support | Contention index |\n");
+        builder.append("| --- | --- | ---: | ---: | ---: | ---: | ---: |\n");
+        for (CampaignRow eraRow : firstRowsByCase(rows)) {
+            for (String scenarioKey : List.of(
+                    "current-system",
+                    "simple-majority",
+                    "default-pass",
+                    "default-pass-challenge",
+                    "default-pass-multiround-mediation-challenge",
+                    "default-pass-alternatives-pairwise"
+            )) {
+                CampaignRow row = find(rows, eraRow.caseKey(), scenarioKey);
+                if (row == null) {
+                    continue;
+                }
+                ScenarioReport report = row.report();
+                builder.append("| ")
+                        .append(row.caseName()).append(" | ")
+                        .append(report.scenarioName()).append(" | ")
+                        .append(format(report.productivity())).append(" | ")
+                        .append(format(report.compromiseScore())).append(" | ")
+                        .append(format(report.gridlockRate())).append(" | ")
+                        .append(format(report.controversialPassageRate())).append(" | ")
+                        .append(format(contentionIndex(report))).append(" |\n");
+            }
+        }
+        builder.append('\n');
     }
 
     private static void appendHeadlineFindings(
@@ -2003,6 +2107,15 @@ public final class CampaignRunner {
         return false;
     }
 
+    private static boolean hasTimelineCases(List<CampaignRow> rows) {
+        for (CampaignRow row : rows) {
+            if (row.caseKey().startsWith("era-")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static List<CampaignRow> firstRowsByCase(List<CampaignRow> rows) {
         Map<String, CampaignRow> byCase = new LinkedHashMap<>();
         for (CampaignRow row : rows) {
@@ -2058,6 +2171,12 @@ public final class CampaignRunner {
 
     private static double floorPerRun(CampaignRow row, int runs) {
         return (row.report().totalBills() * row.report().floorConsiderationRate()) / runs;
+    }
+
+    private static double contentionIndex(ScenarioReport report) {
+        return (0.50 * report.gridlockRate())
+                + (0.30 * (1.0 - report.compromiseScore()))
+                + (0.20 * report.controversialPassageRate());
     }
 
     private static String csvValue(String value) {

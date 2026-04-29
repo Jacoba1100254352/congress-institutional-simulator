@@ -23,7 +23,7 @@
 \begin{abstract}
 Modern legislatures should be productive enough to act while remaining representative enough to convert competing public interests into legitimate compromise. This paper presents a computational framework for searching a broad legislative design space rather than defending one constitutional reform. The simulator compares Congress-style institutions under shared generated worlds, including majority rule, supermajority rule, default enactment unless blocked, challenge vouchers, cross-bloc cosponsorship, adaptive tracks, proposal credits, affected-group harm guardrails, active-law review, competing policy alternatives, lobbying safeguards, citizen mini-public review, and agenda-scarcity mechanisms.
 
-The framework separates productivity from compromise, public responsiveness, agenda control, and legitimacy-related risk. Across 18 baseline assumption cases and 39 current-campaign scenarios, including a stylized current U.S.-style benchmark, open default enactment produces high throughput but also high low-support passage, large policy shifts, and greater proposer gain. Guardrails, coalition-breadth gates, citizen panels, proposal bonds, adaptive tracks, public objection windows, mediation, policy tournaments, and early adaptive-strategy wrappers reduce different risks at different productivity costs. The contribution is a reproducible mechanism-search framework for identifying institutional designs that can improve compromise and productivity while remaining responsive to public support, generated public benefit, and concentrated harm.
+The framework separates productivity from compromise, public responsiveness, agenda control, and legitimacy-related risk. Across 18 baseline assumption cases, weighted party-system sensitivity cases, and a stylized rising-contention timeline, including a current U.S.-style benchmark, open default enactment produces high throughput but also high low-support passage, large policy shifts, and greater proposer gain. Guardrails, coalition-breadth gates, citizen panels, proposal bonds, adaptive tracks, public objection windows, mediation, policy tournaments, and early adaptive-strategy wrappers reduce different risks at different productivity costs. The contribution is a reproducible mechanism-search framework for identifying institutional designs that can improve compromise and productivity while remaining responsive to public support, generated public benefit, and concentrated harm.
 \end{abstract}
 
 \begin{CCSXML}
@@ -174,6 +174,8 @@ The current baseline campaign, \texttt{simulation-campaign-v17}, runs 80 simulat
 
 The party-system sensitivity campaign, \texttt{simulation-campaign-v18}, reuses the same 39 scenarios across four weighted legislature profiles: two-party baseline (0.25), two major parties plus minors (0.40), fragmented multiparty (0.20), and dominant-party (0.15). These profiles assign party seats from profile-specific statistical shares before sorting parties along the ideological range, so party count and party spread affect the generated representative body rather than only labeling ideology bins.
 
+The longitudinal stress campaign, \texttt{simulation-campaign-v19}, compares selected broad systems across six stylized timeline eras. The timeline is not a historical fit to the U.S. Congress. It is a degradation path: polarization, party loyalty, lobbying pressure, and proposal pressure rise over eras, while compromise culture and constituency responsiveness decline. This directly tests the motivating concern that an institution may look acceptable in ordinary conditions but become contentious when parties harden, organized pressure rises, and public responsiveness weakens.
+
 The institutional scenarios are:
 
 \begin{itemize}
@@ -202,9 +204,9 @@ The institutional scenarios are:
   \item default pass plus informed guarded committee;
 \end{itemize}
 
-The proposal-cost result reported below comes from the v17 lobby-surcharge cost variant, while earlier campaigns include the original scalar cost, bicameralism, and presidential veto comparisons. Challenge-token sweeps over party budgets, member tokens, and q-member escalation come from earlier campaigns. Lobbying-channel variants come from v14 and are carried forward through the current comparison.
+The proposal-cost result reported below comes from the v17 lobby-surcharge cost variant, while earlier campaigns include the original scalar cost, bicameralism, and presidential veto comparisons. Challenge-token sweeps over party budgets, member tokens, and q-member escalation come from earlier campaigns. Lobbying-channel variants come from v14 and are carried forward through the current comparison. The v19 timeline uses a derived contention index equal to \(0.50\) gridlock plus \(0.30\) compromise loss plus \(0.20\) low-support passage.
 
-Both campaigns are deterministic: reproduce the baseline with \texttt{make campaign-v17}, the party-system sensitivity run with \texttt{make campaign} or \texttt{make campaign-v18}, and the paper with \texttt{make paper}.
+The campaigns are deterministic: reproduce the baseline with \texttt{make campaign-v17}, the party-system sensitivity run with \texttt{make campaign-v18}, the timeline stress path with \texttt{make campaign} or \texttt{make campaign-v19}, and the paper with \texttt{make paper}.
 
 \section{Code Availability}
 
@@ -213,7 +215,7 @@ The simulator source code, LaTeX manuscript source, generated campaign reports, 
 
 \section{Results}
 
-Table~\ref{tab:scenario-averages} summarizes selected scenario averages across all v17 assumption cases. It is deliberately a broad institutional comparison, not a default-enactment-only table: the \emph{Default lane} column marks whether default passage is absent, open, contested, routed, gated, or paired with later review. The table mixes one absolute load measure with normalized metrics: \emph{Enacted/run} is a count of enacted bills per simulated run, while the other columns are rates or scores on a 0--1 scale. Figures~\ref{fig:productivity-low-support}, \ref{fig:compromise-productivity}, \ref{fig:broad-system-comparison}, and~\ref{fig:default-pass-deltas} visualize the same tradeoff space.
+Table~\ref{tab:scenario-averages} summarizes selected scenario averages across all v17 assumption cases. It is deliberately a broad institutional comparison, not a default-enactment-only table: the \emph{Default lane} column marks whether default passage is absent, open, contested, routed, gated, or paired with later review. The table mixes one absolute load measure with normalized metrics: \emph{Enacted/run} is a count of enacted bills per simulated run, while the other columns are rates or scores on a 0--1 scale. Figures~\ref{fig:productivity-low-support}, \ref{fig:compromise-productivity}, \ref{fig:broad-system-comparison}, \ref{fig:timeline-contention}, and~\ref{fig:default-pass-deltas} visualize the same tradeoff space.
 
 \begin{table*}
   \caption{Broad selected scenario averages across 18 assumption cases in \texttt{simulation-campaign-v17}.}
@@ -243,7 +245,7 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
     \bottomrule
   \end{tabular}%
   }
-  \par\smallskip\footnotesize \emph{Note:} The \emph{Default lane} column is a design attribute, not a value judgment: ``No'' means the scenario uses affirmative passage rather than default enactment; the other values describe how default enactment is constrained. The \emph{Label} column matches point labels in Figure~\ref{fig:productivity-low-support}. The red \emph{Current} row is the stylized current U.S.-style benchmark and matches the red benchmark points and bars in Figures~\ref{fig:productivity-low-support}--\ref{fig:default-pass-deltas}. \emph{Enacted/run} is an absolute count. All other reported columns are normalized rates or scores.
+  \par\smallskip\footnotesize \emph{Note:} The \emph{Default lane} column is a design attribute, not a value judgment: ``No'' means the scenario uses affirmative passage rather than default enactment; the other values describe how default enactment is constrained. The \emph{Label} column matches point labels in Figure~\ref{fig:productivity-low-support}. The red \emph{Current} row is the stylized current U.S.-style benchmark and matches the red benchmark marks in Figures~\ref{fig:productivity-low-support}--\ref{fig:default-pass-deltas}. \emph{Enacted/run} is an absolute count. All other reported columns are normalized rates or scores.
 \end{table*}
 
 \begin{figure*}
@@ -272,11 +274,27 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
 
 \begin{figure*}
   \centering
+  \input{figures/timeline_contention}
+  \caption{Stylized rising-contention timeline from \texttt{simulation-campaign-v19}. The red line marks the current U.S.-style benchmark. This is a stress path rather than historical calibration: later eras increase polarization, party loyalty, lobbying pressure, and proposal pressure while reducing compromise culture and constituency responsiveness.}
+  \label{fig:timeline-contention}
+  \Description{A line chart with six stylized eras on the x-axis and a contention index on the y-axis. The current-system benchmark is shown in red, with simple majority, presidential veto, open default-pass, challenge vouchers, mediation plus challenge, and pairwise policy tournament lines for comparison.}
+\end{figure*}
+
+\begin{figure*}
+  \centering
   \input{figures/default_pass_deltas}
   \caption{Focused comparison of default-pass pairings: productivity, policy-shift, and proposer-gain deltas relative to open default-pass. The stylized current U.S.-style benchmark is shown in red only as an external baseline. Negative shift and proposer-gain deltas are desirable; productivity deltas show the throughput cost or gain.}
   \label{fig:default-pass-deltas}
   \Description{A horizontal bar chart showing that guarded, cross-bloc, adaptive, law-registry, challenge, and policy-tournament scenarios change productivity, policy shift, and proposer gain relative to open default-pass.}
 \end{figure*}
+
+\subsection{Timeline Stress Path}
+
+The v19 timeline adds an explicit overtime comparison. It is deliberately stylized: each era increases pressure that should make institutions more contentious, including polarization, party loyalty, lobbying susceptibility, and proposal volume, while reducing compromise culture and constituent responsiveness. The derived contention index combines gridlock, compromise loss, and low-support passage, so it penalizes both obstruction and low-legitimacy throughput.
+
+Figure~\ref{fig:timeline-contention} shows the current-system benchmark in red so it can be compared against both conventional affirmative systems and default-pass variants under the same changing conditions. The purpose is not to claim that the six eras are dates or calibrated congressional periods. The purpose is to ask whether an institutional design degrades gracefully as background politics worsen. A useful reform candidate should preserve some productivity while avoiding a sharp rise in contention, not merely outperform in the lowest-conflict era.
+
+In the tracked v19 run, the current-system benchmark's contention index rises from 0.588 in the low-contention era to 0.684 in the crisis era, while its productivity falls from 0.220 to 0.017. Simple majority follows a similar direction, rising from 0.471 to 0.669 while productivity falls from 0.504 to 0.128. Open default enactment stays highly productive, but its contention rises from 0.392 to 0.456 as low-support passage increases. The pairwise policy-tournament variant begins with the lowest contention among the plotted systems, but rises from 0.300 to 0.486 as crisis-era low-support passage increases. The mediated-challenge variant is more stable in this stress path, moving from 0.351 to 0.393 while preserving high productivity.
 
 \subsection{Open Default Enactment}
 

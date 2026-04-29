@@ -72,6 +72,7 @@ final class CampaignRunnerTests {
         campaignRunnerWritesReports();
         tinyCampaignGoldenMetricsStayStable();
         campaignRunnerWritesWeightedCsvWithStableSchema();
+        timelineCampaignHasOrderedContentionCases();
         allPredefinedCampaignScenarioListsIncludeCurrentBenchmark();
     }
 
@@ -167,6 +168,52 @@ final class CampaignRunnerTests {
         }
     }
 
+    private static void timelineCampaignHasOrderedContentionCases() {
+        try {
+            Path outputDir = Path.of("out", "test-campaign-v19");
+            Files.createDirectories(outputDir);
+            Files.deleteIfExists(outputDir.resolve("simulation-campaign-v19.csv"));
+            Files.deleteIfExists(outputDir.resolve("simulation-campaign-v19.md"));
+
+            CampaignResult result = CampaignRunner.runV19(outputDir, 2, 17, 6, 92L);
+            assertTrue(result.rows().size() > 0, "Timeline campaign should produce result rows.");
+
+            Set<String> cases = new HashSet<>();
+            Set<String> scenarios = new HashSet<>();
+            for (CampaignRow row : result.rows()) {
+                cases.add(row.caseKey());
+                scenarios.add(row.scenarioKey());
+            }
+            assertTrue(cases.size() == 6, "v19 should include six ordered timeline cases.");
+            assertTrue(scenarios.contains("current-system"), "v19 should include the current-system benchmark.");
+            assertTrue(scenarios.contains("presidential-veto"), "v19 should retain affirmative institutional baselines.");
+            assertTrue(scenarios.contains("default-pass-alternatives-pairwise"), "v19 should include the policy-tournament comparison.");
+
+            CampaignRow firstCurrent = findRow(result, "era-1-low-contention", "current-system");
+            CampaignRow lastCurrent = findRow(result, "era-6-crisis", "current-system");
+            assertTrue(
+                    contentionIndex(lastCurrent.report()) > contentionIndex(firstCurrent.report()),
+                    "The current-system benchmark should become more contentious along the stylized timeline."
+            );
+
+            String csv = Files.readString(result.csvPath());
+            List<String> lines = csv.lines().filter(line -> !line.isBlank()).toList();
+            int headerColumns = csvColumnCount(lines.getFirst());
+            for (int i = 1; i < lines.size(); i++) {
+                assertTrue(
+                        csvColumnCount(lines.get(i)) == headerColumns,
+                        "Timeline CSV rows should match the header column count."
+                );
+            }
+
+            String markdown = Files.readString(result.markdownPath());
+            assertTrue(markdown.contains("## Timeline Contention Path"), "Timeline campaign should document the longitudinal path.");
+            assertTrue(markdown.contains("Era 6 Crisis"), "Timeline Markdown should include the crisis-era case.");
+        } catch (Exception exception) {
+            throw new AssertionError("Timeline campaign report generation failed.", exception);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private static void allPredefinedCampaignScenarioListsIncludeCurrentBenchmark() {
         try {
@@ -199,6 +246,12 @@ final class CampaignRunnerTests {
 
     private static void assertNear(double actual, double expected, double tolerance, String message) {
         assertTrue(Math.abs(actual - expected) <= tolerance, message + " Expected " + expected + ", actual " + actual);
+    }
+
+    private static double contentionIndex(ScenarioReport report) {
+        return (0.50 * report.gridlockRate())
+                + (0.30 * (1.0 - report.compromiseScore()))
+                + (0.20 * report.controversialPassageRate());
     }
 
 }

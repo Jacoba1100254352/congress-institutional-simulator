@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v18.csv`
-- `reports/simulation-campaign-v18.md`
+- `reports/simulation-campaign-v19.csv`
+- `reports/simulation-campaign-v19.md`
 
 Earlier campaigns remain available:
 
@@ -72,6 +72,7 @@ make campaign-v15
 make campaign-v16
 make campaign-v17
 make campaign-v18
+make campaign-v19
 ```
 
 You can override the campaign defaults:
@@ -199,7 +200,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0` through `v18`
+- `--campaign`: run a named campaign, currently `v0` through `v19`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -407,7 +408,7 @@ The v16 campaign adds agenda-scarcity variants:
 - `PublicObjectionWindowProcess` routes contested bills to active voting or rolls back contested default enactments.
 - Campaign reports now include attention spend, objection-window rate, and repeal-window reversal rate.
 
-The current v17 campaign completes the planned roadmap layer:
+The v17 campaign completes the planned roadmap layer:
 
 - `ConstituentPublicWillProcess` grounds public signals in generated district preferences, intensity, and affected-group sensitivity.
 - `ProposalBondProcess` adds refundable public-benefit proposer bonds and records forfeiture.
@@ -419,9 +420,16 @@ The current v17 campaign completes the planned roadmap layer:
 - Adaptive tracks now report fast/middle/high route rates and include lenient, strict, citizen high-risk, and supermajority high-risk variants.
 - Proposal-cost variants include public-value waivers, lobby-pressure surcharges, and stateful member quotas.
 
-The current v18 campaign adds weighted party-system sensitivity:
+The v18 campaign adds weighted party-system sensitivity:
 
 - `PartySystemProfile` lets generated worlds use ideological bins, two major parties with minor parties, dominant-party legislatures, or fragmented multiparty legislatures.
 - `WorldGenerator` assigns profile-specific party seat shares before sorting parties along the ideological range.
 - Campaign rows include `caseWeight`, and scenario averages are weighted when the campaign defines non-unit case likelihoods.
 - The tracked v18 sensitivity mix is 0.25 two-party, 0.40 two-major-plus-minors, 0.20 fragmented multiparty, and 0.15 dominant party.
+
+The current v19 campaign adds timeline stress comparisons:
+
+- Six stylized eras raise polarization, party loyalty, lobbying pressure, and proposal pressure while lowering compromise culture and constituency responsiveness.
+- The campaign includes the current U.S.-style benchmark alongside conventional affirmative systems, open default-pass, challenge vouchers, public panels, adaptive tracks, policy tournaments, public objection, and law-registry review.
+- The generated report includes a contention path using `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * lowSupport`.
+- The timeline is a stress test, not a historical calibration; it asks which institutional systems degrade gracefully as background politics become more contentious.

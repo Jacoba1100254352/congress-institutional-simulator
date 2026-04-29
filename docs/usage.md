@@ -151,6 +151,12 @@ Run the v18 party-system sensitivity campaign:
 make campaign-v18
 ```
 
+Run the v19 timeline stress campaign:
+
+```sh
+make campaign-v19
+```
+
 Remove generated build output:
 
 ```sh
@@ -208,7 +214,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0..v18>`: run a named campaign.
+- `--campaign <v0..v19>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -325,8 +331,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v18.csv`
-- `reports/simulation-campaign-v18.md`
+- `reports/simulation-campaign-v19.csv`
+- `reports/simulation-campaign-v19.md`
 
 Earlier campaigns:
 
@@ -366,6 +372,8 @@ Earlier campaigns:
 - `reports/simulation-campaign-v16.md`
 - `reports/simulation-campaign-v17.csv`
 - `reports/simulation-campaign-v17.md`
+- `reports/simulation-campaign-v18.csv`
+- `reports/simulation-campaign-v18.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
