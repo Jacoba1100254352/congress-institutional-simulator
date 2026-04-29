@@ -266,31 +266,58 @@ def write_scenario_averages_table(rows: list[dict[str, str]]) -> None:
     (FIGURE_DIR / "scenario_averages_table.tex").write_text("\n".join(lines))
 
 
+def label_anchor(dx: float, explicit: str | None = None) -> str:
+    if explicit:
+        return explicit
+    return "r" if dx < 0.0 else "l"
+
+
+def append_labeled_square(
+    lines: list[str],
+    x: float,
+    y: float,
+    label: str,
+    color: str,
+    point_size: str,
+    dx: float,
+    dy: float,
+    anchor: str | None = None,
+) -> None:
+    lines.append(
+        f"\\put({fmt(x)},{fmt(y)})"
+        f"{{\\makebox(0,0){{\\color{{{color}}}\\rule{{{point_size}}}{{{point_size}}}}}}}"
+    )
+    lines.append(
+        f"\\put({fmt(x + dx)},{fmt(y + dy)})"
+        f"{{\\makebox(0,0)[{label_anchor(dx, anchor)}]{{\\color{{{color}}}{label}}}}}"
+    )
+
+
 def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> None:
     points = [
-        ("supermajority-60", "S60", 1.5, -4.0),
-        (CURRENT_SYSTEM_KEY, "Current", 2.0, 7.0),
-        ("presidential-veto", "Veto", 2.0, 2.5),
-        ("bicameral-majority", "Bicam", 2.0, 5.0),
-        ("simple-majority", "SM", 1.5, -6.0),
-        ("default-pass", "DP", 2.0, 2.2),
-        ("default-pass-constituent-citizen-panel", "Public+Panel", 2.0, 2.5),
-        ("default-pass-proposal-bonds", "Bond", -16.0, 4.0),
-        ("default-pass-affected-sponsor-gate", "Aff.Spon", 2.0, 2.5),
-        ("default-pass-multiround-mediation", "Med", -17.0, 2.5),
-        ("default-pass-multiround-mediation-challenge", "Med+Chal", -20.0, -4.0),
-        ("default-pass-challenge-minority-bonus", "MinTok", 2.0, -4.0),
-        ("default-pass-adaptive-track-strict", "AdaptS", 2.0, 2.5),
-        ("default-pass-cost-lobby-surcharge", "Cost", 2.0, 2.5),
-        ("default-pass-weighted-agenda-lottery", "Lot.", 2.0, -4.0),
-        ("default-pass-public-objection", "Obj.", 2.0, -4.0),
-        ("default-pass-alternatives-pairwise", "Pair", 2.0, -4.0),
-        ("default-pass-alternatives-strategic", "Strat", -18.0, 3.0),
-        ("default-pass-adaptive-proposers", "PropStrat", -24.0, -4.0),
-        ("default-pass-strategic-lobbying", "LobbyLearn", -26.0, 5.0),
-        ("default-pass-challenge", "Chal.", 2.0, -4.0),
-        ("default-pass-adaptive-track", "Adapt", 2.0, -4.0),
-        ("default-pass-law-registry", "LawReg", 2.0, 2.4),
+        ("supermajority-60", "S60", -2.0, 5.0, "r"),
+        (CURRENT_SYSTEM_KEY, "Current", 2.4, 6.4, None),
+        ("presidential-veto", "Veto", 2.2, 3.8, None),
+        ("bicameral-majority", "Bicam", 2.2, 6.0, None),
+        ("simple-majority", "SM", 2.2, 5.0, None),
+        ("default-pass", "DP", 2.4, 3.6, None),
+        ("default-pass-constituent-citizen-panel", "Public+Panel", -3.6, 5.5, "r"),
+        ("default-pass-proposal-bonds", "Bond", -5.0, 5.2, "r"),
+        ("default-pass-affected-sponsor-gate", "Aff.Spon", 2.4, 3.8, None),
+        ("default-pass-multiround-mediation", "Med", -5.2, 5.2, "r"),
+        ("default-pass-multiround-mediation-challenge", "Med+Chal", -4.6, 5.2, "r"),
+        ("default-pass-challenge-minority-bonus", "MinTok", 2.4, -6.2, None),
+        ("default-pass-adaptive-track-strict", "AdaptS", 2.4, 4.8, None),
+        ("default-pass-cost-lobby-surcharge", "Cost", 2.2, 4.6, None),
+        ("default-pass-weighted-agenda-lottery", "Lot.", 2.0, 5.2, None),
+        ("default-pass-public-objection", "Obj.", 2.2, 5.0, None),
+        ("default-pass-alternatives-pairwise", "Pair", 2.0, 5.2, None),
+        ("default-pass-alternatives-strategic", "Strat", -5.0, 5.0, "r"),
+        ("default-pass-adaptive-proposers", "PropStrat", -4.6, -6.8, "r"),
+        ("default-pass-strategic-lobbying", "LobbyLearn", -5.2, 5.6, "r"),
+        ("default-pass-challenge", "Chal.", 2.2, -6.4, None),
+        ("default-pass-adaptive-track", "Adapt", 2.0, -6.0, None),
+        ("default-pass-law-registry", "LawReg", 2.2, 4.4, None),
     ]
     left, bottom, width, height = 23.0, 14.0, 90.0, 58.0
     lines = [
@@ -313,17 +340,14 @@ def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> Non
         f"\\put({fmt(left)},{fmt(bottom)}){{\\line(1,0){{{fmt(width)}}}}}",
         f"\\put({fmt(left)},{fmt(bottom)}){{\\line(0,1){{{fmt(height)}}}}}",
     ])
-    for key, label, dx, dy in points:
+    for key, label, dx, dy, anchor in points:
         if key not in averages:
             continue
         color = "red" if key == CURRENT_SYSTEM_KEY else "black"
         point_size = "1.9mm" if key == CURRENT_SYSTEM_KEY else "1.5mm"
         x = left + averages[key]["productivity"] * width
         y = bottom + averages[key]["lowSupport"] * height
-        lines.extend([
-            f"\\put({fmt(x)},{fmt(y)}){{\\makebox(0,0){{\\color{{{color}}}\\rule{{{point_size}}}{{{point_size}}}}}}}",
-            f"\\put({fmt(x + dx)},{fmt(y + dy)}){{\\makebox(0,0)[l]{{\\color{{{color}}}{label}}}}}",
-        ])
+        append_labeled_square(lines, x, y, label, color, point_size, dx, dy, anchor)
     lines.extend([
         f"\\put({fmt(left + width / 2.0)},{fmt(3.0)}){{\\makebox(0,0){{Productivity $\\uparrow$ (share enacted)}}}}",
         f"\\put({fmt(5.0)},{fmt(bottom + height / 2.0)}){{\\rotatebox{{90}}{{Low-support passage $\\downarrow$}}}}",
@@ -414,25 +438,25 @@ def write_default_pass_deltas(averages: dict[str, dict[str, float]]) -> None:
 
 def write_compromise_productivity(averages: dict[str, dict[str, float]]) -> None:
     labels = {
-        "simple-majority": ("SM", 2.0, -4.0),
-        "supermajority-60": ("S60", 2.0, -4.0),
-        "bicameral-majority": ("Bicam", 2.0, 2.5),
-        "presidential-veto": ("Veto", 2.0, 2.5),
-        CURRENT_SYSTEM_KEY: ("Current", 2.0, 2.5),
-        "default-pass": ("DP", 2.0, 2.5),
-        "default-pass-constituent-citizen-panel": ("Public+Panel", -26.0, 2.5),
-        "default-pass-proposal-bonds": ("Bond", -14.0, 2.8),
-        "default-pass-affected-sponsor-gate": ("Aff.Spon", 2.0, -4.0),
-        "default-pass-multiround-mediation": ("Med", -18.0, 2.5),
-        "default-pass-multiround-mediation-challenge": ("Med+Chal", -24.0, -4.0),
-        "default-pass-alternatives-pairwise": ("Pair", 2.0, -4.0),
-        "default-pass-adaptive-proposers": ("PropStrat", -24.0, -4.0),
-        "default-pass-strategic-lobbying": ("LobbyLearn", -26.0, 5.0),
-        "default-pass-challenge": ("Chal.", 2.0, -4.0),
-        "default-pass-challenge-minority-bonus": ("MinTok", 2.0, 2.5),
-        "default-pass-public-objection": ("Obj.", 2.0, -4.0),
-        "default-pass-weighted-agenda-lottery": ("Lot.", 2.0, 2.5),
-        "default-pass-law-registry": ("LawReg", -19.0, -4.0),
+        "simple-majority": ("SM", 2.6, -8.2, None),
+        "supermajority-60": ("S60", -0.6, -5.8, None),
+        "bicameral-majority": ("Bicam", 2.8, 5.0, None),
+        "presidential-veto": ("Veto", 3.0, 4.2, None),
+        CURRENT_SYSTEM_KEY: ("Current", 2.6, 5.2, None),
+        "default-pass": ("DP", 2.4, 3.6, None),
+        "default-pass-constituent-citizen-panel": ("Public+Panel", -3.8, -7.2, "r"),
+        "default-pass-proposal-bonds": ("Bond", -4.6, 4.8, "r"),
+        "default-pass-affected-sponsor-gate": ("Aff.Spon", -2.8, 4.6, "r"),
+        "default-pass-multiround-mediation": ("Med", -4.8, 4.8, "r"),
+        "default-pass-multiround-mediation-challenge": ("Med+Chal", 2.2, -6.0, None),
+        "default-pass-alternatives-pairwise": ("Pair", 2.4, -7.6, None),
+        "default-pass-adaptive-proposers": ("PropStrat", -4.8, -7.8, "r"),
+        "default-pass-strategic-lobbying": ("LobbyLearn", -4.8, 5.8, "r"),
+        "default-pass-challenge": ("Chal.", 2.4, -3.8, None),
+        "default-pass-challenge-minority-bonus": ("MinTok", 2.8, -7.4, None),
+        "default-pass-public-objection": ("Obj.", -3.0, 5.0, "r"),
+        "default-pass-weighted-agenda-lottery": ("Lot.", 2.8, 5.4, None),
+        "default-pass-law-registry": ("LawReg", -4.0, -4.0, "r"),
     }
     left, bottom, width, height = 23.0, 14.0, 90.0, 58.0
     lines = [
@@ -459,17 +483,14 @@ def write_compromise_productivity(averages: dict[str, dict[str, float]]) -> None
         x = left + values["productivity"] * width
         y = bottom + values["compromise"] * height
         lines.append(f"\\put({fmt(x)},{fmt(y)}){{\\makebox(0,0){{\\color{{black!55}}\\rule{{1.1mm}}{{1.1mm}}}}}}")
-    for key, (label, dx, dy) in labels.items():
+    for key, (label, dx, dy, anchor) in labels.items():
         if key not in averages:
             continue
         color = "red" if key == CURRENT_SYSTEM_KEY else "black"
         point_size = "2.0mm" if key == CURRENT_SYSTEM_KEY else "1.7mm"
         x = left + averages[key]["productivity"] * width
         y = bottom + averages[key]["compromise"] * height
-        lines.extend([
-            f"\\put({fmt(x)},{fmt(y)}){{\\makebox(0,0){{\\color{{{color}}}\\rule{{{point_size}}}{{{point_size}}}}}}}",
-            f"\\put({fmt(x + dx)},{fmt(y + dy)}){{\\makebox(0,0)[l]{{\\color{{{color}}}{label}}}}}",
-        ])
+        append_labeled_square(lines, x, y, label, color, point_size, dx, dy, anchor)
     lines.extend([
         f"\\put({fmt(left + width / 2.0)},{fmt(3.0)}){{\\makebox(0,0){{Productivity $\\uparrow$ (share enacted)}}}}",
         f"\\put({fmt(5.0)},{fmt(bottom + height / 2.0)}){{\\rotatebox{{90}}{{Compromise score $\\uparrow$}}}}",
