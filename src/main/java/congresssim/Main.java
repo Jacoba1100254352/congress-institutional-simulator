@@ -72,6 +72,13 @@ public final class Main {
                         options.bills,
                         options.seed
                 );
+                case "v2" -> CampaignRunner.runV2(
+                        options.outputDir,
+                        options.runs,
+                        options.legislators,
+                        options.bills,
+                        options.seed
+                );
                 default -> throw new IllegalArgumentException("Unknown campaign: " + options.campaignName);
             };
             System.out.println(result.name() + " complete.");
@@ -110,7 +117,7 @@ public final class Main {
             return;
         }
 
-        System.out.printf("%-48s %8s %8s %10s %8s %8s %9s %9s %10s %10s %10s%n",
+        System.out.printf("%-48s %8s %8s %10s %8s %8s %9s %9s %9s %10s %10s %10s%n",
                 "Scenario",
                 "Prod",
                 "Floor",
@@ -119,14 +126,15 @@ public final class Main {
                 "Compromise",
                 "AccessD",
                 "CmteRej",
+                "Challenge",
                 "LowSupport",
                 "PolicyShift",
                 "PropGain"
         );
-        System.out.println("-".repeat(141));
+        System.out.println("-".repeat(151));
 
         for (ScenarioReport report : reports) {
-            System.out.printf("%-48s %8.3f %8.3f %10.3f %8.3f %8.3f %9.3f %9.3f %10.3f %10.3f %10.3f%n",
+            System.out.printf("%-48s %8.3f %8.3f %10.3f %8.3f %8.3f %9.3f %9.3f %9.3f %10.3f %10.3f %10.3f%n",
                     report.scenarioName(),
                     report.productivity(),
                     report.floorConsiderationRate(),
@@ -135,6 +143,7 @@ public final class Main {
                     report.compromiseScore(),
                     report.accessDenialRate(),
                     report.committeeRejectionRate(),
+                    report.challengeRate(),
                     report.controversialPassageRate(),
                     report.averagePolicyShift(),
                     report.averageProposerGain()
@@ -147,10 +156,10 @@ public final class Main {
     }
 
     private static void printCsv(List<ScenarioReport> reports) {
-        System.out.println("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,lowSupport,popularFail,policyShift,proposerGain,vetoes,overriddenVetoes");
+        System.out.println("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,vetoes,overriddenVetoes");
         for (ScenarioReport report : reports) {
             System.out.printf(Locale.ROOT,
-                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d%n",
+                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d%n",
                     report.scenarioName(),
                     report.totalBills(),
                     report.enactedBills(),
@@ -163,6 +172,7 @@ public final class Main {
                     report.gridlockRate(),
                     report.accessDenialRate(),
                     report.committeeRejectionRate(),
+                    report.challengeRate(),
                     report.controversialPassageRate(),
                     report.popularBillFailureRate(),
                     report.averagePolicyShift(),
@@ -426,7 +436,7 @@ public final class Main {
                       --scenarios <keys>  Comma-separated scenario keys
                       --format <kind>     table, csv, or bars
                       --charts            Add ASCII bar charts after the table
-                      --campaign <name>   Run a named campaign, currently v0 or v1
+                      --campaign <name>   Run a named campaign, currently v0, v1, or v2
                       --output-dir <path> Campaign output directory
                       --seed <n>          Reproducible random seed
                       --help              Show this message

@@ -4,11 +4,49 @@ This file lists the exact simulations that should be added before treating the p
 
 ## Immediate Priority
 
-### 1. Proposal-Cost Parameter Sweep
+### 1. Challenge-Voucher Parameter Sweep
+
+Purpose: determine whether scarce contestation rights can preserve default-pass throughput while reducing low-support passage, policy shift, and proposer gain.
+
+Add campaign `v3-challenge-sweep` with:
+
+- `tokensPerParty`: 3, 6, 10, 15, 25
+- `challengeThreshold`: 0.50, 0.65, 0.82, 1.00, 1.25
+- allocation mode: per-party fixed, per-party proportional to seats, minority bonus, per-legislator
+- challenged path: simple majority active vote, 60 percent active vote, committee review, committee information plus active vote
+
+Run for:
+
+- baseline
+- two-party
+- multi-party
+- high-polarization
+- high-proposal-pressure
+- extreme-proposal-pressure
+- lobby-fueled-flooding
+- low-compromise-flooding
+
+Report:
+
+- productivity
+- enacted/run
+- challengeRate
+- low-support passage
+- policy shift
+- proposer gain
+- welfare
+- token exhaustion by party or bloc
+- false-negative pass rate once a welfare/legitimacy classifier exists
+
+Decision target:
+
+- identify whether challenge vouchers work best as fixed scarce rights, proportional rights, or minority-protection rights.
+
+### 2. Proposal-Cost Parameter Sweep
 
 Purpose: determine whether the current proposal-cost finding is robust or an artifact of one cost formula.
 
-Add campaign `v2-cost-sweep` with:
+Add campaign `v4-cost-sweep` with:
 
 - `baseCost`: 0.05, 0.15, 0.25, 0.34, 0.45, 0.60
 - `publicCreditWeight`: 0.00, 0.15, 0.30, 0.50
@@ -32,7 +70,7 @@ Decision target:
 
 - identify cost settings that reduce floor load without increasing low-support passage or proposer gain.
 
-### 2. Proposal-Cost Mechanism Variants
+### 3. Proposal-Cost Mechanism Variants
 
 Purpose: compare different definitions of "cost" instead of only tuning one threshold.
 
@@ -56,7 +94,7 @@ Add scenarios:
 - `default-pass-refundable-deposit`
 - `default-pass-calendar-scarcity`
 
-### 3. Proposal-Flooding Severity Sweep
+### 4. Proposal-Flooding Severity Sweep
 
 Purpose: separate rule behavior at normal proposal volume from behavior under flood conditions.
 
@@ -75,7 +113,7 @@ Run for:
 
 Report all percentage metrics plus absolute load metrics. The key output is a curve showing whether each institution scales linearly, saturates, or collapses under high proposal volume.
 
-### 4. Agenda Order-of-Operations Sweep
+### 5. Agenda Order-of-Operations Sweep
 
 Purpose: determine whether order matters when multiple guardrails exist.
 
@@ -97,7 +135,7 @@ Report:
 - welfare
 - proposer gain
 
-### 5. Robustness and Uncertainty Reporting
+### 6. Robustness and Uncertainty Reporting
 
 Purpose: make paper claims statistically defensible.
 
@@ -117,7 +155,7 @@ Minimum for paper draft:
 
 ## Near-Term Model Additions
 
-### 6. Endogenous Proposal Strategy
+### 7. Endogenous Proposal Strategy
 
 Purpose: stop treating proposal flooding as only an exogenous bill-count multiplier.
 
@@ -137,7 +175,7 @@ Report:
 - proposer gain by strategy
 - welfare by strategy
 
-### 7. Lobbying as Proposal Shaping
+### 8. Lobbying as Proposal Shaping
 
 Purpose: model lobbying before the vote, not only as vote pressure.
 
@@ -154,7 +192,7 @@ Compare:
 - proposal-shaping lobbying
 - coalition-subsidy lobbying
 
-### 8. Amendment and Negotiation Rounds
+### 9. Amendment and Negotiation Rounds
 
 Purpose: model compromise as a process rather than only as a voting disposition.
 
@@ -175,7 +213,7 @@ Metrics:
 - final coalition breadth
 - welfare change after amendment
 
-### 9. Minority-Protection Guardrails
+### 10. Minority-Protection Guardrails
 
 Purpose: test whether default enactment can be paired with rights-preserving mechanisms.
 
@@ -186,7 +224,7 @@ Add scenarios:
 - `default-pass-rights-review`: simulated court or rights panel blocks high-harm bills.
 - `default-pass-citizen-review`: citizen panel can require ordinary floor passage for low-support bills.
 
-### 10. Sunset and Delay Rules
+### 11. Sunset and Delay Rules
 
 Purpose: test default enactment with reversible or time-limited policy changes.
 
@@ -206,7 +244,7 @@ Metrics:
 
 ## Validation Simulations
 
-### 11. U.S.-Style Baseline Calibration
+### 12. U.S.-Style Baseline Calibration
 
 Purpose: make the simulator credible before using counterfactuals.
 
@@ -225,7 +263,7 @@ Data targets:
 - Congress.gov or govinfo for bill histories.
 - Center for Effective Lawmaking for productivity comparison.
 
-### 12. Comparative Institution Baselines
+### 13. Comparative Institution Baselines
 
 Purpose: avoid overfitting to one U.S.-style baseline.
 
@@ -243,7 +281,8 @@ Use these as institutional analogues rather than exact country models until cali
 
 The paper should not make strong claims until these are complete:
 
-- v2 cost sweep implemented and reported.
+- challenge-voucher sweep implemented and reported.
+- proposal-cost sweep implemented and reported.
 - uncertainty reporting implemented.
 - at least one validation baseline attempted.
 - formal references cleaned up from the prior-art report.

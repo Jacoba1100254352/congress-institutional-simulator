@@ -51,6 +51,7 @@ public final class PresidentialVetoProcess implements LegislativeProcess {
                     preliminary.gateResults(),
                     preliminary.chamberResults(),
                     PresidentialAction.none(),
+                    preliminary.challenged(),
                     "enacted without veto"
             );
         }
@@ -67,6 +68,7 @@ public final class PresidentialVetoProcess implements LegislativeProcess {
                 preliminary.gateResults(),
                 preliminary.chamberResults(),
                 new PresidentialAction(true, true, overridden),
+                preliminary.challenged(),
                 overridden ? "veto overridden" : "presidential veto sustained"
         );
     }

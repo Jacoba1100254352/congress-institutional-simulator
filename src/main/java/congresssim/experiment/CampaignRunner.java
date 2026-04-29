@@ -41,6 +41,17 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> CHALLENGE_SCENARIOS = List.of(
+            "simple-majority",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-challenge",
+            "default-pass-challenge-info",
+            "default-pass-cost",
+            "default-pass-informed-guarded",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -78,6 +89,26 @@ public final class CampaignRunner {
                 outputDir,
                 v1Cases(legislators, bills),
                 FLOODING_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV2(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v2",
+                "simulation-campaign-v2",
+                outputDir,
+                v1Cases(legislators, bills),
+                CHALLENGE_SCENARIOS,
                 runs,
                 legislators,
                 bills,
@@ -206,7 +237,7 @@ public final class CampaignRunner {
 
     private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,lowSupport,popularFail,policyShift,proposerGain,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,vetoes,overriddenVetoes\n");
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
@@ -228,6 +259,7 @@ public final class CampaignRunner {
                     .append(format(report.gridlockRate())).append(',')
                     .append(format(report.accessDenialRate())).append(',')
                     .append(format(report.committeeRejectionRate())).append(',')
+                    .append(format(report.challengeRate())).append(',')
                     .append(format(report.controversialPassageRate())).append(',')
                     .append(format(report.popularBillFailureRate())).append(',')
                     .append(format(report.averagePolicyShift())).append(',')
@@ -262,8 +294,8 @@ public final class CampaignRunner {
         appendHeadlineFindings(builder, result.rows(), aggregateByScenario);
 
         builder.append("## Scenario Averages Across Cases\n\n");
-        builder.append("| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Policy shift | Proposer gain | Floor |\n");
-        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+        builder.append("| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Policy shift | Proposer gain | Challenge | Floor |\n");
+        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
         aggregateByScenario.values()
                 .stream()
                 .sorted(Comparator.comparing(ScenarioAggregate::scenarioKey))
@@ -276,8 +308,32 @@ public final class CampaignRunner {
                         .append(format(summary.lowSupport())).append(" | ")
                         .append(format(summary.policyShift())).append(" | ")
                         .append(format(summary.proposerGain())).append(" | ")
+                        .append(format(summary.challengeRate())).append(" | ")
                         .append(format(summary.floor())).append(" |\n"));
         builder.append('\n');
+
+        if (aggregateByScenario.containsKey("default-pass-challenge")) {
+            builder.append("## Challenge-Voucher Deltas\n\n");
+            builder.append("Delta values compare `default-pass-challenge` against open `default-pass` in the same case. The challenge rate is the share of potential bills diverted from default enactment into an active vote.\n\n");
+            builder.append("| Case | Enacted/run delta | Productivity delta | Welfare delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Challenge rate |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            for (String caseKey : caseKeys(result.rows())) {
+                CampaignRow open = find(result.rows(), caseKey, "default-pass");
+                CampaignRow challenge = find(result.rows(), caseKey, "default-pass-challenge");
+                if (open != null && challenge != null) {
+                    builder.append("| ")
+                            .append(open.caseName()).append(" | ")
+                            .append(format(enactedPerRun(challenge, runs) - enactedPerRun(open, runs))).append(" | ")
+                            .append(format(challenge.report().productivity() - open.report().productivity())).append(" | ")
+                            .append(format(challenge.report().averagePublicBenefit() - open.report().averagePublicBenefit())).append(" | ")
+                            .append(format(challenge.report().controversialPassageRate() - open.report().controversialPassageRate())).append(" | ")
+                            .append(format(challenge.report().averagePolicyShift() - open.report().averagePolicyShift())).append(" | ")
+                            .append(format(challenge.report().averageProposerGain() - open.report().averageProposerGain())).append(" | ")
+                            .append(format(challenge.report().challengeRate())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
 
         if (aggregateByScenario.containsKey("default-pass-cost")) {
             builder.append("## Proposal-Cost Deltas\n\n");
@@ -341,9 +397,10 @@ public final class CampaignRunner {
         builder.append("- Open default-pass is consistently the throughput leader, but it also carries high low-support passage, high policy movement, and high proposer gain.\n");
         builder.append("- Guarded default-pass variants trade productivity for lower volatility and lower proposer advantage.\n");
         builder.append("- Proposal-cost screens are useful for measuring flooding as institutional load: floor/run and enacted/run expose costs hidden by percentage-only metrics.\n");
+        builder.append("- Challenge vouchers test whether default-pass can preserve throughput while forcing only the most contested bills into active votes.\n");
         builder.append("- The current cost screen reduces volume, but it also selects for proposals with high proposer value or positive lobby pressure; that makes cost design an object of study, not a solved safeguard.\n");
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        builder.append("- The next model extension should run proposal-cost parameter sweeps and compare alternative cost mechanisms, because agenda screening is now the central default-pass tradeoff.\n\n");
+        builder.append("- The next model extension should sweep challenge-token budgets, challenge thresholds, and proposal-cost mechanisms, because agenda screening is now the central default-pass tradeoff.\n\n");
         builder.append("## Reproduction\n\n");
         builder.append("```sh\nmake campaign\n```\n");
         return builder.toString();
@@ -357,6 +414,7 @@ public final class CampaignRunner {
         ScenarioAggregate openDefault = aggregateByScenario.get("default-pass");
         ScenarioAggregate informedGuarded = aggregateByScenario.get("default-pass-informed-guarded");
         ScenarioAggregate proposalCost = aggregateByScenario.get("default-pass-cost");
+        ScenarioAggregate challenge = aggregateByScenario.get("default-pass-challenge");
         ScenarioAggregate simpleMajority = aggregateByScenario.get("simple-majority");
         ScenarioAggregate bestWelfare = aggregateByScenario.values()
                 .stream()
@@ -391,6 +449,15 @@ public final class CampaignRunner {
                     .append(" bills/run, but raised proposer gain by ")
                     .append(format(proposalCost.proposerGain() - openDefault.proposerGain()))
                     .append(".\n");
+        }
+        if (challenge != null) {
+            builder.append("- Challenge vouchers averaged ")
+                    .append(format(challenge.challengeRate()))
+                    .append(" challenge use, changed productivity by ")
+                    .append(format(challenge.productivity() - openDefault.productivity()))
+                    .append(", and changed low-support passage by ")
+                    .append(format(challenge.lowSupport() - openDefault.lowSupport()))
+                    .append(" relative to open default-pass.\n");
         }
         builder.append("- Best average welfare in this campaign came from ")
                 .append(bestWelfare.scenarioName())
@@ -482,6 +549,7 @@ public final class CampaignRunner {
         private double lowSupport;
         private double policyShift;
         private double proposerGain;
+        private double challengeRate;
         private double floor;
         private double enactedPerRun;
         private double floorPerRun;
@@ -498,6 +566,7 @@ public final class CampaignRunner {
             lowSupport += report.controversialPassageRate();
             policyShift += report.averagePolicyShift();
             proposerGain += report.averageProposerGain();
+            challengeRate += report.challengeRate();
             floor += report.floorConsiderationRate();
             enactedPerRun += (double) report.enactedBills() / runs;
             floorPerRun += (report.totalBills() * report.floorConsiderationRate()) / runs;
@@ -529,6 +598,10 @@ public final class CampaignRunner {
 
         private double proposerGain() {
             return proposerGain / count;
+        }
+
+        private double challengeRate() {
+            return challengeRate / count;
         }
 
         private double floor() {

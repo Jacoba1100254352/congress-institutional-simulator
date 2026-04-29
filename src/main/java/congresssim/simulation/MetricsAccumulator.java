@@ -12,6 +12,7 @@ final class MetricsAccumulator {
     private int floorConsideredBills;
     private int accessDeniedBills;
     private int committeeRejectedBills;
+    private int challengedBills;
     private int vetoes;
     private int overriddenVetoes;
     private double enactedSupportSum;
@@ -29,6 +30,9 @@ final class MetricsAccumulator {
             accessDeniedBills++;
         } else if (outcome.agendaDisposition() == AgendaDisposition.COMMITTEE_REJECTED) {
             committeeRejectedBills++;
+        }
+        if (outcome.challenged()) {
+            challengedBills++;
         }
 
         if (outcome.bill().publicSupport() >= 0.60) {
@@ -85,6 +89,7 @@ final class MetricsAccumulator {
                 ratio(floorConsideredBills, totalBills),
                 ratio(accessDeniedBills, totalBills),
                 ratio(committeeRejectedBills, totalBills),
+                ratio(challengedBills, totalBills),
                 vetoes,
                 overriddenVetoes
         );

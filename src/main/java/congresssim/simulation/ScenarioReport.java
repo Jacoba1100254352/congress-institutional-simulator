@@ -17,6 +17,7 @@ public record ScenarioReport(
         double floorConsiderationRate,
         double accessDenialRate,
         double committeeRejectionRate,
+        double challengeRate,
         int vetoes,
         int overriddenVetoes
 ) {

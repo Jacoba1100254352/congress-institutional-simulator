@@ -14,6 +14,7 @@ public record BillOutcome(
         List<ChamberVoteResult> gateResults,
         List<ChamberVoteResult> chamberResults,
         PresidentialAction presidentialAction,
+        boolean challenged,
         String finalReason
 ) {
     public BillOutcome {
@@ -39,6 +40,7 @@ public record BillOutcome(
                 List.of(),
                 chamberResults,
                 presidentialAction,
+                false,
                 finalReason
         );
     }
@@ -53,6 +55,7 @@ public record BillOutcome(
                 List.of(),
                 List.of(),
                 PresidentialAction.none(),
+                false,
                 reason
         );
     }
@@ -72,6 +75,7 @@ public record BillOutcome(
                 List.of(committeeResult),
                 List.of(),
                 PresidentialAction.none(),
+                false,
                 reason
         );
     }
@@ -88,7 +92,23 @@ public record BillOutcome(
                 updatedGateResults,
                 chamberResults,
                 presidentialAction,
+                challenged,
                 finalReason
+        );
+    }
+
+    public BillOutcome withChallenge(String reason) {
+        return new BillOutcome(
+                bill,
+                statusQuoBefore,
+                statusQuoAfter,
+                enacted,
+                agendaDisposition,
+                gateResults,
+                chamberResults,
+                presidentialAction,
+                true,
+                reason
         );
     }
 

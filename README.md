@@ -47,13 +47,14 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v1.csv`
-- `reports/simulation-campaign-v1.md`
+- `reports/simulation-campaign-v2.csv`
+- `reports/simulation-campaign-v2.md`
 
-The earlier v0 campaign remains available:
+Earlier campaigns remain available:
 
 ```sh
 make campaign-v0
+make campaign-v1
 ```
 
 You can override the campaign defaults:
@@ -71,6 +72,8 @@ The default CLI compares:
 - `simple-majority`: unicameral simple majority
 - `supermajority-60`: unicameral 60 percent passage threshold
 - `default-pass`: default passage unless 2/3 vote to block
+- `default-pass-challenge`: default passage with scarce party-held challenge vouchers that divert contested bills to active majority vote
+- `default-pass-challenge-info`: default passage with committee information review before challenge-voucher decisions
 - `default-pass-access`: default passage unless 2/3 vote to block, with a proposal-access screen
 - `default-pass-cost`: default passage unless 2/3 vote to block, with a proposal-cost screen
 - `default-pass-cost-guarded`: default passage with proposal costs, proposal access, committee information, and committee gatekeeping
@@ -104,7 +107,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0` or `v1`
+- `--campaign`: run a named campaign, currently `v0`, `v1`, or `v2`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -139,6 +142,7 @@ The first metric set is deliberately simple, but it separates throughput from le
 - `productivity`: share of introduced bills enacted
 - `floor`: share of potential bills that reached floor consideration
 - campaign reports also track `enactedPerRun` and `floorPerRun` so proposal flooding is visible as institutional load, not only as percentages
+- `challengeRate`: share of potential bills diverted from default enactment into active voting by challenge vouchers
 - `avgSupport`: average yay share for enacted bills
 - `welfare`: average public-benefit score for enacted bills
 - `cooperation`: productivity multiplied by enacted support
@@ -176,3 +180,9 @@ The current v1 campaign adds proposal flooding and proposal costs:
 - `default-pass-cost` screens floor access by comparing a proposal's expected proposer policy gain, public credit, and lobby credit against a fixed cost threshold.
 - The flooding cases increase potential bills per run by 3x or 5x, with variants for high lobbying and low compromise.
 - The first finding is mixed: proposal costs substantially reduce floor load and enactment volume, but the current cost formula also selects for high proposer gain and positive lobby pressure. That makes cost design itself a modeling target.
+
+The current v2 campaign adds challenge vouchers:
+
+- `default-pass-challenge` gives each party a scarce challenge-token budget; unchallenged bills default enact, while challenged bills go to active majority vote.
+- `default-pass-challenge-info` first lets a representative committee improve the public-support signal, then applies the same challenge-voucher mechanism.
+- This tests whether default-pass can keep some throughput advantage while forcing the most contested bills into a stronger affirmative-vote path.

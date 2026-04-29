@@ -5,6 +5,7 @@ import congresssim.behavior.VotingStrategy;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.BicameralProcess;
 import congresssim.institution.Chamber;
+import congresssim.institution.ChallengeVoucherProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
@@ -56,6 +57,8 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("simple-majority", unicameral("Unicameral simple majority", AffirmativeThresholdRule.simpleMajority())),
                 new ScenarioEntry("supermajority-60", unicameral("Unicameral 60 percent passage", AffirmativeThresholdRule.supermajority(0.60))),
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
+                new ScenarioEntry("default-pass-challenge", defaultPassWithChallengeVouchers()),
+                new ScenarioEntry("default-pass-challenge-info", defaultPassWithChallengeVouchersAndInformation()),
                 new ScenarioEntry("default-pass-access", defaultPassWithProposalAccess()),
                 new ScenarioEntry("default-pass-cost", defaultPassWithProposalCost()),
                 new ScenarioEntry("default-pass-cost-guarded", defaultPassWithCostAndGuardrails()),
@@ -123,6 +126,68 @@ public final class ScenarioCatalog {
                         ProposalAccessRules.viabilityScreen(0.35, 0.85),
                         floor
                 );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithChallengeVouchers() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + challenge vouchers";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                Chamber activeVoteChamber = new Chamber(
+                        "Congress",
+                        world.legislators(),
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                return new ChallengeVoucherProcess(
+                        name(),
+                        world.legislators(),
+                        strategy,
+                        10,
+                        0.82,
+                        new UnicameralProcess(name(), activeVoteChamber)
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithChallengeVouchersAndInformation() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + challenge vouchers + info";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                List<Legislator> committeeMembers = CommitteeFactory.select(
+                        world.legislators(),
+                        CommitteeComposition.REPRESENTATIVE,
+                        17
+                );
+                Chamber activeVoteChamber = new Chamber(
+                        "Congress",
+                        world.legislators(),
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                LegislativeProcess challengeProcess = new ChallengeVoucherProcess(
+                        name(),
+                        world.legislators(),
+                        strategy,
+                        10,
+                        0.82,
+                        new UnicameralProcess(name(), activeVoteChamber)
+                );
+                return new CommitteeInformationProcess(name(), committeeMembers, 0.85, 0.45, challengeProcess);
             }
         };
     }

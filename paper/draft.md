@@ -6,7 +6,7 @@
 
 This paper develops an agent-based simulation framework for comparing legislative institutions by separating rule productivity from cooperation, compromise, legitimacy, and agenda control. The motivating counterfactual is a default-enactment legislature in which proposed laws pass unless a two-thirds blocking coalition vetoes them. Prior work gives strong analogues for default or negative-consent procedures in negative parliamentarism, reverse-consensus international procedures, tacit-acceptance treaty amendments, silence procedures, and U.S. review-and-disapproval mechanisms, but the literature does not appear to contain a close mainstream analogue for broad ordinary lawmaking. The simulator therefore treats default enactment as an institutional design pattern whose effects depend on proposal rights, proposal costs, committee gatekeeping, information processing, and voting thresholds.
 
-The current model is intentionally austere: legislators have one-dimensional ideal points and heterogeneous sensitivities to party, constituency, lobbying, reputation, and compromise; bills are generated around proposers; enacted bills update a scalar status quo; and institutional rules are implemented as modular processes. Across the current v1 campaign, open default enactment produces much higher throughput than ordinary majority systems, averaging 0.840 productivity and 81.818 enacted bills per run, but also produces high low-support passage, policy shift, and proposer gain. Agenda guardrails sharply reduce those risks but at a large productivity cost. A new proposal-cost screen reduces floor load and enactments, but the current cost formula selects for high proposer value and positive lobby pressure, showing that proposal costs are themselves a design variable rather than an automatic safeguard. The paper argues that the next research contribution is not a claim that one institution is best, but a reproducible way to test when default enactment produces coordination and when it magnifies agenda-setter power.
+The current model is intentionally austere: legislators have one-dimensional ideal points and heterogeneous sensitivities to party, constituency, lobbying, reputation, and compromise; bills are generated around proposers; enacted bills update a scalar status quo; and institutional rules are implemented as modular processes. Across the current v1 campaign, open default enactment produces much higher throughput than ordinary majority systems, averaging 0.840 productivity and 81.818 enacted bills per run, but also produces high low-support passage, policy shift, and proposer gain. Agenda guardrails sharply reduce those risks but at a large productivity cost. A proposal-cost screen reduces floor load and enactments, but the current cost formula selects for high proposer value and positive lobby pressure, showing that proposal costs are themselves a design variable rather than an automatic safeguard. The v2 campaign adds scarce challenge vouchers, which preserve more throughput than full guardrails while reducing low-support passage, policy shift, and proposer gain. The paper argues that the next research contribution is not a claim that one institution is best, but a reproducible way to test when default enactment produces coordination and when it magnifies agenda-setter power.
 
 ### 1. Introduction
 
@@ -87,26 +87,24 @@ This distinction matters because default enactment can dominate productivity whi
 
 ### 5. Experimental Design
 
-The current campaign is `simulation-campaign-v1`. It uses:
+The current campaign is `simulation-campaign-v2`. It uses:
 
 - 150 runs per case.
 - 101 legislators.
 - 60 base bills per run.
 - Seed 20260428.
 - 16 assumption cases.
-- 11 institutional scenarios per case.
+- 9 institutional scenarios per case.
 
 The institutional scenarios are:
 
 - Unicameral simple majority.
 - Unicameral 60 percent passage.
 - Default pass unless two-thirds block.
-- Default pass plus proposal-access screen.
-- Default pass plus representative committee gate.
-- Default pass plus access and committee.
+- Default pass plus scarce challenge vouchers.
+- Default pass plus scarce challenge vouchers and committee information.
 - Default pass plus informed guarded committee.
 - Default pass plus proposal costs.
-- Default pass plus proposal costs and informed guardrails.
 - Bicameral simple majority.
 - Bicameral majority plus presidential veto and override.
 
@@ -114,17 +112,19 @@ The assumption cases include baseline, low and high polarization, low and high p
 
 ### 6. Current Findings
 
-The first finding is that open default enactment is consistently the throughput leader. Across v1, it averages 0.840 productivity, 81.818 enacted bills per run, and 97.500 floor bills per run. By comparison, unicameral simple majority averages 0.245 productivity and 22.961 enacted bills per run, while the 60 percent supermajority rule averages 0.081 productivity and 7.284 enacted bills per run.
+The first finding is that open default enactment is consistently the throughput leader. Across v2, it averages 0.840 productivity, 81.818 enacted bills per run, and 97.500 floor bills per run. By comparison, unicameral simple majority averages 0.245 productivity and 22.961 enacted bills per run, while the 60 percent supermajority rule averages 0.081 productivity and 7.284 enacted bills per run.
 
 The second finding is that throughput comes with obvious risk signals. Open default enactment averages 0.455 low-support passage, 0.688 policy shift, and 0.686 proposer gain. In this model, the rule is not merely reducing gridlock; it is also letting many proposals pass without majority support and moving policy substantially toward proposers.
 
-The third finding is that informed guardrails greatly reduce those risks. Default pass with access screening, committee information, and committee gatekeeping averages 0.198 productivity, 18.643 enacted bills per run, 0.610 welfare, 0.220 low-support passage, 0.065 policy shift, and 0.247 proposer gain. Relative to open default-pass, that is a 0.236 reduction in low-support passage and a 0.623 reduction in policy shift, but also a 0.643 productivity loss.
+The third finding is that informed guardrails greatly reduce those risks. Default pass with access screening, committee information, and committee gatekeeping averages 0.197 productivity, 18.569 enacted bills per run, 0.609 welfare, 0.221 low-support passage, 0.065 policy shift, and 0.248 proposer gain. Relative to open default-pass, that is a 0.234 reduction in low-support passage and a 0.623 reduction in policy shift, but also a 0.643 productivity loss.
 
 The fourth finding is that proposal costs reveal agenda load more clearly than percentage metrics alone. In high proposal pressure, open default-pass enacts 151.140 bills per run and considers 180.000 bills per run. Under extreme proposal pressure, it enacts 251.533 and considers 300.000. A productivity percentage by itself hides the institutional burden.
 
-The fifth finding is mixed and important: the first proposal-cost rule reduces volume but does not automatically increase legitimacy. Across v1, default pass plus proposal costs averages 47.774 enacted bills per run and 50.204 floor bills per run, versus 81.818 and 97.500 under open default-pass. It reduces average policy shift from 0.688 to 0.607. But low-support passage rises from 0.455 to 0.492, and proposer gain rises from 0.686 to 1.124. That is not a bug in the research program; it is a substantive finding. If the cost function can be cleared by proposer private gain or favorable lobby pressure, costs may screen out low-value proposals while preserving or amplifying agenda-setter advantage.
+The fifth finding is mixed and important: the first proposal-cost rule reduces volume but does not automatically increase legitimacy. Across v2, default pass plus proposal costs averages 47.784 enacted bills per run and 50.195 floor bills per run, versus 81.818 and 97.500 under open default-pass. It reduces average policy shift from 0.688 to 0.607. But low-support passage rises from 0.455 to 0.491, and proposer gain rises from 0.686 to 1.124. That is not a bug in the research program; it is a substantive finding. If the cost function can be cleared by proposer private gain or favorable lobby pressure, costs may screen out low-value proposals while preserving or amplifying agenda-setter advantage.
 
-The sixth finding is that stacking costs and guardrails may overcorrect. Default pass with costs plus informed guardrails averages only 0.053 productivity, 5.067 enacted bills per run, and 5.090 floor bills per run. It produces higher welfare and lower policy shift, but it is less productive than the 60 percent supermajority baseline in the campaign average.
+The sixth finding from v1 is that stacking costs and guardrails may overcorrect. Default pass with costs plus informed guardrails averaged only 0.053 productivity, 5.067 enacted bills per run, and 5.090 floor bills per run. It produced higher welfare and lower policy shift, but it was less productive than the 60 percent supermajority baseline in the campaign average.
+
+The seventh finding is that scarce challenge vouchers are a promising middle path but need parameter sweeps. In v2, default pass plus challenge vouchers averages 0.644 productivity, 71.596 enacted bills per run, 0.481 welfare, 0.398 low-support passage, 0.451 policy shift, 0.561 proposer gain, and 0.422 challenge use. Relative to open default-pass, it reduces productivity by 0.196, low-support passage by 0.058, policy shift by 0.237, and proposer gain by 0.125. Under high and extreme proposal pressure, however, the fixed token budget is diluted; challenge rates fall to 0.167 and 0.100. This suggests the next version should sweep token budgets and allocation formulas rather than treating one voucher design as settled.
 
 ### 7. Interpretation
 
@@ -161,6 +161,7 @@ The paper would be strongest as a computational institutional-design paper, not 
 The next simulations are specified in `paper/simulation-backlog.md`. The immediate additions should be:
 
 - Proposal-cost parameter sweeps.
+- Challenge-voucher budget and threshold sweeps.
 - Alternative proposal-cost mechanisms.
 - Proposal flooding severity sweeps.
 - Agenda order-of-operations comparisons.

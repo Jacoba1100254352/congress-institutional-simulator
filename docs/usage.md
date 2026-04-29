@@ -41,6 +41,12 @@ Run the earlier v0 campaign:
 make campaign-v0
 ```
 
+Run the v1 proposal-cost/flooding campaign:
+
+```sh
+make campaign-v1
+```
+
 Remove generated build output:
 
 ```sh
@@ -93,7 +99,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0|v1>`: run a named campaign.
+- `--campaign <v0|v1|v2>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -105,6 +111,8 @@ The default CLI scenario set includes:
 - `simple-majority`: unicameral simple majority.
 - `supermajority-60`: unicameral 60 percent passage threshold.
 - `default-pass`: default passage unless two-thirds vote to block.
+- `default-pass-challenge`: default passage with scarce party-held challenge vouchers.
+- `default-pass-challenge-info`: default passage with committee information before challenge-voucher decisions.
 - `default-pass-access`: default passage with a proposal-access screen.
 - `default-pass-cost`: default passage with a proposal-cost screen.
 - `default-pass-cost-guarded`: default passage with proposal costs, proposal access, committee information, and committee gatekeeping.
@@ -126,13 +134,15 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v1.csv`
-- `reports/simulation-campaign-v1.md`
+- `reports/simulation-campaign-v2.csv`
+- `reports/simulation-campaign-v2.md`
 
 Earlier campaign:
 
 - `reports/simulation-campaign-v0.csv`
 - `reports/simulation-campaign-v0.md`
+- `reports/simulation-campaign-v1.csv`
+- `reports/simulation-campaign-v1.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -149,6 +159,7 @@ The simulator reports several metrics because passage volume alone is not enough
 - `gridlock`: share of potential bills not enacted.
 - `accessD`: share of potential bills denied by proposal-access rules.
 - `cmteRej`: share of potential bills rejected by committee.
+- `challengeRate`: share of potential bills diverted from default enactment into active voting by challenge vouchers.
 - `lowSupport`: enacted bills with less than 50 percent yes support.
 - `popularFail`: high-public-support bills that fail.
 - `policyShift`: average movement away from the prior status quo.
