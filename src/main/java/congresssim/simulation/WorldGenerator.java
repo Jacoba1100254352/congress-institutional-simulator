@@ -51,31 +51,67 @@ public final class WorldGenerator {
         List<Bill> bills = new ArrayList<>();
         for (int i = 0; i < spec.billCount(); i++) {
             Legislator proposer = legislators.get(random.nextInt(legislators.size()));
-            double ideology = Values.clamp(proposer.ideology() + random.nextGaussian() * 0.22, -1.0, 1.0);
+            boolean antiLobbyingReform = random.nextDouble() < 0.04 + (0.08 * spec.lobbyingSusceptibility());
+            double ideology = antiLobbyingReform
+                    ? Values.clamp(proposer.ideology() * 0.45 + random.nextGaussian() * 0.16, -1.0, 1.0)
+                    : Values.clamp(proposer.ideology() + random.nextGaussian() * 0.22, -1.0, 1.0);
             double moderation = 1.0 - Math.abs(ideology);
-            double lobbyPressure = Values.clamp(random.nextGaussian() * spec.lobbyingSusceptibility(), -1.0, 1.0);
-            double publicBenefit = Values.clamp(
-                    0.34 + (moderation * 0.34) - (Math.max(0.0, lobbyPressure) * 0.08) + random.nextGaussian() * 0.18,
-                    0.0,
-                    1.0
-            );
-            double publicSupport = Values.clamp(
-                    publicBenefit + (lobbyPressure * 0.08) + random.nextGaussian() * 0.22,
-                    0.0,
-                    1.0
-            );
-            double salience = Values.clamp(0.20 + random.nextDouble() * 0.80, 0.0, 1.0);
+            double lobbyPressure;
+            double privateGain;
+            double publicBenefit;
+            double publicSupport;
+            double salience;
+
+            if (antiLobbyingReform) {
+                lobbyPressure = -Values.clamp(
+                        0.28 + (0.58 * spec.lobbyingSusceptibility()) + random.nextGaussian() * 0.16,
+                        0.10,
+                        1.0
+                );
+                privateGain = 0.0;
+                publicBenefit = Values.clamp(
+                        0.58 + (moderation * 0.22) + (spec.constituencySensitivity() * 0.08) + random.nextGaussian() * 0.12,
+                        0.0,
+                        1.0
+                );
+                publicSupport = Values.clamp(
+                        publicBenefit - (spec.lobbyingSusceptibility() * 0.10) + random.nextGaussian() * 0.16,
+                        0.0,
+                        1.0
+                );
+                salience = Values.clamp(0.50 + random.nextDouble() * 0.50, 0.0, 1.0);
+            } else {
+                lobbyPressure = Values.clamp(random.nextGaussian() * spec.lobbyingSusceptibility(), -1.0, 1.0);
+                privateGain = Values.clamp(
+                        (Math.max(0.0, lobbyPressure) * 0.72) + random.nextDouble() * 0.20,
+                        0.0,
+                        1.0
+                );
+                publicBenefit = Values.clamp(
+                        0.34 + (moderation * 0.34) - (privateGain * 0.08) + random.nextGaussian() * 0.18,
+                        0.0,
+                        1.0
+                );
+                publicSupport = Values.clamp(
+                        publicBenefit + (lobbyPressure * 0.08) - (privateGain * 0.05) + random.nextGaussian() * 0.22,
+                        0.0,
+                        1.0
+                );
+                salience = Values.clamp(0.20 + random.nextDouble() * 0.80, 0.0, 1.0);
+            }
 
             bills.add(new Bill(
                     "B-" + (i + 1),
-                    "Bill " + (i + 1),
+                    antiLobbyingReform ? "Anti-Lobbying Reform " + (i + 1) : "Bill " + (i + 1),
                     proposer.id(),
                     proposer.ideology(),
                     ideology,
                     publicSupport,
                     publicBenefit,
                     lobbyPressure,
-                    salience
+                    salience,
+                    privateGain,
+                    antiLobbyingReform
             ));
         }
         return bills;

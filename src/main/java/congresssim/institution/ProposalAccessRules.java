@@ -20,6 +20,20 @@ public final class ProposalAccessRules {
         return new ProposalCostAccessRule(baseCost, publicCreditWeight, lobbyCreditWeight);
     }
 
+    public static ProposalAccessRule publicInterestScreen(
+            double minimumPublicInterest,
+            double maximumCaptureRisk,
+            double maximumPrivateGainRatio,
+            double antiLobbyingBenefitFloor
+    ) {
+        return new PublicInterestScreenAccessRule(
+                minimumPublicInterest,
+                maximumCaptureRisk,
+                maximumPrivateGainRatio,
+                antiLobbyingBenefitFloor
+        );
+    }
+
     public static ProposalAccessRule crossBlocCosponsorship(
             List<Legislator> legislators,
             int minimumCosponsors,

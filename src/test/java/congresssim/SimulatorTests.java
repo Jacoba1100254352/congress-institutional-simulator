@@ -16,6 +16,8 @@ import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.LegislativeProcess;
+import congresssim.institution.LobbyAuditProcess;
+import congresssim.institution.LobbyTransparencyProcess;
 import congresssim.institution.ProposalAccessRules;
 import congresssim.institution.ProposalCreditProcess;
 import congresssim.institution.SunsetTrialProcess;
@@ -48,6 +50,9 @@ public final class SimulatorTests {
         adaptiveTrackRoutesBillsByRisk();
         sunsetTrialExpiresRiskyLowBenefitBills();
         proposalCreditsLearnFromProposalQuality();
+        lobbyTransparencyReducesCapturedBillPressure();
+        publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
+        lobbyAuditCanReverseCapturedEnactments();
         challengeVouchersRouteHighRiskBillsToActiveVote();
         challengeEscalationRoutesBroadlyContestedBillsToActiveVote();
         committeeGateBlocksBillsBeforeFloor();
@@ -217,6 +222,81 @@ public final class SimulatorTests {
                 process.consider(weakBill, context).agendaDisposition() == AgendaDisposition.ACCESS_DENIED,
                 "Low-quality proposals should deplete earned credits and block later proposals."
         );
+    }
+
+    private static void lobbyTransparencyReducesCapturedBillPressure() {
+        Bill capturedBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.10, 0.40, 0.20, 0.90, 0.70, 0.90, false);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        LegislativeProcess captureRevisedBill = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "capture revised bill";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                assertTrue(
+                        bill.lobbyPressure() < capturedBill.lobbyPressure(),
+                        "Transparency should reduce effective lobby pressure."
+                );
+                assertTrue(
+                        bill.publicSupport() < capturedBill.publicSupport(),
+                        "Transparency should create public backlash against high-capture bills."
+                );
+                return BillOutcome.accessDenied(bill, context.currentPolicyPosition(), "captured");
+            }
+        };
+
+        new LobbyTransparencyProcess("transparency test", 0.75, 0.40, captureRevisedBill)
+                .consider(capturedBill, context);
+    }
+
+    private static void publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms() {
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        Bill capturedBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.10, 0.30, 0.18, 0.95, 0.80, 0.95, false);
+        Bill antiLobbyingBill = new Bill("B-reform", "Anti-Lobbying Reform", "L-1", 0.0, 0.05, 0.62, 0.82, -0.80, 0.80, 0.0, true);
+
+        assertFalse(
+                ProposalAccessRules.publicInterestScreen(0.54, 0.58, 2.40, 0.58)
+                        .evaluate(capturedBill, context)
+                        .granted(),
+                "High-private-gain, low-public-interest bills should fail the public-interest screen."
+        );
+        assertTrue(
+                ProposalAccessRules.publicInterestScreen(0.54, 0.58, 2.40, 0.58)
+                        .evaluate(antiLobbyingBill, context)
+                        .granted(),
+                "Public-benefit anti-lobbying reforms should clear the screen despite lobby opposition."
+        );
+    }
+
+    private static void lobbyAuditCanReverseCapturedEnactments() {
+        LegislativeProcess enactEverything = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "enact everything";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "enacted"
+                );
+            }
+        };
+        LobbyAuditProcess process = new LobbyAuditProcess("audit test", enactEverything, 1.0, 0.0, 0.20, 0.60, true);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        Bill capturedBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.80, 0.15, 0.10, 0.95, 0.90, 0.95, false);
+
+        BillOutcome outcome = process.consider(capturedBill, context);
+        assertFalse(outcome.enacted(), "Failed anti-capture audits should reverse captured enactments when configured.");
+        assertTrue(outcome.statusQuoAfter() == context.currentPolicyPosition(), "Audit reversals should roll back the status quo.");
     }
 
     private static void challengeVouchersRouteHighRiskBillsToActiveVote() {
@@ -444,6 +524,10 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-earned-credits"),
                 "Scenario catalog should expose earned proposal-credit keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-anti-capture-bundle"),
+                "Scenario catalog should expose anti-capture scenario keys."
         );
     }
 

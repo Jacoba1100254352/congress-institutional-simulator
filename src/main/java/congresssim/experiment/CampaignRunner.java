@@ -181,6 +181,25 @@ public final class CampaignRunner {
             "default-pass-escalation-q12-s082",
             "default-pass-escalation-q20-s082"
     );
+    private static final List<String> ANTI_CAPTURE_SCENARIOS = List.of(
+            "simple-majority",
+            "simple-majority-lobby-firewall",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-lobby-firewall",
+            "default-pass-lobby-transparency",
+            "default-pass-public-interest-screen",
+            "default-pass-lobby-audit",
+            "default-pass-anti-capture-bundle",
+            "default-pass-informed-guarded",
+            "default-pass-challenge",
+            "default-pass-cross-bloc",
+            "default-pass-adaptive-track",
+            "default-pass-sunset-trial",
+            "default-pass-earned-credits",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -345,6 +364,26 @@ public final class CampaignRunner {
         );
     }
 
+    public static CampaignResult runV8(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v8",
+                "simulation-campaign-v8",
+                outputDir,
+                v8Cases(legislators, bills),
+                ANTI_CAPTURE_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
     private static CampaignResult run(
             String name,
             String fileStem,
@@ -434,6 +473,15 @@ public final class CampaignRunner {
         return cases;
     }
 
+    private static List<ExperimentCase> v8Cases(int legislators, int bills) {
+        List<ExperimentCase> cases = new ArrayList<>(v1Cases(legislators, bills));
+        cases.add(experiment("capture-crisis", "Capture Crisis", "High lobbying, weak constituency pressure, low compromise, and high proposal pressure.",
+                legislators, bills * 3, 3, 0.78, 0.76, 0.94, 0.34, 0.28));
+        cases.add(experiment("popular-anti-lobbying-push", "Popular Anti-Lobbying Push", "High lobbying pressure with stronger public responsiveness and more appetite for reform.",
+                legislators, bills * 2, 3, 0.62, 0.58, 0.86, 0.82, 0.68));
+        return cases;
+    }
+
     private static ExperimentCase experiment(
             String key,
             String name,
@@ -466,7 +514,7 @@ public final class CampaignRunner {
 
     private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,vetoes,overriddenVetoes\n");
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
@@ -493,6 +541,10 @@ public final class CampaignRunner {
                     .append(format(report.popularBillFailureRate())).append(',')
                     .append(format(report.averagePolicyShift())).append(',')
                     .append(format(report.averageProposerGain())).append(',')
+                    .append(format(report.lobbyCaptureIndex())).append(',')
+                    .append(format(report.publicAlignmentScore())).append(',')
+                    .append(format(report.antiLobbyingSuccessRate())).append(',')
+                    .append(format(report.privateGainRatio())).append(',')
                     .append(report.vetoes()).append(',')
                     .append(report.overriddenVetoes()).append('\n');
         }
@@ -523,8 +575,8 @@ public final class CampaignRunner {
         appendHeadlineFindings(builder, result.rows(), aggregateByScenario);
 
         builder.append("## Scenario Averages Across Cases\n\n");
-        builder.append("| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Policy shift | Proposer gain | Challenge | Floor |\n");
-        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+        builder.append("| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Policy shift | Proposer gain | Capture | Anti-lobby pass | Challenge | Floor |\n");
+        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
         aggregateByScenario.values()
                 .stream()
                 .sorted(Comparator.comparing(ScenarioAggregate::scenarioKey))
@@ -537,6 +589,8 @@ public final class CampaignRunner {
                         .append(format(summary.lowSupport())).append(" | ")
                         .append(format(summary.policyShift())).append(" | ")
                         .append(format(summary.proposerGain())).append(" | ")
+                        .append(format(summary.lobbyCapture())).append(" | ")
+                        .append(format(summary.antiLobbyingSuccess())).append(" | ")
                         .append(format(summary.challengeRate())).append(" | ")
                         .append(format(summary.floor())).append(" |\n"));
         builder.append('\n');
@@ -691,6 +745,35 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
+        if (aggregateByScenario.containsKey("default-pass-anti-capture-bundle")) {
+            builder.append("## Anti-Capture Deltas\n\n");
+            builder.append("Delta values compare anti-capture mechanisms against open `default-pass` across all cases. Negative capture and private-gain-ratio deltas are desirable; anti-lobby pass is the share of generated anti-lobbying reform bills enacted.\n\n");
+            builder.append("| Scenario | Productivity delta | Welfare delta | Capture delta | Public-alignment delta | Anti-lobby pass delta | Private-gain-ratio delta | Low-support delta |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            for (String scenarioKey : List.of(
+                    "default-pass-lobby-firewall",
+                    "default-pass-lobby-transparency",
+                    "default-pass-public-interest-screen",
+                    "default-pass-lobby-audit",
+                    "default-pass-anti-capture-bundle"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary != null) {
+                    ScenarioAggregate open = aggregateByScenario.get("default-pass");
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - open.productivity())).append(" | ")
+                            .append(format(summary.welfare() - open.welfare())).append(" | ")
+                            .append(format(summary.lobbyCapture() - open.lobbyCapture())).append(" | ")
+                            .append(format(summary.publicAlignment() - open.publicAlignment())).append(" | ")
+                            .append(format(summary.antiLobbyingSuccess() - open.antiLobbyingSuccess())).append(" | ")
+                            .append(format(summary.privateGainRatio() - open.privateGainRatio())).append(" | ")
+                            .append(format(summary.lowSupport() - open.lowSupport())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
+
         if (aggregateByScenario.containsKey("default-pass-cost")) {
             builder.append("## Proposal-Cost Deltas\n\n");
             builder.append("Delta values compare `default-pass-cost` against open `default-pass` in the same case. Negative enacted-per-run, floor-per-run, low-support, and policy-shift deltas show the proposal-cost screen reducing flooding and volatility.\n\n");
@@ -759,8 +842,14 @@ public final class CampaignRunner {
         if (aggregateByScenario.containsKey("default-pass-cost")) {
             builder.append("- The current cost screen reduces volume, but it also selects for proposals with high proposer value or positive lobby pressure; that makes cost design an object of study, not a solved safeguard.\n");
         }
+        if (aggregateByScenario.containsKey("default-pass-anti-capture-bundle")) {
+            builder.append("- Anti-capture scenarios test whether lobbying pressure can be reduced through vote firewalls, transparency, public-interest screens, audit sanctions, or combined safeguards.\n");
+        }
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        if (aggregateByScenario.containsKey("default-pass-challenge-party-t3-s082")) {
+        if (aggregateByScenario.containsKey("default-pass-anti-capture-bundle")) {
+            builder.append("- Anti-capture mechanisms test lobbying as institutional pressure: anti-lobbying bills now face organized opposition, while high-private-gain bills create measurable capture risk.\n");
+            builder.append("- The next model extension should make lobbying groups explicit actors with budgets, issue targets, defensive spending against anti-lobbying bills, and separate channels for money, information, litigation threat, and public campaigns.\n\n");
+        } else if (aggregateByScenario.containsKey("default-pass-challenge-party-t3-s082")) {
             builder.append("- The challenge sweep compares token budgets, challenge thresholds, party-held tokens, member-held tokens, and tokenless q-member escalation.\n");
             if (aggregateByScenario.containsKey("default-pass-cross-bloc")) {
                 builder.append("- Cross-bloc cosponsorship tests coalition breadth as a pre-floor agenda gate, before default-pass or challenge mechanics can operate.\n");
@@ -770,7 +859,7 @@ public final class CampaignRunner {
                         builder.append("- Sunset trial rules test whether risky default enactments can be made reversible after automatic review.\n");
                         if (aggregateByScenario.containsKey("default-pass-earned-credits")) {
                             builder.append("- Earned proposal credits test whether agenda access can learn from proposer track records instead of using only fixed up-front costs.\n");
-                            builder.append("- The next model extension should add structured amendment or mediation, because the current agenda systems screen and route bills but still rarely change bill content before final yes/no choice.\n\n");
+                            builder.append("- The next model extension should add explicit anti-capture systems, because lobbying currently appears mostly as bill-level pressure rather than as self-protective institutional influence.\n\n");
                         } else {
                             builder.append("- The next model extension should add earned proposal credits, because agenda access still does not learn from proposer track records.\n\n");
                         }
@@ -804,6 +893,7 @@ public final class CampaignRunner {
         ScenarioAggregate adaptive = aggregateByScenario.get("default-pass-adaptive-track");
         ScenarioAggregate sunset = aggregateByScenario.get("default-pass-sunset-trial");
         ScenarioAggregate credits = aggregateByScenario.get("default-pass-earned-credits");
+        ScenarioAggregate antiCaptureBundle = aggregateByScenario.get("default-pass-anti-capture-bundle");
         ScenarioAggregate simpleMajority = aggregateByScenario.get("simple-majority");
         ScenarioAggregate bestWelfare = aggregateByScenario.values()
                 .stream()
@@ -882,6 +972,15 @@ public final class CampaignRunner {
                     .append(format(credits.welfare() - openDefault.welfare()))
                     .append(", and changed proposer gain by ")
                     .append(format(credits.proposerGain() - openDefault.proposerGain()))
+                    .append(" relative to open default-pass.\n");
+        }
+        if (antiCaptureBundle != null) {
+            builder.append("- The anti-capture bundle changed lobby capture by ")
+                    .append(format(antiCaptureBundle.lobbyCapture() - openDefault.lobbyCapture()))
+                    .append(", anti-lobbying reform passage by ")
+                    .append(format(antiCaptureBundle.antiLobbyingSuccess() - openDefault.antiLobbyingSuccess()))
+                    .append(", and private-gain ratio by ")
+                    .append(format(antiCaptureBundle.privateGainRatio() - openDefault.privateGainRatio()))
                     .append(" relative to open default-pass.\n");
         }
         builder.append("- Best average welfare in this campaign came from ")
@@ -974,6 +1073,10 @@ public final class CampaignRunner {
         private double lowSupport;
         private double policyShift;
         private double proposerGain;
+        private double lobbyCapture;
+        private double publicAlignment;
+        private double antiLobbyingSuccess;
+        private double privateGainRatio;
         private double challengeRate;
         private double floor;
         private double accessDenied;
@@ -993,6 +1096,10 @@ public final class CampaignRunner {
             lowSupport += report.controversialPassageRate();
             policyShift += report.averagePolicyShift();
             proposerGain += report.averageProposerGain();
+            lobbyCapture += report.lobbyCaptureIndex();
+            publicAlignment += report.publicAlignmentScore();
+            antiLobbyingSuccess += report.antiLobbyingSuccessRate();
+            privateGainRatio += report.privateGainRatio();
             challengeRate += report.challengeRate();
             floor += report.floorConsiderationRate();
             accessDenied += report.accessDenialRate();
@@ -1027,6 +1134,22 @@ public final class CampaignRunner {
 
         private double proposerGain() {
             return proposerGain / count;
+        }
+
+        private double lobbyCapture() {
+            return lobbyCapture / count;
+        }
+
+        private double publicAlignment() {
+            return publicAlignment / count;
+        }
+
+        private double antiLobbyingSuccess() {
+            return antiLobbyingSuccess / count;
+        }
+
+        private double privateGainRatio() {
+            return privateGainRatio / count;
         }
 
         private double challengeRate() {

@@ -13,6 +13,8 @@ import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.LegislativeProcess;
+import congresssim.institution.LobbyAuditProcess;
+import congresssim.institution.LobbyTransparencyProcess;
 import congresssim.institution.PresidentialVetoProcess;
 import congresssim.institution.ProposalAccessProcess;
 import congresssim.institution.ProposalAccessRules;
@@ -60,8 +62,18 @@ public final class ScenarioCatalog {
     private static List<ScenarioEntry> entries() {
         return List.of(
                 new ScenarioEntry("simple-majority", unicameral("Unicameral simple majority", AffirmativeThresholdRule.simpleMajority())),
+                new ScenarioEntry("simple-majority-lobby-firewall", unicameral(
+                        "Unicameral majority + lobby firewall",
+                        AffirmativeThresholdRule.simpleMajority(),
+                        VotingStrategies.antiCapture()
+                )),
                 new ScenarioEntry("supermajority-60", unicameral("Unicameral 60 percent passage", AffirmativeThresholdRule.supermajority(0.60))),
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
+                new ScenarioEntry("default-pass-lobby-firewall", defaultPassWithLobbyFirewall()),
+                new ScenarioEntry("default-pass-lobby-transparency", defaultPassWithLobbyTransparency()),
+                new ScenarioEntry("default-pass-public-interest-screen", defaultPassWithPublicInterestScreen()),
+                new ScenarioEntry("default-pass-lobby-audit", defaultPassWithLobbyAudit()),
+                new ScenarioEntry("default-pass-anti-capture-bundle", defaultPassWithAntiCaptureBundle()),
                 new ScenarioEntry("default-pass-challenge", defaultPassWithChallengeVouchers()),
                 new ScenarioEntry("default-pass-challenge-info", defaultPassWithChallengeVouchersAndInformation()),
                 new ScenarioEntry("default-pass-cross-bloc", defaultPassWithCrossBlocCosponsorship(
@@ -209,6 +221,105 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("bicameral-majority", bicameral("Bicameral simple majority", AffirmativeThresholdRule.simpleMajority())),
                 new ScenarioEntry("presidential-veto", presidentialVeto())
         );
+    }
+
+    private static Scenario defaultPassWithLobbyFirewall() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + lobby firewall";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.antiCapture();
+                return defaultPassFloorProcess(name(), world, strategy);
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithLobbyTransparency() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + lobby transparency";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new LobbyTransparencyProcess(
+                        name(),
+                        0.72,
+                        0.30,
+                        defaultPassFloorProcess(name(), world, strategy)
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithPublicInterestScreen() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + public-interest screen";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.publicInterestScreen(0.54, 0.58, 2.40, 0.58),
+                        defaultPassFloorProcess(name(), world, strategy)
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithLobbyAudit() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + anti-capture audit";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new LobbyAuditProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        0.08,
+                        0.70,
+                        0.48,
+                        0.50,
+                        true
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithAntiCaptureBundle() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + anti-capture bundle";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.antiCapture();
+                LegislativeProcess process = defaultPassFloorProcess(name(), world, strategy);
+                process = new LobbyAuditProcess(name(), process, 0.10, 0.72, 0.45, 0.55, true);
+                process = new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.publicInterestScreen(0.52, 0.60, 2.50, 0.56),
+                        process
+                );
+                return new LobbyTransparencyProcess(name(), 0.74, 0.34, process);
+            }
+        };
     }
 
     private static Scenario defaultPassWithProposalAccess() {
@@ -775,6 +886,10 @@ public final class ScenarioCatalog {
     }
 
     private static Scenario unicameral(String name, VotingRule rule) {
+        return unicameral(name, rule, VotingStrategies.standard());
+    }
+
+    private static Scenario unicameral(String name, VotingRule rule, VotingStrategy strategy) {
         return new Scenario() {
             @Override
             public String name() {
@@ -783,7 +898,6 @@ public final class ScenarioCatalog {
 
             @Override
             public LegislativeProcess buildProcess(SimulationWorld world) {
-                VotingStrategy strategy = VotingStrategies.standard();
                 Chamber chamber = new Chamber("Congress", world.legislators(), strategy, rule);
                 return new UnicameralProcess(name, chamber);
             }

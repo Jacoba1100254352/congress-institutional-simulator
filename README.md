@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v7.csv`
-- `reports/simulation-campaign-v7.md`
+- `reports/simulation-campaign-v8.csv`
+- `reports/simulation-campaign-v8.md`
 
 Earlier campaigns remain available:
 
@@ -60,6 +60,8 @@ make campaign-v3
 make campaign-v4
 make campaign-v5
 make campaign-v6
+make campaign-v7
+make campaign-v8
 ```
 
 You can override the campaign defaults:
@@ -75,8 +77,14 @@ Full usage documentation lives in [docs/usage.md](docs/usage.md).
 The default CLI compares:
 
 - `simple-majority`: unicameral simple majority
+- `simple-majority-lobby-firewall`: unicameral majority with reduced direct lobby vote influence
 - `supermajority-60`: unicameral 60 percent passage threshold
 - `default-pass`: default passage unless 2/3 vote to block
+- `default-pass-lobby-firewall`: default passage with reduced direct lobby vote influence
+- `default-pass-lobby-transparency`: default passage after disclosure weakens effective lobby pressure and creates backlash against capture-risk bills
+- `default-pass-public-interest-screen`: default passage with an anti-capture public-interest access screen
+- `default-pass-lobby-audit`: default passage with randomized anti-capture audits and sponsor sanctions
+- `default-pass-anti-capture-bundle`: transparency, public-interest screening, audit sanctions, and lower direct lobby vote influence
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers that divert contested bills to active majority vote
 - `default-pass-challenge-info`: default passage with committee information review before challenge-voucher decisions
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate
@@ -122,7 +130,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, or `v7`
+- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`, or `v8`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -145,6 +153,7 @@ Examples:
 - proposal costs: add a `ProposalAccessRule` that prices floor access by expected policy value, public credit, lobby support, or institutional scarcity
 - committee gatekeeping: wrap a floor process with `CommitteeGatekeepingProcess`
 - lobbying: add or replace a `VoteInfluence`
+- anti-capture: wrap a process with `LobbyTransparencyProcess`, `LobbyAuditProcess`, or a `PublicInterestScreenAccessRule`
 - shame/reputation: adjust `StandardInfluences.reputation`
 - committees: add a `LegislativeProcess` that filters bills before chamber votes, or improves bill-quality estimates before members vote
 - courts: add a `LegislativeProcess` wrapper after enactment
@@ -169,6 +178,10 @@ The first metric set is deliberately simple, but it separates throughput from le
 - `popularFail`: share of high-public-support bills that fail
 - `policyShift`: average absolute movement from the prior status quo
 - `propGain`: average enacted movement toward the proposer's ideal point
+- `lobbyCapture`: average enacted-bill capture risk from positive lobby pressure, private gain, and weak public value
+- `publicAlignment`: how closely enacted voting support tracks generated public support
+- `antiLobbyingSuccess`: share of generated anti-lobbying reform bills enacted
+- `privateGainRatio`: enacted private gain relative to generated public benefit
 
 These are not claims about real-world validity. They are hooks for comparing rule sets under shared assumptions.
 
@@ -229,8 +242,17 @@ The v6 campaign adds sunset trial legislation:
 - `default-pass-sunset-challenge` combines the same sunset review with challenge vouchers.
 - The current finding is that reversibility improves enacted-bill welfare and sharply reduces policy shift without using a front-end agenda gate, but it still reduces productivity because failed review rolls the status quo back.
 
-The current v7 campaign adds earned proposal credits:
+The v7 campaign adds earned proposal credits:
 
 - `default-pass-earned-credits` gives proposers stateful agenda credits. A proposal spends credits according to risk, lobby pressure, salience, and public value; after consideration, the proposer earns or loses credits based on generated public benefit, public support, lobby risk, and outcome quality.
 - `default-pass-earned-credits-challenge` combines the same credit budget with challenge-voucher review.
 - The current finding is that earned credits reduce floor load and policy shift more gently than cross-bloc or committee gates. The base credit scenario denies about 20 percent of potential proposals, improves welfare by 0.015, reduces policy shift by 0.159, and reduces proposer gain by 0.032 relative to open default-pass. Combining credits with challenge vouchers is stricter: productivity falls by 0.398, but policy shift falls by 0.416 and proposer gain by 0.191.
+
+The current v8 campaign adds anti-capture stress tests:
+
+- Bill generation now includes ordinary private-gain bills and explicit anti-lobbying reform bills that face negative lobby pressure.
+- `simple-majority-lobby-firewall` and `default-pass-lobby-firewall` reduce direct lobby influence in legislator voting while increasing public/reputation pressure.
+- `default-pass-lobby-transparency` exposes lobbying pressure before consideration, reducing effective lobby pressure and creating public backlash against high-capture proposals.
+- `default-pass-public-interest-screen` denies high-capture, low-public-interest proposals while allowing public-benefit anti-lobbying reforms through the agenda gate.
+- `default-pass-lobby-audit` randomly audits enacted high-capture bills, can reverse failed audits, and sanctions repeat sponsors.
+- `default-pass-anti-capture-bundle` combines transparency, public-interest screening, audit sanctions, and a lower-lobby voting strategy.

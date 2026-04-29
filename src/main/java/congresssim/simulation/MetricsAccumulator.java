@@ -2,6 +2,7 @@ package congresssim.simulation;
 
 import congresssim.institution.BillOutcome;
 import congresssim.institution.AgendaDisposition;
+import congresssim.institution.LobbyCaptureScoring;
 
 final class MetricsAccumulator {
     private int totalBills;
@@ -9,6 +10,8 @@ final class MetricsAccumulator {
     private int controversialEnactedBills;
     private int popularBills;
     private int failedPopularBills;
+    private int antiLobbyingBills;
+    private int enactedAntiLobbyingBills;
     private int floorConsideredBills;
     private int accessDeniedBills;
     private int committeeRejectedBills;
@@ -20,6 +23,9 @@ final class MetricsAccumulator {
     private double compromiseSum;
     private double policyShiftSum;
     private double proposerGainSum;
+    private double lobbyCaptureSum;
+    private double publicAlignmentSum;
+    private double privateGainRatioSum;
 
     void add(BillOutcome outcome) {
         totalBills++;
@@ -47,6 +53,12 @@ final class MetricsAccumulator {
                 overriddenVetoes++;
             }
         }
+        if (outcome.bill().antiLobbyingReform()) {
+            antiLobbyingBills++;
+            if (outcome.enacted()) {
+                enactedAntiLobbyingBills++;
+            }
+        }
 
         if (!outcome.enacted()) {
             return;
@@ -64,6 +76,9 @@ final class MetricsAccumulator {
         double proposerConcession = proposerConcession(outcome);
         compromiseSum += moderation * support * proposerConcession;
         proposerGainSum += proposerGain(outcome);
+        lobbyCaptureSum += LobbyCaptureScoring.captureRisk(outcome.bill());
+        publicAlignmentSum += LobbyCaptureScoring.publicAlignment(support, outcome.bill());
+        privateGainRatioSum += LobbyCaptureScoring.privateGainRatio(outcome.bill());
     }
 
     ScenarioReport toReport(String scenarioName) {
@@ -72,6 +87,9 @@ final class MetricsAccumulator {
         double avgPublicBenefit = enactedBills == 0 ? 0.0 : enactedPublicBenefitSum / enactedBills;
         double compromise = enactedBills == 0 ? 0.0 : compromiseSum / enactedBills;
         double controversial = ratio(controversialEnactedBills, enactedBills);
+        double lobbyCapture = enactedBills == 0 ? 0.0 : lobbyCaptureSum / enactedBills;
+        double publicAlignment = enactedBills == 0 ? 0.0 : publicAlignmentSum / enactedBills;
+        double privateGainRatio = enactedBills == 0 ? 0.0 : privateGainRatioSum / enactedBills;
         return new ScenarioReport(
                 scenarioName,
                 totalBills,
@@ -86,6 +104,10 @@ final class MetricsAccumulator {
                 ratio(failedPopularBills, popularBills),
                 totalBills == 0 ? 0.0 : policyShiftSum / totalBills,
                 enactedBills == 0 ? 0.0 : proposerGainSum / enactedBills,
+                lobbyCapture,
+                publicAlignment,
+                ratio(enactedAntiLobbyingBills, antiLobbyingBills),
+                privateGainRatio,
                 ratio(floorConsideredBills, totalBills),
                 ratio(accessDeniedBills, totalBills),
                 ratio(committeeRejectedBills, totalBills),

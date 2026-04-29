@@ -114,6 +114,13 @@ public final class Main {
                         options.bills,
                         options.seed
                 );
+                case "v8" -> CampaignRunner.runV8(
+                        options.outputDir,
+                        options.runs,
+                        options.legislators,
+                        options.bills,
+                        options.seed
+                );
                 default -> throw new IllegalArgumentException("Unknown campaign: " + options.campaignName);
             };
             System.out.println(result.name() + " complete.");
@@ -152,16 +159,17 @@ public final class Main {
             return;
         }
 
-        System.out.printf("%-48s %8s %8s %10s %8s %8s %9s %9s %9s %10s %10s %10s%n",
+        System.out.printf("%-48s %8s %8s %10s %8s %8s %8s %9s %9s %10s %10s %10s %10s%n",
                 "Scenario",
                 "Prod",
                 "Floor",
                 "AvgSupport",
                 "Welfare",
                 "Compromise",
+                "Capture",
                 "AccessD",
                 "CmteRej",
-                "Challenge",
+                "AntiLobby",
                 "LowSupport",
                 "PolicyShift",
                 "PropGain"
@@ -169,16 +177,17 @@ public final class Main {
         System.out.println("-".repeat(151));
 
         for (ScenarioReport report : reports) {
-            System.out.printf("%-48s %8.3f %8.3f %10.3f %8.3f %8.3f %9.3f %9.3f %9.3f %10.3f %10.3f %10.3f%n",
+            System.out.printf("%-48s %8.3f %8.3f %10.3f %8.3f %8.3f %8.3f %9.3f %9.3f %10.3f %10.3f %10.3f %10.3f%n",
                     report.scenarioName(),
                     report.productivity(),
                     report.floorConsiderationRate(),
                     report.averageEnactedSupport(),
                     report.averagePublicBenefit(),
                     report.compromiseScore(),
+                    report.lobbyCaptureIndex(),
                     report.accessDenialRate(),
                     report.committeeRejectionRate(),
-                    report.challengeRate(),
+                    report.antiLobbyingSuccessRate(),
                     report.controversialPassageRate(),
                     report.averagePolicyShift(),
                     report.averageProposerGain()
@@ -191,10 +200,10 @@ public final class Main {
     }
 
     private static void printCsv(List<ScenarioReport> reports) {
-        System.out.println("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,vetoes,overriddenVetoes");
+        System.out.println("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,vetoes,overriddenVetoes");
         for (ScenarioReport report : reports) {
             System.out.printf(Locale.ROOT,
-                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d%n",
+                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d%n",
                     report.scenarioName(),
                     report.totalBills(),
                     report.enactedBills(),
@@ -212,6 +221,10 @@ public final class Main {
                     report.popularBillFailureRate(),
                     report.averagePolicyShift(),
                     report.averageProposerGain(),
+                    report.lobbyCaptureIndex(),
+                    report.publicAlignmentScore(),
+                    report.antiLobbyingSuccessRate(),
+                    report.privateGainRatio(),
                     report.vetoes(),
                     report.overriddenVetoes()
             );
@@ -471,7 +484,7 @@ public final class Main {
                       --scenarios <keys>  Comma-separated scenario keys
                       --format <kind>     table, csv, or bars
                       --charts            Add ASCII bar charts after the table
-                      --campaign <name>   Run a named campaign, currently v0, v1, v2, v3, v4, v5, v6, or v7
+                      --campaign <name>   Run a named campaign, currently v0, v1, v2, v3, v4, v5, v6, v7, or v8
                       --output-dir <path> Campaign output directory
                       --seed <n>          Reproducible random seed
                       --help              Show this message
