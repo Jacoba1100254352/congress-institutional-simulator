@@ -26,16 +26,39 @@ final class ChallengeTokenBank {
         return new ChallengeTokenBank(tokens);
     }
 
-    boolean hasToken(String party) {
-        return remainingTokens.getOrDefault(party, 0) > 0;
+    static ChallengeTokenBank byLegislator(List<Legislator> legislators, int tokensPerLegislator) {
+        if (tokensPerLegislator < 0) {
+            throw new IllegalArgumentException("tokensPerLegislator must not be negative.");
+        }
+
+        Map<String, Integer> tokens = new LinkedHashMap<>();
+        for (Legislator legislator : legislators) {
+            tokens.put(legislator.id(), tokensPerLegislator);
+        }
+        return new ChallengeTokenBank(tokens);
     }
 
-    void spend(String party) {
-        int remaining = remainingTokens.getOrDefault(party, 0);
+    static ChallengeTokenBank create(
+            List<Legislator> legislators,
+            ChallengeTokenAllocation allocation,
+            int tokensPerOwner
+    ) {
+        return switch (allocation) {
+            case PARTY -> byParty(legislators, tokensPerOwner);
+            case LEGISLATOR -> byLegislator(legislators, tokensPerOwner);
+        };
+    }
+
+    boolean hasToken(String owner) {
+        return remainingTokens.getOrDefault(owner, 0) > 0;
+    }
+
+    void spend(String owner) {
+        int remaining = remainingTokens.getOrDefault(owner, 0);
         if (remaining <= 0) {
-            throw new IllegalStateException("No challenge tokens remain for " + party + ".");
+            throw new IllegalStateException("No challenge tokens remain for " + owner + ".");
         }
-        remainingTokens.put(party, remaining - 1);
+        remainingTokens.put(owner, remaining - 1);
         spentTokens++;
     }
 

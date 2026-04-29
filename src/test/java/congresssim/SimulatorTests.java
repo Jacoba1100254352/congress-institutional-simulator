@@ -8,6 +8,8 @@ import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.AgendaDisposition;
 import congresssim.institution.BillOutcome;
 import congresssim.institution.Chamber;
+import congresssim.institution.ChallengeEscalationProcess;
+import congresssim.institution.ChallengeTokenAllocation;
 import congresssim.institution.ChallengeVoucherProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
@@ -40,6 +42,7 @@ public final class SimulatorTests {
         proposalAccessCanDenyLowViabilityBills();
         proposalCostsCanDenyLowValueBills();
         challengeVouchersRouteHighRiskBillsToActiveVote();
+        challengeEscalationRoutesBroadlyContestedBillsToActiveVote();
         committeeGateBlocksBillsBeforeFloor();
         committeeInformationMovesPublicSignalTowardBenefit();
         committeeCompositionPresetsSelectDifferentMembers();
@@ -112,6 +115,7 @@ public final class SimulatorTests {
                 "challenge test",
                 legislators,
                 (legislator, testedBill, voteContext) -> Vote.NAY,
+                ChallengeTokenAllocation.PARTY,
                 1,
                 0.10,
                 activeVote
@@ -119,6 +123,47 @@ public final class SimulatorTests {
 
         assertTrue(outcome.challenged(), "High-risk bills should consume a challenge voucher.");
         assertFalse(outcome.enacted(), "Challenged bills should use the configured active-vote path.");
+    }
+
+    private static void challengeEscalationRoutesBroadlyContestedBillsToActiveVote() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Opposition", -0.9, 0.7, 0.6, 0.8, 0.2, 0.8),
+                new Legislator("L-2", "Opposition", -0.7, 0.7, 0.6, 0.8, 0.2, 0.8),
+                new Legislator("L-3", "Sponsor", 0.8, 0.4, 0.6, 0.5, 0.2, 0.5)
+        );
+        LegislativeProcess activeVote = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "active vote";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        context.currentPolicyPosition(),
+                        false,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "failed active vote"
+                );
+            }
+        };
+
+        Bill bill = new Bill("B-risk", "Risky Bill", "L-3", 0.8, 0.95, 0.05, 0.15, 0.6, 0.90);
+        VoteContext context = new VoteContext(Map.of("Opposition", -0.8, "Sponsor", 0.8), new Random(2L), 0.0);
+        BillOutcome outcome = new ChallengeEscalationProcess(
+                "challenge escalation test",
+                legislators,
+                (legislator, testedBill, voteContext) -> Vote.NAY,
+                2,
+                0.10,
+                activeVote
+        ).consider(bill, context);
+
+        assertTrue(outcome.challenged(), "Broadly contested bills should trigger q-member escalation.");
+        assertFalse(outcome.enacted(), "Escalated bills should use the configured active-vote path.");
     }
 
     private static void committeeGateBlocksBillsBeforeFloor() {
@@ -243,6 +288,10 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-challenge"),
                 "Scenario catalog should expose CLI-facing keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-escalation-q12-s082"),
+                "Scenario catalog should expose tokenless escalation sweep keys."
         );
     }
 

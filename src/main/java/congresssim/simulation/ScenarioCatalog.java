@@ -5,6 +5,8 @@ import congresssim.behavior.VotingStrategy;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.BicameralProcess;
 import congresssim.institution.Chamber;
+import congresssim.institution.ChallengeEscalationProcess;
+import congresssim.institution.ChallengeTokenAllocation;
 import congresssim.institution.ChallengeVoucherProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
@@ -59,6 +61,87 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
                 new ScenarioEntry("default-pass-challenge", defaultPassWithChallengeVouchers()),
                 new ScenarioEntry("default-pass-challenge-info", defaultPassWithChallengeVouchersAndInformation()),
+                new ScenarioEntry("default-pass-challenge-party-t3-s082", defaultPassWithChallengeVouchers(
+                        "Default pass + party challenge vouchers t=3 s=.82",
+                        ChallengeTokenAllocation.PARTY,
+                        3,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-challenge-party-t6-s082", defaultPassWithChallengeVouchers(
+                        "Default pass + party challenge vouchers t=6 s=.82",
+                        ChallengeTokenAllocation.PARTY,
+                        6,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-challenge-party-t15-s082", defaultPassWithChallengeVouchers(
+                        "Default pass + party challenge vouchers t=15 s=.82",
+                        ChallengeTokenAllocation.PARTY,
+                        15,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-challenge-party-t25-s082", defaultPassWithChallengeVouchers(
+                        "Default pass + party challenge vouchers t=25 s=.82",
+                        ChallengeTokenAllocation.PARTY,
+                        25,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-challenge-party-t10-s050", defaultPassWithChallengeVouchers(
+                        "Default pass + party challenge vouchers t=10 s=.50",
+                        ChallengeTokenAllocation.PARTY,
+                        10,
+                        0.50
+                )),
+                new ScenarioEntry("default-pass-challenge-party-t10-s065", defaultPassWithChallengeVouchers(
+                        "Default pass + party challenge vouchers t=10 s=.65",
+                        ChallengeTokenAllocation.PARTY,
+                        10,
+                        0.65
+                )),
+                new ScenarioEntry("default-pass-challenge-party-t10-s100", defaultPassWithChallengeVouchers(
+                        "Default pass + party challenge vouchers t=10 s=1.00",
+                        ChallengeTokenAllocation.PARTY,
+                        10,
+                        1.00
+                )),
+                new ScenarioEntry("default-pass-challenge-party-t10-s125", defaultPassWithChallengeVouchers(
+                        "Default pass + party challenge vouchers t=10 s=1.25",
+                        ChallengeTokenAllocation.PARTY,
+                        10,
+                        1.25
+                )),
+                new ScenarioEntry("default-pass-challenge-member-t1-s082", defaultPassWithChallengeVouchers(
+                        "Default pass + member challenge vouchers t=1 s=.82",
+                        ChallengeTokenAllocation.LEGISLATOR,
+                        1,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-challenge-member-t2-s082", defaultPassWithChallengeVouchers(
+                        "Default pass + member challenge vouchers t=2 s=.82",
+                        ChallengeTokenAllocation.LEGISLATOR,
+                        2,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-challenge-member-t3-s082", defaultPassWithChallengeVouchers(
+                        "Default pass + member challenge vouchers t=3 s=.82",
+                        ChallengeTokenAllocation.LEGISLATOR,
+                        3,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-escalation-q6-s082", defaultPassWithChallengeEscalation(
+                        "Default pass + q=6 challenge escalation s=.82",
+                        6,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-escalation-q12-s082", defaultPassWithChallengeEscalation(
+                        "Default pass + q=12 challenge escalation s=.82",
+                        12,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-escalation-q20-s082", defaultPassWithChallengeEscalation(
+                        "Default pass + q=20 challenge escalation s=.82",
+                        20,
+                        0.82
+                )),
                 new ScenarioEntry("default-pass-access", defaultPassWithProposalAccess()),
                 new ScenarioEntry("default-pass-cost", defaultPassWithProposalCost()),
                 new ScenarioEntry("default-pass-cost-guarded", defaultPassWithCostAndGuardrails()),
@@ -131,10 +214,24 @@ public final class ScenarioCatalog {
     }
 
     private static Scenario defaultPassWithChallengeVouchers() {
+        return defaultPassWithChallengeVouchers(
+                "Default pass + challenge vouchers",
+                ChallengeTokenAllocation.PARTY,
+                10,
+                0.82
+        );
+    }
+
+    private static Scenario defaultPassWithChallengeVouchers(
+            String scenarioName,
+            ChallengeTokenAllocation allocation,
+            int tokensPerOwner,
+            double challengeThreshold
+    ) {
         return new Scenario() {
             @Override
             public String name() {
-                return "Default pass + challenge vouchers";
+                return scenarioName;
             }
 
             @Override
@@ -150,8 +247,41 @@ public final class ScenarioCatalog {
                         name(),
                         world.legislators(),
                         strategy,
-                        10,
-                        0.82,
+                        allocation,
+                        tokensPerOwner,
+                        challengeThreshold,
+                        new UnicameralProcess(name(), activeVoteChamber)
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithChallengeEscalation(
+            String scenarioName,
+            int minimumChallengers,
+            double challengeThreshold
+    ) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return scenarioName;
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                Chamber activeVoteChamber = new Chamber(
+                        "Congress",
+                        world.legislators(),
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                return new ChallengeEscalationProcess(
+                        name(),
+                        world.legislators(),
+                        strategy,
+                        minimumChallengers,
+                        challengeThreshold,
                         new UnicameralProcess(name(), activeVoteChamber)
                 );
             }

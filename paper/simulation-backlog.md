@@ -2,31 +2,40 @@
 
 This file lists the exact simulations that should be added before treating the paper draft as more than an exploratory working paper.
 
-## Immediate Priority
+## Completed Simulation Increments
 
 ### 1. Challenge-Voucher Parameter Sweep
 
 Purpose: determine whether scarce contestation rights can preserve default-pass throughput while reducing low-support passage, policy shift, and proposer gain.
 
-Add campaign `v3-challenge-sweep` with:
+Implemented campaign `simulation-campaign-v3` with:
 
 - `tokensPerParty`: 3, 6, 10, 15, 25
 - `challengeThreshold`: 0.50, 0.65, 0.82, 1.00, 1.25
-- allocation mode: per-party fixed, per-party proportional to seats, minority bonus, per-legislator
-- challenged path: simple majority active vote, 60 percent active vote, committee review, committee information plus active vote
+- allocation mode: fixed per-party and per-legislator
+- tokenless q-member escalation at q=6, q=12, and q=20
+- challenged path: simple majority active vote
 
-Run for:
+Run for the full v1/v2 assumption set:
 
 - baseline
+- low-polarization
+- high-polarization
+- low-party-loyalty
+- high-party-loyalty
+- low-compromise
+- high-compromise
+- low-lobbying
+- high-lobbying
+- weak-constituency
 - two-party
 - multi-party
-- high-polarization
 - high-proposal-pressure
 - extreme-proposal-pressure
 - lobby-fueled-flooding
 - low-compromise-flooding
 
-Report:
+Reported:
 
 - productivity
 - enacted/run
@@ -35,14 +44,103 @@ Report:
 - policy shift
 - proposer gain
 - welfare
+
+Current finding:
+
+- fixed party-token budgets produce a throughput/safety frontier. Three tokens per party preserves high throughput but barely reduces low-support passage. Ten tokens per party is the middle path. Higher party-token budgets, per-legislator tokens, and q-member escalation reduce low-support passage and policy shift much more, but at costs that approach heavy review.
+
+Still not implemented:
+
+- per-party proportional tokens
+- minority-bonus token allocation
+- challenged paths using 60 percent vote, committee review, or committee information plus active vote
 - token exhaustion by party or bloc
 - false-negative pass rate once a welfare/legitimacy classifier exists
 
+## Immediate Priority
+
+### 2. Cross-Bloc Cosponsorship Gate
+
+Purpose: test whether proposal access based on coalition breadth reduces proposer gain without relying on committee gatekeeping or scalar costs.
+
+Add scenarios:
+
+- `default-pass-cross-bloc`
+- `default-pass-cross-bloc-soft`
+- `default-pass-cross-bloc-challenge`
+
+Report:
+
+- floor/run
+- productivity
+- cross-party or cross-bloc admission rate
+- low-support passage
+- policy shift
+- proposer gain
+- public welfare
+
 Decision target:
 
-- identify whether challenge vouchers work best as fixed scarce rights, proportional rights, or minority-protection rights.
+- identify whether requiring at least one ideologically distant or cross-party sponsor screens the agenda more cleanly than proposal costs.
 
-### 2. Proposal-Cost Parameter Sweep
+### 3. Adaptive Procedural Tracks
+
+Purpose: stop treating all bills as identical procedural objects.
+
+Add scenarios:
+
+- `default-pass-adaptive-track`
+- `default-pass-adaptive-track-challenge`
+
+Routing criteria:
+
+- salience
+- public support
+- policy shift
+- lobby pressure
+- generated public benefit
+
+Decision target:
+
+- identify whether default enactment works better as a fast lane for low-risk bills than as a universal rule.
+
+### 4. Sunset Trial Legislation
+
+Purpose: test whether reversibility reduces the permanent harm of weakly supported default enactments.
+
+Add scenarios:
+
+- `default-pass-sunset-trial`
+- `default-pass-sunset-challenge`
+
+Report:
+
+- enacted/run
+- active law welfare
+- repeal or nonrenewal rate
+- policy volatility
+- low-support active law share
+
+### 5. Earned Proposal Credits
+
+Purpose: replace the current scalar proposal-cost rule with agenda rights earned or lost through prior proposal quality.
+
+Add scenarios:
+
+- `default-pass-earned-credits`
+- `default-pass-earned-credits-challenge`
+
+Report:
+
+- proposer concentration
+- floor/run
+- low-support passage
+- proposer gain
+- welfare per submitted bill
+
+## Later Priority
+
+### 6. Proposal-Cost Parameter Sweep
 
 Purpose: determine whether the current proposal-cost finding is robust or an artifact of one cost formula.
 

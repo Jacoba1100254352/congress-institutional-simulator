@@ -52,7 +52,9 @@ make paper
 The generated PDF is written to:
 
 ```text
-paper/build/main.pdf
+paper/main.pdf
 ```
 
-Build output is ignored by Git.
+The intermediate build directory is ignored by Git. The stable `paper/main.pdf`
+artifact is intentionally tracked so the repository contains the current paper
+PDF without requiring a local LaTeX build first.

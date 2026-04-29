@@ -52,6 +52,27 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> CHALLENGE_SWEEP_SCENARIOS = List.of(
+            "simple-majority",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-informed-guarded",
+            "default-pass-challenge",
+            "default-pass-challenge-party-t3-s082",
+            "default-pass-challenge-party-t6-s082",
+            "default-pass-challenge-party-t15-s082",
+            "default-pass-challenge-party-t25-s082",
+            "default-pass-challenge-party-t10-s050",
+            "default-pass-challenge-party-t10-s065",
+            "default-pass-challenge-party-t10-s100",
+            "default-pass-challenge-party-t10-s125",
+            "default-pass-challenge-member-t1-s082",
+            "default-pass-challenge-member-t2-s082",
+            "default-pass-challenge-member-t3-s082",
+            "default-pass-escalation-q6-s082",
+            "default-pass-escalation-q12-s082",
+            "default-pass-escalation-q20-s082"
+    );
 
     private CampaignRunner() {
     }
@@ -109,6 +130,26 @@ public final class CampaignRunner {
                 outputDir,
                 v1Cases(legislators, bills),
                 CHALLENGE_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV3(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v3",
+                "simulation-campaign-v3",
+                outputDir,
+                v1Cases(legislators, bills),
+                CHALLENGE_SWEEP_SCENARIOS,
                 runs,
                 legislators,
                 bills,
@@ -335,6 +376,27 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
+        if (aggregateByScenario.containsKey("default-pass-challenge-party-t3-s082")
+                || aggregateByScenario.containsKey("default-pass-escalation-q6-s082")) {
+            builder.append("## Challenge Sweep Summary\n\n");
+            builder.append("Delta values compare each challenge variant against open `default-pass` across all cases. Negative low-support, policy-shift, and proposer-gain deltas are desirable; productivity deltas show the throughput cost or gain.\n\n");
+            builder.append("| Scenario | Productivity delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Challenge rate |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: |\n");
+            for (ScenarioAggregate summary : aggregateByScenario.values()) {
+                if (summary.scenarioKey().startsWith("default-pass-challenge")
+                        || summary.scenarioKey().startsWith("default-pass-escalation")) {
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - aggregateByScenario.get("default-pass").productivity())).append(" | ")
+                            .append(format(summary.lowSupport() - aggregateByScenario.get("default-pass").lowSupport())).append(" | ")
+                            .append(format(summary.policyShift() - aggregateByScenario.get("default-pass").policyShift())).append(" | ")
+                            .append(format(summary.proposerGain() - aggregateByScenario.get("default-pass").proposerGain())).append(" | ")
+                            .append(format(summary.challengeRate())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
+
         if (aggregateByScenario.containsKey("default-pass-cost")) {
             builder.append("## Proposal-Cost Deltas\n\n");
             builder.append("Delta values compare `default-pass-cost` against open `default-pass` in the same case. Negative enacted-per-run, floor-per-run, low-support, and policy-shift deltas show the proposal-cost screen reducing flooding and volatility.\n\n");
@@ -396,11 +458,20 @@ public final class CampaignRunner {
         builder.append("## Interpretation\n\n");
         builder.append("- Open default-pass is consistently the throughput leader, but it also carries high low-support passage, high policy movement, and high proposer gain.\n");
         builder.append("- Guarded default-pass variants trade productivity for lower volatility and lower proposer advantage.\n");
-        builder.append("- Proposal-cost screens are useful for measuring flooding as institutional load: floor/run and enacted/run expose costs hidden by percentage-only metrics.\n");
+        if (aggregateByScenario.containsKey("default-pass-cost")) {
+            builder.append("- Proposal-cost screens are useful for measuring flooding as institutional load: floor/run and enacted/run expose costs hidden by percentage-only metrics.\n");
+        }
         builder.append("- Challenge vouchers test whether default-pass can preserve throughput while forcing only the most contested bills into active votes.\n");
-        builder.append("- The current cost screen reduces volume, but it also selects for proposals with high proposer value or positive lobby pressure; that makes cost design an object of study, not a solved safeguard.\n");
+        if (aggregateByScenario.containsKey("default-pass-cost")) {
+            builder.append("- The current cost screen reduces volume, but it also selects for proposals with high proposer value or positive lobby pressure; that makes cost design an object of study, not a solved safeguard.\n");
+        }
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        builder.append("- The next model extension should sweep challenge-token budgets, challenge thresholds, and proposal-cost mechanisms, because agenda screening is now the central default-pass tradeoff.\n\n");
+        if (aggregateByScenario.containsKey("default-pass-challenge-party-t3-s082")) {
+            builder.append("- The challenge sweep compares token budgets, challenge thresholds, party-held tokens, member-held tokens, and tokenless q-member escalation.\n");
+            builder.append("- The next model extension should add coalition-breadth proposal access, because challenge mechanics still operate after a bill enters the agenda.\n\n");
+        } else {
+            builder.append("- The next model extension should sweep challenge-token budgets, challenge thresholds, and proposal-cost mechanisms, because agenda screening is now the central default-pass tradeoff.\n\n");
+        }
         builder.append("## Reproduction\n\n");
         builder.append("```sh\nmake campaign\n```\n");
         return builder.toString();

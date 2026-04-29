@@ -1,7 +1,7 @@
 MAIN_SOURCES := $(shell find src/main/java -name '*.java')
 TEST_SOURCES := $(shell find src/test/java -name '*.java')
 
-.PHONY: build run campaign campaign-v0 campaign-v1 campaign-v2 paper paper-clean test clean
+.PHONY: build run campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 paper paper-clean test clean
 
 build:
 	mkdir -p out/main
@@ -11,9 +11,12 @@ run: build
 	java -cp out/main congresssim.Main $(ARGS)
 
 campaign: build
-	java -cp out/main congresssim.Main --campaign v2 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+	java -cp out/main congresssim.Main --campaign v3 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
 
-campaign-v2: campaign
+campaign-v3: campaign
+
+campaign-v2: build
+	java -cp out/main congresssim.Main --campaign v2 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
 
 campaign-v1: build
 	java -cp out/main congresssim.Main --campaign v1 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
@@ -23,6 +26,7 @@ campaign-v0: build
 
 paper:
 	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
+	cp paper/build/main.pdf paper/main.pdf
 
 paper-clean:
 	cd paper && latexmk -C -outdir=build main.tex

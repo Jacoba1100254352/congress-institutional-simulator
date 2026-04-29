@@ -47,6 +47,12 @@ Run the v1 proposal-cost/flooding campaign:
 make campaign-v1
 ```
 
+Run the v2 challenge-voucher campaign:
+
+```sh
+make campaign-v2
+```
+
 Remove generated build output:
 
 ```sh
@@ -99,7 +105,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0|v1|v2>`: run a named campaign.
+- `--campaign <v0|v1|v2|v3>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -113,6 +119,15 @@ The default CLI scenario set includes:
 - `default-pass`: default passage unless two-thirds vote to block.
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers.
 - `default-pass-challenge-info`: default passage with committee information before challenge-voucher decisions.
+- `default-pass-challenge-party-t3-s082`: party-held challenge voucher sweep point with 3 tokens per party and challenge threshold 0.82.
+- `default-pass-challenge-party-t25-s082`: party-held challenge voucher sweep point with 25 tokens per party and challenge threshold 0.82.
+- `default-pass-challenge-party-t10-s050`: party-held challenge voucher sweep point with 10 tokens per party and challenge threshold 0.50.
+- `default-pass-challenge-party-t10-s125`: party-held challenge voucher sweep point with 10 tokens per party and challenge threshold 1.25.
+- `default-pass-challenge-member-t1-s082`: legislator-held challenge voucher sweep point with 1 token per legislator.
+- `default-pass-challenge-member-t3-s082`: legislator-held challenge voucher sweep point with 3 tokens per legislator.
+- `default-pass-escalation-q6-s082`: tokenless q-member challenge escalation with 6 challengers required.
+- `default-pass-escalation-q12-s082`: tokenless q-member challenge escalation with 12 challengers required.
+- `default-pass-escalation-q20-s082`: tokenless q-member challenge escalation with 20 challengers required.
 - `default-pass-access`: default passage with a proposal-access screen.
 - `default-pass-cost`: default passage with a proposal-cost screen.
 - `default-pass-cost-guarded`: default passage with proposal costs, proposal access, committee information, and committee gatekeeping.
@@ -134,8 +149,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v2.csv`
-- `reports/simulation-campaign-v2.md`
+- `reports/simulation-campaign-v3.csv`
+- `reports/simulation-campaign-v3.md`
 
 Earlier campaign:
 
@@ -143,6 +158,8 @@ Earlier campaign:
 - `reports/simulation-campaign-v0.md`
 - `reports/simulation-campaign-v1.csv`
 - `reports/simulation-campaign-v1.md`
+- `reports/simulation-campaign-v2.csv`
+- `reports/simulation-campaign-v2.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -159,7 +176,7 @@ The simulator reports several metrics because passage volume alone is not enough
 - `gridlock`: share of potential bills not enacted.
 - `accessD`: share of potential bills denied by proposal-access rules.
 - `cmteRej`: share of potential bills rejected by committee.
-- `challengeRate`: share of potential bills diverted from default enactment into active voting by challenge vouchers.
+- `challengeRate`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member escalation.
 - `lowSupport`: enacted bills with less than 50 percent yes support.
 - `popularFail`: high-public-support bills that fail.
 - `policyShift`: average movement away from the prior status quo.

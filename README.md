@@ -47,14 +47,15 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v2.csv`
-- `reports/simulation-campaign-v2.md`
+- `reports/simulation-campaign-v3.csv`
+- `reports/simulation-campaign-v3.md`
 
 Earlier campaigns remain available:
 
 ```sh
 make campaign-v0
 make campaign-v1
+make campaign-v2
 ```
 
 You can override the campaign defaults:
@@ -74,6 +75,7 @@ The default CLI compares:
 - `default-pass`: default passage unless 2/3 vote to block
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers that divert contested bills to active majority vote
 - `default-pass-challenge-info`: default passage with committee information review before challenge-voucher decisions
+- challenge-sweep keys such as `default-pass-challenge-party-t3-s082`, `default-pass-challenge-member-t1-s082`, and `default-pass-escalation-q12-s082`
 - `default-pass-access`: default passage unless 2/3 vote to block, with a proposal-access screen
 - `default-pass-cost`: default passage unless 2/3 vote to block, with a proposal-cost screen
 - `default-pass-cost-guarded`: default passage with proposal costs, proposal access, committee information, and committee gatekeeping
@@ -107,7 +109,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0`, `v1`, or `v2`
+- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, or `v3`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -142,7 +144,7 @@ The first metric set is deliberately simple, but it separates throughput from le
 - `productivity`: share of introduced bills enacted
 - `floor`: share of potential bills that reached floor consideration
 - campaign reports also track `enactedPerRun` and `floorPerRun` so proposal flooding is visible as institutional load, not only as percentages
-- `challengeRate`: share of potential bills diverted from default enactment into active voting by challenge vouchers
+- `challengeRate`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member challenge escalation
 - `avgSupport`: average yay share for enacted bills
 - `welfare`: average public-benefit score for enacted bills
 - `cooperation`: productivity multiplied by enacted support
@@ -181,8 +183,16 @@ The current v1 campaign adds proposal flooding and proposal costs:
 - The flooding cases increase potential bills per run by 3x or 5x, with variants for high lobbying and low compromise.
 - The first finding is mixed: proposal costs substantially reduce floor load and enactment volume, but the current cost formula also selects for high proposer gain and positive lobby pressure. That makes cost design itself a modeling target.
 
-The current v2 campaign adds challenge vouchers:
+The v2 campaign adds challenge vouchers:
 
 - `default-pass-challenge` gives each party a scarce challenge-token budget; unchallenged bills default enact, while challenged bills go to active majority vote.
 - `default-pass-challenge-info` first lets a representative committee improve the public-support signal, then applies the same challenge-voucher mechanism.
 - This tests whether default-pass can keep some throughput advantage while forcing the most contested bills into a stronger affirmative-vote path.
+
+The current v3 campaign sweeps challenge mechanics:
+
+- party token budgets: 3, 6, 10, 15, and 25 tokens per party at the baseline challenge threshold
+- challenge thresholds: 0.50, 0.65, 0.82, 1.00, and 1.25 with 10 party tokens
+- member token budgets: 1, 2, and 3 tokens per legislator
+- tokenless escalation: q-member challenge thresholds at q=6, q=12, and q=20
+- The current finding is a throughput/safety frontier: low token budgets preserve or even increase throughput but barely reduce low-support passage, while member-token and q-member escalation variants cut low-support passage and policy shift much more at a large productivity cost.

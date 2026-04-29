@@ -13,6 +13,7 @@ public final class ChallengeVoucherProcess implements LegislativeProcess {
     private final Chamber supportProbe;
     private final LegislativeProcess challengedProcess;
     private final ChallengeTokenBank tokenBank;
+    private final ChallengeTokenAllocation allocation;
     private final double challengeThreshold;
 
     public ChallengeVoucherProcess(
@@ -20,6 +21,26 @@ public final class ChallengeVoucherProcess implements LegislativeProcess {
             List<Legislator> legislators,
             VotingStrategy votingStrategy,
             int tokensPerParty,
+            double challengeThreshold,
+            LegislativeProcess challengedProcess
+    ) {
+        this(
+                name,
+                legislators,
+                votingStrategy,
+                ChallengeTokenAllocation.PARTY,
+                tokensPerParty,
+                challengeThreshold,
+                challengedProcess
+        );
+    }
+
+    public ChallengeVoucherProcess(
+            String name,
+            List<Legislator> legislators,
+            VotingStrategy votingStrategy,
+            ChallengeTokenAllocation allocation,
+            int tokensPerOwner,
             double challengeThreshold,
             LegislativeProcess challengedProcess
     ) {
@@ -38,7 +59,8 @@ public final class ChallengeVoucherProcess implements LegislativeProcess {
                 AffirmativeThresholdRule.simpleMajority()
         );
         this.challengedProcess = challengedProcess;
-        this.tokenBank = ChallengeTokenBank.byParty(legislators, tokensPerParty);
+        this.allocation = allocation;
+        this.tokenBank = ChallengeTokenBank.create(legislators, allocation, tokensPerOwner);
         this.challengeThreshold = challengeThreshold;
     }
 
@@ -51,9 +73,9 @@ public final class ChallengeVoucherProcess implements LegislativeProcess {
     public BillOutcome consider(Bill bill, VoteContext context) {
         ChallengeDecision decision = challengeDecision(bill, context);
         if (decision.challenged()) {
-            tokenBank.spend(decision.party());
+            tokenBank.spend(decision.owner());
             BillOutcome outcome = challengedProcess.consider(bill, context);
-            return outcome.withChallenge("challenged by " + decision.party() + "; " + outcome.finalReason());
+            return outcome.withChallenge("challenged by " + decision.label() + "; " + outcome.finalReason());
         }
 
         ChamberVoteResult supportResult = supportProbe.voteOn(bill, context);
@@ -70,53 +92,28 @@ public final class ChallengeVoucherProcess implements LegislativeProcess {
     }
 
     private ChallengeDecision challengeDecision(Bill bill, VoteContext context) {
-        String strongestParty = "";
+        String strongestOwner = "";
+        String strongestLabel = "";
         double strongestChallenge = Double.NEGATIVE_INFINITY;
         for (Legislator legislator : legislators) {
-            if (!tokenBank.hasToken(legislator.party())) {
+            String owner = allocation.ownerOf(legislator);
+            if (!tokenBank.hasToken(owner)) {
                 continue;
             }
-            double score = challengeUtility(legislator, bill, context);
+            double score = ChallengeScoring.challengeUtility(legislator, bill, context);
             if (score > strongestChallenge) {
                 strongestChallenge = score;
-                strongestParty = legislator.party();
+                strongestOwner = owner;
+                strongestLabel = allocation.labelFor(legislator);
             }
         }
 
         if (strongestChallenge >= challengeThreshold) {
-            return new ChallengeDecision(true, strongestParty);
+            return new ChallengeDecision(true, strongestOwner, strongestLabel);
         }
-        return new ChallengeDecision(false, "");
+        return new ChallengeDecision(false, "", "");
     }
 
-    private static double challengeUtility(Legislator legislator, Bill bill, VoteContext context) {
-        double billUtility = spatialUtility(bill.ideologyPosition(), legislator.ideology());
-        double statusQuoUtility = spatialUtility(context.currentPolicyPosition(), legislator.ideology());
-        double ideologyLoss = Math.max(0.0, statusQuoUtility - billUtility);
-
-        double partyPosition = context.partyPosition(legislator.party());
-        double partyBillUtility = spatialUtility(bill.ideologyPosition(), partyPosition);
-        double partyStatusQuoUtility = spatialUtility(context.currentPolicyPosition(), partyPosition);
-        double partyLoss = Math.max(0.0, partyStatusQuoUtility - partyBillUtility);
-
-        double lowSupportRisk = Math.max(0.0, 0.50 - bill.publicSupport()) * 2.0;
-        double policyShiftRisk = Math.abs(bill.ideologyPosition() - context.currentPolicyPosition()) / 2.0;
-        double lobbyRisk = Math.max(0.0, bill.lobbyPressure()) * (1.0 - bill.publicSupport());
-
-        double baseScore =
-                (1.35 * ideologyLoss)
-                        + (0.70 * legislator.partyLoyalty() * partyLoss)
-                        + (0.80 * legislator.constituencySensitivity() * lowSupportRisk)
-                        + (0.45 * legislator.compromisePreference() * policyShiftRisk)
-                        + (0.45 * legislator.reputationSensitivity() * lobbyRisk);
-        return baseScore * (0.70 + bill.salience());
-    }
-
-    private static double spatialUtility(double policyPosition, double idealPoint) {
-        double distance = policyPosition - idealPoint;
-        return -(distance * distance);
-    }
-
-    private record ChallengeDecision(boolean challenged, String party) {
+    private record ChallengeDecision(boolean challenged, String owner, String label) {
     }
 }
