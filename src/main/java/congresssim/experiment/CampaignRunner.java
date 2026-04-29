@@ -354,6 +354,27 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> AGENDA_SCARCITY_SCENARIOS = List.of(
+            "simple-majority",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-weighted-agenda-lottery",
+            "default-pass-random-agenda-lottery",
+            "default-pass-quadratic-attention",
+            "default-pass-public-objection",
+            "default-pass-repeal-window",
+            "default-pass-earned-credits",
+            "default-pass-challenge",
+            "default-pass-informed-guarded",
+            "default-pass-public-interest-screen",
+            "default-pass-citizen-certificate",
+            "default-pass-cross-bloc",
+            "default-pass-adaptive-track",
+            "default-pass-alternatives-pairwise",
+            "default-pass-law-registry",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -671,6 +692,26 @@ public final class CampaignRunner {
                 outputDir,
                 v8Cases(legislators, bills),
                 CITIZEN_PANEL_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV16(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v16",
+                "simulation-campaign-v16",
+                outputDir,
+                v8Cases(legislators, bills),
+                AGENDA_SCARCITY_SCENARIOS,
                 runs,
                 legislators,
                 bills,
@@ -1220,6 +1261,39 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
+        if (aggregateByScenario.containsKey("default-pass-weighted-agenda-lottery")) {
+            builder.append("## Agenda-Scarcity Deltas\n\n");
+            builder.append("Delta values compare agenda-scarcity variants against open `default-pass`. Floor and access-denial columns show direct attention rationing; objection and repeal columns show public contestation windows.\n\n");
+            builder.append("| Scenario | Productivity delta | Floor delta | Access-denial delta | Welfare delta | Low-support delta | Attention spend | Objection window | Repeal reversals |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            ScenarioAggregate open = aggregateByScenario.get("default-pass");
+            for (String scenarioKey : List.of(
+                    "default-pass-weighted-agenda-lottery",
+                    "default-pass-random-agenda-lottery",
+                    "default-pass-quadratic-attention",
+                    "default-pass-public-objection",
+                    "default-pass-repeal-window",
+                    "default-pass-earned-credits",
+                    "default-pass-challenge",
+                    "default-pass-informed-guarded"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary != null) {
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - open.productivity())).append(" | ")
+                            .append(format(summary.floor() - open.floor())).append(" | ")
+                            .append(format(summary.accessDenied() - open.accessDenied())).append(" | ")
+                            .append(format(summary.welfare() - open.welfare())).append(" | ")
+                            .append(format(summary.lowSupport() - open.lowSupport())).append(" | ")
+                            .append(format(summary.attentionSpendPerBill())).append(" | ")
+                            .append(format(summary.objectionWindowRate())).append(" | ")
+                            .append(format(summary.repealWindowReversalRate())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
+
         if (aggregateByScenario.containsKey("default-pass-mediation")) {
             builder.append("## Mediation Deltas\n\n");
             builder.append("Delta values compare structured amendment mediation against the matching non-mediated scenario. Amendment rate is the share of potential bills whose policy position moved before final voting.\n\n");
@@ -1362,7 +1436,10 @@ public final class CampaignRunner {
             builder.append("- Anti-capture scenarios test whether lobbying pressure can be reduced through vote firewalls, transparency, public-interest screens, audit sanctions, or combined safeguards.\n");
         }
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        if (aggregateByScenario.containsKey("default-pass-citizen-certificate")) {
+        if (aggregateByScenario.containsKey("default-pass-weighted-agenda-lottery")) {
+            builder.append("- Agenda-scarcity variants test non-committee ways to ration floor attention, including weighted/random lotteries, quadratic credits, and public objection or repeal windows.\n");
+            builder.append("- The next model extension should add richer constituent and affected-group structure so public objection and citizen-panel signals are grounded in represented districts rather than generated bill fields.\n\n");
+        } else if (aggregateByScenario.containsKey("default-pass-citizen-certificate")) {
             builder.append("- Citizen-panel scenarios test whether an independent mini-public can add information and legitimacy without reproducing standing committee control.\n");
             builder.append("- The next model extension should add agenda-scarcity variants, because the simulator now has independent review but still needs non-committee ways to ration floor attention and public objection capacity.\n\n");
         } else if (aggregateByScenario.containsKey("default-pass-lobby-channel-bundle")) {
@@ -1428,6 +1505,10 @@ public final class CampaignRunner {
         ScenarioAggregate budgetedLobbying = aggregateByScenario.get("default-pass-budgeted-lobbying");
         ScenarioAggregate channelBundle = aggregateByScenario.get("default-pass-lobby-channel-bundle");
         ScenarioAggregate citizenCertificate = aggregateByScenario.get("default-pass-citizen-certificate");
+        ScenarioAggregate weightedLottery = aggregateByScenario.get("default-pass-weighted-agenda-lottery");
+        ScenarioAggregate quadraticAttention = aggregateByScenario.get("default-pass-quadratic-attention");
+        ScenarioAggregate publicObjection = aggregateByScenario.get("default-pass-public-objection");
+        ScenarioAggregate repealWindow = aggregateByScenario.get("default-pass-repeal-window");
         ScenarioAggregate pairwiseAlternatives = aggregateByScenario.get("default-pass-alternatives-pairwise");
         ScenarioAggregate simpleMajority = aggregateByScenario.get("simple-majority");
         ScenarioAggregate bestWelfare = aggregateByScenario.values()
@@ -1540,6 +1621,36 @@ public final class CampaignRunner {
                     .append(", and changed legitimacy by ")
                     .append(format(citizenCertificate.legitimacy() - openDefault.legitimacy()))
                     .append(" relative to open default-pass.\n");
+        }
+        if (weightedLottery != null) {
+            builder.append("- Weighted agenda lotteries changed floor consideration by ")
+                    .append(format(weightedLottery.floor() - openDefault.floor()))
+                    .append(", productivity by ")
+                    .append(format(weightedLottery.productivity() - openDefault.productivity()))
+                    .append(", and welfare by ")
+                    .append(format(weightedLottery.welfare() - openDefault.welfare()))
+                    .append(" relative to open default-pass.\n");
+        }
+        if (quadraticAttention != null) {
+            builder.append("- Quadratic attention budgets spent ")
+                    .append(format(quadraticAttention.attentionSpendPerBill()))
+                    .append(" credits per potential bill and changed low-support passage by ")
+                    .append(format(quadraticAttention.lowSupport() - openDefault.lowSupport()))
+                    .append(" relative to open default-pass.\n");
+        }
+        if (publicObjection != null) {
+            builder.append("- Public objection windows triggered on ")
+                    .append(format(publicObjection.objectionWindowRate()))
+                    .append(" of potential bills and changed low-support passage by ")
+                    .append(format(publicObjection.lowSupport() - openDefault.lowSupport()))
+                    .append(" relative to open default-pass.\n");
+        }
+        if (repealWindow != null) {
+            builder.append("- Public repeal windows triggered on ")
+                    .append(format(repealWindow.objectionWindowRate()))
+                    .append(" of potential bills; triggered windows reversed ")
+                    .append(format(repealWindow.repealWindowReversalRate()))
+                    .append(" of those enactments.\n");
         }
         if (pairwiseAlternatives != null) {
             builder.append("- Pairwise policy tournaments changed proposer agenda advantage by ")

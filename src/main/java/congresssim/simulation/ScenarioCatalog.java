@@ -4,6 +4,7 @@ import congresssim.behavior.VotingStrategies;
 import congresssim.behavior.VotingStrategy;
 import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
+import congresssim.institution.AgendaLotteryProcess;
 import congresssim.institution.AlternativeSelectionRule;
 import congresssim.institution.AmendmentMediationProcess;
 import congresssim.institution.BicameralProcess;
@@ -28,6 +29,8 @@ import congresssim.institution.PresidentialVetoProcess;
 import congresssim.institution.ProposalAccessProcess;
 import congresssim.institution.ProposalAccessRules;
 import congresssim.institution.ProposalCreditProcess;
+import congresssim.institution.PublicObjectionWindowProcess;
+import congresssim.institution.QuadraticAttentionBudgetProcess;
 import congresssim.institution.SunsetTrialProcess;
 import congresssim.institution.UnicameralProcess;
 import congresssim.institution.VotingRule;
@@ -140,6 +143,17 @@ public final class ScenarioCatalog {
                         "Default pass + citizen agenda priority",
                         CitizenPanelMode.AGENDA_PRIORITY
                 )),
+                new ScenarioEntry("default-pass-weighted-agenda-lottery", defaultPassWithAgendaLottery(
+                        "Default pass + weighted agenda lottery",
+                        true
+                )),
+                new ScenarioEntry("default-pass-random-agenda-lottery", defaultPassWithAgendaLottery(
+                        "Default pass + random agenda lottery",
+                        false
+                )),
+                new ScenarioEntry("default-pass-quadratic-attention", defaultPassWithQuadraticAttentionBudget()),
+                new ScenarioEntry("default-pass-public-objection", defaultPassWithPublicObjectionWindow(false)),
+                new ScenarioEntry("default-pass-repeal-window", defaultPassWithPublicObjectionWindow(true)),
                 new ScenarioEntry("default-pass-harm-threshold", defaultPassWithHarmWeightedThreshold()),
                 new ScenarioEntry("default-pass-compensation", defaultPassWithDistributionalCompensation(false)),
                 new ScenarioEntry("default-pass-affected-consent", defaultPassWithDistributionalCompensation(true)),
@@ -597,6 +611,72 @@ public final class ScenarioCatalog {
                         mode == CitizenPanelMode.ACTIVE_VOTE_ROUTING ? 0.78 : 0.68,
                         mode == CitizenPanelMode.THRESHOLD_ADJUSTMENT ? 0.18 : 0.24,
                         mode == CitizenPanelMode.AGENDA_PRIORITY ? 0.56 : 0.60
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithAgendaLottery(String scenarioName, boolean weighted) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return scenarioName;
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new AgendaLotteryProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        world.bills(),
+                        weighted ? 0.46 : 0.42,
+                        weighted
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithQuadraticAttentionBudget() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + quadratic attention budget";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new QuadraticAttentionBudgetProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        world.legislators(),
+                        11.5,
+                        4
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithPublicObjectionWindow(boolean repealMode) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return repealMode
+                        ? "Default pass + public repeal window"
+                        : "Default pass + public objection window";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new PublicObjectionWindowProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        repealMode ? 0.50 : 0.42,
+                        0.06,
+                        repealMode
                 );
             }
         };

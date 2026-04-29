@@ -131,6 +131,12 @@ Run the v15 citizen-mini-public campaign:
 make campaign-v15
 ```
 
+Run the v16 agenda-scarcity campaign:
+
+```sh
+make campaign-v16
+```
+
 Remove generated build output:
 
 ```sh
@@ -183,7 +189,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0..v15>`: run a named campaign.
+- `--campaign <v0..v16>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -216,6 +222,11 @@ The default CLI scenario set includes:
 - `default-pass-citizen-active-routing`: uncertified citizen-panel bills route to active majority voting.
 - `default-pass-citizen-threshold`: uncertified citizen-panel bills require a stronger affirmative threshold.
 - `default-pass-citizen-agenda`: citizen-panel results adjust agenda priority/public signals without changing the final lane.
+- `default-pass-weighted-agenda-lottery`: default passage after a weighted lottery rations floor slots.
+- `default-pass-random-agenda-lottery`: default passage after a random lottery rations floor slots.
+- `default-pass-quadratic-attention`: default passage with quadratic agenda-attention credits.
+- `default-pass-public-objection`: high-contestation bills are routed to active voting after a public objection window.
+- `default-pass-repeal-window`: high-contestation default enactments can be reversed after a public repeal window.
 - `default-pass-harm-threshold`: default passage for ordinary bills, but concentrated-harm bills require affirmative supermajority support.
 - `default-pass-compensation`: default passage with compensation amendments for high concentrated-harm bills.
 - `default-pass-affected-consent`: default passage with compensation plus affected-group consent screening.
@@ -268,8 +279,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v15.csv`
-- `reports/simulation-campaign-v15.md`
+- `reports/simulation-campaign-v16.csv`
+- `reports/simulation-campaign-v16.md`
 
 Earlier campaigns:
 
@@ -303,6 +314,8 @@ Earlier campaigns:
 - `reports/simulation-campaign-v13.md`
 - `reports/simulation-campaign-v14.csv`
 - `reports/simulation-campaign-v14.md`
+- `reports/simulation-campaign-v15.csv`
+- `reports/simulation-campaign-v15.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -355,6 +368,9 @@ The simulator reports several metrics because passage volume alone is not enough
 - `citizenReviewRate`: share of potential bills reviewed by a synthetic citizen panel.
 - `citizenCertificationRate`: share of reviewed bills receiving a positive citizen-panel certificate.
 - `citizenLegitimacy`: average legitimacy estimate from citizen-panel review.
+- `attentionSpendPerBill`: quadratic attention credits spent per potential bill.
+- `objectionWindowRate`: share of potential bills triggering a public objection or repeal window.
+- `repealWindowReversalRate`: share of triggered repeal windows that reverse enactment.
 - `vetoes`: presidential veto count.
 - `overrides`: veto override count.
 

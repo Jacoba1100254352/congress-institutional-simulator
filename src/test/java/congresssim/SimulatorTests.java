@@ -7,6 +7,7 @@ import congresssim.experiment.CampaignRunner;
 import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.AgendaDisposition;
+import congresssim.institution.AgendaLotteryProcess;
 import congresssim.institution.AlternativeSelectionRule;
 import congresssim.institution.AmendmentMediationProcess;
 import congresssim.institution.BillOutcome;
@@ -28,6 +29,8 @@ import congresssim.institution.LobbyAuditProcess;
 import congresssim.institution.LobbyTransparencyProcess;
 import congresssim.institution.ProposalAccessRules;
 import congresssim.institution.ProposalCreditProcess;
+import congresssim.institution.PublicObjectionWindowProcess;
+import congresssim.institution.QuadraticAttentionBudgetProcess;
 import congresssim.institution.SunsetTrialProcess;
 import congresssim.simulation.CommitteeComposition;
 import congresssim.simulation.CommitteeFactory;
@@ -68,6 +71,9 @@ public final class SimulatorTests {
         lawRegistryReviewsAndRepealsBadActiveLaws();
         competingAlternativesSelectCompromiseBeforeFinalVote();
         citizenPanelRoutesUncertifiedBillsToReview();
+        agendaLotteryRationsFloorSlots();
+        quadraticAttentionBudgetDeniesExpensiveProposals();
+        publicObjectionWindowRoutesContestedBills();
         publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
         lobbyAuditCanReverseCapturedEnactments();
         challengeVouchersRouteHighRiskBillsToActiveVote();
@@ -544,6 +550,79 @@ public final class SimulatorTests {
         assertFalse(outcome.bill().citizenCertified(), "The revised bill should retain the certification result.");
     }
 
+    private static void agendaLotteryRationsFloorSlots() {
+        Bill firstBill = new Bill("B-lottery-1", "Lottery Bill 1", "L-1", 0.0, 0.10, 0.65, 0.70, 0.0, 0.40);
+        Bill secondBill = new Bill("B-lottery-2", "Lottery Bill 2", "L-2", 0.0, -0.10, 0.55, 0.60, 0.0, 0.40);
+        AgendaLotteryProcess process = new AgendaLotteryProcess(
+                "lottery test",
+                labeledProcess("selected by lottery"),
+                List.of(firstBill, secondBill),
+                0.50,
+                false
+        );
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(3L), 0.0);
+
+        BillOutcome firstOutcome = process.consider(firstBill, context);
+        BillOutcome secondOutcome = process.consider(secondBill, context);
+
+        int denied = (firstOutcome.agendaDisposition() == AgendaDisposition.ACCESS_DENIED ? 1 : 0)
+                + (secondOutcome.agendaDisposition() == AgendaDisposition.ACCESS_DENIED ? 1 : 0);
+        assertTrue(denied == 1, "A half-size agenda lottery should admit exactly one of two bills.");
+    }
+
+    private static void quadraticAttentionBudgetDeniesExpensiveProposals() {
+        QuadraticAttentionBudgetProcess process = new QuadraticAttentionBudgetProcess(
+                "attention test",
+                labeledProcess("attention admitted"),
+                List.of(legislator("L-1")),
+                2.0,
+                4
+        );
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(4L), 0.0);
+        Bill costlyBill = new Bill("B-costly", "Costly Bill", "L-1", 0.0, 0.95, 0.10, 0.20, 0.80, 0.95);
+
+        BillOutcome outcome = process.consider(costlyBill, context);
+
+        assertTrue(outcome.agendaDisposition() == AgendaDisposition.ACCESS_DENIED, "Insufficient attention credits should deny costly proposals.");
+    }
+
+    private static void publicObjectionWindowRoutesContestedBills() {
+        PublicObjectionWindowProcess process = new PublicObjectionWindowProcess(
+                "objection test",
+                labeledProcess("default lane"),
+                labeledProcess("active review lane"),
+                0.20,
+                0.0,
+                false
+        );
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(5L), 0.0);
+        Bill contestedBill = new Bill(
+                "B-objection",
+                "Contested Bill",
+                "L-1",
+                0.0,
+                0.90,
+                0.10,
+                0.15,
+                0.70,
+                0.90,
+                0.80,
+                false,
+                "housing",
+                0.0,
+                0.0,
+                "low-income",
+                0.10,
+                0.80,
+                0.20
+        );
+
+        BillOutcome outcome = process.consider(contestedBill, context);
+
+        assertTrue(outcome.finalReason().equals("active review lane"), "Contested bills should route to active review.");
+        assertTrue(outcome.signals().objectionWindows() == 1, "Triggered objection windows should be recorded.");
+    }
+
     private static void publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms() {
         VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
         Bill capturedBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.10, 0.30, 0.18, 0.95, 0.80, 0.95, false);
@@ -845,6 +924,18 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-citizen-certificate"),
                 "Scenario catalog should expose citizen-panel scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-weighted-agenda-lottery"),
+                "Scenario catalog should expose agenda-lottery scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-quadratic-attention"),
+                "Scenario catalog should expose quadratic attention scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-public-objection"),
+                "Scenario catalog should expose public-objection scenario keys."
         );
     }
 

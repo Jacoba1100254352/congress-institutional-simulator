@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-CSV_PATH = ROOT / "reports" / "simulation-campaign-v15.csv"
+CSV_PATH = ROOT / "reports" / "simulation-campaign-v16.csv"
 FIGURE_DIR = ROOT / "paper" / "figures"
 
 
@@ -50,6 +50,10 @@ def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> Non
         ("default-pass-mediation", "DP+Med", -16.0, 4.0),
         ("default-pass-lobby-channel-bundle", "Lobby", -18.0, 2.5),
         ("default-pass-citizen-certificate", "Panel", 2.0, 2.5),
+        ("default-pass-weighted-agenda-lottery", "Lot.", 2.0, -4.0),
+        ("default-pass-quadratic-attention", "Quad", -17.0, 2.5),
+        ("default-pass-public-objection", "Obj.", 2.0, -4.0),
+        ("default-pass-repeal-window", "Repeal", 2.0, 2.5),
         ("default-pass-alternatives-pairwise", "Pair", 2.0, -4.0),
         ("default-pass-alternatives-benefit", "AltBen", -18.0, -4.0),
         ("default-pass-challenge", "Chal.", 2.0, -4.0),
@@ -104,6 +108,10 @@ def write_default_pass_deltas(averages: dict[str, dict[str, float]]) -> None:
     scenarios = [
         ("default-pass-mediation", "Mediation"),
         ("default-pass-lobby-channel-bundle", "Lobby bundle"),
+        ("default-pass-weighted-agenda-lottery", "Lottery"),
+        ("default-pass-quadratic-attention", "Quadratic"),
+        ("default-pass-public-objection", "Objection"),
+        ("default-pass-repeal-window", "Repeal"),
         ("default-pass-alternatives-benefit", "Alt-benefit"),
         ("default-pass-alternatives-pairwise", "Pairwise"),
         ("default-pass-challenge", "Challenge"),
