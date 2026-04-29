@@ -30,6 +30,7 @@ public record ScenarioReport(
         double legitimacyScore,
         double activeLawWelfare,
         double reversalRate,
+        double timeToCorrectBadLaw,
         double statusQuoVolatility,
         double lowSupportActiveLawShare,
         double selectedAlternativeMedianDistance,

@@ -42,6 +42,8 @@ final class MetricsAccumulator {
     private double lowSupportActiveLawShareSum;
     private int lawReviews;
     private int lawReversals;
+    private int lawCorrections;
+    private double correctionDelaySum;
     private double alternativeMedianDistanceSum;
     private double proposerAgendaAdvantageSum;
     private int alternativeRounds;
@@ -83,6 +85,8 @@ final class MetricsAccumulator {
         OutcomeSignals signals = outcome.signals();
         lawReviews += signals.lawReviews();
         lawReversals += signals.lawReversals();
+        lawCorrections += signals.lawCorrections();
+        correctionDelaySum += signals.correctionDelay();
         activeLawWelfareSum += signals.activeLawWelfare();
         lowSupportActiveLawShareSum += signals.lowSupportActiveLawShare();
         alternativeRounds += signals.alternativeRounds();
@@ -206,6 +210,7 @@ final class MetricsAccumulator {
                 legitimacy,
                 activeLawWelfare,
                 ratio(lawReversals, lawReviews),
+                lawCorrections == 0 ? 0.0 : correctionDelaySum / lawCorrections,
                 totalBills == 0 ? 0.0 : policyShiftSum / totalBills,
                 lowSupportActiveLawShare,
                 selectedAlternativeMedianDistance,

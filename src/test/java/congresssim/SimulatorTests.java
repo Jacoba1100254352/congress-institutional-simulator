@@ -18,6 +18,7 @@ import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.DistributionalHarmProcess;
+import congresssim.institution.LawRegistryProcess;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
 import congresssim.institution.LobbyTransparencyProcess;
@@ -58,6 +59,7 @@ public final class SimulatorTests {
         budgetedLobbyingSpendsDefensivelyAgainstAntiLobbyingReforms();
         amendmentMediationMovesRiskyBillsTowardMedian();
         distributionalHarmProcessCompensatesAffectedGroups();
+        lawRegistryReviewsAndRepealsBadActiveLaws();
         publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
         lobbyAuditCanReverseCapturedEnactments();
         challengeVouchersRouteHighRiskBillsToActiveVote();
@@ -361,6 +363,42 @@ public final class SimulatorTests {
 
         new DistributionalHarmProcess("distribution test", captureBill, 0.40, 0.40, 0.60, 0.25, false)
                 .consider(harmfulBill, context);
+    }
+
+    private static void lawRegistryReviewsAndRepealsBadActiveLaws() {
+        LegislativeProcess enactEverything = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "enact everything";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "enacted"
+                );
+            }
+        };
+        LawRegistryProcess process = new LawRegistryProcess("registry test", enactEverything, 1, 0.10, 0.80, 1.0);
+        VoteContext firstContext = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        Bill badLaw = new Bill("B-bad-law", "Bad Law", "L-1", 0.0, 0.80, 0.12, 0.12, 0.80, 0.90);
+        Bill nextBill = new Bill("B-next", "Next Bill", "L-1", 0.0, 0.10, 0.80, 0.80, 0.0, 0.20);
+
+        process.consider(badLaw, firstContext);
+        BillOutcome reviewed = process.consider(
+                nextBill,
+                new VoteContext(Map.of("Test", 0.0), new Random(2L), badLaw.ideologyPosition())
+        );
+
+        assertTrue(reviewed.signals().lawReviews() > 0, "Registry should review due provisional laws.");
+        assertTrue(reviewed.signals().lawReversals() > 0, "Low-benefit active laws should be reversed.");
+        assertTrue(reviewed.statusQuoAfter() < badLaw.ideologyPosition(), "Registry reversal should roll back status-quo movement.");
     }
 
     private static void publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms() {

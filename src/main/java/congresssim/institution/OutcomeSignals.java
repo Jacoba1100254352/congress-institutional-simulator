@@ -4,6 +4,8 @@ public record OutcomeSignals(
         int lawReviews,
         int lawReversals,
         int lawRenewals,
+        int lawCorrections,
+        double correctionDelay,
         double activeLawWelfare,
         double lowSupportActiveLawShare,
         int alternativeRounds,
@@ -18,7 +20,7 @@ public record OutcomeSignals(
         int repealWindowReversals
 ) {
     public static OutcomeSignals none() {
-        return new OutcomeSignals(0, 0, 0, 0.0, 0.0, 0, 0, 0, 0.0, 0.0, 0, 0, 0.0, 0, 0);
+        return new OutcomeSignals(0, 0, 0, 0, 0.0, 0.0, 0.0, 0, 0, 0, 0.0, 0.0, 0, 0, 0.0, 0, 0);
     }
 
     public OutcomeSignals plus(OutcomeSignals other) {
@@ -26,6 +28,8 @@ public record OutcomeSignals(
                 lawReviews + other.lawReviews,
                 lawReversals + other.lawReversals,
                 lawRenewals + other.lawRenewals,
+                lawCorrections + other.lawCorrections,
+                correctionDelay + other.correctionDelay,
                 activeLawWelfare + other.activeLawWelfare,
                 lowSupportActiveLawShare + other.lowSupportActiveLawShare,
                 alternativeRounds + other.alternativeRounds,
@@ -45,12 +49,15 @@ public record OutcomeSignals(
             boolean reversed,
             boolean renewed,
             double activeLawWelfare,
-            double lowSupportActiveLawShare
+            double lowSupportActiveLawShare,
+            double correctionDelay
     ) {
         return new OutcomeSignals(
                 1,
                 reversed ? 1 : 0,
                 renewed ? 1 : 0,
+                reversed ? 1 : 0,
+                reversed ? correctionDelay : 0.0,
                 activeLawWelfare,
                 lowSupportActiveLawShare,
                 0,
@@ -76,6 +83,8 @@ public record OutcomeSignals(
                 0,
                 0,
                 0,
+                0,
+                0.0,
                 0.0,
                 0.0,
                 1,
@@ -96,6 +105,8 @@ public record OutcomeSignals(
                 0,
                 0,
                 0,
+                0,
+                0.0,
                 0.0,
                 0.0,
                 0,
@@ -116,6 +127,8 @@ public record OutcomeSignals(
                 0,
                 0,
                 0,
+                0,
+                0.0,
                 0.0,
                 0.0,
                 0,

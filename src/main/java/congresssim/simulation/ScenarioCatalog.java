@@ -16,6 +16,7 @@ import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.DistributionalHarmProcess;
 import congresssim.institution.HarmWeightedThresholdProcess;
+import congresssim.institution.LawRegistryProcess;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
 import congresssim.institution.LobbyTransparencyProcess;
@@ -108,6 +109,8 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-adaptive-track-challenge", defaultPassWithAdaptiveTrack(true)),
                 new ScenarioEntry("default-pass-sunset-trial", defaultPassWithSunsetTrial(false)),
                 new ScenarioEntry("default-pass-sunset-challenge", defaultPassWithSunsetTrial(true)),
+                new ScenarioEntry("default-pass-law-registry", defaultPassWithLawRegistry(false)),
+                new ScenarioEntry("default-pass-law-registry-challenge", defaultPassWithLawRegistry(true)),
                 new ScenarioEntry("default-pass-earned-credits", defaultPassWithProposalCredits(false)),
                 new ScenarioEntry("default-pass-earned-credits-challenge", defaultPassWithProposalCredits(true)),
                 new ScenarioEntry("default-pass-challenge-party-t3-s082", defaultPassWithChallengeVouchers(
@@ -774,6 +777,34 @@ public final class ScenarioCatalog {
                         innerProcess,
                         0.38,
                         0.56
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithLawRegistry(boolean includeChallengeVouchers) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                if (includeChallengeVouchers) {
+                    return "Default pass + law registry + challenge";
+                }
+                return "Default pass + law registry";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess innerProcess = includeChallengeVouchers
+                        ? challengeMiddleLane(name(), world, strategy)
+                        : defaultPassFloorProcess(name(), world, strategy);
+                return new LawRegistryProcess(
+                        name(),
+                        innerProcess,
+                        5,
+                        0.34,
+                        0.58,
+                        0.82
                 );
             }
         };

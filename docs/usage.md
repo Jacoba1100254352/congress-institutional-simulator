@@ -107,6 +107,12 @@ Run the v11 distributional-harm campaign:
 make campaign-v11
 ```
 
+Run the v12 law-registry campaign:
+
+```sh
+make campaign-v12
+```
+
 Remove generated build output:
 
 ```sh
@@ -159,7 +165,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0|v1|v2|v3|v4|v5|v6|v7|v8|v9|v10|v11>`: run a named campaign.
+- `--campaign <v0..v12>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -195,6 +201,8 @@ The default CLI scenario set includes:
 - `default-pass-adaptive-track-challenge`: adaptive routing with challenge vouchers in the middle-risk lane.
 - `default-pass-sunset-trial`: provisional enactment plus automatic sunset review for risky bills.
 - `default-pass-sunset-challenge`: challenge vouchers plus sunset review.
+- `default-pass-law-registry`: delayed active-law review, renewal, and repeal across the run.
+- `default-pass-law-registry-challenge`: challenge vouchers plus delayed active-law review.
 - `default-pass-earned-credits`: stateful agenda credits earned or lost through proposal quality.
 - `default-pass-earned-credits-challenge`: earned proposal credits plus challenge vouchers.
 - `default-pass-challenge-party-t3-s082`: party-held challenge voucher sweep point with 3 tokens per party and challenge threshold 0.82.
@@ -227,8 +235,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v11.csv`
-- `reports/simulation-campaign-v11.md`
+- `reports/simulation-campaign-v12.csv`
+- `reports/simulation-campaign-v12.md`
 
 Earlier campaigns:
 
@@ -254,6 +262,8 @@ Earlier campaigns:
 - `reports/simulation-campaign-v9.md`
 - `reports/simulation-campaign-v10.csv`
 - `reports/simulation-campaign-v10.md`
+- `reports/simulation-campaign-v11.csv`
+- `reports/simulation-campaign-v11.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -289,6 +299,10 @@ The simulator reports several metrics because passage volume alone is not enough
 - `concentratedHarmPassage`: share of high concentrated-harm bills that are enacted.
 - `compensationRate`: share of potential bills receiving compensation amendments.
 - `legitimacy`: enacted-bill legitimacy proxy combining public support, chamber support, affected-group support, and harm penalties.
+- `activeLawWelfare`: average generated public benefit among active laws at delayed review points.
+- `reversalRate`: share of delayed law reviews that repeal a provisional law.
+- `timeToCorrectBadLaw`: average rounds between enactment and repeal for corrected laws.
+- `lowSupportActiveLawShare`: share of active laws at review points with public support below 50 percent.
 - `vetoes`: presidential veto count.
 - `overrides`: veto override count.
 

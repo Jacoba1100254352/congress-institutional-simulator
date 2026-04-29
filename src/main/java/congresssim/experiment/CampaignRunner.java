@@ -263,6 +263,26 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> LAW_REGISTRY_SCENARIOS = List.of(
+            "simple-majority",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-mediation",
+            "default-pass-harm-threshold",
+            "default-pass-compensation",
+            "default-pass-affected-consent",
+            "default-pass-sunset-trial",
+            "default-pass-sunset-challenge",
+            "default-pass-law-registry",
+            "default-pass-law-registry-challenge",
+            "default-pass-informed-guarded",
+            "default-pass-challenge",
+            "default-pass-cross-bloc",
+            "default-pass-adaptive-track",
+            "default-pass-earned-credits",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -507,6 +527,26 @@ public final class CampaignRunner {
         );
     }
 
+    public static CampaignResult runV12(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v12",
+                "simulation-campaign-v12",
+                outputDir,
+                v8Cases(legislators, bills),
+                LAW_REGISTRY_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
     private static CampaignResult run(
             String name,
             String fileStem,
@@ -637,7 +677,7 @@ public final class CampaignRunner {
 
     private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,vetoes,overriddenVetoes\n");
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
@@ -680,6 +720,7 @@ public final class CampaignRunner {
                     .append(format(report.legitimacyScore())).append(',')
                     .append(format(report.activeLawWelfare())).append(',')
                     .append(format(report.reversalRate())).append(',')
+                    .append(format(report.timeToCorrectBadLaw())).append(',')
                     .append(format(report.statusQuoVolatility())).append(',')
                     .append(format(report.lowSupportActiveLawShare())).append(',')
                     .append(format(report.selectedAlternativeMedianDistance())).append(',')
@@ -872,6 +913,32 @@ public final class CampaignRunner {
                             .append(format(summary.policyShift() - open.policyShift())).append(" | ")
                             .append(format(summary.proposerGain() - open.proposerGain())).append(" | ")
                             .append(format(summary.challengeRate())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
+
+        if (aggregateByScenario.containsKey("default-pass-law-registry")) {
+            builder.append("## Law-Registry Deltas\n\n");
+            builder.append("Delta values compare delayed multi-session review against open `default-pass`. The registry keeps provisional laws active, reviews them after a delay, and can roll back bad enactments.\n\n");
+            builder.append("| Scenario | Productivity delta | Welfare delta | Reversal rate | Correction delay | Active-law welfare | Low-support active laws | Status-quo volatility delta |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            for (String scenarioKey : List.of(
+                    "default-pass-law-registry",
+                    "default-pass-law-registry-challenge"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary != null) {
+                    ScenarioAggregate open = aggregateByScenario.get("default-pass");
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - open.productivity())).append(" | ")
+                            .append(format(summary.welfare() - open.welfare())).append(" | ")
+                            .append(format(summary.reversalRate())).append(" | ")
+                            .append(format(summary.timeToCorrectBadLaw())).append(" | ")
+                            .append(format(summary.activeLawWelfare())).append(" | ")
+                            .append(format(summary.lowSupportActiveLawShare())).append(" | ")
+                            .append(format(summary.policyShift() - open.policyShift())).append(" |\n");
                 }
             }
             builder.append('\n');
@@ -1361,6 +1428,7 @@ public final class CampaignRunner {
         private double legitimacy;
         private double activeLawWelfare;
         private double reversalRate;
+        private double timeToCorrectBadLaw;
         private double lowSupportActiveLawShare;
         private double selectedAlternativeMedianDistance;
         private double proposerAgendaAdvantage;
@@ -1414,6 +1482,7 @@ public final class CampaignRunner {
             legitimacy += report.legitimacyScore();
             activeLawWelfare += report.activeLawWelfare();
             reversalRate += report.reversalRate();
+            timeToCorrectBadLaw += report.timeToCorrectBadLaw();
             lowSupportActiveLawShare += report.lowSupportActiveLawShare();
             selectedAlternativeMedianDistance += report.selectedAlternativeMedianDistance();
             proposerAgendaAdvantage += report.proposerAgendaAdvantage();
@@ -1533,6 +1602,10 @@ public final class CampaignRunner {
 
         private double reversalRate() {
             return reversalRate / count;
+        }
+
+        private double timeToCorrectBadLaw() {
+            return timeToCorrectBadLaw / count;
         }
 
         private double lowSupportActiveLawShare() {

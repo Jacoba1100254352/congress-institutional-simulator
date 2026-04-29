@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v11.csv`
-- `reports/simulation-campaign-v11.md`
+- `reports/simulation-campaign-v12.csv`
+- `reports/simulation-campaign-v12.md`
 
 Earlier campaigns remain available:
 
@@ -65,6 +65,7 @@ make campaign-v8
 make campaign-v9
 make campaign-v10
 make campaign-v11
+make campaign-v12
 ```
 
 You can override the campaign defaults:
@@ -106,6 +107,8 @@ The default CLI compares:
 - `default-pass-adaptive-track-challenge`: adaptive tracks with challenge vouchers in the middle-risk lane
 - `default-pass-sunset-trial`: default passage with provisional enactment and automatic sunset review for risky bills
 - `default-pass-sunset-challenge`: challenge vouchers plus sunset review
+- `default-pass-law-registry`: default passage with delayed review of active provisional laws across the run
+- `default-pass-law-registry-challenge`: challenge vouchers plus delayed active-law review
 - `default-pass-earned-credits`: default passage with stateful agenda credits earned or lost through proposal quality
 - `default-pass-earned-credits-challenge`: earned proposal credits plus challenge vouchers
 - challenge-sweep keys such as `default-pass-challenge-party-t3-s082`, `default-pass-challenge-member-t1-s082`, and `default-pass-escalation-q12-s082`
@@ -142,7 +145,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`, `v8`, `v9`, `v10`, or `v11`
+- `--campaign`: run a named campaign, currently `v0` through `v12`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -287,10 +290,17 @@ The v10 campaign adds structured amendment mediation:
 - Mediation variants test simple majority, open default-pass, and budgeted-lobbying default-pass against their non-mediated counterparts.
 - Campaign reports now include amendment rate and amendment movement so compromise can be measured as pre-vote content change, not only final yes/no support.
 
-The current v11 campaign adds distributional harm and affected groups:
+The v11 campaign adds distributional harm and affected groups:
 
 - Bills now include an affected group, affected-group support, concentrated-harm score, and compensation cost.
 - `default-pass-harm-threshold` routes concentrated-harm bills to a higher affirmative threshold.
 - `default-pass-compensation` lets high-harm bills receive compensation amendments that reduce concentrated harm at some public-benefit cost.
 - `default-pass-affected-consent` adds an affected-group support requirement after compensation.
 - Campaign reports now include minority harm, concentrated-harm passage, compensation rate, and legitimacy.
+
+The current v12 campaign adds a multi-session law registry:
+
+- `LawRegistryProcess` records risky enacted laws as active provisional laws with a later review date.
+- Due laws are renewed or repealed based on public benefit, public support, affected-group support, and risk.
+- Repealed laws roll back part of their status-quo movement, making correction and instability measurable.
+- Campaign reports now include active-law welfare, reversal rate, time to correction, and low-support active-law share.
