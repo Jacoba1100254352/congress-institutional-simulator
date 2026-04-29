@@ -123,6 +123,34 @@ public final class CampaignRunner {
             "default-pass-escalation-q12-s082",
             "default-pass-escalation-q20-s082"
     );
+    private static final List<String> SUNSET_TRIAL_SCENARIOS = List.of(
+            "simple-majority",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-informed-guarded",
+            "default-pass-challenge",
+            "default-pass-cross-bloc",
+            "default-pass-cross-bloc-strong",
+            "default-pass-cross-bloc-challenge",
+            "default-pass-adaptive-track",
+            "default-pass-adaptive-track-challenge",
+            "default-pass-sunset-trial",
+            "default-pass-sunset-challenge",
+            "default-pass-challenge-party-t3-s082",
+            "default-pass-challenge-party-t6-s082",
+            "default-pass-challenge-party-t15-s082",
+            "default-pass-challenge-party-t25-s082",
+            "default-pass-challenge-party-t10-s050",
+            "default-pass-challenge-party-t10-s065",
+            "default-pass-challenge-party-t10-s100",
+            "default-pass-challenge-party-t10-s125",
+            "default-pass-challenge-member-t1-s082",
+            "default-pass-challenge-member-t2-s082",
+            "default-pass-challenge-member-t3-s082",
+            "default-pass-escalation-q6-s082",
+            "default-pass-escalation-q12-s082",
+            "default-pass-escalation-q20-s082"
+    );
 
     private CampaignRunner() {
     }
@@ -240,6 +268,26 @@ public final class CampaignRunner {
                 outputDir,
                 v1Cases(legislators, bills),
                 ADAPTIVE_TRACK_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV6(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v6",
+                "simulation-campaign-v6",
+                outputDir,
+                v1Cases(legislators, bills),
+                SUNSET_TRIAL_SCENARIOS,
                 runs,
                 legislators,
                 bills,
@@ -541,6 +589,31 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
+        if (aggregateByScenario.containsKey("default-pass-sunset-trial")) {
+            builder.append("## Sunset Trial Deltas\n\n");
+            builder.append("Delta values compare provisional enactment with automatic review against open `default-pass` across all cases. The trial process expires risky enacted bills that fail review, rolling the status quo back.\n\n");
+            builder.append("| Scenario | Productivity delta | Welfare delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Challenge rate |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            for (String scenarioKey : List.of(
+                    "default-pass-sunset-trial",
+                    "default-pass-sunset-challenge"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary != null) {
+                    ScenarioAggregate open = aggregateByScenario.get("default-pass");
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - open.productivity())).append(" | ")
+                            .append(format(summary.welfare() - open.welfare())).append(" | ")
+                            .append(format(summary.lowSupport() - open.lowSupport())).append(" | ")
+                            .append(format(summary.policyShift() - open.policyShift())).append(" | ")
+                            .append(format(summary.proposerGain() - open.proposerGain())).append(" | ")
+                            .append(format(summary.challengeRate())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
+
         if (aggregateByScenario.containsKey("default-pass-cost")) {
             builder.append("## Proposal-Cost Deltas\n\n");
             builder.append("Delta values compare `default-pass-cost` against open `default-pass` in the same case. Negative enacted-per-run, floor-per-run, low-support, and policy-shift deltas show the proposal-cost screen reducing flooding and volatility.\n\n");
@@ -616,7 +689,12 @@ public final class CampaignRunner {
                 builder.append("- Cross-bloc cosponsorship tests coalition breadth as a pre-floor agenda gate, before default-pass or challenge mechanics can operate.\n");
                 if (aggregateByScenario.containsKey("default-pass-adaptive-track")) {
                     builder.append("- Adaptive procedural tracks test whether low-risk bills can stay in a fast lane while high-risk bills receive stronger review.\n");
-                    builder.append("- The next model extension should add sunset trial legislation, because the remaining risk is bad-law persistence after enactment.\n\n");
+                    if (aggregateByScenario.containsKey("default-pass-sunset-trial")) {
+                        builder.append("- Sunset trial rules test whether risky default enactments can be made reversible after automatic review.\n");
+                        builder.append("- The next model extension should add earned proposal credits, because agenda access still does not learn from proposer track records.\n\n");
+                    } else {
+                        builder.append("- The next model extension should add sunset trial legislation, because the remaining risk is bad-law persistence after enactment.\n\n");
+                    }
                 } else {
                     builder.append("- The next model extension should add adaptive procedural tracks, because the agenda system now needs to route bills by risk rather than screening every bill with one rule.\n\n");
                 }
@@ -642,6 +720,7 @@ public final class CampaignRunner {
         ScenarioAggregate challenge = aggregateByScenario.get("default-pass-challenge");
         ScenarioAggregate crossBloc = aggregateByScenario.get("default-pass-cross-bloc");
         ScenarioAggregate adaptive = aggregateByScenario.get("default-pass-adaptive-track");
+        ScenarioAggregate sunset = aggregateByScenario.get("default-pass-sunset-trial");
         ScenarioAggregate simpleMajority = aggregateByScenario.get("simple-majority");
         ScenarioAggregate bestWelfare = aggregateByScenario.values()
                 .stream()
@@ -702,6 +781,15 @@ public final class CampaignRunner {
                     .append(format(adaptive.lowSupport() - openDefault.lowSupport()))
                     .append(", and policy shift by ")
                     .append(format(adaptive.policyShift() - openDefault.policyShift()))
+                    .append(" relative to open default-pass.\n");
+        }
+        if (sunset != null) {
+            builder.append("- Sunset trial review changed productivity by ")
+                    .append(format(sunset.productivity() - openDefault.productivity()))
+                    .append(", welfare by ")
+                    .append(format(sunset.welfare() - openDefault.welfare()))
+                    .append(", and policy shift by ")
+                    .append(format(sunset.policyShift() - openDefault.policyShift()))
                     .append(" relative to open default-pass.\n");
         }
         builder.append("- Best average welfare in this campaign came from ")

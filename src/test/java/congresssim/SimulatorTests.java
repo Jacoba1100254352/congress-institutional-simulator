@@ -17,6 +17,7 @@ import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.ProposalAccessRules;
+import congresssim.institution.SunsetTrialProcess;
 import congresssim.simulation.CommitteeComposition;
 import congresssim.simulation.CommitteeFactory;
 import congresssim.simulation.ScenarioCatalog;
@@ -44,6 +45,7 @@ public final class SimulatorTests {
         proposalCostsCanDenyLowValueBills();
         crossBlocCosponsorshipRequiresOutsideSupport();
         adaptiveTrackRoutesBillsByRisk();
+        sunsetTrialExpiresRiskyLowBenefitBills();
         challengeVouchersRouteHighRiskBillsToActiveVote();
         challengeEscalationRoutesBroadlyContestedBillsToActiveVote();
         committeeGateBlocksBillsBeforeFloor();
@@ -136,6 +138,39 @@ public final class SimulatorTests {
                 process.consider(highRiskBill, context).finalReason().equals("high-risk lane"),
                 "High-risk bills should use the high-risk review lane."
         );
+    }
+
+    private static void sunsetTrialExpiresRiskyLowBenefitBills() {
+        LegislativeProcess enactEverything = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "enact everything";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "enacted"
+                );
+            }
+        };
+        SunsetTrialProcess process = new SunsetTrialProcess("sunset test", enactEverything, 0.20, 0.56);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        Bill badRiskyBill = new Bill("B-bad", "Bad Risky Bill", "L-1", 0.0, 0.95, 0.10, 0.10, 0.8, 0.95);
+        Bill strongBill = new Bill("B-good", "Good Bill", "L-1", 0.0, 0.40, 0.85, 0.85, 0.0, 0.50);
+
+        BillOutcome expired = process.consider(badRiskyBill, context);
+        BillOutcome renewed = process.consider(strongBill, context);
+
+        assertFalse(expired.enacted(), "Risky low-benefit bills should expire after sunset review.");
+        assertTrue(expired.statusQuoAfter() == context.currentPolicyPosition(), "Expired trials should roll back the status quo.");
+        assertTrue(renewed.enacted(), "Strong bills should survive sunset review.");
     }
 
     private static void challengeVouchersRouteHighRiskBillsToActiveVote() {
@@ -355,6 +390,10 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-adaptive-track"),
                 "Scenario catalog should expose adaptive-track keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-sunset-trial"),
+                "Scenario catalog should expose sunset-trial keys."
         );
     }
 

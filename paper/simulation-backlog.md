@@ -131,28 +131,38 @@ Still not implemented:
 - adaptive thresholds swept over low-risk and high-risk cut points
 - high-risk lanes using expert review, citizen panels, or supermajority active votes
 
-## Immediate Priority
-
 ### 4. Sunset Trial Legislation
 
 Purpose: test whether reversibility reduces the permanent harm of weakly supported default enactments.
 
-Add scenarios:
+Implemented campaign `simulation-campaign-v6` with:
 
 - `default-pass-sunset-trial`
 - `default-pass-sunset-challenge`
 
-Report:
+Reported:
 
 - enacted/run
-- active law welfare
-- repeal or nonrenewal rate
-- policy volatility
-- low-support active law share
+- productivity
+- public welfare
+- low-support passage
+- policy shift
+- proposer gain
+- challenge rate for the combined sunset/challenge scenario
 
-Decision target:
+Current finding:
 
-- identify whether default enactment works better when uncertain laws are reversible instead of permanently moving the status quo.
+- sunset review improves enacted-bill welfare and reduces volatility without a front-end agenda gate. The basic sunset trial reduced productivity by 0.394 relative to open default-pass, but increased welfare by 0.114, reduced low-support passage by 0.075, reduced policy shift by 0.427, and reduced proposer gain by 0.208. Combining sunset review with challenge vouchers reduced policy shift by 0.500 and proposer gain by 0.279, but productivity fell to 0.368.
+
+Still not implemented:
+
+- active law registry with delayed review after multiple rounds
+- explicit repeal or nonrenewal metric separate from failed enactment
+- active-law welfare and low-support active-law share
+- review-period sensitivity sweep
+- partial rollback or amendment instead of full rollback
+
+## Immediate Priority
 
 ### 5. Earned Proposal Credits
 
@@ -177,7 +187,7 @@ Report:
 
 Purpose: determine whether the current proposal-cost finding is robust or an artifact of one cost formula.
 
-Add campaign `v6-cost-sweep` with:
+Add campaign `v7-cost-sweep` with:
 
 - `baseCost`: 0.05, 0.15, 0.25, 0.34, 0.45, 0.60
 - `publicCreditWeight`: 0.00, 0.15, 0.30, 0.50

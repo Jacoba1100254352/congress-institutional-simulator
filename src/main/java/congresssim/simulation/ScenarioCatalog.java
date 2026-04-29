@@ -16,6 +16,7 @@ import congresssim.institution.LegislativeProcess;
 import congresssim.institution.PresidentialVetoProcess;
 import congresssim.institution.ProposalAccessProcess;
 import congresssim.institution.ProposalAccessRules;
+import congresssim.institution.SunsetTrialProcess;
 import congresssim.institution.UnicameralProcess;
 import congresssim.institution.VotingRule;
 import congresssim.model.Legislator;
@@ -79,6 +80,8 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-cross-bloc-challenge", defaultPassWithCrossBlocCosponsorshipAndChallenge()),
                 new ScenarioEntry("default-pass-adaptive-track", defaultPassWithAdaptiveTrack(false)),
                 new ScenarioEntry("default-pass-adaptive-track-challenge", defaultPassWithAdaptiveTrack(true)),
+                new ScenarioEntry("default-pass-sunset-trial", defaultPassWithSunsetTrial(false)),
+                new ScenarioEntry("default-pass-sunset-challenge", defaultPassWithSunsetTrial(true)),
                 new ScenarioEntry("default-pass-challenge-party-t3-s082", defaultPassWithChallengeVouchers(
                         "Default pass + party challenge vouchers t=3 s=.82",
                         ChallengeTokenAllocation.PARTY,
@@ -442,6 +445,32 @@ public final class ScenarioCatalog {
                         highRiskLane,
                         0.34,
                         0.58
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithSunsetTrial(boolean includeChallengeVouchers) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                if (includeChallengeVouchers) {
+                    return "Default pass + sunset trial + challenge";
+                }
+                return "Default pass + sunset trial";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess innerProcess = includeChallengeVouchers
+                        ? challengeMiddleLane(name(), world, strategy)
+                        : defaultPassFloorProcess(name(), world, strategy);
+                return new SunsetTrialProcess(
+                        name(),
+                        innerProcess,
+                        0.38,
+                        0.56
                 );
             }
         };

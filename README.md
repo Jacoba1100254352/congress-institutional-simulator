@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v5.csv`
-- `reports/simulation-campaign-v5.md`
+- `reports/simulation-campaign-v6.csv`
+- `reports/simulation-campaign-v6.md`
 
 Earlier campaigns remain available:
 
@@ -58,6 +58,7 @@ make campaign-v1
 make campaign-v2
 make campaign-v3
 make campaign-v4
+make campaign-v5
 ```
 
 You can override the campaign defaults:
@@ -82,6 +83,8 @@ The default CLI compares:
 - `default-pass-cross-bloc-challenge`: cross-bloc cosponsorship before challenge-voucher review
 - `default-pass-adaptive-track`: risk-routed default pass with low-risk, middle, and high-risk procedural lanes
 - `default-pass-adaptive-track-challenge`: adaptive tracks with challenge vouchers in the middle-risk lane
+- `default-pass-sunset-trial`: default passage with provisional enactment and automatic sunset review for risky bills
+- `default-pass-sunset-challenge`: challenge vouchers plus sunset review
 - challenge-sweep keys such as `default-pass-challenge-party-t3-s082`, `default-pass-challenge-member-t1-s082`, and `default-pass-escalation-q12-s082`
 - `default-pass-access`: default passage unless 2/3 vote to block, with a proposal-access screen
 - `default-pass-cost`: default passage unless 2/3 vote to block, with a proposal-cost screen
@@ -116,7 +119,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, or `v5`
+- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, or `v6`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -211,8 +214,14 @@ The v4 campaign adds cross-bloc cosponsorship gates:
 - `default-pass-cross-bloc-challenge` combines the cross-bloc agenda gate with challenge vouchers.
 - The finding is that coalition breadth is a strong upstream filter: it improves enacted-bill welfare and sharply reduces policy shift and proposer gain, but it also cuts floor access enough that adaptive routing became the next important model feature.
 
-The current v5 campaign adds adaptive procedural tracks:
+The v5 campaign adds adaptive procedural tracks:
 
 - `default-pass-adaptive-track` sends low-risk bills to default pass, middle-risk bills to active simple-majority review, and high-risk bills to informed guardrails.
 - `default-pass-adaptive-track-challenge` keeps the same fast and high-risk lanes, but sends middle-risk bills through challenge-voucher review.
-- The current finding is that adaptive routing provides a middle path: it preserves far more floor access than cross-bloc or informed guardrails while reducing low-support passage, policy shift, and proposer gain relative to open default-pass. The next model step is sunset/trial legislation because the remaining risk is persistence of bad enacted laws.
+- The finding is that adaptive routing provides a middle path: it preserves far more floor access than cross-bloc or informed guardrails while reducing low-support passage, policy shift, and proposer gain relative to open default-pass.
+
+The current v6 campaign adds sunset trial legislation:
+
+- `default-pass-sunset-trial` provisionally enacts risky default-pass bills, then automatically renews or expires them using generated public support, public benefit, lobby risk, and risk score.
+- `default-pass-sunset-challenge` combines the same sunset review with challenge vouchers.
+- The current finding is that reversibility improves enacted-bill welfare and sharply reduces policy shift without using a front-end agenda gate, but it still reduces productivity because failed review rolls the status quo back.

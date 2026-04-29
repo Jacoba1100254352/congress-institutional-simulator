@@ -100,6 +100,13 @@ public final class Main {
                         options.bills,
                         options.seed
                 );
+                case "v6" -> CampaignRunner.runV6(
+                        options.outputDir,
+                        options.runs,
+                        options.legislators,
+                        options.bills,
+                        options.seed
+                );
                 default -> throw new IllegalArgumentException("Unknown campaign: " + options.campaignName);
             };
             System.out.println(result.name() + " complete.");
@@ -457,7 +464,7 @@ public final class Main {
                       --scenarios <keys>  Comma-separated scenario keys
                       --format <kind>     table, csv, or bars
                       --charts            Add ASCII bar charts after the table
-                      --campaign <name>   Run a named campaign, currently v0, v1, v2, v3, v4, or v5
+                      --campaign <name>   Run a named campaign, currently v0, v1, v2, v3, v4, v5, or v6
                       --output-dir <path> Campaign output directory
                       --seed <n>          Reproducible random seed
                       --help              Show this message
