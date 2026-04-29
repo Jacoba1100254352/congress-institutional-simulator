@@ -4,6 +4,7 @@ import congresssim.behavior.VoteContext;
 import congresssim.behavior.VotingStrategy;
 import congresssim.experiment.CampaignResult;
 import congresssim.experiment.CampaignRunner;
+import congresssim.experiment.CampaignRow;
 import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.AgendaDisposition;
@@ -39,6 +40,7 @@ import congresssim.institution.SunsetTrialProcess;
 import congresssim.simulation.CommitteeComposition;
 import congresssim.simulation.CommitteeFactory;
 import congresssim.simulation.PartySystemProfile;
+import congresssim.simulation.Scenario;
 import congresssim.simulation.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
@@ -53,9 +55,11 @@ import congresssim.model.Vote;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public final class SimulatorTests {
     private SimulatorTests() {
@@ -95,8 +99,14 @@ public final class SimulatorTests {
         committeeInformationMovesPublicSignalTowardBenefit();
         committeeCompositionPresetsSelectDifferentMembers();
         partySystemProfilesRepresentMajorAndMinorParties();
+        partySystemProfilesKeepIdeologicalOrdering();
+        modelValidationRejectsInvalidInputs();
+        worldGenerationIsDeterministicAndBounded();
+        simulatorReportsAreDeterministicAndBounded();
         scenarioKeysSelectExpectedScenarios();
+        scenarioCatalogHasUniqueKeysAndRunnableNames();
         campaignRunnerWritesReports();
+        campaignRunnerWritesWeightedCsvWithStableSchema();
         simulatorProducesOneReportPerScenario();
         System.out.println("All simulator tests passed.");
     }
@@ -1142,6 +1152,218 @@ public final class SimulatorTests {
         assertTrue(representedParties == 7, "Fragmented multiparty profile should keep each party represented.");
     }
 
+    private static void partySystemProfilesKeepIdeologicalOrdering() {
+        WorldSpec twoMajorWithMinors = new WorldSpec(
+                101,
+                4,
+                5,
+                0.70,
+                0.65,
+                0.45,
+                0.60,
+                0.50,
+                PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES,
+                0.40
+        );
+        SimulationWorld world = new WorldGenerator().generate(twoMajorWithMinors, 2026L);
+        Map<String, Double> partyPositions = world.partyPositions();
+
+        assertTrue(
+                partyPositions.get("Major-Left") < partyPositions.get("Center-Minor"),
+                "Major-left parties should be ideologically left of the center minor party."
+        );
+        assertTrue(
+                partyPositions.get("Center-Minor") < partyPositions.get("Major-Right"),
+                "Center minor parties should be ideologically left of the major-right party."
+        );
+
+        WorldSpec dominant = new WorldSpec(
+                101,
+                4,
+                4,
+                0.66,
+                0.70,
+                0.48,
+                0.62,
+                0.48,
+                PartySystemProfile.DOMINANT_PARTY,
+                0.15
+        );
+        SimulationWorld dominantWorld = new WorldGenerator().generate(dominant, 2027L);
+        long dominantSeats = dominantWorld.legislators()
+                .stream()
+                .filter(legislator -> legislator.party().equals("Dominant-Center"))
+                .count();
+        assertTrue(dominantSeats > 45, "Dominant-party profile should create a large center party.");
+        assertTrue(
+                Math.abs(dominantWorld.partyPositions().get("Dominant-Center")) < 0.45,
+                "Dominant-party profile should keep the dominant party near the ideological center."
+        );
+    }
+
+    private static void modelValidationRejectsInvalidInputs() {
+        assertThrows(
+                () -> new WorldSpec(0, 4, 2, 0.50, 0.50, 0.50, 0.50, 0.50),
+                "WorldSpec should reject nonpositive legislature sizes."
+        );
+        assertThrows(
+                () -> new WorldSpec(10, 4, 2, 1.50, 0.50, 0.50, 0.50, 0.50),
+                "WorldSpec should reject out-of-range polarization."
+        );
+        assertThrows(
+                () -> new Bill("B-invalid", "Invalid Bill", "L-1", 0.0, 1.2, 0.5, 0.5, 0.0, 0.5),
+                "Bill should reject out-of-range ideology positions."
+        );
+        assertThrows(
+                () -> new LobbyGroup(
+                        "G-invalid",
+                        "energy",
+                        Map.of("energy", 1.2),
+                        0.0,
+                        1.0,
+                        0.5,
+                        1.0,
+                        0.5,
+                        0.5,
+                        LobbyCaptureStrategy.BALANCED,
+                        0.5
+                ),
+                "LobbyGroup should reject out-of-range issue preferences."
+        );
+    }
+
+    private static void worldGenerationIsDeterministicAndBounded() {
+        WorldSpec spec = new WorldSpec(
+                61,
+                20,
+                5,
+                0.72,
+                0.66,
+                0.48,
+                0.64,
+                0.55,
+                PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES,
+                0.40
+        );
+        WorldGenerator generator = new WorldGenerator();
+        SimulationWorld first = generator.generate(spec, 4242L);
+        SimulationWorld second = generator.generate(spec, 4242L);
+
+        assertTrue(first.equals(second), "World generation should be deterministic for a fixed seed.");
+        assertTrue(first.legislators().size() == spec.legislatorCount(), "World should contain the requested number of legislators.");
+        assertTrue(first.bills().size() == spec.billCount(), "World should contain the requested number of bills.");
+        assertTrue(first.lobbyGroups().size() >= spec.partyCount(), "World should include explicit lobby actors.");
+        assertRatio((first.initialPolicy().position() + 1.0) / 2.0, "Initial policy should be inside [-1, 1].");
+
+        Set<String> legislatorIds = new HashSet<>();
+        for (Legislator legislator : first.legislators()) {
+            assertTrue(legislatorIds.add(legislator.id()), "Generated legislator IDs should be unique.");
+            assertRatio((legislator.ideology() + 1.0) / 2.0, "Legislator ideology should be inside [-1, 1].");
+            assertRatio(legislator.compromisePreference(), "Compromise preference should be a ratio.");
+            assertRatio(legislator.partyLoyalty(), "Party loyalty should be a ratio.");
+            assertRatio(legislator.constituencySensitivity(), "Constituency sensitivity should be a ratio.");
+            assertRatio(legislator.lobbySensitivity(), "Lobby sensitivity should be a ratio.");
+            assertRatio(legislator.districtIntensity(), "District intensity should be a ratio.");
+        }
+
+        Set<String> billIds = new HashSet<>();
+        for (Bill bill : first.bills()) {
+            assertTrue(billIds.add(bill.id()), "Generated bill IDs should be unique.");
+            assertTrue(legislatorIds.contains(bill.proposerId()), "Each generated bill should have a real proposer.");
+            assertRatio((bill.ideologyPosition() + 1.0) / 2.0, "Bill ideology should be inside [-1, 1].");
+            assertRatio(bill.publicSupport(), "Bill public support should be a ratio.");
+            assertRatio(bill.publicBenefit(), "Bill public benefit should be a ratio.");
+            assertRatio((bill.lobbyPressure() + 1.0) / 2.0, "Bill lobby pressure should be inside [-1, 1].");
+            assertRatio(bill.salience(), "Bill salience should be a ratio.");
+            assertRatio(bill.privateGain(), "Bill private gain should be a ratio.");
+            assertRatio(bill.affectedGroupSupport(), "Affected-group support should be a ratio.");
+            assertRatio(bill.concentratedHarm(), "Concentrated harm should be a ratio.");
+            assertRatio(bill.compensationCost(), "Compensation cost should be a ratio.");
+            assertRatio(bill.publicBenefitUncertainty(), "Public-benefit uncertainty should be a ratio.");
+        }
+    }
+
+    private static void simulatorReportsAreDeterministicAndBounded() {
+        WorldSpec spec = new WorldSpec(
+                31,
+                10,
+                5,
+                0.72,
+                0.66,
+                0.48,
+                0.64,
+                0.55,
+                PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES,
+                0.40
+        );
+        List<Scenario> scenarios = ScenarioCatalog.scenariosForKeys(List.of(
+                "default-pass",
+                "default-pass-challenge",
+                "default-pass-compensation",
+                "default-pass-citizen-certificate",
+                "default-pass-alternatives-pairwise",
+                "default-pass-weighted-agenda-lottery"
+        ));
+        Simulator simulator = new Simulator();
+        List<ScenarioReport> first = simulator.compare(scenarios, spec, 3, 5150L);
+        List<ScenarioReport> second = simulator.compare(scenarios, spec, 3, 5150L);
+
+        assertTrue(first.equals(second), "Simulator reports should be deterministic for a fixed seed.");
+        for (ScenarioReport report : first) {
+            assertTrue(report.totalBills() == 30, "Report should count runs times generated bills.");
+            assertTrue(report.enactedBills() >= 0 && report.enactedBills() <= report.totalBills(), "Enacted bills should be bounded by total bills.");
+            assertRatio(report.productivity(), "Productivity should be a ratio.");
+            assertRatio(report.averageEnactedSupport(), "Average enacted support should be a ratio.");
+            assertRatio(report.averagePublicBenefit(), "Average public benefit should be a ratio.");
+            assertRatio(report.cooperationScore(), "Cooperation score should be a ratio.");
+            assertRatio(report.compromiseScore(), "Compromise score should be a ratio.");
+            assertRatio(report.gridlockRate(), "Gridlock rate should be a ratio.");
+            assertRatio(report.controversialPassageRate(), "Low-support passage should be a ratio.");
+            assertRatio(report.popularBillFailureRate(), "Popular bill failure rate should be a ratio.");
+            assertTrue(report.averagePolicyShift() >= 0.0 && report.averagePolicyShift() <= 2.0, "Average policy shift should stay within the policy range.");
+            assertTrue(report.averageProposerGain() >= 0.0 && report.averageProposerGain() <= 2.0, "Average proposer gain should stay within the policy range.");
+            assertRatio(report.lobbyCaptureIndex(), "Lobby capture index should be a ratio.");
+            assertRatio(report.publicAlignmentScore(), "Public alignment should be a ratio.");
+            assertRatio(report.antiLobbyingSuccessRate(), "Anti-lobbying success should be a ratio.");
+            assertTrue(report.privateGainRatio() >= 0.0 && report.privateGainRatio() <= 5.0, "Private gain ratio should stay within the configured cap.");
+            assertNonNegativeFinite(report.lobbySpendPerBill(), "Lobby spend per bill should be finite and nonnegative.");
+            assertRatio(report.defensiveLobbyingShare(), "Defensive lobbying share should be a ratio.");
+            assertNonNegativeFinite(report.captureReturnOnSpend(), "Capture return on spend should be finite and nonnegative.");
+            assertRatio(report.publicPreferenceDistortion(), "Public-preference distortion should be a ratio.");
+            assertRatio(report.amendmentRate(), "Amendment rate should be a ratio.");
+            assertNonNegativeFinite(report.averageAmendmentMovement(), "Average amendment movement should be finite and nonnegative.");
+            assertRatio(report.minorityHarmIndex(), "Minority harm should be a ratio.");
+            assertRatio(report.concentratedHarmPassageRate(), "Concentrated-harm passage rate should be a ratio.");
+            assertRatio(report.compensationRate(), "Compensation rate should be a ratio.");
+            assertRatio(report.legitimacyScore(), "Legitimacy should be a ratio.");
+            assertRatio(report.reversalRate(), "Reversal rate should be a ratio.");
+            assertRatio(report.lowSupportActiveLawShare(), "Low-support active-law share should be a ratio.");
+            assertRatio(report.statusQuoWinRate(), "Status-quo win rate should be a ratio.");
+            assertRatio(report.citizenReviewRate(), "Citizen review rate should be a ratio.");
+            assertRatio(report.citizenCertificationRate(), "Citizen certification rate should be a ratio.");
+            assertRatio(report.citizenLegitimacy(), "Citizen legitimacy should be a ratio.");
+            assertRatio(report.objectionWindowRate(), "Objection-window rate should be a ratio.");
+            assertRatio(report.repealWindowReversalRate(), "Repeal-window reversal rate should be a ratio.");
+            assertRatio(report.fastLaneRate(), "Fast lane rate should be a ratio.");
+            assertRatio(report.middleLaneRate(), "Middle lane rate should be a ratio.");
+            assertRatio(report.highRiskLaneRate(), "High-risk lane rate should be a ratio.");
+            assertRatio(report.challengeExhaustionRate(), "Challenge exhaustion rate should be a ratio.");
+            assertRatio(report.falseNegativePassRate(), "False-negative pass rate should be a ratio.");
+            assertRatio(report.publicWillReviewRate(), "Public-will review rate should be a ratio.");
+            assertRatio(report.crossBlocAdmissionRate(), "Cross-bloc admission rate should be a ratio.");
+            assertRatio(report.affectedGroupSponsorshipRate(), "Affected-group sponsorship rate should be a ratio.");
+            assertNonNegativeFinite(report.alternativeDiversity(), "Alternative diversity should be finite and nonnegative.");
+            assertNonNegativeFinite(report.publicBenefitPerLobbyDollar(), "Public benefit per lobby dollar should be finite and nonnegative.");
+            assertNonNegativeFinite(report.attentionSpendPerBill(), "Attention spend per bill should be finite and nonnegative.");
+            assertNonNegativeFinite(report.averageCosponsors(), "Average cosponsors should be finite and nonnegative.");
+            assertNonNegativeFinite(report.strategicDecoyRate(), "Strategic decoy rate should be finite and nonnegative.");
+            assertRatio(report.proposerAccessGini(), "Proposer access Gini should be a ratio.");
+            assertRatio(report.welfarePerSubmittedBill(), "Welfare per submitted bill should be a ratio.");
+            assertTrue(report.vetoes() >= 0, "Veto count should be nonnegative.");
+            assertTrue(report.overriddenVetoes() >= 0 && report.overriddenVetoes() <= report.vetoes(), "Overridden vetoes should be bounded by vetoes.");
+        }
+    }
+
     private static void simulatorProducesOneReportPerScenario() {
         WorldSpec spec = new WorldSpec(31, 8, 3, 0.70, 0.65, 0.45, 0.60, 0.50);
         List<ScenarioReport> reports = new Simulator().compare(ScenarioCatalog.defaultScenarios(), spec, 3, 1234L);
@@ -1243,6 +1465,26 @@ public final class SimulatorTests {
         );
     }
 
+    private static void scenarioCatalogHasUniqueKeysAndRunnableNames() {
+        List<String> keys = ScenarioCatalog.scenarioKeys();
+        assertTrue(keys.size() == new HashSet<>(keys).size(), "Scenario keys should be unique.");
+        assertTrue(
+                ScenarioCatalog.defaultScenarios().size() == keys.size(),
+                "Default scenario list should match the CLI-facing key list."
+        );
+
+        Set<String> scenarioNames = new HashSet<>();
+        for (Scenario scenario : ScenarioCatalog.defaultScenarios()) {
+            assertTrue(scenario.name() != null && !scenario.name().isBlank(), "Every scenario should expose a nonblank name.");
+            assertTrue(scenarioNames.add(scenario.name()), "Scenario display names should be unique for reports.");
+        }
+
+        assertThrows(
+                () -> ScenarioCatalog.scenariosForKeys(List.of("missing-scenario-key")),
+                "Unknown scenario keys should fail fast instead of silently changing campaign composition."
+        );
+    }
+
     private static void campaignRunnerWritesReports() {
         try {
             Path outputDir = Path.of("out", "test-campaign");
@@ -1259,6 +1501,49 @@ public final class SimulatorTests {
             );
         } catch (Exception exception) {
             throw new AssertionError("Campaign report generation failed.", exception);
+        }
+    }
+
+    private static void campaignRunnerWritesWeightedCsvWithStableSchema() {
+        try {
+            Path outputDir = Path.of("out", "test-campaign-v18");
+            Files.createDirectories(outputDir);
+            Files.deleteIfExists(outputDir.resolve("simulation-campaign-v18.csv"));
+            Files.deleteIfExists(outputDir.resolve("simulation-campaign-v18.md"));
+
+            CampaignResult result = CampaignRunner.runV18(outputDir, 1, 17, 3, 91L);
+            assertTrue(result.rows().size() > 0, "Weighted campaign should produce result rows.");
+
+            Set<String> cases = new HashSet<>();
+            Set<String> scenarios = new HashSet<>();
+            double caseWeightSum = 0.0;
+            for (CampaignRow row : result.rows()) {
+                scenarios.add(row.scenarioKey());
+                if (cases.add(row.caseKey())) {
+                    caseWeightSum += row.caseWeight();
+                }
+            }
+            assertTrue(cases.size() == 4, "v18 should include the four weighted party-system cases.");
+            assertTrue(Math.abs(caseWeightSum - 1.0) < 0.000001, "v18 case weights should sum to one.");
+            assertTrue(scenarios.size() >= 30, "v18 should exercise the roadmap-completion scenario set.");
+
+            String csv = Files.readString(result.csvPath());
+            List<String> lines = csv.lines().filter(line -> !line.isBlank()).toList();
+            assertTrue(lines.size() == result.rows().size() + 1, "CSV should contain one header plus one line per campaign row.");
+            int headerColumns = csvColumnCount(lines.getFirst());
+            assertTrue(headerColumns >= 70, "CSV should expose the expanded metric schema.");
+            for (int i = 1; i < lines.size(); i++) {
+                assertTrue(
+                        csvColumnCount(lines.get(i)) == headerColumns,
+                        "Every CSV row should match the header column count."
+                );
+            }
+
+            String markdown = Files.readString(result.markdownPath());
+            assertTrue(markdown.contains("## Case Weights"), "Weighted campaigns should document case weights in Markdown.");
+            assertTrue(markdown.contains("Weighted Two Major Plus Minors"), "Markdown should include party-system case names.");
+        } catch (Exception exception) {
+            throw new AssertionError("Weighted campaign report generation failed.", exception);
         }
     }
 
@@ -1296,5 +1581,40 @@ public final class SimulatorTests {
 
     private static void assertFalse(boolean condition, String message) {
         assertTrue(!condition, message);
+    }
+
+    private static void assertThrows(Runnable action, String message) {
+        try {
+            action.run();
+        } catch (RuntimeException expected) {
+            return;
+        }
+        throw new AssertionError(message);
+    }
+
+    private static void assertRatio(double value, String message) {
+        assertTrue(Double.isFinite(value) && value >= 0.0 && value <= 1.0, message + " Actual: " + value);
+    }
+
+    private static void assertNonNegativeFinite(double value, String message) {
+        assertTrue(Double.isFinite(value) && value >= 0.0, message + " Actual: " + value);
+    }
+
+    private static int csvColumnCount(String line) {
+        int columns = 1;
+        boolean quoted = false;
+        for (int index = 0; index < line.length(); index++) {
+            char current = line.charAt(index);
+            if (current == '"') {
+                if (quoted && index + 1 < line.length() && line.charAt(index + 1) == '"') {
+                    index++;
+                } else {
+                    quoted = !quoted;
+                }
+            } else if (current == ',' && !quoted) {
+                columns++;
+            }
+        }
+        return columns;
     }
 }
