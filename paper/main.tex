@@ -213,38 +213,37 @@ The simulator source code, LaTeX manuscript source, generated campaign reports, 
 
 \section{Results}
 
-Table~\ref{tab:scenario-averages} summarizes selected scenario averages across all v17 assumption cases. The table mixes one absolute load measure with normalized metrics: \emph{Enacted/run} is a count of enacted bills per simulated run, while the other columns are rates or scores on a 0--1 scale. Figures~\ref{fig:productivity-low-support}, \ref{fig:compromise-productivity}, and~\ref{fig:default-pass-deltas} visualize the same tradeoff space.
+Table~\ref{tab:scenario-averages} summarizes selected scenario averages across all v17 assumption cases. It is deliberately a broad institutional comparison, not a default-enactment-only table: the \emph{Default lane} column marks whether default passage is absent, open, contested, routed, gated, or paired with later review. The table mixes one absolute load measure with normalized metrics: \emph{Enacted/run} is a count of enacted bills per simulated run, while the other columns are rates or scores on a 0--1 scale. Figures~\ref{fig:productivity-low-support}, \ref{fig:compromise-productivity}, \ref{fig:broad-system-comparison}, and~\ref{fig:default-pass-deltas} visualize the same tradeoff space.
 
 \begin{table*}
-  \caption{Selected scenario averages across 18 assumption cases in \texttt{simulation-campaign-v17}.}
+  \caption{Broad selected scenario averages across 18 assumption cases in \texttt{simulation-campaign-v17}.}
   \label{tab:scenario-averages}
-  \Description{A table comparing figure labels, productivity, enacted bills, welfare, low-support passage, policy shift, proposer gain, and challenge rate across institutional scenarios.}
+  \Description{A table comparing figure labels, default-lane status, productivity, enacted bills, welfare, low-support passage, policy shift, proposer gain, and challenge rate across institutional scenarios.}
   \small
   \resizebox{\textwidth}{!}{%
-  \begin{tabular}{llrrrrrrr}
+  \begin{tabular}{lllrrrrrrr}
     \toprule
-    Label & Scenario & Prod. & Enacted/run & Welfare & Low-sup. & Shift & Prop. gain & Challenge \\
+    Label & Default lane & Scenario & Prod. & Enacted/run & Welfare & Low-sup. & Shift & Prop. gain & Challenge \\
     \midrule
-    \textcolor{red}{Current} & \textcolor{red}{Current U.S.-style system} & \textcolor{red}{0.067} & \textcolor{red}{6.360} & \textcolor{red}{0.704} & \textcolor{red}{0.000} & \textcolor{red}{0.015} & \textcolor{red}{0.155} & \textcolor{red}{0.000} \\
-    DP & Default pass unless 2/3 block & 0.843 & 86.980 & 0.497 & 0.448 & 0.664 & 0.656 & 0.000 \\
-    Public+Panel & Default pass + constituent public will + citizen panel & 0.407 & 41.313 & 0.629 & 0.249 & 0.213 & 0.435 & 0.000 \\
-    Bond & Default pass + proposal bonds & 0.832 & 85.022 & 0.499 & 0.448 & 0.653 & 0.653 & 0.000 \\
-    Aff.Spon & Default pass + affected-group sponsor gate & 0.192 & 18.649 & 0.725 & 0.154 & 0.062 & 0.241 & 0.000 \\
-    Med & Default pass + multi-round mediation & 0.958 & 98.574 & 0.450 & 0.394 & 0.392 & 0.368 & 0.000 \\
-    Med+Chal & Default pass + multi-round mediation + challenge & 0.785 & 86.314 & 0.460 & 0.300 & 0.296 & 0.340 & 0.376 \\
-    Pair & Default pass + pairwise policy tournament & 0.551 & 56.412 & 0.641 & 0.042 & 0.004 & 0.004 & 0.000 \\
-    Chal. & Default pass + challenge vouchers & 0.671 & 77.963 & 0.510 & 0.393 & 0.456 & 0.541 & 0.397 \\
-    MinTok & Default pass + minority-bonus challenge vouchers & 0.635 & 75.106 & 0.519 & 0.372 & 0.421 & 0.524 & 0.442 \\
-    AdaptS & Default pass + strict adaptive tracks & 0.285 & 28.291 & 0.647 & 0.078 & 0.111 & 0.311 & 0.000 \\
-    Obj. & Default pass + public objection window & 0.448 & 45.285 & 0.593 & 0.269 & 0.214 & 0.384 & 0.000 \\
-    LawReg & Default pass + law registry & 0.867 & 89.653 & 0.492 & 0.396 & 0.836 & 0.598 & 0.000 \\
-    Cost & Default pass + lobby-surcharge proposal costs & 0.506 & 51.804 & 0.531 & 0.460 & 0.531 & 0.925 & 0.000 \\
-    SM & Unicameral simple majority & 0.268 & 26.268 & 0.636 & 0.000 & 0.104 & 0.310 & 0.000 \\
-    S60 & Unicameral 60 percent passage & 0.090 & 8.543 & 0.707 & 0.000 & 0.020 & 0.147 & 0.000 \\
+    \textcolor{red}{Current} & \textcolor{red}{No} & \textcolor{red}{Current U.S.-style system} & \textcolor{red}{0.067} & \textcolor{red}{6.360} & \textcolor{red}{0.704} & \textcolor{red}{0.000} & \textcolor{red}{0.015} & \textcolor{red}{0.155} & \textcolor{red}{0.000} \\
+    SM & No & Unicameral simple majority & 0.268 & 26.268 & 0.636 & 0.000 & 0.104 & 0.310 & 0.000 \\
+    S60 & No & Unicameral 60 percent passage & 0.090 & 8.543 & 0.707 & 0.000 & 0.020 & 0.147 & 0.000 \\
+    Bicam & No & Bicameral simple majority & 0.174 & 16.869 & 0.665 & 0.000 & 0.053 & 0.229 & 0.000 \\
+    Veto & No & Bicameral majority + presidential veto & 0.111 & 10.727 & 0.683 & 0.000 & 0.031 & 0.212 & 0.000 \\
+    DP & Open & Default pass unless 2/3 block & 0.843 & 86.980 & 0.497 & 0.448 & 0.664 & 0.656 & 0.000 \\
+    Chal. & Contest & Default pass + challenge vouchers & 0.671 & 77.963 & 0.510 & 0.393 & 0.456 & 0.541 & 0.397 \\
+    Med+Chal & Contest & Default pass + multi-round mediation + challenge & 0.785 & 86.314 & 0.460 & 0.300 & 0.296 & 0.340 & 0.376 \\
+    Public+Panel & Routed & Default pass + constituent public will + citizen panel & 0.407 & 41.313 & 0.629 & 0.249 & 0.213 & 0.435 & 0.000 \\
+    AdaptS & Routed & Default pass + adaptive tracks strict & 0.285 & 28.291 & 0.647 & 0.078 & 0.111 & 0.311 & 0.000 \\
+    Pair & Alt. & Default pass + pairwise policy tournament & 0.551 & 56.412 & 0.641 & 0.042 & 0.004 & 0.004 & 0.000 \\
+    Aff.Spon & Gate & Default pass + affected-group sponsor gate & 0.192 & 18.649 & 0.725 & 0.154 & 0.062 & 0.241 & 0.000 \\
+    Obj. & Window & Default pass + public objection window & 0.448 & 45.285 & 0.593 & 0.269 & 0.214 & 0.384 & 0.000 \\
+    LawReg & Review & Default pass + law registry & 0.867 & 89.653 & 0.492 & 0.396 & 0.836 & 0.598 & 0.000 \\
+    Cost & Access & Default pass + lobby-surcharge proposal costs & 0.506 & 51.804 & 0.531 & 0.460 & 0.531 & 0.925 & 0.000 \\
     \bottomrule
   \end{tabular}%
   }
-  \par\smallskip\footnotesize \emph{Note:} The \emph{Label} column matches the point labels in Figure~\ref{fig:productivity-low-support}. The red \emph{Current} row is the stylized current U.S.-style benchmark and matches the red benchmark points and bars in Figures~\ref{fig:productivity-low-support}--\ref{fig:default-pass-deltas}. \emph{Enacted/run} is an absolute count. All other reported columns are normalized rates or scores.
+  \par\smallskip\footnotesize \emph{Note:} The \emph{Default lane} column is a design attribute, not a value judgment: ``No'' means the scenario uses affirmative passage rather than default enactment; the other values describe how default enactment is constrained. The \emph{Label} column matches point labels in Figure~\ref{fig:productivity-low-support}. The red \emph{Current} row is the stylized current U.S.-style benchmark and matches the red benchmark points and bars in Figures~\ref{fig:productivity-low-support}--\ref{fig:default-pass-deltas}. \emph{Enacted/run} is an absolute count. All other reported columns are normalized rates or scores.
 \end{table*}
 
 \begin{figure*}
@@ -265,8 +264,16 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
 
 \begin{figure*}
   \centering
+  \input{figures/broad_system_comparison}
+  \caption{Broad comparison of selected institutional systems across normalized productivity, compromise, and generated welfare. Default-pass pairings are included as one family among affirmative majority, supermajority, bicameral, presidential-veto, public-panel, adaptive-track, and policy-tournament systems. The stylized current U.S.-style benchmark is shown in red.}
+  \label{fig:broad-system-comparison}
+  \Description{A horizontal grouped bar chart comparing productivity, compromise, and welfare for current-system, simple majority, supermajority, bicameral, presidential veto, open default-pass, challenge vouchers, mediation with challenge, public panel, strict adaptive tracks, pairwise policy tournament, and affected-group gate scenarios.}
+\end{figure*}
+
+\begin{figure*}
+  \centering
   \input{figures/default_pass_deltas}
-  \caption{Productivity, policy-shift, and proposer-gain deltas relative to open default-pass. The stylized current U.S.-style benchmark is shown in red. Negative shift and proposer-gain deltas are desirable; productivity deltas show the throughput cost or gain.}
+  \caption{Focused comparison of default-pass pairings: productivity, policy-shift, and proposer-gain deltas relative to open default-pass. The stylized current U.S.-style benchmark is shown in red only as an external baseline. Negative shift and proposer-gain deltas are desirable; productivity deltas show the throughput cost or gain.}
   \label{fig:default-pass-deltas}
   \Description{A horizontal bar chart showing that guarded, cross-bloc, adaptive, law-registry, challenge, and policy-tournament scenarios change productivity, policy shift, and proposer gain relative to open default-pass.}
 \end{figure*}
