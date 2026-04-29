@@ -2017,12 +2017,17 @@ public final class ScenarioCatalog {
                         AffirmativeThresholdRule.supermajority(0.60)
                 );
                 LegislativeProcess bicameral = new BicameralProcess(name(), house, senate);
-                return new PresidentialVetoProcess(
+                LegislativeProcess finalPassage = new PresidentialVetoProcess(
                         bicameral,
                         presidentFromWorld(world),
                         strategy,
                         0.68,
                         AffirmativeThresholdRule.supermajority(2.0 / 3.0)
+                );
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.currentSystemAgenda(0.58),
+                        finalPassage
                 );
             }
         };

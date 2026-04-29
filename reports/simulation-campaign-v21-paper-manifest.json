@@ -1,0 +1,18 @@
+{
+  "reportName": "Simulation Campaign v21 Paper",
+  "commit": "df23ab4c167c65524973b9944026187b87de4b5e",
+  "tag": "v21",
+  "gitDirty": true,
+  "javaVersion": "25",
+  "javaCommand": "congresssim.Main --campaign v21-paper --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports",
+  "runs": 120,
+  "legislators": 101,
+  "bills": 60,
+  "seed": 20260428,
+  "caseCount": 28,
+  "scenarioCount": 16,
+  "artifacts": [
+    {"path": "reports/simulation-campaign-v21-paper.csv", "sha256": "b4684867be78d9992cb8b22df1a0a7ad45a71794175f026cfe14d615be2fc377"},
+    {"path": "reports/simulation-campaign-v21-paper.md", "sha256": "5440e403b614c0b7d48157dc2768b1f24ea32fe9d78d048ff41c3ec92c77e0b8"}
+  ]
+}

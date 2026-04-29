@@ -7,6 +7,7 @@ import congresssim.simulation.Simulator;
 import congresssim.simulation.MetricDefinition;
 import congresssim.simulation.PartySystemProfile;
 import congresssim.simulation.WorldSpec;
+import congresssim.reporting.ReportProvenance;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -470,6 +471,24 @@ public final class CampaignRunner {
             "default-pass-public-objection",
             "default-pass-law-registry"
     );
+    private static final List<String> PAPER_SCENARIOS = List.of(
+            "current-system",
+            "simple-majority",
+            "supermajority-60",
+            "bicameral-majority",
+            "presidential-veto",
+            "default-pass",
+            "default-pass-challenge",
+            "default-pass-multiround-mediation-challenge",
+            "default-pass-constituent-citizen-panel",
+            "default-pass-adaptive-track-strict",
+            "default-pass-alternatives-pairwise",
+            "default-pass-affected-sponsor-gate",
+            "default-pass-public-objection",
+            "default-pass-law-registry",
+            "default-pass-cost-lobby-surcharge",
+            "default-pass-deep-strategy-bundle"
+    );
 
     private CampaignRunner() {
     }
@@ -894,6 +913,26 @@ public final class CampaignRunner {
         );
     }
 
+    public static CampaignResult runV21Paper(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v21 Paper",
+                "simulation-campaign-v21-paper",
+                outputDir,
+                v21PaperCases(legislators, bills),
+                PAPER_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
     private static CampaignResult run(
             String name,
             String fileStem,
@@ -935,10 +974,22 @@ public final class CampaignRunner {
                 name,
                 rows,
                 outputDir.resolve(fileStem + ".csv"),
-                outputDir.resolve(fileStem + ".md")
+                outputDir.resolve(fileStem + ".md"),
+                outputDir.resolve(fileStem + "-manifest.json")
         );
         Files.writeString(result.csvPath(), csv(result, runs));
         Files.writeString(result.markdownPath(), markdown(result, runs, legislators, baseBills, seed, scenarioKeys.size()));
+        ReportProvenance.write(
+                result.manifestPath(),
+                result.name(),
+                runs,
+                legislators,
+                baseBills,
+                seed,
+                caseCount(result.rows()),
+                scenarioKeys.size(),
+                List.of(result.csvPath(), result.markdownPath())
+        );
         return result;
     }
 
@@ -1041,6 +1092,13 @@ public final class CampaignRunner {
                         legislators, Math.max(1, bills * 2), 2, 0.94, 0.92, 0.90, 0.38, 0.18,
                         PartySystemProfile.IDEOLOGICAL_BINS, 1.0)
         );
+    }
+
+    private static List<ExperimentCase> v21PaperCases(int legislators, int bills) {
+        List<ExperimentCase> cases = new ArrayList<>(v8Cases(legislators, bills));
+        cases.addAll(v18Cases(legislators, bills));
+        cases.addAll(v19Cases(legislators, bills));
+        return cases;
     }
 
     private static ExperimentCase experiment(

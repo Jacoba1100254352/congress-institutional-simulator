@@ -46,6 +46,10 @@ public final class ProposalAccessRules {
         );
     }
 
+    public static ProposalAccessRule currentSystemAgenda(double threshold) {
+        return new CurrentSystemAgendaAccessRule(threshold);
+    }
+
     public static ProposalAccessRule crossBlocCosponsorship(
             List<Legislator> legislators,
             int minimumCosponsors,

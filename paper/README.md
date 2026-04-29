@@ -1,30 +1,23 @@
 # Paper Build
 
-The working manuscript is now `main.tex`, formatted with ACM's `acmart`
-LaTeX class for a public, named manuscript build.
+The working manuscript is `main.tex`, formatted with ACM's `acmart`
+LaTeX class for double-blind review.
 
 ## Target Venue
 
 The best current fit is ACM Collective Intelligence, because its call covers
 computational models, democracy, policymaking, incentive mechanisms, voting
-design, and collective decision-making. Its 2025 instructions required ACM's
-LaTeX template and single-column `manuscript` mode. Archival full papers and
-extended abstracts used double-blind review; demos and posters used
-non-anonymous review.
-
-The public repository build therefore uses:
+design, and collective decision-making. The current review build uses ACM's
+single-column template in anonymous review mode:
 
 ```tex
-\documentclass[manuscript]{acmart}
+\documentclass[manuscript,review,anonymous]{acmart}
 \setcopyright{none}
 ```
 
-If submitting to a CI full-paper or extended-abstract track that requires
-double-blind review, make a review-specific copy that restores `anonymous` and
-`review`, removes the author block, and removes or anonymizes the public code
-repository URL until review is complete. The final camera-ready version should
-remove review-only options and add the ACM rights metadata supplied after
-acceptance.
+The final camera-ready version should restore author metadata, remove
+review-only options, restore the public repository URL if permitted, and add the
+ACM rights metadata supplied after acceptance.
 
 ## Template Source
 
@@ -52,6 +45,14 @@ tlmgr --usermode install acmart xstring zref preprint comment draftwatermark env
 
 ```sh
 make paper
+```
+
+`make paper` first regenerates the canonical `v21-paper` campaign, then
+generates table/figure fragments from `reports/simulation-campaign-v21-paper.csv`
+before compiling the PDF. Word-count compliance can be checked with:
+
+```sh
+make paper-word-count
 ```
 
 The generated PDF is written to:

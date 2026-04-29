@@ -163,6 +163,12 @@ Run the v20 strategy/calibration campaign:
 make campaign-v20
 ```
 
+Run the canonical v21-paper campaign used for the current paper tables and figures:
+
+```sh
+make campaign-v21-paper
+```
+
 Run the empirical benchmark screening report:
 
 ```sh
@@ -228,7 +234,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
 - `--calibrate`: run empirical benchmark screening from `data/calibration/empirical-benchmarks.csv`.
-- `--campaign <v0..v20>`: run a named campaign.
+- `--campaign <v0..v21-paper>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -345,13 +351,15 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v20.csv`
-- `reports/simulation-campaign-v20.md`
+- `reports/simulation-campaign-v21-paper.csv`
+- `reports/simulation-campaign-v21-paper.md`
+- `reports/simulation-campaign-v21-paper-manifest.json`
 
 Calibration report:
 
 - `reports/calibration-baseline.csv`
 - `reports/calibration-baseline.md`
+- `reports/calibration-baseline-manifest.json`
 
 Earlier campaigns:
 

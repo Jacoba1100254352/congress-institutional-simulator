@@ -12,15 +12,15 @@ Executable empirical-screening run for the conventional simulator baseline. This
 
 ## Summary
 
-- passed checks: 6 / 7
+- passed checks: 7 / 7
 
 | Check | Scenario | Metric | Range | Observed | Pass |
 | --- | --- | --- | ---: | ---: | --- |
-| current-system-enactment-rate | current-system | productivity | 0.010--0.120 | 0.048 | yes |
-| current-system-floor-load | current-system | floor | 0.050--0.450 | 1.000 | no |
-| party-unity-support-band | current-system | averageEnactedSupport | 0.500--0.820 | 0.670 | yes |
+| current-system-enactment-rate | current-system | productivity | 0.010--0.120 | 0.034 | yes |
+| current-system-floor-load | current-system | floor | 0.050--0.450 | 0.167 | yes |
+| party-unity-support-band | current-system | averageEnactedSupport | 0.500--0.820 | 0.674 | yes |
 | veto-frequency-band | presidential-veto | vetoesPerRun | 0.000--8.000 | 2.600 | yes |
-| sponsor-success-concentration | current-system | proposerAccessGini | 0.050--0.750 | 0.056 | yes |
+| sponsor-success-concentration | current-system | proposerAccessGini | 0.050--0.750 | 0.153 | yes |
 | lobbying-spend-observable | default-pass-budgeted-lobbying | lobbySpendPerBill | 0.010--1.500 | 0.092 | yes |
 | topic-throughput-yield | simple-majority | welfarePerSubmittedBill | 0.050--0.450 | 0.145 | yes |
 

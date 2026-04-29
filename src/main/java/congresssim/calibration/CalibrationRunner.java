@@ -5,6 +5,7 @@ import congresssim.simulation.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
 import congresssim.simulation.WorldSpec;
+import congresssim.reporting.ReportProvenance;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -69,10 +70,22 @@ public final class CalibrationRunner {
         CalibrationRunResult result = new CalibrationRunResult(
                 rows,
                 outputDir.resolve("calibration-baseline.csv"),
-                outputDir.resolve("calibration-baseline.md")
+                outputDir.resolve("calibration-baseline.md"),
+                outputDir.resolve("calibration-baseline-manifest.json")
         );
         Files.writeString(result.csvPath(), csv(result));
         Files.writeString(result.markdownPath(), markdown(result, runs, legislators, bills, seed));
+        ReportProvenance.write(
+                result.manifestPath(),
+                "Calibration Baseline",
+                runs,
+                legislators,
+                bills,
+                seed,
+                1,
+                CALIBRATION_SCENARIOS.size(),
+                List.of(result.csvPath(), result.markdownPath())
+        );
         return result;
     }
 
@@ -164,7 +177,8 @@ public final class CalibrationRunner {
     public record CalibrationRunResult(
             List<CalibrationRow> rows,
             Path csvPath,
-            Path markdownPath
+            Path markdownPath,
+            Path manifestPath
     ) {
         public CalibrationRunResult {
             rows = List.copyOf(rows);

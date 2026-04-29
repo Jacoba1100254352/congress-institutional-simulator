@@ -2,7 +2,7 @@ MAIN_SOURCES := $(shell find src/main/java -name '*.java')
 TEST_SOURCES := $(shell find src/test/java -name '*.java')
 JAVA_RELEASE ?= 21
 
-.PHONY: build run calibrate campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 paper paper-clean test clean
+.PHONY: build run calibrate calibration-check campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper paper paper-word-count paper-clean test ci clean
 
 build:
 	mkdir -p out/main
@@ -14,8 +14,13 @@ run: build
 calibrate: build
 	java -cp out/main congresssim.Main --calibrate --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
 
-campaign: build
-	java -cp out/main congresssim.Main --campaign v20 --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+calibration-check: calibrate
+	python3 scripts/check_calibration.py reports/calibration-baseline.csv
+
+campaign: campaign-v21-paper
+
+campaign-v21-paper: build
+	java -cp out/main congresssim.Main --campaign v21-paper --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
 
 campaign-v20: build
 	java -cp out/main congresssim.Main --campaign v20 --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
@@ -80,12 +85,15 @@ campaign-v1: build
 campaign-v0: build
 	java -cp out/main congresssim.Main --campaign v0 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
 
-paper:
+paper: campaign-v21-paper
 	python3 paper/scripts/generate_figures.py
 	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
 	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build appendix-odd-d.tex
 	cp paper/build/main.pdf paper/main.pdf
 	cp paper/build/appendix-odd-d.pdf paper/appendix-odd-d.pdf
+
+paper-word-count: paper
+	python3 paper/scripts/check_word_count.py paper/main.pdf --max 6000
 
 paper-clean:
 	cd paper && latexmk -C -outdir=build main.tex
@@ -96,6 +104,8 @@ test: build
 	mkdir -p out/test
 	javac --release $(JAVA_RELEASE) -cp out/main -d out/test $(TEST_SOURCES)
 	java -cp out/main:out/test congresssim.SimulatorTests
+
+ci: test calibration-check paper-word-count
 
 clean:
 	rm -rf out

@@ -7,10 +7,10 @@ public record CampaignResult(
         String name,
         List<CampaignRow> rows,
         Path csvPath,
-        Path markdownPath
+        Path markdownPath,
+        Path manifestPath
 ) {
     public CampaignResult {
         rows = List.copyOf(rows);
     }
 }
-

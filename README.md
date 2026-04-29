@@ -48,8 +48,9 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v20.csv`
-- `reports/simulation-campaign-v20.md`
+- `reports/simulation-campaign-v21-paper.csv`
+- `reports/simulation-campaign-v21-paper.md`
+- `reports/simulation-campaign-v21-paper-manifest.json`
 
 Run empirical benchmark screening:
 
@@ -61,6 +62,7 @@ This writes:
 
 - `reports/calibration-baseline.csv`
 - `reports/calibration-baseline.md`
+- `reports/calibration-baseline-manifest.json`
 
 Earlier campaigns remain available:
 
@@ -86,6 +88,7 @@ make campaign-v17
 make campaign-v18
 make campaign-v19
 make campaign-v20
+make campaign-v21-paper
 ```
 
 You can override the campaign defaults:
@@ -214,7 +217,7 @@ Core controls:
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
 - `--calibrate`: run empirical benchmark screening from `data/calibration/empirical-benchmarks.csv`
-- `--campaign`: run a named campaign, currently `v0` through `v20`
+- `--campaign`: run a named campaign, currently `v0` through `v21-paper`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -456,9 +459,15 @@ The v19 campaign adds timeline stress comparisons:
 - The generated report includes a contention path using `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * lowSupport`.
 - The timeline is a stress test, not a historical calibration; it asks which institutional systems degrade gracefully as background politics become more contentious.
 
-The current v20 campaign adds focused strategy and calibration comparisons:
+The v20 campaign adds focused strategy and calibration comparisons:
 
 - It carries forward the current-system benchmark and conventional affirmative baselines.
 - It compares strategic lobbying, adaptive proposers, adaptive proposers with strategic lobbying, and the combined deep strategy bundle.
 - The deep strategy bundle combines proposer pacing/risk adaptation, lobby-channel learning, issue-budget adaptation, defensive anti-reform behavior, and multi-round mediation.
-- Use it with `make campaign` or `make campaign-v20`.
+- Use it with `make campaign-v20`.
+
+The current v21-paper campaign is the canonical paper evidence base:
+
+- It combines broad assumption cases, weighted party-system sensitivity cases, and rising-contention timeline cases in one CSV.
+- It includes the current-system benchmark, conventional affirmative baselines, default enactment, challenge vouchers, adaptive tracks, affected-group sponsorship, policy tournaments, public objection, law-registry review, multi-round mediation, citizen/public review, budgeted lobbying, strategic lobbying, adaptive proposers, and the combined deep-strategy bundle.
+- Use it with `make campaign` or `make campaign-v21-paper`.

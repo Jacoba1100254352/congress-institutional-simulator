@@ -168,6 +168,7 @@ The main campaigns are:
 - v18: weighted party-system sensitivity campaign.
 - v19: stylized rising-contention timeline.
 - v20: focused strategy and calibration campaign comparing current-system baselines, adaptive proposers, strategic lobbying, combined deep strategy, mediation, citizen panels, alternatives, objection windows, and law registry.
+- v21-paper: canonical paper campaign joining broad assumption cases, party-system sensitivity cases, and rising-contention timeline cases in one CSV artifact for all submitted tables and figures.
 
 All campaign rows include scenario labels, case weights, and a stable metric schema.
 

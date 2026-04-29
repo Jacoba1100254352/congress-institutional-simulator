@@ -9,14 +9,42 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE_CSV_PATH = ROOT / "reports" / "simulation-campaign-v17.csv"
-PARTY_CSV_PATH = ROOT / "reports" / "simulation-campaign-v18.csv"
-TIMELINE_CSV_PATH = ROOT / "reports" / "simulation-campaign-v19.csv"
+PAPER_CSV_PATH = ROOT / "reports" / "simulation-campaign-v21-paper.csv"
 FIGURE_DIR = ROOT / "paper" / "figures"
 CURRENT_SYSTEM_KEY = "current-system"
+TABLE_SCENARIOS = [
+    (CURRENT_SYSTEM_KEY, "Current"),
+    ("simple-majority", "SM"),
+    ("supermajority-60", "S60"),
+    ("bicameral-majority", "Bicam"),
+    ("presidential-veto", "Veto"),
+    ("default-pass", "DP"),
+    ("default-pass-challenge", "Chal."),
+    ("default-pass-multiround-mediation-challenge", "Med+Chal"),
+    ("default-pass-constituent-citizen-panel", "Public+Panel"),
+    ("default-pass-adaptive-track-strict", "AdaptS"),
+    ("default-pass-alternatives-pairwise", "Pair"),
+    ("default-pass-affected-sponsor-gate", "Aff.Spon"),
+    ("default-pass-public-objection", "Obj."),
+    ("default-pass-law-registry", "LawReg"),
+    ("default-pass-cost-lobby-surcharge", "Cost"),
+    ("default-pass-deep-strategy-bundle", "Strategy"),
+]
 
 
-def read_averages(path: Path, weighted: bool = False) -> dict[str, dict[str, float]]:
+def broad_case(case_key: str) -> bool:
+    return not case_key.startswith("party-system-") and not case_key.startswith("era-")
+
+
+def party_case(case_key: str) -> bool:
+    return case_key.startswith("party-system-")
+
+
+def timeline_case(case_key: str) -> bool:
+    return case_key.startswith("era-")
+
+
+def read_averages(path: Path, weighted: bool = False, case_filter=broad_case) -> dict[str, dict[str, float]]:
     totals: dict[str, defaultdict[str, float]] = {}
     weights: dict[str, float] = {}
     fields = (
@@ -38,6 +66,8 @@ def read_averages(path: Path, weighted: bool = False) -> dict[str, dict[str, flo
     )
     with path.open(newline="") as handle:
         for row in csv.DictReader(handle):
+            if not case_filter(row["caseKey"]):
+                continue
             key = row["scenarioKey"]
             weight = float(row.get("caseWeight", "1.0")) if weighted else 1.0
             totals.setdefault(key, defaultdict(float))
@@ -52,6 +82,11 @@ def read_averages(path: Path, weighted: bool = False) -> dict[str, dict[str, flo
     for values in averages.values():
         add_directional_scores(values)
     return averages
+
+
+def read_case_rows(path: Path, case_filter=broad_case) -> list[dict[str, str]]:
+    with path.open(newline="") as handle:
+        return [row for row in csv.DictReader(handle) if case_filter(row["caseKey"])]
 
 
 def clamp01(value: float) -> float:
@@ -98,13 +133,15 @@ def add_directional_scores(values: dict[str, float]) -> None:
     ])
 
 
-def read_timeline(path: Path) -> tuple[list[str], dict[str, dict[str, dict[str, float]]]]:
+def read_timeline(path: Path, case_filter=timeline_case) -> tuple[list[str], dict[str, dict[str, dict[str, float]]]]:
     case_names: dict[str, str] = {}
     values: dict[str, dict[str, dict[str, float]]] = defaultdict(dict)
     if not path.exists():
         return [], values
     with path.open(newline="") as handle:
         for row in csv.DictReader(handle):
+            if not case_filter(row["caseKey"]):
+                continue
             case_key = row["caseKey"]
             scenario_key = row["scenarioKey"]
             case_names.setdefault(case_key, row["caseName"])
@@ -127,6 +164,106 @@ def contention_index(row: dict[str, str]) -> float:
 
 def fmt(value: float) -> str:
     return f"{value:.1f}"
+
+
+def latex_escape(value: str) -> str:
+    return (
+        value.replace("\\", "\\textbackslash{}")
+        .replace("&", "\\&")
+        .replace("%", "\\%")
+        .replace("_", "\\_")
+    )
+
+
+def mean_ci(values: list[float]) -> tuple[float, float]:
+    if not values:
+        return 0.0, 0.0
+    avg = sum(values) / len(values)
+    if len(values) == 1:
+        return avg, 0.0
+    variance = sum((value - avg) ** 2 for value in values) / (len(values) - 1)
+    return avg, 1.96 * ((variance ** 0.5) / (len(values) ** 0.5))
+
+
+def table_value(values: list[float], decimals: int = 3) -> str:
+    avg, ci = mean_ci(values)
+    return f"{avg:.{decimals}f}$\\pm${ci:.{decimals}f}"
+
+
+def scenario_case_values(rows: list[dict[str, str]], scenario_key: str, field: str) -> list[float]:
+    values: list[float] = []
+    for row in rows:
+        if row["scenarioKey"] != scenario_key:
+            continue
+        numeric = {key: float(value) for key, value in row.items() if value and number_like(value)}
+        add_directional_scores(numeric)
+        values.append(numeric[field])
+    return values
+
+
+def number_like(value: str) -> bool:
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
+
+
+def scenario_name(rows: list[dict[str, str]], scenario_key: str) -> str:
+    for row in rows:
+        if row["scenarioKey"] == scenario_key:
+            return row["scenario"]
+    return scenario_key
+
+
+def write_scenario_averages_table(rows: list[dict[str, str]]) -> None:
+    lines = [
+        "% Auto-generated by paper/scripts/generate_figures.py",
+        "\\begin{table*}",
+        "  \\caption{Canonical v21-paper scenario averages across broad assumption cases. Entries are mean$\\pm$95\\% interval across assumption cases.}",
+        "  \\label{tab:scenario-averages}",
+        "  \\Description{A generated table comparing selected institutional scenarios using the canonical v21-paper campaign, including uncertainty intervals across broad assumption cases.}",
+        "  \\scriptsize",
+        "  \\resizebox{\\textwidth}{!}{%",
+        "  \\begin{tabular}{llrrrrrr}",
+        "    \\toprule",
+        "    Label & Scenario & Directional $\\uparrow$ & Prod. $\\uparrow$ & Comp. $\\uparrow$ & Enacted/run & Low-sup. $\\downarrow$ & Risk ctrl. $\\uparrow$ \\\\",
+        "    \\midrule",
+    ]
+    for scenario_key, label in TABLE_SCENARIOS:
+        if not any(row["scenarioKey"] == scenario_key for row in rows):
+            continue
+        cells = [
+            table_value(scenario_case_values(rows, scenario_key, "directionalScore")),
+            table_value(scenario_case_values(rows, scenario_key, "productivity")),
+            table_value(scenario_case_values(rows, scenario_key, "compromise")),
+            table_value(scenario_case_values(rows, scenario_key, "enactedPerRun"), 2),
+            table_value(scenario_case_values(rows, scenario_key, "lowSupport")),
+            table_value(scenario_case_values(rows, scenario_key, "riskControl")),
+        ]
+        scenario = latex_escape(scenario_name(rows, scenario_key))
+        if scenario_key == CURRENT_SYSTEM_KEY:
+            label = f"\\textcolor{{red}}{{\\textbf{{{label}}}}}"
+            scenario = f"\\textcolor{{red}}{{\\textbf{{{scenario}}}}}"
+            cells = [f"\\textcolor{{red}}{{\\textbf{{{cell}}}}}" for cell in cells]
+        lines.append(
+            "    "
+            + label
+            + " & "
+            + scenario
+            + " & "
+            + " & ".join(cells)
+            + " \\\\"
+        )
+    lines.extend([
+        "    \\bottomrule",
+        "  \\end{tabular}%",
+        "  }",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} All table entries come from \\texttt{simulation-campaign-v21-paper.csv}. Directional, productivity, compromise, low-support, and risk-control values are normalized scores or rates. \\emph{Enacted/run} is an absolute institutional-load count. Red marks the stylized current-system benchmark.",
+        "\\end{table*}",
+        "",
+    ])
+    (FIGURE_DIR / "scenario_averages_table.tex").write_text("\n".join(lines))
 
 
 def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> None:
@@ -563,9 +700,11 @@ def write_timeline_contention(
 
 def main() -> None:
     FIGURE_DIR.mkdir(parents=True, exist_ok=True)
-    base_averages = read_averages(BASE_CSV_PATH)
-    party_averages = read_averages(PARTY_CSV_PATH, weighted=True) if PARTY_CSV_PATH.exists() else base_averages
-    timeline_cases, timeline_values = read_timeline(TIMELINE_CSV_PATH)
+    broad_rows = read_case_rows(PAPER_CSV_PATH, broad_case)
+    base_averages = read_averages(PAPER_CSV_PATH, case_filter=broad_case)
+    party_averages = read_averages(PAPER_CSV_PATH, weighted=True, case_filter=party_case)
+    timeline_cases, timeline_values = read_timeline(PAPER_CSV_PATH, case_filter=timeline_case)
+    write_scenario_averages_table(broad_rows)
     write_productivity_low_support(base_averages)
     write_default_pass_deltas(base_averages)
     write_compromise_productivity(party_averages)

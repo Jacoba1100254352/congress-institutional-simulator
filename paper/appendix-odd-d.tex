@@ -1,4 +1,4 @@
-\documentclass[manuscript]{acmart}
+\documentclass[manuscript,review,anonymous]{acmart}
 
 \setcopyright{none}
 \citestyle{acmauthoryear}
@@ -11,13 +11,12 @@
 
 \title{ODD+D Appendix for Searching Legislative Design Space}
 
-\author{Jacob Anderson}
+\author{Anonymous Author(s)}
 \affiliation{%
-  \institution{Independent Researcher}
-  \country{United States}
+  \institution{Anonymous Institution}
+  \country{Anonymous Country}
 }
-\renewcommand{\shortauthors}{Anderson}
-\authorsaddresses{Jacob Anderson, Independent Researcher, United States.}
+\renewcommand{\shortauthors}{Anonymous Author(s)}
 
 \begin{abstract}
 This appendix documents the congressional institutional simulator using the ODD and ODD+D model-description conventions \citep{Grimm2010,Muller2013}. It describes entities, state variables, scheduling, adaptation, input data, submodels, outputs, calibration screening, assumptions, and reproducibility commands for the simulator used in \emph{Searching Legislative Design Space for Compromise and Productivity}.
@@ -167,7 +166,7 @@ Competing-alternative processes generate same-domain alternatives and select by 
 
 \section{Experimental Design}
 
-The main campaigns are v17 broad roadmap completion, v18 party-system sensitivity, v19 rising-contention timeline, and v20 focused strategy/calibration comparison. The v20 campaign includes the current-system benchmark, conventional affirmative baselines, default enactment, budgeted lobbying, strategic lobbying, adaptive proposers, adaptive proposers with strategic lobbying, a combined deep-strategy bundle, multi-round mediation, citizen panels, alternatives, public objection, and law-registry review.
+The main submitted evidence comes from the v21-paper campaign. That campaign joins three families in one artifact: broad assumption cases, party-system sensitivity cases, and a stylized rising-contention timeline. It includes the current-system benchmark, conventional affirmative baselines, default enactment, challenge vouchers, adaptive tracks, affected-group sponsorship, policy tournaments, public objection, law-registry review, multi-round mediation, citizen/public review, budgeted lobbying, strategic lobbying, adaptive proposers, and the combined deep-strategy bundle. Earlier v17--v20 campaigns remain historical development artifacts but are not mixed into the main paper evidence base.
 
 \section{Assumptions and Limitations}
 
@@ -175,7 +174,7 @@ The policy space is one-dimensional. Public benefit is generated rather than emp
 
 \section{Reproducibility}
 
-Run tests with \texttt{make test}. Run the current campaign with \texttt{make campaign}. Run empirical benchmark screening with \texttt{make calibrate}. Build the paper and appendix PDFs with \texttt{make paper}. All generated campaign reports and PDFs are tracked in the public repository.
+Run tests with \texttt{make test}. Run the current campaign with \texttt{make campaign} or \texttt{make campaign-v21-paper}. Run empirical benchmark screening with \texttt{make calibrate}. Build the paper and appendix PDFs with \texttt{make paper}. The review package includes generated campaign reports and PDFs; public repository identifying details are withheld during double-blind review and can be restored after review if permitted.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}

@@ -76,6 +76,7 @@ final class CampaignRunnerTests {
         campaignRunnerWritesWeightedCsvWithStableSchema();
         timelineCampaignHasOrderedContentionCases();
         strategyCampaignIncludesDeepAdaptiveSystems();
+        paperCampaignUsesSingleCanonicalEvidenceBase();
         calibrationRunnerWritesEmpiricalScreeningReports();
         allPredefinedCampaignScenarioListsIncludeCurrentBenchmark();
     }
@@ -91,6 +92,7 @@ final class CampaignRunnerTests {
             CampaignResult result = CampaignRunner.runV0(outputDir, 1, 11, 4, 77L);
             assertTrue(Files.exists(result.csvPath()), "Campaign should write a CSV artifact.");
             assertTrue(Files.exists(result.markdownPath()), "Campaign should write a Markdown artifact.");
+            assertTrue(Files.exists(result.manifestPath()), "Campaign should write a provenance manifest.");
             assertTrue(
                     Files.readString(result.markdownPath()).contains("Simulation Campaign v0"),
                     "Campaign Markdown should identify the report."
@@ -246,6 +248,39 @@ final class CampaignRunnerTests {
         }
     }
 
+    private static void paperCampaignUsesSingleCanonicalEvidenceBase() {
+        try {
+            Path outputDir = Path.of("out", "test-campaign-v21-paper");
+            Files.createDirectories(outputDir);
+            Files.deleteIfExists(outputDir.resolve("simulation-campaign-v21-paper.csv"));
+            Files.deleteIfExists(outputDir.resolve("simulation-campaign-v21-paper.md"));
+
+            CampaignResult result = CampaignRunner.runV21Paper(outputDir, 1, 17, 4, 95L);
+            Set<String> cases = new HashSet<>();
+            Set<String> scenarios = new HashSet<>();
+            for (CampaignRow row : result.rows()) {
+                cases.add(row.caseKey());
+                scenarios.add(row.scenarioKey());
+            }
+
+            assertTrue(cases.contains("baseline"), "v21-paper should include broad assumption cases.");
+            assertTrue(cases.contains("party-system-two-major-minors"), "v21-paper should include party-system sensitivity cases.");
+            assertTrue(cases.contains("era-6-crisis"), "v21-paper should include timeline stress cases.");
+            assertTrue(scenarios.contains("current-system"), "v21-paper should include the current-system benchmark.");
+            assertTrue(scenarios.contains("default-pass-deep-strategy-bundle"), "v21-paper should include the strategy bundle.");
+            assertTrue(scenarios.contains("default-pass-affected-sponsor-gate"), "v21-paper should include affected-group sponsorship.");
+            assertTrue(scenarios.contains("default-pass-alternatives-pairwise"), "v21-paper should include policy tournaments.");
+            assertTrue(Files.readString(result.markdownPath()).contains("Simulation Campaign v21 Paper"), "v21-paper Markdown should identify the report.");
+
+            String csv = Files.readString(result.csvPath());
+            assertTrue(csv.contains("party-system-two-major-minors"), "v21-paper CSV should contain party-system rows.");
+            assertTrue(csv.contains("era-6-crisis"), "v21-paper CSV should contain timeline rows.");
+            assertTrue(csv.contains("default-pass-deep-strategy-bundle"), "v21-paper CSV should contain paper comparison scenarios.");
+        } catch (Exception exception) {
+            throw new AssertionError("Paper campaign report generation failed.", exception);
+        }
+    }
+
     private static void calibrationRunnerWritesEmpiricalScreeningReports() {
         try {
             Path outputDir = Path.of("out", "test-calibration");
@@ -253,10 +288,15 @@ final class CampaignRunnerTests {
             Files.deleteIfExists(outputDir.resolve("calibration-baseline.csv"));
             Files.deleteIfExists(outputDir.resolve("calibration-baseline.md"));
 
-            CalibrationRunResult result = CalibrationRunner.run(outputDir, 2, 17, 6, 93L);
+            CalibrationRunResult result = CalibrationRunner.run(outputDir, 120, 101, 60, 20260428L);
             assertTrue(Files.exists(result.csvPath()), "Calibration runner should write a CSV report.");
             assertTrue(Files.exists(result.markdownPath()), "Calibration runner should write a Markdown report.");
+            assertTrue(Files.exists(result.manifestPath()), "Calibration runner should write a provenance manifest.");
             assertTrue(result.rows().size() >= 6, "Calibration runner should evaluate every benchmark range.");
+            assertTrue(
+                    result.rows().stream().allMatch(CalibrationRunner.CalibrationRow::passed),
+                    "Executable calibration should pass all tracked benchmark screens."
+            );
 
             String csv = Files.readString(result.csvPath());
             assertTrue(csv.contains("observed"), "Calibration CSV should include observed simulator values.");
@@ -265,6 +305,9 @@ final class CampaignRunnerTests {
             String markdown = Files.readString(result.markdownPath());
             assertTrue(markdown.contains("Calibration Baseline"), "Calibration Markdown should identify the report.");
             assertTrue(markdown.contains("passed checks"), "Calibration Markdown should summarize pass/fail results.");
+            String manifest = Files.readString(result.manifestPath());
+            assertTrue(manifest.contains("\"commit\""), "Calibration manifest should include commit provenance.");
+            assertTrue(manifest.contains("\"sha256\""), "Calibration manifest should include artifact checksums.");
         } catch (Exception exception) {
             throw new AssertionError("Calibration report generation failed.", exception);
         }
