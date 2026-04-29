@@ -7,6 +7,7 @@ import congresssim.experiment.CampaignRunner;
 import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.AgendaDisposition;
+import congresssim.institution.AlternativeSelectionRule;
 import congresssim.institution.AmendmentMediationProcess;
 import congresssim.institution.BillOutcome;
 import congresssim.institution.BudgetedLobbyingProcess;
@@ -16,6 +17,7 @@ import congresssim.institution.ChallengeTokenAllocation;
 import congresssim.institution.ChallengeVoucherProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
+import congresssim.institution.CompetingAlternativesProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.DistributionalHarmProcess;
 import congresssim.institution.LawRegistryProcess;
@@ -60,6 +62,7 @@ public final class SimulatorTests {
         amendmentMediationMovesRiskyBillsTowardMedian();
         distributionalHarmProcessCompensatesAffectedGroups();
         lawRegistryReviewsAndRepealsBadActiveLaws();
+        competingAlternativesSelectCompromiseBeforeFinalVote();
         publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
         lobbyAuditCanReverseCapturedEnactments();
         challengeVouchersRouteHighRiskBillsToActiveVote();
@@ -401,6 +404,52 @@ public final class SimulatorTests {
         assertTrue(reviewed.statusQuoAfter() < badLaw.ideologyPosition(), "Registry reversal should roll back status-quo movement.");
     }
 
+    private static void competingAlternativesSelectCompromiseBeforeFinalVote() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Left", -0.4, 0.8, 0.4, 0.8, 0.1, 0.8),
+                new Legislator("L-2", "Center", 0.0, 0.9, 0.4, 0.9, 0.1, 0.9),
+                new Legislator("L-3", "Right", 0.4, 0.8, 0.4, 0.8, 0.1, 0.8)
+        );
+        LegislativeProcess captureSelected = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "capture selected alternative";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                assertTrue(
+                        Math.abs(bill.ideologyPosition()) < 0.20,
+                        "Median-selection tournaments should advance a compromise alternative."
+                );
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "selected alternative enacted"
+                );
+            }
+        };
+        Bill narrowBill = new Bill("B-alt", "Narrow Bill", "L-1", 0.8, 0.90, 0.36, 0.42, 0.20, 0.70);
+        VoteContext context = new VoteContext(Map.of("Left", -0.4, "Center", 0.0, "Right", 0.4), new Random(1L), 0.0);
+
+        BillOutcome outcome = new CompetingAlternativesProcess(
+                "alternative test",
+                captureSelected,
+                legislators,
+                AlternativeSelectionRule.CLOSEST_TO_CHAMBER_MEDIAN,
+                1,
+                false
+        ).consider(narrowBill, context);
+
+        assertTrue(outcome.enacted(), "Selected alternatives should continue to final yes/no ratification.");
+        assertTrue(outcome.signals().alternativeRounds() == 1, "Alternative tournaments should record a tournament round.");
+        assertTrue(outcome.signals().alternativesConsidered() == 2, "Original bill plus generated alternative should be counted.");
+    }
+
     private static void publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms() {
         VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
         Bill capturedBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.10, 0.30, 0.18, 0.95, 0.80, 0.95, false);
@@ -690,6 +739,10 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-budgeted-lobbying-mediation"),
                 "Scenario catalog should expose budgeted lobbying plus mediation scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-alternatives-pairwise"),
+                "Scenario catalog should expose competing-alternatives scenario keys."
         );
     }
 

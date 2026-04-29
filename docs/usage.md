@@ -113,6 +113,12 @@ Run the v12 law-registry campaign:
 make campaign-v12
 ```
 
+Run the v13 policy-tournament campaign:
+
+```sh
+make campaign-v13
+```
+
 Remove generated build output:
 
 ```sh
@@ -165,7 +171,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0..v12>`: run a named campaign.
+- `--campaign <v0..v13>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -192,6 +198,12 @@ The default CLI scenario set includes:
 - `default-pass-harm-threshold`: default passage for ordinary bills, but concentrated-harm bills require affirmative supermajority support.
 - `default-pass-compensation`: default passage with compensation amendments for high concentrated-harm bills.
 - `default-pass-affected-consent`: default passage with compensation plus affected-group consent screening.
+- `simple-majority-alternatives-pairwise`: simple majority after a pairwise competing-alternatives stage.
+- `default-pass-alternatives-benefit`: default passage after choosing the highest-public-benefit alternative.
+- `default-pass-alternatives-support`: default passage after choosing the highest-public-support alternative.
+- `default-pass-alternatives-median`: default passage after choosing the alternative closest to the chamber median.
+- `default-pass-alternatives-pairwise`: default passage after a pairwise policy tournament.
+- `default-pass-obstruction-substitute`: default passage after opponents can force a same-domain substitute into the tournament.
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers.
 - `default-pass-challenge-info`: default passage with committee information before challenge-voucher decisions.
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate.
@@ -235,8 +247,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v12.csv`
-- `reports/simulation-campaign-v12.md`
+- `reports/simulation-campaign-v13.csv`
+- `reports/simulation-campaign-v13.md`
 
 Earlier campaigns:
 
@@ -264,6 +276,8 @@ Earlier campaigns:
 - `reports/simulation-campaign-v10.md`
 - `reports/simulation-campaign-v11.csv`
 - `reports/simulation-campaign-v11.md`
+- `reports/simulation-campaign-v12.csv`
+- `reports/simulation-campaign-v12.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -303,6 +317,10 @@ The simulator reports several metrics because passage volume alone is not enough
 - `reversalRate`: share of delayed law reviews that repeal a provisional law.
 - `timeToCorrectBadLaw`: average rounds between enactment and repeal for corrected laws.
 - `lowSupportActiveLawShare`: share of active laws at review points with public support below 50 percent.
+- `selectedAlternativeMedianDistance`: average distance between selected alternatives and the chamber median.
+- `proposerAgendaAdvantage`: average selected-alternative movement toward the original proposer's ideal point.
+- `alternativeDiversity`: average number of alternatives/status quo options considered per tournament.
+- `statusQuoWinRate`: share of policy tournaments where the status quo blocks final ratification.
 - `vetoes`: presidential veto count.
 - `overrides`: veto override count.
 

@@ -283,6 +283,29 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> POLICY_TOURNAMENT_SCENARIOS = List.of(
+            "simple-majority",
+            "simple-majority-alternatives-pairwise",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-mediation",
+            "default-pass-harm-threshold",
+            "default-pass-compensation",
+            "default-pass-affected-consent",
+            "default-pass-alternatives-benefit",
+            "default-pass-alternatives-support",
+            "default-pass-alternatives-median",
+            "default-pass-alternatives-pairwise",
+            "default-pass-obstruction-substitute",
+            "default-pass-law-registry",
+            "default-pass-informed-guarded",
+            "default-pass-challenge",
+            "default-pass-cross-bloc",
+            "default-pass-adaptive-track",
+            "default-pass-earned-credits",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -540,6 +563,26 @@ public final class CampaignRunner {
                 outputDir,
                 v8Cases(legislators, bills),
                 LAW_REGISTRY_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV13(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v13",
+                "simulation-campaign-v13",
+                outputDir,
+                v8Cases(legislators, bills),
+                POLICY_TOURNAMENT_SCENARIOS,
                 runs,
                 legislators,
                 bills,
@@ -1066,6 +1109,38 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
+        if (aggregateByScenario.containsKey("default-pass-alternatives-pairwise")) {
+            builder.append("## Policy-Tournament Deltas\n\n");
+            builder.append("Delta values compare competing-alternative scenarios against open `default-pass` across all cases. Alternative diversity is the average number of alternatives/status quo options considered; status-quo win rate is the share of tournaments where no alternative advanced to final ratification.\n\n");
+            builder.append("| Scenario | Productivity delta | Welfare delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Median distance | Proposer agenda advantage | Alternative diversity | Status-quo win |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            for (String scenarioKey : List.of(
+                    "simple-majority-alternatives-pairwise",
+                    "default-pass-alternatives-benefit",
+                    "default-pass-alternatives-support",
+                    "default-pass-alternatives-median",
+                    "default-pass-alternatives-pairwise",
+                    "default-pass-obstruction-substitute"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary != null) {
+                    ScenarioAggregate open = aggregateByScenario.get("default-pass");
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - open.productivity())).append(" | ")
+                            .append(format(summary.welfare() - open.welfare())).append(" | ")
+                            .append(format(summary.lowSupport() - open.lowSupport())).append(" | ")
+                            .append(format(summary.policyShift() - open.policyShift())).append(" | ")
+                            .append(format(summary.proposerGain() - open.proposerGain())).append(" | ")
+                            .append(format(summary.selectedAlternativeMedianDistance())).append(" | ")
+                            .append(format(summary.proposerAgendaAdvantage())).append(" | ")
+                            .append(format(summary.alternativeDiversity())).append(" | ")
+                            .append(format(summary.statusQuoWinRate())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
+
         if (aggregateByScenario.containsKey("default-pass-cost")) {
             builder.append("## Proposal-Cost Deltas\n\n");
             builder.append("Delta values compare `default-pass-cost` against open `default-pass` in the same case. Negative enacted-per-run, floor-per-run, low-support, and policy-shift deltas show the proposal-cost screen reducing flooding and volatility.\n\n");
@@ -1138,7 +1213,10 @@ public final class CampaignRunner {
             builder.append("- Anti-capture scenarios test whether lobbying pressure can be reduced through vote firewalls, transparency, public-interest screens, audit sanctions, or combined safeguards.\n");
         }
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        if (aggregateByScenario.containsKey("default-pass-mediation")) {
+        if (aggregateByScenario.containsKey("default-pass-alternatives-pairwise")) {
+            builder.append("- Policy-tournament scenarios test whether agenda-setter power falls when multiple alternatives compete before a final yes/no ratification vote.\n");
+            builder.append("- The next model extension should add deliberative citizen review or richer lobbying channels, because the simulator now has agenda competition, harm guardrails, law review, and mediation but still lacks an independent public legitimacy screen.\n\n");
+        } else if (aggregateByScenario.containsKey("default-pass-mediation")) {
             builder.append("- Structured mediation scenarios let a bounded amendment stage move bills toward the chamber median/status quo before the final yes/no vote.\n");
             builder.append("- The next model extension should add richer constituent and affected-group structure, because compromise quality should be judged against public will and concentrated harms rather than only chamber support.\n\n");
         } else if (aggregateByScenario.containsKey("default-pass-budgeted-lobbying")) {
@@ -1193,6 +1271,7 @@ public final class CampaignRunner {
         ScenarioAggregate credits = aggregateByScenario.get("default-pass-earned-credits");
         ScenarioAggregate antiCaptureBundle = aggregateByScenario.get("default-pass-anti-capture-bundle");
         ScenarioAggregate budgetedLobbying = aggregateByScenario.get("default-pass-budgeted-lobbying");
+        ScenarioAggregate pairwiseAlternatives = aggregateByScenario.get("default-pass-alternatives-pairwise");
         ScenarioAggregate simpleMajority = aggregateByScenario.get("simple-majority");
         ScenarioAggregate bestWelfare = aggregateByScenario.values()
                 .stream()
@@ -1288,6 +1367,15 @@ public final class CampaignRunner {
                     .append(" per potential bill, with ")
                     .append(format(budgetedLobbying.defensiveLobbyingShare()))
                     .append(" of spend aimed defensively at anti-lobbying reform bills.\n");
+        }
+        if (pairwiseAlternatives != null) {
+            builder.append("- Pairwise policy tournaments changed proposer agenda advantage by ")
+                    .append(format(pairwiseAlternatives.proposerAgendaAdvantage() - openDefault.proposerAgendaAdvantage()))
+                    .append(", policy shift by ")
+                    .append(format(pairwiseAlternatives.policyShift() - openDefault.policyShift()))
+                    .append(", and status-quo wins averaged ")
+                    .append(format(pairwiseAlternatives.statusQuoWinRate()))
+                    .append(" relative to open default-pass.\n");
         }
         ScenarioAggregate mediation = aggregateByScenario.get("default-pass-mediation");
         if (mediation != null) {

@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v12.csv`
-- `reports/simulation-campaign-v12.md`
+- `reports/simulation-campaign-v13.csv`
+- `reports/simulation-campaign-v13.md`
 
 Earlier campaigns remain available:
 
@@ -66,6 +66,7 @@ make campaign-v9
 make campaign-v10
 make campaign-v11
 make campaign-v12
+make campaign-v13
 ```
 
 You can override the campaign defaults:
@@ -98,6 +99,12 @@ The default CLI compares:
 - `default-pass-harm-threshold`: default passage for ordinary bills, but concentrated-harm bills require affirmative supermajority support
 - `default-pass-compensation`: default passage with compensation amendments for high concentrated-harm bills
 - `default-pass-affected-consent`: default passage with compensation plus affected-group consent screening
+- `simple-majority-alternatives-pairwise`: simple majority after a pairwise competing-alternatives stage
+- `default-pass-alternatives-benefit`: default passage after choosing the highest-public-benefit alternative
+- `default-pass-alternatives-support`: default passage after choosing the highest-public-support alternative
+- `default-pass-alternatives-median`: default passage after choosing the alternative closest to the chamber median
+- `default-pass-alternatives-pairwise`: default passage after a pairwise policy tournament
+- `default-pass-obstruction-substitute`: default passage after opponents can force a same-domain substitute into the tournament
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers that divert contested bills to active majority vote
 - `default-pass-challenge-info`: default passage with committee information review before challenge-voucher decisions
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate
@@ -145,7 +152,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0` through `v12`
+- `--campaign`: run a named campaign, currently `v0` through `v13`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -203,6 +210,10 @@ The first metric set is deliberately simple, but it separates throughput from le
 - `publicPreferenceDistortion`: average gap between enacted yes-share and generated public support
 - `amendmentRate`: share of potential bills whose policy position moved during mediation
 - `amendmentMovement`: average absolute policy movement created by mediation per potential bill
+- `selectedAlternativeMedianDistance`: average distance between selected alternatives and the chamber median
+- `proposerAgendaAdvantage`: average selected-alternative movement toward the original proposer's ideal point
+- `alternativeDiversity`: average number of alternatives/status quo options considered per tournament
+- `statusQuoWinRate`: share of policy tournaments where the status quo blocks final ratification
 
 These are not claims about real-world validity. They are hooks for comparing rule sets under shared assumptions.
 
@@ -298,9 +309,16 @@ The v11 campaign adds distributional harm and affected groups:
 - `default-pass-affected-consent` adds an affected-group support requirement after compensation.
 - Campaign reports now include minority harm, concentrated-harm passage, compensation rate, and legitimacy.
 
-The current v12 campaign adds a multi-session law registry:
+The v12 campaign adds a multi-session law registry:
 
 - `LawRegistryProcess` records risky enacted laws as active provisional laws with a later review date.
 - Due laws are renewed or repealed based on public benefit, public support, affected-group support, and risk.
 - Repealed laws roll back part of their status-quo movement, making correction and instability measurable.
 - Campaign reports now include active-law welfare, reversal rate, time to correction, and low-support active-law share.
+
+The current v13 campaign adds competing alternatives and policy tournaments:
+
+- `CompetingAlternativesProcess` generates same-domain alternatives before final yes/no ratification.
+- Selection variants choose alternatives by public benefit, public support, chamber-median distance, or pairwise majority performance.
+- `default-pass-obstruction-substitute` models a limited constructive opposition right: opposition can force a substitute into the comparison instead of only blocking.
+- Campaign reports now include selected-alternative median distance, proposer agenda advantage, alternative diversity, and status-quo win rate.

@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-CSV_PATH = ROOT / "reports" / "simulation-campaign-v10.csv"
+CSV_PATH = ROOT / "reports" / "simulation-campaign-v13.csv"
 FIGURE_DIR = ROOT / "paper" / "figures"
 
 
@@ -48,13 +48,15 @@ def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> Non
         ("simple-majority", "SM", 1.5, 2.5),
         ("default-pass", "DP", 2.0, 2.2),
         ("default-pass-mediation", "DP+Med", -16.0, 4.0),
+        ("default-pass-alternatives-pairwise", "Pair", 2.0, -4.0),
+        ("default-pass-alternatives-benefit", "AltBen", -18.0, -4.0),
         ("default-pass-challenge", "Chal.", 2.0, -4.0),
         ("default-pass-cross-bloc", "Cross", 2.0, 3.0),
         ("default-pass-adaptive-track", "Adapt", 2.0, -4.0),
-        ("default-pass-sunset-trial", "Sunset", 2.0, 2.4),
+        ("default-pass-law-registry", "LawReg", 2.0, 2.4),
         ("default-pass-earned-credits", "Credit", -16.0, 2.4),
         ("default-pass-informed-guarded", "Guard", 2.0, -4.0),
-        ("default-pass-anti-capture-bundle", "AntiCap", -18.0, -4.0),
+        ("default-pass-compensation", "Comp", -18.0, -4.0),
     ]
     left, bottom, width, height = 23.0, 14.0, 90.0, 58.0
     lines = [
@@ -97,9 +99,11 @@ def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> Non
 def write_default_pass_deltas(averages: dict[str, dict[str, float]]) -> None:
     scenarios = [
         ("default-pass-mediation", "Mediation"),
+        ("default-pass-alternatives-benefit", "Alt-benefit"),
+        ("default-pass-alternatives-pairwise", "Pairwise"),
         ("default-pass-challenge", "Challenge"),
         ("default-pass-adaptive-track", "Adaptive"),
-        ("default-pass-sunset-trial", "Sunset"),
+        ("default-pass-law-registry", "Law reg."),
         ("default-pass-cross-bloc", "Cross-bloc"),
         ("default-pass-informed-guarded", "Guarded"),
     ]

@@ -4,6 +4,7 @@ import congresssim.behavior.VotingStrategies;
 import congresssim.behavior.VotingStrategy;
 import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
+import congresssim.institution.AlternativeSelectionRule;
 import congresssim.institution.AmendmentMediationProcess;
 import congresssim.institution.BicameralProcess;
 import congresssim.institution.BudgetedLobbyingProcess;
@@ -13,6 +14,7 @@ import congresssim.institution.ChallengeTokenAllocation;
 import congresssim.institution.ChallengeVoucherProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
+import congresssim.institution.CompetingAlternativesProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.DistributionalHarmProcess;
 import congresssim.institution.HarmWeightedThresholdProcess;
@@ -88,6 +90,42 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-harm-threshold", defaultPassWithHarmWeightedThreshold()),
                 new ScenarioEntry("default-pass-compensation", defaultPassWithDistributionalCompensation(false)),
                 new ScenarioEntry("default-pass-affected-consent", defaultPassWithDistributionalCompensation(true)),
+                new ScenarioEntry("simple-majority-alternatives-pairwise", simpleMajorityWithCompetingAlternatives(
+                        "Unicameral majority + pairwise alternatives",
+                        AlternativeSelectionRule.PAIRWISE_MAJORITY,
+                        4,
+                        true
+                )),
+                new ScenarioEntry("default-pass-alternatives-benefit", defaultPassWithCompetingAlternatives(
+                        "Default pass + public-benefit alternatives",
+                        AlternativeSelectionRule.HIGHEST_PUBLIC_BENEFIT,
+                        4,
+                        true
+                )),
+                new ScenarioEntry("default-pass-alternatives-support", defaultPassWithCompetingAlternatives(
+                        "Default pass + public-support alternatives",
+                        AlternativeSelectionRule.HIGHEST_PUBLIC_SUPPORT,
+                        4,
+                        true
+                )),
+                new ScenarioEntry("default-pass-alternatives-median", defaultPassWithCompetingAlternatives(
+                        "Default pass + median-seeking alternatives",
+                        AlternativeSelectionRule.CLOSEST_TO_CHAMBER_MEDIAN,
+                        4,
+                        true
+                )),
+                new ScenarioEntry("default-pass-alternatives-pairwise", defaultPassWithCompetingAlternatives(
+                        "Default pass + pairwise policy tournament",
+                        AlternativeSelectionRule.PAIRWISE_MAJORITY,
+                        4,
+                        true
+                )),
+                new ScenarioEntry("default-pass-obstruction-substitute", defaultPassWithCompetingAlternatives(
+                        "Default pass + obstruction-with-substitute",
+                        AlternativeSelectionRule.PAIRWISE_MAJORITY,
+                        3,
+                        true
+                )),
                 new ScenarioEntry("default-pass-challenge", defaultPassWithChallengeVouchers()),
                 new ScenarioEntry("default-pass-challenge-info", defaultPassWithChallengeVouchersAndInformation()),
                 new ScenarioEntry("default-pass-cross-bloc", defaultPassWithCrossBlocCosponsorship(
@@ -492,6 +530,60 @@ public final class ScenarioCatalog {
                         requireConsent ? 0.72 : 0.58,
                         requireConsent ? 0.42 : 0.30,
                         requireConsent
+                );
+            }
+        };
+    }
+
+    private static Scenario simpleMajorityWithCompetingAlternatives(
+            String scenarioName,
+            AlternativeSelectionRule selectionRule,
+            int generatedAlternatives,
+            boolean includeStatusQuo
+    ) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return scenarioName;
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new CompetingAlternativesProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        world.legislators(),
+                        selectionRule,
+                        generatedAlternatives,
+                        includeStatusQuo
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithCompetingAlternatives(
+            String scenarioName,
+            AlternativeSelectionRule selectionRule,
+            int generatedAlternatives,
+            boolean includeStatusQuo
+    ) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return scenarioName;
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new CompetingAlternativesProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        world.legislators(),
+                        selectionRule,
+                        generatedAlternatives,
+                        includeStatusQuo
                 );
             }
         };
