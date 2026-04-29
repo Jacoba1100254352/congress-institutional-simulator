@@ -33,6 +33,7 @@ import congresssim.institution.ProposalAccessProcess;
 import congresssim.institution.ProposalAccessRules;
 import congresssim.institution.ProposalBondProcess;
 import congresssim.institution.ProposalCreditProcess;
+import congresssim.institution.ProposerStrategyProcess;
 import congresssim.institution.PublicObjectionWindowProcess;
 import congresssim.institution.QuadraticAttentionBudgetProcess;
 import congresssim.institution.SunsetTrialProcess;
@@ -175,6 +176,9 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-multiround-mediation", defaultPassWithMultiRoundMediation(false)),
                 new ScenarioEntry("default-pass-multiround-mediation-challenge", defaultPassWithMultiRoundMediation(true)),
                 new ScenarioEntry("default-pass-alternatives-strategic", defaultPassWithStrategicAlternatives()),
+                new ScenarioEntry("default-pass-adaptive-proposers", defaultPassWithAdaptiveProposers(false)),
+                new ScenarioEntry("default-pass-adaptive-proposers-lobbying", defaultPassWithAdaptiveProposers(true)),
+                new ScenarioEntry("default-pass-strategic-lobbying", defaultPassWithStrategicLobbying()),
                 new ScenarioEntry("default-pass-adaptive-track-lenient", defaultPassWithAdaptiveTrack(false, 0.42, 0.68, "Default pass + adaptive tracks lenient")),
                 new ScenarioEntry("default-pass-adaptive-track-strict", defaultPassWithAdaptiveTrack(false, 0.24, 0.48, "Default pass + adaptive tracks strict")),
                 new ScenarioEntry("default-pass-adaptive-track-citizen-high-risk", defaultPassWithAdaptiveTrackCitizenHighRisk()),
@@ -613,6 +617,65 @@ public final class ScenarioCatalog {
                         0.22,
                         0.44,
                         0.35
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithStrategicLobbying() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + strategic lobbying";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new BudgetedLobbyingProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        world.lobbyGroups(),
+                        0.24,
+                        0.46,
+                        0.38,
+                        true
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithAdaptiveProposers(boolean includeStrategicLobbying) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return includeStrategicLobbying
+                        ? "Default pass + adaptive proposers + strategic lobbying"
+                        : "Default pass + adaptive proposers";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess process = defaultPassFloorProcess(name(), world, strategy);
+                if (includeStrategicLobbying) {
+                    process = new BudgetedLobbyingProcess(
+                            name(),
+                            process,
+                            world.lobbyGroups(),
+                            0.24,
+                            0.46,
+                            0.38,
+                            true
+                    );
+                }
+                return new ProposerStrategyProcess(
+                        name(),
+                        process,
+                        world.legislators(),
+                        0.72,
+                        0.56,
+                        0.42
                 );
             }
         };

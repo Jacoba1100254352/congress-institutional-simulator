@@ -255,6 +255,9 @@ The default CLI scenario set includes:
 - `default-pass-alternatives-median`: default passage after choosing the alternative closest to the chamber median.
 - `default-pass-alternatives-pairwise`: default passage after a pairwise policy tournament.
 - `default-pass-obstruction-substitute`: default passage after opponents can force a same-domain substitute into the tournament.
+- `default-pass-adaptive-proposers`: default passage with stateful proposer trust, moderation, cosponsorship, and withdrawal behavior.
+- `default-pass-adaptive-proposers-lobbying`: adaptive proposer behavior plus strategic budgeted lobbying.
+- `default-pass-strategic-lobbying`: budgeted lobby groups that update influence-channel strategy after bill outcomes.
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers.
 - `default-pass-challenge-info`: default passage with committee information before challenge-voucher decisions.
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate.

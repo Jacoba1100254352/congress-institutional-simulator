@@ -34,6 +34,7 @@ import congresssim.institution.MultiRoundAmendmentProcess;
 import congresssim.institution.ProposalAccessRules;
 import congresssim.institution.ProposalBondProcess;
 import congresssim.institution.ProposalCreditProcess;
+import congresssim.institution.ProposerStrategyProcess;
 import congresssim.institution.PublicObjectionWindowProcess;
 import congresssim.institution.QuadraticAttentionBudgetProcess;
 import congresssim.institution.SunsetTrialProcess;
@@ -78,6 +79,7 @@ final class InstitutionProcessTests {
         lobbyTransparencyReducesCapturedBillPressure();
         budgetedLobbyingSpendsDefensivelyAgainstAntiLobbyingReforms();
         budgetedLobbyingRecordsChannelSpecificSpend();
+        strategicLobbyingReallocatesChannelStrategy();
         amendmentMediationMovesRiskyBillsTowardMedian();
         distributionalHarmProcessCompensatesAffectedGroups();
         lawRegistryReviewsAndRepealsBadActiveLaws();
@@ -88,6 +90,7 @@ final class InstitutionProcessTests {
         publicObjectionWindowRoutesContestedBills();
         constituentPublicWillRevisesSignals();
         proposalBondForfeitsLowQualityBills();
+        proposerStrategyModeratesThenWithdrawsWeakBills();
         coalitionCosponsorshipRecordsSponsors();
         multiRoundMediationReducesHarm();
         strategicAlternativesRecordDecoys();
@@ -364,6 +367,57 @@ final class InstitutionProcessTests {
                 0.0,
                 1.0
         ).consider(captureBill, context);
+    }
+
+    private static void strategicLobbyingReallocatesChannelStrategy() {
+        Bill firstBill = new Bill("B-first", "First Bill", "L-1", 0.0, 0.85, 0.35, 0.42, 0.20, 0.55, 0.40, false, "energy", 0.0, 0.0);
+        Bill secondBill = new Bill("B-second", "Second Bill", "L-1", 0.0, 0.85, 0.35, 0.42, 0.20, 0.55, 0.40, false, "energy", 0.0, 0.0);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        List<LobbyGroup> groups = List.of(new LobbyGroup(
+                "G-adaptive",
+                "energy",
+                Map.of("energy", 1.0),
+                0.85,
+                5.0,
+                0.9,
+                1.0,
+                0.5,
+                0.4,
+                LobbyCaptureStrategy.DIRECT_PRESSURE,
+                0.5
+        ));
+        LegislativeProcess capturePressuredBill = new LegislativeProcess() {
+            private int calls;
+
+            @Override
+            public String name() {
+                return "adaptive lobby capture";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                calls++;
+                if (calls == 1) {
+                    assertTrue(bill.directLobbySpend() > bill.agendaLobbySpend(), "Initial direct-pressure strategy should spend most on direct pressure.");
+                } else {
+                    assertTrue(bill.agendaLobbySpend() > bill.directLobbySpend(), "Strategic lobbying should reallocate toward agenda access after a failed extreme proposal.");
+                }
+                return BillOutcome.accessDenied(bill, context.currentPolicyPosition(), "not enacted");
+            }
+        };
+
+        BudgetedLobbyingProcess process = new BudgetedLobbyingProcess(
+                "adaptive channel lobbying test",
+                capturePressuredBill,
+                groups,
+                0.45,
+                0.44,
+                0.35,
+                true
+        );
+
+        process.consider(firstBill, context);
+        process.consider(secondBill, context);
     }
 
 
@@ -739,6 +793,74 @@ final class InstitutionProcessTests {
         assertTrue(outcome.enacted(), "A proposer with a sufficient bond balance should reach final enactment.");
         assertTrue(outcome.signals().proposalBondReviews() == 1, "Proposal-bond review should be recorded.");
         assertTrue(outcome.signals().proposalBondForfeiture() > 0.0, "Low-quality enacted bills should forfeit part of the bond.");
+    }
+
+    private static void proposerStrategyModeratesThenWithdrawsWeakBills() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Right", 0.75, 0.4, 0.6, 0.5, 0.2, 0.5),
+                new Legislator("L-2", "Center", 0.0, 0.9, 0.4, 0.9, 0.1, 0.9),
+                new Legislator("L-3", "Left", -0.55, 0.8, 0.4, 0.8, 0.1, 0.8)
+        );
+        LegislativeProcess enactEverything = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "enact everything";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "enacted"
+                );
+            }
+        };
+        ProposerStrategyProcess process = new ProposerStrategyProcess(
+                "adaptive proposer test",
+                enactEverything,
+                legislators,
+                0.80,
+                0.55,
+                0.35
+        );
+        VoteContext context = new VoteContext(Map.of("Right", 0.75, "Center", 0.0, "Left", -0.55), new Random(15L), 0.0);
+        Bill weakBill = new Bill(
+                "B-weak",
+                "Weak Strategic Bill",
+                "L-1",
+                0.75,
+                0.95,
+                0.10,
+                0.12,
+                0.90,
+                0.92,
+                0.90,
+                false,
+                "energy",
+                0.0,
+                0.0,
+                "workers",
+                0.10,
+                0.80,
+                0.30
+        );
+
+        BillOutcome first = process.consider(weakBill, context);
+        BillOutcome second = process.consider(weakBill, context);
+        BillOutcome third = process.consider(weakBill, context);
+        BillOutcome fourth = process.consider(weakBill, context);
+
+        assertTrue(first.bill().amendmentMovement() > 0.0, "Adaptive proposers should moderate high-risk bills before voting.");
+        assertTrue(Math.abs(first.bill().ideologyPosition()) < Math.abs(weakBill.ideologyPosition()), "Adaptive proposer moderation should move toward the median/status quo.");
+        assertTrue(first.enacted(), "Initial weak proposals should still be able to reach the downstream process.");
+        assertTrue(second.enacted(), "Trust should decline over repeated bad enactments before withdrawal.");
+        assertTrue(third.enacted(), "Trust should not collapse after a single weak proposal.");
+        assertTrue(fourth.agendaDisposition() == AgendaDisposition.ACCESS_DENIED, "Repeated poor outcomes should make low-trust proposers withdraw risky bills.");
     }
 
 

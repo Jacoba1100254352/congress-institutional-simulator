@@ -139,7 +139,9 @@ final class CampaignRunnerTests {
             }
             assertTrue(cases.size() == 4, "v18 should include the four weighted party-system cases.");
             assertTrue(Math.abs(caseWeightSum - 1.0) < 0.000001, "v18 case weights should sum to one.");
-            assertTrue(scenarios.size() >= 30, "v18 should exercise the roadmap-completion scenario set.");
+            assertTrue(scenarios.size() == 38, "v18 should exercise the full current roadmap-completion scenario set.");
+            assertTrue(scenarios.contains("default-pass-adaptive-proposers"), "v18 should include adaptive proposer behavior.");
+            assertTrue(scenarios.contains("default-pass-strategic-lobbying"), "v18 should include strategic lobbying behavior.");
 
             String csv = Files.readString(result.csvPath());
             List<String> lines = csv.lines().filter(line -> !line.isBlank()).toList();

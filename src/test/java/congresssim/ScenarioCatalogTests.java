@@ -158,6 +158,14 @@ final class ScenarioCatalogTests {
                 "Scenario catalog should expose strategic-alternative scenario keys."
         );
         assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-adaptive-proposers"),
+                "Scenario catalog should expose adaptive proposer scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-strategic-lobbying"),
+                "Scenario catalog should expose strategic lobbying scenario keys."
+        );
+        assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-challenge-minority-bonus"),
                 "Scenario catalog should expose challenge allocation variant keys."
         );

@@ -37,7 +37,7 @@ Scenarios share generated worlds but receive independent deterministic random st
 
 **Emergence:** Aggregate productivity, compromise, capture, and volatility emerge from bill-by-bill interactions with institutional rules.
 
-**Adaptation:** The current baseline has limited adaptation. Proposal credits, proposal bonds, and law review carry state across bills. The next layer adds explicit proposer adaptation and lobby channel learning across sessions.
+**Adaptation:** Proposal credits, proposal bonds, and law review carry state across bills. Optional strategy wrappers add explicit proposer adaptation and lobby channel learning: proposers can moderate, seek cosponsors, or withdraw after low-quality outcomes, while lobby groups can reallocate channel strategy after observing returns.
 
 **Objectives:** Legislators vote according to weighted ideological, party, constituency, lobbying, reputational, and compromise influences. Institutions do not optimize one global objective; they produce measurable tradeoffs.
 

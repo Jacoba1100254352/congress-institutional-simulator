@@ -390,6 +390,9 @@ public final class CampaignRunner {
             "default-pass-multiround-mediation-challenge",
             "default-pass-alternatives-pairwise",
             "default-pass-alternatives-strategic",
+            "default-pass-adaptive-proposers",
+            "default-pass-adaptive-proposers-lobbying",
+            "default-pass-strategic-lobbying",
             "default-pass-challenge",
             "default-pass-challenge-party-proportional",
             "default-pass-challenge-minority-bonus",
@@ -1474,6 +1477,9 @@ public final class CampaignRunner {
                     "default-pass-multiround-mediation",
                     "default-pass-multiround-mediation-challenge",
                     "default-pass-alternatives-strategic",
+                    "default-pass-adaptive-proposers",
+                    "default-pass-adaptive-proposers-lobbying",
+                    "default-pass-strategic-lobbying",
                     "default-pass-challenge-party-proportional",
                     "default-pass-challenge-minority-bonus",
                     "default-pass-challenge-supermajority",
@@ -1661,8 +1667,8 @@ public final class CampaignRunner {
         }
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
         if (aggregateByScenario.containsKey("default-pass-constituent-public-will")) {
-            builder.append("- Roadmap-completion scenarios add district-grounded public signals, refundable proposal bonds, richer cosponsorship diagnostics, multi-round mediation, strategic alternatives, challenge allocation/path variants, adaptive-route rates, and proposal-cost variants.\n");
-            builder.append("- The next model extension should move from mechanism coverage to endogenous strategy: proposers, lobby groups, challengers, and amendment coalitions should adapt to the institutional rules over repeated sessions.\n\n");
+            builder.append("- Roadmap-completion scenarios add district-grounded public signals, refundable proposal bonds, richer cosponsorship diagnostics, multi-round mediation, strategic alternatives, adaptive proposer behavior, strategic lobby-channel learning, challenge allocation/path variants, adaptive-route rates, and proposal-cost variants.\n");
+            builder.append("- The next model extension should deepen endogeneity: challengers, amendment coalitions, constituent publics, and alternative drafters should adapt to the institutional rules over repeated sessions.\n\n");
         } else if (aggregateByScenario.containsKey("default-pass-weighted-agenda-lottery")) {
             builder.append("- Agenda-scarcity variants test non-committee ways to ration floor attention, including weighted/random lotteries, quadratic credits, and public objection or repeal windows.\n");
             builder.append("- The next model extension should add richer constituent and affected-group structure so public objection and citizen-panel signals are grounded in represented districts rather than generated bill fields.\n\n");

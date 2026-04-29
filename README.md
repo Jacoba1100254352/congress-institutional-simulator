@@ -147,6 +147,9 @@ The default CLI compares:
 - `default-pass-multiround-mediation`: multi-round amendment mediation with round costs, concession limits, and compensation
 - `default-pass-multiround-mediation-challenge`: multi-round mediation plus challenge vouchers
 - `default-pass-alternatives-strategic`: policy tournament with strategic clones and decoys
+- `default-pass-adaptive-proposers`: default passage with stateful proposer trust, moderation, cosponsorship, and withdrawal behavior
+- `default-pass-adaptive-proposers-lobbying`: adaptive proposer behavior plus strategic budgeted lobbying
+- `default-pass-strategic-lobbying`: budgeted lobby groups that update influence-channel strategy after bill outcomes
 - `default-pass-challenge-party-proportional`: challenge vouchers allocated proportionally by party size
 - `default-pass-challenge-minority-bonus`: challenge vouchers with a minority-party allocation bonus
 - `default-pass-challenge-supermajority`: challenged bills route to a 60 percent affirmative vote
@@ -409,6 +412,8 @@ The current v17 campaign completes the planned roadmap layer:
 - `ProposalBondProcess` adds refundable public-benefit proposer bonds and records forfeiture.
 - `CoalitionCosponsorshipProcess` records cosponsor counts, outside-bloc admissions, affected-group sponsors, and coalition support discounts.
 - `MultiRoundAmendmentProcess` adds multi-round mediation with round costs, concession limits, poison-pill risk, and compensation.
+- `ProposerStrategyProcess` lets proposers moderate risky bills, seek outside-bloc cosponsorship, and withdraw repeated low-trust proposals.
+- Strategic budgeted lobbying lets lobby groups reallocate influence strategies across direct pressure, agenda access, information distortion, public campaigns, and litigation/delay threats after observing outcomes.
 - Challenge vouchers now include proportional and minority-bonus party allocation plus supermajority, committee, and information-active challenged paths.
 - Adaptive tracks now report fast/middle/high route rates and include lenient, strict, citizen high-risk, and supermajority high-risk variants.
 - Proposal-cost variants include public-value waivers, lobby-pressure surcharges, and stateful member quotas.

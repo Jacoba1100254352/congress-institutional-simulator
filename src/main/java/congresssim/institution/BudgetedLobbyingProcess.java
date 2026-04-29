@@ -22,6 +22,8 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
     private final double publicAdvocateStrength;
     private final double blindReviewStrength;
     private final double defensiveCapShare;
+    private final boolean adaptiveStrategies;
+    private final Map<String, LobbyCaptureStrategy> strategyByGroup = new HashMap<>();
 
     public BudgetedLobbyingProcess(
             String name,
@@ -52,10 +54,62 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
             double spendScale,
             double pressurePerSpend,
             double publicCampaignEffect,
+            boolean adaptiveStrategies
+    ) {
+        this(
+                name,
+                innerProcess,
+                lobbyGroups,
+                spendScale,
+                pressurePerSpend,
+                publicCampaignEffect,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                adaptiveStrategies
+        );
+    }
+
+    public BudgetedLobbyingProcess(
+            String name,
+            LegislativeProcess innerProcess,
+            List<LobbyGroup> lobbyGroups,
+            double spendScale,
+            double pressurePerSpend,
+            double publicCampaignEffect,
             double publicFinancingStrength,
             double publicAdvocateStrength,
             double blindReviewStrength,
             double defensiveCapShare
+    ) {
+        this(
+                name,
+                innerProcess,
+                lobbyGroups,
+                spendScale,
+                pressurePerSpend,
+                publicCampaignEffect,
+                publicFinancingStrength,
+                publicAdvocateStrength,
+                blindReviewStrength,
+                defensiveCapShare,
+                false
+        );
+    }
+
+    public BudgetedLobbyingProcess(
+            String name,
+            LegislativeProcess innerProcess,
+            List<LobbyGroup> lobbyGroups,
+            double spendScale,
+            double pressurePerSpend,
+            double publicCampaignEffect,
+            double publicFinancingStrength,
+            double publicAdvocateStrength,
+            double blindReviewStrength,
+            double defensiveCapShare,
+            boolean adaptiveStrategies
     ) {
         Values.requireRange("spendScale", spendScale, 0.0, 10.0);
         Values.requireRange("pressurePerSpend", pressurePerSpend, 0.0, 1.0);
@@ -74,8 +128,10 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
         this.publicAdvocateStrength = publicAdvocateStrength;
         this.blindReviewStrength = blindReviewStrength;
         this.defensiveCapShare = defensiveCapShare;
+        this.adaptiveStrategies = adaptiveStrategies;
         for (LobbyGroup group : lobbyGroups) {
             remainingBudgetByGroup.put(group.id(), group.budget());
+            strategyByGroup.put(group.id(), group.captureStrategy());
         }
     }
 
@@ -87,7 +143,11 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
     @Override
     public BillOutcome consider(Bill bill, VoteContext context) {
         Bill pressuredBill = applyLobbying(bill);
-        return innerProcess.consider(pressuredBill, context);
+        BillOutcome outcome = innerProcess.consider(pressuredBill, context);
+        if (adaptiveStrategies) {
+            updateStrategies(pressuredBill, outcome);
+        }
+        return outcome;
     }
 
     private Bill applyLobbying(Bill bill) {
@@ -129,7 +189,8 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
 
             remainingBudgetByGroup.put(group.id(), remainingBudget - spend);
             totalSpend += spend;
-            ChannelAllocation allocation = ChannelAllocation.forStrategy(group.captureStrategy(), spend);
+            LobbyCaptureStrategy strategy = strategyByGroup.getOrDefault(group.id(), group.captureStrategy());
+            ChannelAllocation allocation = ChannelAllocation.forStrategy(strategy, spend);
             directSpend += allocation.direct();
             agendaSpend += allocation.agenda();
             informationSpend += allocation.information();
@@ -186,6 +247,56 @@ public final class BudgetedLobbyingProcess implements LegislativeProcess {
                 publicCampaignSpend,
                 litigationThreatSpend
         );
+    }
+
+    private void updateStrategies(Bill bill, BillOutcome outcome) {
+        if (bill.lobbySpend() <= 0.000001) {
+            return;
+        }
+        for (LobbyGroup group : lobbyGroups) {
+            double preference = bill.antiLobbyingReform()
+                    ? Math.max(0.45, group.preferenceFor("democracy"))
+                    : group.preferenceFor(bill.issueDomain());
+            if (preference <= 0.000001) {
+                continue;
+            }
+            LobbyCaptureStrategy current = strategyByGroup.getOrDefault(group.id(), group.captureStrategy());
+            strategyByGroup.put(group.id(), nextStrategy(current, bill, outcome));
+        }
+    }
+
+    private static LobbyCaptureStrategy nextStrategy(
+            LobbyCaptureStrategy current,
+            Bill bill,
+            BillOutcome outcome
+    ) {
+        if (bill.antiLobbyingReform()) {
+            if (!outcome.enacted()) {
+                return bill.litigationThreatSpend() >= bill.publicCampaignSpend()
+                        ? LobbyCaptureStrategy.LITIGATION_DELAY
+                        : LobbyCaptureStrategy.PUBLIC_CAMPAIGN;
+            }
+            return LobbyCaptureStrategy.PUBLIC_CAMPAIGN;
+        }
+
+        double captureRisk = LobbyCaptureScoring.captureRisk(bill);
+        double publicMismatch = Math.max(0.0, bill.publicBenefit() - bill.publicSupport());
+        if (outcome.enacted() && captureRisk >= 0.45) {
+            return current;
+        }
+        if (!outcome.enacted() && bill.salience() >= 0.65) {
+            return LobbyCaptureStrategy.PUBLIC_CAMPAIGN;
+        }
+        if (!outcome.enacted() && Math.abs(bill.ideologyPosition() - bill.proposerIdeology()) >= 0.45) {
+            return LobbyCaptureStrategy.AGENDA_ACCESS;
+        }
+        if (publicMismatch >= 0.20) {
+            return LobbyCaptureStrategy.INFORMATION_DISTORTION;
+        }
+        if (bill.privateGain() >= 0.55) {
+            return LobbyCaptureStrategy.DIRECT_PRESSURE;
+        }
+        return LobbyCaptureStrategy.BALANCED;
     }
 
     private static double supportiveSpendIntent(LobbyGroup group, Bill bill, double preference) {
