@@ -1,7 +1,7 @@
 MAIN_SOURCES := $(shell find src/main/java -name '*.java')
 TEST_SOURCES := $(shell find src/test/java -name '*.java')
 
-.PHONY: build run test clean
+.PHONY: build run campaign test clean
 
 build:
 	mkdir -p out/main
@@ -10,6 +10,9 @@ build:
 run: build
 	java -cp out/main congresssim.Main $(ARGS)
 
+campaign: build
+	java -cp out/main congresssim.Main --campaign v0 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+
 test: build
 	mkdir -p out/test
 	javac --release 17 -cp out/main -d out/test $(TEST_SOURCES)
@@ -17,4 +20,3 @@ test: build
 
 clean:
 	rm -rf out
-

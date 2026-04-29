@@ -2,6 +2,8 @@ package congresssim;
 
 import congresssim.behavior.VoteContext;
 import congresssim.behavior.VotingStrategy;
+import congresssim.experiment.CampaignResult;
+import congresssim.experiment.CampaignRunner;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.AgendaDisposition;
 import congresssim.institution.BillOutcome;
@@ -21,6 +23,8 @@ import congresssim.model.Bill;
 import congresssim.model.Legislator;
 import congresssim.model.Vote;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.List;
 import java.util.Random;
@@ -37,6 +41,7 @@ public final class SimulatorTests {
         committeeInformationMovesPublicSignalTowardBenefit();
         committeeCompositionPresetsSelectDifferentMembers();
         scenarioKeysSelectExpectedScenarios();
+        campaignRunnerWritesReports();
         simulatorProducesOneReportPerScenario();
         System.out.println("All simulator tests passed.");
     }
@@ -186,6 +191,25 @@ public final class SimulatorTests {
                 ScenarioCatalog.scenarioKeys().contains("default-pass-info-captured"),
                 "Scenario catalog should expose CLI-facing keys."
         );
+    }
+
+    private static void campaignRunnerWritesReports() {
+        try {
+            Path outputDir = Path.of("out", "test-campaign");
+            Files.createDirectories(outputDir);
+            Files.deleteIfExists(outputDir.resolve("simulation-campaign-v0.csv"));
+            Files.deleteIfExists(outputDir.resolve("simulation-campaign-v0.md"));
+
+            CampaignResult result = CampaignRunner.runV0(outputDir, 1, 11, 4, 77L);
+            assertTrue(Files.exists(result.csvPath()), "Campaign should write a CSV artifact.");
+            assertTrue(Files.exists(result.markdownPath()), "Campaign should write a Markdown artifact.");
+            assertTrue(
+                    Files.readString(result.markdownPath()).contains("Simulation Campaign v0"),
+                    "Campaign Markdown should identify the report."
+            );
+        } catch (Exception exception) {
+            throw new AssertionError("Campaign report generation failed.", exception);
+        }
     }
 
     private static Legislator legislator(String id) {

@@ -1,10 +1,14 @@
 package congresssim;
 
+import congresssim.experiment.CampaignResult;
+import congresssim.experiment.CampaignRunner;
 import congresssim.simulation.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
 import congresssim.simulation.WorldSpec;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +23,10 @@ public final class Main {
         Options options = Options.parse(args);
         if (options.help) {
             Options.printUsage();
+            return;
+        }
+        if (options.campaignName != null) {
+            runCampaign(options);
             return;
         }
 
@@ -45,6 +53,26 @@ public final class Main {
         );
 
         printReports(options, reports, worldSpec);
+    }
+
+    private static void runCampaign(Options options) {
+        try {
+            CampaignResult result = switch (options.campaignName) {
+                case "v0" -> CampaignRunner.runV0(
+                        options.outputDir,
+                        options.runs,
+                        options.legislators,
+                        options.bills,
+                        options.seed
+                );
+                default -> throw new IllegalArgumentException("Unknown campaign: " + options.campaignName);
+            };
+            System.out.println(result.name() + " complete.");
+            System.out.println("CSV: " + result.csvPath());
+            System.out.println("Markdown: " + result.markdownPath());
+        } catch (IOException exception) {
+            throw new IllegalStateException("Unable to write campaign output.", exception);
+        }
     }
 
     private static void printReports(Options options, List<ScenarioReport> reports, WorldSpec worldSpec) {
@@ -214,6 +242,8 @@ public final class Main {
         private final List<String> scenarioKeys;
         private final OutputFormat outputFormat;
         private final boolean charts;
+        private final String campaignName;
+        private final Path outputDir;
         private final long seed;
         private final boolean help;
 
@@ -230,6 +260,8 @@ public final class Main {
                 List<String> scenarioKeys,
                 OutputFormat outputFormat,
                 boolean charts,
+                String campaignName,
+                Path outputDir,
                 long seed,
                 boolean help
         ) {
@@ -245,6 +277,8 @@ public final class Main {
             this.scenarioKeys = List.copyOf(scenarioKeys);
             this.outputFormat = outputFormat;
             this.charts = charts;
+            this.campaignName = campaignName;
+            this.outputDir = outputDir;
             this.seed = seed;
             this.help = help;
         }
@@ -262,6 +296,8 @@ public final class Main {
             List<String> scenarioKeys = new ArrayList<>();
             OutputFormat outputFormat = OutputFormat.TABLE;
             boolean charts = false;
+            String campaignName = null;
+            Path outputDir = Path.of("reports");
             long seed = 20260428L;
             boolean help = false;
 
@@ -280,6 +316,8 @@ public final class Main {
                     case "--scenarios" -> scenarioKeys = parseScenarioKeys(args, ++i, arg);
                     case "--format" -> outputFormat = parseOutputFormat(args, ++i, arg);
                     case "--charts" -> charts = true;
+                    case "--campaign" -> campaignName = parseString(args, ++i, arg);
+                    case "--output-dir" -> outputDir = Path.of(parseString(args, ++i, arg));
                     case "--seed" -> seed = parseLong(args, ++i, arg);
                     case "--help", "-h" -> help = true;
                     default -> throw new IllegalArgumentException("Unknown argument: " + arg);
@@ -302,6 +340,8 @@ public final class Main {
                     scenarioKeys,
                     outputFormat,
                     charts,
+                    campaignName,
+                    outputDir,
                     seed,
                     help
             );
@@ -319,6 +359,13 @@ public final class Main {
                 throw new IllegalArgumentException(name + " requires a value.");
             }
             return Double.parseDouble(args[index]);
+        }
+
+        private static String parseString(String[] args, int index, String name) {
+            if (index >= args.length) {
+                throw new IllegalArgumentException(name + " requires a value.");
+            }
+            return args[index];
         }
 
         private static long parseLong(String[] args, int index, String name) {
@@ -372,6 +419,8 @@ public final class Main {
                       --scenarios <keys>  Comma-separated scenario keys
                       --format <kind>     table, csv, or bars
                       --charts            Add ASCII bar charts after the table
+                      --campaign <name>   Run a named campaign, currently v0
+                      --output-dir <path> Campaign output directory
                       --seed <n>          Reproducible random seed
                       --help              Show this message
 

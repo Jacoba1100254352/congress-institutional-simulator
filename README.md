@@ -38,6 +38,23 @@ Run tests:
 make test
 ```
 
+Run the first predefined simulation campaign:
+
+```sh
+make campaign
+```
+
+This writes:
+
+- `reports/simulation-campaign-v0.csv`
+- `reports/simulation-campaign-v0.md`
+
+You can override the campaign defaults:
+
+```sh
+make campaign ARGS="--runs 300 --seed 12345"
+```
+
 ## Current Scenarios
 
 The default CLI compares:
@@ -76,6 +93,8 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
+- `--campaign`: run a named campaign, currently `v0`
+- `--output-dir`: campaign output directory
 
 ## Architecture
 
