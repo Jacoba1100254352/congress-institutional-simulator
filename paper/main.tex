@@ -1,0 +1,244 @@
+\documentclass[manuscript,anonymous,review]{acmart}
+
+\setcopyright{none}
+\citestyle{acmauthoryear}
+
+\acmConference[Collective Intelligence]{ACM Collective Intelligence}{2026}{TBD}
+\acmYear{2026}
+\acmBooktitle{Proceedings of ACM Collective Intelligence}
+
+\begin{document}
+
+\title[Default Enactment and Agenda Control]{Default Enactment and Agenda Control}
+\subtitle{An Agent-Based Simulation Framework for Comparing Legislative Decision Rules}
+
+\begin{abstract}
+Legislative design usually treats enactment as an affirmative act: a proposal becomes law only if supporters assemble a winning coalition. This paper studies an inverse design pattern in which proposed laws pass by default unless opponents coordinate to block them. The motivating case is a stylized default-enactment legislature where bills pass unless a two-thirds blocking coalition vetoes them. Related institutions exist in narrower domains, including negative parliamentarism, reverse-consensus dispute settlement, tacit-acceptance procedures, and review-and-disapproval systems, but these analogues generally constrain proposal sources, subject matter, or objection windows. The paper therefore asks a mechanism-design question: under what agenda rules can default enactment increase throughput without amplifying agenda-setter power?
+
+We present an agent-based institutional simulator that separates productivity from cooperation, compromise, agenda control, and legitimacy-related risk. Legislators have heterogeneous ideal points and voting sensitivities; bills are proposed around agenda setters; enacted bills update a scalar status quo; and institutional procedures are implemented as composable stages. Across 16 assumption cases and 9 institutional scenarios, open default enactment produces much higher throughput than ordinary majority systems, but also produces high low-support passage, larger policy shifts, and greater proposer gain. Committee guardrails sharply reduce those risks at large productivity cost. Proposal costs reduce floor load but can amplify proposer advantage when costs are offset by private proposer gain or favorable lobbying. Scarce challenge vouchers provide a promising middle path, preserving more throughput than full guardrails while reducing low-support passage, policy shift, and proposer gain. The contribution is not a claim that default enactment is normatively best, but a reproducible framework for testing when burden-shifted lawmaking coordinates collective action and when it magnifies agenda control.
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10003120.10003121.10003124.10010392</concept_id>
+<concept_desc>Human-centered computing~Collaborative and social computing theory, concepts and paradigms</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10010147.10010257.10010258.10010260</concept_id>
+<concept_desc>Computing methodologies~Agent / discrete models</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10010405.10010455.10010460</concept_id>
+<concept_desc>Applied computing~Law</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Human-centered computing~Collaborative and social computing theory, concepts and paradigms}
+\ccsdesc[500]{Computing methodologies~Agent / discrete models}
+\ccsdesc[300]{Applied computing~Law}
+
+\keywords{agent-based modeling, legislative institutions, agenda control, default rules, collective decision-making, voting systems}
+
+\maketitle
+
+\section{Introduction}
+
+Most legislative rules place the burden of organization on supporters. A bill fails unless its advocates assemble a sufficient coalition. This paper studies the inverse design pattern: a bill becomes law by default unless opponents assemble a sufficient blocking coalition. The rule is attractive because it directly attacks status quo bias and obstruction. It is also dangerous because it changes the identity of pivotal actors. Under ordinary majority rule, the central question is whether a proposal can beat the status quo. Under default enactment, the central question is whether opponents can coordinate strongly enough to prevent enactment.
+
+That reversal makes raw legislative productivity a poor target by itself. A system that passes many laws may be efficient, but it may also be volatile, captured, or weakly legitimate. A strict consensus system may be cooperative but unable to adapt. The problem is therefore not whether default enactment passes more bills. It is whether default enactment can produce coordination and compromise under credible agenda safeguards.
+
+We build an agent-based simulator to study that problem. The simulator compares institutional rules under shared generated worlds and reports a dashboard of outcomes: enacted bills, floor load, welfare proxy, coalition support, low-support passage, policy movement, proposer gain, gridlock, committee rejection, and challenge use. Each final choice is still a yes-or-no vote, but bills may pass through proposal access, committee information, committee gatekeeping, challenge windows, bicameral approval, or executive veto before that vote.
+
+The motivating counterfactual is deliberately stark: proposed laws pass unless two-thirds of legislators vote to block them. The simulator then asks what happens when that rule is left open, paired with informed guardrails, paired with proposal costs, or paired with scarce challenge vouchers. The central thesis is narrow: default enactment cannot be evaluated apart from agenda structure. Proposal rights, proposal volume, screening costs, information institutions, and blocking rights determine whether the rule functions as a coordination device or as a mechanism for flooding the agenda with low-consensus proposals.
+
+\section{Related Work}
+
+The project sits between agent-based political modeling, formal legislative theory, and institutional design. Agent-based models are useful when heterogeneous actors interact under rules that create path-dependent aggregate outcomes \citep{deMarchiPage2014,Epstein2006,GilbertTroitzsch2005}. Prior work has used agent-based models to explore political representation and legislative performance, including simulations of parliament composition and decision efficiency \citep{Pluchino2011}. We use the method differently: the object of comparison is not the demographic composition of a legislature, but the procedural architecture through which proposals reach enactment.
+
+Formal legislative theory motivates the model structure. Spatial voting motivates one-dimensional policy positions and status-quo-relative utility \citep{Downs1957}. Legislative bargaining and agenda-setter models motivate explicit proposer identity and proposer gain \citep{BaronFerejohn1989}. Veto-player theory and pivotal-politics models motivate comparing simple majorities, supermajorities, bicameralism, and executive vetoes \citep{Krehbiel1998,Tsebelis2002}. Agenda-control theories motivate treating bills that never reach the floor as substantively important, not as missing observations \citep{CoxMcCubbins2005}. Empirical legislative-effectiveness work further warns that productivity and influence should not be collapsed into a single measure \citep{VoldenWiseman2014}.
+
+Default enactment also has real institutional analogues, although not usually in broad ordinary lawmaking. WTO dispute-settlement reports are adopted unless there is appeal or consensus not to adopt \citep{WTO1994}. EU fiscal-governance procedures use reverse qualified-majority mechanisms in some enforcement contexts \citep{EuropeanParliament2011}. Tacit-acceptance treaty amendment procedures and silence procedures allow decisions to take effect unless objections are raised by a deadline \citep{ChurchillUlfstein2000}. In the United States, review-and-disapproval structures such as the Congressional Review Act let agency rules take effect unless Congress and the President complete a disapproval process \citep{CRA1996,CRS2024}.
+
+These analogues share a design lesson. Burden-shifted decision rules tend to be paired with constrained proposers, bounded subject matter, information review, objection windows, or post-enactment correction. That is why the simulator treats default enactment as an institutional design pattern rather than as a single rule.
+
+\section{Model}
+
+Each simulation run creates a legislature, a stream of bills, a scalar status quo, and an institutional process. The model is intentionally austere so that procedural effects are visible.
+
+\subsection{Actors and Bills}
+
+Legislators have ideal points in \([-1,1]\), party labels, and heterogeneous sensitivities to party, constituency, lobbying, reputation, and compromise. A legislator's vote is generated by a weighted strategy that evaluates the bill relative to the current status quo and to the legislator's own incentive profile.
+
+Bills have a proposer, a policy position in \([-1,1]\), public support, public-benefit score, lobby pressure, and salience. Proposals are generated around proposers so that agenda-setter advantage is measurable. When a bill is enacted, the status quo moves to that bill's policy position. Votes are therefore not abstract preferences over isolated proposals; they are evaluations of a policy change.
+
+\subsection{Institutional Stages}
+
+The implementation separates voting rules from legislative processes. A voting rule determines how a chamber interprets yes and no votes. A legislative process determines what stages a bill must pass through. Current processes include unicameral majority rule, 60 percent supermajority passage, default passage unless two-thirds block, bicameral majority rule, presidential veto with override, proposal-access screens, proposal-cost access, committee gatekeeping, committee information review, and challenge vouchers.
+
+This modular design matters because default enactment is not meaningful in isolation. The same final default rule can behave differently when proposals are open to all legislators, filtered by a committee, priced by agenda costs, or exposed to scarce challenge rights.
+
+\subsection{Challenge Vouchers}
+
+The newest model feature is a challenge-voucher process. In this scenario, bills start in a default-enactment lane. Parties receive a limited number of challenge tokens per session. Legislators evaluate whether a bill is sufficiently harmful or risky to justify spending a party token. If a challenge is filed, the bill leaves the default lane and is routed to an active affirmative vote. If no challenge is filed, the bill is enacted by default.
+
+The voucher mechanism tests whether default enactment can preserve fast treatment for low-conflict bills while forcing contested bills into a higher-legitimacy lane. It differs from ordinary veto power because objection capacity is scarce. It differs from committee gatekeeping because opponents must actively spend a limited procedural resource.
+
+\section{Metrics}
+
+The simulator reports a metric suite rather than a single score:
+
+\begin{itemize}
+  \item Productivity: share of potential bills enacted.
+  \item Floor consideration: share of potential bills reaching the floor.
+  \item Enacted bills per run and floor bills per run: absolute throughput and institutional load.
+  \item Welfare: average generated public-benefit score of enacted bills.
+  \item Cooperation: productivity weighted by enacted support.
+  \item Compromise: support, moderation, and distance from proposer advantage.
+  \item Low-support passage: enacted bills with less than 50 percent yes support.
+  \item Popular failure: high-public-support bills that fail.
+  \item Policy shift: average absolute movement from the status quo.
+  \item Proposer gain: enacted movement toward the proposer's ideal point.
+  \item Challenge rate: share of potential bills diverted from default enactment into active voting.
+\end{itemize}
+
+The most important distinction is between productivity and cooperation. A high-throughput institution may still enact bills with little active support. Conversely, a low-throughput institution may show high welfare among enacted bills but fail to adapt.
+
+\section{Experimental Design}
+
+The current campaign, \texttt{simulation-campaign-v2}, runs 150 simulations per case, with 101 legislators, 60 base bills per run, base seed 20260428, 16 assumption cases, and 9 institutional scenarios per case. The assumption cases vary polarization, party loyalty, compromise culture, lobbying pressure, constituency pressure, party count, proposal pressure, and flooding conditions.
+
+The institutional scenarios are:
+
+\begin{itemize}
+  \item unicameral simple majority;
+  \item unicameral 60 percent passage;
+  \item default pass unless two-thirds block;
+  \item default pass plus scarce challenge vouchers;
+  \item default pass plus scarce challenge vouchers and committee information;
+  \item default pass plus informed guarded committee;
+  \item default pass plus proposal costs;
+  \item bicameral simple majority;
+  \item bicameral majority plus presidential veto and override.
+\end{itemize}
+
+The campaign is deterministic and reproducible from the repository with \texttt{make campaign}. The paper is generated with \texttt{make paper}.
+
+\section{Results}
+
+Table~\ref{tab:scenario-averages} summarizes scenario averages across all v2 assumption cases.
+
+\begin{table*}
+  \caption{Scenario averages across 16 assumption cases in \texttt{simulation-campaign-v2}.}
+  \label{tab:scenario-averages}
+  \Description{A table comparing productivity, enacted bills, welfare, low-support passage, policy shift, proposer gain, and challenge rate across institutional scenarios.}
+  \small
+  \begin{tabular}{lrrrrrrr}
+    \toprule
+    Scenario & Prod. & Enacted & Welfare & Low-sup. & Shift & Prop. gain & Challenge \\
+    \midrule
+    Bicameral simple majority & 0.158 & 14.509 & 0.623 & 0.000 & 0.049 & 0.236 & 0.000 \\
+    Default pass unless 2/3 block & 0.840 & 81.818 & 0.469 & 0.455 & 0.688 & 0.686 & 0.000 \\
+    Default pass + challenge vouchers & 0.644 & 71.596 & 0.481 & 0.398 & 0.451 & 0.561 & 0.422 \\
+    Default pass + challenge vouchers + info & 0.642 & 71.423 & 0.482 & 0.398 & 0.447 & 0.558 & 0.421 \\
+    Default pass + proposal costs & 0.482 & 47.784 & 0.453 & 0.491 & 0.607 & 1.124 & 0.000 \\
+    Default pass + informed guarded committee & 0.197 & 18.569 & 0.609 & 0.221 & 0.065 & 0.248 & 0.000 \\
+    Bicameral majority + presidential veto & 0.101 & 9.253 & 0.643 & 0.000 & 0.029 & 0.218 & 0.000 \\
+    Unicameral simple majority & 0.245 & 22.961 & 0.593 & 0.000 & 0.098 & 0.322 & 0.000 \\
+    Unicameral 60 percent passage & 0.081 & 7.284 & 0.671 & 0.000 & 0.018 & 0.154 & 0.000 \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+\subsection{Open Default Enactment}
+
+Open default enactment is consistently the throughput leader. Across v2, it averages 0.840 productivity and 81.818 enacted bills per run. By comparison, unicameral simple majority averages 0.245 productivity and 22.961 enacted bills per run, while the 60 percent supermajority rule averages 0.081 productivity and 7.284 enacted bills per run.
+
+The throughput gain comes with risk signals. Open default enactment averages 0.455 low-support passage, 0.688 policy shift, and 0.686 proposer gain. In this model, the rule is not merely reducing gridlock; it is also allowing many proposals to take effect without majority support and moving policy substantially toward proposers.
+
+\subsection{Guardrails}
+
+Informed guardrails sharply reduce these risks. Default pass with access screening, committee information, and committee gatekeeping averages 0.197 productivity, 18.569 enacted bills per run, 0.609 welfare, 0.221 low-support passage, 0.065 policy shift, and 0.248 proposer gain. Relative to open default enactment, that is a 0.234 reduction in low-support passage and a 0.623 reduction in policy shift, but also a 0.643 productivity loss.
+
+This result illustrates the central tradeoff. Informational and gatekeeping institutions can make default enactment much safer, but if they are too strong they erase most of the productivity gain that made default enactment attractive.
+
+\subsection{Proposal Costs}
+
+Proposal-cost screening reduces institutional load but does not automatically improve legitimacy. Across v2, default pass plus proposal costs averages 47.784 enacted bills per run and 50.195 floor bills per run, versus 81.818 and 97.500 under open default enactment. It reduces average policy shift from 0.688 to 0.607.
+
+However, low-support passage rises from 0.455 to 0.491, and proposer gain rises from 0.686 to 1.124. This is not a software bug; it is a substantive mechanism result. If a cost function can be cleared by proposer private gain or favorable lobby pressure, costs may screen out low-value proposals while preserving or amplifying agenda-setter advantage. Proposal costs are therefore an institutional design variable, not a solved safeguard.
+
+\subsection{Challenge Vouchers}
+
+Challenge vouchers are a promising middle path. Default pass plus challenge vouchers averages 0.644 productivity, 71.596 enacted bills per run, 0.481 welfare, 0.398 low-support passage, 0.451 policy shift, 0.561 proposer gain, and 0.422 challenge use. Relative to open default enactment, it reduces productivity by 0.196, low-support passage by 0.058, policy shift by 0.237, and proposer gain by 0.125.
+
+Table~\ref{tab:challenge-deltas} summarizes selected deltas. The important failure mode is visible under proposal flooding: fixed token budgets are diluted as proposal volume rises.
+
+\begin{table}
+  \caption{Selected challenge-voucher deltas relative to open default enactment.}
+  \label{tab:challenge-deltas}
+  \Description{A table showing that challenge vouchers reduce risk metrics in ordinary cases but become diluted under proposal flooding.}
+  \small
+  \begin{tabular}{lrrrr}
+    \toprule
+    Case & Prod. & Low-sup. & Shift & Challenge \\
+    \midrule
+    Baseline & -0.265 & -0.061 & -0.306 & 0.500 \\
+    Low polarization & -0.186 & -0.138 & -0.145 & 0.500 \\
+    High polarization & -0.293 & -0.026 & -0.359 & 0.500 \\
+    Multi-party system & -0.530 & -0.294 & -0.565 & 0.814 \\
+    High proposal pressure & 0.018 & 0.015 & -0.037 & 0.167 \\
+    Extreme proposal pressure & 0.077 & 0.023 & 0.022 & 0.100 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The lesson is not that this specific voucher design is optimal. The lesson is that challenge rights deserve parameter sweeps. Token budgets, allocation formulas, challenge thresholds, and active-vote routing should be treated as model variables.
+
+\section{Discussion}
+
+The results support the core theoretical warning: default enactment is not one institution. It is a family of regimes defined by proposal rights, agenda load, information channels, review procedures, and blocking opportunities. Open default enactment maximizes throughput, but it also increases low-support enactment and proposer advantage. Heavy guardrails reduce those harms but can produce a system less productive than conventional supermajority rule. Proposal costs reduce floor load, but the shape of the cost function determines which proposals survive.
+
+Challenge vouchers illustrate a different design logic. Instead of reviewing every proposal, the institution allocates scarce contestation rights. This preserves a default lane for routine bills while forcing some risky bills into active consent. The current implementation is simple, but it already exposes a key design question: should challenge rights scale with proposal volume, party count, minority status, or historical misuse?
+
+The broader contribution is methodological. Institutional design proposals often mix multiple mechanisms, making it difficult to know whether outcomes come from thresholds, agenda access, information, or reversibility. A modular simulator can isolate these components, compare distributions across shared worlds, and identify parameter regions where a design succeeds or fails.
+
+\section{Limitations}
+
+This is not a validated model of the United States Congress or any real legislature. It is a mechanism-exploration simulator. The current model uses one policy dimension, generated legislators, stylized public support, stylized public benefit, simplified lobbying, no elections, no amendments, no strategic bargaining, no topic-specific policy domains, and limited bicameral asymmetry.
+
+The largest limitation is endogeneity. Real proposers choose bills strategically based on expected institutional response. The current model mostly generates proposals around proposer ideal points. Default-enactment regimes especially require endogenous proposal generation because the attractiveness of flooding, moderation, and strategic timing depends on the rules.
+
+The second limitation is calibration. Before the simulator can support stronger empirical claims, it should reproduce rough patterns for ordinary legislative systems: coalition sizes, party unity, roll-call ideology distributions, bill progression rates, veto frequencies, and topic-specific throughput.
+
+The third limitation is welfare specification. Public benefit is generated inside the model rather than estimated from external outcomes. It is useful for comparing institutions under common assumptions, but it should not be treated as a real social-welfare measure.
+
+\section{Research Roadmap}
+
+The next simulations should extend agenda mechanics before adding media, elections, or other realism layers. The immediate roadmap is:
+
+\begin{enumerate}
+  \item sweep challenge-token budgets, challenge thresholds, allocation modes, and active-vote routing;
+  \item compare scarce vouchers with tokenless challenge-triggered escalation based on a threshold number of legislators;
+  \item add cross-bloc cosponsorship gates so proposal access depends on coalition breadth rather than scalar cost;
+  \item add adaptive procedural tracks based on salience, support, uncertainty, and lobby pressure;
+  \item add trial legislation with sunset review so default enactment becomes reversible for risky bills;
+  \item replace simple proposal costs with earned agenda credits or refundable public-benefit bonds.
+\end{enumerate}
+
+These additions directly address the observed failure modes: proposal flooding, low-support enactment, proposer gain, and permanent policy movement after weakly supported bills.
+
+\section{Conclusion}
+
+Default enactment is a serious institutional design idea because it changes the burden of collective action. The first simulations show why it is also dangerous to evaluate in isolation. Open default rules generate high throughput, but the same mechanism can generate low-support enactments, large policy shifts, and agenda-setter advantage. Guardrails can reduce those risks, but at large productivity cost. Proposal costs reduce institutional load, but their design determines which bills survive. Challenge vouchers preserve more throughput while reducing some risk metrics, but they become diluted under flooding unless token budgets and allocation rules are tuned.
+
+The paper's core claim is therefore conditional: burden-shifted lawmaking may improve coordination only when agenda rights, screening costs, information institutions, and challenge rights are designed together.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}
