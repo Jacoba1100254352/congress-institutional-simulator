@@ -90,13 +90,11 @@ Still not implemented:
 - agenda-credit discounts for broader sponsorship
 - affected-group sponsorship as distinct from party-bloc sponsorship
 
-## Immediate Priority
-
 ### 3. Adaptive Procedural Tracks
 
 Purpose: stop treating all bills as identical procedural objects.
 
-Add scenarios:
+Implemented campaign `simulation-campaign-v5` with:
 
 - `default-pass-adaptive-track`
 - `default-pass-adaptive-track-challenge`
@@ -108,10 +106,32 @@ Routing criteria:
 - policy shift
 - lobby pressure
 - generated public benefit
+- generated public-support/public-benefit disagreement as an uncertainty proxy
 
-Decision target:
+Reported:
 
-- identify whether default enactment works better as a fast lane for low-risk bills than as a universal rule.
+- floor/run
+- productivity
+- access-denial rate
+- committee-rejection rate
+- challenge rate
+- low-support passage
+- policy shift
+- proposer gain
+- public welfare
+
+Current finding:
+
+- adaptive tracks provide a middle path between open default-pass and heavy agenda gates. The non-challenge adaptive track reduced productivity by 0.418 relative to open default-pass, but reduced low-support passage by 0.192, policy shift by 0.474, and proposer gain by 0.278 while keeping floor consideration at 0.925. The challenge-middle-lane variant preserved more productivity, 0.566, but left more low-support passage, 0.367.
+
+Still not implemented:
+
+- explicit route-rate metrics for fast, middle, and high-risk lanes
+- calibrated uncertainty field on bills
+- adaptive thresholds swept over low-risk and high-risk cut points
+- high-risk lanes using expert review, citizen panels, or supermajority active votes
+
+## Immediate Priority
 
 ### 4. Sunset Trial Legislation
 
@@ -129,6 +149,10 @@ Report:
 - repeal or nonrenewal rate
 - policy volatility
 - low-support active law share
+
+Decision target:
+
+- identify whether default enactment works better when uncertain laws are reversible instead of permanently moving the status quo.
 
 ### 5. Earned Proposal Credits
 
@@ -153,7 +177,7 @@ Report:
 
 Purpose: determine whether the current proposal-cost finding is robust or an artifact of one cost formula.
 
-Add campaign `v5-cost-sweep` with:
+Add campaign `v6-cost-sweep` with:
 
 - `baseCost`: 0.05, 0.15, 0.25, 0.34, 0.45, 0.60
 - `publicCreditWeight`: 0.00, 0.15, 0.30, 0.50

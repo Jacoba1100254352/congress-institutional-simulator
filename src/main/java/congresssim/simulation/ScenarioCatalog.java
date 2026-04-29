@@ -2,6 +2,7 @@ package congresssim.simulation;
 
 import congresssim.behavior.VotingStrategies;
 import congresssim.behavior.VotingStrategy;
+import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.BicameralProcess;
 import congresssim.institution.Chamber;
@@ -76,6 +77,8 @@ public final class ScenarioCatalog {
                         0.58
                 )),
                 new ScenarioEntry("default-pass-cross-bloc-challenge", defaultPassWithCrossBlocCosponsorshipAndChallenge()),
+                new ScenarioEntry("default-pass-adaptive-track", defaultPassWithAdaptiveTrack(false)),
+                new ScenarioEntry("default-pass-adaptive-track-challenge", defaultPassWithAdaptiveTrack(true)),
                 new ScenarioEntry("default-pass-challenge-party-t3-s082", defaultPassWithChallengeVouchers(
                         "Default pass + party challenge vouchers t=3 s=.82",
                         ChallengeTokenAllocation.PARTY,
@@ -412,6 +415,118 @@ public final class ScenarioCatalog {
                 );
             }
         };
+    }
+
+    private static Scenario defaultPassWithAdaptiveTrack(boolean useChallengeMiddleLane) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                if (useChallengeMiddleLane) {
+                    return "Default pass + adaptive tracks + challenge";
+                }
+                return "Default pass + adaptive tracks";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess fastLane = defaultPassFloorProcess(name(), world, strategy);
+                LegislativeProcess middleLane = useChallengeMiddleLane
+                        ? challengeMiddleLane(name(), world, strategy)
+                        : simpleMajorityFloorProcess(name(), world, strategy);
+                LegislativeProcess highRiskLane = informedGuardrailProcess(name(), world, strategy);
+                return new AdaptiveTrackProcess(
+                        name(),
+                        fastLane,
+                        middleLane,
+                        highRiskLane,
+                        0.34,
+                        0.58
+                );
+            }
+        };
+    }
+
+    private static LegislativeProcess defaultPassFloorProcess(
+            String name,
+            SimulationWorld world,
+            VotingStrategy strategy
+    ) {
+        Chamber chamber = new Chamber(
+                "Congress",
+                world.legislators(),
+                strategy,
+                new DefaultPassUnlessVetoedRule(2.0 / 3.0)
+        );
+        return new UnicameralProcess(name, chamber);
+    }
+
+    private static LegislativeProcess simpleMajorityFloorProcess(
+            String name,
+            SimulationWorld world,
+            VotingStrategy strategy
+    ) {
+        Chamber chamber = new Chamber(
+                "Congress",
+                world.legislators(),
+                strategy,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        return new UnicameralProcess(name, chamber);
+    }
+
+    private static LegislativeProcess challengeMiddleLane(
+            String name,
+            SimulationWorld world,
+            VotingStrategy strategy
+    ) {
+        Chamber activeVoteChamber = new Chamber(
+                "Congress",
+                world.legislators(),
+                strategy,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        return new ChallengeVoucherProcess(
+                name,
+                world.legislators(),
+                strategy,
+                ChallengeTokenAllocation.PARTY,
+                10,
+                0.82,
+                new UnicameralProcess(name, activeVoteChamber)
+        );
+    }
+
+    private static LegislativeProcess informedGuardrailProcess(
+            String name,
+            SimulationWorld world,
+            VotingStrategy strategy
+    ) {
+        List<Legislator> committeeMembers = CommitteeFactory.select(
+                world.legislators(),
+                CommitteeComposition.REPRESENTATIVE,
+                17
+        );
+        Chamber floorChamber = new Chamber(
+                "Congress",
+                world.legislators(),
+                strategy,
+                new DefaultPassUnlessVetoedRule(2.0 / 3.0)
+        );
+        Chamber committee = new Chamber(
+                "Committee",
+                committeeMembers,
+                strategy,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        LegislativeProcess process = new UnicameralProcess(name, floorChamber);
+        process = new CommitteeGatekeepingProcess(name, committee, process);
+        process = new CommitteeInformationProcess(name, committeeMembers, 0.85, 0.45, process);
+        return new ProposalAccessProcess(
+                name,
+                ProposalAccessRules.viabilityScreen(0.35, 0.85),
+                process
+        );
     }
 
     private static Scenario defaultPassWithProposalCost() {

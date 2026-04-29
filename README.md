@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v4.csv`
-- `reports/simulation-campaign-v4.md`
+- `reports/simulation-campaign-v5.csv`
+- `reports/simulation-campaign-v5.md`
 
 Earlier campaigns remain available:
 
@@ -57,6 +57,7 @@ make campaign-v0
 make campaign-v1
 make campaign-v2
 make campaign-v3
+make campaign-v4
 ```
 
 You can override the campaign defaults:
@@ -79,6 +80,8 @@ The default CLI compares:
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate
 - `default-pass-cross-bloc-strong`: stricter cross-bloc cosponsorship gate
 - `default-pass-cross-bloc-challenge`: cross-bloc cosponsorship before challenge-voucher review
+- `default-pass-adaptive-track`: risk-routed default pass with low-risk, middle, and high-risk procedural lanes
+- `default-pass-adaptive-track-challenge`: adaptive tracks with challenge vouchers in the middle-risk lane
 - challenge-sweep keys such as `default-pass-challenge-party-t3-s082`, `default-pass-challenge-member-t1-s082`, and `default-pass-escalation-q12-s082`
 - `default-pass-access`: default passage unless 2/3 vote to block, with a proposal-access screen
 - `default-pass-cost`: default passage unless 2/3 vote to block, with a proposal-cost screen
@@ -113,7 +116,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, or `v4`
+- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, or `v5`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -201,9 +204,15 @@ The v3 campaign sweeps challenge mechanics:
 - tokenless escalation: q-member challenge thresholds at q=6, q=12, and q=20
 - The finding is a throughput/safety frontier: low token budgets preserve or even increase throughput but barely reduce low-support passage, while member-token and q-member escalation variants cut low-support passage and policy shift much more at a large productivity cost.
 
-The current v4 campaign adds cross-bloc cosponsorship gates:
+The v4 campaign adds cross-bloc cosponsorship gates:
 
 - `default-pass-cross-bloc` requires credible support from at least two legislators outside the proposer bloc before a bill reaches default-pass consideration.
 - `default-pass-cross-bloc-strong` raises the cosponsorship burden to test a stricter coalition-breadth screen.
 - `default-pass-cross-bloc-challenge` combines the cross-bloc agenda gate with challenge vouchers.
-- The current finding is that coalition breadth is a strong upstream filter: it improves enacted-bill welfare and sharply reduces policy shift and proposer gain, but it also cuts floor access enough that adaptive routing is now the next important model feature.
+- The finding is that coalition breadth is a strong upstream filter: it improves enacted-bill welfare and sharply reduces policy shift and proposer gain, but it also cuts floor access enough that adaptive routing became the next important model feature.
+
+The current v5 campaign adds adaptive procedural tracks:
+
+- `default-pass-adaptive-track` sends low-risk bills to default pass, middle-risk bills to active simple-majority review, and high-risk bills to informed guardrails.
+- `default-pass-adaptive-track-challenge` keeps the same fast and high-risk lanes, but sends middle-risk bills through challenge-voucher review.
+- The current finding is that adaptive routing provides a middle path: it preserves far more floor access than cross-bloc or informed guardrails while reducing low-support passage, policy shift, and proposer gain relative to open default-pass. The next model step is sunset/trial legislation because the remaining risk is persistence of bad enacted laws.

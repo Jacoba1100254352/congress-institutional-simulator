@@ -4,6 +4,7 @@ import congresssim.behavior.VoteContext;
 import congresssim.behavior.VotingStrategy;
 import congresssim.experiment.CampaignResult;
 import congresssim.experiment.CampaignRunner;
+import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.AgendaDisposition;
 import congresssim.institution.BillOutcome;
@@ -42,6 +43,7 @@ public final class SimulatorTests {
         proposalAccessCanDenyLowViabilityBills();
         proposalCostsCanDenyLowValueBills();
         crossBlocCosponsorshipRequiresOutsideSupport();
+        adaptiveTrackRoutesBillsByRisk();
         challengeVouchersRouteHighRiskBillsToActiveVote();
         challengeEscalationRoutesBroadlyContestedBillsToActiveVote();
         committeeGateBlocksBillsBeforeFloor();
@@ -107,6 +109,32 @@ public final class SimulatorTests {
                         .evaluate(narrowBill, context)
                         .granted(),
                 "Narrow, low-support bills should fail the cross-bloc gate."
+        );
+    }
+
+    private static void adaptiveTrackRoutesBillsByRisk() {
+        LegislativeProcess fast = labeledProcess("fast lane");
+        LegislativeProcess middle = labeledProcess("middle lane");
+        LegislativeProcess highRisk = labeledProcess("high-risk lane");
+        AdaptiveTrackProcess process = new AdaptiveTrackProcess(
+                "adaptive test",
+                fast,
+                middle,
+                highRisk,
+                0.34,
+                0.58
+        );
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        Bill lowRisk = new Bill("B-low", "Low Risk", "L-1", 0.0, 0.05, 0.85, 0.80, -0.2, 0.20);
+        Bill highRiskBill = new Bill("B-high", "High Risk", "L-1", 0.0, 0.90, 0.15, 0.20, 0.8, 0.90);
+
+        assertTrue(
+                process.consider(lowRisk, context).finalReason().equals("fast lane"),
+                "Low-risk bills should use the fast lane."
+        );
+        assertTrue(
+                process.consider(highRiskBill, context).finalReason().equals("high-risk lane"),
+                "High-risk bills should use the high-risk review lane."
         );
     }
 
@@ -324,6 +352,10 @@ public final class SimulatorTests {
                 ScenarioCatalog.scenarioKeys().contains("default-pass-cross-bloc"),
                 "Scenario catalog should expose cross-bloc cosponsorship keys."
         );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-adaptive-track"),
+                "Scenario catalog should expose adaptive-track keys."
+        );
     }
 
     private static void campaignRunnerWritesReports() {
@@ -347,6 +379,28 @@ public final class SimulatorTests {
 
     private static Legislator legislator(String id) {
         return new Legislator(id, "Test", 0.0, 0.5, 0.5, 0.5, 0.5, 0.5);
+    }
+
+    private static LegislativeProcess labeledProcess(String label) {
+        return new LegislativeProcess() {
+            @Override
+            public String name() {
+                return label;
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        context.currentPolicyPosition(),
+                        false,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        label
+                );
+            }
+        };
     }
 
     private static void assertTrue(boolean condition, String message) {
