@@ -62,6 +62,8 @@ You can override the campaign defaults:
 make campaign ARGS="--runs 300 --seed 12345"
 ```
 
+Full usage documentation lives in [docs/usage.md](docs/usage.md).
+
 ## Current Scenarios
 
 The default CLI compares:
