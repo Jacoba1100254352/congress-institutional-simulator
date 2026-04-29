@@ -28,6 +28,19 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> FLOODING_SCENARIOS = List.of(
+            "simple-majority",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-cost",
+            "default-pass-access",
+            "default-pass-committee",
+            "default-pass-guarded",
+            "default-pass-informed-guarded",
+            "default-pass-cost-guarded",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -39,10 +52,53 @@ public final class CampaignRunner {
             int bills,
             long seed
     ) throws IOException {
+        return run(
+                "Simulation Campaign v0",
+                "simulation-campaign-v0",
+                outputDir,
+                v0Cases(legislators, bills),
+                CORE_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV1(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v1",
+                "simulation-campaign-v1",
+                outputDir,
+                v1Cases(legislators, bills),
+                FLOODING_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    private static CampaignResult run(
+            String name,
+            String fileStem,
+            Path outputDir,
+            List<ExperimentCase> cases,
+            List<String> scenarioKeys,
+            int runs,
+            int legislators,
+            int baseBills,
+            long seed
+    ) throws IOException {
         Files.createDirectories(outputDir);
 
-        List<ExperimentCase> cases = v0Cases(legislators, bills);
-        List<Scenario> scenarios = ScenarioCatalog.scenariosForKeys(CORE_SCENARIOS);
+        List<Scenario> scenarios = ScenarioCatalog.scenariosForKeys(scenarioKeys);
         Simulator simulator = new Simulator();
         List<CampaignRow> rows = new ArrayList<>();
 
@@ -59,20 +115,20 @@ public final class CampaignRunner {
                         experimentCase.key(),
                         experimentCase.name(),
                         experimentCase.description(),
-                        CORE_SCENARIOS.get(scenarioIndex),
+                        scenarioKeys.get(scenarioIndex),
                         reports.get(scenarioIndex)
                 ));
             }
         }
 
         CampaignResult result = new CampaignResult(
-                "Simulation Campaign v0",
+                name,
                 rows,
-                outputDir.resolve("simulation-campaign-v0.csv"),
-                outputDir.resolve("simulation-campaign-v0.md")
+                outputDir.resolve(fileStem + ".csv"),
+                outputDir.resolve(fileStem + ".md")
         );
-        Files.writeString(result.csvPath(), csv(result));
-        Files.writeString(result.markdownPath(), markdown(result, runs, legislators, bills, seed));
+        Files.writeString(result.csvPath(), csv(result, runs));
+        Files.writeString(result.markdownPath(), markdown(result, runs, legislators, baseBills, seed, scenarioKeys.size()));
         return result;
     }
 
@@ -105,6 +161,19 @@ public final class CampaignRunner {
         );
     }
 
+    private static List<ExperimentCase> v1Cases(int legislators, int bills) {
+        List<ExperimentCase> cases = new ArrayList<>(v0Cases(legislators, bills));
+        cases.add(experiment("high-proposal-pressure", "High Proposal Pressure", "Three times as many potential proposals reach the institutional system.",
+                legislators, bills * 3, 3, 0.72, 0.68, 0.48, 0.64, 0.52));
+        cases.add(experiment("extreme-proposal-pressure", "Extreme Proposal Pressure", "Five times as many potential proposals reach the institutional system.",
+                legislators, bills * 5, 3, 0.72, 0.68, 0.48, 0.64, 0.52));
+        cases.add(experiment("lobby-fueled-flooding", "Lobby-Fueled Flooding", "High proposal pressure with strong lobbying and weaker constituency pressure.",
+                legislators, bills * 3, 3, 0.72, 0.70, 0.88, 0.42, 0.38));
+        cases.add(experiment("low-compromise-flooding", "Low-Compromise Flooding", "High proposal pressure in a low-compromise legislature.",
+                legislators, bills * 3, 3, 0.82, 0.76, 0.52, 0.54, 0.16));
+        return cases;
+    }
+
     private static ExperimentCase experiment(
             String key,
             String name,
@@ -135,9 +204,9 @@ public final class CampaignRunner {
         );
     }
 
-    private static String csv(CampaignResult result) {
+    private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,lowSupport,popularFail,policyShift,proposerGain,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,lowSupport,popularFail,policyShift,proposerGain,vetoes,overriddenVetoes\n");
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
@@ -146,7 +215,10 @@ public final class CampaignRunner {
                     .append(csvValue(row.scenarioKey())).append(',')
                     .append(csvValue(report.scenarioName())).append(',')
                     .append(report.totalBills()).append(',')
+                    .append(format((double) report.totalBills() / runs)).append(',')
                     .append(report.enactedBills()).append(',')
+                    .append(format((double) report.enactedBills() / runs)).append(',')
+                    .append(format((report.totalBills() * report.floorConsiderationRate()) / runs)).append(',')
                     .append(format(report.productivity())).append(',')
                     .append(format(report.floorConsiderationRate())).append(',')
                     .append(format(report.averageEnactedSupport())).append(',')
@@ -171,38 +243,64 @@ public final class CampaignRunner {
             int runs,
             int legislators,
             int bills,
-            long seed
+            long seed,
+            int scenarioCount
     ) {
-        Map<String, ScenarioAggregate> aggregateByScenario = aggregateByScenario(result.rows());
+        Map<String, ScenarioAggregate> aggregateByScenario = aggregateByScenario(result.rows(), runs);
         StringBuilder builder = new StringBuilder();
-        builder.append("# Simulation Campaign v0\n\n");
+        builder.append("# ").append(result.name()).append("\n\n");
         builder.append("Deterministic batch campaign for comparing institutional regimes across assumption sweeps.\n\n");
         builder.append("## Run Configuration\n\n");
         builder.append("- runs per case: ").append(runs).append('\n');
         builder.append("- legislators: ").append(legislators).append('\n');
-        builder.append("- bills per run: ").append(bills).append('\n');
+        builder.append("- base bills per run: ").append(bills).append('\n');
         builder.append("- base seed: ").append(seed).append('\n');
-        builder.append("- scenarios per case: ").append(CORE_SCENARIOS.size()).append('\n');
+        builder.append("- scenarios per case: ").append(scenarioCount).append('\n');
         builder.append("- experiment cases: ").append(caseCount(result.rows())).append("\n\n");
 
         builder.append("## Headline Findings\n\n");
         appendHeadlineFindings(builder, result.rows(), aggregateByScenario);
 
         builder.append("## Scenario Averages Across Cases\n\n");
-        builder.append("| Scenario | Productivity | Welfare | Low-support | Policy shift | Proposer gain | Floor |\n");
-        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+        builder.append("| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Policy shift | Proposer gain | Floor |\n");
+        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
         aggregateByScenario.values()
                 .stream()
                 .sorted(Comparator.comparing(ScenarioAggregate::scenarioKey))
                 .forEach(summary -> builder.append("| ")
                         .append(summary.scenarioName()).append(" | ")
                         .append(format(summary.productivity())).append(" | ")
+                        .append(format(summary.enactedPerRun())).append(" | ")
+                        .append(format(summary.floorPerRun())).append(" | ")
                         .append(format(summary.welfare())).append(" | ")
                         .append(format(summary.lowSupport())).append(" | ")
                         .append(format(summary.policyShift())).append(" | ")
                         .append(format(summary.proposerGain())).append(" | ")
                         .append(format(summary.floor())).append(" |\n"));
         builder.append('\n');
+
+        if (aggregateByScenario.containsKey("default-pass-cost")) {
+            builder.append("## Proposal-Cost Deltas\n\n");
+            builder.append("Delta values compare `default-pass-cost` against open `default-pass` in the same case. Negative enacted-per-run, floor-per-run, low-support, and policy-shift deltas show the proposal-cost screen reducing flooding and volatility.\n\n");
+            builder.append("| Case | Enacted/run delta | Floor/run delta | Productivity delta | Welfare delta | Low-support delta | Policy-shift delta | Proposer-gain delta |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            for (String caseKey : caseKeys(result.rows())) {
+                CampaignRow open = find(result.rows(), caseKey, "default-pass");
+                CampaignRow cost = find(result.rows(), caseKey, "default-pass-cost");
+                if (open != null && cost != null) {
+                    builder.append("| ")
+                            .append(open.caseName()).append(" | ")
+                            .append(format(enactedPerRun(cost, runs) - enactedPerRun(open, runs))).append(" | ")
+                            .append(format(floorPerRun(cost, runs) - floorPerRun(open, runs))).append(" | ")
+                            .append(format(cost.report().productivity() - open.report().productivity())).append(" | ")
+                            .append(format(cost.report().averagePublicBenefit() - open.report().averagePublicBenefit())).append(" | ")
+                            .append(format(cost.report().controversialPassageRate() - open.report().controversialPassageRate())).append(" | ")
+                            .append(format(cost.report().averagePolicyShift() - open.report().averagePolicyShift())).append(" | ")
+                            .append(format(cost.report().averageProposerGain() - open.report().averageProposerGain())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
 
         builder.append("## Default-Pass Guardrail Deltas\n\n");
         builder.append("Delta values compare `default-pass-informed-guarded` against open `default-pass` in the same case. Negative low-support, policy-shift, and proposer-gain deltas are desirable; productivity losses are the tradeoff.\n\n");
@@ -242,8 +340,10 @@ public final class CampaignRunner {
         builder.append("## Interpretation\n\n");
         builder.append("- Open default-pass is consistently the throughput leader, but it also carries high low-support passage, high policy movement, and high proposer gain.\n");
         builder.append("- Guarded default-pass variants trade productivity for lower volatility and lower proposer advantage.\n");
+        builder.append("- Proposal-cost screens are useful for measuring flooding as institutional load: floor/run and enacted/run expose costs hidden by percentage-only metrics.\n");
+        builder.append("- The current cost screen reduces volume, but it also selects for proposals with high proposer value or positive lobby pressure; that makes cost design an object of study, not a solved safeguard.\n");
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        builder.append("- The next model extension should target proposal flooding and proposal costs, because this campaign makes proposal access and agenda screening central to the default-pass tradeoff.\n\n");
+        builder.append("- The next model extension should run proposal-cost parameter sweeps and compare alternative cost mechanisms, because agenda screening is now the central default-pass tradeoff.\n\n");
         builder.append("## Reproduction\n\n");
         builder.append("```sh\nmake campaign\n```\n");
         return builder.toString();
@@ -256,6 +356,7 @@ public final class CampaignRunner {
     ) {
         ScenarioAggregate openDefault = aggregateByScenario.get("default-pass");
         ScenarioAggregate informedGuarded = aggregateByScenario.get("default-pass-informed-guarded");
+        ScenarioAggregate proposalCost = aggregateByScenario.get("default-pass-cost");
         ScenarioAggregate simpleMajority = aggregateByScenario.get("simple-majority");
         ScenarioAggregate bestWelfare = aggregateByScenario.values()
                 .stream()
@@ -282,6 +383,15 @@ public final class CampaignRunner {
                 .append(", while changing productivity by ")
                 .append(format(productivityChange))
                 .append(".\n");
+        if (proposalCost != null) {
+            builder.append("- Proposal-cost screening reduced floor load by ")
+                    .append(format(openDefault.floorPerRun() - proposalCost.floorPerRun()))
+                    .append(" bills/run and enactments by ")
+                    .append(format(openDefault.enactedPerRun() - proposalCost.enactedPerRun()))
+                    .append(" bills/run, but raised proposer gain by ")
+                    .append(format(proposalCost.proposerGain() - openDefault.proposerGain()))
+                    .append(".\n");
+        }
         builder.append("- Best average welfare in this campaign came from ")
                 .append(bestWelfare.scenarioName())
                 .append(" at ")
@@ -289,13 +399,13 @@ public final class CampaignRunner {
                 .append(".\n\n");
     }
 
-    private static Map<String, ScenarioAggregate> aggregateByScenario(List<CampaignRow> rows) {
+    private static Map<String, ScenarioAggregate> aggregateByScenario(List<CampaignRow> rows, int runs) {
         Map<String, ScenarioAggregate> byScenario = new LinkedHashMap<>();
         for (CampaignRow row : rows) {
             byScenario.computeIfAbsent(
                     row.scenarioKey(),
                     key -> new ScenarioAggregate(key, row.report().scenarioName())
-            ).add(row.report());
+            ).add(row.report(), runs);
         }
         return byScenario;
     }
@@ -341,6 +451,14 @@ public final class CampaignRunner {
         return rows.stream().min(comparator).orElseThrow();
     }
 
+    private static double enactedPerRun(CampaignRow row, int runs) {
+        return (double) row.report().enactedBills() / runs;
+    }
+
+    private static double floorPerRun(CampaignRow row, int runs) {
+        return (row.report().totalBills() * row.report().floorConsiderationRate()) / runs;
+    }
+
     private static String csvValue(String value) {
         if (value.contains(",") || value.contains("\"") || value.contains("\n")) {
             return "\"" + value.replace("\"", "\"\"") + "\"";
@@ -365,13 +483,15 @@ public final class CampaignRunner {
         private double policyShift;
         private double proposerGain;
         private double floor;
+        private double enactedPerRun;
+        private double floorPerRun;
 
         private ScenarioAggregate(String scenarioKey, String scenarioName) {
             this.scenarioKey = scenarioKey;
             this.scenarioName = scenarioName;
         }
 
-        private void add(ScenarioReport report) {
+        private void add(ScenarioReport report, int runs) {
             count++;
             productivity += report.productivity();
             welfare += report.averagePublicBenefit();
@@ -379,6 +499,8 @@ public final class CampaignRunner {
             policyShift += report.averagePolicyShift();
             proposerGain += report.averageProposerGain();
             floor += report.floorConsiderationRate();
+            enactedPerRun += (double) report.enactedBills() / runs;
+            floorPerRun += (report.totalBills() * report.floorConsiderationRate()) / runs;
         }
 
         private String scenarioKey() {
@@ -411,6 +533,14 @@ public final class CampaignRunner {
 
         private double floor() {
             return floor / count;
+        }
+
+        private double enactedPerRun() {
+            return enactedPerRun / count;
+        }
+
+        private double floorPerRun() {
+            return floorPerRun / count;
         }
     }
 }

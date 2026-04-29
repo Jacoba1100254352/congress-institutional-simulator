@@ -37,6 +37,7 @@ public final class SimulatorTests {
         simpleMajorityRequiresMoreYaysThanNays();
         defaultPassRequiresBlockingSupermajority();
         proposalAccessCanDenyLowViabilityBills();
+        proposalCostsCanDenyLowValueBills();
         committeeGateBlocksBillsBeforeFloor();
         committeeInformationMovesPublicSignalTowardBenefit();
         committeeCompositionPresetsSelectDifferentMembers();
@@ -65,6 +66,15 @@ public final class SimulatorTests {
         assertFalse(
                 ProposalAccessRules.viabilityScreen(0.35, 0.85).evaluate(bill, context).granted(),
                 "Low-support or distant bills should be denied proposal access."
+        );
+    }
+
+    private static void proposalCostsCanDenyLowValueBills() {
+        Bill bill = new Bill("B-test", "Test Bill", "L-1", 0.0, 0.02, 0.15, 0.20, 0.0, 0.20);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        assertFalse(
+                ProposalAccessRules.proposalCost(0.34, 0.22, 0.18).evaluate(bill, context).granted(),
+                "Low-value proposals should fail the proposal-cost screen."
         );
     }
 
@@ -188,7 +198,7 @@ public final class SimulatorTests {
                 "Scenario keys should select a focused scenario subset."
         );
         assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-info-captured"),
+                ScenarioCatalog.scenarioKeys().contains("default-pass-cost-guarded"),
                 "Scenario catalog should expose CLI-facing keys."
         );
     }

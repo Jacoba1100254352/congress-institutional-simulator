@@ -57,6 +57,8 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("supermajority-60", unicameral("Unicameral 60 percent passage", AffirmativeThresholdRule.supermajority(0.60))),
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
                 new ScenarioEntry("default-pass-access", defaultPassWithProposalAccess()),
+                new ScenarioEntry("default-pass-cost", defaultPassWithProposalCost()),
+                new ScenarioEntry("default-pass-cost-guarded", defaultPassWithCostAndGuardrails()),
                 new ScenarioEntry("default-pass-committee", defaultPassWithCommitteeGate(
                         "Default pass + representative committee gate",
                         CommitteeComposition.REPRESENTATIVE
@@ -120,6 +122,76 @@ public final class ScenarioCatalog {
                         name(),
                         ProposalAccessRules.viabilityScreen(0.35, 0.85),
                         floor
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithProposalCost() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + proposal costs";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                Chamber chamber = new Chamber(
+                        "Congress",
+                        world.legislators(),
+                        strategy,
+                        new DefaultPassUnlessVetoedRule(2.0 / 3.0)
+                );
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.proposalCost(0.34, 0.22, 0.18),
+                        new UnicameralProcess(name(), chamber)
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithCostAndGuardrails() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + costs + informed guardrails";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                List<Legislator> committeeMembers = CommitteeFactory.select(
+                        world.legislators(),
+                        CommitteeComposition.REPRESENTATIVE,
+                        17
+                );
+                Chamber floorChamber = new Chamber(
+                        "Congress",
+                        world.legislators(),
+                        strategy,
+                        new DefaultPassUnlessVetoedRule(2.0 / 3.0)
+                );
+                Chamber committee = new Chamber(
+                        "Committee",
+                        committeeMembers,
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+
+                LegislativeProcess process = new UnicameralProcess(name(), floorChamber);
+                process = new CommitteeGatekeepingProcess(name(), committee, process);
+                process = new CommitteeInformationProcess(name(), committeeMembers, 0.85, 0.45, process);
+                process = new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.viabilityScreen(0.35, 0.85),
+                        process
+                );
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.proposalCost(0.34, 0.22, 0.18),
+                        process
                 );
             }
         };

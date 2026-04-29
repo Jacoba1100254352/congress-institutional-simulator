@@ -11,6 +11,9 @@ run: build
 	java -cp out/main congresssim.Main $(ARGS)
 
 campaign: build
+	java -cp out/main congresssim.Main --campaign v1 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+
+campaign-v0: build
 	java -cp out/main congresssim.Main --campaign v0 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
 
 test: build

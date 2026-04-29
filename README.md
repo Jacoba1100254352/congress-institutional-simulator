@@ -11,6 +11,7 @@ The current model intentionally includes only the parts needed to compare instit
 - bills proposed near a selected legislator's ideal point, with public support, lobby pressure, and salience
 - voting strategies that compare a bill against the current status quo before reducing pressures to a final `YAY` or `NAY`
 - pluggable institutional rules such as simple majority, supermajority passage, and default passage unless a veto bloc forms
+- proposal-access screens, proposal-cost screens, committee information review, and committee gatekeeping
 - legislative processes such as unicameral Congress, bicameral Congress, and a basic presidential veto wrapper
 - aggregate metrics over many randomized runs
 
@@ -38,7 +39,7 @@ Run tests:
 make test
 ```
 
-Run the first predefined simulation campaign:
+Run the current predefined simulation campaign:
 
 ```sh
 make campaign
@@ -46,8 +47,14 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v0.csv`
-- `reports/simulation-campaign-v0.md`
+- `reports/simulation-campaign-v1.csv`
+- `reports/simulation-campaign-v1.md`
+
+The earlier v0 campaign remains available:
+
+```sh
+make campaign-v0
+```
 
 You can override the campaign defaults:
 
@@ -63,6 +70,8 @@ The default CLI compares:
 - `supermajority-60`: unicameral 60 percent passage threshold
 - `default-pass`: default passage unless 2/3 vote to block
 - `default-pass-access`: default passage unless 2/3 vote to block, with a proposal-access screen
+- `default-pass-cost`: default passage unless 2/3 vote to block, with a proposal-cost screen
+- `default-pass-cost-guarded`: default passage with proposal costs, proposal access, committee information, and committee gatekeeping
 - `default-pass-committee`: default passage unless 2/3 vote to block, with a representative committee gate
 - `default-pass-committee-majority`: default passage with a majority-controlled committee gate
 - `default-pass-committee-polarized`: default passage with a polarized committee gate
@@ -93,7 +102,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0`
+- `--campaign`: run a named campaign, currently `v0` or `v1`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -113,6 +122,7 @@ To add a new system, implement one of those interfaces rather than rewriting the
 Examples:
 
 - proposal access: add a `ProposalAccessRule` and wrap a process with `ProposalAccessProcess`
+- proposal costs: add a `ProposalAccessRule` that prices floor access by expected policy value, public credit, lobby support, or institutional scarcity
 - committee gatekeeping: wrap a floor process with `CommitteeGatekeepingProcess`
 - lobbying: add or replace a `VoteInfluence`
 - shame/reputation: adjust `StandardInfluences.reputation`
@@ -126,6 +136,7 @@ The first metric set is deliberately simple, but it separates throughput from le
 
 - `productivity`: share of introduced bills enacted
 - `floor`: share of potential bills that reached floor consideration
+- campaign reports also track `enactedPerRun` and `floorPerRun` so proposal flooding is visible as institutional load, not only as percentages
 - `avgSupport`: average yay share for enacted bills
 - `welfare`: average public-benefit score for enacted bills
 - `cooperation`: productivity multiplied by enacted support
@@ -144,7 +155,7 @@ These are not claims about real-world validity. They are hooks for comparing rul
 
 The research report found that the proposed default-pass rule has analogues in negative parliamentarism, WTO reverse consensus, EU reverse qualified majority rules, tacit-acceptance treaty procedures, silence procedures, and U.S. review-and-disapproval structures such as the Congressional Review Act and BRAC. It did not find a close mainstream analogue where ordinary statutes generally pass unless a two-thirds blocking coalition forms.
 
-The main design warning is that default passage shifts power from affirmative majority formation to blocking coalition formation. That makes agenda access, proposal screening, proposer power, committees, and legitimacy metrics central. The next modeling layer should therefore be agenda access and committee gatekeeping before media, lobbying, elections, or richer behavioral systems.
+The main design warning is that default passage shifts power from affirmative majority formation to blocking coalition formation. That makes agenda access, proposal screening, proposer power, committees, and legitimacy metrics central. The first modeling layers therefore focus on agenda access, committee gatekeeping, committee information, and proposal costs before media, lobbying, elections, or richer behavioral systems.
 
 That agenda layer is now represented in three comparison scenarios:
 
@@ -152,8 +163,14 @@ That agenda layer is now represented in three comparison scenarios:
 - `Default pass + representative committee gate`: requires approval by a representative committee before the default-pass floor rule applies.
 - `Default pass + access + committee`: applies both filters before the floor vote.
 
-The next agenda layer adds committee composition and information:
+The committee-information layer adds committee composition and information:
 
 - Committee presets can select representative, majority-controlled, polarized, expert-style, or captured/lobby-sensitive committees.
 - `CommitteeInformationProcess` moves the noisy public-support signal toward a bill's generated public-benefit score before floor consideration.
 - Information review can be tested independently or combined with access screening and committee gatekeeping.
+
+The current v1 campaign adds proposal flooding and proposal costs:
+
+- `default-pass-cost` screens floor access by comparing a proposal's expected proposer policy gain, public credit, and lobby credit against a fixed cost threshold.
+- The flooding cases increase potential bills per run by 3x or 5x, with variants for high lobbying and low compromise.
+- The first finding is mixed: proposal costs substantially reduce floor load and enactment volume, but the current cost formula also selects for high proposer gain and positive lobby pressure. That makes cost design itself a modeling target.
