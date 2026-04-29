@@ -16,6 +16,7 @@ import congresssim.institution.LegislativeProcess;
 import congresssim.institution.PresidentialVetoProcess;
 import congresssim.institution.ProposalAccessProcess;
 import congresssim.institution.ProposalAccessRules;
+import congresssim.institution.ProposalCreditProcess;
 import congresssim.institution.SunsetTrialProcess;
 import congresssim.institution.UnicameralProcess;
 import congresssim.institution.VotingRule;
@@ -82,6 +83,8 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-adaptive-track-challenge", defaultPassWithAdaptiveTrack(true)),
                 new ScenarioEntry("default-pass-sunset-trial", defaultPassWithSunsetTrial(false)),
                 new ScenarioEntry("default-pass-sunset-challenge", defaultPassWithSunsetTrial(true)),
+                new ScenarioEntry("default-pass-earned-credits", defaultPassWithProposalCredits(false)),
+                new ScenarioEntry("default-pass-earned-credits-challenge", defaultPassWithProposalCredits(true)),
                 new ScenarioEntry("default-pass-challenge-party-t3-s082", defaultPassWithChallengeVouchers(
                         "Default pass + party challenge vouchers t=3 s=.82",
                         ChallengeTokenAllocation.PARTY,
@@ -471,6 +474,38 @@ public final class ScenarioCatalog {
                         innerProcess,
                         0.38,
                         0.56
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithProposalCredits(boolean includeChallengeVouchers) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                if (includeChallengeVouchers) {
+                    return "Default pass + earned proposal credits + challenge";
+                }
+                return "Default pass + earned proposal credits";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess innerProcess = includeChallengeVouchers
+                        ? challengeMiddleLane(name(), world, strategy)
+                        : defaultPassFloorProcess(name(), world, strategy);
+                return new ProposalCreditProcess(
+                        name(),
+                        innerProcess,
+                        1.15,
+                        0.30,
+                        3.00,
+                        0.56,
+                        1.00,
+                        0.28,
+                        0.75,
+                        0.60
                 );
             }
         };

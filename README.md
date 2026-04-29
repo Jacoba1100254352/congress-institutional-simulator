@@ -11,7 +11,7 @@ The current model intentionally includes only the parts needed to compare instit
 - bills proposed near a selected legislator's ideal point, with public support, lobby pressure, and salience
 - voting strategies that compare a bill against the current status quo before reducing pressures to a final `YAY` or `NAY`
 - pluggable institutional rules such as simple majority, supermajority passage, and default passage unless a veto bloc forms
-- proposal-access screens, proposal-cost screens, committee information review, and committee gatekeeping
+- proposal-access screens, proposal-cost screens, earned proposal credits, committee information review, and committee gatekeeping
 - legislative processes such as unicameral Congress, bicameral Congress, and a basic presidential veto wrapper
 - aggregate metrics over many randomized runs
 
@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v6.csv`
-- `reports/simulation-campaign-v6.md`
+- `reports/simulation-campaign-v7.csv`
+- `reports/simulation-campaign-v7.md`
 
 Earlier campaigns remain available:
 
@@ -59,6 +59,7 @@ make campaign-v2
 make campaign-v3
 make campaign-v4
 make campaign-v5
+make campaign-v6
 ```
 
 You can override the campaign defaults:
@@ -85,6 +86,8 @@ The default CLI compares:
 - `default-pass-adaptive-track-challenge`: adaptive tracks with challenge vouchers in the middle-risk lane
 - `default-pass-sunset-trial`: default passage with provisional enactment and automatic sunset review for risky bills
 - `default-pass-sunset-challenge`: challenge vouchers plus sunset review
+- `default-pass-earned-credits`: default passage with stateful agenda credits earned or lost through proposal quality
+- `default-pass-earned-credits-challenge`: earned proposal credits plus challenge vouchers
 - challenge-sweep keys such as `default-pass-challenge-party-t3-s082`, `default-pass-challenge-member-t1-s082`, and `default-pass-escalation-q12-s082`
 - `default-pass-access`: default passage unless 2/3 vote to block, with a proposal-access screen
 - `default-pass-cost`: default passage unless 2/3 vote to block, with a proposal-cost screen
@@ -119,7 +122,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, or `v6`
+- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, or `v7`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -220,8 +223,14 @@ The v5 campaign adds adaptive procedural tracks:
 - `default-pass-adaptive-track-challenge` keeps the same fast and high-risk lanes, but sends middle-risk bills through challenge-voucher review.
 - The finding is that adaptive routing provides a middle path: it preserves far more floor access than cross-bloc or informed guardrails while reducing low-support passage, policy shift, and proposer gain relative to open default-pass.
 
-The current v6 campaign adds sunset trial legislation:
+The v6 campaign adds sunset trial legislation:
 
 - `default-pass-sunset-trial` provisionally enacts risky default-pass bills, then automatically renews or expires them using generated public support, public benefit, lobby risk, and risk score.
 - `default-pass-sunset-challenge` combines the same sunset review with challenge vouchers.
 - The current finding is that reversibility improves enacted-bill welfare and sharply reduces policy shift without using a front-end agenda gate, but it still reduces productivity because failed review rolls the status quo back.
+
+The current v7 campaign adds earned proposal credits:
+
+- `default-pass-earned-credits` gives proposers stateful agenda credits. A proposal spends credits according to risk, lobby pressure, salience, and public value; after consideration, the proposer earns or loses credits based on generated public benefit, public support, lobby risk, and outcome quality.
+- `default-pass-earned-credits-challenge` combines the same credit budget with challenge-voucher review.
+- The current finding is that earned credits reduce floor load and policy shift more gently than cross-bloc or committee gates. The base credit scenario denies about 20 percent of potential proposals, improves welfare by 0.015, reduces policy shift by 0.159, and reduces proposer gain by 0.032 relative to open default-pass. Combining credits with challenge vouchers is stricter: productivity falls by 0.398, but policy shift falls by 0.416 and proposer gain by 0.191.

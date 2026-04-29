@@ -151,6 +151,36 @@ public final class CampaignRunner {
             "default-pass-escalation-q12-s082",
             "default-pass-escalation-q20-s082"
     );
+    private static final List<String> PROPOSAL_CREDIT_SCENARIOS = List.of(
+            "simple-majority",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-informed-guarded",
+            "default-pass-challenge",
+            "default-pass-cross-bloc",
+            "default-pass-cross-bloc-strong",
+            "default-pass-cross-bloc-challenge",
+            "default-pass-adaptive-track",
+            "default-pass-adaptive-track-challenge",
+            "default-pass-sunset-trial",
+            "default-pass-sunset-challenge",
+            "default-pass-earned-credits",
+            "default-pass-earned-credits-challenge",
+            "default-pass-challenge-party-t3-s082",
+            "default-pass-challenge-party-t6-s082",
+            "default-pass-challenge-party-t15-s082",
+            "default-pass-challenge-party-t25-s082",
+            "default-pass-challenge-party-t10-s050",
+            "default-pass-challenge-party-t10-s065",
+            "default-pass-challenge-party-t10-s100",
+            "default-pass-challenge-party-t10-s125",
+            "default-pass-challenge-member-t1-s082",
+            "default-pass-challenge-member-t2-s082",
+            "default-pass-challenge-member-t3-s082",
+            "default-pass-escalation-q6-s082",
+            "default-pass-escalation-q12-s082",
+            "default-pass-escalation-q20-s082"
+    );
 
     private CampaignRunner() {
     }
@@ -288,6 +318,26 @@ public final class CampaignRunner {
                 outputDir,
                 v1Cases(legislators, bills),
                 SUNSET_TRIAL_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runV7(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v7",
+                "simulation-campaign-v7",
+                outputDir,
+                v1Cases(legislators, bills),
+                PROPOSAL_CREDIT_SCENARIOS,
                 runs,
                 legislators,
                 bills,
@@ -614,6 +664,33 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
+        if (aggregateByScenario.containsKey("default-pass-earned-credits")) {
+            builder.append("## Earned Proposal-Credit Deltas\n\n");
+            builder.append("Delta values compare stateful earned agenda credits against open `default-pass` across all cases. Access denial is the share of potential proposals whose sponsors lacked enough accumulated credit.\n\n");
+            builder.append("| Scenario | Productivity delta | Floor delta | Access denied | Welfare delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Challenge rate |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+            for (String scenarioKey : List.of(
+                    "default-pass-earned-credits",
+                    "default-pass-earned-credits-challenge"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary != null) {
+                    ScenarioAggregate open = aggregateByScenario.get("default-pass");
+                    builder.append("| ")
+                            .append(summary.scenarioName()).append(" | ")
+                            .append(format(summary.productivity() - open.productivity())).append(" | ")
+                            .append(format(summary.floor() - open.floor())).append(" | ")
+                            .append(format(summary.accessDenied())).append(" | ")
+                            .append(format(summary.welfare() - open.welfare())).append(" | ")
+                            .append(format(summary.lowSupport() - open.lowSupport())).append(" | ")
+                            .append(format(summary.policyShift() - open.policyShift())).append(" | ")
+                            .append(format(summary.proposerGain() - open.proposerGain())).append(" | ")
+                            .append(format(summary.challengeRate())).append(" |\n");
+                }
+            }
+            builder.append('\n');
+        }
+
         if (aggregateByScenario.containsKey("default-pass-cost")) {
             builder.append("## Proposal-Cost Deltas\n\n");
             builder.append("Delta values compare `default-pass-cost` against open `default-pass` in the same case. Negative enacted-per-run, floor-per-run, low-support, and policy-shift deltas show the proposal-cost screen reducing flooding and volatility.\n\n");
@@ -691,7 +768,12 @@ public final class CampaignRunner {
                     builder.append("- Adaptive procedural tracks test whether low-risk bills can stay in a fast lane while high-risk bills receive stronger review.\n");
                     if (aggregateByScenario.containsKey("default-pass-sunset-trial")) {
                         builder.append("- Sunset trial rules test whether risky default enactments can be made reversible after automatic review.\n");
-                        builder.append("- The next model extension should add earned proposal credits, because agenda access still does not learn from proposer track records.\n\n");
+                        if (aggregateByScenario.containsKey("default-pass-earned-credits")) {
+                            builder.append("- Earned proposal credits test whether agenda access can learn from proposer track records instead of using only fixed up-front costs.\n");
+                            builder.append("- The next model extension should add structured amendment or mediation, because the current agenda systems screen and route bills but still rarely change bill content before final yes/no choice.\n\n");
+                        } else {
+                            builder.append("- The next model extension should add earned proposal credits, because agenda access still does not learn from proposer track records.\n\n");
+                        }
                     } else {
                         builder.append("- The next model extension should add sunset trial legislation, because the remaining risk is bad-law persistence after enactment.\n\n");
                     }
@@ -721,6 +803,7 @@ public final class CampaignRunner {
         ScenarioAggregate crossBloc = aggregateByScenario.get("default-pass-cross-bloc");
         ScenarioAggregate adaptive = aggregateByScenario.get("default-pass-adaptive-track");
         ScenarioAggregate sunset = aggregateByScenario.get("default-pass-sunset-trial");
+        ScenarioAggregate credits = aggregateByScenario.get("default-pass-earned-credits");
         ScenarioAggregate simpleMajority = aggregateByScenario.get("simple-majority");
         ScenarioAggregate bestWelfare = aggregateByScenario.values()
                 .stream()
@@ -790,6 +873,15 @@ public final class CampaignRunner {
                     .append(format(sunset.welfare() - openDefault.welfare()))
                     .append(", and policy shift by ")
                     .append(format(sunset.policyShift() - openDefault.policyShift()))
+                    .append(" relative to open default-pass.\n");
+        }
+        if (credits != null) {
+            builder.append("- Earned proposal credits denied ")
+                    .append(format(credits.accessDenied()))
+                    .append(" of potential proposals, changed welfare by ")
+                    .append(format(credits.welfare() - openDefault.welfare()))
+                    .append(", and changed proposer gain by ")
+                    .append(format(credits.proposerGain() - openDefault.proposerGain()))
                     .append(" relative to open default-pass.\n");
         }
         builder.append("- Best average welfare in this campaign came from ")

@@ -17,6 +17,7 @@ import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.ProposalAccessRules;
+import congresssim.institution.ProposalCreditProcess;
 import congresssim.institution.SunsetTrialProcess;
 import congresssim.simulation.CommitteeComposition;
 import congresssim.simulation.CommitteeFactory;
@@ -46,6 +47,7 @@ public final class SimulatorTests {
         crossBlocCosponsorshipRequiresOutsideSupport();
         adaptiveTrackRoutesBillsByRisk();
         sunsetTrialExpiresRiskyLowBenefitBills();
+        proposalCreditsLearnFromProposalQuality();
         challengeVouchersRouteHighRiskBillsToActiveVote();
         challengeEscalationRoutesBroadlyContestedBillsToActiveVote();
         committeeGateBlocksBillsBeforeFloor();
@@ -171,6 +173,50 @@ public final class SimulatorTests {
         assertFalse(expired.enacted(), "Risky low-benefit bills should expire after sunset review.");
         assertTrue(expired.statusQuoAfter() == context.currentPolicyPosition(), "Expired trials should roll back the status quo.");
         assertTrue(renewed.enacted(), "Strong bills should survive sunset review.");
+    }
+
+    private static void proposalCreditsLearnFromProposalQuality() {
+        LegislativeProcess enactEverything = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "enact everything";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "enacted"
+                );
+            }
+        };
+        ProposalCreditProcess process = new ProposalCreditProcess(
+                "credit test",
+                enactEverything,
+                1.00,
+                0.0,
+                2.0,
+                0.40,
+                0.40,
+                0.30,
+                0.90,
+                0.90
+        );
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        Bill strongBill = new Bill("B-good", "Good Bill", "L-1", 0.0, 0.05, 0.90, 0.90, -0.2, 0.20);
+        Bill weakBill = new Bill("B-bad", "Bad Bill", "L-1", 0.0, 0.95, 0.05, 0.05, 0.9, 0.95);
+
+        assertTrue(process.consider(strongBill, context).enacted(), "High-quality proposals should be able to earn credit.");
+        assertTrue(process.consider(weakBill, context).enacted(), "A sponsor with earned credits can still spend them on a bad bill.");
+        assertTrue(
+                process.consider(weakBill, context).agendaDisposition() == AgendaDisposition.ACCESS_DENIED,
+                "Low-quality proposals should deplete earned credits and block later proposals."
+        );
     }
 
     private static void challengeVouchersRouteHighRiskBillsToActiveVote() {
@@ -394,6 +440,10 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-sunset-trial"),
                 "Scenario catalog should expose sunset-trial keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-earned-credits"),
+                "Scenario catalog should expose earned proposal-credit keys."
         );
     }
 

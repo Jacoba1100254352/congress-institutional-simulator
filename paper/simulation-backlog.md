@@ -162,28 +162,64 @@ Still not implemented:
 - review-period sensitivity sweep
 - partial rollback or amendment instead of full rollback
 
-## Immediate Priority
-
 ### 5. Earned Proposal Credits
 
-Purpose: replace the current scalar proposal-cost rule with agenda rights earned or lost through prior proposal quality.
+Purpose: replace the scalar proposal-cost rule with agenda rights earned or lost through prior proposal quality.
 
-Add scenarios:
+Implemented campaign `simulation-campaign-v7` with:
 
 - `default-pass-earned-credits`
 - `default-pass-earned-credits-challenge`
 
+Reported:
+
+- floor/run
+- access-denial rate
+- low-support passage
+- policy shift
+- proposer gain
+- public welfare
+- challenge rate for the combined credit/challenge scenario
+
+Current finding:
+
+- earned proposal credits are a mild agenda-accountability layer. The base credit scenario denied 0.200 of potential proposals, reduced productivity by 0.166 relative to open default-pass, increased welfare by 0.015, reduced low-support passage by 0.010, reduced policy shift by 0.159, and reduced proposer gain by 0.032. Combining credits with challenge vouchers is much stricter: productivity falls by 0.398 relative to open default-pass, but low-support passage falls by 0.101, policy shift by 0.416, and proposer gain by 0.191.
+
+Still not implemented:
+
+- proposer concentration or access-gini metrics
+- party-level or coalition-level credit pools
+- refundable public-benefit bonds
+- credit transfers, hoarding, or collusion
+- welfare per submitted bill
+
+## Immediate Priority
+
+### 6. Structured Amendment and Mediation
+
+Purpose: add bargaining over bill content before the final yes/no vote.
+
+Add scenarios:
+
+- `default-pass-mediated-amendments`
+- `default-pass-mediated-amendments-challenge`
+- `adaptive-track-mediated-middle`
+- `sunset-trial-mediated-review`
+
 Report:
 
-- proposer concentration
-- floor/run
+- compromise movement toward chamber median
+- compromise movement toward public median
+- amendment success rate
 - low-support passage
+- policy shift
 - proposer gain
-- welfare per submitted bill
+- welfare
+- amendment load
 
 ## Later Priority
 
-### 6. Proposal-Cost Parameter Sweep
+### 7. Proposal-Cost Parameter Sweep
 
 Purpose: determine whether the current proposal-cost finding is robust or an artifact of one cost formula.
 
@@ -211,7 +247,7 @@ Decision target:
 
 - identify cost settings that reduce floor load without increasing low-support passage or proposer gain.
 
-### 7. Proposal-Cost Mechanism Variants
+### 8. Proposal-Cost Mechanism Variants
 
 Purpose: compare different definitions of "cost" instead of only tuning one threshold.
 
@@ -235,7 +271,7 @@ Add scenarios:
 - `default-pass-refundable-deposit`
 - `default-pass-calendar-scarcity`
 
-### 8. Proposal-Flooding Severity Sweep
+### 9. Proposal-Flooding Severity Sweep
 
 Purpose: separate rule behavior at normal proposal volume from behavior under flood conditions.
 
@@ -254,7 +290,7 @@ Run for:
 
 Report all percentage metrics plus absolute load metrics. The key output is a curve showing whether each institution scales linearly, saturates, or collapses under high proposal volume.
 
-### 5. Agenda Order-of-Operations Sweep
+### 10. Agenda Order-of-Operations Sweep
 
 Purpose: determine whether order matters when multiple guardrails exist.
 
@@ -276,7 +312,7 @@ Report:
 - welfare
 - proposer gain
 
-### 6. Robustness and Uncertainty Reporting
+### 11. Robustness and Uncertainty Reporting
 
 Purpose: make paper claims statistically defensible.
 
@@ -296,7 +332,7 @@ Minimum for paper draft:
 
 ## Near-Term Model Additions
 
-### 7. Endogenous Proposal Strategy
+### 12. Endogenous Proposal Strategy
 
 Purpose: stop treating proposal flooding as only an exogenous bill-count multiplier.
 
@@ -316,7 +352,7 @@ Report:
 - proposer gain by strategy
 - welfare by strategy
 
-### 8. Lobbying as Proposal Shaping
+### 13. Lobbying as Proposal Shaping
 
 Purpose: model lobbying before the vote, not only as vote pressure.
 
@@ -333,7 +369,7 @@ Compare:
 - proposal-shaping lobbying
 - coalition-subsidy lobbying
 
-### 9. Amendment and Negotiation Rounds
+### 14. Amendment and Negotiation Rounds
 
 Purpose: model compromise as a process rather than only as a voting disposition.
 
@@ -354,7 +390,7 @@ Metrics:
 - final coalition breadth
 - welfare change after amendment
 
-### 10. Minority-Protection Guardrails
+### 15. Minority-Protection Guardrails
 
 Purpose: test whether default enactment can be paired with rights-preserving mechanisms.
 
@@ -365,7 +401,7 @@ Add scenarios:
 - `default-pass-rights-review`: simulated court or rights panel blocks high-harm bills.
 - `default-pass-citizen-review`: citizen panel can require ordinary floor passage for low-support bills.
 
-### 11. Sunset and Delay Rules
+### 16. Sunset and Delay Rules
 
 Purpose: test default enactment with reversible or time-limited policy changes.
 
@@ -385,7 +421,7 @@ Metrics:
 
 ## Validation Simulations
 
-### 12. U.S.-Style Baseline Calibration
+### 17. U.S.-Style Baseline Calibration
 
 Purpose: make the simulator credible before using counterfactuals.
 
@@ -404,7 +440,7 @@ Data targets:
 - Congress.gov or govinfo for bill histories.
 - Center for Effective Lawmaking for productivity comparison.
 
-### 13. Comparative Institution Baselines
+### 18. Comparative Institution Baselines
 
 Purpose: avoid overfitting to one U.S.-style baseline.
 
