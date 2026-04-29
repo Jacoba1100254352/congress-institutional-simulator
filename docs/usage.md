@@ -137,6 +137,12 @@ Run the v16 agenda-scarcity campaign:
 make campaign-v16
 ```
 
+Run the v17 roadmap-completion campaign:
+
+```sh
+make campaign-v17
+```
+
 Remove generated build output:
 
 ```sh
@@ -189,7 +195,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0..v16>`: run a named campaign.
+- `--campaign <v0..v17>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -249,6 +255,29 @@ The default CLI scenario set includes:
 - `default-pass-law-registry-challenge`: challenge vouchers plus delayed active-law review.
 - `default-pass-earned-credits`: stateful agenda credits earned or lost through proposal quality.
 - `default-pass-earned-credits-challenge`: earned proposal credits plus challenge vouchers.
+- `default-pass-constituent-public-will`: district-weighted constituent/public-will signal revision.
+- `default-pass-constituent-citizen-panel`: constituent public-will revision followed by citizen-panel active routing.
+- `default-pass-proposal-bonds`: refundable public-benefit proposal bonds.
+- `default-pass-proposal-bonds-challenge`: proposal bonds plus challenge vouchers.
+- `default-pass-cross-bloc-credit-discount`: richer cross-bloc cosponsorship with coalition support discounts.
+- `default-pass-affected-sponsor-gate`: cross-bloc cosponsorship requiring affected-group sponsor participation.
+- `default-pass-multiround-mediation`: multi-round amendment mediation with costs, concession limits, poison-pill risk, and compensation.
+- `default-pass-multiround-mediation-challenge`: multi-round mediation plus challenge vouchers.
+- `default-pass-alternatives-strategic`: policy tournament with strategic clones and decoys.
+- `default-pass-challenge-party-proportional`: challenge vouchers allocated proportionally by party size.
+- `default-pass-challenge-minority-bonus`: challenge vouchers with a minority-party allocation bonus.
+- `default-pass-challenge-supermajority`: challenged bills route to a 60 percent affirmative vote.
+- `default-pass-challenge-committee`: challenged bills route to committee review.
+- `default-pass-challenge-info-active`: challenged bills receive committee information before active voting.
+- `default-pass-adaptive-track-lenient`: adaptive routing with wider fast-lane eligibility.
+- `default-pass-adaptive-track-strict`: adaptive routing with stricter high-risk review.
+- `default-pass-adaptive-track-citizen-high-risk`: adaptive routing with citizen-panel review for high-risk bills.
+- `default-pass-adaptive-track-supermajority-high-risk`: adaptive routing with supermajority review for high-risk bills.
+- `default-pass-law-registry-fast-review`: active-law registry with faster review.
+- `default-pass-law-registry-slow-review`: active-law registry with slower partial rollback.
+- `default-pass-cost-public-waiver`: proposal costs discounted by public value.
+- `default-pass-cost-lobby-surcharge`: proposal costs increased by positive lobby pressure.
+- `default-pass-member-quota`: stateful per-member proposal quota.
 - `default-pass-challenge-party-t3-s082`: party-held challenge voucher sweep point with 3 tokens per party and challenge threshold 0.82.
 - `default-pass-challenge-party-t25-s082`: party-held challenge voucher sweep point with 25 tokens per party and challenge threshold 0.82.
 - `default-pass-challenge-party-t10-s050`: party-held challenge voucher sweep point with 10 tokens per party and challenge threshold 0.50.
@@ -279,8 +308,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v16.csv`
-- `reports/simulation-campaign-v16.md`
+- `reports/simulation-campaign-v17.csv`
+- `reports/simulation-campaign-v17.md`
 
 Earlier campaigns:
 
@@ -371,6 +400,15 @@ The simulator reports several metrics because passage volume alone is not enough
 - `attentionSpendPerBill`: quadratic attention credits spent per potential bill.
 - `objectionWindowRate`: share of potential bills triggering a public objection or repeal window.
 - `repealWindowReversalRate`: share of triggered repeal windows that reverse enactment.
+- `fastLaneRate`, `middleLaneRate`, `highRiskLaneRate`: adaptive-route shares.
+- `challengeExhaustionRate`: share of potential bills where a challenge would have cleared threshold but no token was available.
+- `falseNegativePassRate`: risky, low-support, or high-harm default enactments that passed unchallenged.
+- `publicWillReviewRate`, `publicSignalMovement`, `districtAlignment`: constituent/public-will review diagnostics.
+- `crossBlocAdmissionRate`, `affectedGroupSponsorshipRate`, `averageCosponsors`: richer cosponsorship diagnostics.
+- `proposalBondForfeiture`: average proposal-bond loss per potential bill.
+- `strategicDecoyRate`: strategic clone/decoy alternatives introduced per tournament.
+- `proposerAccessGini`: concentration of floor access across proposers.
+- `welfarePerSubmittedBill`: public-benefit yield per potential proposal.
 - `vetoes`: presidential veto count.
 - `overrides`: veto override count.
 

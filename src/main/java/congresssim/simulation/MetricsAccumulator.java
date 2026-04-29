@@ -6,6 +6,9 @@ import congresssim.institution.AffectedGroupScoring;
 import congresssim.institution.LobbyCaptureScoring;
 import congresssim.institution.OutcomeSignals;
 
+import java.util.HashMap;
+import java.util.Map;
+
 final class MetricsAccumulator {
     private int totalBills;
     private int enactedBills;
@@ -54,15 +57,36 @@ final class MetricsAccumulator {
     private double citizenLegitimacySum;
     private int objectionWindows;
     private int repealWindowReversals;
+    private int fastLaneRoutes;
+    private int middleLaneRoutes;
+    private int highRiskRoutes;
+    private int challengeTokenExhaustions;
+    private int falseNegativePasses;
+    private int publicWillReviews;
+    private double publicSignalMovementSum;
+    private double districtAlignmentSum;
+    private int cosponsorshipReviews;
+    private int crossBlocAdmissions;
+    private int affectedGroupSponsors;
+    private int totalCosponsors;
+    private int proposalBondReviews;
+    private double proposalBondForfeitureSum;
+    private int strategicAlternativeRounds;
+    private int strategicDecoys;
     private double directLobbySpendSum;
     private double agendaLobbySpendSum;
     private double informationLobbySpendSum;
     private double publicCampaignSpendSum;
     private double litigationThreatSpendSum;
     private double attentionSpendSum;
+    private double submittedPublicBenefitSum;
+    private final Map<String, Integer> submittedByProposer = new HashMap<>();
+    private final Map<String, Integer> floorByProposer = new HashMap<>();
 
     void add(BillOutcome outcome) {
         totalBills++;
+        submittedPublicBenefitSum += outcome.bill().publicBenefit();
+        submittedByProposer.merge(outcome.bill().proposerId(), 1, Integer::sum);
         totalLobbySpendSum += outcome.bill().lobbySpend();
         defensiveLobbySpendSum += outcome.bill().defensiveLobbySpend();
         directLobbySpendSum += outcome.bill().directLobbySpend();
@@ -99,8 +123,25 @@ final class MetricsAccumulator {
         citizenLegitimacySum += signals.citizenLegitimacy();
         objectionWindows += signals.objectionWindows();
         repealWindowReversals += signals.repealWindowReversals();
+        fastLaneRoutes += signals.fastLaneRoutes();
+        middleLaneRoutes += signals.middleLaneRoutes();
+        highRiskRoutes += signals.highRiskRoutes();
+        challengeTokenExhaustions += signals.challengeTokenExhaustions();
+        falseNegativePasses += signals.falseNegativePasses();
+        publicWillReviews += signals.publicWillReviews();
+        publicSignalMovementSum += signals.publicSignalMovement();
+        districtAlignmentSum += signals.districtAlignment();
+        cosponsorshipReviews += signals.cosponsorshipReviews();
+        crossBlocAdmissions += signals.crossBlocAdmissions();
+        affectedGroupSponsors += signals.affectedGroupSponsors();
+        totalCosponsors += signals.totalCosponsors();
+        proposalBondReviews += signals.proposalBondReviews();
+        proposalBondForfeitureSum += signals.proposalBondForfeiture();
+        strategicAlternativeRounds += signals.strategicAlternativeRounds();
+        strategicDecoys += signals.strategicDecoys();
         if (outcome.agendaDisposition() == AgendaDisposition.FLOOR_CONSIDERED) {
             floorConsideredBills++;
+            floorByProposer.merge(outcome.bill().proposerId(), 1, Integer::sum);
         } else if (outcome.agendaDisposition() == AgendaDisposition.ACCESS_DENIED) {
             accessDeniedBills++;
         } else if (outcome.agendaDisposition() == AgendaDisposition.COMMITTEE_REJECTED) {
@@ -180,6 +221,9 @@ final class MetricsAccumulator {
         double proposerAgendaAdvantage = alternativeRounds == 0 ? 0.0 : proposerAgendaAdvantageSum / alternativeRounds;
         double alternativeDiversity = alternativeRounds == 0 ? 0.0 : (double) alternativesConsidered / alternativeRounds;
         double publicBenefitPerLobbyDollar = totalLobbySpendSum == 0.0 ? 0.0 : enactedPublicBenefitSum / totalLobbySpendSum;
+        double proposalBondForfeiture = proposalBondReviews == 0 ? 0.0 : proposalBondForfeitureSum / proposalBondReviews;
+        double publicSignalMovement = publicWillReviews == 0 ? 0.0 : publicSignalMovementSum / publicWillReviews;
+        double districtAlignment = publicWillReviews == 0 ? 0.0 : districtAlignmentSum / publicWillReviews;
         return new ScenarioReport(
                 scenarioName,
                 totalBills,
@@ -229,6 +273,21 @@ final class MetricsAccumulator {
                 totalBills == 0 ? 0.0 : attentionSpendSum / totalBills,
                 ratio(objectionWindows, totalBills),
                 ratio(repealWindowReversals, objectionWindows),
+                ratio(fastLaneRoutes, totalBills),
+                ratio(middleLaneRoutes, totalBills),
+                ratio(highRiskRoutes, totalBills),
+                ratio(challengeTokenExhaustions, totalBills),
+                ratio(falseNegativePasses, totalBills),
+                ratio(publicWillReviews, totalBills),
+                publicSignalMovement,
+                districtAlignment,
+                ratio(crossBlocAdmissions, cosponsorshipReviews),
+                ratio(affectedGroupSponsors, cosponsorshipReviews),
+                cosponsorshipReviews == 0 ? 0.0 : (double) totalCosponsors / cosponsorshipReviews,
+                proposalBondForfeiture,
+                ratio(strategicDecoys, strategicAlternativeRounds),
+                gini(floorByProposer),
+                totalBills == 0 ? 0.0 : enactedPublicBenefitSum / totalBills,
                 ratio(floorConsideredBills, totalBills),
                 ratio(accessDeniedBills, totalBills),
                 ratio(committeeRejectedBills, totalBills),
@@ -244,6 +303,24 @@ final class MetricsAccumulator {
 
     private static double share(double numerator, double denominator) {
         return denominator == 0.0 ? 0.0 : numerator / denominator;
+    }
+
+    private static double gini(Map<String, Integer> counts) {
+        if (counts.isEmpty()) {
+            return 0.0;
+        }
+        int size = counts.size();
+        double mean = counts.values().stream().mapToInt(Integer::intValue).average().orElse(0.0);
+        if (mean <= 0.000001) {
+            return 0.0;
+        }
+        double differenceSum = 0.0;
+        for (int left : counts.values()) {
+            for (int right : counts.values()) {
+                differenceSum += Math.abs(left - right);
+            }
+        }
+        return differenceSum / (2.0 * size * size * mean);
     }
 
     private static double proposerConcession(BillOutcome outcome) {

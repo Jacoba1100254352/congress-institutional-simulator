@@ -14,6 +14,28 @@ public enum ChallengeTokenAllocation {
             return legislator.party();
         }
     },
+    PARTY_PROPORTIONAL {
+        @Override
+        String ownerOf(Legislator legislator) {
+            return legislator.party();
+        }
+
+        @Override
+        String labelFor(Legislator legislator) {
+            return legislator.party();
+        }
+    },
+    PARTY_MINORITY_BONUS {
+        @Override
+        String ownerOf(Legislator legislator) {
+            return legislator.party();
+        }
+
+        @Override
+        String labelFor(Legislator legislator) {
+            return legislator.party();
+        }
+    },
     LEGISLATOR {
         @Override
         String ownerOf(Legislator legislator) {
@@ -30,4 +52,3 @@ public enum ChallengeTokenAllocation {
 
     abstract String labelFor(Legislator legislator);
 }
-

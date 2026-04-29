@@ -54,6 +54,11 @@ public final class WorldGenerator {
             double ideology = Values.clamp(center + (random.nextGaussian() * standardDeviation), -1.0, 1.0);
             String party = partyFor(ideology, spec.partyCount());
             double moderation = 1.0 - Math.abs(ideology);
+            double districtPreference = Values.clamp(
+                    (0.78 * ideology) + (random.nextGaussian() * (0.18 + (0.10 * spec.polarization()))),
+                    -1.0,
+                    1.0
+            );
 
             legislators.add(new Legislator(
                     "L-" + (i + 1),
@@ -63,7 +68,10 @@ public final class WorldGenerator {
                     Values.clamp(spec.partyLoyalty() + random.nextGaussian() * 0.12, 0.0, 1.0),
                     Values.clamp(spec.constituencySensitivity() + random.nextGaussian() * 0.12, 0.0, 1.0),
                     Values.clamp(spec.lobbyingSusceptibility() + random.nextGaussian() * 0.16, 0.0, 1.0),
-                    Values.clamp(0.58 + random.nextGaussian() * 0.15, 0.0, 1.0)
+                    Values.clamp(0.58 + random.nextGaussian() * 0.15, 0.0, 1.0),
+                    districtPreference,
+                    Values.clamp(spec.constituencySensitivity() + random.nextGaussian() * 0.16, 0.0, 1.0),
+                    Values.clamp(0.34 + random.nextDouble() * 0.58, 0.0, 1.0)
             ));
         }
         return legislators;
@@ -88,6 +96,7 @@ public final class WorldGenerator {
             double concentratedHarm;
             double affectedGroupSupport;
             double compensationCost;
+            double publicBenefitUncertainty;
 
             if (antiLobbyingReform) {
                 lobbyPressure = -Values.clamp(
@@ -112,6 +121,7 @@ public final class WorldGenerator {
                         0.0,
                         0.35
                 );
+                publicBenefitUncertainty = Values.clamp(0.18 + random.nextGaussian() * 0.08, 0.0, 1.0);
             } else {
                 lobbyPressure = Values.clamp(random.nextGaussian() * spec.lobbyingSusceptibility(), -1.0, 1.0);
                 privateGain = Values.clamp(
@@ -139,6 +149,15 @@ public final class WorldGenerator {
                         0.0,
                         1.0
                 );
+                publicBenefitUncertainty = Values.clamp(
+                        0.14
+                                + (salience * 0.18)
+                                + (Math.abs(publicSupport - publicBenefit) * 0.32)
+                                + (Math.max(0.0, lobbyPressure) * 0.10)
+                                + random.nextGaussian() * 0.08,
+                        0.0,
+                        1.0
+                );
             }
             affectedGroupSupport = Values.clamp(
                     publicSupport
@@ -155,7 +174,7 @@ public final class WorldGenerator {
                     0.55
             );
 
-            bills.add(new Bill(
+            Bill bill = new Bill(
                     "B-" + (i + 1),
                     antiLobbyingReform ? "Anti-Lobbying Reform " + (i + 1) : "Bill " + (i + 1),
                     proposer.id(),
@@ -174,7 +193,8 @@ public final class WorldGenerator {
                     affectedGroupSupport,
                     concentratedHarm,
                     compensationCost
-            ));
+            ).withPublicBenefitUncertainty(publicBenefitUncertainty);
+            bills.add(bill);
         }
         return bills;
     }

@@ -375,6 +375,43 @@ public final class CampaignRunner {
             "bicameral-majority",
             "presidential-veto"
     );
+    private static final List<String> ROADMAP_COMPLETION_SCENARIOS = List.of(
+            "simple-majority",
+            "supermajority-60",
+            "default-pass",
+            "default-pass-constituent-public-will",
+            "default-pass-constituent-citizen-panel",
+            "default-pass-proposal-bonds",
+            "default-pass-proposal-bonds-challenge",
+            "default-pass-cross-bloc-credit-discount",
+            "default-pass-affected-sponsor-gate",
+            "default-pass-multiround-mediation",
+            "default-pass-multiround-mediation-challenge",
+            "default-pass-alternatives-pairwise",
+            "default-pass-alternatives-strategic",
+            "default-pass-challenge",
+            "default-pass-challenge-party-proportional",
+            "default-pass-challenge-minority-bonus",
+            "default-pass-challenge-supermajority",
+            "default-pass-challenge-committee",
+            "default-pass-challenge-info-active",
+            "default-pass-adaptive-track",
+            "default-pass-adaptive-track-lenient",
+            "default-pass-adaptive-track-strict",
+            "default-pass-adaptive-track-citizen-high-risk",
+            "default-pass-adaptive-track-supermajority-high-risk",
+            "default-pass-law-registry",
+            "default-pass-law-registry-fast-review",
+            "default-pass-law-registry-slow-review",
+            "default-pass-cost",
+            "default-pass-cost-public-waiver",
+            "default-pass-cost-lobby-surcharge",
+            "default-pass-member-quota",
+            "default-pass-weighted-agenda-lottery",
+            "default-pass-public-objection",
+            "bicameral-majority",
+            "presidential-veto"
+    );
 
     private CampaignRunner() {
     }
@@ -719,6 +756,26 @@ public final class CampaignRunner {
         );
     }
 
+    public static CampaignResult runV17(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Simulation Campaign v17",
+                "simulation-campaign-v17",
+                outputDir,
+                v8Cases(legislators, bills),
+                ROADMAP_COMPLETION_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
     private static CampaignResult run(
             String name,
             String fileStem,
@@ -849,7 +906,7 @@ public final class CampaignRunner {
 
     private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,fastLaneRate,middleLaneRate,highRiskLaneRate,challengeExhaustionRate,falseNegativePassRate,publicWillReviewRate,publicSignalMovement,districtAlignment,crossBlocAdmissionRate,affectedGroupSponsorshipRate,averageCosponsors,proposalBondForfeiture,strategicDecoyRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes\n");
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
@@ -911,6 +968,21 @@ public final class CampaignRunner {
                     .append(format(report.attentionSpendPerBill())).append(',')
                     .append(format(report.objectionWindowRate())).append(',')
                     .append(format(report.repealWindowReversalRate())).append(',')
+                    .append(format(report.fastLaneRate())).append(',')
+                    .append(format(report.middleLaneRate())).append(',')
+                    .append(format(report.highRiskLaneRate())).append(',')
+                    .append(format(report.challengeExhaustionRate())).append(',')
+                    .append(format(report.falseNegativePassRate())).append(',')
+                    .append(format(report.publicWillReviewRate())).append(',')
+                    .append(format(report.publicSignalMovement())).append(',')
+                    .append(format(report.districtAlignment())).append(',')
+                    .append(format(report.crossBlocAdmissionRate())).append(',')
+                    .append(format(report.affectedGroupSponsorshipRate())).append(',')
+                    .append(format(report.averageCosponsors())).append(',')
+                    .append(format(report.proposalBondForfeiture())).append(',')
+                    .append(format(report.strategicDecoyRate())).append(',')
+                    .append(format(report.proposerAccessGini())).append(',')
+                    .append(format(report.welfarePerSubmittedBill())).append(',')
                     .append(report.vetoes()).append(',')
                     .append(report.overriddenVetoes()).append('\n');
         }
@@ -1294,6 +1366,64 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
+        if (aggregateByScenario.containsKey("default-pass-constituent-public-will")) {
+            builder.append("## Roadmap-Completion Diagnostics\n\n");
+            builder.append("These scenarios cover the remaining planned gaps: constituent-grounded public signals, refundable proposal bonds, richer cosponsorship gates, multi-round mediation, strategic alternatives, challenge allocation/path variants, adaptive route sensitivity, and proposal-cost variants.\n\n");
+            builder.append("| Scenario | Productivity delta | Welfare delta | Low-support delta | False-negative pass | Public-will review | Public signal move | District alignment | Bond forfeiture | Cross-bloc admission | Cosponsors | Route fast/mid/high | Challenge exhaustion | Strategic decoys | Proposer access Gini | Welfare/submitted |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |\n");
+            ScenarioAggregate open = aggregateByScenario.get("default-pass");
+            for (String scenarioKey : List.of(
+                    "default-pass-constituent-public-will",
+                    "default-pass-constituent-citizen-panel",
+                    "default-pass-proposal-bonds",
+                    "default-pass-proposal-bonds-challenge",
+                    "default-pass-cross-bloc-credit-discount",
+                    "default-pass-affected-sponsor-gate",
+                    "default-pass-multiround-mediation",
+                    "default-pass-multiround-mediation-challenge",
+                    "default-pass-alternatives-strategic",
+                    "default-pass-challenge-party-proportional",
+                    "default-pass-challenge-minority-bonus",
+                    "default-pass-challenge-supermajority",
+                    "default-pass-challenge-committee",
+                    "default-pass-challenge-info-active",
+                    "default-pass-adaptive-track-lenient",
+                    "default-pass-adaptive-track-strict",
+                    "default-pass-adaptive-track-citizen-high-risk",
+                    "default-pass-adaptive-track-supermajority-high-risk",
+                    "default-pass-law-registry-fast-review",
+                    "default-pass-law-registry-slow-review",
+                    "default-pass-cost-public-waiver",
+                    "default-pass-cost-lobby-surcharge",
+                    "default-pass-member-quota"
+            )) {
+                ScenarioAggregate summary = aggregateByScenario.get(scenarioKey);
+                if (summary == null) {
+                    continue;
+                }
+                builder.append("| ")
+                        .append(summary.scenarioName()).append(" | ")
+                        .append(format(summary.productivity() - open.productivity())).append(" | ")
+                        .append(format(summary.welfare() - open.welfare())).append(" | ")
+                        .append(format(summary.lowSupport() - open.lowSupport())).append(" | ")
+                        .append(format(summary.falseNegativePassRate())).append(" | ")
+                        .append(format(summary.publicWillReviewRate())).append(" | ")
+                        .append(format(summary.publicSignalMovement())).append(" | ")
+                        .append(format(summary.districtAlignment())).append(" | ")
+                        .append(format(summary.proposalBondForfeiture())).append(" | ")
+                        .append(format(summary.crossBlocAdmissionRate())).append(" | ")
+                        .append(format(summary.averageCosponsors())).append(" | ")
+                        .append(format(summary.fastLaneRate())).append("/")
+                        .append(format(summary.middleLaneRate())).append("/")
+                        .append(format(summary.highRiskLaneRate())).append(" | ")
+                        .append(format(summary.challengeExhaustionRate())).append(" | ")
+                        .append(format(summary.strategicDecoyRate())).append(" | ")
+                        .append(format(summary.proposerAccessGini())).append(" | ")
+                        .append(format(summary.welfarePerSubmittedBill())).append(" |\n");
+            }
+            builder.append('\n');
+        }
+
         if (aggregateByScenario.containsKey("default-pass-mediation")) {
             builder.append("## Mediation Deltas\n\n");
             builder.append("Delta values compare structured amendment mediation against the matching non-mediated scenario. Amendment rate is the share of potential bills whose policy position moved before final voting.\n\n");
@@ -1387,24 +1517,26 @@ public final class CampaignRunner {
             builder.append('\n');
         }
 
-        builder.append("## Default-Pass Guardrail Deltas\n\n");
-        builder.append("Delta values compare `default-pass-informed-guarded` against open `default-pass` in the same case. Negative low-support, policy-shift, and proposer-gain deltas are desirable; productivity losses are the tradeoff.\n\n");
-        builder.append("| Case | Productivity delta | Welfare delta | Low-support delta | Policy-shift delta | Proposer-gain delta |\n");
-        builder.append("| --- | ---: | ---: | ---: | ---: | ---: |\n");
-        for (String caseKey : caseKeys(result.rows())) {
-            CampaignRow open = find(result.rows(), caseKey, "default-pass");
-            CampaignRow guarded = find(result.rows(), caseKey, "default-pass-informed-guarded");
-            if (open != null && guarded != null) {
-                builder.append("| ")
-                        .append(open.caseName()).append(" | ")
-                        .append(format(guarded.report().productivity() - open.report().productivity())).append(" | ")
-                        .append(format(guarded.report().averagePublicBenefit() - open.report().averagePublicBenefit())).append(" | ")
-                        .append(format(guarded.report().controversialPassageRate() - open.report().controversialPassageRate())).append(" | ")
-                        .append(format(guarded.report().averagePolicyShift() - open.report().averagePolicyShift())).append(" | ")
-                        .append(format(guarded.report().averageProposerGain() - open.report().averageProposerGain())).append(" |\n");
+        if (aggregateByScenario.containsKey("default-pass-informed-guarded")) {
+            builder.append("## Default-Pass Guardrail Deltas\n\n");
+            builder.append("Delta values compare `default-pass-informed-guarded` against open `default-pass` in the same case. Negative low-support, policy-shift, and proposer-gain deltas are desirable; productivity losses are the tradeoff.\n\n");
+            builder.append("| Case | Productivity delta | Welfare delta | Low-support delta | Policy-shift delta | Proposer-gain delta |\n");
+            builder.append("| --- | ---: | ---: | ---: | ---: | ---: |\n");
+            for (String caseKey : caseKeys(result.rows())) {
+                CampaignRow open = find(result.rows(), caseKey, "default-pass");
+                CampaignRow guarded = find(result.rows(), caseKey, "default-pass-informed-guarded");
+                if (open != null && guarded != null) {
+                    builder.append("| ")
+                            .append(open.caseName()).append(" | ")
+                            .append(format(guarded.report().productivity() - open.report().productivity())).append(" | ")
+                            .append(format(guarded.report().averagePublicBenefit() - open.report().averagePublicBenefit())).append(" | ")
+                            .append(format(guarded.report().controversialPassageRate() - open.report().controversialPassageRate())).append(" | ")
+                            .append(format(guarded.report().averagePolicyShift() - open.report().averagePolicyShift())).append(" | ")
+                            .append(format(guarded.report().averageProposerGain() - open.report().averageProposerGain())).append(" |\n");
+                }
             }
+            builder.append('\n');
         }
-        builder.append('\n');
 
         builder.append("## Case Highlights\n\n");
         builder.append("| Case | Best welfare | Most productive | Lowest low-support passage |\n");
@@ -1436,7 +1568,10 @@ public final class CampaignRunner {
             builder.append("- Anti-capture scenarios test whether lobbying pressure can be reduced through vote firewalls, transparency, public-interest screens, audit sanctions, or combined safeguards.\n");
         }
         builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        if (aggregateByScenario.containsKey("default-pass-weighted-agenda-lottery")) {
+        if (aggregateByScenario.containsKey("default-pass-constituent-public-will")) {
+            builder.append("- Roadmap-completion scenarios add district-grounded public signals, refundable proposal bonds, richer cosponsorship diagnostics, multi-round mediation, strategic alternatives, challenge allocation/path variants, adaptive-route rates, and proposal-cost variants.\n");
+            builder.append("- The next model extension should move from mechanism coverage to endogenous strategy: proposers, lobby groups, challengers, and amendment coalitions should adapt to the institutional rules over repeated sessions.\n\n");
+        } else if (aggregateByScenario.containsKey("default-pass-weighted-agenda-lottery")) {
             builder.append("- Agenda-scarcity variants test non-committee ways to ration floor attention, including weighted/random lotteries, quadratic credits, and public objection or repeal windows.\n");
             builder.append("- The next model extension should add richer constituent and affected-group structure so public objection and citizen-panel signals are grounded in represented districts rather than generated bill fields.\n\n");
         } else if (aggregateByScenario.containsKey("default-pass-citizen-certificate")) {
@@ -1515,27 +1650,59 @@ public final class CampaignRunner {
                 .stream()
                 .max(Comparator.comparingDouble(ScenarioAggregate::welfare))
                 .orElseThrow();
-        double lowSupportReduction = openDefault.lowSupport() - informedGuarded.lowSupport();
-        double policyShiftReduction = openDefault.policyShift() - informedGuarded.policyShift();
-        double productivityChange = informedGuarded.productivity() - openDefault.productivity();
+        if (openDefault == null) {
+            ScenarioAggregate bestProductivity = aggregateByScenario.values()
+                    .stream()
+                    .max(Comparator.comparingDouble(ScenarioAggregate::productivity))
+                    .orElseThrow();
+            ScenarioAggregate bestCompromise = aggregateByScenario.values()
+                    .stream()
+                    .max(Comparator.comparingDouble(ScenarioAggregate::compromise))
+                    .orElseThrow();
+            builder.append("- This focused campaign does not include the open default-pass baseline, so relative headline deltas are reported in the diagnostic sections below.\n");
+            builder.append("- Best average welfare in this campaign came from ")
+                    .append(bestWelfare.scenarioName())
+                    .append(" at ")
+                    .append(format(bestWelfare.welfare()))
+                    .append(".\n");
+            builder.append("- Highest productivity came from ")
+                    .append(bestProductivity.scenarioName())
+                    .append(" at ")
+                    .append(format(bestProductivity.productivity()))
+                    .append(", while highest compromise came from ")
+                    .append(bestCompromise.scenarioName())
+                    .append(" at ")
+                    .append(format(bestCompromise.compromise()))
+                    .append(".\n\n");
+            return;
+        }
 
         builder.append("- Open default-pass averaged ")
                 .append(format(openDefault.productivity()))
-                .append(" productivity, versus ")
-                .append(format(simpleMajority.productivity()))
-                .append(" for simple majority.\n");
+                .append(" productivity");
+        if (simpleMajority != null) {
+            builder.append(", versus ")
+                    .append(format(simpleMajority.productivity()))
+                    .append(" for simple majority");
+        }
+        builder.append(".\n");
         builder.append("- Open default-pass also averaged ")
                 .append(format(openDefault.lowSupport()))
                 .append(" low-support passage and ")
                 .append(format(openDefault.policyShift()))
                 .append(" policy shift.\n");
-        builder.append("- Informed guarded default-pass reduced low-support passage by ")
-                .append(format(lowSupportReduction))
-                .append(" and reduced policy shift by ")
-                .append(format(policyShiftReduction))
-                .append(", while changing productivity by ")
-                .append(format(productivityChange))
-                .append(".\n");
+        if (informedGuarded != null) {
+            double lowSupportReduction = openDefault.lowSupport() - informedGuarded.lowSupport();
+            double policyShiftReduction = openDefault.policyShift() - informedGuarded.policyShift();
+            double productivityChange = informedGuarded.productivity() - openDefault.productivity();
+            builder.append("- Informed guarded default-pass reduced low-support passage by ")
+                    .append(format(lowSupportReduction))
+                    .append(" and reduced policy shift by ")
+                    .append(format(policyShiftReduction))
+                    .append(", while changing productivity by ")
+                    .append(format(productivityChange))
+                    .append(".\n");
+        }
         if (proposalCost != null) {
             builder.append("- Proposal-cost screening reduced floor load by ")
                     .append(format(openDefault.floorPerRun() - proposalCost.floorPerRun()))
@@ -1818,6 +1985,21 @@ public final class CampaignRunner {
         private double attentionSpendPerBill;
         private double objectionWindowRate;
         private double repealWindowReversalRate;
+        private double fastLaneRate;
+        private double middleLaneRate;
+        private double highRiskLaneRate;
+        private double challengeExhaustionRate;
+        private double falseNegativePassRate;
+        private double publicWillReviewRate;
+        private double publicSignalMovement;
+        private double districtAlignment;
+        private double crossBlocAdmissionRate;
+        private double affectedGroupSponsorshipRate;
+        private double averageCosponsors;
+        private double proposalBondForfeiture;
+        private double strategicDecoyRate;
+        private double proposerAccessGini;
+        private double welfarePerSubmittedBill;
         private double challengeRate;
         private double floor;
         private double accessDenied;
@@ -1872,6 +2054,21 @@ public final class CampaignRunner {
             attentionSpendPerBill += report.attentionSpendPerBill();
             objectionWindowRate += report.objectionWindowRate();
             repealWindowReversalRate += report.repealWindowReversalRate();
+            fastLaneRate += report.fastLaneRate();
+            middleLaneRate += report.middleLaneRate();
+            highRiskLaneRate += report.highRiskLaneRate();
+            challengeExhaustionRate += report.challengeExhaustionRate();
+            falseNegativePassRate += report.falseNegativePassRate();
+            publicWillReviewRate += report.publicWillReviewRate();
+            publicSignalMovement += report.publicSignalMovement();
+            districtAlignment += report.districtAlignment();
+            crossBlocAdmissionRate += report.crossBlocAdmissionRate();
+            affectedGroupSponsorshipRate += report.affectedGroupSponsorshipRate();
+            averageCosponsors += report.averageCosponsors();
+            proposalBondForfeiture += report.proposalBondForfeiture();
+            strategicDecoyRate += report.strategicDecoyRate();
+            proposerAccessGini += report.proposerAccessGini();
+            welfarePerSubmittedBill += report.welfarePerSubmittedBill();
             challengeRate += report.challengeRate();
             floor += report.floorConsiderationRate();
             accessDenied += report.accessDenialRate();
@@ -2046,6 +2243,66 @@ public final class CampaignRunner {
 
         private double repealWindowReversalRate() {
             return repealWindowReversalRate / count;
+        }
+
+        private double fastLaneRate() {
+            return fastLaneRate / count;
+        }
+
+        private double middleLaneRate() {
+            return middleLaneRate / count;
+        }
+
+        private double highRiskLaneRate() {
+            return highRiskLaneRate / count;
+        }
+
+        private double challengeExhaustionRate() {
+            return challengeExhaustionRate / count;
+        }
+
+        private double falseNegativePassRate() {
+            return falseNegativePassRate / count;
+        }
+
+        private double publicWillReviewRate() {
+            return publicWillReviewRate / count;
+        }
+
+        private double publicSignalMovement() {
+            return publicSignalMovement / count;
+        }
+
+        private double districtAlignment() {
+            return districtAlignment / count;
+        }
+
+        private double crossBlocAdmissionRate() {
+            return crossBlocAdmissionRate / count;
+        }
+
+        private double affectedGroupSponsorshipRate() {
+            return affectedGroupSponsorshipRate / count;
+        }
+
+        private double averageCosponsors() {
+            return averageCosponsors / count;
+        }
+
+        private double proposalBondForfeiture() {
+            return proposalBondForfeiture / count;
+        }
+
+        private double strategicDecoyRate() {
+            return strategicDecoyRate / count;
+        }
+
+        private double proposerAccessGini() {
+            return proposerAccessGini / count;
+        }
+
+        private double welfarePerSubmittedBill() {
+            return welfarePerSubmittedBill / count;
         }
 
         private double challengeRate() {

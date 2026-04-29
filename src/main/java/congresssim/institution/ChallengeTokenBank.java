@@ -38,6 +38,38 @@ final class ChallengeTokenBank {
         return new ChallengeTokenBank(tokens);
     }
 
+    static ChallengeTokenBank byProportionalParty(List<Legislator> legislators, int totalTokenMultiplier) {
+        if (totalTokenMultiplier < 0) {
+            throw new IllegalArgumentException("totalTokenMultiplier must not be negative.");
+        }
+        Map<String, Integer> partySizes = partySizes(legislators);
+        int partyCount = partySizes.size();
+        int totalTokens = Math.max(partyCount, totalTokenMultiplier * partyCount);
+        Map<String, Integer> tokens = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : partySizes.entrySet()) {
+            int allocation = Math.max(1, (int) Math.round(totalTokens * ((double) entry.getValue() / legislators.size())));
+            tokens.put(entry.getKey(), allocation);
+        }
+        return new ChallengeTokenBank(tokens);
+    }
+
+    static ChallengeTokenBank byMinorityBonusParty(List<Legislator> legislators, int baseTokensPerParty) {
+        if (baseTokensPerParty < 0) {
+            throw new IllegalArgumentException("baseTokensPerParty must not be negative.");
+        }
+        Map<String, Integer> partySizes = partySizes(legislators);
+        int largest = partySizes.values().stream().mapToInt(Integer::intValue).max().orElse(0);
+        Map<String, Integer> tokens = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> entry : partySizes.entrySet()) {
+            int tokensForParty = baseTokensPerParty;
+            if (entry.getValue() < largest) {
+                tokensForParty = Math.max(tokensForParty + 1, (int) Math.ceil(baseTokensPerParty * 1.55));
+            }
+            tokens.put(entry.getKey(), tokensForParty);
+        }
+        return new ChallengeTokenBank(tokens);
+    }
+
     static ChallengeTokenBank create(
             List<Legislator> legislators,
             ChallengeTokenAllocation allocation,
@@ -45,8 +77,18 @@ final class ChallengeTokenBank {
     ) {
         return switch (allocation) {
             case PARTY -> byParty(legislators, tokensPerOwner);
+            case PARTY_PROPORTIONAL -> byProportionalParty(legislators, tokensPerOwner);
+            case PARTY_MINORITY_BONUS -> byMinorityBonusParty(legislators, tokensPerOwner);
             case LEGISLATOR -> byLegislator(legislators, tokensPerOwner);
         };
+    }
+
+    private static Map<String, Integer> partySizes(List<Legislator> legislators) {
+        Map<String, Integer> partySizes = new LinkedHashMap<>();
+        for (Legislator legislator : legislators) {
+            partySizes.merge(legislator.party(), 1, Integer::sum);
+        }
+        return partySizes;
     }
 
     boolean hasToken(String owner) {

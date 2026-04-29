@@ -6,12 +6,12 @@ The first version starts with a deliberately simple legislature: one-dimensional
 
 The current model intentionally includes only the parts needed to compare institutional structures:
 
-- legislators with ideology, party loyalty, constituency sensitivity, lobby susceptibility, reputation sensitivity, and compromise preference
+- legislators with ideology, party loyalty, district/public-will signals, constituency sensitivity, lobby susceptibility, reputation sensitivity, and compromise preference
 - a current policy status quo that changes when bills are enacted
-- bills proposed near a selected legislator's ideal point, with public support, lobby pressure, and salience
+- bills proposed near a selected legislator's ideal point, with public support, public-benefit uncertainty, affected-group harm, lobby pressure, and salience
 - voting strategies that compare a bill against the current status quo before reducing pressures to a final `YAY` or `NAY`
 - pluggable institutional rules such as simple majority, supermajority passage, and default passage unless a veto bloc forms
-- proposal-access screens, proposal-cost screens, earned proposal credits, committee information review, and committee gatekeeping
+- proposal-access screens, proposal-cost screens, refundable proposal bonds, earned proposal credits, committee information review, and committee gatekeeping
 - legislative processes such as unicameral Congress, bicameral Congress, and a basic presidential veto wrapper
 - aggregate metrics over many randomized runs
 
@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v16.csv`
-- `reports/simulation-campaign-v16.md`
+- `reports/simulation-campaign-v17.csv`
+- `reports/simulation-campaign-v17.md`
 
 Earlier campaigns remain available:
 
@@ -70,6 +70,7 @@ make campaign-v13
 make campaign-v14
 make campaign-v15
 make campaign-v16
+make campaign-v17
 ```
 
 You can override the campaign defaults:
@@ -135,6 +136,29 @@ The default CLI compares:
 - `default-pass-law-registry-challenge`: challenge vouchers plus delayed active-law review
 - `default-pass-earned-credits`: default passage with stateful agenda credits earned or lost through proposal quality
 - `default-pass-earned-credits-challenge`: earned proposal credits plus challenge vouchers
+- `default-pass-constituent-public-will`: default passage after district-weighted constituent/public-will signal revision
+- `default-pass-constituent-citizen-panel`: constituent public-will revision followed by citizen-panel active routing
+- `default-pass-proposal-bonds`: default passage with refundable public-benefit proposal bonds
+- `default-pass-proposal-bonds-challenge`: proposal bonds plus challenge vouchers
+- `default-pass-cross-bloc-credit-discount`: richer cross-bloc cosponsorship with an agenda-credit-style support discount
+- `default-pass-affected-sponsor-gate`: cross-bloc cosponsorship requiring affected-group sponsor participation
+- `default-pass-multiround-mediation`: multi-round amendment mediation with round costs, concession limits, and compensation
+- `default-pass-multiround-mediation-challenge`: multi-round mediation plus challenge vouchers
+- `default-pass-alternatives-strategic`: policy tournament with strategic clones and decoys
+- `default-pass-challenge-party-proportional`: challenge vouchers allocated proportionally by party size
+- `default-pass-challenge-minority-bonus`: challenge vouchers with a minority-party allocation bonus
+- `default-pass-challenge-supermajority`: challenged bills route to a 60 percent affirmative vote
+- `default-pass-challenge-committee`: challenged bills route to committee review
+- `default-pass-challenge-info-active`: challenged bills receive committee information before active voting
+- `default-pass-adaptive-track-lenient`: adaptive routing with wider fast-lane eligibility
+- `default-pass-adaptive-track-strict`: adaptive routing with stricter high-risk review
+- `default-pass-adaptive-track-citizen-high-risk`: adaptive routing with citizen-panel review for high-risk bills
+- `default-pass-adaptive-track-supermajority-high-risk`: adaptive routing with supermajority review for high-risk bills
+- `default-pass-law-registry-fast-review`: active-law registry with faster review
+- `default-pass-law-registry-slow-review`: active-law registry with slower partial rollback
+- `default-pass-cost-public-waiver`: proposal costs discounted by public value
+- `default-pass-cost-lobby-surcharge`: proposal costs increased by positive lobby pressure
+- `default-pass-member-quota`: stateful per-member proposal quota
 - challenge-sweep keys such as `default-pass-challenge-party-t3-s082`, `default-pass-challenge-member-t1-s082`, and `default-pass-escalation-q12-s082`
 - `default-pass-access`: default passage unless 2/3 vote to block, with a proposal-access screen
 - `default-pass-cost`: default passage unless 2/3 vote to block, with a proposal-cost screen
@@ -169,7 +193,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0` through `v16`
+- `--campaign`: run a named campaign, currently `v0` through `v17`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -237,6 +261,15 @@ The first metric set is deliberately simple, but it separates throughput from le
 - `attentionSpendPerBill`: quadratic attention credits spent per potential bill
 - `objectionWindowRate`: share of potential bills triggering a public objection or repeal window
 - `repealWindowReversalRate`: share of triggered repeal windows that reverse enactment
+- `fastLaneRate`, `middleLaneRate`, `highRiskLaneRate`: adaptive-route shares
+- `challengeExhaustionRate`: share of potential bills where a challenge would have cleared threshold but no token was available
+- `falseNegativePassRate`: risky, low-support, or high-harm default enactments that passed unchallenged
+- `publicWillReviewRate`, `publicSignalMovement`, `districtAlignment`: constituent/public-will review diagnostics
+- `crossBlocAdmissionRate`, `affectedGroupSponsorshipRate`, `averageCosponsors`: richer cosponsorship diagnostics
+- `proposalBondForfeiture`: average proposal-bond loss per potential bill
+- `strategicDecoyRate`: strategic clone/decoy alternatives introduced per tournament
+- `proposerAccessGini`: concentration of floor access across proposers
+- `welfarePerSubmittedBill`: public-benefit yield per potential proposal
 
 These are not claims about real-world validity. They are hooks for comparing rule sets under shared assumptions.
 
@@ -360,9 +393,19 @@ The v15 campaign adds citizen mini-public review:
 - New scenarios test certificate-gated default passage, active-vote routing for uncertified bills, threshold adjustment, and softer agenda-priority review.
 - Campaign reports now include citizen review rate, certification rate, and panel legitimacy.
 
-The current v16 campaign adds agenda-scarcity variants:
+The v16 campaign adds agenda-scarcity variants:
 
 - `AgendaLotteryProcess` admits a bounded share of bills by weighted or random draw.
 - `QuadraticAttentionBudgetProcess` makes proposal access consume scarce credits with increasing marginal cost.
 - `PublicObjectionWindowProcess` routes contested bills to active voting or rolls back contested default enactments.
 - Campaign reports now include attention spend, objection-window rate, and repeal-window reversal rate.
+
+The current v17 campaign completes the planned roadmap layer:
+
+- `ConstituentPublicWillProcess` grounds public signals in generated district preferences, intensity, and affected-group sensitivity.
+- `ProposalBondProcess` adds refundable public-benefit proposer bonds and records forfeiture.
+- `CoalitionCosponsorshipProcess` records cosponsor counts, outside-bloc admissions, affected-group sponsors, and coalition support discounts.
+- `MultiRoundAmendmentProcess` adds multi-round mediation with round costs, concession limits, poison-pill risk, and compensation.
+- Challenge vouchers now include proportional and minority-bonus party allocation plus supermajority, committee, and information-active challenged paths.
+- Adaptive tracks now report fast/middle/high route rates and include lenient, strict, citizen high-risk, and supermajority high-risk variants.
+- Proposal-cost variants include public-value waivers, lobby-pressure surcharges, and stateful member quotas.

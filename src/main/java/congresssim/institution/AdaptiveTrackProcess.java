@@ -42,12 +42,12 @@ public final class AdaptiveTrackProcess implements LegislativeProcess {
     public BillOutcome consider(Bill bill, VoteContext context) {
         double risk = riskScore(bill, context);
         if (risk <= fastLaneMaximumRisk) {
-            return fastLaneProcess.consider(bill, context);
+            return fastLaneProcess.consider(bill, context).withSignals(OutcomeSignals.route("fast"));
         }
         if (risk >= highRiskMinimumRisk) {
-            return highRiskProcess.consider(bill, context);
+            return highRiskProcess.consider(bill, context).withSignals(OutcomeSignals.route("high"));
         }
-        return middleLaneProcess.consider(bill, context);
+        return middleLaneProcess.consider(bill, context).withSignals(OutcomeSignals.route("middle"));
     }
 
     static double riskScore(Bill bill, VoteContext context) {
@@ -55,7 +55,10 @@ public final class AdaptiveTrackProcess implements LegislativeProcess {
         double shiftRisk = Math.abs(bill.ideologyPosition() - context.currentPolicyPosition()) / 2.0;
         double lobbyRisk = Math.max(0.0, bill.lobbyPressure());
         double salienceRisk = bill.salience();
-        double signalUncertainty = Math.abs(bill.publicSupport() - bill.publicBenefit());
+        double signalUncertainty = Math.max(
+                bill.publicBenefitUncertainty(),
+                Math.abs(bill.publicSupport() - bill.publicBenefit()) * 0.65
+        );
         double lowWelfareRisk = 1.0 - bill.publicBenefit();
 
         return (0.26 * lowSupportRisk)

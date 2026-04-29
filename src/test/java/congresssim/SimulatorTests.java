@@ -18,16 +18,20 @@ import congresssim.institution.ChallengeTokenAllocation;
 import congresssim.institution.ChallengeVoucherProcess;
 import congresssim.institution.CitizenPanelMode;
 import congresssim.institution.CitizenPanelReviewProcess;
+import congresssim.institution.CoalitionCosponsorshipProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.CompetingAlternativesProcess;
+import congresssim.institution.ConstituentPublicWillProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.DistributionalHarmProcess;
 import congresssim.institution.LawRegistryProcess;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
 import congresssim.institution.LobbyTransparencyProcess;
+import congresssim.institution.MultiRoundAmendmentProcess;
 import congresssim.institution.ProposalAccessRules;
+import congresssim.institution.ProposalBondProcess;
 import congresssim.institution.ProposalCreditProcess;
 import congresssim.institution.PublicObjectionWindowProcess;
 import congresssim.institution.QuadraticAttentionBudgetProcess;
@@ -74,6 +78,12 @@ public final class SimulatorTests {
         agendaLotteryRationsFloorSlots();
         quadraticAttentionBudgetDeniesExpensiveProposals();
         publicObjectionWindowRoutesContestedBills();
+        constituentPublicWillRevisesSignals();
+        proposalBondForfeitsLowQualityBills();
+        coalitionCosponsorshipRecordsSponsors();
+        multiRoundMediationReducesHarm();
+        strategicAlternativesRecordDecoys();
+        challengeVouchersReportTokenExhaustion();
         publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
         lobbyAuditCanReverseCapturedEnactments();
         challengeVouchersRouteHighRiskBillsToActiveVote();
@@ -623,6 +633,233 @@ public final class SimulatorTests {
         assertTrue(outcome.signals().objectionWindows() == 1, "Triggered objection windows should be recorded.");
     }
 
+    private static void constituentPublicWillRevisesSignals() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Left", -0.45, 0.8, 0.4, 0.9, 0.1, 0.8, -0.35, 0.9, 0.8),
+                new Legislator("L-2", "Center", 0.0, 0.9, 0.3, 0.9, 0.1, 0.9, -0.05, 0.8, 0.7),
+                new Legislator("L-3", "Right", 0.45, 0.7, 0.5, 0.8, 0.1, 0.8, 0.10, 0.7, 0.6)
+        );
+        Bill bill = new Bill(
+                "B-public-will",
+                "Public Will Bill",
+                "L-1",
+                -0.45,
+                -0.20,
+                0.20,
+                0.75,
+                0.0,
+                0.30,
+                0.10,
+                false,
+                "health",
+                0.0,
+                0.0,
+                "patients",
+                0.20,
+                0.25,
+                0.10
+        ).withPublicBenefitUncertainty(0.60);
+        VoteContext context = new VoteContext(Map.of("Left", -0.45, "Center", 0.0, "Right", 0.45), new Random(9L), 0.0);
+
+        BillOutcome outcome = new ConstituentPublicWillProcess(
+                "public will test",
+                labeledProcess("public will revised"),
+                legislators,
+                1.0,
+                0.25
+        ).consider(bill, context);
+
+        assertTrue(outcome.signals().publicWillReviews() == 1, "Public-will review should be recorded.");
+        assertTrue(outcome.signals().publicSignalMovement() > 0.0, "Public-will review should move at least one signal.");
+        assertTrue(outcome.signals().districtAlignment() > bill.publicSupport(), "District estimate should raise support for a district-aligned bill.");
+        assertTrue(outcome.bill().publicSupport() > bill.publicSupport(), "Bill support should be revised toward district public will.");
+        assertTrue(outcome.bill().publicBenefitUncertainty() < bill.publicBenefitUncertainty(), "Public-will review should reduce uncertainty when update strength is high.");
+    }
+
+    private static void proposalBondForfeitsLowQualityBills() {
+        LegislativeProcess enactEverything = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "enact everything";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "enacted"
+                );
+            }
+        };
+        ProposalBondProcess process = new ProposalBondProcess(
+                "bond test",
+                enactEverything,
+                2.0,
+                0.0,
+                2.0,
+                0.25,
+                0.65,
+                0.40,
+                0.10
+        );
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(10L), 0.0);
+        Bill lowQualityBill = new Bill("B-bond", "Low Quality Bond Bill", "L-1", 0.0, 0.85, 0.12, 0.18, 0.80, 0.90);
+
+        BillOutcome outcome = process.consider(lowQualityBill, context);
+
+        assertTrue(outcome.enacted(), "A proposer with a sufficient bond balance should reach final enactment.");
+        assertTrue(outcome.signals().proposalBondReviews() == 1, "Proposal-bond review should be recorded.");
+        assertTrue(outcome.signals().proposalBondForfeiture() > 0.0, "Low-quality enacted bills should forfeit part of the bond.");
+    }
+
+    private static void coalitionCosponsorshipRecordsSponsors() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Left", -0.45, 0.8, 0.4, 0.9, 0.1, 0.8, -0.40, 0.8, 0.4),
+                new Legislator("L-2", "Center", -0.02, 0.9, 0.3, 0.9, 0.1, 0.9, -0.05, 0.8, 0.8),
+                new Legislator("L-3", "Right", 0.40, 0.9, 0.4, 0.9, 0.1, 0.9, 0.10, 0.8, 0.7),
+                new Legislator("L-4", "Right", 0.55, 0.8, 0.5, 0.8, 0.1, 0.8, 0.15, 0.7, 0.6)
+        );
+        Bill bill = new Bill(
+                "B-coalition",
+                "Coalition Bill",
+                "L-1",
+                -0.45,
+                0.02,
+                0.72,
+                0.78,
+                0.0,
+                0.40,
+                0.10,
+                false,
+                "housing",
+                0.0,
+                0.0,
+                "renters",
+                0.62,
+                0.18,
+                0.10
+        );
+        VoteContext context = new VoteContext(Map.of("Left", -0.45, "Center", 0.0, "Right", 0.45), new Random(11L), 0.0);
+
+        BillOutcome outcome = new CoalitionCosponsorshipProcess(
+                "coalition test",
+                labeledProcess("coalition admitted"),
+                legislators,
+                2,
+                2,
+                0.20,
+                0.45,
+                true,
+                true
+        ).consider(bill, context);
+
+        assertTrue(outcome.agendaDisposition() == AgendaDisposition.FLOOR_CONSIDERED, "A broad coalition should reach the floor.");
+        assertTrue(outcome.signals().cosponsorshipReviews() == 1, "Cosponsorship review should be recorded.");
+        assertTrue(outcome.signals().crossBlocAdmissions() == 1, "Admitted cross-bloc bills should be counted.");
+        assertTrue(outcome.signals().affectedGroupSponsors() == 1, "Affected-group sponsor participation should be counted.");
+        assertTrue(outcome.bill().cosponsorCount() >= 2, "The revised bill should store cosponsor count.");
+        assertTrue(outcome.bill().publicSupport() > bill.publicSupport(), "Credit discount should boost support signal for broad sponsorship.");
+    }
+
+    private static void multiRoundMediationReducesHarm() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Left", -0.50, 0.9, 0.3, 0.9, 0.1, 0.9, -0.45, 0.9, 0.8),
+                new Legislator("L-2", "Center", 0.0, 0.9, 0.3, 0.9, 0.1, 0.9, 0.0, 0.8, 0.9),
+                new Legislator("L-3", "Right", 0.55, 0.7, 0.4, 0.8, 0.1, 0.8, 0.20, 0.7, 0.7)
+        );
+        Bill harmfulBill = new Bill(
+                "B-multiround",
+                "Multi-Round Bill",
+                "L-3",
+                0.55,
+                0.85,
+                0.22,
+                0.64,
+                0.10,
+                0.85,
+                0.20,
+                false,
+                "labor",
+                0.0,
+                0.0,
+                "workers",
+                0.18,
+                0.85,
+                0.32
+        ).withPublicBenefitUncertainty(0.65);
+        VoteContext context = new VoteContext(Map.of("Left", -0.50, "Center", 0.0, "Right", 0.55), new Random(12L), 0.0);
+
+        BillOutcome outcome = new MultiRoundAmendmentProcess(
+                "multi-round test",
+                labeledProcess("multi-round revised"),
+                legislators,
+                4,
+                0.01,
+                1.20,
+                0.0
+        ).consider(harmfulBill, context);
+
+        assertTrue(outcome.bill().amendmentMovement() > 0.0, "Multi-round mediation should record amendment movement.");
+        assertTrue(outcome.bill().concentratedHarm() < harmfulBill.concentratedHarm(), "Mediation should reduce concentrated harm.");
+        assertTrue(outcome.bill().compensationAdded(), "High-harm mediation should add compensation.");
+        assertTrue(Math.abs(outcome.bill().ideologyPosition()) < Math.abs(harmfulBill.ideologyPosition()), "Mediation should move content toward compromise.");
+    }
+
+    private static void strategicAlternativesRecordDecoys() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Left", -0.50, 0.8, 0.4, 0.8, 0.1, 0.8),
+                new Legislator("L-2", "Center", 0.0, 0.9, 0.3, 0.9, 0.1, 0.9),
+                new Legislator("L-3", "Right", 0.50, 0.8, 0.4, 0.8, 0.1, 0.8)
+        );
+        Bill bill = new Bill("B-strategy", "Strategic Alternative Bill", "L-3", 0.50, 0.75, 0.42, 0.62, 0.0, 0.70);
+        VoteContext context = new VoteContext(Map.of("Left", -0.50, "Center", 0.0, "Right", 0.50), new Random(13L), 0.0);
+
+        BillOutcome outcome = new CompetingAlternativesProcess(
+                "strategic alternatives test",
+                labeledProcess("strategic selected"),
+                legislators,
+                AlternativeSelectionRule.PAIRWISE_MAJORITY,
+                4,
+                true,
+                2,
+                2
+        ).consider(bill, context);
+
+        assertTrue(outcome.signals().alternativeRounds() == 1, "Alternative tournament should still record the main round.");
+        assertTrue(outcome.signals().strategicAlternativeRounds() == 1, "Strategic-alternative diagnostics should be recorded.");
+        assertTrue(outcome.signals().strategicDecoys() == 4, "Clone and decoy proposals should be counted.");
+    }
+
+    private static void challengeVouchersReportTokenExhaustion() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Opposition", -0.9, 0.7, 0.6, 0.8, 0.2, 0.8),
+                new Legislator("L-2", "Opposition", -0.7, 0.7, 0.6, 0.8, 0.2, 0.8),
+                new Legislator("L-3", "Sponsor", 0.8, 0.4, 0.6, 0.5, 0.2, 0.5)
+        );
+        Bill badBill = new Bill("B-no-token", "Unchallenged Bad Bill", "L-3", 0.8, 0.95, 0.05, 0.10, 0.8, 0.95);
+        VoteContext context = new VoteContext(Map.of("Opposition", -0.8, "Sponsor", 0.8), new Random(14L), 0.0);
+
+        BillOutcome outcome = new ChallengeVoucherProcess(
+                "exhausted challenge test",
+                legislators,
+                (legislator, testedBill, voteContext) -> Vote.NAY,
+                ChallengeTokenAllocation.PARTY,
+                0,
+                0.10,
+                labeledProcess("unused challenged path")
+        ).consider(badBill, context);
+
+        assertFalse(outcome.challenged(), "No challenge should occur when all token banks are empty.");
+        assertTrue(outcome.enacted(), "Tokenless default-pass bills should enact by default.");
+        assertTrue(outcome.signals().challengeTokenExhaustions() == 1, "Token exhaustion should be diagnosed.");
+        assertTrue(outcome.signals().falseNegativePasses() == 1, "Bad unchallenged enactment should be counted as a false negative.");
+    }
+
     private static void publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms() {
         VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
         Bill capturedBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.10, 0.30, 0.18, 0.95, 0.80, 0.95, false);
@@ -936,6 +1173,26 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-public-objection"),
                 "Scenario catalog should expose public-objection scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-constituent-public-will"),
+                "Scenario catalog should expose constituent-public-will scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-proposal-bonds"),
+                "Scenario catalog should expose proposal-bond scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-multiround-mediation"),
+                "Scenario catalog should expose multi-round mediation scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-alternatives-strategic"),
+                "Scenario catalog should expose strategic-alternative scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-challenge-minority-bonus"),
+                "Scenario catalog should expose challenge allocation variant keys."
         );
     }
 

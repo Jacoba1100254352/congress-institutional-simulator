@@ -23,7 +23,7 @@
 \begin{abstract}
 Modern legislatures should be productive enough to act while remaining representative enough to convert competing public interests into legitimate compromise. This paper presents a computational framework for searching a broad legislative design space rather than defending one constitutional reform. The simulator compares Congress-style institutions under shared generated worlds, including majority rule, supermajority rule, default enactment unless blocked, challenge vouchers, cross-bloc cosponsorship, adaptive tracks, proposal credits, affected-group harm guardrails, active-law review, competing policy alternatives, lobbying safeguards, citizen mini-public review, and agenda-scarcity mechanisms.
 
-The framework separates productivity from compromise, public responsiveness, agenda control, and legitimacy-related risk. Across 18 assumption cases and 19 current-campaign scenarios, open default enactment produces high throughput but also high low-support passage, large policy shifts, and greater proposer gain. Guardrails, coalition-breadth gates, citizen certificates, agenda lotteries, public objection windows, and policy tournaments reduce different risks at different productivity costs. The contribution is a reproducible mechanism-search framework for identifying institutional designs that can improve compromise and productivity while remaining responsive to public support, generated public benefit, and concentrated harm.
+The framework separates productivity from compromise, public responsiveness, agenda control, and legitimacy-related risk. Across 18 assumption cases and 35 current-campaign scenarios, open default enactment produces high throughput but also high low-support passage, large policy shifts, and greater proposer gain. Guardrails, coalition-breadth gates, citizen panels, proposal bonds, adaptive tracks, public objection windows, mediation, and policy tournaments reduce different risks at different productivity costs. The contribution is a reproducible mechanism-search framework for identifying institutional designs that can improve compromise and productivity while remaining responsive to public support, generated public benefit, and concentrated harm.
 \end{abstract}
 
 \begin{CCSXML}
@@ -88,7 +88,7 @@ Bills have a proposer, a policy position in \([-1,1]\), public support, public-b
 
 \subsection{Institutional Stages}
 
-The implementation separates voting rules from legislative processes. A voting rule determines how a chamber interprets yes and no votes. A legislative process determines what stages a bill must pass through. Current processes include majority rule, 60 percent supermajority passage, default passage unless two-thirds block, bicameralism, presidential veto with override, proposal-access screens, cross-bloc cosponsorship, committee review, challenge vouchers, adaptive routing, sunset and active-law review, earned proposal credits, budgeted lobbying, distributional-harm review, structured mediation, competing alternatives, citizen-panel review, agenda lotteries, quadratic attention budgets, and public objection windows.
+The implementation separates voting rules from legislative processes. A voting rule determines how a chamber interprets yes and no votes. A legislative process determines what stages a bill must pass through. Current processes include majority rule, 60 percent supermajority passage, default passage unless two-thirds block, bicameralism, presidential veto with override, proposal-access screens, cross-bloc cosponsorship, committee review, challenge vouchers, adaptive routing, sunset and active-law review, earned proposal credits, refundable proposal bonds, budgeted lobbying, distributional-harm review, structured mediation, multi-round mediation, competing alternatives, citizen-panel review, constituent public-will review, agenda lotteries, quadratic attention budgets, and public objection windows.
 
 This modular design matters because no legislative rule is meaningful in isolation. The same final threshold can behave differently when proposals are open to all legislators, filtered by a committee, priced by agenda costs, routed by risk, exposed to scarce challenge rights, or revised through amendment. The framework is intended to make those combinations easy to test.
 
@@ -120,7 +120,7 @@ The active-law registry extends this idea over later bills in the run. Risky ena
 
 Earned proposal credits replace a static proposal-cost screen with stateful agenda rights. Each proposer starts with a small credit balance and receives a modest session drip. Proposals spend credits according to generated risk, positive lobby pressure, salience, and public value. After the downstream process considers the bill, the proposer earns or loses credits based on public benefit, public support, risk, lobby pressure, and whether the bill passed with weak support.
 
-This mechanism tests whether agenda access can learn from proposer track records. It differs from a fixed proposal cost because bad proposals reduce future access for that proposer, while high-quality proposals replenish agenda capacity. It is still intentionally simple: credits are attached to individual proposers, not parties or coalitions, and the current metric suite does not yet report proposer concentration directly.
+This mechanism tests whether agenda access can learn from proposer track records. It differs from a fixed proposal cost because bad proposals reduce future access for that proposer, while high-quality proposals replenish agenda capacity. It is still intentionally simple: credits are attached to individual proposers, not parties or coalitions, but the current metric suite now reports proposer-access concentration.
 
 \subsection{Budgeted Lobbying}
 
@@ -163,13 +163,14 @@ The simulator reports a metric suite rather than a single score:
   \item Alternative metrics: selected-alternative distance from the chamber median, proposer agenda advantage, alternative diversity, and status-quo win rate.
   \item Citizen-review metrics: panel-review rate, certification rate, and panel legitimacy estimate.
   \item Agenda-scarcity metrics: attention spend per potential bill, objection-window rate, and repeal-window reversal rate.
+  \item Roadmap diagnostics: fast/middle/high route rates, challenge exhaustion, false-negative default passage, public-will review rate, public-signal movement, district alignment, cosponsorship counts, proposal-bond forfeiture, strategic decoy rate, proposer-access Gini, and welfare per submitted bill.
 \end{itemize}
 
 The most important distinction is between productivity and compromise. A high-throughput institution may still enact bills with little active support. Conversely, a low-throughput institution may show high welfare among enacted bills but fail to adapt. The current compromise proxy is only a first step: the long-term target is to model representative compromise more directly by measuring public support, public benefit, coalition breadth, movement away from proposer advantage, and protection against concentrated minority harm.
 
 \section{Experimental Design}
 
-The current campaign, \texttt{simulation-campaign-v16}, runs 150 simulations per case, with 101 legislators, 60 base bills per run, base seed 20260428, 18 assumption cases, and 19 institutional scenarios per case. The assumption cases vary polarization, party loyalty, compromise culture, lobbying pressure, constituency pressure, party count, proposal pressure, flooding conditions, capture pressure, and public appetite for anti-lobbying reform.
+The current campaign, \texttt{simulation-campaign-v17}, runs 80 simulations per case, with 101 legislators, 60 base bills per run, base seed 20260428, 18 assumption cases, and 35 institutional scenarios per case. The assumption cases vary polarization, party loyalty, compromise culture, lobbying pressure, constituency pressure, party count, proposal pressure, flooding conditions, capture pressure, and public appetite for anti-lobbying reform. The lower run count keeps the expanded v17 campaign practical while still comparing all scenarios across the same assumption cases.
 
 The institutional scenarios are:
 
@@ -181,6 +182,11 @@ The institutional scenarios are:
   \item default pass plus cross-bloc cosponsorship gates;
   \item adaptive procedural tracks that route bills by generated risk;
   \item sunset trial legislation with automatic review for risky enactments;
+  \item constituent/public-will signal revision;
+  \item refundable proposal bonds and proposal-cost variants;
+  \item proportional and minority-bonus challenge-token allocation;
+  \item multi-round mediation with compensation and poison-pill risk;
+  \item strategic clones and decoys in policy tournaments;
   \item earned proposal credits;
   \item explicit budgeted lobbying, transparency, and anti-capture bundles;
   \item lobbying-channel variants with democracy vouchers, public advocates, blind origin review, and defensive-spend caps;
@@ -193,7 +199,7 @@ The institutional scenarios are:
   \item default pass plus informed guarded committee;
 \end{itemize}
 
-The proposal-cost result reported below comes from \texttt{simulation-campaign-v2}, which included proposal costs, bicameralism, and presidential veto scenarios. Challenge-token sweeps over party budgets, member tokens, and q-member escalation come from earlier campaigns. Lobbying-channel variants come from v14 and are carried forward through the current comparison.
+The proposal-cost result reported below comes from the v17 lobby-surcharge cost variant, while earlier campaigns include the original scalar cost, bicameralism, and presidential veto comparisons. Challenge-token sweeps over party budgets, member tokens, and q-member escalation come from earlier campaigns. Lobbying-channel variants come from v14 and are carried forward through the current comparison.
 
 The campaign is deterministic and reproducible from the repository with \texttt{make campaign}. The paper is generated with \texttt{make paper}.
 
@@ -204,40 +210,43 @@ The simulator source code, LaTeX manuscript source, generated campaign reports, 
 
 \section{Results}
 
-Table~\ref{tab:scenario-averages} summarizes selected scenario averages across all v16 assumption cases. The table mixes one absolute load measure with normalized metrics: \emph{Enacted/run} is a count of enacted bills per simulated run, while the other columns are rates or scores on a 0--1 scale. Figures~\ref{fig:productivity-low-support} and~\ref{fig:default-pass-deltas} visualize the same tradeoff space.
+Table~\ref{tab:scenario-averages} summarizes selected scenario averages across all v17 assumption cases. The table mixes one absolute load measure with normalized metrics: \emph{Enacted/run} is a count of enacted bills per simulated run, while the other columns are rates or scores on a 0--1 scale. Figures~\ref{fig:productivity-low-support} and~\ref{fig:default-pass-deltas} visualize the same tradeoff space.
 
 \begin{table*}
-  \caption{Selected scenario averages across 18 assumption cases in \texttt{simulation-campaign-v16}.}
+  \caption{Selected scenario averages across 18 assumption cases in \texttt{simulation-campaign-v17}.}
   \label{tab:scenario-averages}
   \Description{A table comparing productivity, enacted bills, welfare, low-support passage, policy shift, proposer gain, and challenge rate across institutional scenarios.}
   \small
+  \resizebox{\textwidth}{!}{%
   \begin{tabular}{lrrrrrrr}
     \toprule
     Scenario & Prod. & Enacted/run & Welfare & Low-sup. & Shift & Prop. gain & Challenge \\
     \midrule
-    Default pass unless 2/3 block & 0.842 & 86.886 & 0.497 & 0.450 & 0.665 & 0.656 & 0.000 \\
-    Default pass + citizen certificate & 0.449 & 45.838 & 0.617 & 0.251 & 0.257 & 0.475 & 0.000 \\
-    Default pass + weighted agenda lottery & 0.407 & 41.815 & 0.548 & 0.421 & 0.296 & 0.602 & 0.000 \\
-    Default pass + quadratic attention budget & 0.443 & 41.819 & 0.575 & 0.402 & 0.197 & 0.344 & 0.000 \\
-    Default pass + public objection window & 0.447 & 45.360 & 0.593 & 0.269 & 0.211 & 0.378 & 0.000 \\
-    Default pass + public repeal window & 0.535 & 54.382 & 0.572 & 0.370 & 0.279 & 0.420 & 0.000 \\
-    Default pass + pairwise policy tournament & 0.549 & 56.338 & 0.641 & 0.042 & 0.004 & 0.004 & 0.000 \\
-    Default pass + challenge vouchers & 0.671 & 77.999 & 0.510 & 0.392 & 0.456 & 0.541 & 0.397 \\
-    Default pass + adaptive tracks & 0.443 & 44.843 & 0.605 & 0.265 & 0.216 & 0.393 & 0.000 \\
-    Default pass + law registry & 0.869 & 89.729 & 0.492 & 0.396 & 0.834 & 0.599 & 0.000 \\
-    Default pass + cross-bloc cosponsors & 0.253 & 24.680 & 0.687 & 0.239 & 0.080 & 0.235 & 0.000 \\
-    Default pass + informed guarded committee & 0.221 & 21.997 & 0.651 & 0.214 & 0.073 & 0.249 & 0.000 \\
-    Unicameral simple majority & 0.265 & 26.289 & 0.637 & 0.000 & 0.102 & 0.305 & 0.000 \\
-    Unicameral 60 percent passage & 0.091 & 8.634 & 0.707 & 0.000 & 0.020 & 0.147 & 0.000 \\
+    Default pass unless 2/3 block & 0.843 & 86.980 & 0.497 & 0.448 & 0.664 & 0.656 & 0.000 \\
+    Default pass + constituent public will + citizen panel & 0.407 & 41.313 & 0.629 & 0.249 & 0.213 & 0.435 & 0.000 \\
+    Default pass + proposal bonds & 0.832 & 85.022 & 0.499 & 0.448 & 0.653 & 0.653 & 0.000 \\
+    Default pass + affected-group sponsor gate & 0.192 & 18.649 & 0.725 & 0.154 & 0.062 & 0.241 & 0.000 \\
+    Default pass + multi-round mediation & 0.958 & 98.574 & 0.450 & 0.394 & 0.392 & 0.368 & 0.000 \\
+    Default pass + multi-round mediation + challenge & 0.785 & 86.314 & 0.460 & 0.300 & 0.296 & 0.340 & 0.376 \\
+    Default pass + pairwise policy tournament & 0.551 & 56.412 & 0.641 & 0.042 & 0.004 & 0.004 & 0.000 \\
+    Default pass + challenge vouchers & 0.671 & 77.943 & 0.510 & 0.395 & 0.456 & 0.540 & 0.397 \\
+    Default pass + minority-bonus challenge vouchers & 0.635 & 75.043 & 0.520 & 0.372 & 0.420 & 0.524 & 0.442 \\
+    Default pass + strict adaptive tracks & 0.284 & 28.239 & 0.648 & 0.076 & 0.112 & 0.313 & 0.000 \\
+    Default pass + public objection window & 0.449 & 45.428 & 0.592 & 0.265 & 0.215 & 0.383 & 0.000 \\
+    Default pass + law registry & 0.868 & 89.730 & 0.492 & 0.398 & 0.836 & 0.598 & 0.000 \\
+    Default pass + lobby-surcharge proposal costs & 0.506 & 51.780 & 0.531 & 0.460 & 0.531 & 0.924 & 0.000 \\
+    Unicameral simple majority & 0.268 & 26.268 & 0.636 & 0.000 & 0.104 & 0.310 & 0.000 \\
+    Unicameral 60 percent passage & 0.090 & 8.543 & 0.707 & 0.000 & 0.020 & 0.147 & 0.000 \\
     \bottomrule
-  \end{tabular}
+  \end{tabular}%
+  }
   \par\smallskip\footnotesize \emph{Note:} \emph{Enacted/run} is an absolute count. All other reported columns are normalized rates or scores.
 \end{table*}
 
 \begin{figure*}
   \centering
   \input{figures/productivity_low_support}
-  \caption{Productivity versus low-support passage for selected v16 scenarios. The figure makes the main scale distinction visible: productivity and low-support passage are normalized rates, while Table~\ref{tab:scenario-averages} also reports enacted bills per run as an absolute load measure.}
+  \caption{Productivity versus low-support passage for selected v17 scenarios. The figure makes the main scale distinction visible: productivity and low-support passage are normalized rates, while Table~\ref{tab:scenario-averages} also reports enacted bills per run as an absolute load measure.}
   \label{fig:productivity-low-support}
   \Description{A scatter plot with productivity on the x-axis and low-support passage on the y-axis. Open default-pass is high on both axes; simple majority and supermajority are low on low-support passage; cross-bloc, adaptive, guarded, policy-tournament, and law-registry scenarios reduce low-support passage at different productivity levels.}
 \end{figure*}
@@ -252,23 +261,21 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
 
 \subsection{Open Default Enactment}
 
-Open default enactment is consistently the broad throughput leader among baseline institutions. Across v16, it averages 0.842 productivity and 86.886 enacted bills per run. By comparison, unicameral simple majority averages 0.265 productivity and 26.289 enacted bills per run, while the 60 percent supermajority rule averages 0.091 productivity and 8.634 enacted bills per run.
+Open default enactment is consistently the broad throughput leader among baseline institutions. Across v17, it averages 0.843 productivity and 86.980 enacted bills per run. By comparison, unicameral simple majority averages 0.268 productivity and 26.268 enacted bills per run, while the 60 percent supermajority rule averages 0.090 productivity and 8.543 enacted bills per run.
 
-The throughput gain comes with risk signals. Open default enactment averages 0.450 low-support passage, 0.665 policy shift, and 0.656 proposer gain. In this model, the rule is not merely reducing gridlock; it is also allowing many proposals to take effect without majority support and moving policy substantially toward proposers.
+The throughput gain comes with risk signals. Open default enactment averages 0.448 low-support passage, 0.664 policy shift, and 0.656 proposer gain. In this model, the rule is not merely reducing gridlock; it is also allowing many proposals to take effect without majority support and moving policy substantially toward proposers.
 
 \subsection{Guardrails}
 
-Informed guardrails sharply reduce these risks. Default pass with access screening, committee information, and committee gatekeeping averages 0.221 productivity, 21.997 enacted bills per run, 0.651 welfare, 0.214 low-support passage, 0.073 policy shift, and 0.249 proposer gain. Relative to open default enactment, that is a 0.236 reduction in low-support passage and a 0.592 reduction in policy shift, but also a 0.621 productivity loss.
-
-This result illustrates the central tradeoff. Informational and gatekeeping institutions can make default enactment much safer, but if they are too strong they erase most of the productivity gain that made default enactment attractive.
+Earlier informed-guardrail campaigns show the central tradeoff: access screening, committee information, and committee gatekeeping can sharply reduce low-support passage and policy shift, but strong front-end review can erase most of the productivity gain that made default enactment attractive.
 
 \subsection{Proposal Costs}
 
-Proposal-cost screening reduces institutional load but does not automatically improve legitimacy. Across v2, default pass plus proposal costs averages 47.784 enacted bills and 50.195 floor bills per run, versus 81.818 and 97.500 under open default enactment. It reduces policy shift from 0.688 to 0.607, but low-support passage rises from 0.455 to 0.491 and proposer gain rises from 0.686 to 1.124. If a cost can be cleared by proposer private gain or favorable lobby pressure, it may screen out low-value proposals while preserving agenda-setter advantage.
+Proposal-cost screening reduces institutional load but does not automatically improve legitimacy. In v17, default pass plus lobby-surcharge proposal costs averages 51.780 enacted bills per run and 0.506 productivity, versus 86.980 and 0.843 under open default enactment. It raises welfare from 0.497 to 0.531 and lowers policy shift from 0.664 to 0.531, but low-support passage remains high at 0.460 and proposer gain rises to 0.924. If a cost can be cleared by proposer private gain or favorable lobby pressure, it may screen out low-value proposals while preserving agenda-setter advantage.
 
 \subsection{Challenge Vouchers}
 
-Challenge vouchers are a promising middle path. Default pass plus challenge vouchers averages 0.671 productivity, 77.999 enacted bills per run, 0.510 welfare, 0.392 low-support passage, 0.456 policy shift, 0.541 proposer gain, and 0.397 challenge use. Relative to open default enactment, it reduces productivity by 0.171, low-support passage by 0.058, policy shift by 0.209, and proposer gain by 0.115.
+Challenge vouchers are a promising middle path. Default pass plus challenge vouchers averages 0.671 productivity, 77.943 enacted bills per run, 0.510 welfare, 0.395 low-support passage, 0.456 policy shift, 0.540 proposer gain, and 0.397 challenge use. Relative to open default enactment, it reduces productivity by 0.172, low-support passage by 0.054, policy shift by 0.208, and proposer gain by 0.116. The v17 minority-bonus allocation pushes challenge use to 0.442 and further reduces low-support passage to 0.372, at additional productivity cost.
 
 Table~\ref{tab:challenge-deltas} summarizes selected deltas from the earlier challenge sweep. The important failure mode is visible under proposal flooding: fixed token budgets are diluted as proposal volume rises.
 
@@ -295,31 +302,27 @@ The sweep shows a throughput/safety frontier. Three party-held tokens per party 
 
 \subsection{Cross-Bloc Cosponsorship}
 
-Cross-bloc cosponsorship tests agenda access before a bill reaches the default lane. In the default cross-bloc scenario, a bill must attract credible support from at least two legislators outside the proposer's party bloc and at a modest ideological distance. This gate averages 0.253 productivity, 24.680 enacted bills per run, 0.687 welfare, 0.239 low-support passage, 0.080 policy shift, and 0.235 proposer gain.
+Cross-bloc cosponsorship tests agenda access before a bill reaches the default lane. In the v17 affected-group sponsor gate, a bill must attract credible outside-bloc support and affected-group sponsor participation. This gate averages 0.192 productivity, 18.649 enacted bills per run, 0.725 welfare, 0.154 low-support passage, 0.062 policy shift, and 0.241 proposer gain.
 
-Relative to open default enactment, the gate reduces floor consideration by 0.744, low-support passage by 0.211, policy shift by 0.584, and proposer gain by 0.421. Earlier cross-bloc sweeps show that stronger gates and cross-bloc-plus-challenge combinations can reduce low-support passage further, but at large productivity cost.
+Relative to open default enactment, the affected-sponsor gate reduces low-support passage by 0.294, policy shift by 0.602, and proposer gain by 0.415 while increasing welfare by 0.228. It admits 0.192 of potential bills and records 4.840 average cosponsors, so the result is high-quality but strongly rationed agenda access. The softer cross-bloc credit-discount variant admits 0.273 of bills, averages 6.005 cosponsors, and raises welfare to 0.687.
 
 This is an important negative result as much as a positive one. Coalition breadth screens for higher-welfare, lower-volatility bills, but a uniform cosponsorship gate can become too blunt. That motivates adaptive procedural tracks: routine, low-risk bills should not necessarily face the same agenda burden as high-salience, high-uncertainty, or lobby-heavy bills.
 
 \subsection{Adaptive Procedural Tracks}
 
-Adaptive procedural tracks route bills by a generated risk score rather than applying one admission rule to all proposals. The non-challenge adaptive scenario sends low-risk bills to default enactment, middle-risk bills to active simple-majority review, and high-risk bills to informed guardrails. It averages 0.443 productivity, 44.843 enacted bills per run, 0.605 welfare, 0.265 low-support passage, 0.216 policy shift, and 0.393 proposer gain.
+Adaptive procedural tracks route bills by a generated risk score rather than applying one admission rule to all proposals. The non-challenge adaptive scenario sends low-risk bills to default enactment, middle-risk bills to active simple-majority review, and high-risk bills to informed guardrails. It averages 0.418 productivity, 42.216 enacted bills per run, 0.612 welfare, 0.243 low-support passage, 0.201 policy shift, and 0.386 proposer gain.
 
-Relative to open default enactment, that reduces productivity by 0.400 but reduces low-support passage by 0.185, policy shift by 0.448, and proposer gain by 0.263. It keeps floor consideration at 0.926, much higher than cross-bloc cosponsorship or informed guardrails. Earlier challenge-middle-lane variants preserve more productivity, but leave higher low-support passage and policy shift. The result is a useful design contrast: challenge rights preserve throughput, while active middle-lane voting removes more weakly supported bills.
+Relative to open default enactment, that reduces productivity by 0.424 while reducing low-support passage by 0.205, policy shift by 0.463, and proposer gain by 0.270. The v17 route-rate metrics show the default adaptive rule using the fast lane for about 0.300 of bills, the middle lane for 0.599, and the high-risk lane for 0.101. A strict variant pushes more bills into review, lowering productivity to 0.284 but cutting low-support passage to 0.076.
 
 \subsection{Active-Law Review}
 
-Active-law review tests reversibility after enactment rather than agenda exclusion. The law-registry scenario lets default-pass bills enter the floor lane, records risky enactments as provisional laws, and reviews them after delay. It averages 0.869 productivity, 89.729 enacted bills per run, 0.492 welfare, 0.396 low-support passage, 0.834 status-quo volatility, and 0.599 proposer gain.
+Active-law review tests reversibility after enactment rather than agenda exclusion. The law-registry scenario lets default-pass bills enter the floor lane, records risky enactments as provisional laws, and reviews them after delay. It averages 0.868 productivity, 89.730 enacted bills per run, 0.492 welfare, 0.398 low-support passage, 0.836 status-quo volatility, and 0.598 proposer gain.
 
-Relative to open default enactment, the registry increases productivity by 0.026 and lowers low-support passage by 0.054, but it also increases measured status-quo volatility because repeal itself is a policy movement. Its reversal rate is 0.463, average correction delay is 5.127 rounds, active-law welfare at review is 0.585, and low-support active-law share is 0.045. The result supports modeling reversibility as its own tradeoff: correction can reduce the stock of weak laws while increasing churn.
+Relative to open default enactment, the registry increases productivity by 0.026 and lowers low-support passage by 0.050, but it also increases measured status-quo volatility because repeal itself is a policy movement. Its reversal rate is 0.436, average correction delay is 5.125 rounds, active-law welfare at review is 0.608, and low-support active-law share is 0.037. The result supports modeling reversibility as its own tradeoff: correction can reduce the stock of weak laws while increasing churn.
 
 \subsection{Earned Proposal Credits}
 
-Earned proposal credits are a milder agenda-control mechanism. The base earned-credit scenario averages 0.676 productivity, 64.694 enacted bills per run, 76.341 floor bills per run, 0.513 welfare, 0.441 low-support passage, 0.510 policy shift, and 0.625 proposer gain. It denies 0.202 of potential proposals.
-
-Relative to open default enactment, earned credits reduce productivity by 0.165, floor consideration by 0.202, low-support passage by 0.009, policy shift by 0.153, and proposer gain by 0.031, while increasing welfare by 0.016. This is not a dramatic legitimacy gain, but it is a useful contrast with static proposal costs: the mechanism reduces load without the large proposer-gain increase observed under the earlier cost formula.
-
-Earlier combined earned-credit-plus-challenge runs were more consequential, reducing policy shift and proposer gain much more than the base credit rule alone. The result suggests that proposer accountability works best as one layer in a package, not as a substitute for contestation rights.
+Earned proposal credits are a milder agenda-control mechanism. Earlier runs show that credits reduce floor load and policy shift more gently than committee or cross-bloc gates. The v17 proposal-bond variant adds sharper accountability: it preserves most open-default productivity, records 0.517 average bond forfeiture, and is more useful as a diagnostic for proposer accountability than as a stand-alone safeguard.
 
 \subsection{Budgeted Lobbying and Anti-Capture}
 
@@ -327,17 +330,15 @@ Budgeted lobbying distinguishes baseline lobby susceptibility from explicit orga
 
 \subsection{Citizen Mini-Public Review}
 
-Citizen-panel review tests whether an independent deliberative screen can add information and legitimacy without becoming a standing committee veto. In v16, certificate review certifies 0.331 of reviewed bills, reduces low-support passage by 0.199, and raises welfare to 0.617 and legitimacy to 0.552, but productivity falls to 0.449. The result is a useful distinction between panel review that changes routing and lighter review that only changes signals.
+Citizen-panel review tests whether an independent deliberative screen can add information and legitimacy without becoming a standing committee veto. In v17, constituent public-will revision followed by citizen-panel routing averages 0.407 productivity, 0.629 welfare, 0.249 low-support passage, and 0.516 legitimacy. Public-will review runs on every potential bill in that scenario and records an average 0.278 public-signal movement, which helps separate district-grounded public signals from purely bill-level proxies.
 
 \subsection{Agenda Scarcity and Objection}
 
-Agenda scarcity variants test ways to ration attention without a permanent committee gate. The weighted agenda lottery admits 0.465 of potential bills to the floor, lowers productivity to 0.407, raises welfare by 0.051, and slightly lowers low-support passage. The random lottery has similar floor scarcity but no welfare gain, which shows why neutral randomness and value-weighted randomness should be separated.
-
-Quadratic attention budgets spend 3.402 credits per potential bill, lower floor consideration by 0.448, and reduce policy shift and proposer gain more sharply than earned proposal credits. Public objection windows are stronger legitimacy filters: they trigger on 0.645 of potential bills, reduce low-support passage by 0.181, and raise welfare by 0.097. Repeal windows are less restrictive at the front end; they trigger on 0.491 of potential bills and reverse 0.558 of triggered enactments.
+Agenda scarcity variants test ways to ration attention without a permanent committee gate. In v17, the weighted agenda lottery lowers productivity to 0.408 and raises welfare to 0.549. Public objection windows are stronger legitimacy filters: they trigger on 0.646 of potential bills, reduce low-support passage by 0.183, and raise welfare by 0.096 relative to open default enactment.
 
 \subsection{Structured Mediation}
 
-Structured mediation adds content revision before voting. In the default-pass mediation scenario, 0.827 of potential bills are amended. Productivity rises from 0.843 to 0.896, policy shift falls from 0.665 to 0.499, and proposer gain falls from 0.657 to 0.509. Compromise increases relative to open default-pass, while welfare changes only slightly.
+Structured mediation adds content revision before voting. In the v17 multi-round mediation scenario, 0.719 of potential bills are amended and 0.240 receive compensation. Productivity rises from 0.843 to 0.958, policy shift falls from 0.664 to 0.392, proposer gain falls from 0.656 to 0.368, and low-support passage falls from 0.448 to 0.394. Combining mediation with challenge vouchers lowers productivity to 0.785 but further reduces low-support passage to 0.300 and proposer gain to 0.340.
 
 This result should not be overread as mediation being universally beneficial. Under simple majority, mediation increases productivity but lowers enacted welfare and increases policy movement relative to ordinary simple majority. The more useful finding is conditional: in default-pass settings, a bounded amendment stage can preserve throughput while reducing proposer advantage and policy volatility.
 
@@ -345,7 +346,7 @@ This result should not be overread as mediation being universally beneficial. Un
 
 The distributional-harm scenarios show that legitimacy-oriented safeguards can improve minority-protection metrics without always requiring broad front-end gatekeeping. Compensation amendments leave productivity essentially unchanged relative to open default-pass while reducing minority harm by 0.045 and improving legitimacy by 0.019. Affected-group consent is stricter in earlier campaigns: productivity falls, but minority harm and legitimacy improve.
 
-Competing-alternative scenarios produce the largest reductions in agenda-setter advantage. Public-benefit and median-seeking alternatives both raise productivity to 0.943 while reducing policy shift almost to zero and cutting low-support passage to about 0.196. Pairwise policy tournaments are stricter: productivity falls to 0.550, but welfare rises to 0.641, low-support passage falls to 0.042, and proposer gain falls to 0.004. The obstruction-with-substitute variant behaves similarly, suggesting that forcing a real alternative can be more productive than pure obstruction.
+Competing-alternative scenarios produce the largest reductions in agenda-setter advantage. Pairwise policy tournaments in v17 average 0.551 productivity, 0.641 welfare, 0.042 low-support passage, 0.004 policy shift, and 0.004 proposer gain. The strategic clone/decoy variant records four strategic alternatives per tournament but produces nearly identical aggregate outcomes in the current implementation, which is useful diagnostically: the model now measures decoys, but the selection rule is not yet sufficiently vulnerable to them.
 
 These results are promising but also cautionary. The current alternatives are generated by a stylized procedure with access to chamber medians and public-benefit signals. Future versions should make alternative drafting endogenous, costly, and strategically manipulable before treating policy tournaments as a robust institutional recommendation.
 
@@ -357,11 +358,11 @@ Challenge vouchers illustrate a different design logic. Instead of reviewing eve
 
 Cross-bloc cosponsorship improves proposal access upstream, before a challenge window is needed. Its limitation is that it treats coalition breadth as a universal admission requirement. That is attractive for risky or divisive bills, but wasteful for routine bills with high support and low downside. Adaptive routing responds by making procedure conditional on risk. Active-law review responds from the other side: it lets risky bills pass provisionally, but later reviews and can repeal weak laws. Earned proposal credits add proposer learning, but only modestly change outcomes on their own. Structured mediation and competing alternatives begin to address bargaining over bill content. The next missing layer is endogenous strategy: proposers, opponents, lobby groups, and citizen reviewers should adapt their behavior to the mechanisms rather than passively moving through them.
 
-The broader contribution is methodological. Institutional design proposals often mix multiple mechanisms, making it difficult to know whether outcomes come from thresholds, agenda access, information, bargaining, lobbying, reversibility, citizen review, public objection, or alternative selection. A modular simulator can isolate these components, compare distributions across shared worlds, and identify parameter regions where a design succeeds or fails. The aim is not to crown a winner from the current v16 scenarios; it is to create an expandable search process for discovering and stress-testing more varied legislative frameworks.
+The broader contribution is methodological. Institutional design proposals often mix multiple mechanisms, making it difficult to know whether outcomes come from thresholds, agenda access, information, bargaining, lobbying, reversibility, citizen review, public objection, or alternative selection. A modular simulator can isolate these components, compare distributions across shared worlds, and identify parameter regions where a design succeeds or fails. The aim is not to crown a winner from the current v17 scenarios; it is to create an expandable search process for discovering and stress-testing more varied legislative frameworks.
 
 \section{Limitations}
 
-This is not a validated model of the United States Congress or any real legislature. It is a mechanism-exploration simulator. The current model uses one policy dimension, generated legislators, stylized public support, stylized public benefit, simplified lobbying, no elections, bounded mediation rather than full amendment bargaining, generated alternatives rather than strategic drafting, abstract issue domains, and limited bicameral asymmetry.
+This is not a validated model of the United States Congress or any real legislature. It is a mechanism-exploration simulator. The current model uses one policy dimension, generated legislators, stylized public support, stylized public benefit, simplified lobbying, no elections, bounded and multi-round mediation rather than full amendment bargaining, generated alternatives rather than strategic drafting, abstract issue domains, and limited bicameral asymmetry.
 
 The largest limitation is endogeneity. Real proposers choose bills strategically based on expected institutional response. The current model mostly generates proposals around proposer ideal points. Default-enactment regimes especially require endogenous proposal generation because the attractiveness of flooding, moderation, and strategic timing depends on the rules.
 
@@ -371,20 +372,21 @@ The third limitation is welfare specification. Public benefit is generated insid
 
 \section{Research Roadmap}
 
-The next simulations should deepen representation and endogeneity before adding media, elections, or other realism layers:
+The planned roadmap mechanisms are now represented in v17, so the next simulations should deepen representation and endogeneity before adding media, elections, or other realism layers:
 
 \begin{enumerate}
-  \item add richer constituent, district, and public-will models so affected-group support is grounded in represented people rather than generated bill fields;
-  \item make public objection and citizen-panel signals emerge from those constituent models rather than from bill-level proxies;
-  \item make alternative drafting endogenous, costly, and vulnerable to strategic decoys or cloned alternatives;
-  \item deepen mediation into multi-round amendment bargaining with compensation offers for concentrated harms.
+  \item generate constituent populations inside districts, including issue intensity, affected-group membership, and public-attention differences;
+  \item make proposers strategically adapt bill volume, moderation, cosponsorship, amendment posture, and timing to institutional rules;
+  \item let lobby groups learn which influence channels produce returns and reallocate budgets across sessions;
+  \item make public objection and citizen-panel signals emerge from constituent populations rather than from bill-level proxies;
+  \item make alternative drafting endogenous, costly, and more vulnerable to strategic decoys or cloned alternatives.
 \end{enumerate}
 
 These additions directly address the observed failure modes: proposal flooding, low-support enactment, proposer gain, weak compromise formation, and permanent policy movement after weakly supported bills.
 
 \section{Conclusion}
 
-The current simulations are an early pass through a much larger design space. Default enactment is useful because it changes the burden of collective action, but it is only one candidate. Guardrails reduce low-support enactment at large productivity cost. Challenge vouchers preserve more throughput but dilute under flooding unless token budgets and allocation rules are tuned. Cross-bloc cosponsorship improves enacted-bill quality but can become a blunt gate. Adaptive routing is more flexible. Active-law review shows that correction is separate from front-end screening. Structured mediation, distributional compensation, policy tournaments, lobbying-channel safeguards, citizen panels, and agenda-scarcity variants show that content revision, alternatives, anti-capture channel design, independent legitimacy screens, and attention rationing can reduce proposer or capture advantage more directly than yes/no screening alone, though the model still needs richer constituent structure, endogenous strategy, and multi-round bargaining.
+The current simulations are an early pass through a much larger design space. Default enactment is useful because it changes the burden of collective action, but it is only one candidate. Guardrails reduce low-support enactment at large productivity cost. Challenge vouchers preserve more throughput but dilute under flooding unless token budgets and allocation rules are tuned. Cross-bloc cosponsorship improves enacted-bill quality but can become a blunt gate. Adaptive routing is more flexible. Active-law review shows that correction is separate from front-end screening. Structured mediation, distributional compensation, policy tournaments, lobbying-channel safeguards, citizen panels, agenda-scarcity variants, proposal bonds, and constituent-public-will signals show that content revision, alternatives, anti-capture channel design, independent legitimacy screens, attention rationing, proposer accountability, and district-grounded public information can reduce proposer or capture advantage more directly than yes/no screening alone, though the model still needs richer constituent populations and endogenous strategy.
 
 The paper's core claim is therefore exploratory: computational institutional search can help identify legislative frameworks that better balance compromise, productivity, and representative responsiveness than any single familiar rule or isolated reform proposal.
 

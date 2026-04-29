@@ -20,6 +20,18 @@ public final class ProposalAccessRules {
         return new ProposalCostAccessRule(baseCost, publicCreditWeight, lobbyCreditWeight);
     }
 
+    public static ProposalAccessRule lobbySurchargeCost(
+            double baseCost,
+            double publicCreditWeight,
+            double lobbySurchargeWeight
+    ) {
+        return new LobbySurchargeProposalAccessRule(baseCost, publicCreditWeight, lobbySurchargeWeight);
+    }
+
+    public static ProposalAccessRule memberQuota(int quotaPerProposer) {
+        return new MemberQuotaAccessRule(quotaPerProposer);
+    }
+
     public static ProposalAccessRule publicInterestScreen(
             double minimumPublicInterest,
             double maximumCaptureRisk,

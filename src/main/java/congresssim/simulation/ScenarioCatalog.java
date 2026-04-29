@@ -15,9 +15,11 @@ import congresssim.institution.ChallengeTokenAllocation;
 import congresssim.institution.ChallengeVoucherProcess;
 import congresssim.institution.CitizenPanelMode;
 import congresssim.institution.CitizenPanelReviewProcess;
+import congresssim.institution.CoalitionCosponsorshipProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.CompetingAlternativesProcess;
+import congresssim.institution.ConstituentPublicWillProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.DistributionalHarmProcess;
 import congresssim.institution.HarmWeightedThresholdProcess;
@@ -25,9 +27,11 @@ import congresssim.institution.LawRegistryProcess;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
 import congresssim.institution.LobbyTransparencyProcess;
+import congresssim.institution.MultiRoundAmendmentProcess;
 import congresssim.institution.PresidentialVetoProcess;
 import congresssim.institution.ProposalAccessProcess;
 import congresssim.institution.ProposalAccessRules;
+import congresssim.institution.ProposalBondProcess;
 import congresssim.institution.ProposalCreditProcess;
 import congresssim.institution.PublicObjectionWindowProcess;
 import congresssim.institution.QuadraticAttentionBudgetProcess;
@@ -154,6 +158,37 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-quadratic-attention", defaultPassWithQuadraticAttentionBudget()),
                 new ScenarioEntry("default-pass-public-objection", defaultPassWithPublicObjectionWindow(false)),
                 new ScenarioEntry("default-pass-repeal-window", defaultPassWithPublicObjectionWindow(true)),
+                new ScenarioEntry("default-pass-constituent-public-will", defaultPassWithConstituentPublicWill(false)),
+                new ScenarioEntry("default-pass-constituent-citizen-panel", defaultPassWithConstituentPublicWill(true)),
+                new ScenarioEntry("default-pass-proposal-bonds", defaultPassWithProposalBonds(false)),
+                new ScenarioEntry("default-pass-proposal-bonds-challenge", defaultPassWithProposalBonds(true)),
+                new ScenarioEntry("default-pass-cross-bloc-credit-discount", defaultPassWithCoalitionSponsorship(
+                        "Default pass + cross-bloc credit discount",
+                        false,
+                        true
+                )),
+                new ScenarioEntry("default-pass-affected-sponsor-gate", defaultPassWithCoalitionSponsorship(
+                        "Default pass + affected-group sponsor gate",
+                        true,
+                        true
+                )),
+                new ScenarioEntry("default-pass-multiround-mediation", defaultPassWithMultiRoundMediation(false)),
+                new ScenarioEntry("default-pass-multiround-mediation-challenge", defaultPassWithMultiRoundMediation(true)),
+                new ScenarioEntry("default-pass-alternatives-strategic", defaultPassWithStrategicAlternatives()),
+                new ScenarioEntry("default-pass-adaptive-track-lenient", defaultPassWithAdaptiveTrack(false, 0.42, 0.68, "Default pass + adaptive tracks lenient")),
+                new ScenarioEntry("default-pass-adaptive-track-strict", defaultPassWithAdaptiveTrack(false, 0.24, 0.48, "Default pass + adaptive tracks strict")),
+                new ScenarioEntry("default-pass-adaptive-track-citizen-high-risk", defaultPassWithAdaptiveTrackCitizenHighRisk()),
+                new ScenarioEntry("default-pass-adaptive-track-supermajority-high-risk", defaultPassWithAdaptiveTrackSupermajorityHighRisk()),
+                new ScenarioEntry("default-pass-law-registry-fast-review", defaultPassWithLawRegistry(false, 2, 0.34, 0.58, 0.82, "Default pass + law registry fast review")),
+                new ScenarioEntry("default-pass-law-registry-slow-review", defaultPassWithLawRegistry(false, 8, 0.34, 0.58, 0.62, "Default pass + law registry slow partial review")),
+                new ScenarioEntry("default-pass-cost-public-waiver", defaultPassWithProposalCost(
+                        "Default pass + proposal costs + public waiver",
+                        0.34,
+                        0.50,
+                        0.00
+                )),
+                new ScenarioEntry("default-pass-cost-lobby-surcharge", defaultPassWithLobbySurchargeCost()),
+                new ScenarioEntry("default-pass-member-quota", defaultPassWithMemberQuota()),
                 new ScenarioEntry("default-pass-harm-threshold", defaultPassWithHarmWeightedThreshold()),
                 new ScenarioEntry("default-pass-compensation", defaultPassWithDistributionalCompensation(false)),
                 new ScenarioEntry("default-pass-affected-consent", defaultPassWithDistributionalCompensation(true)),
@@ -241,6 +276,39 @@ public final class ScenarioCatalog {
                         ChallengeTokenAllocation.PARTY,
                         25,
                         0.82
+                )),
+                new ScenarioEntry("default-pass-challenge-party-proportional", defaultPassWithChallengeVouchers(
+                        "Default pass + proportional party challenge vouchers",
+                        ChallengeTokenAllocation.PARTY_PROPORTIONAL,
+                        10,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-challenge-minority-bonus", defaultPassWithChallengeVouchers(
+                        "Default pass + minority-bonus challenge vouchers",
+                        ChallengeTokenAllocation.PARTY_MINORITY_BONUS,
+                        8,
+                        0.82
+                )),
+                new ScenarioEntry("default-pass-challenge-supermajority", defaultPassWithChallengePath(
+                        "Default pass + challenge to 60 percent vote",
+                        ChallengeTokenAllocation.PARTY,
+                        10,
+                        0.82,
+                        ChallengePath.SUPERMAJORITY
+                )),
+                new ScenarioEntry("default-pass-challenge-committee", defaultPassWithChallengePath(
+                        "Default pass + challenge to committee review",
+                        ChallengeTokenAllocation.PARTY,
+                        10,
+                        0.82,
+                        ChallengePath.COMMITTEE_REVIEW
+                )),
+                new ScenarioEntry("default-pass-challenge-info-active", defaultPassWithChallengePath(
+                        "Default pass + challenge to info + active vote",
+                        ChallengeTokenAllocation.PARTY,
+                        10,
+                        0.82,
+                        ChallengePath.INFORMATION_PLUS_ACTIVE
                 )),
                 new ScenarioEntry("default-pass-challenge-party-t10-s050", defaultPassWithChallengeVouchers(
                         "Default pass + party challenge vouchers t=10 s=.50",
@@ -682,6 +750,134 @@ public final class ScenarioCatalog {
         };
     }
 
+    private static Scenario defaultPassWithConstituentPublicWill(boolean includeCitizenPanel) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return includeCitizenPanel
+                        ? "Default pass + constituent public will + citizen panel"
+                        : "Default pass + constituent public will";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess process;
+                if (includeCitizenPanel) {
+                    LegislativeProcess certified = defaultPassFloorProcess(name(), world, strategy);
+                    LegislativeProcess uncertified = simpleMajorityFloorProcess(name(), world, strategy);
+                    process = new CitizenPanelReviewProcess(
+                            name(),
+                            certified,
+                            uncertified,
+                            CitizenPanelMode.ACTIVE_VOTE_ROUTING,
+                            73,
+                            0.14,
+                            0.80,
+                            0.16,
+                            0.60
+                    );
+                } else {
+                    process = defaultPassFloorProcess(name(), world, strategy);
+                }
+                return new ConstituentPublicWillProcess(name(), process, world.legislators(), 0.74, 0.45);
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithProposalBonds(boolean includeChallengeVouchers) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return includeChallengeVouchers
+                        ? "Default pass + proposal bonds + challenge"
+                        : "Default pass + proposal bonds";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess process = includeChallengeVouchers
+                        ? challengeMiddleLane(name(), world, strategy)
+                        : defaultPassFloorProcess(name(), world, strategy);
+                return new ProposalBondProcess(name(), process, 2.20, 0.20, 4.50, 0.40, 1.15, 0.38, 0.70);
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithCoalitionSponsorship(
+            String scenarioName,
+            boolean requireAffectedGroupSponsor,
+            boolean applyAgendaCreditDiscount
+    ) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return scenarioName;
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new CoalitionCosponsorshipProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        world.legislators(),
+                        requireAffectedGroupSponsor ? 3 : 2,
+                        1,
+                        0.12,
+                        requireAffectedGroupSponsor ? 0.50 : 0.48,
+                        requireAffectedGroupSponsor,
+                        applyAgendaCreditDiscount
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithMultiRoundMediation(boolean includeChallengeVouchers) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return includeChallengeVouchers
+                        ? "Default pass + multi-round mediation + challenge"
+                        : "Default pass + multi-round mediation";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess process = includeChallengeVouchers
+                        ? challengeMiddleLane(name(), world, strategy)
+                        : defaultPassFloorProcess(name(), world, strategy);
+                return new MultiRoundAmendmentProcess(name(), process, world.legislators(), 3, 0.025, 1.15, 0.08);
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithStrategicAlternatives() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + strategic policy tournament";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new CompetingAlternativesProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        world.legislators(),
+                        AlternativeSelectionRule.PAIRWISE_MAJORITY,
+                        4,
+                        true,
+                        2,
+                        2
+                );
+            }
+        };
+    }
+
     private static Scenario defaultPassWithHarmWeightedThreshold() {
         return new Scenario() {
             @Override
@@ -874,6 +1070,76 @@ public final class ScenarioCatalog {
         };
     }
 
+    private static Scenario defaultPassWithChallengePath(
+            String scenarioName,
+            ChallengeTokenAllocation allocation,
+            int tokensPerOwner,
+            double challengeThreshold,
+            ChallengePath challengePath
+    ) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return scenarioName;
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess challengedProcess = challengedProcess(name(), world, strategy, challengePath);
+                return new ChallengeVoucherProcess(
+                        name(),
+                        world.legislators(),
+                        strategy,
+                        allocation,
+                        tokensPerOwner,
+                        challengeThreshold,
+                        challengedProcess
+                );
+            }
+        };
+    }
+
+    private static LegislativeProcess challengedProcess(
+            String name,
+            SimulationWorld world,
+            VotingStrategy strategy,
+            ChallengePath challengePath
+    ) {
+        return switch (challengePath) {
+            case SIMPLE_MAJORITY -> simpleMajorityFloorProcess(name, world, strategy);
+            case SUPERMAJORITY -> supermajorityFloorProcess(name, world, strategy, 0.60);
+            case COMMITTEE_REVIEW -> {
+                List<Legislator> committeeMembers = CommitteeFactory.select(
+                        world.legislators(),
+                        CommitteeComposition.REPRESENTATIVE,
+                        17
+                );
+                Chamber committee = new Chamber(
+                        "Committee",
+                        committeeMembers,
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                yield new CommitteeGatekeepingProcess(name, committee, simpleMajorityFloorProcess(name, world, strategy));
+            }
+            case INFORMATION_PLUS_ACTIVE -> {
+                List<Legislator> committeeMembers = CommitteeFactory.select(
+                        world.legislators(),
+                        CommitteeComposition.EXPERT,
+                        17
+                );
+                yield new CommitteeInformationProcess(
+                        name,
+                        committeeMembers,
+                        0.90,
+                        0.35,
+                        simpleMajorityFloorProcess(name, world, strategy)
+                );
+            }
+        };
+    }
+
     private static Scenario defaultPassWithChallengeEscalation(
             String scenarioName,
             int minimumChallengers,
@@ -1018,13 +1284,26 @@ public final class ScenarioCatalog {
     }
 
     private static Scenario defaultPassWithAdaptiveTrack(boolean useChallengeMiddleLane) {
+        return defaultPassWithAdaptiveTrack(
+                useChallengeMiddleLane,
+                0.34,
+                0.58,
+                useChallengeMiddleLane
+                        ? "Default pass + adaptive tracks + challenge"
+                        : "Default pass + adaptive tracks"
+        );
+    }
+
+    private static Scenario defaultPassWithAdaptiveTrack(
+            boolean useChallengeMiddleLane,
+            double fastLaneMaximumRisk,
+            double highRiskMinimumRisk,
+            String scenarioName
+    ) {
         return new Scenario() {
             @Override
             public String name() {
-                if (useChallengeMiddleLane) {
-                    return "Default pass + adaptive tracks + challenge";
-                }
-                return "Default pass + adaptive tracks";
+                return scenarioName;
             }
 
             @Override
@@ -1040,6 +1319,63 @@ public final class ScenarioCatalog {
                         fastLane,
                         middleLane,
                         highRiskLane,
+                        fastLaneMaximumRisk,
+                        highRiskMinimumRisk
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithAdaptiveTrackCitizenHighRisk() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + adaptive tracks + citizen high-risk";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess certified = defaultPassFloorProcess(name(), world, strategy);
+                LegislativeProcess uncertified = supermajorityFloorProcess(name(), world, strategy, 0.60);
+                LegislativeProcess highRiskLane = new CitizenPanelReviewProcess(
+                        name(),
+                        certified,
+                        uncertified,
+                        CitizenPanelMode.THRESHOLD_ADJUSTMENT,
+                        91,
+                        0.12,
+                        0.82,
+                        0.12,
+                        0.62
+                );
+                return new AdaptiveTrackProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        highRiskLane,
+                        0.34,
+                        0.58
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithAdaptiveTrackSupermajorityHighRisk() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + adaptive tracks + supermajority high-risk";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new AdaptiveTrackProcess(
+                        name(),
+                        defaultPassFloorProcess(name(), world, strategy),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        supermajorityFloorProcess(name(), world, strategy, 0.60),
                         0.34,
                         0.58
                 );
@@ -1074,13 +1410,30 @@ public final class ScenarioCatalog {
     }
 
     private static Scenario defaultPassWithLawRegistry(boolean includeChallengeVouchers) {
+        return defaultPassWithLawRegistry(
+                includeChallengeVouchers,
+                5,
+                0.34,
+                0.58,
+                0.82,
+                includeChallengeVouchers
+                        ? "Default pass + law registry + challenge"
+                        : "Default pass + law registry"
+        );
+    }
+
+    private static Scenario defaultPassWithLawRegistry(
+            boolean includeChallengeVouchers,
+            int reviewDelayRounds,
+            double provisionalRiskThreshold,
+            double renewalThreshold,
+            double rollbackRate,
+            String scenarioName
+    ) {
         return new Scenario() {
             @Override
             public String name() {
-                if (includeChallengeVouchers) {
-                    return "Default pass + law registry + challenge";
-                }
-                return "Default pass + law registry";
+                return scenarioName;
             }
 
             @Override
@@ -1092,10 +1445,10 @@ public final class ScenarioCatalog {
                 return new LawRegistryProcess(
                         name(),
                         innerProcess,
-                        5,
-                        0.34,
-                        0.58,
-                        0.82
+                        reviewDelayRounds,
+                        provisionalRiskThreshold,
+                        renewalThreshold,
+                        rollbackRate
                 );
             }
         };
@@ -1231,10 +1584,19 @@ public final class ScenarioCatalog {
     }
 
     private static Scenario defaultPassWithProposalCost() {
+        return defaultPassWithProposalCost("Default pass + proposal costs", 0.34, 0.22, 0.18);
+    }
+
+    private static Scenario defaultPassWithProposalCost(
+            String scenarioName,
+            double baseCost,
+            double publicCreditWeight,
+            double lobbyCreditWeight
+    ) {
         return new Scenario() {
             @Override
             public String name() {
-                return "Default pass + proposal costs";
+                return scenarioName;
             }
 
             @Override
@@ -1248,7 +1610,57 @@ public final class ScenarioCatalog {
                 );
                 return new ProposalAccessProcess(
                         name(),
-                        ProposalAccessRules.proposalCost(0.34, 0.22, 0.18),
+                        ProposalAccessRules.proposalCost(baseCost, publicCreditWeight, lobbyCreditWeight),
+                        new UnicameralProcess(name(), chamber)
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithLobbySurchargeCost() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + lobby-surcharge proposal costs";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                Chamber chamber = new Chamber(
+                        "Congress",
+                        world.legislators(),
+                        strategy,
+                        new DefaultPassUnlessVetoedRule(2.0 / 3.0)
+                );
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.lobbySurchargeCost(0.32, 0.48, 0.42),
+                        new UnicameralProcess(name(), chamber)
+                );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithMemberQuota() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Default pass + member proposal quota";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                Chamber chamber = new Chamber(
+                        "Congress",
+                        world.legislators(),
+                        strategy,
+                        new DefaultPassUnlessVetoedRule(2.0 / 3.0)
+                );
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.memberQuota(3),
                         new UnicameralProcess(name(), chamber)
                 );
             }
@@ -1504,5 +1916,12 @@ public final class ScenarioCatalog {
     }
 
     private record ScenarioEntry(String key, Scenario scenario) {
+    }
+
+    private enum ChallengePath {
+        SIMPLE_MAJORITY,
+        SUPERMAJORITY,
+        COMMITTEE_REVIEW,
+        INFORMATION_PLUS_ACTIVE
     }
 }

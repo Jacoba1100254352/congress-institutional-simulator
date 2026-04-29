@@ -17,10 +17,26 @@ public record OutcomeSignals(
         int citizenCertifications,
         double citizenLegitimacy,
         int objectionWindows,
-        int repealWindowReversals
+        int repealWindowReversals,
+        int fastLaneRoutes,
+        int middleLaneRoutes,
+        int highRiskRoutes,
+        int challengeTokenExhaustions,
+        int falseNegativePasses,
+        int publicWillReviews,
+        double publicSignalMovement,
+        double districtAlignment,
+        int cosponsorshipReviews,
+        int crossBlocAdmissions,
+        int affectedGroupSponsors,
+        int totalCosponsors,
+        int proposalBondReviews,
+        double proposalBondForfeiture,
+        int strategicAlternativeRounds,
+        int strategicDecoys
 ) {
     public static OutcomeSignals none() {
-        return new OutcomeSignals(0, 0, 0, 0, 0.0, 0.0, 0.0, 0, 0, 0, 0.0, 0.0, 0, 0, 0.0, 0, 0);
+        return zero();
     }
 
     public OutcomeSignals plus(OutcomeSignals other) {
@@ -41,7 +57,23 @@ public record OutcomeSignals(
                 citizenCertifications + other.citizenCertifications,
                 citizenLegitimacy + other.citizenLegitimacy,
                 objectionWindows + other.objectionWindows,
-                repealWindowReversals + other.repealWindowReversals
+                repealWindowReversals + other.repealWindowReversals,
+                fastLaneRoutes + other.fastLaneRoutes,
+                middleLaneRoutes + other.middleLaneRoutes,
+                highRiskRoutes + other.highRiskRoutes,
+                challengeTokenExhaustions + other.challengeTokenExhaustions,
+                falseNegativePasses + other.falseNegativePasses,
+                publicWillReviews + other.publicWillReviews,
+                publicSignalMovement + other.publicSignalMovement,
+                districtAlignment + other.districtAlignment,
+                cosponsorshipReviews + other.cosponsorshipReviews,
+                crossBlocAdmissions + other.crossBlocAdmissions,
+                affectedGroupSponsors + other.affectedGroupSponsors,
+                totalCosponsors + other.totalCosponsors,
+                proposalBondReviews + other.proposalBondReviews,
+                proposalBondForfeiture + other.proposalBondForfeiture,
+                strategicAlternativeRounds + other.strategicAlternativeRounds,
+                strategicDecoys + other.strategicDecoys
         );
     }
 
@@ -52,24 +84,13 @@ public record OutcomeSignals(
             double lowSupportActiveLawShare,
             double correctionDelay
     ) {
-        return new OutcomeSignals(
-                1,
+        return zero(
                 reversed ? 1 : 0,
                 renewed ? 1 : 0,
                 reversed ? 1 : 0,
                 reversed ? correctionDelay : 0.0,
                 activeLawWelfare,
-                lowSupportActiveLawShare,
-                0,
-                0,
-                0,
-                0.0,
-                0.0,
-                0,
-                0,
-                0.0,
-                0,
-                0
+                lowSupportActiveLawShare
         );
     }
 
@@ -79,68 +100,392 @@ public record OutcomeSignals(
             double selectedAlternativeMedianDistance,
             double proposerAgendaAdvantage
     ) {
+        OutcomeSignals base = zero();
         return new OutcomeSignals(
-                0,
-                0,
-                0,
-                0,
-                0.0,
-                0.0,
-                0.0,
+                base.lawReviews,
+                base.lawReversals,
+                base.lawRenewals,
+                base.lawCorrections,
+                base.correctionDelay,
+                base.activeLawWelfare,
+                base.lowSupportActiveLawShare,
                 1,
                 alternativesConsidered,
                 statusQuoWon ? 1 : 0,
                 selectedAlternativeMedianDistance,
                 proposerAgendaAdvantage,
-                0,
-                0,
-                0.0,
-                0,
-                0
+                base.citizenReviews,
+                base.citizenCertifications,
+                base.citizenLegitimacy,
+                base.objectionWindows,
+                base.repealWindowReversals,
+                base.fastLaneRoutes,
+                base.middleLaneRoutes,
+                base.highRiskRoutes,
+                base.challengeTokenExhaustions,
+                base.falseNegativePasses,
+                base.publicWillReviews,
+                base.publicSignalMovement,
+                base.districtAlignment,
+                base.cosponsorshipReviews,
+                base.crossBlocAdmissions,
+                base.affectedGroupSponsors,
+                base.totalCosponsors,
+                base.proposalBondReviews,
+                base.proposalBondForfeiture,
+                base.strategicAlternativeRounds,
+                base.strategicDecoys
         );
     }
 
     public static OutcomeSignals citizenReview(boolean certified, double legitimacy) {
+        OutcomeSignals base = zero();
         return new OutcomeSignals(
-                0,
-                0,
-                0,
-                0,
-                0.0,
-                0.0,
-                0.0,
-                0,
-                0,
-                0,
-                0.0,
-                0.0,
+                base.lawReviews,
+                base.lawReversals,
+                base.lawRenewals,
+                base.lawCorrections,
+                base.correctionDelay,
+                base.activeLawWelfare,
+                base.lowSupportActiveLawShare,
+                base.alternativeRounds,
+                base.alternativesConsidered,
+                base.statusQuoWins,
+                base.selectedAlternativeMedianDistance,
+                base.proposerAgendaAdvantage,
                 1,
                 certified ? 1 : 0,
                 legitimacy,
-                0,
-                0
+                base.objectionWindows,
+                base.repealWindowReversals,
+                base.fastLaneRoutes,
+                base.middleLaneRoutes,
+                base.highRiskRoutes,
+                base.challengeTokenExhaustions,
+                base.falseNegativePasses,
+                base.publicWillReviews,
+                base.publicSignalMovement,
+                base.districtAlignment,
+                base.cosponsorshipReviews,
+                base.crossBlocAdmissions,
+                base.affectedGroupSponsors,
+                base.totalCosponsors,
+                base.proposalBondReviews,
+                base.proposalBondForfeiture,
+                base.strategicAlternativeRounds,
+                base.strategicDecoys
         );
     }
 
     public static OutcomeSignals objectionWindow(boolean reversal) {
+        OutcomeSignals base = zero();
         return new OutcomeSignals(
-                0,
-                0,
-                0,
-                0,
-                0.0,
-                0.0,
-                0.0,
-                0,
-                0,
-                0,
-                0.0,
-                0.0,
-                0,
-                0,
-                0.0,
+                base.lawReviews,
+                base.lawReversals,
+                base.lawRenewals,
+                base.lawCorrections,
+                base.correctionDelay,
+                base.activeLawWelfare,
+                base.lowSupportActiveLawShare,
+                base.alternativeRounds,
+                base.alternativesConsidered,
+                base.statusQuoWins,
+                base.selectedAlternativeMedianDistance,
+                base.proposerAgendaAdvantage,
+                base.citizenReviews,
+                base.citizenCertifications,
+                base.citizenLegitimacy,
                 1,
-                reversal ? 1 : 0
+                reversal ? 1 : 0,
+                base.fastLaneRoutes,
+                base.middleLaneRoutes,
+                base.highRiskRoutes,
+                base.challengeTokenExhaustions,
+                base.falseNegativePasses,
+                base.publicWillReviews,
+                base.publicSignalMovement,
+                base.districtAlignment,
+                base.cosponsorshipReviews,
+                base.crossBlocAdmissions,
+                base.affectedGroupSponsors,
+                base.totalCosponsors,
+                base.proposalBondReviews,
+                base.proposalBondForfeiture,
+                base.strategicAlternativeRounds,
+                base.strategicDecoys
+        );
+    }
+
+    public static OutcomeSignals route(String lane) {
+        OutcomeSignals base = zero();
+        return new OutcomeSignals(
+                base.lawReviews,
+                base.lawReversals,
+                base.lawRenewals,
+                base.lawCorrections,
+                base.correctionDelay,
+                base.activeLawWelfare,
+                base.lowSupportActiveLawShare,
+                base.alternativeRounds,
+                base.alternativesConsidered,
+                base.statusQuoWins,
+                base.selectedAlternativeMedianDistance,
+                base.proposerAgendaAdvantage,
+                base.citizenReviews,
+                base.citizenCertifications,
+                base.citizenLegitimacy,
+                base.objectionWindows,
+                base.repealWindowReversals,
+                "fast".equals(lane) ? 1 : 0,
+                "middle".equals(lane) ? 1 : 0,
+                "high".equals(lane) ? 1 : 0,
+                base.challengeTokenExhaustions,
+                base.falseNegativePasses,
+                base.publicWillReviews,
+                base.publicSignalMovement,
+                base.districtAlignment,
+                base.cosponsorshipReviews,
+                base.crossBlocAdmissions,
+                base.affectedGroupSponsors,
+                base.totalCosponsors,
+                base.proposalBondReviews,
+                base.proposalBondForfeiture,
+                base.strategicAlternativeRounds,
+                base.strategicDecoys
+        );
+    }
+
+    public static OutcomeSignals challengeDiagnostics(boolean tokenExhausted, boolean falseNegativePass) {
+        OutcomeSignals base = zero();
+        return new OutcomeSignals(
+                base.lawReviews,
+                base.lawReversals,
+                base.lawRenewals,
+                base.lawCorrections,
+                base.correctionDelay,
+                base.activeLawWelfare,
+                base.lowSupportActiveLawShare,
+                base.alternativeRounds,
+                base.alternativesConsidered,
+                base.statusQuoWins,
+                base.selectedAlternativeMedianDistance,
+                base.proposerAgendaAdvantage,
+                base.citizenReviews,
+                base.citizenCertifications,
+                base.citizenLegitimacy,
+                base.objectionWindows,
+                base.repealWindowReversals,
+                base.fastLaneRoutes,
+                base.middleLaneRoutes,
+                base.highRiskRoutes,
+                tokenExhausted ? 1 : 0,
+                falseNegativePass ? 1 : 0,
+                base.publicWillReviews,
+                base.publicSignalMovement,
+                base.districtAlignment,
+                base.cosponsorshipReviews,
+                base.crossBlocAdmissions,
+                base.affectedGroupSponsors,
+                base.totalCosponsors,
+                base.proposalBondReviews,
+                base.proposalBondForfeiture,
+                base.strategicAlternativeRounds,
+                base.strategicDecoys
+        );
+    }
+
+    public static OutcomeSignals publicWill(double publicSignalMovement, double districtAlignment) {
+        OutcomeSignals base = zero();
+        return new OutcomeSignals(
+                base.lawReviews,
+                base.lawReversals,
+                base.lawRenewals,
+                base.lawCorrections,
+                base.correctionDelay,
+                base.activeLawWelfare,
+                base.lowSupportActiveLawShare,
+                base.alternativeRounds,
+                base.alternativesConsidered,
+                base.statusQuoWins,
+                base.selectedAlternativeMedianDistance,
+                base.proposerAgendaAdvantage,
+                base.citizenReviews,
+                base.citizenCertifications,
+                base.citizenLegitimacy,
+                base.objectionWindows,
+                base.repealWindowReversals,
+                base.fastLaneRoutes,
+                base.middleLaneRoutes,
+                base.highRiskRoutes,
+                base.challengeTokenExhaustions,
+                base.falseNegativePasses,
+                1,
+                publicSignalMovement,
+                districtAlignment,
+                base.cosponsorshipReviews,
+                base.crossBlocAdmissions,
+                base.affectedGroupSponsors,
+                base.totalCosponsors,
+                base.proposalBondReviews,
+                base.proposalBondForfeiture,
+                base.strategicAlternativeRounds,
+                base.strategicDecoys
+        );
+    }
+
+    public static OutcomeSignals cosponsorship(
+            boolean admitted,
+            boolean affectedGroupSponsor,
+            int cosponsorCount
+    ) {
+        OutcomeSignals base = zero();
+        return new OutcomeSignals(
+                base.lawReviews,
+                base.lawReversals,
+                base.lawRenewals,
+                base.lawCorrections,
+                base.correctionDelay,
+                base.activeLawWelfare,
+                base.lowSupportActiveLawShare,
+                base.alternativeRounds,
+                base.alternativesConsidered,
+                base.statusQuoWins,
+                base.selectedAlternativeMedianDistance,
+                base.proposerAgendaAdvantage,
+                base.citizenReviews,
+                base.citizenCertifications,
+                base.citizenLegitimacy,
+                base.objectionWindows,
+                base.repealWindowReversals,
+                base.fastLaneRoutes,
+                base.middleLaneRoutes,
+                base.highRiskRoutes,
+                base.challengeTokenExhaustions,
+                base.falseNegativePasses,
+                base.publicWillReviews,
+                base.publicSignalMovement,
+                base.districtAlignment,
+                1,
+                admitted ? 1 : 0,
+                affectedGroupSponsor ? 1 : 0,
+                cosponsorCount,
+                base.proposalBondReviews,
+                base.proposalBondForfeiture,
+                base.strategicAlternativeRounds,
+                base.strategicDecoys
+        );
+    }
+
+    public static OutcomeSignals proposalBond(double forfeiture) {
+        OutcomeSignals base = zero();
+        return new OutcomeSignals(
+                base.lawReviews,
+                base.lawReversals,
+                base.lawRenewals,
+                base.lawCorrections,
+                base.correctionDelay,
+                base.activeLawWelfare,
+                base.lowSupportActiveLawShare,
+                base.alternativeRounds,
+                base.alternativesConsidered,
+                base.statusQuoWins,
+                base.selectedAlternativeMedianDistance,
+                base.proposerAgendaAdvantage,
+                base.citizenReviews,
+                base.citizenCertifications,
+                base.citizenLegitimacy,
+                base.objectionWindows,
+                base.repealWindowReversals,
+                base.fastLaneRoutes,
+                base.middleLaneRoutes,
+                base.highRiskRoutes,
+                base.challengeTokenExhaustions,
+                base.falseNegativePasses,
+                base.publicWillReviews,
+                base.publicSignalMovement,
+                base.districtAlignment,
+                base.cosponsorshipReviews,
+                base.crossBlocAdmissions,
+                base.affectedGroupSponsors,
+                base.totalCosponsors,
+                1,
+                forfeiture,
+                base.strategicAlternativeRounds,
+                base.strategicDecoys
+        );
+    }
+
+    public static OutcomeSignals strategicAlternatives(int decoys) {
+        OutcomeSignals base = zero();
+        return new OutcomeSignals(
+                base.lawReviews,
+                base.lawReversals,
+                base.lawRenewals,
+                base.lawCorrections,
+                base.correctionDelay,
+                base.activeLawWelfare,
+                base.lowSupportActiveLawShare,
+                base.alternativeRounds,
+                base.alternativesConsidered,
+                base.statusQuoWins,
+                base.selectedAlternativeMedianDistance,
+                base.proposerAgendaAdvantage,
+                base.citizenReviews,
+                base.citizenCertifications,
+                base.citizenLegitimacy,
+                base.objectionWindows,
+                base.repealWindowReversals,
+                base.fastLaneRoutes,
+                base.middleLaneRoutes,
+                base.highRiskRoutes,
+                base.challengeTokenExhaustions,
+                base.falseNegativePasses,
+                base.publicWillReviews,
+                base.publicSignalMovement,
+                base.districtAlignment,
+                base.cosponsorshipReviews,
+                base.crossBlocAdmissions,
+                base.affectedGroupSponsors,
+                base.totalCosponsors,
+                base.proposalBondReviews,
+                base.proposalBondForfeiture,
+                1,
+                decoys
+        );
+    }
+
+    private static OutcomeSignals zero() {
+        return new OutcomeSignals(
+                0, 0, 0, 0, 0.0, 0.0, 0.0,
+                0, 0, 0, 0.0, 0.0,
+                0, 0, 0.0,
+                0, 0,
+                0, 0, 0, 0, 0,
+                0, 0.0, 0.0,
+                0, 0, 0, 0,
+                0, 0.0,
+                0, 0
+        );
+    }
+
+    private static OutcomeSignals zero(
+            int lawReversals,
+            int lawRenewals,
+            int lawCorrections,
+            double correctionDelay,
+            double activeLawWelfare,
+            double lowSupportActiveLawShare
+    ) {
+        return new OutcomeSignals(
+                1, lawReversals, lawRenewals, lawCorrections, correctionDelay, activeLawWelfare, lowSupportActiveLawShare,
+                0, 0, 0, 0.0, 0.0,
+                0, 0, 0.0,
+                0, 0,
+                0, 0, 0, 0, 0,
+                0, 0.0, 0.0,
+                0, 0, 0, 0,
+                0, 0.0,
+                0, 0
         );
     }
 }

@@ -2,7 +2,7 @@ MAIN_SOURCES := $(shell find src/main/java -name '*.java')
 TEST_SOURCES := $(shell find src/test/java -name '*.java')
 JAVA_RELEASE ?= 21
 
-.PHONY: build run campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 paper paper-clean test clean
+.PHONY: build run campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 paper paper-clean test clean
 
 build:
 	mkdir -p out/main
@@ -12,9 +12,13 @@ run: build
 	java -cp out/main congresssim.Main $(ARGS)
 
 campaign: build
-	java -cp out/main congresssim.Main --campaign v16 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+	java -cp out/main congresssim.Main --campaign v17 --runs 80 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
 
-campaign-v16: campaign
+campaign-v17: build
+	java -cp out/main congresssim.Main --campaign v17 --runs 80 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+
+campaign-v16: build
+	java -cp out/main congresssim.Main --campaign v16 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
 
 campaign-v15: build
 	java -cp out/main congresssim.Main --campaign v15 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)

@@ -80,6 +80,7 @@ public final class ChallengeVoucherProcess implements LegislativeProcess {
 
         ChamberVoteResult supportResult = supportProbe.voteOn(bill, context);
         double statusQuoBefore = context.currentPolicyPosition();
+        boolean falseNegativePass = badBillPassedUnchallenged(bill, supportResult);
         return new BillOutcome(
                 bill,
                 statusQuoBefore,
@@ -88,19 +89,23 @@ public final class ChallengeVoucherProcess implements LegislativeProcess {
                 List.of(supportResult),
                 PresidentialAction.none(),
                 "unchallenged default enactment"
-        );
+        ).withSignals(OutcomeSignals.challengeDiagnostics(decision.tokenExhausted(), falseNegativePass));
     }
 
     private ChallengeDecision challengeDecision(Bill bill, VoteContext context) {
         String strongestOwner = "";
         String strongestLabel = "";
         double strongestChallenge = Double.NEGATIVE_INFINITY;
+        double strongestAnyChallenge = Double.NEGATIVE_INFINITY;
         for (Legislator legislator : legislators) {
+            double score = ChallengeScoring.challengeUtility(legislator, bill, context);
+            if (score > strongestAnyChallenge) {
+                strongestAnyChallenge = score;
+            }
             String owner = allocation.ownerOf(legislator);
             if (!tokenBank.hasToken(owner)) {
                 continue;
             }
-            double score = ChallengeScoring.challengeUtility(legislator, bill, context);
             if (score > strongestChallenge) {
                 strongestChallenge = score;
                 strongestOwner = owner;
@@ -109,11 +114,18 @@ public final class ChallengeVoucherProcess implements LegislativeProcess {
         }
 
         if (strongestChallenge >= challengeThreshold) {
-            return new ChallengeDecision(true, strongestOwner, strongestLabel);
+            return new ChallengeDecision(true, strongestOwner, strongestLabel, false);
         }
-        return new ChallengeDecision(false, "", "");
+        return new ChallengeDecision(false, "", "", strongestAnyChallenge >= challengeThreshold);
     }
 
-    private record ChallengeDecision(boolean challenged, String owner, String label) {
+    private static boolean badBillPassedUnchallenged(Bill bill, ChamberVoteResult supportResult) {
+        return supportResult.yayShare() < 0.50
+                || bill.publicSupport() < 0.42
+                || bill.publicBenefit() < 0.36
+                || AffectedGroupScoring.minorityHarm(bill) > 0.18;
+    }
+
+    private record ChallengeDecision(boolean challenged, String owner, String label, boolean tokenExhausted) {
     }
 }
