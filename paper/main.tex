@@ -1,4 +1,4 @@
-\documentclass[manuscript,anonymous,review]{acmart}
+\documentclass[manuscript]{acmart}
 
 \setcopyright{none}
 \citestyle{acmauthoryear}
@@ -11,6 +11,14 @@
 
 \title[Default Enactment and Agenda Control]{Default Enactment and Agenda Control}
 \subtitle{An Agent-Based Simulation Framework for Comparing Legislative Decision Rules}
+
+\author{Jacob Anderson}
+\affiliation{%
+  \institution{Independent Researcher}
+  \country{United States}
+}
+\renewcommand{\shortauthors}{Anderson}
+\authorsaddresses{Jacob Anderson, Independent Researcher, United States.}
 
 \begin{abstract}
 Legislative design usually treats enactment as an affirmative act: a proposal becomes law only if supporters assemble a winning coalition. This paper studies an inverse design pattern in which proposed laws pass by default unless opponents coordinate to block them. The motivating case is a stylized default-enactment legislature where bills pass unless a two-thirds blocking coalition vetoes them. Related institutions exist in narrower domains, including negative parliamentarism, reverse-consensus dispute settlement, tacit-acceptance procedures, and review-and-disapproval systems, but these analogues generally constrain proposal sources, subject matter, or objection windows. The paper therefore asks a mechanism-design question: under what agenda rules can default enactment increase throughput without amplifying agenda-setter power?
@@ -161,6 +169,11 @@ The institutional scenarios are:
 The proposal-cost result reported below comes from \texttt{simulation-campaign-v2}, which included proposal costs, bicameralism, and presidential veto scenarios. The v7 campaign narrows the comparison to challenge mechanics, cross-bloc agenda access, adaptive routing, sunset review, and earned credits so that the sweep is interpretable.
 
 The campaign is deterministic and reproducible from the repository with \texttt{make campaign}. The paper is generated with \texttt{make paper}.
+
+\section{Code Availability}
+
+The simulator source code, LaTeX manuscript source, generated campaign reports, and tracked paper PDF are available in the public open-source repository:
+\url{https://github.com/Jacoba1100254352/congress-institutional-simulator}.
 
 \section{Results}
 

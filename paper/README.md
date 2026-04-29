@@ -1,25 +1,30 @@
 # Paper Build
 
 The working manuscript is now `main.tex`, formatted with ACM's `acmart`
-LaTeX class for an anonymous review submission.
+LaTeX class for a public, named manuscript build.
 
 ## Target Venue
 
 The best current fit is ACM Collective Intelligence, because its call covers
 computational models, democracy, policymaking, incentive mechanisms, voting
-design, and collective decision-making. Its 2025 instructions require ACM's
-LaTeX template, single-column `manuscript` mode for review, and double-blind
-anonymization for archival full papers.
+design, and collective decision-making. Its 2025 instructions required ACM's
+LaTeX template and single-column `manuscript` mode. Archival full papers and
+extended abstracts used double-blind review; demos and posters used
+non-anonymous review.
 
-The source therefore uses:
+The public repository build therefore uses:
 
 ```tex
-\documentclass[manuscript,anonymous,review]{acmart}
+\documentclass[manuscript]{acmart}
 \setcopyright{none}
 ```
 
-The final camera-ready version should remove `manuscript`, `anonymous`, and
-`review`, then add the ACM rights metadata supplied after acceptance.
+If submitting to a CI full-paper or extended-abstract track that requires
+double-blind review, make a review-specific copy that restores `anonymous` and
+`review`, removes the author block, and removes or anonymizes the public code
+repository URL until review is complete. The final camera-ready version should
+remove review-only options and add the ACM rights metadata supplied after
+acceptance.
 
 ## Template Source
 
