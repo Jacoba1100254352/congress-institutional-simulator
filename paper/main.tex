@@ -170,6 +170,10 @@ The simulator reports a metric suite rather than a single score:
   \item Roadmap diagnostics: fast/middle/high route rates, challenge exhaustion, false-negative default passage, public-will review rate, public-signal movement, district alignment, cosponsorship counts, proposal-bond forfeiture, strategic decoy rate, proposer-access Gini, and welfare per submitted bill.
 \end{itemize}
 
+Metric direction matters. Most metrics are normalized rates or scores, but they do not all have the same interpretation. Productivity, welfare, compromise, public alignment, legitimacy, anti-lobbying success, citizen certification, district alignment, and welfare per submitted bill are reported as higher-is-better diagnostics. Gridlock, low-support passage, popular failure, lobby capture, public-preference distortion, minority harm, concentrated-harm passage, proposer gain, low-support active-law share, and false-negative default passage are lower-is-better risk metrics. Floor consideration, access denial, committee rejection, challenge use, amendment use, compensation use, reversal, attention spending, objection-window use, and policy shift are context-dependent diagnostics. Policy shift and proposer gain are policy-space distances, not ordinary 0--1 desirability scores; when they enter a directional comparison, they are normalized against the model's policy range and inverted only for that derived view.
+
+For reader-facing comparisons, the simulator also reports a \emph{directional score}. This is not an optimization target or a normative claim that one system is best. It is a display aid that orients mixed-sign metrics in the same direction: representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy; risk control averages inverted low-support passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift; the directional score averages productivity, representative quality, and risk control.
+
 The most important distinction is between productivity and compromise. A high-throughput institution may still enact bills with little active support. Conversely, a low-throughput institution may show high welfare among enacted bills but fail to adapt. The current compromise proxy is only a first step: the long-term target is to model representative compromise more directly by measuring public support, public benefit, coalition breadth, movement away from proposer advantage, and protection against concentrated minority harm.
 
 \section{Experimental Design}
@@ -223,7 +227,7 @@ The simulator source code, LaTeX manuscript source, ODD+D appendix source and PD
 
 \section{Results}
 
-Table~\ref{tab:scenario-averages} summarizes selected scenario averages across all v17 assumption cases. It is deliberately a broad institutional comparison, not a default-enactment-only table: the \emph{Default lane} column marks whether default passage is absent, open, contested, routed, gated, or paired with later review. The table mixes one absolute load measure with normalized metrics: \emph{Enacted/run} is a count of enacted bills per simulated run, while the other columns are rates or scores on a 0--1 scale. Figures~\ref{fig:productivity-low-support}, \ref{fig:compromise-productivity}, \ref{fig:broad-system-comparison}, \ref{fig:timeline-contention}, and~\ref{fig:default-pass-deltas} visualize the same tradeoff space.
+Table~\ref{tab:scenario-averages} summarizes selected scenario averages across all v17 assumption cases. It is deliberately a broad institutional comparison, not a default-enactment-only table: the \emph{Default lane} column marks whether default passage is absent, open, contested, routed, gated, or paired with later review. The table mixes one absolute load measure, several normalized metrics, and two policy-distance diagnostics: \emph{Enacted/run} is a count of enacted bills per simulated run; productivity, welfare, low-support passage, and challenge use are rates or scores; policy shift and proposer gain are average policy-space distances. Figures~\ref{fig:productivity-low-support}, \ref{fig:compromise-productivity}, \ref{fig:broad-system-comparison}, \ref{fig:directional-scoreboard}, \ref{fig:timeline-contention}, and~\ref{fig:default-pass-deltas} visualize the same tradeoff space.
 
 \begin{table*}
   \caption{Broad selected scenario averages across 18 assumption cases in \texttt{simulation-campaign-v17}.}
@@ -253,7 +257,7 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
     \bottomrule
   \end{tabular}%
   }
-  \par\smallskip\footnotesize \emph{Note:} The \emph{Default lane} column is a design attribute, not a value judgment: ``No'' means the scenario uses affirmative passage rather than default enactment; the other values describe how default enactment is constrained. The \emph{Label} column matches point labels in Figure~\ref{fig:productivity-low-support}. The red \emph{Current} row is the stylized current U.S.-style benchmark and matches the red benchmark marks in Figures~\ref{fig:productivity-low-support}--\ref{fig:default-pass-deltas}. \emph{Enacted/run} is an absolute count. All other reported columns are normalized rates or scores.
+  \par\smallskip\footnotesize \emph{Note:} The \emph{Default lane} column is a design attribute, not a value judgment: ``No'' means the scenario uses affirmative passage rather than default enactment; the other values describe how default enactment is constrained. The \emph{Label} column matches point labels in Figure~\ref{fig:productivity-low-support}. The red \emph{Current} row is the stylized current U.S.-style benchmark and matches the red benchmark marks in Figures~\ref{fig:productivity-low-support}--\ref{fig:default-pass-deltas}. \emph{Enacted/run} is an absolute count. Productivity, welfare, low-support passage, and challenge are normalized rates or scores. Shift and proposer gain are policy-distance diagnostics; smaller values usually indicate less volatility or proposer advantage, but the interpretation depends on whether reform-oriented movement is desired.
 \end{table*}
 
 \begin{figure*}
@@ -278,6 +282,14 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
   \caption{Broad comparison of selected institutional systems across normalized productivity, compromise, and generated welfare. Default-pass pairings are included as one family among affirmative majority, supermajority, bicameral, presidential-veto, public-panel, adaptive-track, and policy-tournament systems. The stylized current U.S.-style benchmark is shown in red.}
   \label{fig:broad-system-comparison}
   \Description{A horizontal grouped bar chart comparing productivity, compromise, and welfare for current-system, simple majority, supermajority, bicameral, presidential veto, open default-pass, challenge vouchers, mediation with challenge, public panel, strict adaptive tracks, pairwise policy tournament, and affected-group gate scenarios.}
+\end{figure*}
+
+\begin{figure*}
+  \centering
+  \input{figures/directional_scoreboard}
+  \caption{Directional comparison of selected institutional systems. Unlike raw metric plots, every bar in this figure is oriented so farther right is better under the paper's stated interpretation: productivity is raw throughput, representative quality combines welfare, enacted support, compromise, public alignment, and legitimacy, and risk control inverts low-support passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift. The aggregate directional score is a reading aid, not a normative proof. The stylized current U.S.-style benchmark is shown in red.}
+  \label{fig:directional-scoreboard}
+  \Description{A horizontal grouped bar chart comparing selected systems on directional score, productivity, representative quality, and risk control, with all bars oriented so higher is better. The current-system benchmark appears in red.}
 \end{figure*}
 
 \begin{figure*}

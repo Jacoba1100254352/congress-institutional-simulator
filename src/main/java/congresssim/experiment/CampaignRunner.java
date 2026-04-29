@@ -4,6 +4,7 @@ import congresssim.simulation.Scenario;
 import congresssim.simulation.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
+import congresssim.simulation.MetricDefinition;
 import congresssim.simulation.PartySystemProfile;
 import congresssim.simulation.WorldSpec;
 
@@ -1109,7 +1110,7 @@ public final class CampaignRunner {
 
     private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,caseWeight,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,fastLaneRate,middleLaneRate,highRiskLaneRate,challengeExhaustionRate,falseNegativePassRate,publicWillReviewRate,publicSignalMovement,districtAlignment,crossBlocAdmissionRate,affectedGroupSponsorshipRate,averageCosponsors,proposalBondForfeiture,strategicDecoyRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,caseWeight,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,directionalScore,representativeQuality,riskControl,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,fastLaneRate,middleLaneRate,highRiskLaneRate,challengeExhaustionRate,falseNegativePassRate,publicWillReviewRate,publicSignalMovement,districtAlignment,crossBlocAdmissionRate,affectedGroupSponsorshipRate,averageCosponsors,proposalBondForfeiture,strategicDecoyRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes\n");
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
@@ -1123,6 +1124,9 @@ public final class CampaignRunner {
                     .append(report.enactedBills()).append(',')
                     .append(format((double) report.enactedBills() / runs)).append(',')
                     .append(format((report.totalBills() * report.floorConsiderationRate()) / runs)).append(',')
+                    .append(format(report.directionalScore())).append(',')
+                    .append(format(report.representativeQualityScore())).append(',')
+                    .append(format(report.riskControlScore())).append(',')
                     .append(format(report.productivity())).append(',')
                     .append(format(report.floorConsiderationRate())).append(',')
                     .append(format(report.averageEnactedSupport())).append(',')
@@ -1229,14 +1233,23 @@ public final class CampaignRunner {
         builder.append("## Headline Findings\n\n");
         appendHeadlineFindings(builder, result.rows(), aggregateByScenario);
 
+        builder.append("## Metric Direction Legend\n\n");
+        builder.append("- `↑` means a higher raw value is usually better.\n");
+        builder.append("- `↓` means a lower raw value is usually better; directional scores invert these metrics before combining them.\n");
+        builder.append("- `diag.` means the metric is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.\n");
+        builder.append("- `Directional score` is a reading aid, not a final institutional verdict. It averages productivity, representative quality, and risk control. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts low-support passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.\n\n");
+
         builder.append("## Scenario Averages Across Cases\n\n");
-        builder.append("| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Minority harm | Legitimacy | Policy shift | Proposer gain | Capture | Lobby spend | Defensive spend | Amend rate | Compensation | Anti-lobby pass | Challenge | Floor |\n");
-        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+        builder.append("| Scenario | Directional score ↑ | Quality ↑ | Risk control ↑ | Productivity ↑ | Enacted/run | Floor/run diag. | Welfare ↑ | Low-support ↓ | Minority harm ↓ | Legitimacy ↑ | Policy shift diag. | Proposer gain ↓ | Capture ↓ | Lobby spend diag. | Defensive spend diag. | Amend rate diag. | Compensation diag. | Anti-lobby pass ↑ | Challenge diag. | Floor diag. |\n");
+        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
         aggregateByScenario.values()
                 .stream()
                 .sorted(Comparator.comparing(ScenarioAggregate::scenarioKey))
                 .forEach(summary -> builder.append("| ")
                         .append(summary.scenarioName()).append(" | ")
+                        .append(format(summary.directionalScore())).append(" | ")
+                        .append(format(summary.representativeQuality())).append(" | ")
+                        .append(format(summary.riskControl())).append(" | ")
                         .append(format(summary.productivity())).append(" | ")
                         .append(format(summary.enactedPerRun())).append(" | ")
                         .append(format(summary.floorPerRun())).append(" | ")
@@ -1909,6 +1922,10 @@ public final class CampaignRunner {
                 .stream()
                 .max(Comparator.comparingDouble(ScenarioAggregate::welfare))
                 .orElseThrow();
+        ScenarioAggregate bestDirectional = aggregateByScenario.values()
+                .stream()
+                .max(Comparator.comparingDouble(ScenarioAggregate::directionalScore))
+                .orElseThrow();
         if (openDefault == null) {
             ScenarioAggregate bestProductivity = aggregateByScenario.values()
                     .stream()
@@ -1932,6 +1949,11 @@ public final class CampaignRunner {
                     .append(bestCompromise.scenarioName())
                     .append(" at ")
                     .append(format(bestCompromise.compromise()))
+                    .append(".\n");
+            builder.append("- Highest directional score, where lower-better risk metrics are inverted, came from ")
+                    .append(bestDirectional.scenarioName())
+                    .append(" at ")
+                    .append(format(bestDirectional.directionalScore()))
                     .append(".\n\n");
             return;
         }
@@ -1950,6 +1972,11 @@ public final class CampaignRunner {
                 .append(" low-support passage and ")
                 .append(format(openDefault.policyShift()))
                 .append(" policy shift.\n");
+        builder.append("- Highest directional score, where lower-better risk metrics are inverted before combination, came from ")
+                .append(bestDirectional.scenarioName())
+                .append(" at ")
+                .append(format(bestDirectional.directionalScore()))
+                .append(".\n");
         if (informedGuarded != null) {
             double lowSupportReduction = openDefault.lowSupport() - informedGuarded.lowSupport();
             double policyShiftReduction = openDefault.policyShift() - informedGuarded.policyShift();
@@ -2237,6 +2264,7 @@ public final class CampaignRunner {
         private final String scenarioName;
         private double weightTotal;
         private double productivity;
+        private double avgSupport;
         private double welfare;
         private double compromise;
         private double lowSupport;
@@ -2306,6 +2334,7 @@ public final class CampaignRunner {
         private void add(ScenarioReport report, int runs, double weight) {
             weightTotal += weight;
             productivity += report.productivity() * weight;
+            avgSupport += report.averageEnactedSupport() * weight;
             welfare += report.averagePublicBenefit() * weight;
             compromise += report.compromiseScore() * weight;
             lowSupport += report.controversialPassageRate() * weight;
@@ -2380,8 +2409,42 @@ public final class CampaignRunner {
             return productivity / weightTotal;
         }
 
+        private double representativeQuality() {
+            return MetricDefinition.average(
+                    welfare(),
+                    avgSupport(),
+                    compromise(),
+                    publicAlignment(),
+                    legitimacy()
+            );
+        }
+
+        private double riskControl() {
+            return MetricDefinition.average(
+                    MetricDefinition.lowerIsBetter(lowSupport()),
+                    MetricDefinition.lowerIsBetter(minorityHarm()),
+                    MetricDefinition.lowerIsBetter(lobbyCapture()),
+                    MetricDefinition.lowerIsBetter(publicPreferenceDistortion()),
+                    MetricDefinition.lowerIsBetter(concentratedHarmPassage()),
+                    MetricDefinition.lowerIsBetter(proposerGain(), 2.0),
+                    MetricDefinition.lowerIsBetter(policyShift(), 2.0)
+            );
+        }
+
+        private double directionalScore() {
+            return MetricDefinition.average(
+                    productivity(),
+                    representativeQuality(),
+                    riskControl()
+            );
+        }
+
         private double welfare() {
             return welfare / weightTotal;
+        }
+
+        private double avgSupport() {
+            return avgSupport / weightTotal;
         }
 
         private double lowSupport() {

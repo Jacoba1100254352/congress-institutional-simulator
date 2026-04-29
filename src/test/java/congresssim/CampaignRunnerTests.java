@@ -155,6 +155,9 @@ final class CampaignRunnerTests {
             String csv = Files.readString(result.csvPath());
             List<String> lines = csv.lines().filter(line -> !line.isBlank()).toList();
             assertTrue(lines.size() == result.rows().size() + 1, "CSV should contain one header plus one line per campaign row.");
+            assertTrue(lines.getFirst().contains("directionalScore"), "CSV should expose oriented display scores.");
+            assertTrue(lines.getFirst().contains("representativeQuality"), "CSV should expose representative quality.");
+            assertTrue(lines.getFirst().contains("riskControl"), "CSV should expose inverted risk-control score.");
             int headerColumns = csvColumnCount(lines.getFirst());
             assertTrue(headerColumns >= 70, "CSV should expose the expanded metric schema.");
             for (int i = 1; i < lines.size(); i++) {
@@ -166,6 +169,9 @@ final class CampaignRunnerTests {
 
             String markdown = Files.readString(result.markdownPath());
             assertTrue(markdown.contains("## Case Weights"), "Weighted campaigns should document case weights in Markdown.");
+            assertTrue(markdown.contains("## Metric Direction Legend"), "Markdown should explain metric direction.");
+            assertTrue(markdown.contains("Directional score ↑"), "Markdown scenario table should label oriented scores.");
+            assertTrue(markdown.contains("Low-support ↓"), "Markdown scenario table should label lower-is-better metrics.");
             assertTrue(markdown.contains("Weighted Two Major Plus Minors"), "Markdown should include party-system case names.");
         } catch (Exception exception) {
             throw new AssertionError("Weighted campaign report generation failed.", exception);

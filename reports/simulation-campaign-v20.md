@@ -15,32 +15,40 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 
 - Open default-pass averaged 0.841 productivity, versus 0.266 for simple majority.
 - Open default-pass also averaged 0.449 low-support passage and 0.664 policy shift.
+- Highest directional score, where lower-better risk metrics are inverted before combination, came from Default pass + adaptive strategy bundle at 0.720.
 - Budgeted lobbying spent 0.103 per potential bill, with 0.629 of spend aimed defensively at anti-lobbying reform bills.
 - Public objection windows triggered on 0.647 of potential bills and changed low-support passage by -0.180 relative to open default-pass.
 - Pairwise policy tournaments changed proposer agenda advantage by 0.002, policy shift by -0.659, and status-quo wins averaged 0.450 relative to open default-pass.
 - Best average welfare in this campaign came from Unicameral 60 percent passage at 0.708.
 
+## Metric Direction Legend
+
+- `↑` means a higher raw value is usually better.
+- `↓` means a lower raw value is usually better; directional scores invert these metrics before combining them.
+- `diag.` means the metric is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.
+- `Directional score` is a reading aid, not a final institutional verdict. It averages productivity, representative quality, and risk control. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts low-support passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
+
 ## Scenario Averages Across Cases
 
-| Scenario | Productivity | Enacted/run | Floor/run | Welfare | Low-support | Minority harm | Legitimacy | Policy shift | Proposer gain | Capture | Lobby spend | Defensive spend | Amend rate | Compensation | Anti-lobby pass | Challenge | Floor |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Bicameral simple majority | 0.174 | 16.805 | 103.333 | 0.665 | 0.000 | 0.078 | 0.593 | 0.053 | 0.230 | 0.234 | 0.000 | 0.000 | 0.000 | 0.000 | 0.458 | 0.000 | 1.000 |
-| Current U.S.-style system | 0.067 | 6.338 | 103.333 | 0.704 | 0.000 | 0.061 | 0.656 | 0.015 | 0.157 | 0.253 | 0.000 | 0.000 | 0.000 | 0.000 | 0.183 | 0.000 | 1.000 |
-| Default pass unless 2/3 block | 0.841 | 86.900 | 103.333 | 0.496 | 0.449 | 0.168 | 0.392 | 0.664 | 0.657 | 0.265 | 0.000 | 0.000 | 0.000 | 0.000 | 0.991 | 0.000 | 1.000 |
-| Default pass + adaptive proposers | 0.861 | 88.603 | 102.607 | 0.495 | 0.444 | 0.163 | 0.399 | 0.568 | 0.590 | 0.256 | 0.000 | 0.000 | 0.995 | 0.019 | 0.993 | 0.000 | 0.995 |
-| Default pass + adaptive proposers + strategic lobbying | 0.861 | 88.553 | 102.602 | 0.494 | 0.445 | 0.164 | 0.398 | 0.568 | 0.590 | 0.258 | 0.125 | 0.586 | 0.995 | 0.019 | 0.989 | 0.000 | 0.995 |
-| Default pass + pairwise policy tournament | 0.550 | 56.361 | 56.369 | 0.641 | 0.042 | 0.046 | 0.645 | 0.004 | 0.004 | 0.202 | 0.000 | 0.000 | 0.550 | 0.000 | 0.944 | 0.000 | 0.550 |
-| Default pass + budgeted lobbying | 0.843 | 86.975 | 103.333 | 0.495 | 0.450 | 0.168 | 0.391 | 0.665 | 0.656 | 0.267 | 0.103 | 0.629 | 0.000 | 0.000 | 0.990 | 0.000 | 1.000 |
-| Default pass + constituent public will + citizen panel | 0.404 | 41.193 | 103.333 | 0.629 | 0.248 | 0.106 | 0.516 | 0.211 | 0.434 | 0.209 | 0.000 | 0.000 | 0.000 | 0.000 | 0.963 | 0.000 | 1.000 |
-| Default pass + adaptive strategy bundle | 0.965 | 99.159 | 102.662 | 0.456 | 0.377 | 0.120 | 0.433 | 0.370 | 0.346 | 0.239 | 0.123 | 0.555 | 0.996 | 0.230 | 0.990 | 0.000 | 0.996 |
-| Default pass + law registry | 0.867 | 89.698 | 103.333 | 0.491 | 0.398 | 0.171 | 0.391 | 0.835 | 0.597 | 0.266 | 0.000 | 0.000 | 0.000 | 0.000 | 0.992 | 0.000 | 1.000 |
-| Default pass + multi-round mediation | 0.957 | 98.540 | 103.333 | 0.449 | 0.394 | 0.117 | 0.426 | 0.391 | 0.368 | 0.270 | 0.000 | 0.000 | 0.720 | 0.240 | 0.989 | 0.000 | 1.000 |
-| Default pass + multi-round mediation + challenge | 0.784 | 86.294 | 103.333 | 0.460 | 0.301 | 0.114 | 0.438 | 0.296 | 0.340 | 0.275 | 0.000 | 0.000 | 0.718 | 0.241 | 0.867 | 0.376 | 1.000 |
-| Default pass + public objection window | 0.447 | 45.377 | 103.333 | 0.592 | 0.268 | 0.104 | 0.505 | 0.214 | 0.383 | 0.216 | 0.000 | 0.000 | 0.000 | 0.000 | 0.901 | 0.000 | 1.000 |
-| Default pass + strategic lobbying | 0.841 | 86.854 | 103.333 | 0.495 | 0.451 | 0.168 | 0.391 | 0.664 | 0.657 | 0.267 | 0.122 | 0.594 | 0.000 | 0.000 | 0.989 | 0.000 | 1.000 |
-| Bicameral majority + presidential veto | 0.112 | 10.794 | 103.333 | 0.682 | 0.000 | 0.070 | 0.617 | 0.031 | 0.210 | 0.234 | 0.000 | 0.000 | 0.000 | 0.000 | 0.306 | 0.000 | 1.000 |
-| Unicameral simple majority | 0.266 | 26.283 | 103.333 | 0.636 | 0.000 | 0.091 | 0.553 | 0.103 | 0.311 | 0.234 | 0.000 | 0.000 | 0.000 | 0.000 | 0.649 | 0.000 | 1.000 |
-| Unicameral 60 percent passage | 0.089 | 8.458 | 103.333 | 0.708 | 0.000 | 0.059 | 0.654 | 0.020 | 0.150 | 0.246 | 0.000 | 0.000 | 0.000 | 0.000 | 0.251 | 0.000 | 1.000 |
+| Scenario | Directional score ↑ | Quality ↑ | Risk control ↑ | Productivity ↑ | Enacted/run | Floor/run diag. | Welfare ↑ | Low-support ↓ | Minority harm ↓ | Legitimacy ↑ | Policy shift diag. | Proposer gain ↓ | Capture ↓ | Lobby spend diag. | Defensive spend diag. | Amend rate diag. | Compensation diag. | Anti-lobby pass ↑ | Challenge diag. | Floor diag. |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Bicameral simple majority | 0.556 | 0.596 | 0.899 | 0.174 | 16.805 | 103.333 | 0.665 | 0.000 | 0.078 | 0.593 | 0.053 | 0.230 | 0.234 | 0.000 | 0.000 | 0.000 | 0.000 | 0.458 | 0.000 | 1.000 |
+| Current U.S.-style system | 0.541 | 0.642 | 0.914 | 0.067 | 6.338 | 103.333 | 0.704 | 0.000 | 0.061 | 0.656 | 0.015 | 0.157 | 0.253 | 0.000 | 0.000 | 0.000 | 0.000 | 0.183 | 0.000 | 1.000 |
+| Default pass unless 2/3 block | 0.650 | 0.466 | 0.642 | 0.841 | 86.900 | 103.333 | 0.496 | 0.449 | 0.168 | 0.392 | 0.664 | 0.657 | 0.265 | 0.000 | 0.000 | 0.000 | 0.000 | 0.991 | 0.000 | 1.000 |
+| Default pass + adaptive proposers | 0.662 | 0.471 | 0.653 | 0.861 | 88.603 | 102.607 | 0.495 | 0.444 | 0.163 | 0.399 | 0.568 | 0.590 | 0.256 | 0.000 | 0.000 | 0.995 | 0.019 | 0.993 | 0.000 | 0.995 |
+| Default pass + adaptive proposers + strategic lobbying | 0.661 | 0.471 | 0.652 | 0.861 | 88.553 | 102.602 | 0.494 | 0.445 | 0.164 | 0.398 | 0.568 | 0.590 | 0.258 | 0.125 | 0.586 | 0.995 | 0.019 | 0.989 | 0.000 | 0.995 |
+| Default pass + pairwise policy tournament | 0.710 | 0.651 | 0.931 | 0.550 | 56.361 | 56.369 | 0.641 | 0.042 | 0.046 | 0.645 | 0.004 | 0.004 | 0.202 | 0.000 | 0.000 | 0.550 | 0.000 | 0.944 | 0.000 | 0.550 |
+| Default pass + budgeted lobbying | 0.650 | 0.466 | 0.641 | 0.843 | 86.975 | 103.333 | 0.495 | 0.450 | 0.168 | 0.391 | 0.665 | 0.656 | 0.267 | 0.103 | 0.629 | 0.000 | 0.000 | 0.990 | 0.000 | 1.000 |
+| Default pass + constituent public will + citizen panel | 0.593 | 0.547 | 0.827 | 0.404 | 41.193 | 103.333 | 0.629 | 0.248 | 0.106 | 0.516 | 0.211 | 0.434 | 0.209 | 0.000 | 0.000 | 0.000 | 0.000 | 0.963 | 0.000 | 1.000 |
+| Default pass + adaptive strategy bundle | 0.720 | 0.492 | 0.702 | 0.965 | 99.159 | 102.662 | 0.456 | 0.377 | 0.120 | 0.433 | 0.370 | 0.346 | 0.239 | 0.123 | 0.555 | 0.996 | 0.230 | 0.990 | 0.000 | 0.996 |
+| Default pass + law registry | 0.658 | 0.472 | 0.634 | 0.867 | 89.698 | 103.333 | 0.491 | 0.398 | 0.171 | 0.391 | 0.835 | 0.597 | 0.266 | 0.000 | 0.000 | 0.000 | 0.000 | 0.992 | 0.000 | 1.000 |
+| Default pass + multi-round mediation | 0.708 | 0.486 | 0.681 | 0.957 | 98.540 | 103.333 | 0.449 | 0.394 | 0.117 | 0.426 | 0.391 | 0.368 | 0.270 | 0.000 | 0.000 | 0.720 | 0.240 | 0.989 | 0.000 | 1.000 |
+| Default pass + multi-round mediation + challenge | 0.672 | 0.497 | 0.734 | 0.784 | 86.294 | 103.333 | 0.460 | 0.301 | 0.114 | 0.438 | 0.296 | 0.340 | 0.275 | 0.000 | 0.000 | 0.718 | 0.241 | 0.867 | 0.376 | 1.000 |
+| Default pass + public objection window | 0.596 | 0.527 | 0.813 | 0.447 | 45.377 | 103.333 | 0.592 | 0.268 | 0.104 | 0.505 | 0.214 | 0.383 | 0.216 | 0.000 | 0.000 | 0.000 | 0.000 | 0.901 | 0.000 | 1.000 |
+| Default pass + strategic lobbying | 0.649 | 0.466 | 0.641 | 0.841 | 86.854 | 103.333 | 0.495 | 0.451 | 0.168 | 0.391 | 0.664 | 0.657 | 0.267 | 0.122 | 0.594 | 0.000 | 0.000 | 0.989 | 0.000 | 1.000 |
+| Bicameral majority + presidential veto | 0.543 | 0.611 | 0.907 | 0.112 | 10.794 | 103.333 | 0.682 | 0.000 | 0.070 | 0.617 | 0.031 | 0.210 | 0.234 | 0.000 | 0.000 | 0.000 | 0.000 | 0.306 | 0.000 | 1.000 |
+| Unicameral simple majority | 0.571 | 0.568 | 0.880 | 0.266 | 26.283 | 103.333 | 0.636 | 0.000 | 0.091 | 0.553 | 0.103 | 0.311 | 0.234 | 0.000 | 0.000 | 0.000 | 0.000 | 0.649 | 0.000 | 1.000 |
+| Unicameral 60 percent passage | 0.548 | 0.641 | 0.914 | 0.089 | 8.458 | 103.333 | 0.708 | 0.000 | 0.059 | 0.654 | 0.020 | 0.150 | 0.246 | 0.000 | 0.000 | 0.000 | 0.000 | 0.251 | 0.000 | 1.000 |
 
 ## Law-Registry Deltas
 

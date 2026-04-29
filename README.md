@@ -247,51 +247,59 @@ Examples:
 
 The first metric set is deliberately simple, but it separates throughput from legitimacy-oriented signals:
 
-- `productivity`: share of introduced bills enacted
-- `floor`: share of potential bills that reached floor consideration
-- `caseWeight`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`
-- campaign reports also track `enactedPerRun` and `floorPerRun` so proposal flooding is visible as institutional load, not only as percentages
-- `challengeRate`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member challenge escalation
-- `avgSupport`: average yay share for enacted bills
-- `welfare`: average public-benefit score for enacted bills
-- `cooperation`: a legacy throughput-support metric, not a unity score
-- `compromise`: the more important target metric; it rewards enacted bills that are moderate, broadly supported, and do not simply hand the proposer their ideal point
-- `gridlock`: share of introduced bills that fail
-- `accessD`: share of potential bills blocked by proposal-access rules
-- `cmteRej`: share of potential bills rejected by a committee gate
-- `lowSupport`: share of enacted bills with less than 50 percent yay support
-- `popularFail`: share of high-public-support bills that fail
-- `policyShift`: average absolute movement from the prior status quo
-- `propGain`: average enacted movement toward the proposer's ideal point
-- `lobbyCapture`: average enacted-bill capture risk from positive lobby pressure, private gain, and weak public value
-- `publicAlignment`: how closely enacted voting support tracks generated public support
-- `antiLobbyingSuccess`: share of generated anti-lobbying reform bills enacted
-- `privateGainRatio`: enacted private gain relative to generated public benefit
-- `lobbySpendPerBill`: explicit lobby-group spend per potential bill
-- `defensiveLobbyingShare`: share of lobby spend aimed at defeating anti-lobbying reform bills
-- `captureReturnOnSpend`: enacted capture risk per unit of explicit lobby spend
-- `publicPreferenceDistortion`: average gap between enacted yes-share and generated public support
-- `amendmentRate`: share of potential bills whose policy position moved during mediation
-- `amendmentMovement`: average absolute policy movement created by mediation per potential bill
-- `selectedAlternativeMedianDistance`: average distance between selected alternatives and the chamber median
-- `proposerAgendaAdvantage`: average selected-alternative movement toward the original proposer's ideal point
-- `alternativeDiversity`: average number of alternatives/status quo options considered per tournament
-- `statusQuoWinRate`: share of policy tournaments where the status quo blocks final ratification
-- `citizenReviewRate`: share of potential bills reviewed by a synthetic citizen panel
-- `citizenCertificationRate`: share of reviewed bills receiving a positive citizen-panel certificate
-- `citizenLegitimacy`: average legitimacy estimate from citizen-panel review
-- `attentionSpendPerBill`: quadratic attention credits spent per potential bill
-- `objectionWindowRate`: share of potential bills triggering a public objection or repeal window
-- `repealWindowReversalRate`: share of triggered repeal windows that reverse enactment
-- `fastLaneRate`, `middleLaneRate`, `highRiskLaneRate`: adaptive-route shares
-- `challengeExhaustionRate`: share of potential bills where a challenge would have cleared threshold but no token was available
-- `falseNegativePassRate`: risky, low-support, or high-harm default enactments that passed unchallenged
-- `publicWillReviewRate`, `publicSignalMovement`, `districtAlignment`: constituent/public-will review diagnostics
-- `crossBlocAdmissionRate`, `affectedGroupSponsorshipRate`, `averageCosponsors`: richer cosponsorship diagnostics
-- `proposalBondForfeiture`: average proposal-bond loss per potential bill
-- `strategicDecoyRate`: strategic clone/decoy alternatives introduced per tournament
-- `proposerAccessGini`: concentration of floor access across proposers
-- `welfarePerSubmittedBill`: public-benefit yield per potential proposal
+Metric direction is explicit:
+
+- `↑` higher is generally better.
+- `↓` lower is generally better; directional comparisons invert these before combining them.
+- `diag.` means the value is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.
+- `directionalScore` is a reader aid that averages `productivity`, `representativeQuality`, and `riskControl`. `representativeQuality` averages welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts low-support passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
+
+- `productivity` `↑`: share of introduced bills enacted
+- `floor` `diag.`: share of potential bills that reached floor consideration
+- `caseWeight` `diag.`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`
+- campaign reports also track `enactedPerRun` and `floorPerRun` `diag.` so proposal flooding is visible as institutional load, not only as percentages
+- `directionalScore` `↑`, `representativeQuality` `↑`, and `riskControl` `↑`: derived display scores that orient mixed-sign metrics in the same direction
+- `challengeRate` `diag.`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member challenge escalation
+- `avgSupport` `↑`: average yay share for enacted bills
+- `welfare` `↑`: average public-benefit score for enacted bills
+- `cooperation` `↑`: a legacy throughput-support metric, not a unity score
+- `compromise` `↑`: the more important target metric; it rewards enacted bills that are moderate, broadly supported, and do not simply hand the proposer their ideal point
+- `gridlock` `↓`: share of introduced bills that fail
+- `accessD` `diag.`: share of potential bills blocked by proposal-access rules
+- `cmteRej` `diag.`: share of potential bills rejected by a committee gate
+- `lowSupport` `↓`: share of enacted bills with less than 50 percent yay support
+- `popularFail` `↓`: share of high-public-support bills that fail
+- `policyShift` `diag.`: average absolute movement from the prior status quo; high values may mean useful reform or uncontrolled volatility depending on context
+- `propGain` `↓`: average enacted movement toward the proposer's ideal point
+- `lobbyCapture` `↓`: average enacted-bill capture risk from positive lobby pressure, private gain, and weak public value
+- `publicAlignment` `↑`: how closely enacted voting support tracks generated public support
+- `antiLobbyingSuccess` `↑`: share of generated anti-lobbying reform bills enacted
+- `privateGainRatio` `↓`: enacted private gain relative to generated public benefit
+- `lobbySpendPerBill` `diag.`: explicit lobby-group spend per potential bill
+- `defensiveLobbyingShare` `diag.`: share of lobby spend aimed at defeating anti-lobbying reform bills
+- `captureReturnOnSpend` `↓`: enacted capture risk per unit of explicit lobby spend
+- `publicPreferenceDistortion` `↓`: average gap between enacted yes-share and generated public support
+- `amendmentRate` `diag.`: share of potential bills whose policy position moved during mediation
+- `amendmentMovement` `diag.`: average absolute policy movement created by mediation per potential bill
+- `selectedAlternativeMedianDistance` `↓`: average distance between selected alternatives and the chamber median
+- `proposerAgendaAdvantage` `↓`: average selected-alternative movement toward the original proposer's ideal point
+- `alternativeDiversity` `diag.`: average number of alternatives/status quo options considered per tournament
+- `statusQuoWinRate` `diag.`: share of policy tournaments where the status quo blocks final ratification
+- `citizenReviewRate` `diag.`: share of potential bills reviewed by a synthetic citizen panel
+- `citizenCertificationRate` `↑`: share of reviewed bills receiving a positive citizen-panel certificate
+- `citizenLegitimacy` `↑`: average legitimacy estimate from citizen-panel review
+- `attentionSpendPerBill` `diag.`: quadratic attention credits spent per potential bill
+- `objectionWindowRate` `diag.`: share of potential bills triggering a public objection or repeal window
+- `repealWindowReversalRate` `diag.`: share of triggered repeal windows that reverse enactment
+- `fastLaneRate`, `middleLaneRate`, `highRiskLaneRate` `diag.`: adaptive-route shares
+- `challengeExhaustionRate` `↓`: share of potential bills where a challenge would have cleared threshold but no token was available
+- `falseNegativePassRate` `↓`: risky, low-support, or high-harm default enactments that passed unchallenged
+- `publicWillReviewRate`, `publicSignalMovement` `diag.`, `districtAlignment` `↑`: constituent/public-will review diagnostics
+- `crossBlocAdmissionRate`, `affectedGroupSponsorshipRate`, `averageCosponsors` `diag.`: richer cosponsorship diagnostics
+- `proposalBondForfeiture` `diag.`: average proposal-bond loss per potential bill
+- `strategicDecoyRate` `↓`: strategic clone/decoy alternatives introduced per tournament
+- `proposerAccessGini` `↓`: concentration of floor access across proposers
+- `welfarePerSubmittedBill` `↑`: public-benefit yield per potential proposal
 
 These are not claims about real-world validity. They are hooks for comparing rule sets under shared assumptions.
 

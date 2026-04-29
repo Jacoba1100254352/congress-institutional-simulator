@@ -402,64 +402,68 @@ Use CSV output for analysis and Markdown output for quick review.
 
 The simulator reports several metrics because passage volume alone is not enough to evaluate an institution.
 
-- `productivity`: share of potential bills enacted.
-- `caseWeight`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`.
-- `floor`: share of potential bills reaching floor consideration.
-- `avgSupport`: average yes-vote share for enacted bills.
-- `welfare`: average public-benefit score for enacted bills.
-- `cooperation`: productivity weighted by enacted support.
-- `compromise`: moderation, support, and distance from proposer advantage.
-- `gridlock`: share of potential bills not enacted.
-- `accessD`: share of potential bills denied by proposal-access rules.
-- `cmteRej`: share of potential bills rejected by committee.
-- `challengeRate`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member escalation.
-- `lowSupport`: enacted bills with less than 50 percent yes support.
-- `popularFail`: high-public-support bills that fail.
-- `policyShift`: average movement away from the prior status quo.
-- `propGain`: enacted movement toward the proposer's ideal point.
-- `lobbyCapture`: average enacted-bill capture risk from positive lobby pressure, private gain, and weak public value.
-- `publicAlignment`: how closely enacted voting support tracks generated public support.
-- `antiLobbyingSuccess`: share of generated anti-lobbying reform bills enacted.
-- `privateGainRatio`: enacted private gain relative to generated public benefit.
-- `lobbySpendPerBill`: explicit lobby-group spend per potential bill.
-- `defensiveLobbyingShare`: share of lobby spend aimed at defeating anti-lobbying reform bills.
-- `captureReturnOnSpend`: enacted capture risk per unit of explicit lobby spend.
-- `publicPreferenceDistortion`: average gap between enacted yes-share and generated public support.
-- `amendmentRate`: share of potential bills whose policy position moved during mediation.
-- `amendmentMovement`: average absolute policy movement created by mediation per potential bill.
-- `minorityHarm`: average enacted concentrated harm weighted by affected-group opposition.
-- `concentratedHarmPassage`: share of high concentrated-harm bills that are enacted.
-- `compensationRate`: share of potential bills receiving compensation amendments.
-- `legitimacy`: enacted-bill legitimacy proxy combining public support, chamber support, affected-group support, and harm penalties.
-- `activeLawWelfare`: average generated public benefit among active laws at delayed review points.
-- `reversalRate`: share of delayed law reviews that repeal a provisional law.
-- `timeToCorrectBadLaw`: average rounds between enactment and repeal for corrected laws.
-- `lowSupportActiveLawShare`: share of active laws at review points with public support below 50 percent.
-- `selectedAlternativeMedianDistance`: average distance between selected alternatives and the chamber median.
-- `proposerAgendaAdvantage`: average selected-alternative movement toward the original proposer's ideal point.
-- `alternativeDiversity`: average number of alternatives/status quo options considered per tournament.
-- `statusQuoWinRate`: share of policy tournaments where the status quo blocks final ratification.
-- `publicBenefitPerLobbyDollar`: enacted public benefit per unit of explicit lobby spend.
-- `directLobbySpendShare`: share of explicit lobbying spent on direct pressure.
-- `agendaLobbySpendShare`: share of explicit lobbying spent on agenda access.
-- `informationLobbySpendShare`: share of explicit lobbying spent on information distortion.
-- `publicCampaignSpendShare`: share of explicit lobbying spent on public campaigns.
-- `litigationThreatSpendShare`: share of explicit lobbying spent on litigation or delay threats.
-- `citizenReviewRate`: share of potential bills reviewed by a synthetic citizen panel.
-- `citizenCertificationRate`: share of reviewed bills receiving a positive citizen-panel certificate.
-- `citizenLegitimacy`: average legitimacy estimate from citizen-panel review.
-- `attentionSpendPerBill`: quadratic attention credits spent per potential bill.
-- `objectionWindowRate`: share of potential bills triggering a public objection or repeal window.
-- `repealWindowReversalRate`: share of triggered repeal windows that reverse enactment.
-- `fastLaneRate`, `middleLaneRate`, `highRiskLaneRate`: adaptive-route shares.
-- `challengeExhaustionRate`: share of potential bills where a challenge would have cleared threshold but no token was available.
-- `falseNegativePassRate`: risky, low-support, or high-harm default enactments that passed unchallenged.
-- `publicWillReviewRate`, `publicSignalMovement`, `districtAlignment`: constituent/public-will review diagnostics.
-- `crossBlocAdmissionRate`, `affectedGroupSponsorshipRate`, `averageCosponsors`: richer cosponsorship diagnostics.
-- `proposalBondForfeiture`: average proposal-bond loss per potential bill.
-- `strategicDecoyRate`: strategic clone/decoy alternatives introduced per tournament.
-- `proposerAccessGini`: concentration of floor access across proposers.
-- `welfarePerSubmittedBill`: public-benefit yield per potential proposal.
+Direction markers are used in generated reports and paper figures:
+
+- `↑`: higher is generally better.
+- `↓`: lower is generally better.
+- `diag.`: context-dependent activity or risk context.
+
+The campaign CSV also includes `directionalScore`, `representativeQuality`, and `riskControl`. These are display scores, not proof that a system is best. `directionalScore` averages productivity, representative quality, and risk control. `representativeQuality` combines welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts low-support passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
+
+- `productivity` `↑`: share of potential bills enacted.
+- `caseWeight` `diag.`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`.
+- `floor` `diag.`: share of potential bills reaching floor consideration.
+- `avgSupport` `↑`: average yes-vote share for enacted bills.
+- `welfare` `↑`: average public-benefit score for enacted bills.
+- `cooperation` `↑`: productivity weighted by enacted support.
+- `compromise` `↑`: moderation, support, and distance from proposer advantage.
+- `gridlock` `↓`: share of potential bills not enacted.
+- `accessD` `diag.`: share of potential bills denied by proposal-access rules.
+- `cmteRej` `diag.`: share of potential bills rejected by committee.
+- `challengeRate` `diag.`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member escalation.
+- `lowSupport` `↓`: enacted bills with less than 50 percent yes support.
+- `popularFail` `↓`: high-public-support bills that fail.
+- `policyShift` `diag.`: average movement away from the prior status quo; this can be reform or volatility depending on the scenario.
+- `propGain` `↓`: enacted movement toward the proposer's ideal point.
+- `lobbyCapture` `↓`: average enacted-bill capture risk from positive lobby pressure, private gain, and weak public value.
+- `publicAlignment` `↑`: how closely enacted voting support tracks generated public support.
+- `antiLobbyingSuccess` `↑`: share of generated anti-lobbying reform bills enacted.
+- `privateGainRatio` `↓`: enacted private gain relative to generated public benefit.
+- `lobbySpendPerBill` `diag.`: explicit lobby-group spend per potential bill.
+- `defensiveLobbyingShare` `diag.`: share of lobby spend aimed at defeating anti-lobbying reform bills.
+- `captureReturnOnSpend` `↓`: enacted capture risk per unit of explicit lobby spend.
+- `publicPreferenceDistortion` `↓`: average gap between enacted yes-share and generated public support.
+- `amendmentRate` `diag.`: share of potential bills whose policy position moved during mediation.
+- `amendmentMovement` `diag.`: average absolute policy movement created by mediation per potential bill.
+- `minorityHarm` `↓`: average enacted concentrated harm weighted by affected-group opposition.
+- `concentratedHarmPassage` `↓`: share of high concentrated-harm bills that are enacted.
+- `compensationRate` `diag.`: share of potential bills receiving compensation amendments.
+- `legitimacy` `↑`: enacted-bill legitimacy proxy combining public support, chamber support, affected-group support, and harm penalties.
+- `activeLawWelfare` `↑`: average generated public benefit among active laws at delayed review points.
+- `reversalRate` `diag.`: share of delayed law reviews that repeal a provisional law.
+- `timeToCorrectBadLaw` `↓`: average rounds between enactment and repeal for corrected laws.
+- `lowSupportActiveLawShare` `↓`: share of active laws at review points with public support below 50 percent.
+- `selectedAlternativeMedianDistance` `↓`: average distance between selected alternatives and the chamber median.
+- `proposerAgendaAdvantage` `↓`: average selected-alternative movement toward the original proposer's ideal point.
+- `alternativeDiversity` `diag.`: average number of alternatives/status quo options considered per tournament.
+- `statusQuoWinRate` `diag.`: share of policy tournaments where the status quo blocks final ratification.
+- `publicBenefitPerLobbyDollar` `↑`: enacted public benefit per unit of explicit lobby spend.
+- `directLobbySpendShare`, `agendaLobbySpendShare`, `informationLobbySpendShare`, `publicCampaignSpendShare`, `litigationThreatSpendShare` `diag.`: explicit lobbying spend allocation by channel.
+- `citizenReviewRate` `diag.`: share of potential bills reviewed by a synthetic citizen panel.
+- `citizenCertificationRate` `↑`: share of reviewed bills receiving a positive citizen-panel certificate.
+- `citizenLegitimacy` `↑`: average legitimacy estimate from citizen-panel review.
+- `attentionSpendPerBill` `diag.`: quadratic attention credits spent per potential bill.
+- `objectionWindowRate` `diag.`: share of potential bills triggering a public objection or repeal window.
+- `repealWindowReversalRate` `diag.`: share of triggered repeal windows that reverse enactment.
+- `fastLaneRate`, `middleLaneRate`, `highRiskLaneRate` `diag.`: adaptive-route shares.
+- `challengeExhaustionRate` `↓`: share of potential bills where a challenge would have cleared threshold but no token was available.
+- `falseNegativePassRate` `↓`: risky, low-support, or high-harm default enactments that passed unchallenged.
+- `publicWillReviewRate`, `publicSignalMovement` `diag.`, `districtAlignment` `↑`: constituent/public-will review diagnostics.
+- `crossBlocAdmissionRate`, `affectedGroupSponsorshipRate`, `averageCosponsors` `diag.`: richer cosponsorship diagnostics.
+- `proposalBondForfeiture` `diag.`: average proposal-bond loss per potential bill.
+- `strategicDecoyRate` `↓`: strategic clone/decoy alternatives introduced per tournament.
+- `proposerAccessGini` `↓`: concentration of floor access across proposers.
+- `welfarePerSubmittedBill` `↑`: public-benefit yield per potential proposal.
 - `vetoes`: presidential veto count.
 - `overrides`: veto override count.
 

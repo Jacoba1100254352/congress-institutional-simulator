@@ -39,6 +39,8 @@ import congresssim.institution.QuadraticAttentionBudgetProcess;
 import congresssim.institution.SunsetTrialProcess;
 import congresssim.simulation.CommitteeComposition;
 import congresssim.simulation.CommitteeFactory;
+import congresssim.simulation.MetricDefinition;
+import congresssim.simulation.MetricDirection;
 import congresssim.simulation.PartySystemProfile;
 import congresssim.simulation.Scenario;
 import congresssim.simulation.ScenarioCatalog;
@@ -68,6 +70,7 @@ final class SimulatorInvariantTests {
 
     static void run() {
         simulatorReportsAreDeterministicAndBounded();
+        metricDirectionMetadataCoversCoreMetrics();
         simulatorProducesOneReportPerScenario();
     }
 
@@ -106,6 +109,9 @@ final class SimulatorInvariantTests {
             assertRatio(report.averagePublicBenefit(), "Average public benefit should be a ratio.");
             assertRatio(report.cooperationScore(), "Cooperation score should be a ratio.");
             assertRatio(report.compromiseScore(), "Compromise score should be a ratio.");
+            assertRatio(report.representativeQualityScore(), "Representative quality should be a directional ratio.");
+            assertRatio(report.riskControlScore(), "Risk control should be a directional ratio.");
+            assertRatio(report.directionalScore(), "Directional score should be a directional ratio.");
             assertRatio(report.gridlockRate(), "Gridlock rate should be a ratio.");
             assertRatio(report.controversialPassageRate(), "Low-support passage should be a ratio.");
             assertRatio(report.popularBillFailureRate(), "Popular bill failure rate should be a ratio.");
@@ -151,6 +157,30 @@ final class SimulatorInvariantTests {
             assertTrue(report.vetoes() >= 0, "Veto count should be nonnegative.");
             assertTrue(report.overriddenVetoes() >= 0 && report.overriddenVetoes() <= report.vetoes(), "Overridden vetoes should be bounded by vetoes.");
         }
+    }
+
+    private static void metricDirectionMetadataCoversCoreMetrics() {
+        assertTrue(
+                MetricDefinition.require("productivity").direction() == MetricDirection.HIGHER_IS_BETTER,
+                "Productivity should be marked higher-is-better."
+        );
+        assertTrue(
+                MetricDefinition.require("lowSupport").direction() == MetricDirection.LOWER_IS_BETTER,
+                "Low-support passage should be marked lower-is-better."
+        );
+        assertTrue(
+                MetricDefinition.require("policyShift").direction() == MetricDirection.DIAGNOSTIC,
+                "Policy shift should remain diagnostic, not automatically good or bad."
+        );
+        assertTrue(
+                MetricDefinition.definitions().size() >= 30,
+                "Metric direction registry should cover the report's core metrics."
+        );
+        assertRatio(MetricDefinition.lowerIsBetter(0.25), "Metric inversion should produce a ratio.");
+        assertTrue(
+                MetricDefinition.lowerIsBetter(1.0, 2.0) == 0.5,
+                "Range-aware metric inversion should normalize policy distances."
+        );
     }
 
 

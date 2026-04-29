@@ -71,4 +71,35 @@ public record ScenarioReport(
         int vetoes,
         int overriddenVetoes
 ) {
+    private static final double POLICY_DISTANCE_MAX = 2.0;
+
+    public double representativeQualityScore() {
+        return MetricDefinition.average(
+                averagePublicBenefit,
+                averageEnactedSupport,
+                compromiseScore,
+                publicAlignmentScore,
+                legitimacyScore
+        );
+    }
+
+    public double riskControlScore() {
+        return MetricDefinition.average(
+                MetricDefinition.lowerIsBetter(controversialPassageRate),
+                MetricDefinition.lowerIsBetter(minorityHarmIndex),
+                MetricDefinition.lowerIsBetter(lobbyCaptureIndex),
+                MetricDefinition.lowerIsBetter(publicPreferenceDistortion),
+                MetricDefinition.lowerIsBetter(concentratedHarmPassageRate),
+                MetricDefinition.lowerIsBetter(averageProposerGain, POLICY_DISTANCE_MAX),
+                MetricDefinition.lowerIsBetter(averagePolicyShift, POLICY_DISTANCE_MAX)
+        );
+    }
+
+    public double directionalScore() {
+        return MetricDefinition.average(
+                productivity,
+                representativeQualityScore(),
+                riskControlScore()
+        );
+    }
 }

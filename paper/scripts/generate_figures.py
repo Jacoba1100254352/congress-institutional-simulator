@@ -19,27 +19,83 @@ CURRENT_SYSTEM_KEY = "current-system"
 def read_averages(path: Path, weighted: bool = False) -> dict[str, dict[str, float]]:
     totals: dict[str, defaultdict[str, float]] = {}
     weights: dict[str, float] = {}
+    fields = (
+        "productivity",
+        "enactedPerRun",
+        "avgSupport",
+        "welfare",
+        "lowSupport",
+        "policyShift",
+        "proposerGain",
+        "lobbyCapture",
+        "publicAlignment",
+        "publicPreferenceDistortion",
+        "minorityHarm",
+        "concentratedHarmPassage",
+        "challengeRate",
+        "compromise",
+        "legitimacy",
+    )
     with path.open(newline="") as handle:
         for row in csv.DictReader(handle):
             key = row["scenarioKey"]
             weight = float(row.get("caseWeight", "1.0")) if weighted else 1.0
             totals.setdefault(key, defaultdict(float))
             weights[key] = weights.get(key, 0.0) + weight
-            for field in (
-                "productivity",
-                "enactedPerRun",
-                "welfare",
-                "lowSupport",
-                "policyShift",
-                "proposerGain",
-                "challengeRate",
-                "compromise",
-            ):
-                totals[key][field] += float(row[field]) * weight
-    return {
+            for field in fields:
+                if field in row and row[field] != "":
+                    totals[key][field] += float(row[field]) * weight
+    averages = {
         key: {field: value / weights[key] for field, value in values.items()}
         for key, values in totals.items()
     }
+    for values in averages.values():
+        add_directional_scores(values)
+    return averages
+
+
+def clamp01(value: float) -> float:
+    return max(0.0, min(1.0, value))
+
+
+def inverse01(value: float) -> float:
+    return 1.0 - clamp01(value)
+
+
+def inverse_range(value: float, max_value: float = 2.0) -> float:
+    if max_value <= 0.0:
+        return inverse01(value)
+    return 1.0 - clamp01(value / max_value)
+
+
+def mean(values: list[float]) -> float:
+    return sum(values) / len(values) if values else 0.0
+
+
+def add_directional_scores(values: dict[str, float]) -> None:
+    representative_quality = mean([
+        clamp01(values.get("welfare", 0.0)),
+        clamp01(values.get("avgSupport", 0.0)),
+        clamp01(values.get("compromise", 0.0)),
+        clamp01(values.get("publicAlignment", 0.0)),
+        clamp01(values.get("legitimacy", 0.0)),
+    ])
+    risk_control = mean([
+        inverse01(values.get("lowSupport", 0.0)),
+        inverse01(values.get("minorityHarm", 0.0)),
+        inverse01(values.get("lobbyCapture", 0.0)),
+        inverse01(values.get("publicPreferenceDistortion", 0.0)),
+        inverse01(values.get("concentratedHarmPassage", 0.0)),
+        inverse_range(values.get("proposerGain", 0.0)),
+        inverse_range(values.get("policyShift", 0.0)),
+    ])
+    values["representativeQuality"] = representative_quality
+    values["riskControl"] = risk_control
+    values["directionalScore"] = mean([
+        clamp01(values.get("productivity", 0.0)),
+        representative_quality,
+        risk_control,
+    ])
 
 
 def read_timeline(path: Path) -> tuple[list[str], dict[str, dict[str, dict[str, float]]]]:
@@ -132,8 +188,8 @@ def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> Non
             f"\\put({fmt(x + dx)},{fmt(y + dy)}){{\\makebox(0,0)[l]{{\\color{{{color}}}{label}}}}}",
         ])
     lines.extend([
-        f"\\put({fmt(left + width / 2.0)},{fmt(3.0)}){{\\makebox(0,0){{Productivity (share enacted)}}}}",
-        f"\\put({fmt(5.0)},{fmt(bottom + height / 2.0)}){{\\rotatebox{{90}}{{Low-support passage}}}}",
+        f"\\put({fmt(left + width / 2.0)},{fmt(3.0)}){{\\makebox(0,0){{Productivity $\\uparrow$ (share enacted)}}}}",
+        f"\\put({fmt(5.0)},{fmt(bottom + height / 2.0)}){{\\rotatebox{{90}}{{Low-support passage $\\downarrow$}}}}",
         "\\end{picture}",
         "\\endgroup",
         "",
@@ -278,8 +334,8 @@ def write_compromise_productivity(averages: dict[str, dict[str, float]]) -> None
             f"\\put({fmt(x + dx)},{fmt(y + dy)}){{\\makebox(0,0)[l]{{\\color{{{color}}}{label}}}}}",
         ])
     lines.extend([
-        f"\\put({fmt(left + width / 2.0)},{fmt(3.0)}){{\\makebox(0,0){{Productivity (share enacted)}}}}",
-        f"\\put({fmt(5.0)},{fmt(bottom + height / 2.0)}){{\\rotatebox{{90}}{{Compromise score}}}}",
+        f"\\put({fmt(left + width / 2.0)},{fmt(3.0)}){{\\makebox(0,0){{Productivity $\\uparrow$ (share enacted)}}}}",
+        f"\\put({fmt(5.0)},{fmt(bottom + height / 2.0)}){{\\rotatebox{{90}}{{Compromise score $\\uparrow$}}}}",
         "\\end{picture}",
         "\\endgroup",
         "",
@@ -343,12 +399,77 @@ def write_broad_system_comparison(averages: dict[str, dict[str, float]]) -> None
             f"\\put({fmt(x + 7.0)},{fmt(legend_y + 0.2)}){{\\makebox(0,0)[l]{{{short}}}}}",
         ])
     lines.extend([
-        f"\\put({fmt(76.0)},{fmt(0.8)}){{\\makebox(0,0){{Normalized score}}}}",
+        f"\\put({fmt(76.0)},{fmt(0.8)}){{\\makebox(0,0){{Raw normalized score (higher is better for shown bars)}}}}",
         "\\end{picture}",
         "\\endgroup",
         "",
     ])
     (FIGURE_DIR / "broad_system_comparison.tex").write_text("\n".join(lines))
+
+
+def write_directional_scoreboard(averages: dict[str, dict[str, float]]) -> None:
+    scenarios = [
+        (CURRENT_SYSTEM_KEY, "Current"),
+        ("simple-majority", "Simple maj."),
+        ("supermajority-60", "60\\%"),
+        ("bicameral-majority", "Bicameral"),
+        ("presidential-veto", "Pres. veto"),
+        ("default-pass", "Default"),
+        ("default-pass-challenge", "Challenge"),
+        ("default-pass-multiround-mediation-challenge", "Med.+chal."),
+        ("default-pass-constituent-citizen-panel", "Public+panel"),
+        ("default-pass-adaptive-track-strict", "Strict adaptive"),
+        ("default-pass-alternatives-pairwise", "Pairwise"),
+        ("default-pass-affected-sponsor-gate", "Affected gate"),
+    ]
+    metrics = [
+        ("directionalScore", "Directional", "black"),
+        ("productivity", "Productivity", "black!70"),
+        ("representativeQuality", "Rep. quality", "black!45"),
+        ("riskControl", "Risk control", "black!20"),
+    ]
+    left_label, left_axis, scale = 34.0, 38.0, 76.0
+    top, row_gap, bar_gap = 78.0, 5.8, 0.95
+    lines = [
+        "% Auto-generated by paper/scripts/generate_figures.py",
+        "\\begingroup",
+        "\\setlength{\\unitlength}{1mm}",
+        "\\begin{picture}(128,90)",
+        "\\scriptsize",
+    ]
+    for tick in (0.0, 0.25, 0.5, 0.75, 1.0):
+        x = left_axis + tick * scale
+        lines.extend([
+            f"\\put({fmt(x)},{fmt(8.0)}){{\\color{{black!15}}\\line(0,1){{73.0}}}}",
+            f"\\put({fmt(x)},{fmt(4.5)}){{\\makebox(0,0){{{tick:.2g}}}}}",
+        ])
+    for row_index, (key, label) in enumerate(scenarios):
+        if key not in averages:
+            continue
+        y = top - row_index * row_gap
+        label_color = "red" if key == CURRENT_SYSTEM_KEY else "black"
+        lines.append(f"\\put({fmt(left_label)},{fmt(y)}){{\\makebox(0,0)[r]{{\\color{{{label_color}}}{label}}}}}")
+        for metric_index, (field, _short, color) in enumerate(metrics):
+            if key == CURRENT_SYSTEM_KEY:
+                color = ("red", "red!70", "red!45", "red!25")[metric_index]
+            value = clamp01(averages[key][field])
+            bar_y = y + (1.5 - metric_index) * bar_gap
+            lines.append(f"\\put({fmt(left_axis)},{fmt(bar_y)}){{\\color{{{color}}}\\rule{{{max(value * scale, 0.3):.1f}mm}}{{0.75mm}}}}")
+    legend_y = 86.0
+    legend_x = 23.0
+    for index, (_field, short, color) in enumerate(metrics):
+        x = legend_x + index * 27.0
+        lines.extend([
+            f"\\put({fmt(x)},{fmt(legend_y)}){{\\color{{{color}}}\\rule{{5.0mm}}{{1.6mm}}}}",
+            f"\\put({fmt(x + 7.0)},{fmt(legend_y + 0.1)}){{\\makebox(0,0)[l]{{{short}}}}}",
+        ])
+    lines.extend([
+        f"\\put({fmt(76.0)},{fmt(0.8)}){{\\makebox(0,0){{Directional score/components (all oriented so rightward is better)}}}}",
+        "\\end{picture}",
+        "\\endgroup",
+        "",
+    ])
+    (FIGURE_DIR / "directional_scoreboard.tex").write_text("\n".join(lines))
 
 
 def write_timeline_contention(
@@ -431,7 +552,7 @@ def write_timeline_contention(
     lines.extend([
         "\\linethickness{0.25mm}",
         f"\\put({fmt(left + width / 2.0)},{fmt(2.0)}){{\\makebox(0,0){{Stylized timeline era}}}}",
-        f"\\put({fmt(4.0)},{fmt(bottom + height / 2.0)}){{\\rotatebox{{90}}{{Contention index}}}}",
+        f"\\put({fmt(4.0)},{fmt(bottom + height / 2.0)}){{\\rotatebox{{90}}{{Contention index $\\downarrow$}}}}",
         "\\put(17,77){\\makebox(0,0)[l]{Contention = 0.50 gridlock + 0.30 compromise loss + 0.20 low-support}}",
         "\\end{picture}",
         "\\endgroup",
@@ -449,6 +570,7 @@ def main() -> None:
     write_default_pass_deltas(base_averages)
     write_compromise_productivity(party_averages)
     write_broad_system_comparison(base_averages)
+    write_directional_scoreboard(base_averages)
     write_timeline_contention(timeline_cases, timeline_values)
 
 
