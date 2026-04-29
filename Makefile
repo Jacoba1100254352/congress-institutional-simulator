@@ -47,6 +47,7 @@ campaign-v0: build
 	java -cp out/main congresssim.Main --campaign v0 --runs 150 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
 
 paper:
+	python3 paper/scripts/generate_figures.py
 	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
 	cp paper/build/main.pdf paper/main.pdf
 
