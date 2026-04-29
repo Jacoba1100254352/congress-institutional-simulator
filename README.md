@@ -23,7 +23,13 @@ make run
 With custom parameters:
 
 ```sh
-make run ARGS="--runs 1000 --legislators 151 --bills 80 --seed 42"
+make run ARGS="--runs 1000 --legislators 151 --bills 80 --party-count 4 --polarization 0.85 --compromise 0.35 --charts --seed 42"
+```
+
+Compare only selected scenarios:
+
+```sh
+make run ARGS="--scenarios default-pass,default-pass-guarded --format csv"
 ```
 
 Run tests:
@@ -36,14 +42,33 @@ make test
 
 The default CLI compares:
 
-- unicameral simple majority
-- unicameral 60 percent passage threshold
-- default passage unless 2/3 vote to block
-- default passage unless 2/3 vote to block, with a proposal-access screen
-- default passage unless 2/3 vote to block, with a committee gate
-- default passage unless 2/3 vote to block, with both agenda filters
-- bicameral simple majority
-- bicameral majority with presidential veto and 2/3 override
+- `simple-majority`: unicameral simple majority
+- `supermajority-60`: unicameral 60 percent passage threshold
+- `default-pass`: default passage unless 2/3 vote to block
+- `default-pass-access`: default passage unless 2/3 vote to block, with a proposal-access screen
+- `default-pass-committee`: default passage unless 2/3 vote to block, with a committee gate
+- `default-pass-guarded`: default passage unless 2/3 vote to block, with both agenda filters
+- `bicameral-majority`: bicameral simple majority
+- `presidential-veto`: bicameral majority with presidential veto and 2/3 override
+
+## Experiment Controls
+
+Use `make run ARGS="--help"` for the current command reference.
+
+Core controls:
+
+- `--runs`: randomized worlds per scenario
+- `--legislators`: generated chamber size
+- `--bills`: bills per run
+- `--party-count`: number of generated party labels
+- `--polarization`: ideological clustering from 0.0 to 1.0
+- `--party-loyalty`: party-pressure sensitivity from 0.0 to 1.0
+- `--compromise`: compromise culture from 0.0 to 1.0
+- `--constituency`: constituent-pressure sensitivity from 0.0 to 1.0
+- `--lobbying`: lobby-pressure sensitivity from 0.0 to 1.0
+- `--scenarios`: comma-separated scenario keys
+- `--format`: `table`, `csv`, or `bars`
+- `--charts`: add ASCII bar charts after the table
 
 ## Architecture
 

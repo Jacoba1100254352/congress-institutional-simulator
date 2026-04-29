@@ -31,6 +31,7 @@ public final class SimulatorTests {
         defaultPassRequiresBlockingSupermajority();
         proposalAccessCanDenyLowViabilityBills();
         committeeGateBlocksBillsBeforeFloor();
+        scenarioKeysSelectExpectedScenarios();
         simulatorProducesOneReportPerScenario();
         System.out.println("All simulator tests passed.");
     }
@@ -102,13 +103,24 @@ public final class SimulatorTests {
     }
 
     private static void simulatorProducesOneReportPerScenario() {
-        WorldSpec spec = new WorldSpec(31, 8, 0.70, 0.65, 0.45, 0.60, 0.50);
+        WorldSpec spec = new WorldSpec(31, 8, 3, 0.70, 0.65, 0.45, 0.60, 0.50);
         List<ScenarioReport> reports = new Simulator().compare(ScenarioCatalog.defaultScenarios(), spec, 3, 1234L);
         assertTrue(reports.size() == ScenarioCatalog.defaultScenarios().size(), "Expected one report per scenario.");
         for (ScenarioReport report : reports) {
             assertTrue(report.totalBills() == 24, "Expected 3 runs * 8 bills.");
             assertTrue(report.productivity() >= 0.0 && report.productivity() <= 1.0, "Productivity must be a ratio.");
         }
+    }
+
+    private static void scenarioKeysSelectExpectedScenarios() {
+        assertTrue(
+                ScenarioCatalog.scenariosForKeys(List.of("default-pass", "default-pass-guarded")).size() == 2,
+                "Scenario keys should select a focused scenario subset."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("presidential-veto"),
+                "Scenario catalog should expose CLI-facing keys."
+        );
     }
 
     private static Legislator legislator(String id) {

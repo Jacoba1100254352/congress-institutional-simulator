@@ -30,7 +30,7 @@ public final class WorldGenerator {
             double faction = random.nextDouble();
             double center = faction < 0.46 ? -spread : faction < 0.92 ? spread : 0.0;
             double ideology = Values.clamp(center + (random.nextGaussian() * standardDeviation), -1.0, 1.0);
-            String party = partyFor(ideology);
+            String party = partyFor(ideology, spec.partyCount());
             double moderation = 1.0 - Math.abs(ideology);
 
             legislators.add(new Legislator(
@@ -71,14 +71,26 @@ public final class WorldGenerator {
         return bills;
     }
 
-    private static String partyFor(double ideology) {
-        if (ideology < -0.22) {
-            return "Progressive";
+    private static String partyFor(double ideology, int partyCount) {
+        if (partyCount == 1) {
+            return "Unified";
         }
-        if (ideology > 0.22) {
-            return "Conservative";
+        if (partyCount == 2) {
+            return ideology < 0.0 ? "Left" : "Right";
         }
-        return "Moderate";
+        if (partyCount == 3) {
+            if (ideology < -0.22) {
+                return "Progressive";
+            }
+            if (ideology > 0.22) {
+                return "Conservative";
+            }
+            return "Moderate";
+        }
+
+        double normalized = (ideology + 1.0) / 2.0;
+        int partyIndex = Math.min(partyCount - 1, (int) Math.floor(normalized * partyCount));
+        return "Party-" + (partyIndex + 1);
     }
 
     private static Map<String, Double> partyPositions(List<Legislator> legislators) {

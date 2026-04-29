@@ -18,21 +18,48 @@ import congresssim.model.SimulationWorld;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 public final class ScenarioCatalog {
     private ScenarioCatalog() {
     }
 
     public static List<Scenario> defaultScenarios() {
+        return entries().stream().map(ScenarioEntry::scenario).toList();
+    }
+
+    public static List<Scenario> scenariosForKeys(List<String> keys) {
+        Map<String, Scenario> byKey = new LinkedHashMap<>();
+        for (ScenarioEntry entry : entries()) {
+            byKey.put(entry.key(), entry.scenario());
+        }
+
+        List<Scenario> scenarios = new ArrayList<>();
+        for (String key : keys) {
+            Scenario scenario = byKey.get(key);
+            if (scenario == null) {
+                throw new IllegalArgumentException("Unknown scenario key: " + key);
+            }
+            scenarios.add(scenario);
+        }
+        return scenarios;
+    }
+
+    public static List<String> scenarioKeys() {
+        return entries().stream().map(ScenarioEntry::key).toList();
+    }
+
+    private static List<ScenarioEntry> entries() {
         return List.of(
-                unicameral("Unicameral simple majority", AffirmativeThresholdRule.simpleMajority()),
-                unicameral("Unicameral 60 percent passage", AffirmativeThresholdRule.supermajority(0.60)),
-                unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0)),
-                defaultPassWithProposalAccess(),
-                defaultPassWithCommitteeGate(),
-                defaultPassWithAccessAndCommitteeGate(),
-                bicameral("Bicameral simple majority", AffirmativeThresholdRule.simpleMajority()),
-                presidentialVeto()
+                new ScenarioEntry("simple-majority", unicameral("Unicameral simple majority", AffirmativeThresholdRule.simpleMajority())),
+                new ScenarioEntry("supermajority-60", unicameral("Unicameral 60 percent passage", AffirmativeThresholdRule.supermajority(0.60))),
+                new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
+                new ScenarioEntry("default-pass-access", defaultPassWithProposalAccess()),
+                new ScenarioEntry("default-pass-committee", defaultPassWithCommitteeGate()),
+                new ScenarioEntry("default-pass-guarded", defaultPassWithAccessAndCommitteeGate()),
+                new ScenarioEntry("bicameral-majority", bicameral("Bicameral simple majority", AffirmativeThresholdRule.simpleMajority())),
+                new ScenarioEntry("presidential-veto", presidentialVeto())
         );
     }
 
@@ -233,5 +260,8 @@ public final class ScenarioCatalog {
                 0.46,
                 0.62
         );
+    }
+
+    private record ScenarioEntry(String key, Scenario scenario) {
     }
 }
