@@ -1,8 +1,8 @@
 # Congress Institutional Simulator
 
-This is a small agent-based simulator for testing how legislative rules shape cooperation, compromise, productivity, and gridlock.
+This is a small individual-legislator simulator for testing how possible legislative systems shape compromise, productivity, public responsiveness, and gridlock.
 
-The first version follows the main recommendation from the research report: start with a one-dimensional spatial legislature, a scalar status quo, proposers, and comparable institutional regimes before adding a kitchen-sink set of external systems.
+The first version starts with a deliberately simple legislature: one-dimensional policy space, a scalar status quo, proposers, and comparable institutional regimes. Default passage is included as one stress-test family, but the project goal is broader: search across many possible legislative frameworks and measure which ones best balance compromise, productivity, and representative responsiveness.
 
 The current model intentionally includes only the parts needed to compare institutional structures:
 
@@ -160,8 +160,8 @@ The first metric set is deliberately simple, but it separates throughput from le
 - `challengeRate`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member challenge escalation
 - `avgSupport`: average yay share for enacted bills
 - `welfare`: average public-benefit score for enacted bills
-- `cooperation`: productivity multiplied by enacted support
-- `compromise`: rewards enacted bills that are moderate, broadly supported, and do not simply hand the proposer their ideal point
+- `cooperation`: a legacy throughput-support metric, not a unity score
+- `compromise`: the more important target metric; it rewards enacted bills that are moderate, broadly supported, and do not simply hand the proposer their ideal point
 - `gridlock`: share of introduced bills that fail
 - `accessD`: share of potential bills blocked by proposal-access rules
 - `cmteRej`: share of potential bills rejected by a committee gate
@@ -174,11 +174,11 @@ These are not claims about real-world validity. They are hooks for comparing rul
 
 ## Research Direction
 
-The research report found that the proposed default-pass rule has analogues in negative parliamentarism, WTO reverse consensus, EU reverse qualified majority rules, tacit-acceptance treaty procedures, silence procedures, and U.S. review-and-disapproval structures such as the Congressional Review Act and BRAC. It did not find a close mainstream analogue where ordinary statutes generally pass unless a two-thirds blocking coalition forms.
+The research direction is comparative institutional search. The simulator should be able to test ordinary legislative systems, default-pass systems, cross-bloc systems, challenge-token systems, adaptive-track systems, sunset/review systems, and more radical future proposals under shared assumptions.
 
-The main design warning is that default passage shifts power from affirmative majority formation to blocking coalition formation. That makes agenda access, proposal screening, proposer power, committees, and legitimacy metrics central. The first modeling layers therefore focus on agenda access, committee gatekeeping, committee information, and proposal costs before media, lobbying, elections, or richer behavioral systems.
+Default passage remains useful as an early stress test because it sharply shifts power from affirmative majority formation to blocking coalition formation. The broader design warning is that every legislative structure depends on agenda access, proposal screening, proposer power, information, challenge rights, reversibility, and legitimacy metrics. The first modeling layers therefore focus on those institutional mechanics before media, elections, or richer behavioral systems.
 
-That agenda layer is now represented in three comparison scenarios:
+The early agenda layer is represented in three comparison scenarios:
 
 - `Default pass + proposal access screen`: denies floor access to bills with low public support or very large jumps away from the status quo.
 - `Default pass + representative committee gate`: requires approval by a representative committee before the default-pass floor rule applies.
