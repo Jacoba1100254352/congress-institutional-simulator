@@ -47,8 +47,8 @@ make campaign
 
 This writes:
 
-- `reports/simulation-campaign-v8.csv`
-- `reports/simulation-campaign-v8.md`
+- `reports/simulation-campaign-v9.csv`
+- `reports/simulation-campaign-v9.md`
 
 Earlier campaigns remain available:
 
@@ -62,6 +62,7 @@ make campaign-v5
 make campaign-v6
 make campaign-v7
 make campaign-v8
+make campaign-v9
 ```
 
 You can override the campaign defaults:
@@ -85,6 +86,9 @@ The default CLI compares:
 - `default-pass-public-interest-screen`: default passage with an anti-capture public-interest access screen
 - `default-pass-lobby-audit`: default passage with randomized anti-capture audits and sponsor sanctions
 - `default-pass-anti-capture-bundle`: transparency, public-interest screening, audit sanctions, and lower direct lobby vote influence
+- `default-pass-budgeted-lobbying`: default passage after explicit lobby groups spend limited budgets by issue domain
+- `default-pass-budgeted-lobbying-transparency`: budgeted lobbying followed by transparency backlash
+- `default-pass-budgeted-lobbying-bundle`: budgeted lobbying with transparency, public-interest screening, audits, and lower direct lobby vote influence
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers that divert contested bills to active majority vote
 - `default-pass-challenge-info`: default passage with committee information review before challenge-voucher decisions
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate
@@ -130,7 +134,7 @@ Core controls:
 - `--scenarios`: comma-separated scenario keys
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
-- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`, or `v8`
+- `--campaign`: run a named campaign, currently `v0`, `v1`, `v2`, `v3`, `v4`, `v5`, `v6`, `v7`, `v8`, or `v9`
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -182,6 +186,10 @@ The first metric set is deliberately simple, but it separates throughput from le
 - `publicAlignment`: how closely enacted voting support tracks generated public support
 - `antiLobbyingSuccess`: share of generated anti-lobbying reform bills enacted
 - `privateGainRatio`: enacted private gain relative to generated public benefit
+- `lobbySpendPerBill`: explicit lobby-group spend per potential bill
+- `defensiveLobbyingShare`: share of lobby spend aimed at defeating anti-lobbying reform bills
+- `captureReturnOnSpend`: enacted capture risk per unit of explicit lobby spend
+- `publicPreferenceDistortion`: average gap between enacted yes-share and generated public support
 
 These are not claims about real-world validity. They are hooks for comparing rule sets under shared assumptions.
 
@@ -248,7 +256,7 @@ The v7 campaign adds earned proposal credits:
 - `default-pass-earned-credits-challenge` combines the same credit budget with challenge-voucher review.
 - The current finding is that earned credits reduce floor load and policy shift more gently than cross-bloc or committee gates. The base credit scenario denies about 20 percent of potential proposals, improves welfare by 0.015, reduces policy shift by 0.159, and reduces proposer gain by 0.032 relative to open default-pass. Combining credits with challenge vouchers is stricter: productivity falls by 0.398, but policy shift falls by 0.416 and proposer gain by 0.191.
 
-The current v8 campaign adds anti-capture stress tests:
+The v8 campaign adds anti-capture stress tests:
 
 - Bill generation now includes ordinary private-gain bills and explicit anti-lobbying reform bills that face negative lobby pressure.
 - `simple-majority-lobby-firewall` and `default-pass-lobby-firewall` reduce direct lobby influence in legislator voting while increasing public/reputation pressure.
@@ -256,3 +264,9 @@ The current v8 campaign adds anti-capture stress tests:
 - `default-pass-public-interest-screen` denies high-capture, low-public-interest proposals while allowing public-benefit anti-lobbying reforms through the agenda gate.
 - `default-pass-lobby-audit` randomly audits enacted high-capture bills, can reverse failed audits, and sanctions repeat sponsors.
 - `default-pass-anti-capture-bundle` combines transparency, public-interest screening, audit sanctions, and a lower-lobby voting strategy.
+
+The current v9 campaign adds explicit lobbying actors:
+
+- `LobbyGroup` actors have issue domains, budgets, preferred policy positions, influence intensity, defensive multipliers, information bias, and public-campaign skill.
+- `BudgetedLobbyingProcess` lets groups spend limited budgets to boost favored private-gain bills and spend defensively against anti-lobbying reform.
+- Campaign reports now distinguish ordinary capture pressure from explicit spending, defensive spending, capture return on spend, and public-preference distortion.

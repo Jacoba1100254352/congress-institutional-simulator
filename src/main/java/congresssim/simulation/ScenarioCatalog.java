@@ -5,6 +5,7 @@ import congresssim.behavior.VotingStrategy;
 import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.BicameralProcess;
+import congresssim.institution.BudgetedLobbyingProcess;
 import congresssim.institution.Chamber;
 import congresssim.institution.ChallengeEscalationProcess;
 import congresssim.institution.ChallengeTokenAllocation;
@@ -74,6 +75,9 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("default-pass-public-interest-screen", defaultPassWithPublicInterestScreen()),
                 new ScenarioEntry("default-pass-lobby-audit", defaultPassWithLobbyAudit()),
                 new ScenarioEntry("default-pass-anti-capture-bundle", defaultPassWithAntiCaptureBundle()),
+                new ScenarioEntry("default-pass-budgeted-lobbying", defaultPassWithBudgetedLobbying(false, false)),
+                new ScenarioEntry("default-pass-budgeted-lobbying-transparency", defaultPassWithBudgetedLobbying(true, false)),
+                new ScenarioEntry("default-pass-budgeted-lobbying-bundle", defaultPassWithBudgetedLobbying(true, true)),
                 new ScenarioEntry("default-pass-challenge", defaultPassWithChallengeVouchers()),
                 new ScenarioEntry("default-pass-challenge-info", defaultPassWithChallengeVouchersAndInformation()),
                 new ScenarioEntry("default-pass-cross-bloc", defaultPassWithCrossBlocCosponsorship(
@@ -318,6 +322,48 @@ public final class ScenarioCatalog {
                         process
                 );
                 return new LobbyTransparencyProcess(name(), 0.74, 0.34, process);
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithBudgetedLobbying(boolean includeTransparency, boolean includeAntiCaptureBundle) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                if (includeAntiCaptureBundle) {
+                    return "Default pass + budgeted lobbying + anti-capture bundle";
+                }
+                if (includeTransparency) {
+                    return "Default pass + budgeted lobbying + transparency";
+                }
+                return "Default pass + budgeted lobbying";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = includeAntiCaptureBundle
+                        ? VotingStrategies.antiCapture()
+                        : VotingStrategies.standard();
+                LegislativeProcess process = defaultPassFloorProcess(name(), world, strategy);
+                if (includeAntiCaptureBundle) {
+                    process = new LobbyAuditProcess(name(), process, 0.10, 0.72, 0.45, 0.55, true);
+                    process = new ProposalAccessProcess(
+                            name(),
+                            ProposalAccessRules.publicInterestScreen(0.52, 0.60, 2.50, 0.56),
+                            process
+                    );
+                }
+                if (includeTransparency) {
+                    process = new LobbyTransparencyProcess(name(), 0.74, 0.34, process);
+                }
+                return new BudgetedLobbyingProcess(
+                        name(),
+                        process,
+                        world.lobbyGroups(),
+                        0.22,
+                        0.44,
+                        0.35
+                );
             }
         };
     }

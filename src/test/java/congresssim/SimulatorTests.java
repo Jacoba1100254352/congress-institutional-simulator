@@ -8,6 +8,7 @@ import congresssim.institution.AdaptiveTrackProcess;
 import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.AgendaDisposition;
 import congresssim.institution.BillOutcome;
+import congresssim.institution.BudgetedLobbyingProcess;
 import congresssim.institution.Chamber;
 import congresssim.institution.ChallengeEscalationProcess;
 import congresssim.institution.ChallengeTokenAllocation;
@@ -29,6 +30,7 @@ import congresssim.simulation.Simulator;
 import congresssim.simulation.WorldSpec;
 import congresssim.model.Bill;
 import congresssim.model.Legislator;
+import congresssim.model.LobbyGroup;
 import congresssim.model.Vote;
 
 import java.nio.file.Files;
@@ -51,6 +53,7 @@ public final class SimulatorTests {
         sunsetTrialExpiresRiskyLowBenefitBills();
         proposalCreditsLearnFromProposalQuality();
         lobbyTransparencyReducesCapturedBillPressure();
+        budgetedLobbyingSpendsDefensivelyAgainstAntiLobbyingReforms();
         publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
         lobbyAuditCanReverseCapturedEnactments();
         challengeVouchersRouteHighRiskBillsToActiveVote();
@@ -249,6 +252,29 @@ public final class SimulatorTests {
 
         new LobbyTransparencyProcess("transparency test", 0.75, 0.40, captureRevisedBill)
                 .consider(capturedBill, context);
+    }
+
+    private static void budgetedLobbyingSpendsDefensivelyAgainstAntiLobbyingReforms() {
+        Bill antiLobbyingBill = new Bill("B-reform", "Anti-Lobbying Reform", "L-1", 0.0, 0.05, 0.75, 0.85, -0.30, 0.85, 0.0, true, "democracy", 0.0, 0.0);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+        List<LobbyGroup> groups = List.of(new LobbyGroup("G-1", "democracy", 0.7, 2.0, 0.8, 2.0, 0.6, 0.6));
+        LegislativeProcess capturePressuredBill = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "capture pressured bill";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                assertTrue(bill.lobbySpend() > 0.0, "Budgeted lobbying should spend against salient reform.");
+                assertTrue(bill.defensiveLobbySpend() > 0.0, "Anti-lobbying reform should be marked as defensive spend.");
+                assertTrue(bill.lobbyPressure() < antiLobbyingBill.lobbyPressure(), "Defensive lobbying should increase pressure against reform.");
+                return BillOutcome.accessDenied(bill, context.currentPolicyPosition(), "captured");
+            }
+        };
+
+        new BudgetedLobbyingProcess("budgeted lobbying test", capturePressuredBill, groups, 0.30, 0.50, 0.25)
+                .consider(antiLobbyingBill, context);
     }
 
     private static void publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms() {
@@ -528,6 +554,10 @@ public final class SimulatorTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-anti-capture-bundle"),
                 "Scenario catalog should expose anti-capture scenario keys."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("default-pass-budgeted-lobbying"),
+                "Scenario catalog should expose budgeted-lobbying scenario keys."
         );
     }
 

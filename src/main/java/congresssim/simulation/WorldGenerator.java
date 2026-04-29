@@ -2,6 +2,7 @@ package congresssim.simulation;
 
 import congresssim.model.Bill;
 import congresssim.model.Legislator;
+import congresssim.model.LobbyGroup;
 import congresssim.model.PolicyState;
 import congresssim.model.SimulationWorld;
 import congresssim.util.Values;
@@ -13,12 +14,23 @@ import java.util.Map;
 import java.util.Random;
 
 public final class WorldGenerator {
+    private static final List<String> ISSUE_DOMAINS = List.of(
+            "tax",
+            "health",
+            "energy",
+            "technology",
+            "labor",
+            "housing",
+            "democracy"
+    );
+
     public SimulationWorld generate(WorldSpec spec, long seed) {
         Random random = new Random(seed);
         List<Legislator> legislators = generateLegislators(spec, random);
+        List<LobbyGroup> lobbyGroups = generateLobbyGroups(spec, random);
         PolicyState initialPolicy = new PolicyState(Values.clamp(random.nextGaussian() * 0.18, -1.0, 1.0));
         List<Bill> bills = generateBills(spec, legislators, random);
-        return new SimulationWorld(legislators, bills, initialPolicy, partyPositions(legislators));
+        return new SimulationWorld(legislators, bills, lobbyGroups, initialPolicy, partyPositions(legislators));
     }
 
     private List<Legislator> generateLegislators(WorldSpec spec, Random random) {
@@ -52,6 +64,7 @@ public final class WorldGenerator {
         for (int i = 0; i < spec.billCount(); i++) {
             Legislator proposer = legislators.get(random.nextInt(legislators.size()));
             boolean antiLobbyingReform = random.nextDouble() < 0.04 + (0.08 * spec.lobbyingSusceptibility());
+            String issueDomain = antiLobbyingReform ? "democracy" : randomIssueDomain(random);
             double ideology = antiLobbyingReform
                     ? Values.clamp(proposer.ideology() * 0.45 + random.nextGaussian() * 0.16, -1.0, 1.0)
                     : Values.clamp(proposer.ideology() + random.nextGaussian() * 0.22, -1.0, 1.0);
@@ -111,10 +124,41 @@ public final class WorldGenerator {
                     lobbyPressure,
                     salience,
                     privateGain,
-                    antiLobbyingReform
+                    antiLobbyingReform,
+                    issueDomain,
+                    0.0,
+                    0.0
             ));
         }
         return bills;
+    }
+
+    private List<LobbyGroup> generateLobbyGroups(WorldSpec spec, Random random) {
+        List<LobbyGroup> groups = new ArrayList<>();
+        int count = Math.max(6, spec.partyCount() + 4);
+        for (int i = 0; i < count; i++) {
+            String domain = ISSUE_DOMAINS.get(i % ISSUE_DOMAINS.size());
+            double budget = Values.clamp(
+                    0.40 + (spec.lobbyingSusceptibility() * 1.85) + random.nextDouble() * 1.20,
+                    0.0,
+                    4.0
+            );
+            groups.add(new LobbyGroup(
+                    "G-" + (i + 1),
+                    domain,
+                    Values.clamp(random.nextGaussian() * 0.70, -1.0, 1.0),
+                    budget,
+                    Values.clamp(0.35 + (spec.lobbyingSusceptibility() * 0.45) + random.nextGaussian() * 0.10, 0.0, 1.0),
+                    Values.clamp(0.70 + (spec.lobbyingSusceptibility() * 1.15) + random.nextGaussian() * 0.18, 0.0, 3.0),
+                    Values.clamp(0.30 + random.nextDouble() * 0.55, 0.0, 1.0),
+                    Values.clamp(0.28 + random.nextDouble() * 0.60, 0.0, 1.0)
+            ));
+        }
+        return groups;
+    }
+
+    private static String randomIssueDomain(Random random) {
+        return ISSUE_DOMAINS.get(random.nextInt(ISSUE_DOMAINS.size() - 1));
     }
 
     private static String partyFor(double ideology, int partyCount) {

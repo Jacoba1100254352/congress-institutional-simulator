@@ -89,6 +89,12 @@ Run the v8 anti-capture campaign:
 make campaign-v8
 ```
 
+Run the v9 budgeted-lobbying campaign:
+
+```sh
+make campaign-v9
+```
+
 Remove generated build output:
 
 ```sh
@@ -141,7 +147,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--scenarios <keys>`: comma-separated scenario keys.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
-- `--campaign <v0|v1|v2|v3|v4|v5|v6|v7|v8>`: run a named campaign.
+- `--campaign <v0|v1|v2|v3|v4|v5|v6|v7|v8|v9>`: run a named campaign.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
@@ -159,6 +165,9 @@ The default CLI scenario set includes:
 - `default-pass-public-interest-screen`: default passage with an anti-capture public-interest access screen.
 - `default-pass-lobby-audit`: default passage with randomized anti-capture audits and sponsor sanctions.
 - `default-pass-anti-capture-bundle`: transparency, public-interest screening, audit sanctions, and lower direct lobby vote influence.
+- `default-pass-budgeted-lobbying`: default passage after explicit lobby groups spend limited budgets by issue domain.
+- `default-pass-budgeted-lobbying-transparency`: budgeted lobbying followed by transparency backlash.
+- `default-pass-budgeted-lobbying-bundle`: budgeted lobbying with transparency, public-interest screening, audits, and lower direct lobby vote influence.
 - `default-pass-challenge`: default passage with scarce party-held challenge vouchers.
 - `default-pass-challenge-info`: default passage with committee information before challenge-voucher decisions.
 - `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate.
@@ -200,8 +209,8 @@ Campaigns write CSV and Markdown artifacts under `reports/`.
 
 Current campaign:
 
-- `reports/simulation-campaign-v8.csv`
-- `reports/simulation-campaign-v8.md`
+- `reports/simulation-campaign-v9.csv`
+- `reports/simulation-campaign-v9.md`
 
 Earlier campaign:
 
@@ -221,6 +230,8 @@ Earlier campaign:
 - `reports/simulation-campaign-v6.md`
 - `reports/simulation-campaign-v7.csv`
 - `reports/simulation-campaign-v7.md`
+- `reports/simulation-campaign-v8.csv`
+- `reports/simulation-campaign-v8.md`
 
 Use CSV output for analysis and Markdown output for quick review.
 
@@ -246,6 +257,10 @@ The simulator reports several metrics because passage volume alone is not enough
 - `publicAlignment`: how closely enacted voting support tracks generated public support.
 - `antiLobbyingSuccess`: share of generated anti-lobbying reform bills enacted.
 - `privateGainRatio`: enacted private gain relative to generated public benefit.
+- `lobbySpendPerBill`: explicit lobby-group spend per potential bill.
+- `defensiveLobbyingShare`: share of lobby spend aimed at defeating anti-lobbying reform bills.
+- `captureReturnOnSpend`: enacted capture risk per unit of explicit lobby spend.
+- `publicPreferenceDistortion`: average gap between enacted yes-share and generated public support.
 - `vetoes`: presidential veto count.
 - `overrides`: veto override count.
 
@@ -268,6 +283,7 @@ Typical additions:
 - Add a new agenda screen in `src/main/java/congresssim/institution`.
 - Add a new process wrapper in `src/main/java/congresssim/institution`.
 - For anti-capture modeling, use `LobbyTransparencyProcess`, `LobbyAuditProcess`, or `PublicInterestScreenAccessRule`.
+- For explicit lobbying actors, add `LobbyGroup` instances to `SimulationWorld` and wrap a process with `BudgetedLobbyingProcess`.
 - Register the new scenario in `src/main/java/congresssim/simulation/ScenarioCatalog.java`.
 - Add focused coverage in `src/test/java/congresssim/SimulatorTests.java`.
 

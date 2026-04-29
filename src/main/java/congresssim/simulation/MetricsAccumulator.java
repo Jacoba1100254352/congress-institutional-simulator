@@ -26,9 +26,14 @@ final class MetricsAccumulator {
     private double lobbyCaptureSum;
     private double publicAlignmentSum;
     private double privateGainRatioSum;
+    private double totalLobbySpendSum;
+    private double defensiveLobbySpendSum;
+    private double publicPreferenceDistortionSum;
 
     void add(BillOutcome outcome) {
         totalBills++;
+        totalLobbySpendSum += outcome.bill().lobbySpend();
+        defensiveLobbySpendSum += outcome.bill().defensiveLobbySpend();
         policyShiftSum += Math.abs(outcome.statusQuoAfter() - outcome.statusQuoBefore());
         if (outcome.agendaDisposition() == AgendaDisposition.FLOOR_CONSIDERED) {
             floorConsideredBills++;
@@ -79,6 +84,7 @@ final class MetricsAccumulator {
         lobbyCaptureSum += LobbyCaptureScoring.captureRisk(outcome.bill());
         publicAlignmentSum += LobbyCaptureScoring.publicAlignment(support, outcome.bill());
         privateGainRatioSum += LobbyCaptureScoring.privateGainRatio(outcome.bill());
+        publicPreferenceDistortionSum += Math.abs(support - outcome.bill().publicSupport());
     }
 
     ScenarioReport toReport(String scenarioName) {
@@ -90,6 +96,10 @@ final class MetricsAccumulator {
         double lobbyCapture = enactedBills == 0 ? 0.0 : lobbyCaptureSum / enactedBills;
         double publicAlignment = enactedBills == 0 ? 0.0 : publicAlignmentSum / enactedBills;
         double privateGainRatio = enactedBills == 0 ? 0.0 : privateGainRatioSum / enactedBills;
+        double lobbySpendPerBill = totalBills == 0 ? 0.0 : totalLobbySpendSum / totalBills;
+        double defensiveLobbyingShare = totalLobbySpendSum == 0.0 ? 0.0 : defensiveLobbySpendSum / totalLobbySpendSum;
+        double captureReturnOnSpend = totalLobbySpendSum == 0.0 ? 0.0 : lobbyCaptureSum / totalLobbySpendSum;
+        double publicPreferenceDistortion = enactedBills == 0 ? 0.0 : publicPreferenceDistortionSum / enactedBills;
         return new ScenarioReport(
                 scenarioName,
                 totalBills,
@@ -108,6 +118,10 @@ final class MetricsAccumulator {
                 publicAlignment,
                 ratio(enactedAntiLobbyingBills, antiLobbyingBills),
                 privateGainRatio,
+                lobbySpendPerBill,
+                defensiveLobbyingShare,
+                captureReturnOnSpend,
+                publicPreferenceDistortion,
                 ratio(floorConsideredBills, totalBills),
                 ratio(accessDeniedBills, totalBills),
                 ratio(committeeRejectedBills, totalBills),
