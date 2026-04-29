@@ -68,6 +68,7 @@ final class CampaignRunnerTests {
 
     static void run() {
         campaignRunnerWritesReports();
+        tinyCampaignGoldenMetricsStayStable();
         campaignRunnerWritesWeightedCsvWithStableSchema();
     }
 
@@ -88,6 +89,31 @@ final class CampaignRunnerTests {
             );
         } catch (Exception exception) {
             throw new AssertionError("Campaign report generation failed.", exception);
+        }
+    }
+
+    private static void tinyCampaignGoldenMetricsStayStable() {
+        try {
+            Path outputDir = Path.of("out", "test-campaign-golden");
+            Files.createDirectories(outputDir);
+            CampaignResult result = CampaignRunner.runV0(outputDir, 1, 11, 4, 77L);
+
+            CampaignRow simpleMajority = findRow(result, "baseline", "simple-majority");
+            CampaignRow supermajority = findRow(result, "baseline", "supermajority-60");
+            CampaignRow defaultPass = findRow(result, "baseline", "default-pass");
+            CampaignRow informedGuarded = findRow(result, "baseline", "default-pass-informed-guarded");
+
+            assertNear(simpleMajority.report().productivity(), 0.250, 0.0005, "Golden simple-majority productivity drifted.");
+            assertNear(simpleMajority.report().averagePublicBenefit(), 0.702, 0.0005, "Golden simple-majority welfare drifted.");
+            assertNear(supermajority.report().productivity(), 0.000, 0.0005, "Golden supermajority productivity drifted.");
+            assertNear(defaultPass.report().productivity(), 0.500, 0.0005, "Golden default-pass productivity drifted.");
+            assertNear(defaultPass.report().controversialPassageRate(), 0.500, 0.0005, "Golden default-pass low-support passage drifted.");
+            assertNear(defaultPass.report().averagePolicyShift(), 0.558, 0.0005, "Golden default-pass policy shift drifted.");
+            assertNear(informedGuarded.report().floorConsiderationRate(), 0.250, 0.0005, "Golden informed-guarded floor rate drifted.");
+            assertNear(informedGuarded.report().accessDenialRate(), 0.500, 0.0005, "Golden informed-guarded access denial drifted.");
+            assertNear(informedGuarded.report().committeeRejectionRate(), 0.250, 0.0005, "Golden informed-guarded committee rejection drifted.");
+        } catch (Exception exception) {
+            throw new AssertionError("Golden campaign regression failed.", exception);
         }
     }
 
@@ -133,6 +159,18 @@ final class CampaignRunnerTests {
         } catch (Exception exception) {
             throw new AssertionError("Weighted campaign report generation failed.", exception);
         }
+    }
+
+    private static CampaignRow findRow(CampaignResult result, String caseKey, String scenarioKey) {
+        return result.rows()
+                .stream()
+                .filter(row -> row.caseKey().equals(caseKey) && row.scenarioKey().equals(scenarioKey))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("Missing campaign row: " + caseKey + "/" + scenarioKey));
+    }
+
+    private static void assertNear(double actual, double expected, double tolerance, String message) {
+        assertTrue(Math.abs(actual - expected) <= tolerance, message + " Expected " + expected + ", actual " + actual);
     }
 
 }

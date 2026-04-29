@@ -81,6 +81,7 @@ make campaign ARGS="--runs 300 --seed 12345"
 ```
 
 Full usage documentation lives in [docs/usage.md](docs/usage.md).
+Calibration planning lives in [docs/calibration.md](docs/calibration.md), and the current ODD-style model description lives in [docs/odd-model.md](docs/odd-model.md).
 
 ## Current Scenarios
 

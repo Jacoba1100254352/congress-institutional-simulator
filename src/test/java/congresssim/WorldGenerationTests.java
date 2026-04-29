@@ -52,6 +52,8 @@ import congresssim.model.LobbyCaptureStrategy;
 import congresssim.model.LobbyGroup;
 import congresssim.model.SimulationWorld;
 import congresssim.model.Vote;
+import congresssim.calibration.CalibrationTarget;
+import congresssim.calibration.CalibrationTargetCatalog;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -72,6 +74,7 @@ final class WorldGenerationTests {
         partySystemProfilesKeepIdeologicalOrdering();
         modelValidationRejectsInvalidInputs();
         worldGenerationIsDeterministicAndBounded();
+        calibrationTargetCatalogDocumentsExternalValidationWork();
     }
 
 
@@ -266,6 +269,19 @@ final class WorldGenerationTests {
             assertRatio(bill.concentratedHarm(), "Concentrated harm should be a ratio.");
             assertRatio(bill.compensationCost(), "Compensation cost should be a ratio.");
             assertRatio(bill.publicBenefitUncertainty(), "Public-benefit uncertainty should be a ratio.");
+        }
+    }
+
+    private static void calibrationTargetCatalogDocumentsExternalValidationWork() {
+        List<CalibrationTarget> targets = CalibrationTargetCatalog.standardTargets();
+        Set<String> keys = new HashSet<>();
+
+        assertTrue(targets.size() >= 6, "Calibration catalog should cover the major external validation targets.");
+        for (CalibrationTarget target : targets) {
+            assertTrue(keys.add(target.key()), "Calibration target keys should be unique.");
+            assertTrue(!target.empiricalDataset().isBlank(), "Calibration targets should name an empirical dataset.");
+            assertTrue(!target.simulatorMetric().isBlank(), "Calibration targets should name simulator metrics.");
+            assertTrue(!target.validationUse().isBlank(), "Calibration targets should explain how they will be used.");
         }
     }
 

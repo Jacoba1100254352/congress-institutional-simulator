@@ -29,6 +29,8 @@ Run tests:
 make test
 ```
 
+The same test command runs in GitHub Actions on pushes and pull requests.
+
 Run the current campaign report:
 
 ```sh
@@ -154,6 +156,11 @@ Remove generated build output:
 ```sh
 make clean
 ```
+
+## Research Documentation
+
+- [Calibration plan](calibration.md): external validation targets and the intended calibration workflow.
+- [ODD model description](odd-model.md): entities, state variables, scheduling, design concepts, initialization, and submodels.
 
 ## CLI Examples
 
