@@ -75,11 +75,12 @@ public final class Main {
             return;
         }
 
-        System.out.printf("%-48s %8s %8s %10s %8s %9s %9s %10s %10s %10s%n",
+        System.out.printf("%-48s %8s %8s %10s %8s %8s %9s %9s %10s %10s %10s%n",
                 "Scenario",
                 "Prod",
                 "Floor",
                 "AvgSupport",
+                "Welfare",
                 "Compromise",
                 "AccessD",
                 "CmteRej",
@@ -87,14 +88,15 @@ public final class Main {
                 "PolicyShift",
                 "PropGain"
         );
-        System.out.println("-".repeat(132));
+        System.out.println("-".repeat(141));
 
         for (ScenarioReport report : reports) {
-            System.out.printf("%-48s %8.3f %8.3f %10.3f %8.3f %9.3f %9.3f %10.3f %10.3f %10.3f%n",
+            System.out.printf("%-48s %8.3f %8.3f %10.3f %8.3f %8.3f %9.3f %9.3f %10.3f %10.3f %10.3f%n",
                     report.scenarioName(),
                     report.productivity(),
                     report.floorConsiderationRate(),
                     report.averageEnactedSupport(),
+                    report.averagePublicBenefit(),
                     report.compromiseScore(),
                     report.accessDenialRate(),
                     report.committeeRejectionRate(),
@@ -110,16 +112,17 @@ public final class Main {
     }
 
     private static void printCsv(List<ScenarioReport> reports) {
-        System.out.println("scenario,totalBills,enactedBills,productivity,floor,avgSupport,cooperation,compromise,gridlock,accessDenied,committeeRejected,lowSupport,popularFail,policyShift,proposerGain,vetoes,overriddenVetoes");
+        System.out.println("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,lowSupport,popularFail,policyShift,proposerGain,vetoes,overriddenVetoes");
         for (ScenarioReport report : reports) {
             System.out.printf(Locale.ROOT,
-                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d%n",
+                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d%n",
                     report.scenarioName(),
                     report.totalBills(),
                     report.enactedBills(),
                     report.productivity(),
                     report.floorConsiderationRate(),
                     report.averageEnactedSupport(),
+                    report.averagePublicBenefit(),
                     report.cooperationScore(),
                     report.compromiseScore(),
                     report.gridlockRate(),
@@ -138,6 +141,7 @@ public final class Main {
     private static void printCharts(List<ScenarioReport> reports) {
         System.out.println();
         printChart("Productivity", reports, Metric.PRODUCTIVITY);
+        printChart("Public welfare", reports, Metric.PUBLIC_WELFARE);
         printChart("Low-support passage", reports, Metric.LOW_SUPPORT);
         printChart("Policy shift", reports, Metric.POLICY_SHIFT);
     }
@@ -173,6 +177,12 @@ public final class Main {
             @Override
             double value(ScenarioReport report) {
                 return report.controversialPassageRate();
+            }
+        },
+        PUBLIC_WELFARE {
+            @Override
+            double value(ScenarioReport report) {
+                return report.averagePublicBenefit();
             }
         },
         POLICY_SHIFT {

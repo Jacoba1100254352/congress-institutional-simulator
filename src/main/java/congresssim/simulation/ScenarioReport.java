@@ -6,6 +6,7 @@ public record ScenarioReport(
         int enactedBills,
         double productivity,
         double averageEnactedSupport,
+        double averagePublicBenefit,
         double cooperationScore,
         double compromiseScore,
         double gridlockRate,

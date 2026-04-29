@@ -6,6 +6,7 @@ import congresssim.institution.AffirmativeThresholdRule;
 import congresssim.institution.BicameralProcess;
 import congresssim.institution.Chamber;
 import congresssim.institution.CommitteeGatekeepingProcess;
+import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.PresidentialVetoProcess;
@@ -56,8 +57,43 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("supermajority-60", unicameral("Unicameral 60 percent passage", AffirmativeThresholdRule.supermajority(0.60))),
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
                 new ScenarioEntry("default-pass-access", defaultPassWithProposalAccess()),
-                new ScenarioEntry("default-pass-committee", defaultPassWithCommitteeGate()),
+                new ScenarioEntry("default-pass-committee", defaultPassWithCommitteeGate(
+                        "Default pass + representative committee gate",
+                        CommitteeComposition.REPRESENTATIVE
+                )),
+                new ScenarioEntry("default-pass-committee-majority", defaultPassWithCommitteeGate(
+                        "Default pass + majority-controlled committee",
+                        CommitteeComposition.MAJORITY_CONTROLLED
+                )),
+                new ScenarioEntry("default-pass-committee-polarized", defaultPassWithCommitteeGate(
+                        "Default pass + polarized committee",
+                        CommitteeComposition.POLARIZED
+                )),
+                new ScenarioEntry("default-pass-committee-captured", defaultPassWithCommitteeGate(
+                        "Default pass + captured committee",
+                        CommitteeComposition.CAPTURED
+                )),
+                new ScenarioEntry("default-pass-info", defaultPassWithInformation(
+                        "Default pass + representative committee info",
+                        CommitteeComposition.REPRESENTATIVE,
+                        false
+                )),
+                new ScenarioEntry("default-pass-info-expert", defaultPassWithInformation(
+                        "Default pass + expert committee info",
+                        CommitteeComposition.EXPERT,
+                        false
+                )),
+                new ScenarioEntry("default-pass-info-captured", defaultPassWithInformation(
+                        "Default pass + captured committee info",
+                        CommitteeComposition.CAPTURED,
+                        false
+                )),
                 new ScenarioEntry("default-pass-guarded", defaultPassWithAccessAndCommitteeGate()),
+                new ScenarioEntry("default-pass-informed-guarded", defaultPassWithInformation(
+                        "Default pass + informed guarded committee",
+                        CommitteeComposition.REPRESENTATIVE,
+                        true
+                )),
                 new ScenarioEntry("bicameral-majority", bicameral("Bicameral simple majority", AffirmativeThresholdRule.simpleMajority())),
                 new ScenarioEntry("presidential-veto", presidentialVeto())
         );
@@ -89,11 +125,11 @@ public final class ScenarioCatalog {
         };
     }
 
-    private static Scenario defaultPassWithCommitteeGate() {
+    private static Scenario defaultPassWithCommitteeGate(String name, CommitteeComposition composition) {
         return new Scenario() {
             @Override
             public String name() {
-                return "Default pass + committee gate";
+                return name;
             }
 
             @Override
@@ -107,7 +143,7 @@ public final class ScenarioCatalog {
                 );
                 Chamber committee = new Chamber(
                         "Committee",
-                        representativeSubset(world.legislators(), 17),
+                        CommitteeFactory.select(world.legislators(), composition, 17),
                         strategy,
                         AffirmativeThresholdRule.simpleMajority()
                 );
@@ -116,6 +152,50 @@ public final class ScenarioCatalog {
                         committee,
                         new UnicameralProcess(name(), floorChamber)
                 );
+            }
+        };
+    }
+
+    private static Scenario defaultPassWithInformation(
+            String name,
+            CommitteeComposition composition,
+            boolean includeAccessAndGate
+    ) {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return name;
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                List<Legislator> committeeMembers = CommitteeFactory.select(world.legislators(), composition, 17);
+                Chamber floorChamber = new Chamber(
+                        "Congress",
+                        world.legislators(),
+                        strategy,
+                        new DefaultPassUnlessVetoedRule(2.0 / 3.0)
+                );
+                LegislativeProcess process = new UnicameralProcess(name(), floorChamber);
+                if (includeAccessAndGate) {
+                    Chamber committee = new Chamber(
+                            "Committee",
+                            committeeMembers,
+                            strategy,
+                            AffirmativeThresholdRule.simpleMajority()
+                    );
+                    process = new CommitteeGatekeepingProcess(name(), committee, process);
+                }
+                process = new CommitteeInformationProcess(name(), committeeMembers, 0.85, 0.45, process);
+                if (includeAccessAndGate) {
+                    process = new ProposalAccessProcess(
+                            name(),
+                            ProposalAccessRules.viabilityScreen(0.35, 0.85),
+                            process
+                    );
+                }
+                return process;
             }
         };
     }
@@ -138,7 +218,7 @@ public final class ScenarioCatalog {
                 );
                 Chamber committee = new Chamber(
                         "Committee",
-                        representativeSubset(world.legislators(), 17),
+                        CommitteeFactory.select(world.legislators(), CommitteeComposition.REPRESENTATIVE, 17),
                         strategy,
                         AffirmativeThresholdRule.simpleMajority()
                 );
@@ -225,23 +305,6 @@ public final class ScenarioCatalog {
             senate.add(legislators.get(0));
         }
         return senate;
-    }
-
-    private static List<Legislator> representativeSubset(List<Legislator> legislators, int targetSize) {
-        List<Legislator> sorted = new ArrayList<>(legislators);
-        sorted.sort((left, right) -> Double.compare(left.ideology(), right.ideology()));
-
-        int size = Math.min(targetSize, sorted.size());
-        if (size <= 1) {
-            return List.of(sorted.get(0));
-        }
-
-        List<Legislator> subset = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            int index = (int) Math.round(i * (sorted.size() - 1.0) / (size - 1.0));
-            subset.add(sorted.get(index));
-        }
-        return subset;
     }
 
     private static Legislator presidentFromWorld(SimulationWorld world) {

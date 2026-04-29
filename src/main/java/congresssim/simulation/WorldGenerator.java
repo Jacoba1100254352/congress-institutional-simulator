@@ -53,8 +53,17 @@ public final class WorldGenerator {
             Legislator proposer = legislators.get(random.nextInt(legislators.size()));
             double ideology = Values.clamp(proposer.ideology() + random.nextGaussian() * 0.22, -1.0, 1.0);
             double moderation = 1.0 - Math.abs(ideology);
-            double publicSupport = Values.clamp(0.42 + (moderation * 0.20) + random.nextGaussian() * 0.20, 0.0, 1.0);
             double lobbyPressure = Values.clamp(random.nextGaussian() * spec.lobbyingSusceptibility(), -1.0, 1.0);
+            double publicBenefit = Values.clamp(
+                    0.34 + (moderation * 0.34) - (Math.max(0.0, lobbyPressure) * 0.08) + random.nextGaussian() * 0.18,
+                    0.0,
+                    1.0
+            );
+            double publicSupport = Values.clamp(
+                    publicBenefit + (lobbyPressure * 0.08) + random.nextGaussian() * 0.22,
+                    0.0,
+                    1.0
+            );
             double salience = Values.clamp(0.20 + random.nextDouble() * 0.80, 0.0, 1.0);
 
             bills.add(new Bill(
@@ -64,6 +73,7 @@ public final class WorldGenerator {
                     proposer.ideology(),
                     ideology,
                     publicSupport,
+                    publicBenefit,
                     lobbyPressure,
                     salience
             ));

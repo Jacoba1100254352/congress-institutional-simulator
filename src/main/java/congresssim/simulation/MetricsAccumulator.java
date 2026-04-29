@@ -15,6 +15,7 @@ final class MetricsAccumulator {
     private int vetoes;
     private int overriddenVetoes;
     private double enactedSupportSum;
+    private double enactedPublicBenefitSum;
     private double compromiseSum;
     private double policyShiftSum;
     private double proposerGainSum;
@@ -50,6 +51,7 @@ final class MetricsAccumulator {
         enactedBills++;
         double support = outcome.averageYayShare();
         enactedSupportSum += support;
+        enactedPublicBenefitSum += outcome.bill().publicBenefit();
         if (support < 0.50) {
             controversialEnactedBills++;
         }
@@ -63,6 +65,7 @@ final class MetricsAccumulator {
     ScenarioReport toReport(String scenarioName) {
         double productivity = ratio(enactedBills, totalBills);
         double avgSupport = enactedBills == 0 ? 0.0 : enactedSupportSum / enactedBills;
+        double avgPublicBenefit = enactedBills == 0 ? 0.0 : enactedPublicBenefitSum / enactedBills;
         double compromise = enactedBills == 0 ? 0.0 : compromiseSum / enactedBills;
         double controversial = ratio(controversialEnactedBills, enactedBills);
         return new ScenarioReport(
@@ -71,6 +74,7 @@ final class MetricsAccumulator {
                 enactedBills,
                 productivity,
                 avgSupport,
+                avgPublicBenefit,
                 productivity * avgSupport,
                 compromise,
                 1.0 - productivity,

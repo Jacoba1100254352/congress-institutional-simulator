@@ -46,8 +46,15 @@ The default CLI compares:
 - `supermajority-60`: unicameral 60 percent passage threshold
 - `default-pass`: default passage unless 2/3 vote to block
 - `default-pass-access`: default passage unless 2/3 vote to block, with a proposal-access screen
-- `default-pass-committee`: default passage unless 2/3 vote to block, with a committee gate
+- `default-pass-committee`: default passage unless 2/3 vote to block, with a representative committee gate
+- `default-pass-committee-majority`: default passage with a majority-controlled committee gate
+- `default-pass-committee-polarized`: default passage with a polarized committee gate
+- `default-pass-committee-captured`: default passage with a lobby-sensitive/captured committee gate
+- `default-pass-info`: default passage with representative committee information review
+- `default-pass-info-expert`: default passage with expert-style committee information review
+- `default-pass-info-captured`: default passage with captured/lobby-sensitive committee information review
 - `default-pass-guarded`: default passage unless 2/3 vote to block, with both agenda filters
+- `default-pass-informed-guarded`: default passage with access screening, committee information, and committee gatekeeping
 - `bicameral-majority`: bicameral simple majority
 - `presidential-veto`: bicameral majority with presidential veto and 2/3 override
 
@@ -101,6 +108,7 @@ The first metric set is deliberately simple, but it separates throughput from le
 - `productivity`: share of introduced bills enacted
 - `floor`: share of potential bills that reached floor consideration
 - `avgSupport`: average yay share for enacted bills
+- `welfare`: average public-benefit score for enacted bills
 - `cooperation`: productivity multiplied by enacted support
 - `compromise`: rewards enacted bills that are moderate, broadly supported, and do not simply hand the proposer their ideal point
 - `gridlock`: share of introduced bills that fail
@@ -122,5 +130,11 @@ The main design warning is that default passage shifts power from affirmative ma
 That agenda layer is now represented in three comparison scenarios:
 
 - `Default pass + proposal access screen`: denies floor access to bills with low public support or very large jumps away from the status quo.
-- `Default pass + committee gate`: requires approval by a representative committee before the default-pass floor rule applies.
+- `Default pass + representative committee gate`: requires approval by a representative committee before the default-pass floor rule applies.
 - `Default pass + access + committee`: applies both filters before the floor vote.
+
+The next agenda layer adds committee composition and information:
+
+- Committee presets can select representative, majority-controlled, polarized, expert-style, or captured/lobby-sensitive committees.
+- `CommitteeInformationProcess` moves the noisy public-support signal toward a bill's generated public-benefit score before floor consideration.
+- Information review can be tested independently or combined with access screening and committee gatekeeping.

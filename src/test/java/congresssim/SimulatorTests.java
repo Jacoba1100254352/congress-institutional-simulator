@@ -7,9 +7,12 @@ import congresssim.institution.AgendaDisposition;
 import congresssim.institution.BillOutcome;
 import congresssim.institution.Chamber;
 import congresssim.institution.CommitteeGatekeepingProcess;
+import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.ProposalAccessRules;
+import congresssim.simulation.CommitteeComposition;
+import congresssim.simulation.CommitteeFactory;
 import congresssim.simulation.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
@@ -31,6 +34,8 @@ public final class SimulatorTests {
         defaultPassRequiresBlockingSupermajority();
         proposalAccessCanDenyLowViabilityBills();
         committeeGateBlocksBillsBeforeFloor();
+        committeeInformationMovesPublicSignalTowardBenefit();
+        committeeCompositionPresetsSelectDifferentMembers();
         scenarioKeysSelectExpectedScenarios();
         simulatorProducesOneReportPerScenario();
         System.out.println("All simulator tests passed.");
@@ -50,7 +55,7 @@ public final class SimulatorTests {
     }
 
     private static void proposalAccessCanDenyLowViabilityBills() {
-        Bill bill = new Bill("B-test", "Test Bill", "L-1", 0.8, 0.9, 0.20, 0.0, 0.50);
+        Bill bill = new Bill("B-test", "Test Bill", "L-1", 0.8, 0.9, 0.20, 0.75, 0.0, 0.50);
         VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
         assertFalse(
                 ProposalAccessRules.viabilityScreen(0.35, 0.85).evaluate(bill, context).granted(),
@@ -91,7 +96,7 @@ public final class SimulatorTests {
             }
         };
 
-        Bill bill = new Bill("B-test", "Test Bill", "L-1", 0.0, 0.1, 0.60, 0.0, 0.50);
+        Bill bill = new Bill("B-test", "Test Bill", "L-1", 0.0, 0.1, 0.60, 0.70, 0.0, 0.50);
         BillOutcome outcome = new CommitteeGatekeepingProcess("test committee", committee, floorWouldPass)
                 .consider(bill, new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0));
 
@@ -100,6 +105,66 @@ public final class SimulatorTests {
                 outcome.agendaDisposition() == AgendaDisposition.COMMITTEE_REJECTED,
                 "Committee rejection should be recorded as the agenda disposition."
         );
+    }
+
+    private static void committeeInformationMovesPublicSignalTowardBenefit() {
+        Bill bill = new Bill("B-test", "Test Bill", "L-1", 0.0, 0.1, 0.20, 0.90, 0.0, 0.50);
+        List<Legislator> committeeMembers = List.of(
+                new Legislator("L-1", "Test", 0.0, 1.0, 0.2, 1.0, 0.0, 1.0),
+                new Legislator("L-2", "Test", 0.0, 1.0, 0.2, 1.0, 0.0, 1.0)
+        );
+        LegislativeProcess captureBill = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "capture bill";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        context.currentPolicyPosition(),
+                        false,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "captured"
+                );
+            }
+        };
+
+        BillOutcome outcome = new CommitteeInformationProcess(
+                "test information",
+                committeeMembers,
+                1.0,
+                0.0,
+                captureBill
+        ).consider(bill, new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0));
+
+        assertTrue(
+                outcome.bill().publicSupport() > bill.publicSupport(),
+                "Information review should move perceived public support toward public benefit."
+        );
+        assertTrue(
+                outcome.bill().publicSupport() < bill.publicBenefit(),
+                "Information review should improve the signal without making it perfectly omniscient."
+        );
+    }
+
+    private static void committeeCompositionPresetsSelectDifferentMembers() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "A", -0.9, 0.1, 0.5, 0.2, 0.1, 0.2),
+                new Legislator("L-2", "A", -0.4, 0.2, 0.5, 0.2, 0.2, 0.2),
+                new Legislator("L-3", "B", 0.0, 1.0, 0.5, 1.0, 0.0, 1.0),
+                new Legislator("L-4", "B", 0.4, 0.4, 0.5, 0.4, 0.8, 0.4),
+                new Legislator("L-5", "B", 0.9, 0.3, 0.5, 0.3, 1.0, 0.3)
+        );
+
+        List<Legislator> expert = CommitteeFactory.select(legislators, CommitteeComposition.EXPERT, 2);
+        List<Legislator> captured = CommitteeFactory.select(legislators, CommitteeComposition.CAPTURED, 2);
+
+        assertTrue(expert.stream().anyMatch(legislator -> legislator.id().equals("L-3")), "Expert committee should select public-interest members.");
+        assertTrue(captured.stream().anyMatch(legislator -> legislator.id().equals("L-5")), "Captured committee should select lobby-sensitive members.");
     }
 
     private static void simulatorProducesOneReportPerScenario() {
@@ -118,7 +183,7 @@ public final class SimulatorTests {
                 "Scenario keys should select a focused scenario subset."
         );
         assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("presidential-veto"),
+                ScenarioCatalog.scenarioKeys().contains("default-pass-info-captured"),
                 "Scenario catalog should expose CLI-facing keys."
         );
     }
