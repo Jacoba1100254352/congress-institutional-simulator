@@ -1,0 +1,86 @@
+# Congress Institutional Simulator
+
+This is a small agent-based simulator for testing how legislative rules shape cooperation, compromise, productivity, and gridlock.
+
+The first version follows the main recommendation from the research report: start with a one-dimensional spatial legislature, a scalar status quo, proposers, and comparable institutional regimes before adding a kitchen-sink set of external systems.
+
+The current model intentionally includes only the parts needed to compare institutional structures:
+
+- legislators with ideology, party loyalty, constituency sensitivity, lobby susceptibility, reputation sensitivity, and compromise preference
+- a current policy status quo that changes when bills are enacted
+- bills proposed near a selected legislator's ideal point, with public support, lobby pressure, and salience
+- voting strategies that compare a bill against the current status quo before reducing pressures to a final `YAY` or `NAY`
+- pluggable institutional rules such as simple majority, supermajority passage, and default passage unless a veto bloc forms
+- legislative processes such as unicameral Congress, bicameral Congress, and a basic presidential veto wrapper
+- aggregate metrics over many randomized runs
+
+## Run
+
+```sh
+make run
+```
+
+With custom parameters:
+
+```sh
+make run ARGS="--runs 1000 --legislators 151 --bills 80 --seed 42"
+```
+
+Run tests:
+
+```sh
+make test
+```
+
+## Current Scenarios
+
+The default CLI compares:
+
+- unicameral simple majority
+- unicameral 60 percent passage threshold
+- default passage unless 2/3 vote to block
+- bicameral simple majority
+- bicameral majority with presidential veto and 2/3 override
+
+## Architecture
+
+The simulator is designed around small strategy interfaces:
+
+- `VotingStrategy`: how a legislator turns weighted pressures into `YAY` or `NAY`
+- `VoteInfluence`: one source of pressure, such as ideology, party, constituency, lobbying, or compromise preference
+- `VotingRule`: how chamber vote totals become pass/fail outcomes
+- `LegislativeProcess`: how one or more institutions consider a bill
+- `Scenario`: a named institutional design to compare
+- `PolicyState`: the current scalar status quo for the simulated policy space
+
+To add a new system, implement one of those interfaces rather than rewriting the simulator engine.
+
+Examples:
+
+- lobbying: add or replace a `VoteInfluence`
+- shame/reputation: adjust `StandardInfluences.reputation`
+- committees: add a `LegislativeProcess` that filters bills before chamber votes, or improves bill-quality estimates before members vote
+- courts: add a `LegislativeProcess` wrapper after enactment
+- elections: run multiple worlds over time and mutate legislator incentives between sessions
+
+## Metrics
+
+The first metric set is deliberately simple, but it separates throughput from legitimacy-oriented signals:
+
+- `productivity`: share of introduced bills enacted
+- `avgSupport`: average yay share for enacted bills
+- `cooperation`: productivity multiplied by enacted support
+- `compromise`: rewards enacted bills that are moderate, broadly supported, and do not simply hand the proposer their ideal point
+- `gridlock`: share of introduced bills that fail
+- `lowSupport`: share of enacted bills with less than 50 percent yay support
+- `popularFail`: share of high-public-support bills that fail
+- `policyShift`: average absolute movement from the prior status quo
+- `propGain`: average enacted movement toward the proposer's ideal point
+
+These are not claims about real-world validity. They are hooks for comparing rule sets under shared assumptions.
+
+## Research Direction
+
+The research report found that the proposed default-pass rule has analogues in negative parliamentarism, WTO reverse consensus, EU reverse qualified majority rules, tacit-acceptance treaty procedures, silence procedures, and U.S. review-and-disapproval structures such as the Congressional Review Act and BRAC. It did not find a close mainstream analogue where ordinary statutes generally pass unless a two-thirds blocking coalition forms.
+
+The main design warning is that default passage shifts power from affirmative majority formation to blocking coalition formation. That makes agenda access, proposal screening, proposer power, committees, and legitimacy metrics central. The next modeling layer should therefore be agenda access and committee gatekeeping before media, lobbying, elections, or richer behavioral systems.
