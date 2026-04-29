@@ -34,10 +34,12 @@ Generated artifacts:
 The planned roadmap layer is now implemented. The next additions would be research-expansion work rather than cleanup of previously promised features:
 
 - endogenous strategy: proposers should adapt proposal volume, moderation, timing, cosponsorship, lobbying exposure, and amendment demands to the institutional rule set
-- strategic lobbying response: lobby groups should learn which channels produce capture returns and reallocate budgets across sessions
+- strategic lobbying response: lobby groups should learn which channels produce capture returns and reallocate budgets across sessions; the empirical target should include lobbying as legislative subsidy, access, information transmission, mobilized participation, and defensive rent protection rather than only direct vote buying
 - richer public model: constituents should be generated as district populations with preference distributions, issue intensity, group membership, and turnout/attention differences rather than only legislator-level district signals
 - richer bargaining: amendments should support coalitions, side payments or compensation packages, poison-pill amendments from opponents, and proposer withdrawal
-- calibration: compare rough simulator outputs to Voteview, Congress.gov/govinfo, lobbying disclosure, Comparative Agendas Project, V-Dem, ParlGov, and Center for Effective Lawmaking patterns before making empirical claims
+- calibration: compare rough simulator outputs to Voteview roll-call ideology and party-unity patterns, Congress.gov/govinfo bill progression, lobbying disclosure spending and client patterns, Comparative Agendas topic throughput, V-Dem institutional measures, ParlGov party-system structure, and Center for Effective Lawmaking sponsor-success benchmarks before making empirical claims
+- agenda-control validation: add diagnostics for referral authority, jurisdictional monopoly, discharge thresholds, amendment openness, floor scheduling, and status-quo fallback so committee-power and closed-rule agenda models can be matched more directly
+- social-choice stress tests: make policy tournaments vulnerable to clone alternatives, strategic sequencing, and multidimensional cycling before treating pairwise winners as robust reform candidates
 - documentation: convert the model description into an ODD/ODD+D appendix if the project moves toward submission
 
 ## Submission Note
