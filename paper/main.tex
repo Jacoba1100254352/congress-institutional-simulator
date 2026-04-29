@@ -217,32 +217,32 @@ Table~\ref{tab:scenario-averages} summarizes selected scenario averages across a
 \begin{table*}
   \caption{Selected scenario averages across 18 assumption cases in \texttt{simulation-campaign-v17}.}
   \label{tab:scenario-averages}
-  \Description{A table comparing productivity, enacted bills, welfare, low-support passage, policy shift, proposer gain, and challenge rate across institutional scenarios.}
+  \Description{A table comparing figure labels, productivity, enacted bills, welfare, low-support passage, policy shift, proposer gain, and challenge rate across institutional scenarios.}
   \small
   \resizebox{\textwidth}{!}{%
-  \begin{tabular}{lrrrrrrr}
+  \begin{tabular}{llrrrrrrr}
     \toprule
-    Scenario & Prod. & Enacted/run & Welfare & Low-sup. & Shift & Prop. gain & Challenge \\
+    Label & Scenario & Prod. & Enacted/run & Welfare & Low-sup. & Shift & Prop. gain & Challenge \\
     \midrule
-    Default pass unless 2/3 block & 0.843 & 86.980 & 0.497 & 0.448 & 0.664 & 0.656 & 0.000 \\
-    Default pass + constituent public will + citizen panel & 0.407 & 41.313 & 0.629 & 0.249 & 0.213 & 0.435 & 0.000 \\
-    Default pass + proposal bonds & 0.832 & 85.022 & 0.499 & 0.448 & 0.653 & 0.653 & 0.000 \\
-    Default pass + affected-group sponsor gate & 0.192 & 18.649 & 0.725 & 0.154 & 0.062 & 0.241 & 0.000 \\
-    Default pass + multi-round mediation & 0.958 & 98.574 & 0.450 & 0.394 & 0.392 & 0.368 & 0.000 \\
-    Default pass + multi-round mediation + challenge & 0.785 & 86.314 & 0.460 & 0.300 & 0.296 & 0.340 & 0.376 \\
-    Default pass + pairwise policy tournament & 0.551 & 56.412 & 0.641 & 0.042 & 0.004 & 0.004 & 0.000 \\
-    Default pass + challenge vouchers & 0.671 & 77.963 & 0.510 & 0.393 & 0.456 & 0.541 & 0.397 \\
-    Default pass + minority-bonus challenge vouchers & 0.635 & 75.106 & 0.519 & 0.372 & 0.421 & 0.524 & 0.442 \\
-    Default pass + strict adaptive tracks & 0.285 & 28.291 & 0.647 & 0.078 & 0.111 & 0.311 & 0.000 \\
-    Default pass + public objection window & 0.448 & 45.285 & 0.593 & 0.269 & 0.214 & 0.384 & 0.000 \\
-    Default pass + law registry & 0.867 & 89.653 & 0.492 & 0.396 & 0.836 & 0.598 & 0.000 \\
-    Default pass + lobby-surcharge proposal costs & 0.506 & 51.804 & 0.531 & 0.460 & 0.531 & 0.925 & 0.000 \\
-    Unicameral simple majority & 0.268 & 26.268 & 0.636 & 0.000 & 0.104 & 0.310 & 0.000 \\
-    Unicameral 60 percent passage & 0.090 & 8.543 & 0.707 & 0.000 & 0.020 & 0.147 & 0.000 \\
+    DP & Default pass unless 2/3 block & 0.843 & 86.980 & 0.497 & 0.448 & 0.664 & 0.656 & 0.000 \\
+    Public+Panel & Default pass + constituent public will + citizen panel & 0.407 & 41.313 & 0.629 & 0.249 & 0.213 & 0.435 & 0.000 \\
+    Bond & Default pass + proposal bonds & 0.832 & 85.022 & 0.499 & 0.448 & 0.653 & 0.653 & 0.000 \\
+    Aff.Spon & Default pass + affected-group sponsor gate & 0.192 & 18.649 & 0.725 & 0.154 & 0.062 & 0.241 & 0.000 \\
+    Med & Default pass + multi-round mediation & 0.958 & 98.574 & 0.450 & 0.394 & 0.392 & 0.368 & 0.000 \\
+    Med+Chal & Default pass + multi-round mediation + challenge & 0.785 & 86.314 & 0.460 & 0.300 & 0.296 & 0.340 & 0.376 \\
+    Pair & Default pass + pairwise policy tournament & 0.551 & 56.412 & 0.641 & 0.042 & 0.004 & 0.004 & 0.000 \\
+    Chal. & Default pass + challenge vouchers & 0.671 & 77.963 & 0.510 & 0.393 & 0.456 & 0.541 & 0.397 \\
+    MinTok & Default pass + minority-bonus challenge vouchers & 0.635 & 75.106 & 0.519 & 0.372 & 0.421 & 0.524 & 0.442 \\
+    AdaptS & Default pass + strict adaptive tracks & 0.285 & 28.291 & 0.647 & 0.078 & 0.111 & 0.311 & 0.000 \\
+    Obj. & Default pass + public objection window & 0.448 & 45.285 & 0.593 & 0.269 & 0.214 & 0.384 & 0.000 \\
+    LawReg & Default pass + law registry & 0.867 & 89.653 & 0.492 & 0.396 & 0.836 & 0.598 & 0.000 \\
+    Cost & Default pass + lobby-surcharge proposal costs & 0.506 & 51.804 & 0.531 & 0.460 & 0.531 & 0.925 & 0.000 \\
+    SM & Unicameral simple majority & 0.268 & 26.268 & 0.636 & 0.000 & 0.104 & 0.310 & 0.000 \\
+    S60 & Unicameral 60 percent passage & 0.090 & 8.543 & 0.707 & 0.000 & 0.020 & 0.147 & 0.000 \\
     \bottomrule
   \end{tabular}%
   }
-  \par\smallskip\footnotesize \emph{Note:} \emph{Enacted/run} is an absolute count. All other reported columns are normalized rates or scores.
+  \par\smallskip\footnotesize \emph{Note:} The \emph{Label} column matches the point labels in Figure~\ref{fig:productivity-low-support}. \emph{Enacted/run} is an absolute count. All other reported columns are normalized rates or scores.
 \end{table*}
 
 \begin{figure*}
