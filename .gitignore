@@ -1,4 +1,5 @@
 out/
+dist/
 paper/build/
 *.class
 .DS_Store

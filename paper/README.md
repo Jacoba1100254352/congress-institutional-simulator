@@ -55,6 +55,19 @@ before compiling the PDF. Word-count compliance can be checked with:
 make paper-word-count
 ```
 
+The review checks for word count, anonymous PDF text, and generated figure label
+bounds run with:
+
+```sh
+make paper-checks
+```
+
+Build the anonymous review supplement with:
+
+```sh
+make supplement-anonymous
+```
+
 The generated PDF is written to:
 
 ```text

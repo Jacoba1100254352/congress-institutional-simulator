@@ -71,6 +71,7 @@ final class InstitutionProcessTests {
         simpleMajorityRequiresMoreYaysThanNays();
         defaultPassRequiresBlockingSupermajority();
         proposalAccessCanDenyLowViabilityBills();
+        currentSystemAgendaDoesNotUseTrueGeneratedBenefit();
         proposalCostsCanDenyLowValueBills();
         crossBlocCosponsorshipRequiresOutsideSupport();
         adaptiveTrackRoutesBillsByRisk();
@@ -127,6 +128,20 @@ final class InstitutionProcessTests {
         assertFalse(
                 ProposalAccessRules.viabilityScreen(0.35, 0.85).evaluate(bill, context).granted(),
                 "Low-support or distant bills should be denied proposal access."
+        );
+    }
+
+
+    private static void currentSystemAgendaDoesNotUseTrueGeneratedBenefit() {
+        Bill lowTrueBenefit = new Bill("B-current", "Current Gate Bill", "L-1", 0.0, 0.10, 0.62, 0.05, 0.10, 0.58);
+        Bill highTrueBenefit = new Bill("B-current", "Current Gate Bill", "L-1", 0.0, 0.10, 0.62, 0.95, 0.10, 0.58);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+
+        boolean lowDecision = ProposalAccessRules.currentSystemAgenda(0.58).evaluate(lowTrueBenefit, context).granted();
+        boolean highDecision = ProposalAccessRules.currentSystemAgenda(0.58).evaluate(highTrueBenefit, context).granted();
+        assertTrue(
+                lowDecision == highDecision,
+                "Current-system agenda access should use observable signals, not generated true public benefit."
         );
     }
 

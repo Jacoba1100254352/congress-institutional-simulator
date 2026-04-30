@@ -77,6 +77,7 @@ final class CampaignRunnerTests {
         timelineCampaignHasOrderedContentionCases();
         strategyCampaignIncludesDeepAdaptiveSystems();
         paperCampaignUsesSingleCanonicalEvidenceBase();
+        paperCampaignSeedRobustnessSmokeTest();
         calibrationRunnerWritesEmpiricalScreeningReports();
         allPredefinedCampaignScenarioListsIncludeCurrentBenchmark();
     }
@@ -281,6 +282,38 @@ final class CampaignRunnerTests {
         }
     }
 
+    private static void paperCampaignSeedRobustnessSmokeTest() {
+        try {
+            long[] seeds = {95L, 96L, 97L};
+            int expectedRows = -1;
+            double currentProductivityTotal = 0.0;
+            double defaultProductivityTotal = 0.0;
+            for (long seed : seeds) {
+                Path outputDir = Path.of("out", "test-campaign-v21-paper-seed-" + seed);
+                Files.createDirectories(outputDir);
+                CampaignResult result = CampaignRunner.runV21Paper(outputDir, 1, 17, 4, seed);
+                if (expectedRows < 0) {
+                    expectedRows = result.rows().size();
+                }
+                assertTrue(result.rows().size() == expectedRows, "Seed robustness runs should keep the same row count.");
+
+                CampaignRow current = findRow(result, "baseline", "current-system");
+                CampaignRow defaultPass = findRow(result, "baseline", "default-pass");
+                assertTrue(Double.isFinite(current.report().productivity()), "Current-system productivity should be finite.");
+                assertTrue(Double.isFinite(defaultPass.report().productivity()), "Default-pass productivity should be finite.");
+                currentProductivityTotal += current.report().productivity();
+                defaultProductivityTotal += defaultPass.report().productivity();
+            }
+
+            assertTrue(
+                    (defaultProductivityTotal / seeds.length) > (currentProductivityTotal / seeds.length),
+                    "Open default-pass should remain the productivity stress-test extreme across smoke-test seeds."
+            );
+        } catch (Exception exception) {
+            throw new AssertionError("Paper campaign seed robustness smoke test failed.", exception);
+        }
+    }
+
     private static void calibrationRunnerWritesEmpiricalScreeningReports() {
         try {
             Path outputDir = Path.of("out", "test-calibration");
@@ -306,7 +339,7 @@ final class CampaignRunnerTests {
             assertTrue(markdown.contains("Calibration Baseline"), "Calibration Markdown should identify the report.");
             assertTrue(markdown.contains("passed checks"), "Calibration Markdown should summarize pass/fail results.");
             String manifest = Files.readString(result.manifestPath());
-            assertTrue(manifest.contains("\"commit\""), "Calibration manifest should include commit provenance.");
+            assertTrue(manifest.contains("\"provenanceFormat\""), "Calibration manifest should use stable tracked provenance.");
             assertTrue(manifest.contains("\"sha256\""), "Calibration manifest should include artifact checksums.");
         } catch (Exception exception) {
             throw new AssertionError("Calibration report generation failed.", exception);

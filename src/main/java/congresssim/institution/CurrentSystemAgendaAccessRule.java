@@ -2,6 +2,7 @@ package congresssim.institution;
 
 import congresssim.behavior.VoteContext;
 import congresssim.model.Bill;
+import congresssim.util.Values;
 
 final class CurrentSystemAgendaAccessRule implements ProposalAccessRule {
     private final double threshold;
@@ -21,9 +22,17 @@ final class CurrentSystemAgendaAccessRule implements ProposalAccessRule {
         double capturePenalty = Math.max(0.0, bill.lobbyPressure()) * (0.40 + (0.40 * bill.privateGain()));
         double harmPenalty = bill.concentratedHarm() * (1.0 - bill.affectedGroupSupport());
         double uncertaintyPenalty = bill.publicBenefitUncertainty() * (1.0 - bill.publicSupport());
+        double observableValueSignal = Values.clamp(
+                (0.52 * bill.publicSupport())
+                        + (0.22 * bill.salience())
+                        + (0.14 * (1.0 - bill.publicBenefitUncertainty()))
+                        + (0.12 * (1.0 - harmPenalty)),
+                0.0,
+                1.0
+        );
         double agendaScore =
                 (0.30 * bill.publicSupport())
-                        + (0.26 * bill.publicBenefit())
+                        + (0.26 * observableValueSignal)
                         + (0.16 * bill.salience())
                         + (0.14 * policyStability)
                         + (bill.antiLobbyingReform() ? 0.05 : 0.0)

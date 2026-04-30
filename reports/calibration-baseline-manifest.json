@@ -1,9 +1,8 @@
 {
   "reportName": "Calibration Baseline",
-  "commit": "df23ab4c167c65524973b9944026187b87de4b5e",
-  "tag": "v21",
-  "gitDirty": true,
-  "javaVersion": "25",
+  "provenanceFormat": "stable-report-v2",
+  "sourceTree": "tracked submission artifact; inspect repository history for commit identity",
+  "javaRelease": "21",
   "javaCommand": "congresssim.Main --calibrate --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports",
   "runs": 120,
   "legislators": 101,
@@ -12,7 +11,7 @@
   "caseCount": 1,
   "scenarioCount": 5,
   "artifacts": [
-    {"path": "reports/calibration-baseline.csv", "sha256": "9cdd06ade92b4b48cd04431edd87833f11316d56734e04dae0b1abef58cf9a20"},
-    {"path": "reports/calibration-baseline.md", "sha256": "bd91e3453b2958fe05bc54d9e02ed5f8e4abaa25dffc082b90dbc64b3391af83"}
+    {"path": "reports/calibration-baseline.csv", "sha256": "c1109972f9c60467b21736514034d79e2e9594c75c746497d5b35067ae4bdcdb"},
+    {"path": "reports/calibration-baseline.md", "sha256": "efc569eefd7e9654b0b7c6597e99f9be372d9fbf6e8f2b568b130ed1994e8489"}
   ]
 }

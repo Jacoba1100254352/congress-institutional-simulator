@@ -28,10 +28,9 @@ public final class ReportProvenance {
         StringBuilder builder = new StringBuilder();
         builder.append("{\n");
         append(builder, "reportName", reportName, true);
-        append(builder, "commit", command("git", "rev-parse", "HEAD"), true);
-        append(builder, "tag", command("git", "describe", "--tags", "--always", "HEAD"), true);
-        append(builder, "gitDirty", !command("git", "status", "--short").isBlank(), true);
-        append(builder, "javaVersion", System.getProperty("java.version", "unknown"), true);
+        append(builder, "provenanceFormat", "stable-report-v2", true);
+        append(builder, "sourceTree", "tracked submission artifact; inspect repository history for commit identity", true);
+        append(builder, "javaRelease", System.getProperty("congresssim.javaRelease", "21"), true);
         append(builder, "javaCommand", System.getProperty("sun.java.command", "unknown"), true);
         append(builder, "runs", runs, true);
         append(builder, "legislators", legislators, true);
@@ -94,25 +93,6 @@ public final class ReportProvenance {
             return HexFormat.of().formatHex(digest.digest(Files.readAllBytes(path))).toLowerCase(Locale.ROOT);
         } catch (NoSuchAlgorithmException exception) {
             throw new IllegalStateException("SHA-256 digest is unavailable.", exception);
-        }
-    }
-
-    private static String command(String... command) {
-        try {
-            Process process = new ProcessBuilder(command)
-                    .redirectErrorStream(true)
-                    .start();
-            String output = new String(process.getInputStream().readAllBytes()).trim();
-            int exit = process.waitFor();
-            if (exit != 0) {
-                return "unknown";
-            }
-            return output;
-        } catch (IOException exception) {
-            return "unknown";
-        } catch (InterruptedException exception) {
-            Thread.currentThread().interrupt();
-            return "unknown";
         }
     }
 
