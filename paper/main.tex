@@ -141,10 +141,11 @@ The submitted manuscript is anonymized for double-blind review. The reproducibil
 \begin{verbatim}
 make campaign-v21-paper
 make calibrate
+make seed-robustness
 make paper
 make supplement-anonymous
 \end{verbatim}
-The paper build regenerates the v21-paper campaign before drawing tables or figures, so the PDF is tied to the tracked campaign artifact rather than to stale CSV files. The anonymous supplement target packages source, paper files, generated reports, and review PDFs while excluding repository metadata and local artifacts. A public repository URL will be added after review if anonymity rules permit.
+The paper build regenerates the v21-paper campaign before drawing tables or figures, so the PDF is tied to the tracked campaign artifact rather than to stale CSV files. The seed-robustness target writes a separate multi-seed report for selected paper scenarios; Table~\ref{tab:scenario-averages} still reports sensitivity across assumption cases. The anonymous supplement target packages source, paper files, generated reports, and review PDFs while excluding repository metadata and local artifacts. A public repository URL will be added after review if anonymity rules permit.
 
 \section*{Use of Large Language Model Tools}
 

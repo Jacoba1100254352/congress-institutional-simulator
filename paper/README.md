@@ -68,6 +68,12 @@ Build the anonymous review supplement with:
 make supplement-anonymous
 ```
 
+Run the selected multi-seed robustness report with:
+
+```sh
+make seed-robustness
+```
+
 The generated PDF is written to:
 
 ```text

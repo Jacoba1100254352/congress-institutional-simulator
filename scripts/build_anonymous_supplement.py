@@ -75,6 +75,7 @@ def copy_reports() -> None:
     for pattern in (
         "calibration-baseline.*",
         "simulation-campaign-v21-paper.*",
+        "seed-robustness-summary.*",
     ):
         for path in source.glob(pattern):
             if path.is_file():

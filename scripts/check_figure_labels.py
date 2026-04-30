@@ -15,7 +15,7 @@ FIGURES = [
 ]
 
 PICTURE_RE = re.compile(r"\\begin\{picture\}\(([-0-9.]+),([-0-9.]+)\)")
-POINT_LABEL_RE = re.compile(r"% point-label label=(.*?) x=([-0-9.]+) y=([-0-9.]+)")
+POINT_LABEL_RE = re.compile(r"% (?:point|legend)-label label=(.*?) x=([-0-9.]+) y=([-0-9.]+)")
 PUT_RE = re.compile(r"\\put\(([-0-9.]+),([-0-9.]+)\)")
 
 

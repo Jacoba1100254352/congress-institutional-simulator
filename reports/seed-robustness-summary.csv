@@ -1,0 +1,25 @@
+scenarioKey,scenario,metric,seedCount,mean,min,max,range
+current-system,Current U.S.-style system,productivity,5,0.047678,0.046500,0.050000,0.003500
+current-system,Current U.S.-style system,compromise,5,0.377400,0.371000,0.383500,0.012500
+current-system,Current U.S.-style system,lowSupport,5,0.000000,0.000000,0.000000,0.000000
+current-system,Current U.S.-style system,welfare,5,0.755311,0.750944,0.758389,0.007444
+simple-majority,Unicameral simple majority,productivity,5,0.267733,0.266111,0.270500,0.004389
+simple-majority,Unicameral simple majority,compromise,5,0.233944,0.231556,0.237000,0.005444
+simple-majority,Unicameral simple majority,lowSupport,5,0.000000,0.000000,0.000000,0.000000
+simple-majority,Unicameral simple majority,welfare,5,0.635878,0.633556,0.639500,0.005944
+default-pass,Default pass unless 2/3 block,productivity,5,0.840133,0.838167,0.841667,0.003500
+default-pass,Default pass unless 2/3 block,compromise,5,0.110556,0.109778,0.111833,0.002056
+default-pass,Default pass unless 2/3 block,lowSupport,5,0.448733,0.447167,0.450000,0.002833
+default-pass,Default pass unless 2/3 block,welfare,5,0.497711,0.496667,0.499333,0.002667
+default-pass-multiround-mediation-challenge,Mediation + challenge,productivity,5,0.784711,0.781833,0.787056,0.005222
+default-pass-multiround-mediation-challenge,Mediation + challenge,compromise,5,0.217067,0.216278,0.217833,0.001556
+default-pass-multiround-mediation-challenge,Mediation + challenge,lowSupport,5,0.299400,0.297444,0.301167,0.003722
+default-pass-multiround-mediation-challenge,Mediation + challenge,welfare,5,0.460889,0.458611,0.462667,0.004056
+default-pass-alternatives-pairwise,Pairwise policy tournament,productivity,5,0.550856,0.549111,0.552833,0.003722
+default-pass-alternatives-pairwise,Pairwise policy tournament,compromise,5,0.491722,0.486889,0.503333,0.016444
+default-pass-alternatives-pairwise,Pairwise policy tournament,lowSupport,5,0.042567,0.040889,0.044333,0.003444
+default-pass-alternatives-pairwise,Pairwise policy tournament,welfare,5,0.640978,0.639500,0.642556,0.003056
+default-pass-deep-strategy-bundle,Adaptive strategy bundle,productivity,5,0.965544,0.964556,0.966778,0.002222
+default-pass-deep-strategy-bundle,Adaptive strategy bundle,compromise,5,0.213356,0.212389,0.214056,0.001667
+default-pass-deep-strategy-bundle,Adaptive strategy bundle,lowSupport,5,0.376944,0.372611,0.380056,0.007444
+default-pass-deep-strategy-bundle,Adaptive strategy bundle,welfare,5,0.456989,0.454889,0.458278,0.003389
