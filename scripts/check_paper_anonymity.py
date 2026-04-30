@@ -66,6 +66,10 @@ def pdf_metadata(path: Path) -> str:
     return completed.stdout
 
 
+def pdf_raw_text(path: Path) -> str:
+    return path.read_bytes().decode("latin-1", errors="ignore")
+
+
 def main(argv: list[str]) -> int:
     pdfs = [Path(argument) for argument in argv] if argv else DEFAULT_PDFS
     failures: list[str] = []
@@ -75,11 +79,14 @@ def main(argv: list[str]) -> int:
             continue
         text = pdf_text(pdf)
         metadata = pdf_metadata(pdf)
+        raw_text = pdf_raw_text(pdf)
         for pattern in BANNED_PATTERNS:
             if pattern.search(text):
                 failures.append(f"{pdf}: matched banned identity pattern {pattern.pattern!r}")
             if pattern.search(metadata):
                 failures.append(f"{pdf}: metadata matched banned identity pattern {pattern.pattern!r}")
+            if pattern.search(raw_text):
+                failures.append(f"{pdf}: raw PDF bytes matched banned identity pattern {pattern.pattern!r}")
 
     if failures:
         print("Paper anonymity check failed:", file=sys.stderr)

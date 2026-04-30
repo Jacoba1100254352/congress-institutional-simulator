@@ -3,7 +3,7 @@ TEST_SOURCES := $(shell find src/test/java -name '*.java')
 JAVA_RELEASE ?= 21
 JAVA_PROPS ?= -Dcongresssim.javaRelease=$(JAVA_RELEASE)
 
-.PHONY: build run calibrate calibration-check campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper seed-robustness seed-robustness-check family-champions validation-readiness public-provenance paper paper-word-count paper-checks paper-anonymity-check figure-label-check supplement-anonymous clean-regeneration-check paper-clean test ci clean
+.PHONY: build run calibrate calibration-check campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper seed-robustness seed-robustness-check family-champions catalog-breadth validation-readiness empirical-validation public-provenance paper paper-word-count paper-checks paper-anonymity-check figure-label-check pdf-render-check table-figure-consistency-check supplement-anonymous clean-regeneration-check paper-clean test ci clean
 
 build:
 	mkdir -p out/main
@@ -95,8 +95,14 @@ seed-robustness-check: seed-robustness
 family-champions: build
 	JAVA_PROPS="$(JAVA_PROPS)" python3 scripts/run_family_champions.py
 
+catalog-breadth: build
+	python3 scripts/report_catalog_breadth.py
+
 validation-readiness:
 	python3 scripts/validate_empirical_inputs.py
+
+empirical-validation:
+	python3 scripts/run_empirical_validation.py
 
 public-provenance:
 	python3 scripts/write_public_provenance.py
@@ -115,12 +121,20 @@ paper-checks: paper
 	python3 paper/scripts/check_word_count.py paper/main.pdf --max 6000
 	python3 scripts/check_paper_anonymity.py paper/main.pdf paper/appendix-odd-d.pdf
 	python3 scripts/check_figure_labels.py
+	python3 scripts/check_table_figure_consistency.py
+	python3 scripts/check_pdf_render.py paper/main.pdf paper/appendix-odd-d.pdf
 
 paper-anonymity-check: paper
 	python3 scripts/check_paper_anonymity.py paper/main.pdf paper/appendix-odd-d.pdf
 
 figure-label-check: paper
 	python3 scripts/check_figure_labels.py
+
+pdf-render-check: paper
+	python3 scripts/check_pdf_render.py paper/main.pdf paper/appendix-odd-d.pdf
+
+table-figure-consistency-check: paper
+	python3 scripts/check_table_figure_consistency.py
 
 supplement-anonymous: paper
 	python3 scripts/build_anonymous_supplement.py
@@ -138,7 +152,7 @@ test: build
 	javac --release $(JAVA_RELEASE) -cp out/main -d out/test $(TEST_SOURCES)
 	java $(JAVA_PROPS) -cp out/main:out/test congresssim.SimulatorTests
 
-ci: test calibration-check seed-robustness-check validation-readiness paper-checks supplement-anonymous clean-regeneration-check
+ci: test calibration-check seed-robustness-check validation-readiness empirical-validation catalog-breadth paper-checks supplement-anonymous clean-regeneration-check
 
 clean:
 	rm -rf out

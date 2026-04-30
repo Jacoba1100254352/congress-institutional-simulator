@@ -55,8 +55,8 @@ before compiling the PDF. Word-count compliance can be checked with:
 make paper-word-count
 ```
 
-The review checks for word count, anonymous PDF text, and generated figure label
-bounds run with:
+The review checks for word count, anonymous PDF text and metadata, generated
+figure label bounds, table/figure consistency, and rendered-PDF sanity run with:
 
 ```sh
 make paper-checks
@@ -78,6 +78,19 @@ Check optional raw empirical validation input readiness with:
 
 ```sh
 make validation-readiness
+```
+
+Compute empirical validation summaries from any optional raw inputs that are
+present with:
+
+```sh
+make empirical-validation
+```
+
+Report the breadth-first scenario catalog composition with:
+
+```sh
+make catalog-breadth
 ```
 
 For public, non-anonymous releases after review, write a provenance manifest

@@ -147,11 +147,13 @@ make campaign-v21-paper
 make calibrate
 make seed-robustness-check
 make family-champions
+make catalog-breadth
 make validation-readiness
+make empirical-validation
 make paper
 make supplement-anonymous
 \end{verbatim}
-The paper build regenerates the v21-paper campaign before drawing tables or figures, so the PDF is tied to the tracked campaign artifact rather than to stale CSV files. The seed-robustness target writes a separate multi-seed report for every paper scenario; Table~\ref{tab:scenario-averages} still reports sensitivity across assumption cases. The family-champions target writes a supplemental all-catalog screen under a fixed selection rule. The validation-readiness target reports which optional raw empirical inputs are present for future validation. The anonymous supplement target packages source, paper files, generated reports, and review PDFs while excluding repository metadata and local artifacts. A public repository URL will be added after review if anonymity rules permit; a separate public provenance manifest can be generated after review with \texttt{make public-provenance}.
+The paper build regenerates the v21-paper campaign before drawing tables or figures, so the PDF is tied to the tracked campaign artifact rather than to stale CSV files. The seed-robustness target writes a multi-seed report for every paper scenario, and Table~\ref{tab:scenario-averages} includes a compact seed half-range column for the directional score alongside sensitivity intervals across assumption cases. The family-champions target writes a supplemental breadth-catalog screen under a fixed selection rule, and catalog-breadth records which historical default-pass variants are archived outside that screen. The validation targets report which optional raw empirical inputs are present and compute first-pass summaries when those files exist. The anonymous supplement target packages source, paper files, generated reports, and review PDFs while excluding repository metadata and local artifacts. A public repository URL will be added after review if anonymity rules permit; a separate public provenance manifest can be generated after review with \texttt{make public-provenance}.
 
 \section*{Use of Large Language Model Tools}
 

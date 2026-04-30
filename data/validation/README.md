@@ -21,3 +21,9 @@ Run `make validation-readiness` to generate a report showing which inputs are
 present and whether the required columns are available. A passing readiness
 report would only mean the raw files are shaped correctly; it would not by
 itself validate the simulator.
+
+Run `make empirical-validation` after adding one or more raw files to compute
+dataset-specific summary metrics such as party unity, bill attrition, lobbying
+spending concentration, topic throughput, and sponsor success concentration.
+The command writes `reports/empirical-validation-summary.csv` and `.md`; missing
+datasets are reported as missing rather than treated as build failures.

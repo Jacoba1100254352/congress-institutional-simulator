@@ -170,6 +170,10 @@ final class ScenarioCatalogTests {
                 "Scenario catalog should expose the stylized U.S.-like benchmark key."
         );
         assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("current-congress-workflow"),
+                "Scenario catalog should expose a richer stylized current-Congress workflow benchmark."
+        );
+        assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("committee-regular-order"),
                 "Scenario catalog should expose non-default committee-first designs."
         );
@@ -202,8 +206,16 @@ final class ScenarioCatalogTests {
                 "Scenario catalog should expose endogenous norm-erosion stress designs."
         );
         assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("democratic-deterioration-majority"),
+                "Scenario catalog should expose broader endogenous democratic-deterioration stress designs."
+        );
+        assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("package-bargaining-majority"),
                 "Scenario catalog should expose non-default package bargaining designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("multidimensional-package-majority"),
+                "Scenario catalog should expose multidimensional package bargaining designs."
         );
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-challenge-minority-bonus"),
@@ -224,8 +236,20 @@ final class ScenarioCatalogTests {
                 "Default scenario list should be a representative breadth-first set, not the full historical catalog."
         );
         assertTrue(
-                ScenarioCatalog.allScenarios().size() == keys.size(),
-                "All-scenarios list should expose the full historical catalog."
+                ScenarioCatalog.allScenarios().size() == ScenarioCatalog.allScenarioKeys().size(),
+                "All-scenarios list should match the breadth-first all-scenario key list."
+        );
+        assertTrue(
+                ScenarioCatalog.allScenarioKeys().size() < keys.size(),
+                "Historical scenario keys should remain accessible without making --all-scenarios default-pass-heavy."
+        );
+        long allScenarioDefaultPassCount = ScenarioCatalog.allScenarioKeys().stream()
+                .filter(key -> key.startsWith("default-pass"))
+                .count();
+        long allScenarioNonDefaultCount = ScenarioCatalog.allScenarioKeys().size() - allScenarioDefaultPassCount;
+        assertTrue(
+                allScenarioDefaultPassCount <= 3 && allScenarioNonDefaultCount > allScenarioDefaultPassCount,
+                "--all-scenarios should keep default-pass variants as a small side family."
         );
         long defaultPassCount = ScenarioCatalog.defaultScenarioKeys().stream()
                 .filter(key -> key.startsWith("default-pass"))

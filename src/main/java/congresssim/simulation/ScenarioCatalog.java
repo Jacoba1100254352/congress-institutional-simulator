@@ -23,6 +23,7 @@ import congresssim.institution.CompetingAlternativesProcess;
 import congresssim.institution.ConferenceCommitteeProcess;
 import congresssim.institution.ConstituentPublicWillProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
+import congresssim.institution.DemocraticDeteriorationProcess;
 import congresssim.institution.DistributionalHarmProcess;
 import congresssim.institution.HarmWeightedThresholdProcess;
 import congresssim.institution.InstitutionalNormErosionProcess;
@@ -32,6 +33,7 @@ import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
 import congresssim.institution.LobbyTransparencyProcess;
 import congresssim.institution.MultiRoundAmendmentProcess;
+import congresssim.institution.MultidimensionalPackageBargainingProcess;
 import congresssim.institution.PackageBargainingProcess;
 import congresssim.institution.PresidentialVetoProcess;
 import congresssim.institution.ProposalAccessProcess;
@@ -96,6 +98,20 @@ public final class ScenarioCatalog {
     }
 
     public static List<Scenario> allScenarios() {
+        return entries().stream()
+                .filter(entry -> isBreadthCatalogKey(entry.key()))
+                .map(ScenarioEntry::scenario)
+                .toList();
+    }
+
+    public static List<String> allScenarioKeys() {
+        return entries().stream()
+                .map(ScenarioEntry::key)
+                .filter(ScenarioCatalog::isBreadthCatalogKey)
+                .toList();
+    }
+
+    public static List<Scenario> historicalScenarios() {
         return entries().stream().map(ScenarioEntry::scenario).toList();
     }
 
@@ -120,6 +136,10 @@ public final class ScenarioCatalog {
         return entries().stream().map(ScenarioEntry::key).toList();
     }
 
+    private static boolean isBreadthCatalogKey(String key) {
+        return !key.startsWith("default-pass") || DEFAULT_SCENARIO_KEYS.contains(key);
+    }
+
     private static List<ScenarioEntry> entries() {
         return List.of(
                 new ScenarioEntry("simple-majority", unicameral("Unicameral simple majority", AffirmativeThresholdRule.simpleMajority())),
@@ -131,6 +151,7 @@ public final class ScenarioCatalog {
                 )),
                 new ScenarioEntry("supermajority-60", unicameral("Unicameral 60 percent passage", AffirmativeThresholdRule.supermajority(0.60))),
                 new ScenarioEntry("current-system", currentSystem()),
+                new ScenarioEntry("current-congress-workflow", stylizedCurrentCongressWorkflow()),
                 new ScenarioEntry("committee-regular-order", majorityWithCommitteeRegularOrder()),
                 new ScenarioEntry("leadership-cartel-majority", leadershipCartelMajority()),
                 new ScenarioEntry("cloture-conference-review", clotureConferenceAndJudicialReview()),
@@ -144,11 +165,13 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("harm-weighted-majority", majorityWithHarmWeightedThreshold()),
                 new ScenarioEntry("compensation-majority", majorityWithDistributionalCompensation(false)),
                 new ScenarioEntry("package-bargaining-majority", majorityWithPackageBargaining()),
+                new ScenarioEntry("multidimensional-package-majority", majorityWithMultidimensionalPackageBargaining()),
                 new ScenarioEntry("law-registry-majority", majorityWithLawRegistry()),
                 new ScenarioEntry("public-objection-majority", majorityWithPublicObjectionWindow()),
                 new ScenarioEntry("anti-capture-majority-bundle", majorityWithAntiCaptureBundle()),
                 new ScenarioEntry("risk-routed-majority", riskRoutedMajority()),
                 new ScenarioEntry("norm-erosion-majority", normErosionMajority()),
+                new ScenarioEntry("democratic-deterioration-majority", democraticDeteriorationMajority()),
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
                 new ScenarioEntry("default-pass-mediation", defaultPassWithMediation()),
                 new ScenarioEntry("default-pass-lobby-firewall", defaultPassWithLobbyFirewall()),
@@ -872,6 +895,29 @@ public final class ScenarioCatalog {
         };
     }
 
+    private static Scenario majorityWithMultidimensionalPackageBargaining() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Multidimensional package bargaining + majority";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new MultidimensionalPackageBargainingProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        0.28,
+                        4,
+                        0.66,
+                        0.38,
+                        0.54
+                );
+            }
+        };
+    }
+
     private static Scenario majorityWithLawRegistry() {
         return new Scenario() {
             @Override
@@ -1018,6 +1064,47 @@ public final class ScenarioCatalog {
                         0.18,
                         0.42,
                         0.16
+                );
+            }
+        };
+    }
+
+    private static Scenario democraticDeteriorationMajority() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Democratic deterioration stress + majority";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess process = new ProposerStrategyProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        world.legislators(),
+                        0.62,
+                        0.56,
+                        0.44
+                );
+                process = new BudgetedLobbyingProcess(
+                        name(),
+                        process,
+                        world.lobbyGroups(),
+                        0.22,
+                        0.44,
+                        0.34,
+                        true
+                );
+                return new DemocraticDeteriorationProcess(
+                        name(),
+                        process,
+                        0.16,
+                        0.38,
+                        0.46,
+                        0.34,
+                        0.42,
+                        0.10
                 );
             }
         };
@@ -2657,6 +2744,75 @@ public final class ScenarioCatalog {
                         name(),
                         ProposalAccessRules.currentSystemAgenda(0.58),
                         finalPassage
+                );
+            }
+        };
+    }
+
+    private static Scenario stylizedCurrentCongressWorkflow() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Stylized current-Congress workflow";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                List<Legislator> committeeMembers = CommitteeFactory.select(
+                        world.legislators(),
+                        CommitteeComposition.MAJORITY_CONTROLLED,
+                        19
+                );
+                Chamber committee = new Chamber(
+                        "Committee queue",
+                        committeeMembers,
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                Chamber house = new Chamber(
+                        "House floor",
+                        world.legislators(),
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                Chamber senate = new Chamber(
+                        "Senate cloture/final passage",
+                        senateSubset(world.legislators()),
+                        strategy,
+                        AffirmativeThresholdRule.supermajority(0.60)
+                );
+                LegislativeProcess process = new ConferenceCommitteeProcess(
+                        name(),
+                        house,
+                        senate,
+                        0.50,
+                        chamberMedian(world.legislators()),
+                        0.30,
+                        0.34
+                );
+                process = new PresidentialVetoProcess(
+                        process,
+                        presidentFromWorld(world),
+                        strategy,
+                        0.66,
+                        AffirmativeThresholdRule.supermajority(2.0 / 3.0)
+                );
+                process = new JudicialReviewProcess(name(), process, 0.44, 0.68, 0.44);
+                process = new CommitteeGatekeepingProcess(name(), committee, process);
+                process = new CommitteeInformationProcess(name(), committeeMembers, 0.74, 0.50, process);
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.leadershipAgenda(
+                                world.legislators(),
+                                0.58,
+                                0.46,
+                                0.34,
+                                0.20,
+                                0.20,
+                                0.16
+                        ),
+                        process
                 );
             }
         };

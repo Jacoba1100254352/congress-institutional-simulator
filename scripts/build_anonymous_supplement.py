@@ -78,6 +78,9 @@ def copy_reports() -> None:
         "seed-robustness-summary.*",
         "all-scenarios-baseline.*",
         "family-champions.*",
+        "catalog-breadth.*",
+        "empirical-validation-readiness.*",
+        "empirical-validation-summary.*",
     ):
         for path in source.glob(pattern):
             if path.is_file():
@@ -95,11 +98,13 @@ def write_readme() -> None:
         "make calibration-check\n"
         "make seed-robustness\n"
         "make family-champions\n"
+        "make catalog-breadth\n"
+        "make empirical-validation\n"
         "make paper\n"
         "```\n\n"
         "The main evidence artifact is `reports/simulation-campaign-v21-paper.csv`. "
         "Calibration screening output is in `reports/calibration-baseline.csv`, and the "
-        "supplemental all-catalog screen is in `reports/family-champions.md`.\n"
+        "supplemental breadth-catalog screen is in `reports/family-champions.md`.\n"
     )
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a supplemental all-catalog screen and summarize family champions."""
+"""Run a supplemental breadth-catalog screen and summarize family champions."""
 
 from __future__ import annotations
 
@@ -52,7 +52,7 @@ def family_for(name: str) -> str:
     lower = name.lower()
     if "default pass" in lower:
         return "Default-pass side family"
-    if "current" in lower or "u.s.-like" in lower or "bicameral" in lower or "veto" in lower:
+    if "current" in lower or "u.s.-like" in lower or "congress" in lower or "bicameral" in lower or "veto" in lower:
         return "Conventional benchmark"
     if "leadership" in lower or "cloture" in lower or "conference" in lower or "judicial" in lower:
         return "Leadership and procedural veto points"
@@ -78,7 +78,7 @@ def family_for(name: str) -> str:
         return "Reversibility and objection"
     if "lobby" in lower or "capture" in lower or "advocate" in lower or "voucher" in lower or "blind" in lower:
         return "Anti-capture"
-    if "adaptive" in lower or "risk-routed" in lower or "strategy" in lower or "norm erosion" in lower:
+    if "adaptive" in lower or "risk-routed" in lower or "strategy" in lower or "norm erosion" in lower or "deterioration" in lower:
         return "Adaptive strategy"
     return "Other"
 
@@ -129,7 +129,7 @@ def write_summary(rows: list[dict[str, str]]) -> None:
     lines = [
         "# Family Champion Screen",
         "",
-        "Supplemental all-catalog screen over every explicit scenario key. This is a baseline screening run, not the paper's main evidence base.",
+        "Supplemental breadth-catalog screen over the runnable --all-scenarios set. Long default-pass parameter sweeps remain archived as explicit --scenarios keys, but are not included in this breadth screen.",
         "",
         "- Runs per scenario: 48",
         "- Legislators: 101",
@@ -149,7 +149,7 @@ def write_summary(rows: list[dict[str, str]]) -> None:
         )
     lines.extend([
         "",
-        "The screen exists to reduce cherry-picking risk: the main paper reports a compact breadth-first campaign, while this supplement shows which variants would win under a fixed within-family rule.",
+        "The screen exists to reduce cherry-picking risk: the main paper reports a compact breadth-first campaign, while this supplement shows which breadth-catalog variants would win under a fixed within-family rule.",
     ])
     REPORT_MD.write_text("\n".join(lines) + "\n")
 
