@@ -69,7 +69,7 @@ public final class CalibrationTargetCatalog {
                         0.01,
                         0.12,
                         "Congress.gov bill-status bulk data and govinfo BILLS/BILLSTATUS collections",
-                        "Broad screening range for ordinary U.S.-style attrition; exact Congress-specific targets should be fitted from raw bill histories."
+                        "Broad screening range for stylized U.S.-like conventional attrition; exact Congress-specific targets should be fitted from raw bill histories."
                 ),
                 new CalibrationBenchmark(
                         "current-system-floor-load",

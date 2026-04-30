@@ -106,6 +106,8 @@ The model reports productivity, floor load, enacted support, public-benefit prox
 
 Party-system profiles include ideological bins, two major parties with minor parties, fragmented multiparty systems, dominant-party systems, and weighted campaign profiles. Campaign v18 assigns likelihood weights to party-system profiles.
 
+The v21-paper campaign also supports adversarial proposal-generator profiles: high-benefit extreme reform, popular harmful bills, low-benefit moderate capture, delayed-benefit reform, concentrated rights-like harm, and anti-lobbying backlash. These cases are stress tests for the generator's own normative assumptions, not empirical claims about real proposal distributions.
+
 ## 6. Input Data
 
 Scenario runs use synthetic generated worlds. Calibration screening reads `data/calibration/empirical-benchmarks.csv`, a tracked extract that maps empirical sources to simulator metrics and benchmark ranges.
@@ -152,6 +154,10 @@ Citizen panels simulate sampling noise, information quality, manipulation risk, 
 
 Competing-alternative processes generate same-domain alternatives and select by public benefit, public support, chamber median proximity, or pairwise majority before a final yes-or-no ratification.
 
+**Package Bargaining**
+
+Package bargaining approximates side payments, implementation delays, policy concessions, and harm-reducing trades. It is intentionally a proxy: it can test whether compromise-by-packaging changes the productivity/legitimacy tradeoff, but it does not yet model true multidimensional omnibus bargaining or jurisdictional trades.
+
 **Law Registry**
 
 Enacted laws can persist across later bills, receive review dates, produce realized welfare/support estimates, and be renewed, repealed, or partially rolled back.
@@ -167,14 +173,15 @@ The main campaigns are:
 - v17: broad roadmap-completion campaign across 18 assumption cases.
 - v18: weighted party-system sensitivity campaign.
 - v19: stylized rising-contention timeline.
-- v20: focused strategy and calibration campaign comparing current-system baselines, adaptive proposers, strategic lobbying, combined deep strategy, mediation, citizen panels, alternatives, objection windows, and law registry.
-- v21-paper: canonical paper campaign joining broad assumption cases, party-system sensitivity cases, and rising-contention timeline cases in one CSV artifact for all submitted tables and figures.
+- v20: focused strategy and calibration campaign comparing the stylized U.S.-like benchmark, adaptive proposers, strategic lobbying, combined deep strategy, mediation, citizen panels, alternatives, objection windows, and law registry.
+- v21-paper: canonical paper campaign joining broad assumption cases, adversarial generator cases, party-system sensitivity cases, and rising-contention timeline cases in one CSV artifact for all submitted tables and figures.
+- family champions: supplemental all-catalog screen that runs every explicit scenario key and reports fixed-rule within-family champions.
 
 All campaign rows include scenario labels, case weights, and a stable metric schema.
 
 ## 9. Assumptions And Limitations
 
-The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The calibration layer screens plausible ranges but does not yet fit raw datasets directly. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment.
+The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The calibration layer screens plausible ranges but does not yet fit raw datasets directly. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment. Several mechanisms are optimistic prototypes: citizen panels, objection windows, tournaments, audits, challenge tokens, package bargaining, and law review include diagnostics for cost and strain, but not full administrative or strategic manipulation costs.
 
 These limitations are intentional at this stage. The model is meant to identify which institutional mechanisms deserve deeper modeling, not to prove that one constitutional design would work in the real world.
 
@@ -202,4 +209,22 @@ Build paper and appendix PDFs:
 
 ```sh
 make paper
+```
+
+Run multi-seed robustness checks for the paper scenarios:
+
+```sh
+make seed-robustness
+```
+
+Run the all-catalog family champion screen:
+
+```sh
+make family-champions
+```
+
+Build the anonymous supplement package:
+
+```sh
+make supplement-anonymous
 ```

@@ -14,7 +14,8 @@ public record WorldSpec(
         double constituencySensitivity,
         double compromiseCulture,
         PartySystemProfile partySystemProfile,
-        double partySystemWeight
+        double partySystemWeight,
+        ProposalShockProfile proposalShockProfile
 ) {
     public WorldSpec(
             int legislatorCount,
@@ -36,7 +37,35 @@ public record WorldSpec(
                 constituencySensitivity,
                 compromiseCulture,
                 PartySystemProfile.IDEOLOGICAL_BINS,
-                1.0
+                1.0,
+                ProposalShockProfile.BASELINE
+        );
+    }
+
+    public WorldSpec(
+            int legislatorCount,
+            int billCount,
+            int partyCount,
+            double polarization,
+            double partyLoyalty,
+            double lobbyingSusceptibility,
+            double constituencySensitivity,
+            double compromiseCulture,
+            PartySystemProfile partySystemProfile,
+            double partySystemWeight
+    ) {
+        this(
+                legislatorCount,
+                billCount,
+                partyCount,
+                polarization,
+                partyLoyalty,
+                lobbyingSusceptibility,
+                constituencySensitivity,
+                compromiseCulture,
+                partySystemProfile,
+                partySystemWeight,
+                ProposalShockProfile.BASELINE
         );
     }
 
@@ -45,6 +74,7 @@ public record WorldSpec(
             throw new IllegalArgumentException("legislatorCount, billCount, and partyCount must be positive.");
         }
         partySystemProfile = Objects.requireNonNull(partySystemProfile, "partySystemProfile");
+        proposalShockProfile = Objects.requireNonNull(proposalShockProfile, "proposalShockProfile");
         if (!Double.isFinite(partySystemWeight) || partySystemWeight <= 0.0) {
             throw new IllegalArgumentException("partySystemWeight must be finite and positive.");
         }

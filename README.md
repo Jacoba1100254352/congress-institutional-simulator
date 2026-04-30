@@ -104,7 +104,7 @@ Calibration and validation details live in [docs/calibration.md](docs/calibratio
 
 The default CLI and v21 paper campaign now use a representative breadth-first set. Default passage is deliberately kept to three stress-test variants rather than treated as the main family:
 
-- `current-system`: stylized current U.S. benchmark
+- `current-system`: stylized U.S.-like conventional benchmark
 - `simple-majority`: unicameral simple majority
 - `supermajority-60`: unicameral 60 percent passage threshold
 - `bicameral-majority`: bicameral simple majority
@@ -120,6 +120,7 @@ The default CLI and v21 paper campaign now use a representative breadth-first se
 - `proposal-bond-majority`: refundable proposal accountability bond
 - `harm-weighted-majority`: concentrated-harm thresholds
 - `compensation-majority`: compensation amendments for concentrated harm
+- `package-bargaining-majority`: side payments, implementation delay, and harm-reducing package trades
 - `law-registry-majority`: active-law review and correction
 - `public-objection-majority`: public objection window before majority ratification
 - `anti-capture-majority-bundle`: lobbying transparency, public advocate, audit, and screen bundle
@@ -146,6 +147,7 @@ Core controls:
 - `--constituency`: constituent-pressure sensitivity from 0.0 to 1.0
 - `--lobbying`: lobby-pressure sensitivity from 0.0 to 1.0
 - `--scenarios`: comma-separated scenario keys
+- `--all-scenarios`: compare every explicit key in the historical catalog
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
 - `--calibrate`: run empirical benchmark screening from `data/calibration/empirical-benchmarks.csv`
@@ -389,19 +391,20 @@ The v18 campaign adds weighted party-system sensitivity:
 The v19 campaign adds timeline stress comparisons:
 
 - Six stylized eras raise polarization, party loyalty, lobbying pressure, and proposal pressure while lowering compromise culture and constituency responsiveness.
-- The campaign includes the current U.S.-style benchmark alongside conventional affirmative systems, open default-pass, challenge vouchers, public panels, adaptive tracks, policy tournaments, public objection, and law-registry review.
+- The campaign includes the stylized U.S.-like conventional benchmark alongside conventional affirmative systems, open default-pass, challenge vouchers, public panels, adaptive tracks, policy tournaments, public objection, and law-registry review.
 - The generated report includes a contention path using `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * lowSupport`.
 - The timeline is a stress test, not a historical calibration; it asks which institutional systems degrade gracefully as background politics become more contentious.
 
 The v20 campaign adds focused strategy and calibration comparisons:
 
-- It carries forward the current-system benchmark and conventional affirmative baselines.
+- It carries forward the stylized U.S.-like benchmark and conventional affirmative baselines.
 - It compares strategic lobbying, adaptive proposers, adaptive proposers with strategic lobbying, and the combined deep strategy bundle.
 - The deep strategy bundle combines proposer pacing/risk adaptation, lobby-channel learning, issue-budget adaptation, defensive anti-reform behavior, and multi-round mediation.
 - Use it with `make campaign-v20`.
 
 The current v21-paper campaign is the canonical paper evidence base:
 
-- It combines broad assumption cases, weighted party-system sensitivity cases, and rising-contention timeline cases in one CSV.
-- It is breadth-first: current-system and conventional affirmative baselines, committee regular order, coalition confidence, policy tournaments, citizen review, public-interest screening, agenda lotteries, quadratic attention, proposal bonds, harm and compensation rules, public objection, law-registry review, anti-capture safeguards, risk routing, and a small default-pass stress-test family.
+- It combines broad assumption cases, adversarial proposal-generator cases, weighted party-system sensitivity cases, and rising-contention timeline cases in one CSV.
+- It is breadth-first: stylized U.S.-like and conventional affirmative baselines, committee regular order, coalition confidence, policy tournaments, citizen review, public-interest screening, agenda lotteries, quadratic attention, proposal bonds, harm and compensation rules, package bargaining, public objection, law-registry review, anti-capture safeguards, risk routing, and a small default-pass stress-test family.
+- `make family-champions` runs a supplemental all-catalog screen and writes `reports/all-scenarios-baseline.csv` plus `reports/family-champions.md`.
 - Use it with `make campaign` or `make campaign-v21-paper`.

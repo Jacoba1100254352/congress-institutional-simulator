@@ -1,0 +1,11 @@
+package congresssim.simulation;
+
+public enum ProposalShockProfile {
+    BASELINE,
+    HIGH_BENEFIT_EXTREME_REFORM,
+    POPULAR_HARMFUL_BILL,
+    LOW_BENEFIT_MODERATE_CAPTURE,
+    DELAYED_BENEFIT_REFORM,
+    CONCENTRATED_RIGHTS_HARM,
+    ANTI_LOBBYING_BACKLASH
+}

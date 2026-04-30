@@ -24,7 +24,7 @@ The following planned increments are now represented in code, tests, campaign re
 
 ## Current Campaign
 
-`simulation-campaign-v21-paper` is the current default campaign. It runs 120 simulations per case, combines broad assumption cases, weighted party-system cases, and six stylized timeline eras, and uses 101 legislators with 60 base bills per run. The scenario set is breadth-first: conventional affirmative systems, committee-first regular order, coalition confidence, policy tournaments, citizen review, agenda scarcity, proposal accountability, harm/compensation rules, anti-capture safeguards, risk routing, reversibility, and a small default-enactment stress-test family.
+`simulation-campaign-v21-paper` is the current default campaign. It runs 120 simulations per case, combines broad assumption cases, adversarial proposal-generator cases, weighted party-system cases, and six stylized timeline eras, and uses 101 legislators with 60 base bills per run. The scenario set is breadth-first: conventional affirmative systems, committee-first regular order, coalition confidence, policy tournaments, citizen review, agenda scarcity, proposal accountability, harm/compensation/package-bargaining rules, anti-capture safeguards, risk routing, reversibility, and a small default-enactment stress-test family.
 
 Generated artifacts:
 

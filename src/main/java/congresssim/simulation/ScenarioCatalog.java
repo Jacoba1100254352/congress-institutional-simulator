@@ -28,6 +28,7 @@ import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
 import congresssim.institution.LobbyTransparencyProcess;
 import congresssim.institution.MultiRoundAmendmentProcess;
+import congresssim.institution.PackageBargainingProcess;
 import congresssim.institution.PresidentialVetoProcess;
 import congresssim.institution.ProposalAccessProcess;
 import congresssim.institution.ProposalAccessRules;
@@ -65,6 +66,7 @@ public final class ScenarioCatalog {
             "proposal-bond-majority",
             "harm-weighted-majority",
             "compensation-majority",
+            "package-bargaining-majority",
             "law-registry-majority",
             "public-objection-majority",
             "anti-capture-majority-bundle",
@@ -83,6 +85,10 @@ public final class ScenarioCatalog {
 
     public static List<String> defaultScenarioKeys() {
         return DEFAULT_SCENARIO_KEYS;
+    }
+
+    public static List<Scenario> allScenarios() {
+        return entries().stream().map(ScenarioEntry::scenario).toList();
     }
 
     public static List<Scenario> scenariosForKeys(List<String> keys) {
@@ -126,6 +132,7 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("proposal-bond-majority", majorityWithProposalBonds()),
                 new ScenarioEntry("harm-weighted-majority", majorityWithHarmWeightedThreshold()),
                 new ScenarioEntry("compensation-majority", majorityWithDistributionalCompensation(false)),
+                new ScenarioEntry("package-bargaining-majority", majorityWithPackageBargaining()),
                 new ScenarioEntry("law-registry-majority", majorityWithLawRegistry()),
                 new ScenarioEntry("public-objection-majority", majorityWithPublicObjectionWindow()),
                 new ScenarioEntry("anti-capture-majority-bundle", majorityWithAntiCaptureBundle()),
@@ -708,6 +715,28 @@ public final class ScenarioCatalog {
                         requireConsent ? 0.72 : 0.58,
                         requireConsent ? 0.42 : 0.30,
                         requireConsent
+                );
+            }
+        };
+    }
+
+    private static Scenario majorityWithPackageBargaining() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Package bargaining + majority";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new PackageBargainingProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        0.32,
+                        0.10,
+                        0.08,
+                        0.70
                 );
             }
         };
@@ -2439,7 +2468,7 @@ public final class ScenarioCatalog {
         return new Scenario() {
             @Override
             public String name() {
-                return "Current U.S.-style system";
+                return "Stylized U.S.-like conventional benchmark";
             }
 
             @Override

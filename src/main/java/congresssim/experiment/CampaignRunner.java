@@ -6,6 +6,7 @@ import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
 import congresssim.simulation.MetricDefinition;
 import congresssim.simulation.PartySystemProfile;
+import congresssim.simulation.ProposalShockProfile;
 import congresssim.simulation.WorldSpec;
 import congresssim.reporting.ReportProvenance;
 
@@ -446,6 +447,7 @@ public final class CampaignRunner {
             "parliamentary-coalition-confidence",
             "simple-majority-alternatives-pairwise",
             "citizen-assembly-threshold",
+            "package-bargaining-majority",
             "risk-routed-majority",
             "default-pass",
             "default-pass-challenge",
@@ -487,6 +489,7 @@ public final class CampaignRunner {
             "proposal-bond-majority",
             "harm-weighted-majority",
             "compensation-majority",
+            "package-bargaining-majority",
             "law-registry-majority",
             "public-objection-majority",
             "anti-capture-majority-bundle",
@@ -1104,7 +1107,37 @@ public final class CampaignRunner {
         List<ExperimentCase> cases = new ArrayList<>(v8Cases(legislators, bills));
         cases.addAll(v18Cases(legislators, bills));
         cases.addAll(v19Cases(legislators, bills));
+        cases.addAll(v21AdversarialCases(legislators, bills));
         return cases;
+    }
+
+    private static List<ExperimentCase> v21AdversarialCases(int legislators, int bills) {
+        return List.of(
+                experiment("adversarial-high-benefit-extreme", "Adversarial High-Benefit Extreme Reform",
+                        "Extreme proposals can have high generated public benefit but lower initial support and high uncertainty.",
+                        legislators, bills, 4, 0.72, 0.64, 0.38, 0.66, 0.46,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.HIGH_BENEFIT_EXTREME_REFORM),
+                experiment("adversarial-popular-harmful", "Adversarial Popular Harmful Bill",
+                        "Popular proposals can have low generated public benefit, private upside, and concentrated harm.",
+                        legislators, bills, 3, 0.66, 0.66, 0.72, 0.62, 0.52,
+                        PartySystemProfile.IDEOLOGICAL_BINS, 1.0, ProposalShockProfile.POPULAR_HARMFUL_BILL),
+                experiment("adversarial-moderate-capture", "Adversarial Moderate Capture",
+                        "Moderate-looking proposals can have low public benefit and high organized-interest capture.",
+                        legislators, bills, 3, 0.52, 0.62, 0.84, 0.54, 0.58,
+                        PartySystemProfile.IDEOLOGICAL_BINS, 1.0, ProposalShockProfile.LOW_BENEFIT_MODERATE_CAPTURE),
+                experiment("adversarial-delayed-benefit", "Adversarial Delayed-Benefit Reform",
+                        "Beneficial reforms can have low immediate support because benefits are delayed and uncertain.",
+                        legislators, bills, 4, 0.62, 0.58, 0.34, 0.60, 0.50,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.DELAYED_BENEFIT_REFORM),
+                experiment("adversarial-rights-harm", "Adversarial Concentrated Rights Harm",
+                        "Proposals can be broadly supported while imposing severe concentrated rights-like harm.",
+                        legislators, bills, 4, 0.70, 0.70, 0.52, 0.66, 0.44,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.CONCENTRATED_RIGHTS_HARM),
+                experiment("adversarial-anti-lobbying-backlash", "Adversarial Anti-Lobbying Backlash",
+                        "Anti-lobbying reforms are more common, but face stronger defensive lobbying and lower observed support.",
+                        legislators, bills, 4, 0.64, 0.64, 0.90, 0.70, 0.50,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.ANTI_LOBBYING_BACKLASH)
+        );
     }
 
     private static ExperimentCase experiment(
@@ -1152,6 +1185,40 @@ public final class CampaignRunner {
             PartySystemProfile partySystemProfile,
             double caseWeight
     ) {
+        return experiment(
+                key,
+                name,
+                description,
+                legislators,
+                bills,
+                parties,
+                polarization,
+                partyLoyalty,
+                lobbying,
+                constituency,
+                compromise,
+                partySystemProfile,
+                caseWeight,
+                ProposalShockProfile.BASELINE
+        );
+    }
+
+    private static ExperimentCase experiment(
+            String key,
+            String name,
+            String description,
+            int legislators,
+            int bills,
+            int parties,
+            double polarization,
+            double partyLoyalty,
+            double lobbying,
+            double constituency,
+            double compromise,
+            PartySystemProfile partySystemProfile,
+            double caseWeight,
+            ProposalShockProfile proposalShockProfile
+    ) {
         return new ExperimentCase(
                 key,
                 name,
@@ -1167,7 +1234,8 @@ public final class CampaignRunner {
                         constituency,
                         compromise,
                         partySystemProfile,
-                        caseWeight
+                        caseWeight,
+                        proposalShockProfile
                 )
         );
     }
@@ -1862,7 +1930,7 @@ public final class CampaignRunner {
             builder.append("- Open default-pass remains the throughput extreme, but its high low-support passage and policy movement make it a diagnostic endpoint rather than the project focus.\n");
             builder.append("- Policy tournaments and risk-routed majority systems occupy the strongest compromise/productivity middle ground in this synthetic campaign; committee-first, public-interest, citizen, and parliamentary-style gates control risk but give up substantial throughput.\n");
             builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality, and generated welfare remains conditional on model assumptions.\n");
-            builder.append("- The next model extension should add stronger non-default families: multidimensional package bargaining, judicial/court intervention, executive emergency/delegated rulemaking, direct-democracy routes, electoral feedback, and media/information ecosystems.\n\n");
+            builder.append("- The next model extension should deepen non-default families beyond their current prototypes: multidimensional package bargaining, judicial/court intervention, executive emergency/delegated rulemaking, direct-democracy routes, electoral feedback, and media/information ecosystems.\n\n");
         } else if (aggregateByScenario.containsKey("default-pass-constituent-public-will")) {
             builder.append("- Roadmap-completion scenarios add district-grounded public signals, refundable proposal bonds, richer cosponsorship diagnostics, multi-round mediation, strategic alternatives, adaptive proposer behavior, strategic lobby-channel learning, challenge allocation/path variants, adaptive-route rates, and proposal-cost variants.\n");
             builder.append("- The next model extension should deepen endogeneity: challengers, amendment coalitions, constituent publics, and alternative drafters should adapt to the institutional rules over repeated sessions.\n\n");
@@ -2030,7 +2098,7 @@ public final class CampaignRunner {
                         .append(" policy shift, so it functions as a throughput/risk endpoint.\n");
             }
             if (currentSystem != null) {
-                builder.append("- The stylized current-system benchmark averaged ")
+                builder.append("- The stylized U.S.-like conventional benchmark averaged ")
                         .append(format(currentSystem.productivity()))
                         .append(" productivity and ")
                         .append(format(currentSystem.welfare()))

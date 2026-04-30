@@ -167,7 +167,7 @@ final class ScenarioCatalogTests {
         );
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("current-system"),
-                "Scenario catalog should expose the current-system benchmark key."
+                "Scenario catalog should expose the stylized U.S.-like benchmark key."
         );
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("committee-regular-order"),
@@ -186,6 +186,10 @@ final class ScenarioCatalogTests {
                 "Scenario catalog should expose non-default adaptive routing designs."
         );
         assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("package-bargaining-majority"),
+                "Scenario catalog should expose non-default package bargaining designs."
+        );
+        assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-challenge-minority-bonus"),
                 "Scenario catalog should expose challenge allocation variant keys."
         );
@@ -202,6 +206,10 @@ final class ScenarioCatalogTests {
         assertTrue(
                 ScenarioCatalog.defaultScenarioKeys().size() < keys.size(),
                 "Default scenario list should be a representative breadth-first set, not the full historical catalog."
+        );
+        assertTrue(
+                ScenarioCatalog.allScenarios().size() == keys.size(),
+                "All-scenarios list should expose the full historical catalog."
         );
         long defaultPassCount = ScenarioCatalog.defaultScenarioKeys().stream()
                 .filter(key -> key.startsWith("default-pass"))

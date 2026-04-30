@@ -48,9 +48,14 @@ public final class Main {
         );
 
         Simulator simulator = new Simulator();
-        List<congresssim.simulation.Scenario> scenarios = options.scenarioKeys.isEmpty()
-                ? ScenarioCatalog.defaultScenarios()
-                : ScenarioCatalog.scenariosForKeys(options.scenarioKeys);
+        List<congresssim.simulation.Scenario> scenarios;
+        if (!options.scenarioKeys.isEmpty()) {
+            scenarios = ScenarioCatalog.scenariosForKeys(options.scenarioKeys);
+        } else if (options.allScenarios) {
+            scenarios = ScenarioCatalog.allScenarios();
+        } else {
+            scenarios = ScenarioCatalog.defaultScenarios();
+        }
         List<ScenarioReport> reports = simulator.compare(
                 scenarios,
                 worldSpec,
@@ -437,6 +442,7 @@ public final class Main {
         private final OutputFormat outputFormat;
         private final boolean charts;
         private final boolean calibrate;
+        private final boolean allScenarios;
         private final String campaignName;
         private final Path outputDir;
         private final long seed;
@@ -456,6 +462,7 @@ public final class Main {
                 OutputFormat outputFormat,
                 boolean charts,
                 boolean calibrate,
+                boolean allScenarios,
                 String campaignName,
                 Path outputDir,
                 long seed,
@@ -474,6 +481,7 @@ public final class Main {
             this.outputFormat = outputFormat;
             this.charts = charts;
             this.calibrate = calibrate;
+            this.allScenarios = allScenarios;
             this.campaignName = campaignName;
             this.outputDir = outputDir;
             this.seed = seed;
@@ -494,6 +502,7 @@ public final class Main {
             OutputFormat outputFormat = OutputFormat.TABLE;
             boolean charts = false;
             boolean calibrate = false;
+            boolean allScenarios = false;
             String campaignName = null;
             Path outputDir = Path.of("reports");
             long seed = 20260428L;
@@ -515,6 +524,7 @@ public final class Main {
                     case "--format" -> outputFormat = parseOutputFormat(args, ++i, arg);
                     case "--charts" -> charts = true;
                     case "--calibrate" -> calibrate = true;
+                    case "--all-scenarios" -> allScenarios = true;
                     case "--campaign" -> campaignName = parseString(args, ++i, arg);
                     case "--output-dir" -> outputDir = Path.of(parseString(args, ++i, arg));
                     case "--seed" -> seed = parseLong(args, ++i, arg);
@@ -540,6 +550,7 @@ public final class Main {
                     outputFormat,
                     charts,
                     calibrate,
+                    allScenarios,
                     campaignName,
                     outputDir,
                     seed,
@@ -621,6 +632,7 @@ public final class Main {
                       --constituency <x>  Constituent-pressure sensitivity, from 0.0 to 1.0
                       --lobbying <x>      Lobby-pressure sensitivity, from 0.0 to 1.0
                       --scenarios <keys>  Comma-separated scenario keys
+                      --all-scenarios     Compare every scenario key in the historical catalog
                       --format <kind>     table, csv, or bars
                       --charts            Add ASCII bar charts after the table
                       --calibrate         Run empirical benchmark screening instead of scenario comparison

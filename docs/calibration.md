@@ -41,7 +41,7 @@ The current benchmark extract maps named empirical quantities to simulator metri
 
 | Check | Source Data | Scenario | Metric | Purpose |
 | --- | --- | --- | --- | --- |
-| current-system-enactment-rate | Congress.gov and govinfo bill histories | `current-system` | `productivity` | Screen whether ordinary U.S.-style bill attrition stays plausible. |
+| current-system-enactment-rate | Congress.gov and govinfo bill histories | `current-system` | `productivity` | Screen whether stylized U.S.-like conventional bill attrition stays plausible. |
 | current-system-floor-load | Congress.gov and govinfo bill histories | `current-system` | `floor` | Prevent the benchmark from treating every introduced bill as a floor bill. |
 | party-unity-support-band | Voteview roll-call votes | `current-system` | `averageEnactedSupport` | Check generated winning coalition support under polarization. |
 | veto-frequency-band | Congress.gov veto actions and CRS summaries | `presidential-veto` | `vetoesPerRun` | Catch implausible executive-veto behavior. |
@@ -52,7 +52,7 @@ The current benchmark extract maps named empirical quantities to simulator metri
 ## Calibration Workflow
 
 1. Load benchmark ranges from `data/calibration/empirical-benchmarks.csv`.
-2. Run conventional scenarios: simple majority, bicameral majority, presidential veto, current-system, and explicit budgeted lobbying.
+2. Run conventional scenarios: simple majority, bicameral majority, presidential veto, the stylized U.S.-like benchmark, and explicit budgeted lobbying.
 3. Compute the mapped simulator metric for each benchmark range.
 4. Write a CSV and Markdown report with observed values and pass/fail status.
 5. Use failures as calibration prompts before drawing paper-level conclusions from counterfactual mechanisms.

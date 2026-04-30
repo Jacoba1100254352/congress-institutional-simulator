@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a deterministic multi-seed robustness sweep for selected paper scenarios."""
+"""Run a deterministic multi-seed robustness sweep for all paper scenarios."""
 
 from __future__ import annotations
 
@@ -33,6 +33,7 @@ SCENARIOS = [
     ("proposal-bond-majority", "Proposal bonds + majority"),
     ("harm-weighted-majority", "Harm-weighted double majority"),
     ("compensation-majority", "Compensation amendments + majority"),
+    ("package-bargaining-majority", "Package bargaining + majority"),
     ("law-registry-majority", "Active-law registry + majority review"),
     ("public-objection-majority", "Public objection window + majority"),
     ("anti-capture-majority-bundle", "Majority + anti-capture bundle"),
@@ -132,12 +133,12 @@ def main() -> int:
     lines = [
         "# Seed Robustness Summary",
         "",
-        "Deterministic multi-seed sweep for selected v21-paper scenarios.",
-        "The main paper table still reports sensitivity intervals across broad assumption cases; this report checks whether selected relationships are stable across independent base seeds.",
+        "Deterministic multi-seed sweep for all v21-paper scenarios.",
+        "The main paper table still reports sensitivity intervals across broad and adversarial assumption cases; this report checks whether paper-scenario relationships are stable across independent base seeds.",
         "",
         f"- Seeds: {', '.join(str(seed) for seed in SEEDS)}",
         "- Runs per seed: 24",
-        "- Cases summarized: broad assumption cases only",
+        "- Cases summarized: broad and adversarial assumption cases only",
         "",
         "| Scenario | Metric | Mean | Min | Max | Range |",
         "| --- | --- | ---: | ---: | ---: | ---: |",

@@ -83,6 +83,9 @@ public final class WorldGenerator {
         for (int i = 0; i < spec.billCount(); i++) {
             Legislator proposer = legislators.get(random.nextInt(legislators.size()));
             boolean antiLobbyingReform = random.nextDouble() < 0.04 + (0.08 * spec.lobbyingSusceptibility());
+            if (spec.proposalShockProfile() == ProposalShockProfile.ANTI_LOBBYING_BACKLASH) {
+                antiLobbyingReform = random.nextDouble() < 0.30 + (0.18 * spec.constituencySensitivity());
+            }
             String issueDomain = antiLobbyingReform ? "democracy" : randomIssueDomain(random);
             double ideology = antiLobbyingReform
                     ? Values.clamp(proposer.ideology() * 0.45 + random.nextGaussian() * 0.16, -1.0, 1.0)
@@ -160,6 +163,31 @@ public final class WorldGenerator {
                         1.0
                 );
             }
+            if (spec.proposalShockProfile() != ProposalShockProfile.BASELINE) {
+                double[] shocked = shockedProposalValues(
+                        spec.proposalShockProfile(),
+                        ideology,
+                        proposer.ideology(),
+                        publicSupport,
+                        publicBenefit,
+                        lobbyPressure,
+                        privateGain,
+                        salience,
+                        concentratedHarm,
+                        publicBenefitUncertainty,
+                        antiLobbyingReform,
+                        random
+                );
+                ideology = shocked[0];
+                publicSupport = shocked[1];
+                publicBenefit = shocked[2];
+                lobbyPressure = shocked[3];
+                privateGain = shocked[4];
+                salience = shocked[5];
+                concentratedHarm = shocked[6];
+                publicBenefitUncertainty = shocked[7];
+            }
+
             affectedGroupSupport = Values.clamp(
                     publicSupport
                             - (concentratedHarm * 0.48)
@@ -198,6 +226,90 @@ public final class WorldGenerator {
             bills.add(bill);
         }
         return bills;
+    }
+
+    private static double[] shockedProposalValues(
+            ProposalShockProfile profile,
+            double ideology,
+            double proposerIdeology,
+            double publicSupport,
+            double publicBenefit,
+            double lobbyPressure,
+            double privateGain,
+            double salience,
+            double concentratedHarm,
+            double uncertainty,
+            boolean antiLobbyingReform,
+            Random random
+    ) {
+        double sign = Math.abs(proposerIdeology) < 0.08
+                ? (random.nextBoolean() ? 1.0 : -1.0)
+                : Math.signum(proposerIdeology);
+        return switch (profile) {
+            case BASELINE -> new double[] {
+                    ideology, publicSupport, publicBenefit, lobbyPressure, privateGain, salience, concentratedHarm, uncertainty
+            };
+            case HIGH_BENEFIT_EXTREME_REFORM -> new double[] {
+                    Values.clamp((0.82 * sign) + random.nextGaussian() * 0.12, -1.0, 1.0),
+                    Values.clamp(0.46 + random.nextGaussian() * 0.17, 0.0, 1.0),
+                    Values.clamp(0.76 + random.nextGaussian() * 0.10, 0.0, 1.0),
+                    Values.clamp(lobbyPressure * 0.45 + random.nextGaussian() * 0.16, -1.0, 1.0),
+                    Values.clamp(privateGain * 0.35, 0.0, 1.0),
+                    Values.clamp(0.72 + random.nextGaussian() * 0.12, 0.0, 1.0),
+                    Values.clamp(0.30 + random.nextGaussian() * 0.16, 0.0, 1.0),
+                    Values.clamp(0.58 + random.nextGaussian() * 0.12, 0.0, 1.0)
+            };
+            case POPULAR_HARMFUL_BILL -> new double[] {
+                    Values.clamp(ideology * 0.55 + random.nextGaussian() * 0.10, -1.0, 1.0),
+                    Values.clamp(0.72 + random.nextGaussian() * 0.10, 0.0, 1.0),
+                    Values.clamp(0.24 + random.nextGaussian() * 0.12, 0.0, 1.0),
+                    Values.clamp(0.48 + Math.max(0.0, lobbyPressure) * 0.44 + random.nextGaussian() * 0.14, -1.0, 1.0),
+                    Values.clamp(0.62 + random.nextGaussian() * 0.14, 0.0, 1.0),
+                    Values.clamp(0.76 + random.nextGaussian() * 0.10, 0.0, 1.0),
+                    Values.clamp(0.56 + random.nextGaussian() * 0.16, 0.0, 1.0),
+                    Values.clamp(0.30 + random.nextGaussian() * 0.10, 0.0, 1.0)
+            };
+            case LOW_BENEFIT_MODERATE_CAPTURE -> new double[] {
+                    Values.clamp(random.nextGaussian() * 0.16, -1.0, 1.0),
+                    Values.clamp(0.56 + random.nextGaussian() * 0.12, 0.0, 1.0),
+                    Values.clamp(0.30 + random.nextGaussian() * 0.10, 0.0, 1.0),
+                    Values.clamp(0.62 + random.nextGaussian() * 0.14, -1.0, 1.0),
+                    Values.clamp(0.72 + random.nextGaussian() * 0.12, 0.0, 1.0),
+                    Values.clamp(0.50 + random.nextGaussian() * 0.14, 0.0, 1.0),
+                    Values.clamp(0.28 + random.nextGaussian() * 0.12, 0.0, 1.0),
+                    Values.clamp(0.26 + random.nextGaussian() * 0.10, 0.0, 1.0)
+            };
+            case DELAYED_BENEFIT_REFORM -> new double[] {
+                    Values.clamp(ideology + random.nextGaussian() * 0.08, -1.0, 1.0),
+                    Values.clamp(0.40 + random.nextGaussian() * 0.14, 0.0, 1.0),
+                    Values.clamp(0.74 + random.nextGaussian() * 0.12, 0.0, 1.0),
+                    Values.clamp(lobbyPressure * 0.30 + random.nextGaussian() * 0.12, -1.0, 1.0),
+                    Values.clamp(privateGain * 0.25, 0.0, 1.0),
+                    Values.clamp(0.54 + random.nextGaussian() * 0.16, 0.0, 1.0),
+                    Values.clamp(0.22 + random.nextGaussian() * 0.14, 0.0, 1.0),
+                    Values.clamp(0.72 + random.nextGaussian() * 0.10, 0.0, 1.0)
+            };
+            case CONCENTRATED_RIGHTS_HARM -> new double[] {
+                    Values.clamp(ideology * 0.70 + random.nextGaussian() * 0.10, -1.0, 1.0),
+                    Values.clamp(0.62 + random.nextGaussian() * 0.14, 0.0, 1.0),
+                    Values.clamp(publicBenefit * 0.72 + 0.10 + random.nextGaussian() * 0.10, 0.0, 1.0),
+                    Values.clamp(lobbyPressure + random.nextGaussian() * 0.08, -1.0, 1.0),
+                    Values.clamp(privateGain + 0.12, 0.0, 1.0),
+                    Values.clamp(0.82 + random.nextGaussian() * 0.08, 0.0, 1.0),
+                    Values.clamp(0.82 + random.nextGaussian() * 0.10, 0.0, 1.0),
+                    Values.clamp(0.34 + random.nextGaussian() * 0.12, 0.0, 1.0)
+            };
+            case ANTI_LOBBYING_BACKLASH -> new double[] {
+                    Values.clamp(ideology * 0.72 + random.nextGaussian() * 0.08, -1.0, 1.0),
+                    Values.clamp((antiLobbyingReform ? 0.44 : publicSupport) + random.nextGaussian() * 0.13, 0.0, 1.0),
+                    Values.clamp((antiLobbyingReform ? 0.70 : publicBenefit) + random.nextGaussian() * 0.10, 0.0, 1.0),
+                    Values.clamp((antiLobbyingReform ? -0.84 : lobbyPressure + 0.18) + random.nextGaussian() * 0.10, -1.0, 1.0),
+                    Values.clamp(antiLobbyingReform ? 0.02 : privateGain + 0.10, 0.0, 1.0),
+                    Values.clamp(0.72 + random.nextGaussian() * 0.12, 0.0, 1.0),
+                    Values.clamp(concentratedHarm + (antiLobbyingReform ? 0.04 : 0.12), 0.0, 1.0),
+                    Values.clamp(0.46 + random.nextGaussian() * 0.12, 0.0, 1.0)
+            };
+        };
     }
 
     private List<LobbyGroup> generateLobbyGroups(WorldSpec spec, Random random) {

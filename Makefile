@@ -3,7 +3,7 @@ TEST_SOURCES := $(shell find src/test/java -name '*.java')
 JAVA_RELEASE ?= 21
 JAVA_PROPS ?= -Dcongresssim.javaRelease=$(JAVA_RELEASE)
 
-.PHONY: build run calibrate calibration-check campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper seed-robustness paper paper-word-count paper-checks paper-anonymity-check figure-label-check supplement-anonymous clean-regeneration-check paper-clean test ci clean
+.PHONY: build run calibrate calibration-check campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper seed-robustness family-champions paper paper-word-count paper-checks paper-anonymity-check figure-label-check supplement-anonymous clean-regeneration-check paper-clean test ci clean
 
 build:
 	mkdir -p out/main
@@ -88,6 +88,9 @@ campaign-v0: build
 
 seed-robustness: build
 	JAVA_PROPS="$(JAVA_PROPS)" python3 scripts/run_seed_robustness.py
+
+family-champions: build
+	JAVA_PROPS="$(JAVA_PROPS)" python3 scripts/run_family_champions.py
 
 paper: campaign-v21-paper
 	python3 paper/scripts/generate_figures.py

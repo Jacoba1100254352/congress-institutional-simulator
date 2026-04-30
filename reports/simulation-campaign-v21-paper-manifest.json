@@ -8,10 +8,10 @@
   "legislators": 101,
   "bills": 60,
   "seed": 20260428,
-  "caseCount": 28,
-  "scenarioCount": 23,
+  "caseCount": 34,
+  "scenarioCount": 24,
   "artifacts": [
-    {"path": "reports/simulation-campaign-v21-paper.csv", "sha256": "1f07bd541c424985f9d649194f1ee287b3c2bcd6b04921facd2976ab2298aad0"},
-    {"path": "reports/simulation-campaign-v21-paper.md", "sha256": "37a159b7f5889192de881aad8273a798e20bbd89eafecdef3e933d5397e5c55c"}
+    {"path": "reports/simulation-campaign-v21-paper.csv", "sha256": "64bb4d28943c40cac26fa6cb3d7fa8e18f2d13626344872272d7c4216b155511"},
+    {"path": "reports/simulation-campaign-v21-paper.md", "sha256": "0650a2c8c80b7e0f1b4f79187f6b4bfdfd0820d7fa949f1c676726c4c25f204c"}
   ]
 }

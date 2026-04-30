@@ -175,6 +175,12 @@ Run the empirical benchmark screening report:
 make calibrate
 ```
 
+Run the supplemental all-catalog family champion screen:
+
+```sh
+make family-champions
+```
+
 Remove generated build output:
 
 ```sh
@@ -231,6 +237,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--constituency <0..1>`: sensitivity to public support.
 - `--lobbying <0..1>`: sensitivity to lobby pressure.
 - `--scenarios <keys>`: comma-separated scenario keys.
+- `--all-scenarios`: compare every explicit scenario key in the historical catalog.
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
 - `--calibrate`: run empirical benchmark screening from `data/calibration/empirical-benchmarks.csv`.
@@ -261,6 +268,7 @@ Default breadth-first keys:
 - `proposal-bond-majority`
 - `harm-weighted-majority`
 - `compensation-majority`
+- `package-bargaining-majority`
 - `law-registry-majority`
 - `public-objection-majority`
 - `anti-capture-majority-bundle`

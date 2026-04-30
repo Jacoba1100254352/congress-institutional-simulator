@@ -151,7 +151,7 @@ final class CampaignRunnerTests {
             assertTrue(cases.size() == 4, "v18 should include the four weighted party-system cases.");
             assertTrue(Math.abs(caseWeightSum - 1.0) < 0.000001, "v18 case weights should sum to one.");
             assertTrue(scenarios.size() == 39, "v18 should exercise the full current roadmap-completion scenario set.");
-            assertTrue(scenarios.contains("current-system"), "v18 should include the current-system benchmark.");
+            assertTrue(scenarios.contains("current-system"), "v18 should include the stylized U.S.-like benchmark.");
             assertTrue(scenarios.contains("default-pass-adaptive-proposers"), "v18 should include adaptive proposer behavior.");
             assertTrue(scenarios.contains("default-pass-strategic-lobbying"), "v18 should include strategic lobbying behavior.");
 
@@ -198,7 +198,7 @@ final class CampaignRunnerTests {
                 scenarios.add(row.scenarioKey());
             }
             assertTrue(cases.size() == 6, "v19 should include six ordered timeline cases.");
-            assertTrue(scenarios.contains("current-system"), "v19 should include the current-system benchmark.");
+            assertTrue(scenarios.contains("current-system"), "v19 should include the stylized U.S.-like benchmark.");
             assertTrue(scenarios.contains("presidential-veto"), "v19 should retain affirmative institutional baselines.");
             assertTrue(scenarios.contains("simple-majority-alternatives-pairwise"), "v19 should include the non-default policy-tournament comparison.");
 
@@ -206,7 +206,7 @@ final class CampaignRunnerTests {
             CampaignRow lastCurrent = findRow(result, "era-6-crisis", "current-system");
             assertTrue(
                     contentionIndex(lastCurrent.report()) > contentionIndex(firstCurrent.report()),
-                    "The current-system benchmark should become more contentious along the stylized timeline."
+                    "The stylized U.S.-like benchmark should become more contentious along the stylized timeline."
             );
 
             String csv = Files.readString(result.csvPath());
@@ -240,7 +240,7 @@ final class CampaignRunnerTests {
                 scenarios.add(row.scenarioKey());
             }
 
-            assertTrue(scenarios.contains("current-system"), "v20 should include the current-system benchmark.");
+            assertTrue(scenarios.contains("current-system"), "v20 should include the stylized U.S.-like benchmark.");
             assertTrue(scenarios.contains("default-pass-adaptive-proposers-lobbying"), "v20 should include adaptive proposers with strategic lobbying.");
             assertTrue(scenarios.contains("default-pass-deep-strategy-bundle"), "v20 should include the combined deep-strategy bundle.");
             assertTrue(Files.readString(result.markdownPath()).contains("Simulation Campaign v20"), "v20 Markdown should identify the report.");
@@ -265,19 +265,22 @@ final class CampaignRunnerTests {
             }
 
             assertTrue(cases.contains("baseline"), "v21-paper should include broad assumption cases.");
+            assertTrue(cases.contains("adversarial-high-benefit-extreme"), "v21-paper should include adversarial generator cases.");
             assertTrue(cases.contains("party-system-two-major-minors"), "v21-paper should include party-system sensitivity cases.");
             assertTrue(cases.contains("era-6-crisis"), "v21-paper should include timeline stress cases.");
-            assertTrue(scenarios.contains("current-system"), "v21-paper should include the current-system benchmark.");
+            assertTrue(scenarios.contains("current-system"), "v21-paper should include the stylized U.S.-like benchmark.");
             assertTrue(scenarios.contains("committee-regular-order"), "v21-paper should include committee-first regular order.");
             assertTrue(scenarios.contains("parliamentary-coalition-confidence"), "v21-paper should include a coalition-confidence design.");
             assertTrue(scenarios.contains("simple-majority-alternatives-pairwise"), "v21-paper should include non-default policy tournaments.");
             assertTrue(scenarios.contains("harm-weighted-majority"), "v21-paper should include harm-weighted thresholds.");
+            assertTrue(scenarios.contains("package-bargaining-majority"), "v21-paper should include package bargaining.");
             assertTrue(scenarios.contains("risk-routed-majority"), "v21-paper should include adaptive risk routing.");
             assertTrue(scenarios.contains("default-pass"), "v21-paper should retain default pass as one stress-test family.");
             assertTrue(Files.readString(result.markdownPath()).contains("Simulation Campaign v21 Paper"), "v21-paper Markdown should identify the report.");
 
             String csv = Files.readString(result.csvPath());
             assertTrue(csv.contains("party-system-two-major-minors"), "v21-paper CSV should contain party-system rows.");
+            assertTrue(csv.contains("adversarial-high-benefit-extreme"), "v21-paper CSV should contain adversarial generator rows.");
             assertTrue(csv.contains("era-6-crisis"), "v21-paper CSV should contain timeline rows.");
             assertTrue(csv.contains("risk-routed-majority"), "v21-paper CSV should contain broad paper comparison scenarios.");
         } catch (Exception exception) {
@@ -363,7 +366,7 @@ final class CampaignRunnerTests {
                 List<String> scenarios = (List<String>) field.get(null);
                 assertTrue(
                         scenarios.contains("current-system"),
-                        field.getName() + " should include the current-system benchmark."
+                        field.getName() + " should include the stylized U.S.-like benchmark."
                 );
             }
         } catch (IllegalAccessException exception) {
