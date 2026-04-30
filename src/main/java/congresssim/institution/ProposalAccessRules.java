@@ -50,6 +50,26 @@ public final class ProposalAccessRules {
         return new CurrentSystemAgendaAccessRule(threshold);
     }
 
+    public static ProposalAccessRule leadershipAgenda(
+            List<Legislator> legislators,
+            double threshold,
+            double majorityFitWeight,
+            double publicSignalWeight,
+            double salienceWeight,
+            double capturePenaltyWeight,
+            double minorityHarmPenaltyWeight
+    ) {
+        return new LeadershipAgendaAccessRule(
+                legislators,
+                threshold,
+                majorityFitWeight,
+                publicSignalWeight,
+                salienceWeight,
+                capturePenaltyWeight,
+                minorityHarmPenaltyWeight
+        );
+    }
+
     public static ProposalAccessRule crossBlocCosponsorship(
             List<Legislator> legislators,
             int minimumCosponsors,

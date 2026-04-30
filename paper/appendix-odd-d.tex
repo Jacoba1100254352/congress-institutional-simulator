@@ -64,7 +64,7 @@ Lobby groups are explicit collective actors. Each group has an identifier, prima
 
 \subsection{Institutional Processes}
 
-An institutional process is a composable module. Processes can screen proposal access, modify public signals, spend lobbying or attention resources, route bills to procedural tracks, mediate amendments, evaluate affected-group harm, select among alternatives, conduct chamber votes, apply vetoes, register enacted laws, or review laws later. The final decision still resolves to a yes-or-no outcome, enactment or rejection, and a post-bill status quo.
+An institutional process is a composable module. Processes can screen proposal access, apply leadership agenda control, modify public signals, spend lobbying or attention resources, route bills to procedural tracks, mediate amendments, evaluate affected-group harm, select among alternatives, conduct chamber votes, revise through conference committees, apply vetoes, apply judicial review, route through citizen initiatives, register enacted laws, or review laws later. The final decision still resolves to a yes-or-no outcome, enactment or rejection, and a post-bill status quo.
 
 \section{Process Overview and Scheduling}
 
@@ -98,7 +98,7 @@ Proposers adapt over repeated bills. They can reduce proposal volume, delay timi
 
 Lobby groups adapt over repeated bills. They track returns by channel, select capture strategies from learned returns and current bill conditions, change issue-specific spending multipliers, adjust overall budget intensity, increase reform-threat sensitivity when anti-lobbying bills become threatening, and maintain defensive pressure against reforms that would reduce lobbying influence.
 
-Institutional state also adapts through proposal credits, proposal bonds, law registries, sunset review, challenge-token exhaustion, attention-token spending, and active-law correction.
+Institutional state also adapts through proposal credits, proposal bonds, law registries, sunset review, challenge-token exhaustion, attention-token spending, norm erosion, judicial reversals, and active-law correction.
 
 \subsection{Objectives}
 
@@ -134,7 +134,7 @@ Legislators cast \texttt{YAY} or \texttt{NAY} through weighted influences: ideol
 
 \subsection{Proposal Access and Agenda Scarcity}
 
-Access rules include open access, viability screens, scalar proposal costs, public-value waivers, lobby surcharges, member quotas, public-interest screens, cross-bloc cosponsorship gates, affected-group sponsor gates, proposal bonds, earned proposal credits, agenda lotteries, and quadratic attention budgets.
+Access rules include open access, viability screens, scalar proposal costs, public-value waivers, lobby surcharges, member quotas, leadership agenda control, public-interest screens, cross-bloc cosponsorship gates, affected-group sponsor gates, proposal bonds, earned proposal credits, agenda lotteries, and quadratic attention budgets.
 
 \subsection{Committees and Information}
 
@@ -160,21 +160,25 @@ Harm-weighted thresholds, compensation amendments, and affected-group consent me
 
 Citizen panels simulate sampling noise, information quality, manipulation risk, informed support, benefit estimates, and legitimacy. Panel output can affect default-pass eligibility, active-vote routing, final threshold, agenda priority, or affirmative majority burden of proof.
 
-\subsection{Alternatives, Package Bargaining, and Law Registry}
+\subsection{Leadership, Direct Democracy, and Judicial Review}
 
-Competing-alternative processes generate same-domain alternatives and select by public benefit, public support, chamber-median proximity, or pairwise majority before final ratification. Package-bargaining processes approximate compromise through side-payment costs, implementation-delay costs, modest policy movement, and harm-reducing package trades. Law-registry processes allow enacted laws to persist, be reviewed later, and be renewed, repealed, or partially rolled back.
+Leadership agenda control schedules bills using observable public support, salience, uncertainty, majority-party fit, capture risk, and concentrated-harm risk rather than generated true welfare. Citizen-initiative processes let sufficiently salient, high-support proposals bypass legislative floor blockage through a public referendum. Conference-committee processes revise near-miss bicameral bills toward a bargaining target before chamber revotes. Judicial-review processes can invalidate enacted laws with high rights-like harm, uncertainty, policy shock, or capture risk.
+
+\subsection{Alternatives, Package Bargaining, Norm Erosion, and Law Registry}
+
+Competing-alternative processes generate same-domain alternatives and select by public benefit, public support, chamber-median proximity, or pairwise majority before final ratification. Package-bargaining processes approximate compromise through side-payment costs, implementation-delay costs, modest policy movement, and harm-reducing package trades. Norm-erosion processes raise procedural delay and reduce public support signals under high contention. Law-registry processes allow enacted laws to persist, be reviewed later, and be renewed, repealed, or partially rolled back.
 
 \section{Experimental Design}
 
-The main submitted evidence comes from the v21-paper campaign. That campaign joins broad assumption cases, adversarial proposal-generator cases, party-system sensitivity cases, and a stylized rising-contention timeline in one artifact. It is now breadth-first: it includes the stylized U.S.-like benchmark, conventional affirmative baselines, committee-first regular order, parliamentary-style coalition confidence, non-default policy tournaments, citizen assembly review, public-interest screening, agenda lotteries, quadratic attention budgets, proposal bonds, harm-weighted thresholds, compensation amendments, package bargaining, public objection, law-registry review, anti-capture safeguards, adaptive risk routing, and a small default-enactment stress-test family. Adversarial generator cases test high-benefit extreme reform, popular harmful bills, moderate capture, delayed-benefit reform, concentrated rights-like harm, and anti-lobbying backlash. Earlier v17--v20 campaigns remain historical development artifacts, including deeper default-pass sweeps, but are not mixed into the main paper evidence base.
+The main submitted evidence comes from the v21-paper campaign. That campaign joins broad assumption cases, adversarial proposal-generator cases, party-system sensitivity cases, and a stylized rising-contention timeline in one artifact. It is now breadth-first: it includes the stylized U.S.-like benchmark, conventional affirmative baselines, leadership agenda control, committee-first regular order, cloture with conference and judicial review, parliamentary-style coalition confidence, direct citizen initiatives, non-default policy tournaments, citizen assembly review, public-interest screening, agenda lotteries, quadratic attention budgets, proposal bonds, harm-weighted thresholds, compensation amendments, package bargaining, public objection, law-registry review, anti-capture safeguards, adaptive risk routing, norm erosion, and a small default-enactment stress-test family. Adversarial generator cases test high-benefit extreme reform, popular harmful bills, moderate capture, delayed-benefit reform, concentrated rights-like harm, and anti-lobbying backlash. Earlier v17--v20 campaigns remain historical development artifacts, including deeper default-pass sweeps, but are not mixed into the main paper evidence base.
 
 \section{Assumptions and Limitations}
 
-The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The calibration layer screens plausible ranges but does not yet fit raw datasets automatically. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment. Package bargaining is a one-dimensional proxy for side payments, delays, exemptions, and harm reduction, not a full model of omnibus bargaining or multidimensional coalition trades.
+The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The calibration layer screens plausible ranges but does not yet fit raw datasets automatically. Leadership, initiative, conference, judicial, and norm-erosion processes are stylized mechanism prototypes rather than detailed institutional models. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment. Package bargaining is a one-dimensional proxy for side payments, delays, exemptions, and harm reduction, not a full model of omnibus bargaining or multidimensional coalition trades.
 
 \section{Reproducibility}
 
-Run tests with \texttt{make test}. Run the current campaign with \texttt{make campaign} or \texttt{make campaign-v21-paper}. Run empirical benchmark screening with \texttt{make calibrate}. Run multi-seed checks for all paper scenarios with \texttt{make seed-robustness}. Run the all-catalog family champion screen with \texttt{make family-champions}. Build the paper and appendix PDFs with \texttt{make paper}. Build a double-blind supplement with \texttt{make supplement-anonymous}. The review package includes generated campaign reports and PDFs; public repository identifying details are withheld during double-blind review and can be restored after review if permitted.
+Run tests with \texttt{make test}. Run the current campaign with \texttt{make campaign} or \texttt{make campaign-v21-paper}. Run empirical benchmark screening with \texttt{make calibrate}. Run multi-seed checks for all paper scenarios with \texttt{make seed-robustness-check}. Run raw-data readiness checks with \texttt{make validation-readiness}. Run the all-catalog family champion screen with \texttt{make family-champions}. Build the paper and appendix PDFs with \texttt{make paper}. Build a double-blind supplement with \texttt{make supplement-anonymous}. After review, generate a non-anonymous provenance manifest with \texttt{make public-provenance}. The review package includes generated campaign reports and PDFs; public repository identifying details are withheld during double-blind review and can be restored after review if permitted.
 
 \section*{Use of Large Language Model Tools}
 

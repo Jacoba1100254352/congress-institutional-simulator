@@ -23,9 +23,13 @@ import congresssim.institution.CoalitionCosponsorshipProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.CompetingAlternativesProcess;
+import congresssim.institution.ConferenceCommitteeProcess;
 import congresssim.institution.ConstituentPublicWillProcess;
+import congresssim.institution.CitizenInitiativeProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.DistributionalHarmProcess;
+import congresssim.institution.InstitutionalNormErosionProcess;
+import congresssim.institution.JudicialReviewProcess;
 import congresssim.institution.LawRegistryProcess;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
@@ -72,6 +76,11 @@ final class InstitutionProcessTests {
         defaultPassRequiresBlockingSupermajority();
         proposalAccessCanDenyLowViabilityBills();
         currentSystemAgendaDoesNotUseTrueGeneratedBenefit();
+        leadershipAgendaUsesMajorityAndObservableSignals();
+        conferenceCommitteeRevisesNearMissBills();
+        judicialReviewCanInvalidateRightsLikeHarm();
+        citizenInitiativeCanBypassLegislativeFloor();
+        normErosionCreatesEndogenousDelay();
         proposalCostsCanDenyLowValueBills();
         crossBlocCosponsorshipRequiresOutsideSupport();
         adaptiveTrackRoutesBillsByRisk();
@@ -143,6 +152,185 @@ final class InstitutionProcessTests {
                 lowDecision == highDecision,
                 "Current-system agenda access should use observable signals, not generated true public benefit."
         );
+    }
+
+    private static void leadershipAgendaUsesMajorityAndObservableSignals() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "Majority", -0.45, 0.7, 0.5, 0.8, 0.2, 0.8),
+                new Legislator("L-2", "Majority", -0.40, 0.7, 0.5, 0.8, 0.2, 0.8),
+                new Legislator("L-3", "Majority", -0.35, 0.7, 0.5, 0.8, 0.2, 0.8),
+                new Legislator("L-4", "Opposition", 0.35, 0.7, 0.5, 0.8, 0.2, 0.8),
+                new Legislator("L-5", "Opposition", 0.45, 0.7, 0.5, 0.8, 0.2, 0.8)
+        );
+        VoteContext context = new VoteContext(Map.of("Majority", -0.40, "Opposition", 0.40), new Random(1L), 0.0);
+        Bill lowTrueBenefit = new Bill("B-leader", "Leadership Gate Bill", "L-1", -0.40, -0.38, 0.58, 0.05, 0.10, 0.45)
+                .withPublicBenefitUncertainty(0.20);
+        Bill highTrueBenefit = new Bill("B-leader", "Leadership Gate Bill", "L-1", -0.40, -0.38, 0.58, 0.95, 0.10, 0.45)
+                .withPublicBenefitUncertainty(0.20);
+        Bill oppositionBill = new Bill("B-leader-opposition", "Opposition Bill", "L-4", 0.40, 0.75, 0.38, 0.80, 0.0, 0.20)
+                .withPublicBenefitUncertainty(0.40);
+
+        boolean lowDecision = ProposalAccessRules.leadershipAgenda(legislators, 0.45, 0.48, 0.36, 0.16, 0.22, 0.14)
+                .evaluate(lowTrueBenefit, context)
+                .granted();
+        boolean highDecision = ProposalAccessRules.leadershipAgenda(legislators, 0.45, 0.48, 0.36, 0.16, 0.22, 0.14)
+                .evaluate(highTrueBenefit, context)
+                .granted();
+        boolean oppositionDecision = ProposalAccessRules.leadershipAgenda(legislators, 0.62, 0.48, 0.36, 0.16, 0.22, 0.14)
+                .evaluate(oppositionBill, context)
+                .granted();
+
+        assertTrue(lowDecision == highDecision, "Leadership agenda should use observable public signals, not true generated welfare.");
+        assertTrue(lowDecision, "Majority-aligned bills with adequate public signals should be scheduled.");
+        assertFalse(oppositionDecision, "Leadership agenda control should be able to exclude low-signal opposition bills.");
+    }
+
+    private static void conferenceCommitteeRevisesNearMissBills() {
+        List<Legislator> firstMembers = List.of(legislator("H-1"), legislator("H-2"), legislator("H-3"));
+        List<Legislator> secondMembers = List.of(legislator("S-1"), legislator("S-2"), legislator("S-3"));
+        Chamber firstChamber = new Chamber(
+                "First chamber",
+                firstMembers,
+                (legislator, bill, context) -> Vote.YAY,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        Chamber secondChamber = new Chamber(
+                "Second chamber",
+                secondMembers,
+                (legislator, bill, context) -> Vote.NAY,
+                AffirmativeThresholdRule.supermajority(0.60)
+        );
+        Bill bill = new Bill("B-conference", "Conference Bill", "L-1", 0.0, 0.85, 0.52, 0.62, 0.10, 0.70)
+                .withPublicBenefitUncertainty(0.20);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+
+        BillOutcome outcome = new ConferenceCommitteeProcess(
+                "conference test",
+                firstChamber,
+                secondChamber,
+                0.30,
+                0.0,
+                0.50,
+                0.20
+        ).consider(bill, context);
+
+        assertTrue(outcome.chamberResults().size() == 4, "Conference should record pre-conference and conference-report votes.");
+        assertTrue(outcome.bill().amendmentMovement() > 0.0, "Conference should revise near-miss bills before revote.");
+        assertTrue(Math.abs(outcome.bill().ideologyPosition()) < Math.abs(bill.ideologyPosition()), "Conference revision should move content toward the bargaining target.");
+    }
+
+    private static void judicialReviewCanInvalidateRightsLikeHarm() {
+        LegislativeProcess enactEverything = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "enact everything";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "enacted"
+                );
+            }
+        };
+        Bill rightsRiskBill = new Bill(
+                "B-court",
+                "Rights Risk Bill",
+                "L-1",
+                0.0,
+                0.80,
+                0.20,
+                0.20,
+                0.50,
+                0.85,
+                0.70,
+                false,
+                "rights",
+                0.0,
+                0.0,
+                "targeted minority",
+                0.05,
+                0.95,
+                0.40
+        ).withPublicBenefitUncertainty(0.90);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(2L), 0.0);
+
+        BillOutcome outcome = new JudicialReviewProcess("court test", enactEverything, 0.10, 0.20, 1.0)
+                .consider(rightsRiskBill, context);
+
+        assertFalse(outcome.enacted(), "High rights-like harm should be invalidated under aggressive judicial review.");
+        assertTrue(outcome.statusQuoAfter() == context.currentPolicyPosition(), "Judicial invalidation should roll back the enacted status quo shift.");
+        assertTrue(outcome.signals().lawReversals() == 1, "Judicial invalidation should record a law reversal.");
+    }
+
+    private static void citizenInitiativeCanBypassLegislativeFloor() {
+        LegislativeProcess legislativeFailure = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "legislative failure";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return BillOutcome.accessDenied(bill, context.currentPolicyPosition(), "blocked in legislature");
+            }
+        };
+        Bill initiativeBill = new Bill("B-initiative", "Initiative Bill", "L-1", 0.0, 0.20, 0.88, 0.86, 0.0, 0.80)
+                .withPublicBenefitUncertainty(0.15);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(3L), 0.0);
+
+        BillOutcome outcome = new CitizenInitiativeProcess("initiative test", legislativeFailure, 0.50, 0.55, 0.30, 0.0)
+                .consider(initiativeBill, context);
+
+        assertTrue(outcome.enacted(), "A high-support citizen initiative should bypass a blocked legislative floor.");
+        assertTrue(outcome.chamberResults().size() == 1, "Citizen referendum should be recorded as a public vote result.");
+        assertTrue(outcome.chamberResults().getFirst().chamberName().equals("Citizen referendum"), "The public vote should be labeled as a referendum.");
+        assertTrue(outcome.signals().publicWillReviews() == 1, "Citizen initiative review should contribute public-will diagnostics.");
+    }
+
+    private static void normErosionCreatesEndogenousDelay() {
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(4L), 0.0);
+        boolean delayed = false;
+        for (int index = 0; index < 250 && !delayed; index++) {
+            InstitutionalNormErosionProcess process = new InstitutionalNormErosionProcess(
+                    "norm erosion test",
+                    labeledProcess("ordinary floor failure"),
+                    1.0,
+                    0.80,
+                    0.0
+            );
+            Bill bill = new Bill(
+                    "B-norm-" + index,
+                    "Norm Erosion Bill",
+                    "L-1",
+                    0.0,
+                    0.90,
+                    0.02,
+                    0.20,
+                    0.85,
+                    1.0,
+                    0.90,
+                    false,
+                    "democracy",
+                    0.0,
+                    0.0,
+                    "minority",
+                    0.05,
+                    0.80,
+                    0.80
+            ).withPublicBenefitUncertainty(1.0);
+            BillOutcome outcome = process.consider(bill, context);
+            delayed = outcome.agendaDisposition() == AgendaDisposition.ACCESS_DENIED
+                    && outcome.finalReason().equals("norm erosion procedural delay");
+        }
+
+        assertTrue(delayed, "High contention should sometimes create endogenous procedural delay.");
     }
 
 

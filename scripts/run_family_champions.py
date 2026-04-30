@@ -54,6 +54,10 @@ def family_for(name: str) -> str:
         return "Default-pass side family"
     if "current" in lower or "u.s.-like" in lower or "bicameral" in lower or "veto" in lower:
         return "Conventional benchmark"
+    if "leadership" in lower or "cloture" in lower or "conference" in lower or "judicial" in lower:
+        return "Leadership and procedural veto points"
+    if "initiative" in lower or "referendum" in lower:
+        return "Direct democracy"
     if "supermajority" in lower or "60 percent" in lower or "simple majority" in lower or "unicameral simple" in lower:
         return "Conventional threshold"
     if "committee" in lower or "public-interest" in lower or "lottery" in lower:
@@ -74,7 +78,7 @@ def family_for(name: str) -> str:
         return "Reversibility and objection"
     if "lobby" in lower or "capture" in lower or "advocate" in lower or "voucher" in lower or "blind" in lower:
         return "Anti-capture"
-    if "adaptive" in lower or "risk-routed" in lower or "strategy" in lower:
+    if "adaptive" in lower or "risk-routed" in lower or "strategy" in lower or "norm erosion" in lower:
         return "Adaptive strategy"
     return "Other"
 

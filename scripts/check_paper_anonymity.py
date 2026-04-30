@@ -50,6 +50,22 @@ def pdf_text(path: Path) -> str:
     return completed.stdout
 
 
+def pdf_metadata(path: Path) -> str:
+    try:
+        completed = subprocess.run(
+            ["pdfinfo", str(path)],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+    except FileNotFoundError as exception:
+        raise SystemExit("pdfinfo is required for paper anonymity metadata checks.") from exception
+    except subprocess.CalledProcessError as exception:
+        raise SystemExit(f"Could not extract metadata from {path}: {exception.stderr}") from exception
+    return completed.stdout
+
+
 def main(argv: list[str]) -> int:
     pdfs = [Path(argument) for argument in argv] if argv else DEFAULT_PDFS
     failures: list[str] = []
@@ -58,9 +74,12 @@ def main(argv: list[str]) -> int:
             failures.append(f"{pdf}: missing")
             continue
         text = pdf_text(pdf)
+        metadata = pdf_metadata(pdf)
         for pattern in BANNED_PATTERNS:
             if pattern.search(text):
                 failures.append(f"{pdf}: matched banned identity pattern {pattern.pattern!r}")
+            if pattern.search(metadata):
+                failures.append(f"{pdf}: metadata matched banned identity pattern {pattern.pattern!r}")
 
     if failures:
         print("Paper anonymity check failed:", file=sys.stderr)

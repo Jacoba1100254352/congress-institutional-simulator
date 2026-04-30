@@ -15,14 +15,18 @@ import congresssim.institution.ChallengeTokenAllocation;
 import congresssim.institution.ChallengeVoucherProcess;
 import congresssim.institution.CitizenPanelMode;
 import congresssim.institution.CitizenPanelReviewProcess;
+import congresssim.institution.CitizenInitiativeProcess;
 import congresssim.institution.CoalitionCosponsorshipProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
 import congresssim.institution.CompetingAlternativesProcess;
+import congresssim.institution.ConferenceCommitteeProcess;
 import congresssim.institution.ConstituentPublicWillProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.DistributionalHarmProcess;
 import congresssim.institution.HarmWeightedThresholdProcess;
+import congresssim.institution.InstitutionalNormErosionProcess;
+import congresssim.institution.JudicialReviewProcess;
 import congresssim.institution.LawRegistryProcess;
 import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
@@ -55,8 +59,11 @@ public final class ScenarioCatalog {
             "supermajority-60",
             "bicameral-majority",
             "presidential-veto",
+            "leadership-cartel-majority",
             "committee-regular-order",
+            "cloture-conference-review",
             "parliamentary-coalition-confidence",
+            "citizen-initiative-referendum",
             "simple-majority-alternatives-pairwise",
             "simple-majority-alternatives-strategic",
             "citizen-assembly-threshold",
@@ -71,6 +78,7 @@ public final class ScenarioCatalog {
             "public-objection-majority",
             "anti-capture-majority-bundle",
             "risk-routed-majority",
+            "norm-erosion-majority",
             "default-pass",
             "default-pass-challenge",
             "default-pass-multiround-mediation-challenge"
@@ -124,7 +132,10 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("supermajority-60", unicameral("Unicameral 60 percent passage", AffirmativeThresholdRule.supermajority(0.60))),
                 new ScenarioEntry("current-system", currentSystem()),
                 new ScenarioEntry("committee-regular-order", majorityWithCommitteeRegularOrder()),
+                new ScenarioEntry("leadership-cartel-majority", leadershipCartelMajority()),
+                new ScenarioEntry("cloture-conference-review", clotureConferenceAndJudicialReview()),
                 new ScenarioEntry("parliamentary-coalition-confidence", parliamentaryCoalitionConfidence()),
+                new ScenarioEntry("citizen-initiative-referendum", citizenInitiativeReferendum()),
                 new ScenarioEntry("public-interest-majority", majorityWithPublicInterestScreen()),
                 new ScenarioEntry("citizen-assembly-threshold", majorityWithCitizenAssemblyThreshold()),
                 new ScenarioEntry("agenda-lottery-majority", majorityWithAgendaLottery(true)),
@@ -137,6 +148,7 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("public-objection-majority", majorityWithPublicObjectionWindow()),
                 new ScenarioEntry("anti-capture-majority-bundle", majorityWithAntiCaptureBundle()),
                 new ScenarioEntry("risk-routed-majority", riskRoutedMajority()),
+                new ScenarioEntry("norm-erosion-majority", normErosionMajority()),
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
                 new ScenarioEntry("default-pass-mediation", defaultPassWithMediation()),
                 new ScenarioEntry("default-pass-lobby-firewall", defaultPassWithLobbyFirewall()),
@@ -520,6 +532,124 @@ public final class ScenarioCatalog {
         };
     }
 
+    private static Scenario leadershipCartelMajority() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Leadership agenda cartel + majority";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.leadershipAgenda(
+                                world.legislators(),
+                                0.54,
+                                0.42,
+                                0.34,
+                                0.18,
+                                0.22,
+                                0.16
+                        ),
+                        simpleMajorityFloorProcess(name(), world, strategy)
+                );
+            }
+        };
+    }
+
+    private static Scenario clotureConferenceAndJudicialReview() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Cloture, conference, and judicial review";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                List<Legislator> committeeMembers = CommitteeFactory.select(
+                        world.legislators(),
+                        CommitteeComposition.MAJORITY_CONTROLLED,
+                        17
+                );
+                Chamber committee = new Chamber(
+                        "Committee",
+                        committeeMembers,
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                Chamber house = new Chamber(
+                        "House",
+                        world.legislators(),
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                Chamber senate = new Chamber(
+                        "Senate cloture",
+                        senateSubset(world.legislators()),
+                        strategy,
+                        AffirmativeThresholdRule.supermajority(0.60)
+                );
+                LegislativeProcess process = new ConferenceCommitteeProcess(
+                        name(),
+                        house,
+                        senate,
+                        0.45,
+                        chamberMedian(world.legislators()),
+                        0.32,
+                        0.30
+                );
+                process = new PresidentialVetoProcess(
+                        process,
+                        presidentFromWorld(world),
+                        strategy,
+                        0.68,
+                        AffirmativeThresholdRule.supermajority(2.0 / 3.0)
+                );
+                process = new JudicialReviewProcess(name(), process, 0.48, 0.66, 0.46);
+                process = new CommitteeGatekeepingProcess(name(), committee, process);
+                process = new CommitteeInformationProcess(name(), committeeMembers, 0.78, 0.48, process);
+                return new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.leadershipAgenda(
+                                world.legislators(),
+                                0.56,
+                                0.44,
+                                0.30,
+                                0.18,
+                                0.18,
+                                0.14
+                        ),
+                        process
+                );
+            }
+        };
+    }
+
+    private static Scenario citizenInitiativeReferendum() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Citizen initiative and referendum";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new CitizenInitiativeProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        0.58,
+                        0.54,
+                        0.42,
+                        0.32
+                );
+            }
+        };
+    }
+
     private static Scenario parliamentaryCoalitionConfidence() {
         return new Scenario() {
             @Override
@@ -859,6 +989,35 @@ public final class ScenarioCatalog {
                         highRiskLane,
                         0.30,
                         0.58
+                );
+            }
+        };
+    }
+
+    private static Scenario normErosionMajority() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Endogenous norm erosion + majority";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess process = new ProposerStrategyProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        world.legislators(),
+                        0.58,
+                        0.58,
+                        0.46
+                );
+                return new InstitutionalNormErosionProcess(
+                        name(),
+                        process,
+                        0.18,
+                        0.42,
+                        0.16
                 );
             }
         };
@@ -2501,6 +2660,21 @@ public final class ScenarioCatalog {
                 );
             }
         };
+    }
+
+    private static double chamberMedian(List<Legislator> legislators) {
+        if (legislators.isEmpty()) {
+            return 0.0;
+        }
+        List<Double> positions = legislators.stream()
+                .map(Legislator::ideology)
+                .sorted()
+                .toList();
+        int middle = positions.size() / 2;
+        if (positions.size() % 2 == 1) {
+            return positions.get(middle);
+        }
+        return (positions.get(middle - 1) + positions.get(middle)) / 2.0;
     }
 
     private static List<Legislator> senateSubset(List<Legislator> legislators) {

@@ -1,8 +1,8 @@
 # Simulation Roadmap
 
-This file tracks simulator increments that were planned for the paper and the current status after `simulation-campaign-v19`.
+This file tracks simulator increments that were planned for the paper and the current status after `simulation-campaign-v21-paper` and the subsequent breadth/process cleanup.
 
-## Implemented Through v19
+## Implemented Through v21-Paper
 
 The following planned increments are now represented in code, tests, campaign reports, and the LaTeX paper workflow:
 
@@ -21,6 +21,8 @@ The following planned increments are now represented in code, tests, campaign re
 - weighted party-system sensitivity, including two-party, two-major-plus-minors, fragmented multiparty, and dominant-party legislature profiles with case likelihood weights
 - initial endogenous strategy, including proposer moderation/cosponsorship/withdrawal behavior and lobby-group influence-channel learning after outcomes
 - stylized timeline stress comparisons, including rising polarization, party loyalty, lobbying pressure, proposal pressure, lower compromise culture, lower constituency responsiveness, and a derived contention index
+- non-default institutional families added after the breadth audit: leadership agenda control, conference-committee revision, stylized judicial review, direct citizen initiative/referendum, and endogenous norm-erosion delay
+- process hardening, including multi-seed robustness regression checks, figure-label checks, PDF text and metadata anonymity checks, anonymous supplement packaging, validation-readiness reporting, and a non-anonymous public provenance target
 
 ## Current Campaign
 
@@ -34,16 +36,16 @@ Generated artifacts:
 
 ## Remaining Research Work
 
-The planned roadmap layer is now implemented. The next additions would be research-expansion work rather than cleanup of previously promised features:
+The planned roadmap layer is implemented at prototype depth. The next additions would be research-expansion work rather than cleanup of previously promised features:
 
-- deeper endogenous strategy: proposers currently adapt moderation, cosponsorship, and withdrawal; next they should adapt proposal volume, timing, lobbying exposure, and amendment demands to each institutional rule set
-- deeper strategic lobbying response: lobby groups currently reallocate capture strategy after outcomes; next they should learn channel returns over longer sessions and adapt budgets by issue, reform threat, and opponent behavior
+- deeper endogenous strategy: proposers now adapt moderation, cosponsorship, withdrawal, proposal volume, timing, harm posture, and lobbying exposure, but they still do not learn full rule-specific strategies over many sessions
+- deeper strategic lobbying response: lobby groups now reallocate capture strategy, defensive threat, and budget intensity, but they still do not run long-horizon adversarial learning against organized public-interest opponents
 - richer public model: constituents should be generated as district populations with preference distributions, issue intensity, group membership, and turnout/attention differences rather than only legislator-level district signals
 - richer bargaining: amendments should support coalitions, side payments or compensation packages, poison-pill amendments from opponents, and proposer withdrawal
-- calibration: compare rough simulator outputs to Voteview roll-call ideology and party-unity patterns, Congress.gov/govinfo bill progression, lobbying disclosure spending and client patterns, Comparative Agendas topic throughput, V-Dem institutional measures, ParlGov party-system structure, and Center for Effective Lawmaking sponsor-success benchmarks before making empirical claims
+- empirical validation: `make validation-readiness` checks whether optional raw input files are present and schema-compatible, but the project still needs adapters that compare simulator outputs to Voteview roll-call ideology and party-unity patterns, Congress.gov/govinfo bill progression, lobbying disclosure spending and client patterns, Comparative Agendas topic throughput, V-Dem institutional measures, ParlGov party-system structure, and Center for Effective Lawmaking sponsor-success benchmarks before making empirical claims
 - agenda-control validation: add diagnostics for referral authority, jurisdictional monopoly, discharge thresholds, amendment openness, floor scheduling, and status-quo fallback so committee-power and closed-rule agenda models can be matched more directly
 - social-choice stress tests: make policy tournaments vulnerable to clone alternatives, strategic sequencing, and multidimensional cycling before treating pairwise winners as robust reform candidates
-- documentation: expand the ODD/ODD+D description into a submission appendix if the project moves toward submission
+- institutional realism: the newly added leadership, conference, judicial, initiative, and norm-erosion modules are stylized family representatives, not detailed models of Congress, courts, elections, federalism, agencies, or media ecosystems
 
 ## Submission Note
 

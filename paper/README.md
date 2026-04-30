@@ -71,7 +71,20 @@ make supplement-anonymous
 Run the selected multi-seed robustness report with:
 
 ```sh
-make seed-robustness
+make seed-robustness-check
+```
+
+Check optional raw empirical validation input readiness with:
+
+```sh
+make validation-readiness
+```
+
+For public, non-anonymous releases after review, write a provenance manifest
+with:
+
+```sh
+make public-provenance
 ```
 
 The generated PDF is written to:

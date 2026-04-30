@@ -15,15 +15,24 @@ ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = ROOT / "out" / "seed-robustness"
 REPORT_CSV = ROOT / "reports" / "seed-robustness-summary.csv"
 REPORT_MD = ROOT / "reports" / "seed-robustness-summary.md"
-SEEDS = [20260428, 20260429, 20260430, 20260501, 20260502]
+DEFAULT_SEEDS = [20260428, 20260429, 20260430, 20260501, 20260502]
+SEEDS = [
+    int(seed.strip())
+    for seed in os.environ.get("SEED_ROBUSTNESS_SEEDS", ",".join(str(seed) for seed in DEFAULT_SEEDS)).split(",")
+    if seed.strip()
+]
+RUNS = int(os.environ.get("SEED_ROBUSTNESS_RUNS", "24"))
 SCENARIOS = [
     ("current-system", "Stylized U.S.-like benchmark"),
     ("simple-majority", "Unicameral simple majority"),
     ("supermajority-60", "Unicameral 60 percent passage"),
     ("bicameral-majority", "Bicameral simple majority"),
     ("presidential-veto", "Bicameral majority + presidential veto"),
+    ("leadership-cartel-majority", "Leadership agenda cartel + majority"),
     ("committee-regular-order", "Committee-first regular order"),
+    ("cloture-conference-review", "Cloture, conference, and judicial review"),
     ("parliamentary-coalition-confidence", "Parliamentary coalition confidence"),
+    ("citizen-initiative-referendum", "Citizen initiative and referendum"),
     ("simple-majority-alternatives-pairwise", "Majority pairwise policy tournament"),
     ("simple-majority-alternatives-strategic", "Strategic policy tournament"),
     ("citizen-assembly-threshold", "Citizen assembly threshold gate"),
@@ -38,6 +47,7 @@ SCENARIOS = [
     ("public-objection-majority", "Public objection window + majority"),
     ("anti-capture-majority-bundle", "Majority + anti-capture bundle"),
     ("risk-routed-majority", "Risk-routed majority legislature"),
+    ("norm-erosion-majority", "Endogenous norm erosion + majority"),
     ("default-pass", "Default pass unless 2/3 block"),
     ("default-pass-challenge", "Default pass + challenge vouchers"),
     ("default-pass-multiround-mediation-challenge", "Default pass + mediation + challenge"),
@@ -62,7 +72,7 @@ def run_campaign(seed: int) -> Path:
         "--campaign",
         "v21-paper",
         "--runs",
-        "24",
+        str(RUNS),
         "--legislators",
         "101",
         "--bills",
@@ -137,7 +147,7 @@ def main() -> int:
         "The main paper table still reports sensitivity intervals across broad and adversarial assumption cases; this report checks whether paper-scenario relationships are stable across independent base seeds.",
         "",
         f"- Seeds: {', '.join(str(seed) for seed in SEEDS)}",
-        "- Runs per seed: 24",
+        f"- Runs per seed: {RUNS}",
         "- Cases summarized: broad and adversarial assumption cases only",
         "",
         "| Scenario | Metric | Mean | Min | Max | Range |",

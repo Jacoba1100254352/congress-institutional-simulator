@@ -328,7 +328,7 @@ public final class Main {
         for (ScenarioReport report : reports) {
             System.out.printf(Locale.ROOT,
                     "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d%n",
-                    report.scenarioName(),
+                    csvCell(report.scenarioName()),
                     report.totalBills(),
                     report.enactedBills(),
                     report.productivity(),
@@ -363,6 +363,13 @@ public final class Main {
                     report.overriddenVetoes()
             );
         }
+    }
+
+    private static String csvCell(String value) {
+        if (value.indexOf(',') < 0 && value.indexOf('"') < 0 && value.indexOf('\n') < 0 && value.indexOf('\r') < 0) {
+            return value;
+        }
+        return "\"" + value.replace("\"", "\"\"") + "\"";
     }
 
     private static void printCharts(List<ScenarioReport> reports) {

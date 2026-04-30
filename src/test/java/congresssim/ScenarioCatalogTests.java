@@ -174,6 +174,18 @@ final class ScenarioCatalogTests {
                 "Scenario catalog should expose non-default committee-first designs."
         );
         assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("leadership-cartel-majority"),
+                "Scenario catalog should expose non-default leadership agenda-control designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("cloture-conference-review"),
+                "Scenario catalog should expose non-default cloture, conference, and judicial-review designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("citizen-initiative-referendum"),
+                "Scenario catalog should expose direct-democracy initiative designs."
+        );
+        assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("parliamentary-coalition-confidence"),
                 "Scenario catalog should expose non-default coalition-confidence designs."
         );
@@ -184,6 +196,10 @@ final class ScenarioCatalogTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("risk-routed-majority"),
                 "Scenario catalog should expose non-default adaptive routing designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("norm-erosion-majority"),
+                "Scenario catalog should expose endogenous norm-erosion stress designs."
         );
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("package-bargaining-majority"),

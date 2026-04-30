@@ -270,11 +270,15 @@ final class CampaignRunnerTests {
             assertTrue(cases.contains("era-6-crisis"), "v21-paper should include timeline stress cases.");
             assertTrue(scenarios.contains("current-system"), "v21-paper should include the stylized U.S.-like benchmark.");
             assertTrue(scenarios.contains("committee-regular-order"), "v21-paper should include committee-first regular order.");
+            assertTrue(scenarios.contains("leadership-cartel-majority"), "v21-paper should include leadership agenda control.");
+            assertTrue(scenarios.contains("cloture-conference-review"), "v21-paper should include cloture, conference, and judicial review.");
             assertTrue(scenarios.contains("parliamentary-coalition-confidence"), "v21-paper should include a coalition-confidence design.");
+            assertTrue(scenarios.contains("citizen-initiative-referendum"), "v21-paper should include citizen initiative/referendum.");
             assertTrue(scenarios.contains("simple-majority-alternatives-pairwise"), "v21-paper should include non-default policy tournaments.");
             assertTrue(scenarios.contains("harm-weighted-majority"), "v21-paper should include harm-weighted thresholds.");
             assertTrue(scenarios.contains("package-bargaining-majority"), "v21-paper should include package bargaining.");
             assertTrue(scenarios.contains("risk-routed-majority"), "v21-paper should include adaptive risk routing.");
+            assertTrue(scenarios.contains("norm-erosion-majority"), "v21-paper should include endogenous norm erosion.");
             assertTrue(scenarios.contains("default-pass"), "v21-paper should retain default pass as one stress-test family.");
             assertTrue(Files.readString(result.markdownPath()).contains("Simulation Campaign v21 Paper"), "v21-paper Markdown should identify the report.");
 

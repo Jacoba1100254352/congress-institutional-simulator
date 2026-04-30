@@ -13,6 +13,11 @@ FIGURES = [
     Path("paper/figures/compromise_productivity.tex"),
     Path("paper/figures/timeline_contention.tex"),
 ]
+MIN_LABELS = {
+    Path("paper/figures/productivity_low_support.tex"): 25,
+    Path("paper/figures/compromise_productivity.tex"): 25,
+    Path("paper/figures/timeline_contention.tex"): 6,
+}
 
 PICTURE_RE = re.compile(r"\\begin\{picture\}\(([-0-9.]+),([-0-9.]+)\)")
 POINT_LABEL_RE = re.compile(r"% (?:point|legend)-label label=(.*?) x=([-0-9.]+) y=([-0-9.]+)")
@@ -43,6 +48,14 @@ def check_file(path: Path) -> list[str]:
         (match.group(1), float(match.group(2)), float(match.group(3)))
         for match in POINT_LABEL_RE.finditer(text)
     ]
+    minimum = MIN_LABELS.get(path)
+    if minimum is not None and len(labels) < minimum:
+        failures.append(f"{path}: expected at least {minimum} point labels, found {len(labels)}")
+    seen_labels: set[str] = set()
+    for label, _x, _y in labels:
+        if label in seen_labels:
+            failures.append(f"{path}: duplicate point label {label!r}")
+        seen_labels.add(label)
     for label, x, y in labels:
         if x < 0.0 or x > width or y < 0.0 or y > height:
             failures.append(f"{path}: label {label!r} outside picture bounds ({x:.1f}, {y:.1f})")
