@@ -17,14 +17,31 @@ REPORT_CSV = ROOT / "reports" / "seed-robustness-summary.csv"
 REPORT_MD = ROOT / "reports" / "seed-robustness-summary.md"
 SEEDS = [20260428, 20260429, 20260430, 20260501, 20260502]
 SCENARIOS = [
-    ("current-system", "Current U.S.-style system"),
+    ("current-system", "Stylized U.S.-like benchmark"),
     ("simple-majority", "Unicameral simple majority"),
+    ("supermajority-60", "Unicameral 60 percent passage"),
+    ("bicameral-majority", "Bicameral simple majority"),
+    ("presidential-veto", "Bicameral majority + presidential veto"),
+    ("committee-regular-order", "Committee-first regular order"),
+    ("parliamentary-coalition-confidence", "Parliamentary coalition confidence"),
+    ("simple-majority-alternatives-pairwise", "Majority pairwise policy tournament"),
+    ("simple-majority-alternatives-strategic", "Strategic policy tournament"),
+    ("citizen-assembly-threshold", "Citizen assembly threshold gate"),
+    ("public-interest-majority", "Majority + public-interest screen"),
+    ("agenda-lottery-majority", "Weighted agenda lottery + majority"),
+    ("quadratic-attention-majority", "Quadratic attention budget + majority"),
+    ("proposal-bond-majority", "Proposal bonds + majority"),
+    ("harm-weighted-majority", "Harm-weighted double majority"),
+    ("compensation-majority", "Compensation amendments + majority"),
+    ("law-registry-majority", "Active-law registry + majority review"),
+    ("public-objection-majority", "Public objection window + majority"),
+    ("anti-capture-majority-bundle", "Majority + anti-capture bundle"),
+    ("risk-routed-majority", "Risk-routed majority legislature"),
     ("default-pass", "Default pass unless 2/3 block"),
-    ("default-pass-multiround-mediation-challenge", "Mediation + challenge"),
-    ("default-pass-alternatives-pairwise", "Pairwise policy tournament"),
-    ("default-pass-deep-strategy-bundle", "Adaptive strategy bundle"),
+    ("default-pass-challenge", "Default pass + challenge vouchers"),
+    ("default-pass-multiround-mediation-challenge", "Default pass + mediation + challenge"),
 ]
-FIELDS = ["productivity", "compromise", "lowSupport", "welfare"]
+FIELDS = ["directionalScore", "productivity", "compromise", "lowSupport", "welfare", "riskControl"]
 
 
 def broad_case(case_key: str) -> bool:
@@ -96,7 +113,7 @@ def main() -> int:
                 by_scenario[scenario][field].append(value)
 
     with REPORT_CSV.open("w", newline="") as handle:
-        writer = csv.writer(handle)
+        writer = csv.writer(handle, lineterminator="\n")
         writer.writerow(["scenarioKey", "scenario", "metric", "seedCount", "mean", "min", "max", "range"])
         for scenario_key, scenario_name in SCENARIOS:
             for field in FIELDS:

@@ -200,7 +200,7 @@ final class CampaignRunnerTests {
             assertTrue(cases.size() == 6, "v19 should include six ordered timeline cases.");
             assertTrue(scenarios.contains("current-system"), "v19 should include the current-system benchmark.");
             assertTrue(scenarios.contains("presidential-veto"), "v19 should retain affirmative institutional baselines.");
-            assertTrue(scenarios.contains("default-pass-alternatives-pairwise"), "v19 should include the policy-tournament comparison.");
+            assertTrue(scenarios.contains("simple-majority-alternatives-pairwise"), "v19 should include the non-default policy-tournament comparison.");
 
             CampaignRow firstCurrent = findRow(result, "era-1-low-contention", "current-system");
             CampaignRow lastCurrent = findRow(result, "era-6-crisis", "current-system");
@@ -268,15 +268,18 @@ final class CampaignRunnerTests {
             assertTrue(cases.contains("party-system-two-major-minors"), "v21-paper should include party-system sensitivity cases.");
             assertTrue(cases.contains("era-6-crisis"), "v21-paper should include timeline stress cases.");
             assertTrue(scenarios.contains("current-system"), "v21-paper should include the current-system benchmark.");
-            assertTrue(scenarios.contains("default-pass-deep-strategy-bundle"), "v21-paper should include the strategy bundle.");
-            assertTrue(scenarios.contains("default-pass-affected-sponsor-gate"), "v21-paper should include affected-group sponsorship.");
-            assertTrue(scenarios.contains("default-pass-alternatives-pairwise"), "v21-paper should include policy tournaments.");
+            assertTrue(scenarios.contains("committee-regular-order"), "v21-paper should include committee-first regular order.");
+            assertTrue(scenarios.contains("parliamentary-coalition-confidence"), "v21-paper should include a coalition-confidence design.");
+            assertTrue(scenarios.contains("simple-majority-alternatives-pairwise"), "v21-paper should include non-default policy tournaments.");
+            assertTrue(scenarios.contains("harm-weighted-majority"), "v21-paper should include harm-weighted thresholds.");
+            assertTrue(scenarios.contains("risk-routed-majority"), "v21-paper should include adaptive risk routing.");
+            assertTrue(scenarios.contains("default-pass"), "v21-paper should retain default pass as one stress-test family.");
             assertTrue(Files.readString(result.markdownPath()).contains("Simulation Campaign v21 Paper"), "v21-paper Markdown should identify the report.");
 
             String csv = Files.readString(result.csvPath());
             assertTrue(csv.contains("party-system-two-major-minors"), "v21-paper CSV should contain party-system rows.");
             assertTrue(csv.contains("era-6-crisis"), "v21-paper CSV should contain timeline rows.");
-            assertTrue(csv.contains("default-pass-deep-strategy-bundle"), "v21-paper CSV should contain paper comparison scenarios.");
+            assertTrue(csv.contains("risk-routed-majority"), "v21-paper CSV should contain broad paper comparison scenarios.");
         } catch (Exception exception) {
             throw new AssertionError("Paper campaign report generation failed.", exception);
         }

@@ -31,7 +31,7 @@ make run ARGS="--runs 1000 --legislators 151 --bills 80 --party-count 4 --polari
 Compare only selected scenarios:
 
 ```sh
-make run ARGS="--scenarios default-pass,default-pass-guarded --format csv"
+make run ARGS="--scenarios current-system,simple-majority,simple-majority-alternatives-pairwise,risk-routed-majority,default-pass --format csv"
 ```
 
 Run tests:
@@ -102,101 +102,33 @@ Calibration and validation details live in [docs/calibration.md](docs/calibratio
 
 ## Current Scenarios
 
-The default CLI compares:
+The default CLI and v21 paper campaign now use a representative breadth-first set. Default passage is deliberately kept to three stress-test variants rather than treated as the main family:
 
+- `current-system`: stylized current U.S. benchmark
 - `simple-majority`: unicameral simple majority
-- `simple-majority-mediation`: unicameral simple majority with a structured amendment/mediation stage
-- `simple-majority-lobby-firewall`: unicameral majority with reduced direct lobby vote influence
 - `supermajority-60`: unicameral 60 percent passage threshold
-- `default-pass`: default passage unless 2/3 vote to block
-- `default-pass-mediation`: default passage after a bounded mediation stage can move risky bills toward the median/status quo
-- `default-pass-lobby-firewall`: default passage with reduced direct lobby vote influence
-- `default-pass-lobby-transparency`: default passage after disclosure weakens effective lobby pressure and creates backlash against capture-risk bills
-- `default-pass-public-interest-screen`: default passage with an anti-capture public-interest access screen
-- `default-pass-lobby-audit`: default passage with randomized anti-capture audits and sponsor sanctions
-- `default-pass-anti-capture-bundle`: transparency, public-interest screening, audit sanctions, and lower direct lobby vote influence
-- `default-pass-budgeted-lobbying`: default passage after explicit lobby groups spend limited budgets by issue domain
-- `default-pass-budgeted-lobbying-transparency`: budgeted lobbying followed by transparency backlash
-- `default-pass-budgeted-lobbying-bundle`: budgeted lobbying with transparency, public-interest screening, audits, and lower direct lobby vote influence
-- `default-pass-budgeted-lobbying-mediation`: budgeted lobbying followed by bounded amendment mediation
-- `default-pass-democracy-vouchers`: budgeted lobbying with public-financing pressure that moves public signals back toward public benefit
-- `default-pass-public-advocate`: budgeted lobbying with an equal-access public advocate counterweight
-- `default-pass-blind-lobby-review`: budgeted lobbying with reduced agenda and information effectiveness before origin disclosure
-- `default-pass-defensive-lobby-cap`: budgeted lobbying with an explicit cap on defensive anti-reform spending
-- `default-pass-lobby-channel-bundle`: public financing, public advocate access, blind review, and defensive caps together
-- `default-pass-citizen-certificate`: default passage only for bills certified by a synthetic citizen panel
-- `default-pass-citizen-active-routing`: uncertified citizen-panel bills route to active majority voting
-- `default-pass-citizen-threshold`: uncertified citizen-panel bills require a stronger affirmative threshold
-- `default-pass-citizen-agenda`: citizen-panel results adjust agenda priority/public signals without changing the final lane
-- `default-pass-weighted-agenda-lottery`: default passage after a weighted lottery rations floor slots
-- `default-pass-random-agenda-lottery`: default passage after a random lottery rations floor slots
-- `default-pass-quadratic-attention`: default passage with quadratic agenda-attention credits
-- `default-pass-public-objection`: high-contestation bills are routed to active voting after a public objection window
-- `default-pass-repeal-window`: high-contestation default enactments can be reversed after a public repeal window
-- `default-pass-harm-threshold`: default passage for ordinary bills, but concentrated-harm bills require affirmative supermajority support
-- `default-pass-compensation`: default passage with compensation amendments for high concentrated-harm bills
-- `default-pass-affected-consent`: default passage with compensation plus affected-group consent screening
-- `simple-majority-alternatives-pairwise`: simple majority after a pairwise competing-alternatives stage
-- `default-pass-alternatives-benefit`: default passage after choosing the highest-public-benefit alternative
-- `default-pass-alternatives-support`: default passage after choosing the highest-public-support alternative
-- `default-pass-alternatives-median`: default passage after choosing the alternative closest to the chamber median
-- `default-pass-alternatives-pairwise`: default passage after a pairwise policy tournament
-- `default-pass-obstruction-substitute`: default passage after opponents can force a same-domain substitute into the tournament
-- `default-pass-challenge`: default passage with scarce party-held challenge vouchers that divert contested bills to active majority vote
-- `default-pass-challenge-info`: default passage with committee information review before challenge-voucher decisions
-- `default-pass-cross-bloc`: default passage with a cross-bloc cosponsorship agenda gate
-- `default-pass-cross-bloc-strong`: stricter cross-bloc cosponsorship gate
-- `default-pass-cross-bloc-challenge`: cross-bloc cosponsorship before challenge-voucher review
-- `default-pass-adaptive-track`: risk-routed default pass with low-risk, middle, and high-risk procedural lanes
-- `default-pass-adaptive-track-challenge`: adaptive tracks with challenge vouchers in the middle-risk lane
-- `default-pass-sunset-trial`: default passage with provisional enactment and automatic sunset review for risky bills
-- `default-pass-sunset-challenge`: challenge vouchers plus sunset review
-- `default-pass-law-registry`: default passage with delayed review of active provisional laws across the run
-- `default-pass-law-registry-challenge`: challenge vouchers plus delayed active-law review
-- `default-pass-earned-credits`: default passage with stateful agenda credits earned or lost through proposal quality
-- `default-pass-earned-credits-challenge`: earned proposal credits plus challenge vouchers
-- `default-pass-constituent-public-will`: default passage after district-weighted constituent/public-will signal revision
-- `default-pass-constituent-citizen-panel`: constituent public-will revision followed by citizen-panel active routing
-- `default-pass-proposal-bonds`: default passage with refundable public-benefit proposal bonds
-- `default-pass-proposal-bonds-challenge`: proposal bonds plus challenge vouchers
-- `default-pass-cross-bloc-credit-discount`: richer cross-bloc cosponsorship with an agenda-credit-style support discount
-- `default-pass-affected-sponsor-gate`: cross-bloc cosponsorship requiring affected-group sponsor participation
-- `default-pass-multiround-mediation`: multi-round amendment mediation with round costs, concession limits, and compensation
-- `default-pass-multiround-mediation-challenge`: multi-round mediation plus challenge vouchers
-- `default-pass-alternatives-strategic`: policy tournament with strategic clones and decoys
-- `default-pass-adaptive-proposers`: default passage with stateful proposer trust, moderation, cosponsorship, and withdrawal behavior
-- `default-pass-adaptive-proposers-lobbying`: adaptive proposer behavior plus strategic budgeted lobbying
-- `default-pass-strategic-lobbying`: budgeted lobby groups that update influence-channel strategy after bill outcomes
-- `default-pass-challenge-party-proportional`: challenge vouchers allocated proportionally by party size
-- `default-pass-challenge-minority-bonus`: challenge vouchers with a minority-party allocation bonus
-- `default-pass-challenge-supermajority`: challenged bills route to a 60 percent affirmative vote
-- `default-pass-challenge-committee`: challenged bills route to committee review
-- `default-pass-challenge-info-active`: challenged bills receive committee information before active voting
-- `default-pass-adaptive-track-lenient`: adaptive routing with wider fast-lane eligibility
-- `default-pass-adaptive-track-strict`: adaptive routing with stricter high-risk review
-- `default-pass-adaptive-track-citizen-high-risk`: adaptive routing with citizen-panel review for high-risk bills
-- `default-pass-adaptive-track-supermajority-high-risk`: adaptive routing with supermajority review for high-risk bills
-- `default-pass-law-registry-fast-review`: active-law registry with faster review
-- `default-pass-law-registry-slow-review`: active-law registry with slower partial rollback
-- `default-pass-cost-public-waiver`: proposal costs discounted by public value
-- `default-pass-cost-lobby-surcharge`: proposal costs increased by positive lobby pressure
-- `default-pass-member-quota`: stateful per-member proposal quota
-- challenge-sweep keys such as `default-pass-challenge-party-t3-s082`, `default-pass-challenge-member-t1-s082`, and `default-pass-escalation-q12-s082`
-- `default-pass-access`: default passage unless 2/3 vote to block, with a proposal-access screen
-- `default-pass-cost`: default passage unless 2/3 vote to block, with a proposal-cost screen
-- `default-pass-cost-guarded`: default passage with proposal costs, proposal access, committee information, and committee gatekeeping
-- `default-pass-committee`: default passage unless 2/3 vote to block, with a representative committee gate
-- `default-pass-committee-majority`: default passage with a majority-controlled committee gate
-- `default-pass-committee-polarized`: default passage with a polarized committee gate
-- `default-pass-committee-captured`: default passage with a lobby-sensitive/captured committee gate
-- `default-pass-info`: default passage with representative committee information review
-- `default-pass-info-expert`: default passage with expert-style committee information review
-- `default-pass-info-captured`: default passage with captured/lobby-sensitive committee information review
-- `default-pass-guarded`: default passage unless 2/3 vote to block, with both agenda filters
-- `default-pass-informed-guarded`: default passage with access screening, committee information, and committee gatekeeping
 - `bicameral-majority`: bicameral simple majority
 - `presidential-veto`: bicameral majority with presidential veto and 2/3 override
-- `current-system`: stylized current U.S. benchmark with House majority, Senate 60 percent threshold, presidential veto, and 2/3 override
+- `committee-regular-order`: committee-first regular order under affirmative majority rule
+- `parliamentary-coalition-confidence`: cross-bloc confidence/access discipline
+- `simple-majority-alternatives-pairwise`: pairwise policy tournament before majority ratification
+- `simple-majority-alternatives-strategic`: policy tournament with strategic clones and decoys
+- `citizen-assembly-threshold`: mini-public review changes the burden of proof
+- `public-interest-majority`: affirmative majority with public-interest agenda screening
+- `agenda-lottery-majority`: weighted agenda lottery with majority ratification
+- `quadratic-attention-majority`: quadratic attention budget with majority ratification
+- `proposal-bond-majority`: refundable proposal accountability bond
+- `harm-weighted-majority`: concentrated-harm thresholds
+- `compensation-majority`: compensation amendments for concentrated harm
+- `law-registry-majority`: active-law review and correction
+- `public-objection-majority`: public objection window before majority ratification
+- `anti-capture-majority-bundle`: lobbying transparency, public advocate, audit, and screen bundle
+- `risk-routed-majority`: adaptive risk lanes under majority rule
+- `default-pass`: default passage unless 2/3 vote to block
+- `default-pass-challenge`: default passage with scarce challenge vouchers
+- `default-pass-multiround-mediation-challenge`: default passage with mediation plus challenge vouchers
+
+The full catalog still exposes the earlier default-pass sweeps for side analysis, including challenge-token sweeps, committee variants, lobbying variants, citizen-panel variants, and default-pass law-registry variants. Use `make run ARGS="--help"` to list all explicit keys, or pass keys with `--scenarios` to recreate those historical comparisons.
 
 ## Experiment Controls
 
@@ -311,6 +243,8 @@ These are not claims about real-world validity. They are hooks for comparing rul
 The research direction is comparative institutional search. The simulator should be able to test ordinary legislative systems, default-pass systems, cross-bloc systems, challenge-token systems, adaptive-track systems, sunset/review systems, and more radical future proposals under shared assumptions.
 
 Default passage remains useful as an early stress test because it sharply shifts power from affirmative majority formation to blocking coalition formation. The broader design warning is that every legislative structure depends on agenda access, proposal screening, proposer power, information, challenge rights, reversibility, and legitimacy metrics. The first modeling layers therefore focus on those institutional mechanics before media, elections, or richer behavioral systems.
+
+The following campaign notes are historical side logs. They explain how earlier default-pass-heavy iterations were developed, but the current paper campaign is the breadth-first v21 comparison above.
 
 The early agenda layer is represented in three comparison scenarios:
 
@@ -469,5 +403,5 @@ The v20 campaign adds focused strategy and calibration comparisons:
 The current v21-paper campaign is the canonical paper evidence base:
 
 - It combines broad assumption cases, weighted party-system sensitivity cases, and rising-contention timeline cases in one CSV.
-- It includes the current-system benchmark, conventional affirmative baselines, default enactment, challenge vouchers, adaptive tracks, affected-group sponsorship, policy tournaments, public objection, law-registry review, multi-round mediation, citizen/public review, budgeted lobbying, strategic lobbying, adaptive proposers, and the combined deep-strategy bundle.
+- It is breadth-first: current-system and conventional affirmative baselines, committee regular order, coalition confidence, policy tournaments, citizen review, public-interest screening, agenda lotteries, quadratic attention, proposal bonds, harm and compensation rules, public objection, law-registry review, anti-capture safeguards, risk routing, and a small default-pass stress-test family.
 - Use it with `make campaign` or `make campaign-v21-paper`.

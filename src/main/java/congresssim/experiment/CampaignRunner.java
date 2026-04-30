@@ -442,15 +442,14 @@ public final class CampaignRunner {
             "supermajority-60",
             "bicameral-majority",
             "presidential-veto",
+            "committee-regular-order",
+            "parliamentary-coalition-confidence",
+            "simple-majority-alternatives-pairwise",
+            "citizen-assembly-threshold",
+            "risk-routed-majority",
             "default-pass",
             "default-pass-challenge",
-            "default-pass-multiround-mediation-challenge",
-            "default-pass-constituent-citizen-panel",
-            "default-pass-adaptive-track-strict",
-            "default-pass-alternatives-pairwise",
-            "default-pass-affected-sponsor-gate",
-            "default-pass-public-objection",
-            "default-pass-law-registry"
+            "default-pass-multiround-mediation-challenge"
     );
     private static final List<String> STRATEGY_CALIBRATION_SCENARIOS = List.of(
             "current-system",
@@ -477,17 +476,24 @@ public final class CampaignRunner {
             "supermajority-60",
             "bicameral-majority",
             "presidential-veto",
+            "committee-regular-order",
+            "parliamentary-coalition-confidence",
+            "simple-majority-alternatives-pairwise",
+            "simple-majority-alternatives-strategic",
+            "citizen-assembly-threshold",
+            "public-interest-majority",
+            "agenda-lottery-majority",
+            "quadratic-attention-majority",
+            "proposal-bond-majority",
+            "harm-weighted-majority",
+            "compensation-majority",
+            "law-registry-majority",
+            "public-objection-majority",
+            "anti-capture-majority-bundle",
+            "risk-routed-majority",
             "default-pass",
             "default-pass-challenge",
-            "default-pass-multiround-mediation-challenge",
-            "default-pass-constituent-citizen-panel",
-            "default-pass-adaptive-track-strict",
-            "default-pass-alternatives-pairwise",
-            "default-pass-affected-sponsor-gate",
-            "default-pass-public-objection",
-            "default-pass-law-registry",
-            "default-pass-cost-lobby-surcharge",
-            "default-pass-deep-strategy-bundle"
+            "default-pass-multiround-mediation-challenge"
     );
 
     private CampaignRunner() {
@@ -1332,8 +1338,8 @@ public final class CampaignRunner {
         }
 
         if (aggregateByScenario.containsKey("default-pass-challenge")) {
-            builder.append("## Challenge-Voucher Deltas\n\n");
-            builder.append("Delta values compare `default-pass-challenge` against open `default-pass` in the same case. The challenge rate is the share of potential bills diverted from default enactment into an active vote.\n\n");
+            builder.append("## Default-Pass Side Note: Challenge-Voucher Deltas\n\n");
+            builder.append("Default enactment is no longer the main paper frame, but the campaign keeps this burden-shifting side comparison. Delta values compare `default-pass-challenge` against open `default-pass` in the same case. The challenge rate is the share of potential bills diverted from default enactment into an active vote.\n\n");
             builder.append("| Case | Enacted/run delta | Productivity delta | Welfare delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Challenge rate |\n");
             builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
             for (String caseKey : caseKeys(result.rows())) {
@@ -1850,20 +1856,14 @@ public final class CampaignRunner {
         builder.append('\n');
 
         builder.append("## Interpretation\n\n");
-        builder.append("- Open default-pass is consistently the throughput leader, but it also carries high low-support passage, high policy movement, and high proposer gain.\n");
-        builder.append("- Guarded default-pass variants trade productivity for lower volatility and lower proposer advantage.\n");
-        if (aggregateByScenario.containsKey("default-pass-cost")) {
-            builder.append("- Proposal-cost screens are useful for measuring flooding as institutional load: floor/run and enacted/run expose costs hidden by percentage-only metrics.\n");
-        }
-        builder.append("- Challenge vouchers test whether default-pass can preserve throughput while forcing only the most contested bills into active votes.\n");
-        if (aggregateByScenario.containsKey("default-pass-cost")) {
-            builder.append("- The current cost screen reduces volume, but it also selects for proposals with high proposer value or positive lobby pressure; that makes cost design an object of study, not a solved safeguard.\n");
-        }
-        if (aggregateByScenario.containsKey("default-pass-anti-capture-bundle")) {
-            builder.append("- Anti-capture scenarios test whether lobbying pressure can be reduced through vote firewalls, transparency, public-interest screens, audit sanctions, or combined safeguards.\n");
-        }
-        builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality.\n");
-        if (aggregateByScenario.containsKey("default-pass-constituent-public-will")) {
+        if (aggregateByScenario.containsKey("committee-regular-order")
+                && aggregateByScenario.containsKey("risk-routed-majority")) {
+            builder.append("- This is a breadth-first paper campaign. Default pass is retained as one burden-shifting stress test, while the main comparison spans conventional thresholds, committee-first regular order, coalition confidence, policy tournaments, citizen review, agenda scarcity, proposal accountability, harm/compensation rules, anti-capture safeguards, adaptive risk routing, and law-registry review.\n");
+            builder.append("- Open default-pass remains the throughput extreme, but its high low-support passage and policy movement make it a diagnostic endpoint rather than the project focus.\n");
+            builder.append("- Policy tournaments and risk-routed majority systems occupy the strongest compromise/productivity middle ground in this synthetic campaign; committee-first, public-interest, citizen, and parliamentary-style gates control risk but give up substantial throughput.\n");
+            builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality, and generated welfare remains conditional on model assumptions.\n");
+            builder.append("- The next model extension should add stronger non-default families: multidimensional package bargaining, judicial/court intervention, executive emergency/delegated rulemaking, direct-democracy routes, electoral feedback, and media/information ecosystems.\n\n");
+        } else if (aggregateByScenario.containsKey("default-pass-constituent-public-will")) {
             builder.append("- Roadmap-completion scenarios add district-grounded public signals, refundable proposal bonds, richer cosponsorship diagnostics, multi-round mediation, strategic alternatives, adaptive proposer behavior, strategic lobby-channel learning, challenge allocation/path variants, adaptive-route rates, and proposal-cost variants.\n");
             builder.append("- The next model extension should deepen endogeneity: challengers, amendment coalitions, constituent publics, and alternative drafters should adapt to the institutional rules over repeated sessions.\n\n");
         } else if (hasTimelineCases(result.rows())) {
@@ -1930,10 +1930,13 @@ public final class CampaignRunner {
             for (String scenarioKey : List.of(
                     "current-system",
                     "simple-majority",
+                    "committee-regular-order",
+                    "parliamentary-coalition-confidence",
+                    "simple-majority-alternatives-pairwise",
+                    "citizen-assembly-threshold",
+                    "risk-routed-majority",
                     "default-pass",
-                    "default-pass-challenge",
-                    "default-pass-multiround-mediation-challenge",
-                    "default-pass-alternatives-pairwise"
+                    "default-pass-multiround-mediation-challenge"
             )) {
                 CampaignRow row = find(rows, eraRow.caseKey(), scenarioKey);
                 if (row == null) {
@@ -1984,15 +1987,59 @@ public final class CampaignRunner {
                 .stream()
                 .max(Comparator.comparingDouble(ScenarioAggregate::directionalScore))
                 .orElseThrow();
+        ScenarioAggregate bestProductivity = aggregateByScenario.values()
+                .stream()
+                .max(Comparator.comparingDouble(ScenarioAggregate::productivity))
+                .orElseThrow();
+        ScenarioAggregate bestCompromise = aggregateByScenario.values()
+                .stream()
+                .max(Comparator.comparingDouble(ScenarioAggregate::compromise))
+                .orElseThrow();
+        if (aggregateByScenario.containsKey("committee-regular-order")
+                && aggregateByScenario.containsKey("risk-routed-majority")) {
+            ScenarioAggregate currentSystem = aggregateByScenario.get("current-system");
+            builder.append("- The canonical paper campaign is breadth-first: ")
+                    .append(aggregateByScenario.size())
+                    .append(" scenario families are compared across the same synthetic worlds, with default enactment retained as one stress-test family rather than the organizing case.\n");
+            builder.append("- Highest directional score, where lower-better risk metrics are inverted before combination, came from ")
+                    .append(bestDirectional.scenarioName())
+                    .append(" at ")
+                    .append(format(bestDirectional.directionalScore()))
+                    .append(".\n");
+            builder.append("- Best average welfare came from ")
+                    .append(bestWelfare.scenarioName())
+                    .append(" at ")
+                    .append(format(bestWelfare.welfare()))
+                    .append("; highest compromise came from ")
+                    .append(bestCompromise.scenarioName())
+                    .append(" at ")
+                    .append(format(bestCompromise.compromise()))
+                    .append(".\n");
+            builder.append("- Highest productivity came from ")
+                    .append(bestProductivity.scenarioName())
+                    .append(" at ")
+                    .append(format(bestProductivity.productivity()))
+                    .append(".\n");
+            if (openDefault != null) {
+                builder.append("- Open default-pass averaged ")
+                        .append(format(openDefault.productivity()))
+                        .append(" productivity, ")
+                        .append(format(openDefault.lowSupport()))
+                        .append(" low-support passage, and ")
+                        .append(format(openDefault.policyShift()))
+                        .append(" policy shift, so it functions as a throughput/risk endpoint.\n");
+            }
+            if (currentSystem != null) {
+                builder.append("- The stylized current-system benchmark averaged ")
+                        .append(format(currentSystem.productivity()))
+                        .append(" productivity and ")
+                        .append(format(currentSystem.welfare()))
+                        .append(" welfare: it protects quality in the synthetic generator partly by allowing few proposals through.\n");
+            }
+            builder.append('\n');
+            return;
+        }
         if (openDefault == null) {
-            ScenarioAggregate bestProductivity = aggregateByScenario.values()
-                    .stream()
-                    .max(Comparator.comparingDouble(ScenarioAggregate::productivity))
-                    .orElseThrow();
-            ScenarioAggregate bestCompromise = aggregateByScenario.values()
-                    .stream()
-                    .max(Comparator.comparingDouble(ScenarioAggregate::compromise))
-                    .orElseThrow();
             builder.append("- This focused campaign does not include the open default-pass baseline, so relative headline deltas are reported in the diagnostic sections below.\n");
             builder.append("- Best average welfare in this campaign came from ")
                     .append(bestWelfare.scenarioName())

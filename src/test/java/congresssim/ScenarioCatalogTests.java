@@ -170,6 +170,22 @@ final class ScenarioCatalogTests {
                 "Scenario catalog should expose the current-system benchmark key."
         );
         assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("committee-regular-order"),
+                "Scenario catalog should expose non-default committee-first designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("parliamentary-coalition-confidence"),
+                "Scenario catalog should expose non-default coalition-confidence designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("simple-majority-alternatives-strategic"),
+                "Scenario catalog should expose non-default strategic policy tournaments."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("risk-routed-majority"),
+                "Scenario catalog should expose non-default adaptive routing designs."
+        );
+        assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-challenge-minority-bonus"),
                 "Scenario catalog should expose challenge allocation variant keys."
         );
@@ -180,8 +196,19 @@ final class ScenarioCatalogTests {
         List<String> keys = ScenarioCatalog.scenarioKeys();
         assertTrue(keys.size() == new HashSet<>(keys).size(), "Scenario keys should be unique.");
         assertTrue(
-                ScenarioCatalog.defaultScenarios().size() == keys.size(),
-                "Default scenario list should match the CLI-facing key list."
+                ScenarioCatalog.defaultScenarios().size() == ScenarioCatalog.defaultScenarioKeys().size(),
+                "Default scenario list should match the default key list."
+        );
+        assertTrue(
+                ScenarioCatalog.defaultScenarioKeys().size() < keys.size(),
+                "Default scenario list should be a representative breadth-first set, not the full historical catalog."
+        );
+        long defaultPassCount = ScenarioCatalog.defaultScenarioKeys().stream()
+                .filter(key -> key.startsWith("default-pass"))
+                .count();
+        assertTrue(
+                defaultPassCount <= 3,
+                "Default scenario list should keep default-pass as a small side family."
         );
 
         Set<String> scenarioNames = new HashSet<>();

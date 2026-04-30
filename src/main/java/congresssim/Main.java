@@ -598,6 +598,10 @@ public final class Main {
         }
 
         private static void printUsage() {
+            StringJoiner defaultScenarioKeys = new StringJoiner(", ");
+            for (String key : ScenarioCatalog.defaultScenarioKeys()) {
+                defaultScenarioKeys.add(key);
+            }
             StringJoiner scenarioKeys = new StringJoiner(", ");
             for (String key : ScenarioCatalog.scenarioKeys()) {
                 scenarioKeys.add(key);
@@ -625,7 +629,9 @@ public final class Main {
                       --seed <n>          Reproducible random seed
                       --help              Show this message
 
-                    Scenario keys:
+                    Default scenario keys when --scenarios is omitted:
+                    """ + defaultScenarioKeys + "\n\n" + """
+                    All scenario keys, including legacy/default-pass side sweeps:
                     """ + scenarioKeys + "\n");
         }
     }
