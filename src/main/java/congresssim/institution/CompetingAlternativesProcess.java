@@ -18,6 +18,9 @@ public final class CompetingAlternativesProcess implements LegislativeProcess {
     private final boolean includeStatusQuo;
     private final int strategicCloneCount;
     private final int strategicDecoyCount;
+    private final double supportBoostScale;
+    private final double agendaOverloadPenalty;
+    private final double badFaithPenalty;
 
     public CompetingAlternativesProcess(
             String name,
@@ -40,11 +43,42 @@ public final class CompetingAlternativesProcess implements LegislativeProcess {
             int strategicCloneCount,
             int strategicDecoyCount
     ) {
+        this(
+                name,
+                innerProcess,
+                legislators,
+                selectionRule,
+                generatedAlternatives,
+                includeStatusQuo,
+                strategicCloneCount,
+                strategicDecoyCount,
+                1.0,
+                0.0,
+                0.0
+        );
+    }
+
+    public CompetingAlternativesProcess(
+            String name,
+            LegislativeProcess innerProcess,
+            List<Legislator> legislators,
+            AlternativeSelectionRule selectionRule,
+            int generatedAlternatives,
+            boolean includeStatusQuo,
+            int strategicCloneCount,
+            int strategicDecoyCount,
+            double supportBoostScale,
+            double agendaOverloadPenalty,
+            double badFaithPenalty
+    ) {
         if (legislators.isEmpty()) {
             throw new IllegalArgumentException("legislators must not be empty.");
         }
         if (generatedAlternatives < 1) {
             throw new IllegalArgumentException("generatedAlternatives must be positive.");
+        }
+        if (strategicCloneCount < 0 || strategicDecoyCount < 0) {
+            throw new IllegalArgumentException("strategic alternative counts must be non-negative.");
         }
         this.name = name;
         this.innerProcess = innerProcess;
@@ -54,6 +88,9 @@ public final class CompetingAlternativesProcess implements LegislativeProcess {
         this.includeStatusQuo = includeStatusQuo;
         this.strategicCloneCount = strategicCloneCount;
         this.strategicDecoyCount = strategicDecoyCount;
+        this.supportBoostScale = Values.clamp(supportBoostScale, 0.0, 1.25);
+        this.agendaOverloadPenalty = Math.max(0.0, agendaOverloadPenalty);
+        this.badFaithPenalty = Math.max(0.0, badFaithPenalty);
     }
 
     @Override
@@ -85,7 +122,8 @@ public final class CompetingAlternativesProcess implements LegislativeProcess {
                     "status quo won alternative tournament"
             ).withSignals(signals);
         }
-        return innerProcess.consider(selected, context).withSignals(signals);
+        Bill selectedWithProcessCost = selected.withAttentionSpend(alternativeProcessCost(alternatives.size()));
+        return innerProcess.consider(selectedWithProcessCost, context).withSignals(signals);
     }
 
     private List<Bill> alternativesFor(Bill bill, VoteContext context) {
@@ -93,18 +131,18 @@ public final class CompetingAlternativesProcess implements LegislativeProcess {
         alternatives.add(bill);
         double median = chamberMedian();
         double statusQuo = context.currentPolicyPosition();
-        addAlternative(alternatives, bill, "median", median, 0.10, 0.12);
+        addAlternative(alternatives, bill, "median", median, 0.10, 0.12, false);
         if (generatedAlternatives >= 2) {
             double compromise = (0.45 * median) + (0.35 * statusQuo) + (0.20 * bill.proposerIdeology());
-            addAlternative(alternatives, bill, "compromise", compromise, 0.08, 0.10);
+            addAlternative(alternatives, bill, "compromise", compromise, 0.08, 0.10, false);
         }
         if (generatedAlternatives >= 3) {
             double opposition = Values.clamp((2.0 * median) - bill.ideologyPosition(), -1.0, 1.0);
-            addAlternative(alternatives, bill, "substitute", opposition, 0.02, 0.08);
+            addAlternative(alternatives, bill, "substitute", opposition, 0.02, 0.08, false);
         }
         if (generatedAlternatives >= 4) {
             double lowHarm = Values.clamp((0.55 * bill.ideologyPosition()) + (0.45 * statusQuo), -1.0, 1.0);
-            addAlternative(alternatives, bill, "low-harm", lowHarm, 0.04, 0.16);
+            addAlternative(alternatives, bill, "low-harm", lowHarm, 0.04, 0.16, false);
         }
         for (int i = 0; i < strategicCloneCount; i++) {
             double clonePosition = Values.clamp(
@@ -112,7 +150,7 @@ public final class CompetingAlternativesProcess implements LegislativeProcess {
                     -1.0,
                     1.0
             );
-            addAlternative(alternatives, bill, "clone-" + i, clonePosition, -0.02, -0.04);
+            addAlternative(alternatives, bill, "clone-" + i, clonePosition, -0.02, -0.04, true);
         }
         for (int i = 0; i < strategicDecoyCount; i++) {
             double decoyDirection = Math.signum(bill.ideologyPosition() - median);
@@ -120,31 +158,43 @@ public final class CompetingAlternativesProcess implements LegislativeProcess {
                 decoyDirection = 1.0;
             }
             double decoyPosition = Values.clamp(median - (decoyDirection * (0.42 + (i * 0.10))), -1.0, 1.0);
-            addAlternative(alternatives, bill, "decoy-" + i, decoyPosition, -0.08, -0.10);
+            addAlternative(alternatives, bill, "decoy-" + i, decoyPosition, -0.08, -0.10, true);
         }
         return alternatives;
     }
 
-    private static void addAlternative(
+    private void addAlternative(
             List<Bill> alternatives,
             Bill bill,
             String label,
             double position,
             double benefitAdjustment,
-            double supportAdjustment
+            double supportAdjustment,
+            boolean badFaith
     ) {
         double movement = Math.abs(position - bill.ideologyPosition());
+        double overload = overloadPenalty();
+        double badFaithCost = badFaith ? badFaithPenalty : 0.0;
         double revisedBenefit = Values.clamp(
-                bill.publicBenefit() + benefitAdjustment - (movement * 0.05),
+                bill.publicBenefit() + benefitAdjustment - (movement * 0.05) - badFaithCost - (overload * 0.50),
                 0.0,
                 1.0
         );
         double revisedSupport = Values.clamp(
-                bill.publicSupport() + supportAdjustment + (movement * 0.10),
+                bill.publicSupport()
+                        + ((supportAdjustment + (movement * 0.10)) * supportBoostScale)
+                        - (badFaithCost * 0.55)
+                        - overload,
                 0.0,
                 1.0
         );
-        double revisedHarm = Values.clamp(bill.concentratedHarm() * (1.0 - Math.min(0.55, movement)), 0.0, 1.0);
+        double revisedHarm = Values.clamp(
+                (bill.concentratedHarm() * (1.0 - Math.min(0.55, movement * supportBoostScale)))
+                        + (badFaithCost * 0.18)
+                        + (overload * 0.08),
+                0.0,
+                1.0
+        );
         double revisedAffectedSupport = Values.clamp(
                 bill.affectedGroupSupport() + ((bill.concentratedHarm() - revisedHarm) * 0.62),
                 0.0,
@@ -152,6 +202,15 @@ public final class CompetingAlternativesProcess implements LegislativeProcess {
         );
         alternatives.add(bill.withAmendment(position, revisedSupport, revisedBenefit)
                 .withAffectedGroup(bill.affectedGroup(), revisedAffectedSupport, revisedHarm, bill.compensationCost()));
+    }
+
+    private double overloadPenalty() {
+        int alternativesBeforeStatusQuo = 1 + generatedAlternatives + strategicCloneCount + strategicDecoyCount;
+        return Math.max(0.0, alternativesBeforeStatusQuo - 5) * agendaOverloadPenalty;
+    }
+
+    private double alternativeProcessCost(int alternativeCount) {
+        return Math.min(6.0, (0.16 * alternativeCount) + (0.10 * (strategicCloneCount + strategicDecoyCount)));
     }
 
     private Bill select(List<Bill> alternatives, VoteContext context) {

@@ -67,7 +67,6 @@ public final class ScenarioCatalog {
             "parliamentary-coalition-confidence",
             "citizen-initiative-referendum",
             "simple-majority-alternatives-pairwise",
-            "simple-majority-alternatives-strategic",
             "citizen-assembly-threshold",
             "public-interest-majority",
             "agenda-lottery-majority",
@@ -76,10 +75,12 @@ public final class ScenarioCatalog {
             "harm-weighted-majority",
             "compensation-majority",
             "package-bargaining-majority",
+            "multidimensional-package-majority",
             "law-registry-majority",
             "public-objection-majority",
             "anti-capture-majority-bundle",
             "risk-routed-majority",
+            "portfolio-hybrid-legislature",
             "norm-erosion-majority",
             "default-pass",
             "default-pass-challenge",
@@ -163,13 +164,18 @@ public final class ScenarioCatalog {
                 new ScenarioEntry("quadratic-attention-majority", majorityWithQuadraticAttentionBudget()),
                 new ScenarioEntry("proposal-bond-majority", majorityWithProposalBonds()),
                 new ScenarioEntry("harm-weighted-majority", majorityWithHarmWeightedThreshold()),
+                new ScenarioEntry("harm-weighted-loose-claims-majority", majorityWithLooseHarmClaims()),
                 new ScenarioEntry("compensation-majority", majorityWithDistributionalCompensation(false)),
+                new ScenarioEntry("affected-consent-majority", majorityWithDistributionalCompensation(true)),
                 new ScenarioEntry("package-bargaining-majority", majorityWithPackageBargaining()),
                 new ScenarioEntry("multidimensional-package-majority", majorityWithMultidimensionalPackageBargaining()),
                 new ScenarioEntry("law-registry-majority", majorityWithLawRegistry()),
                 new ScenarioEntry("public-objection-majority", majorityWithPublicObjectionWindow()),
+                new ScenarioEntry("public-objection-astroturf-majority", majorityWithAstroturfObjectionWindow()),
                 new ScenarioEntry("anti-capture-majority-bundle", majorityWithAntiCaptureBundle()),
                 new ScenarioEntry("risk-routed-majority", riskRoutedMajority()),
+                new ScenarioEntry("portfolio-hybrid-legislature", portfolioHybridLegislature()),
+                new ScenarioEntry("risk-routed-no-citizen-majority", riskRoutedNoCitizenReviewMajority()),
                 new ScenarioEntry("norm-erosion-majority", normErosionMajority()),
                 new ScenarioEntry("democratic-deterioration-majority", democraticDeteriorationMajority()),
                 new ScenarioEntry("default-pass", unicameral("Default pass unless 2/3 block", new DefaultPassUnlessVetoedRule(2.0 / 3.0))),
@@ -308,6 +314,7 @@ public final class ScenarioCatalog {
                         true
                 )),
                 new ScenarioEntry("simple-majority-alternatives-strategic", simpleMajorityWithStrategicAlternatives()),
+                new ScenarioEntry("citizen-assembly-manipulation-stress", majorityWithCitizenAssemblyManipulationStress()),
                 new ScenarioEntry("default-pass-alternatives-benefit", defaultPassWithCompetingAlternatives(
                         "Default pass + public-benefit alternatives",
                         AlternativeSelectionRule.HIGHEST_PUBLIC_BENEFIT,
@@ -754,6 +761,31 @@ public final class ScenarioCatalog {
         };
     }
 
+    private static Scenario majorityWithCitizenAssemblyManipulationStress() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Citizen assembly under manipulation stress";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new CitizenPanelReviewProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        supermajorityFloorProcess(name(), world, strategy, 0.64),
+                        CitizenPanelMode.THRESHOLD_ADJUSTMENT,
+                        45,
+                        0.24,
+                        0.50,
+                        0.86,
+                        0.59
+                );
+            }
+        };
+    }
+
     private static Scenario majorityWithAgendaLottery(boolean weighted) {
         return new Scenario() {
             @Override
@@ -844,6 +876,33 @@ public final class ScenarioCatalog {
                         AffirmativeThresholdRule.supermajority(0.64)
                 );
                 return new HarmWeightedThresholdProcess(name(), ordinary, highHarm, 0.46);
+            }
+        };
+    }
+
+    private static Scenario majorityWithLooseHarmClaims() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Harm-weighted majority + loose harm claims";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                Chamber ordinary = new Chamber(
+                        "Legislature",
+                        world.legislators(),
+                        strategy,
+                        AffirmativeThresholdRule.simpleMajority()
+                );
+                Chamber highHarm = new Chamber(
+                        "Legislature loose-claim review",
+                        world.legislators(),
+                        strategy,
+                        AffirmativeThresholdRule.supermajority(0.64)
+                );
+                return new HarmWeightedThresholdProcess(name(), ordinary, highHarm, 0.22);
             }
         };
     }
@@ -962,6 +1021,28 @@ public final class ScenarioCatalog {
         };
     }
 
+    private static Scenario majorityWithAstroturfObjectionWindow() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Public objection window + astroturf stress";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new PublicObjectionWindowProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        supermajorityFloorProcess(name(), world, strategy, 0.64),
+                        0.30,
+                        0.18,
+                        false
+                );
+            }
+        };
+    }
+
     private static Scenario majorityWithAntiCaptureBundle() {
         return new Scenario() {
             @Override
@@ -1028,6 +1109,128 @@ public final class ScenarioCatalog {
                         0.12,
                         0.62
                 );
+                return new AdaptiveTrackProcess(
+                        name(),
+                        fastLane,
+                        middleLane,
+                        highRiskLane,
+                        0.30,
+                        0.58
+                );
+            }
+        };
+    }
+
+    private static Scenario portfolioHybridLegislature() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Portfolio hybrid legislature";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy standard = VotingStrategies.standard();
+                VotingStrategy antiCapture = VotingStrategies.antiCapture();
+
+                LegislativeProcess fastLane = simpleMajorityFloorProcess(name(), world, standard);
+                LegislativeProcess middleLane = new MultiRoundAmendmentProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, standard),
+                        world.legislators(),
+                        3,
+                        0.023,
+                        1.18,
+                        0.055
+                );
+                middleLane = new CompetingAlternativesProcess(
+                        name(),
+                        middleLane,
+                        world.legislators(),
+                        AlternativeSelectionRule.PAIRWISE_MAJORITY,
+                        4,
+                        true,
+                        0,
+                        0,
+                        0.92,
+                        0.012,
+                        0.0
+                );
+                LegislativeProcess highRiskLane = new CitizenPanelReviewProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, antiCapture),
+                        supermajorityFloorProcess(name(), world, antiCapture, 0.65),
+                        CitizenPanelMode.THRESHOLD_ADJUSTMENT,
+                        91,
+                        0.12,
+                        0.84,
+                        0.12,
+                        0.62
+                );
+                highRiskLane = new DistributionalHarmProcess(
+                        name(),
+                        highRiskLane,
+                        0.40,
+                        0.43,
+                        0.66,
+                        0.31,
+                        false
+                );
+                LegislativeProcess process = new AdaptiveTrackProcess(
+                        name(),
+                        fastLane,
+                        middleLane,
+                        highRiskLane,
+                        0.28,
+                        0.56
+                );
+                process = new LobbyAuditProcess(name(), process, 0.08, 0.70, 0.46, 0.50, true);
+                process = new ProposalBondProcess(name(), process, 2.70, 0.22, 4.80, 0.24, 0.78, 0.30, 0.90);
+                process = new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.publicInterestScreen(0.40, 0.70, 2.80, 0.52),
+                        process
+                );
+                process = new LobbyTransparencyProcess(name(), 0.70, 0.30, process);
+                process = new BudgetedLobbyingProcess(
+                        name(),
+                        process,
+                        world.lobbyGroups(),
+                        0.20,
+                        0.40,
+                        0.32,
+                        0.48,
+                        0.45,
+                        0.40,
+                        0.06,
+                        true
+                );
+                return new LawRegistryProcess(name(), process, 4, 0.32, 0.58, 0.76);
+            }
+        };
+    }
+
+    private static Scenario riskRoutedNoCitizenReviewMajority() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Risk-routed majority without citizen review";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess fastLane = simpleMajorityFloorProcess(name(), world, strategy);
+                LegislativeProcess middleLane = new MultiRoundAmendmentProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        world.legislators(),
+                        3,
+                        0.025,
+                        1.15,
+                        0.08
+                );
+                LegislativeProcess highRiskLane = supermajorityFloorProcess(name(), world, strategy, 0.64);
                 return new AdaptiveTrackProcess(
                         name(),
                         fastLane,
@@ -1672,8 +1875,11 @@ public final class ScenarioCatalog {
                         AlternativeSelectionRule.PAIRWISE_MAJORITY,
                         4,
                         true,
-                        2,
-                        2
+                        4,
+                        4,
+                        0.45,
+                        0.035,
+                        0.10
                 );
             }
         };
@@ -1696,8 +1902,11 @@ public final class ScenarioCatalog {
                         AlternativeSelectionRule.PAIRWISE_MAJORITY,
                         4,
                         true,
-                        2,
-                        2
+                        4,
+                        4,
+                        0.45,
+                        0.035,
+                        0.10
                 );
             }
         };

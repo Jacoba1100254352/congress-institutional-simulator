@@ -1,0 +1,17 @@
+{
+  "reportName": "Manipulation Stress Campaign",
+  "provenanceFormat": "stable-report-v2",
+  "sourceTree": "tracked submission artifact; inspect repository history for commit identity",
+  "javaRelease": "21",
+  "javaCommand": "congresssim.Main --campaign manipulation-stress --runs 64 --legislators 101 --bills 60 --seed 20260428 --output-dir reports",
+  "runs": 64,
+  "legislators": 101,
+  "bills": 60,
+  "seed": 20260428,
+  "caseCount": 7,
+  "scenarioCount": 13,
+  "artifacts": [
+    {"path": "reports/simulation-manipulation-stress.csv", "sha256": "7db7ba121d4dd8b08e3960b67bd5e395753b2635df1b31b1cd142d0b0152f377"},
+    {"path": "reports/simulation-manipulation-stress.md", "sha256": "1d76b277ef04a993a88d8507609ae01da6b9b94609911f273115848184df381f"}
+  ]
+}

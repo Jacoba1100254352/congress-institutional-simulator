@@ -111,9 +111,11 @@ final class SimulatorInvariantTests {
             assertRatio(report.compromiseScore(), "Compromise score should be a ratio.");
             assertRatio(report.representativeQualityScore(), "Representative quality should be a directional ratio.");
             assertRatio(report.riskControlScore(), "Risk control should be a directional ratio.");
+            assertRatio(report.administrativeFeasibilityScore(), "Administrative feasibility should be a directional ratio.");
             assertRatio(report.directionalScore(), "Directional score should be a directional ratio.");
             assertRatio(report.gridlockRate(), "Gridlock rate should be a ratio.");
             assertRatio(report.controversialPassageRate(), "Low-support passage should be a ratio.");
+            assertRatio(report.weakPublicMandatePassageRate(), "Weak public-mandate passage should be a ratio.");
             assertRatio(report.popularBillFailureRate(), "Popular bill failure rate should be a ratio.");
             assertTrue(report.averagePolicyShift() >= 0.0 && report.averagePolicyShift() <= 2.0, "Average policy shift should stay within the policy range.");
             assertTrue(report.averageProposerGain() >= 0.0 && report.averageProposerGain() <= 2.0, "Average proposer gain should stay within the policy range.");
@@ -125,6 +127,7 @@ final class SimulatorInvariantTests {
             assertRatio(report.defensiveLobbyingShare(), "Defensive lobbying share should be a ratio.");
             assertNonNegativeFinite(report.captureReturnOnSpend(), "Capture return on spend should be finite and nonnegative.");
             assertRatio(report.publicPreferenceDistortion(), "Public-preference distortion should be a ratio.");
+            assertRatio(report.administrativeCostIndex(), "Administrative cost should be a ratio.");
             assertRatio(report.amendmentRate(), "Amendment rate should be a ratio.");
             assertNonNegativeFinite(report.averageAmendmentMovement(), "Average amendment movement should be finite and nonnegative.");
             assertRatio(report.minorityHarmIndex(), "Minority harm should be a ratio.");
@@ -167,6 +170,14 @@ final class SimulatorInvariantTests {
         assertTrue(
                 MetricDefinition.require("lowSupport").direction() == MetricDirection.LOWER_IS_BETTER,
                 "Low-support passage should be marked lower-is-better."
+        );
+        assertTrue(
+                MetricDefinition.require("weakPublicMandatePassage").direction() == MetricDirection.LOWER_IS_BETTER,
+                "Weak public-mandate passage should be marked lower-is-better."
+        );
+        assertTrue(
+                MetricDefinition.require("administrativeCost").direction() == MetricDirection.LOWER_IS_BETTER,
+                "Administrative cost should be marked lower-is-better."
         );
         assertTrue(
                 MetricDefinition.require("policyShift").direction() == MetricDirection.DIAGNOSTIC,

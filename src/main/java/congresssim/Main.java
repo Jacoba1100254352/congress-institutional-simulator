@@ -233,7 +233,21 @@ public final class Main {
                         options.bills,
                         options.seed
                 );
-                case "v21", "v21-paper" -> CampaignRunner.runV21Paper(
+                case "v21", "v21-paper", "paper", "paper-campaign", "main", "main-comparison" -> CampaignRunner.runV21Paper(
+                        options.outputDir,
+                        options.runs,
+                        options.legislators,
+                        options.bills,
+                        options.seed
+                );
+                case "ablation", "ablation-analysis" -> CampaignRunner.runAblationAnalysis(
+                        options.outputDir,
+                        options.runs,
+                        options.legislators,
+                        options.bills,
+                        options.seed
+                );
+                case "manipulation", "manipulation-stress" -> CampaignRunner.runManipulationStress(
                         options.outputDir,
                         options.runs,
                         options.legislators,
@@ -324,10 +338,10 @@ public final class Main {
     }
 
     private static void printCsv(List<ScenarioReport> reports) {
-        System.out.println("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,falseNegativePassRate,publicWillReviewRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes");
+        System.out.println("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,weakPublicMandatePassage,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,administrativeCost,administrativeFeasibility,amendmentRate,amendmentMovement,falseNegativePassRate,publicWillReviewRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes");
         for (ScenarioReport report : reports) {
             System.out.printf(Locale.ROOT,
-                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d%n",
+                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d%n",
                     csvCell(report.scenarioName()),
                     report.totalBills(),
                     report.enactedBills(),
@@ -342,6 +356,7 @@ public final class Main {
                     report.committeeRejectionRate(),
                     report.challengeRate(),
                     report.controversialPassageRate(),
+                    report.weakPublicMandatePassageRate(),
                     report.popularBillFailureRate(),
                     report.averagePolicyShift(),
                     report.averageProposerGain(),
@@ -353,6 +368,8 @@ public final class Main {
                     report.defensiveLobbyingShare(),
                     report.captureReturnOnSpend(),
                     report.publicPreferenceDistortion(),
+                    report.administrativeCostIndex(),
+                    report.administrativeFeasibilityScore(),
                     report.amendmentRate(),
                     report.averageAmendmentMovement(),
                     report.falseNegativePassRate(),
@@ -643,7 +660,7 @@ public final class Main {
                       --format <kind>     table, csv, or bars
                       --charts            Add ASCII bar charts after the table
                       --calibrate         Run empirical benchmark screening instead of scenario comparison
-                      --campaign <name>   Run a named campaign, currently v0 through v21-paper
+                      --campaign <name>   Run a named campaign, currently v0 through v20 plus paper/main-comparison
                       --output-dir <path> Campaign output directory
                       --seed <n>          Reproducible random seed
                       --help              Show this message

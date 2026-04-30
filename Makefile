@@ -3,7 +3,7 @@ TEST_SOURCES := $(shell find src/test/java -name '*.java')
 JAVA_RELEASE ?= 21
 JAVA_PROPS ?= -Dcongresssim.javaRelease=$(JAVA_RELEASE)
 
-.PHONY: build run calibrate calibration-check campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper seed-robustness seed-robustness-check family-champions catalog-breadth validation-readiness empirical-validation public-provenance paper paper-word-count paper-checks paper-anonymity-check figure-label-check pdf-render-check table-figure-consistency-check supplement-anonymous clean-regeneration-check paper-clean test ci clean
+.PHONY: build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper paper-word-count paper-checks paper-anonymity-check figure-label-check pdf-render-check table-figure-consistency-check supplement-anonymous clean-regeneration-check paper-clean test ci clean
 
 build:
 	mkdir -p out/main
@@ -18,7 +18,11 @@ calibrate: build
 calibration-check: calibrate
 	python3 scripts/check_calibration.py reports/calibration-baseline.csv
 
-campaign: campaign-v21-paper
+campaign: paper-campaign
+
+paper-campaign: campaign-v21-paper
+
+main-campaign: paper-campaign
 
 campaign-v21-paper: build
 	java $(JAVA_PROPS) -cp out/main congresssim.Main --campaign v21-paper --runs 120 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
@@ -95,8 +99,13 @@ seed-robustness-check: seed-robustness
 family-champions: build
 	JAVA_PROPS="$(JAVA_PROPS)" python3 scripts/run_family_champions.py
 
+family-screen: family-champions
+
 catalog-breadth: build
 	python3 scripts/report_catalog_breadth.py
+
+findings-validation: paper-campaign
+	python3 scripts/write_findings_validation.py
 
 validation-readiness:
 	python3 scripts/validate_empirical_inputs.py
@@ -104,10 +113,24 @@ validation-readiness:
 empirical-validation:
 	python3 scripts/run_empirical_validation.py
 
+empirical-bridge: empirical-validation
+	python3 scripts/run_empirical_bridge.py
+
+ablation-analysis: build
+	java $(JAVA_PROPS) -cp out/main congresssim.Main --campaign ablation-analysis --runs 64 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+	python3 scripts/summarize_ablation_analysis.py
+
+manipulation-stress: build
+	java $(JAVA_PROPS) -cp out/main congresssim.Main --campaign manipulation-stress --runs 64 --legislators 101 --bills 60 --seed 20260428 --output-dir reports $(ARGS)
+	python3 scripts/summarize_manipulation_stress.py
+
+mechanism-diagnostics: empirical-bridge ablation-analysis manipulation-stress
+	python3 scripts/write_paper_diagnostics.py
+
 public-provenance:
 	python3 scripts/write_public_provenance.py
 
-paper: campaign-v21-paper
+paper: paper-campaign mechanism-diagnostics
 	python3 paper/scripts/generate_figures.py
 	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
 	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build appendix-odd-d.tex

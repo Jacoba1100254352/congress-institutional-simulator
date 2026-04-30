@@ -1,0 +1,11 @@
+family,fullScenario,comparisonScenario,ablation,deltaDirectional,deltaProductivity,deltaCompromise,weakMandateReduction,adminCostAdded,interpretation
+Policy tournament,simple-majority-alternatives-pairwise,simple-majority,remove alternative comparison,0.046333,0.221542,0.261917,0.206417,0.215292,"helps, but with visible process cost"
+Risk routing,risk-routed-majority,simple-majority,remove routing and high-risk lane,0.019917,0.208583,0.018708,-0.023458,0.100833,small gain relative to added process cost
+Risk routing,risk-routed-majority,risk-routed-no-citizen-majority,replace citizen review with supermajority lane,-0.002208,-0.001208,0.000167,0.001167,0.008958,mixed or small effect
+Anti-capture,anti-capture-majority-bundle,simple-majority,remove screen/audit/transparency bundle,0.009792,-0.013000,0.002250,0.056458,-0.004958,mixed or small effect
+Anti-capture,anti-capture-majority-bundle,public-interest-majority,keep public-interest screen only,0.018958,0.061708,0.000125,0.028333,0.005500,mixed or small effect
+Affected groups,compensation-majority,simple-majority,remove compensation stage,-0.003167,0.000458,0.000208,-0.002375,0.000000,mixed or small effect
+Affected groups,affected-consent-majority,compensation-majority,replace consent with compensation-only,0.000042,-0.007917,0.000000,0.015208,-0.006625,mixed or small effect
+Package bargaining,multidimensional-package-majority,simple-majority,remove package bargaining,-0.026208,0.020583,-0.004583,-0.007042,0.102708,component hurts this value profile
+Package bargaining,multidimensional-package-majority,package-bargaining-majority,replace multidimensional package with scalar package,-0.015417,0.012250,-0.002208,0.001708,0.063042,mixed or small effect
+Reversibility,law-registry-majority,simple-majority,remove active-law registry,-0.011500,0.025458,-0.009125,-0.030500,0.048500,mixed or small effect

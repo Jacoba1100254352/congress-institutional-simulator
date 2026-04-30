@@ -163,10 +163,10 @@ Run the v20 strategy/calibration campaign:
 make campaign-v20
 ```
 
-Run the canonical v21-paper campaign used for the current paper tables and figures:
+Run the main comparison campaign used for the current paper tables and figures:
 
 ```sh
-make campaign-v21-paper
+make paper-campaign
 ```
 
 Run the empirical benchmark screening report:
@@ -175,10 +175,34 @@ Run the empirical benchmark screening report:
 make calibrate
 ```
 
-Run the supplemental all-catalog family champion screen:
+Run the supplemental all-catalog family screen:
 
 ```sh
-make family-champions
+make family-screen
+```
+
+Run the empirical validation bridge:
+
+```sh
+make empirical-bridge
+```
+
+Run component ablations:
+
+```sh
+make ablation-analysis
+```
+
+Run manipulation stress tests:
+
+```sh
+make manipulation-stress
+```
+
+Regenerate all paper diagnostics tables:
+
+```sh
+make mechanism-diagnostics
 ```
 
 Remove generated build output:
@@ -241,14 +265,14 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--format <table|csv|bars>`: output format.
 - `--charts`: append ASCII charts to table output.
 - `--calibrate`: run empirical benchmark screening from `data/calibration/empirical-benchmarks.csv`.
-- `--campaign <v0..v21-paper>`: run a named campaign.
+- `--campaign <name>`: run a named campaign, currently `v0` through `v20`, `paper` / `main-comparison`, `ablation-analysis`, and `manipulation-stress`; the older `v21-paper` name is still accepted.
 - `--output-dir <path>`: campaign artifact directory.
 - `--seed <n>`: reproducible random seed.
 - `--help`: print command help.
 
 ## Scenario Keys
 
-When `--scenarios` is omitted, the CLI now runs the same representative breadth-first set used by the v21 paper campaign. Default-pass systems remain available, but only three are in the default set so they function as stress tests rather than the project center.
+When `--scenarios` is omitted, the CLI now runs the same representative breadth-first set used by the main paper campaign. Default-pass systems remain available, but only three are in the default set so they function as stress tests rather than the project center.
 
 Default breadth-first keys:
 
@@ -269,6 +293,7 @@ Default breadth-first keys:
 - `harm-weighted-majority`
 - `compensation-majority`
 - `package-bargaining-majority`
+- `multidimensional-package-majority`
 - `law-registry-majority`
 - `public-objection-majority`
 - `anti-capture-majority-bundle`
@@ -288,12 +313,24 @@ Current campaign:
 - `reports/simulation-campaign-v21-paper.csv`
 - `reports/simulation-campaign-v21-paper.md`
 - `reports/simulation-campaign-v21-paper-manifest.json`
+- `reports/paper-findings-validation.md`
 
 Calibration report:
 
 - `reports/calibration-baseline.csv`
 - `reports/calibration-baseline.md`
 - `reports/calibration-baseline-manifest.json`
+
+Diagnostic reports:
+
+- `reports/empirical-bridge.csv`
+- `reports/empirical-bridge.md`
+- `reports/ablation-analysis-summary.csv`
+- `reports/ablation-analysis-summary.md`
+- `reports/manipulation-stress-summary.csv`
+- `reports/manipulation-stress-summary.md`
+- `reports/simulation-ablation-analysis.csv`
+- `reports/simulation-manipulation-stress.csv`
 
 Earlier campaigns:
 
@@ -350,7 +387,7 @@ Direction markers are used in generated reports and paper figures:
 - `↓`: lower is generally better.
 - `diag.`: context-dependent activity or risk context.
 
-The campaign CSV also includes `directionalScore`, `representativeQuality`, and `riskControl`. These are display scores, not proof that a system is best. `directionalScore` averages productivity, representative quality, and risk control. `representativeQuality` combines welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts low-support passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
+The campaign CSV also includes `directionalScore`, `representativeQuality`, `riskControl`, and `administrativeFeasibility`. These are display scores, not proof that a system is best. `directionalScore` averages productivity, representative quality, risk control, and administrative feasibility. `representativeQuality` combines welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts chamber low-support passage, weak public-mandate passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift. `administrativeFeasibility` inverts the administrative-cost index.
 
 - `productivity` `↑`: share of potential bills enacted.
 - `caseWeight` `diag.`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`.
@@ -364,6 +401,8 @@ The campaign CSV also includes `directionalScore`, `representativeQuality`, and 
 - `cmteRej` `diag.`: share of potential bills rejected by committee.
 - `challengeRate` `diag.`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member escalation.
 - `lowSupport` `↓`: enacted bills with less than 50 percent yes support.
+- `weakPublicMandatePassage` `↓`: enacted bills with generated public support below 50 percent, regardless of chamber threshold.
+- `administrativeCost` `↓`: estimated procedural load from attention spending, review, challenge, amendment, and alternative-selection work.
 - `popularFail` `↓`: high-public-support bills that fail.
 - `policyShift` `diag.`: average movement away from the prior status quo; this can be reform or volatility depending on the scenario.
 - `propGain` `↓`: enacted movement toward the proposer's ideal point.

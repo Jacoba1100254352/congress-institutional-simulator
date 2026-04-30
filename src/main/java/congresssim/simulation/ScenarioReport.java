@@ -22,6 +22,7 @@ public record ScenarioReport(
         double defensiveLobbyingShare,
         double captureReturnOnSpend,
         double publicPreferenceDistortion,
+        double weakPublicMandatePassageRate,
         double amendmentRate,
         double averageAmendmentMovement,
         double minorityHarmIndex,
@@ -64,6 +65,7 @@ public record ScenarioReport(
         double strategicDecoyRate,
         double proposerAccessGini,
         double welfarePerSubmittedBill,
+        double administrativeCostIndex,
         double floorConsiderationRate,
         double accessDenialRate,
         double committeeRejectionRate,
@@ -86,6 +88,7 @@ public record ScenarioReport(
     public double riskControlScore() {
         return MetricDefinition.average(
                 MetricDefinition.lowerIsBetter(controversialPassageRate),
+                MetricDefinition.lowerIsBetter(weakPublicMandatePassageRate),
                 MetricDefinition.lowerIsBetter(minorityHarmIndex),
                 MetricDefinition.lowerIsBetter(lobbyCaptureIndex),
                 MetricDefinition.lowerIsBetter(publicPreferenceDistortion),
@@ -95,11 +98,16 @@ public record ScenarioReport(
         );
     }
 
+    public double administrativeFeasibilityScore() {
+        return MetricDefinition.lowerIsBetter(administrativeCostIndex);
+    }
+
     public double directionalScore() {
         return MetricDefinition.average(
                 productivity,
                 representativeQualityScore(),
-                riskControlScore()
+                riskControlScore(),
+                administrativeFeasibilityScore()
         );
     }
 }

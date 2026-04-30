@@ -76,8 +76,14 @@ def copy_reports() -> None:
         "calibration-baseline.*",
         "simulation-campaign-v21-paper.*",
         "seed-robustness-summary.*",
+        "paper-findings-validation.*",
         "all-scenarios-baseline.*",
         "family-champions.*",
+        "ablation-analysis-summary.*",
+        "manipulation-stress-summary.*",
+        "empirical-bridge.*",
+        "simulation-ablation-analysis.*",
+        "simulation-manipulation-stress.*",
         "catalog-breadth.*",
         "empirical-validation-readiness.*",
         "empirical-validation-summary.*",
@@ -97,13 +103,15 @@ def write_readme() -> None:
         "make test\n"
         "make calibration-check\n"
         "make seed-robustness\n"
-        "make family-champions\n"
+        "make findings-validation\n"
+        "make family-screen\n"
         "make catalog-breadth\n"
         "make empirical-validation\n"
         "make paper\n"
         "```\n\n"
         "The main evidence artifact is `reports/simulation-campaign-v21-paper.csv`. "
-        "Calibration screening output is in `reports/calibration-baseline.csv`, and the "
+        "Calibration screening output is in `reports/calibration-baseline.csv`, the "
+        "generated findings audit is in `reports/paper-findings-validation.md`, and the "
         "supplemental breadth-catalog screen is in `reports/family-champions.md`.\n"
     )
 

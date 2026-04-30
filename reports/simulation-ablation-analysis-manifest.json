@@ -1,0 +1,17 @@
+{
+  "reportName": "Mechanism Ablation Analysis",
+  "provenanceFormat": "stable-report-v2",
+  "sourceTree": "tracked submission artifact; inspect repository history for commit identity",
+  "javaRelease": "21",
+  "javaCommand": "congresssim.Main --campaign ablation-analysis --runs 64 --legislators 101 --bills 60 --seed 20260428 --output-dir reports",
+  "runs": 64,
+  "legislators": 101,
+  "bills": 60,
+  "seed": 20260428,
+  "caseCount": 24,
+  "scenarioCount": 15,
+  "artifacts": [
+    {"path": "reports/simulation-ablation-analysis.csv", "sha256": "3a58686f3f7636c7ec96c6f66e7d98c04a774040a26be3a5c77e8e849fc91309"},
+    {"path": "reports/simulation-ablation-analysis.md", "sha256": "d5bcfb89b3e2fdeec99c124e9ba4760c3d6b57ac83fe4c2250422a7bc999ba62"}
+  ]
+}

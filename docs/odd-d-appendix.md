@@ -26,6 +26,8 @@ Lobby groups have an ID, primary issue domain, issue-preference map, preferred p
 
 Institutional scenarios are composed from legislative-process modules. A process may screen proposal access, modify public signals, allocate lobbying or attention spending, route bills to different tracks, mediate amendments, evaluate affected-group harm, select among alternatives, conduct votes, apply vetoes, register enacted laws, or review laws later.
 
+The main comparison now also includes a synthesized portfolio hybrid. It combines a low-risk fast lane, middle-risk pairwise alternatives and mediation, high-risk citizen and distributional-harm review, proposal bonds, anti-capture safeguards, and law-registry correction. It is a testable institutional hypothesis derived from earlier campaign comparisons, not an assumed optimum.
+
 **Environment**
 
 The environment is a one-dimensional policy space from `-1.0` to `1.0`, a scalar status quo, a generated bill stream, generated lobby groups, and party-system parameters. Most support, benefit, harm, legitimacy, and sensitivity values are ratios from `0.0` to `1.0`.
@@ -92,7 +94,7 @@ Parties and blocs are modeled through party labels, party positions, party loyal
 
 **Observation**
 
-The model reports productivity, floor load, enacted support, public-benefit proxy, cooperation, compromise, gridlock, access denial, committee rejection, challenge rate, low-support passage, policy shift, proposer gain, lobby capture, public alignment, anti-lobbying success, private-gain ratio, lobbying spend by channel, public benefit per lobby dollar, amendment rate, amendment movement, minority harm, concentrated-harm passage, compensation rate, legitimacy, law-review metrics, alternative-selection metrics, citizen-review metrics, agenda-scarcity metrics, adaptive-track route rates, false-negative default passage, public-will review, district alignment, cosponsorship, bond forfeiture, strategic decoys, proposer-access Gini, welfare per submitted bill, vetoes, and overrides.
+The model reports productivity, floor load, enacted support, public-benefit proxy, cooperation, compromise, gridlock, access denial, committee rejection, challenge rate, chamber low-support passage, weak public-mandate passage, administrative cost, policy shift, proposer gain, lobby capture, public alignment, anti-lobbying success, private-gain ratio, lobbying spend by channel, public benefit per lobby dollar, amendment rate, amendment movement, minority harm, concentrated-harm passage, compensation rate, legitimacy, law-review metrics, alternative-selection metrics, citizen-review metrics, agenda-scarcity metrics, adaptive-track route rates, false-negative default passage, public-will review, district alignment, cosponsorship, bond forfeiture, strategic decoys, proposer-access Gini, welfare per submitted bill, vetoes, and overrides.
 
 ## 5. Initialization
 
@@ -104,9 +106,9 @@ The model reports productivity, floor load, enacted support, public-benefit prox
 - a status quo in the one-dimensional policy space;
 - bills around proposer ideal points with public-support, public-benefit, salience, lobbying, affected-group, harm, uncertainty, and private-gain signals.
 
-Party-system profiles include ideological bins, two major parties with minor parties, fragmented multiparty systems, dominant-party systems, and weighted campaign profiles. Campaign v18 assigns likelihood weights to party-system profiles.
+Party-system profiles include ideological bins, two major parties with minor parties, fragmented multiparty systems, dominant-party systems, and weighted campaign profiles. The party-system sensitivity campaign assigns likelihood weights to party-system profiles.
 
-The v21-paper campaign also supports adversarial proposal-generator profiles: high-benefit extreme reform, popular harmful bills, low-benefit moderate capture, delayed-benefit reform, concentrated rights-like harm, and anti-lobbying backlash. These cases are stress tests for the generator's own normative assumptions, not empirical claims about real proposal distributions.
+The main comparison campaign also supports adversarial proposal-generator profiles: high-benefit extreme reform, popular harmful bills, low-benefit moderate capture, delayed-benefit reform, concentrated rights-like harm, and anti-lobbying backlash. These cases are stress tests for the generator's own normative assumptions, not empirical claims about real proposal distributions.
 
 ## 6. Input Data
 
@@ -170,18 +172,20 @@ Agenda lotteries, quadratic attention budgets, proposal credits, and challenge t
 
 The main campaigns are:
 
-- v17: broad roadmap-completion campaign across 18 assumption cases.
-- v18: weighted party-system sensitivity campaign.
-- v19: stylized rising-contention timeline.
-- v20: focused strategy and calibration campaign comparing the stylized U.S.-like benchmark, adaptive proposers, strategic lobbying, combined deep strategy, mediation, citizen panels, alternatives, objection windows, and law registry.
-- v21-paper: canonical paper campaign joining broad assumption cases, adversarial generator cases, party-system sensitivity cases, and rising-contention timeline cases in one CSV artifact for all submitted tables and figures.
-- family champions: supplemental all-catalog screen that runs every explicit scenario key and reports fixed-rule within-family champions.
+- roadmap-completion campaign across broad assumption cases.
+- weighted party-system sensitivity campaign.
+- stylized rising-contention timeline.
+- focused strategy and calibration campaign comparing the stylized U.S.-like benchmark, adaptive proposers, strategic lobbying, combined deep strategy, mediation, citizen panels, alternatives, objection windows, and law registry.
+- main paper campaign joining broad assumption cases, adversarial generator cases, party-system sensitivity cases, and rising-contention timeline cases in one CSV artifact for all submitted tables and figures; the campaign includes the portfolio hybrid as a synthesized candidate alongside family representatives.
+- family screen: supplemental all-catalog screen that runs every explicit scenario key and reports the highest-scoring scenario within each family under a fixed rule.
+- mechanism diagnostics: ablation comparisons for nearby mechanism removals plus manipulation-stress comparisons for clone proposals, panel manipulation, astroturf objection, bad-faith harm claims, agenda flooding, and capture pressure.
+- empirical bridge: optional raw empirical summaries mapped to the simulator proxy metrics currently used for calibration screening.
 
 All campaign rows include scenario labels, case weights, and a stable metric schema.
 
 ## 9. Assumptions And Limitations
 
-The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The calibration layer screens plausible ranges but does not yet fit raw datasets directly. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment. Several mechanisms are optimistic prototypes: citizen panels, objection windows, tournaments, audits, challenge tokens, package bargaining, and law review include diagnostics for cost and strain, but not full administrative or strategic manipulation costs.
+The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The calibration layer screens plausible ranges but does not yet fit raw datasets directly. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment. Several mechanisms are optimistic prototypes: citizen panels, objection windows, tournaments, audits, challenge tokens, package bargaining, and law review include diagnostics for procedural cost and strain, but not full real-world implementation cost or strategic manipulation cost.
 
 These limitations are intentional at this stage. The model is meant to identify which institutional mechanisms deserve deeper modeling, not to prove that one constitutional design would work in the real world.
 
@@ -217,10 +221,19 @@ Run multi-seed robustness checks for the paper scenarios:
 make seed-robustness
 ```
 
-Run the all-catalog family champion screen:
+Run the all-catalog family screen:
 
 ```sh
-make family-champions
+make family-screen
+```
+
+Run the empirical bridge and mechanism diagnostics:
+
+```sh
+make empirical-bridge
+make ablation-analysis
+make manipulation-stress
+make mechanism-diagnostics
 ```
 
 Build the anonymous supplement package:

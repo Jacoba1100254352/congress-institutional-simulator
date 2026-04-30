@@ -202,6 +202,10 @@ final class ScenarioCatalogTests {
                 "Scenario catalog should expose non-default adaptive routing designs."
         );
         assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("portfolio-hybrid-legislature"),
+                "Scenario catalog should expose the synthesized portfolio hybrid design."
+        );
+        assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("norm-erosion-majority"),
                 "Scenario catalog should expose endogenous norm-erosion stress designs."
         );
@@ -216,6 +220,22 @@ final class ScenarioCatalogTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("multidimensional-package-majority"),
                 "Scenario catalog should expose multidimensional package bargaining designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("risk-routed-no-citizen-majority"),
+                "Scenario catalog should expose risk-routing ablation variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("citizen-assembly-manipulation-stress"),
+                "Scenario catalog should expose citizen-panel manipulation stress variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("harm-weighted-loose-claims-majority"),
+                "Scenario catalog should expose bad-faith harm-claim stress variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("public-objection-astroturf-majority"),
+                "Scenario catalog should expose astroturf objection stress variants."
         );
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-challenge-minority-bonus"),

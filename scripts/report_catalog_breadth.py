@@ -50,6 +50,8 @@ def family(key: str) -> str:
         return "Reversibility"
     if "lobby" in key or "capture" in key:
         return "Anti-capture"
+    if "portfolio" in key or "hybrid" in key:
+        return "Portfolio hybrid"
     if "adaptive" in key or "risk" in key or "norm" in key or "strategy" in key or "deterioration" in key:
         return "Adaptive/stress"
     return "Other"

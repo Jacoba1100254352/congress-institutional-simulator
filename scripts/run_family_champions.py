@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a supplemental breadth-catalog screen and summarize family champions."""
+"""Run a supplemental breadth-catalog screen and summarize top family scenarios."""
 
 from __future__ import annotations
 
@@ -37,15 +37,20 @@ def directional_score(row: dict[str, str]) -> float:
         clamp01(float(row["avgSupport"])),
         clamp01(float(row["compromise"])),
         clamp01(float(row["publicAlignment"])),
+        clamp01(float(row.get("legitimacy", 0.0))),
     ])
     risk = mean([
         inverse01(float(row["lowSupport"])),
+        inverse01(float(row.get("weakPublicMandatePassage", 0.0))),
+        inverse01(float(row.get("minorityHarm", 0.0))),
         inverse01(float(row["lobbyCapture"])),
         inverse01(float(row["publicPreferenceDistortion"])),
+        inverse01(float(row.get("concentratedHarmPassage", 0.0))),
         inverse_range(float(row["proposerGain"])),
         inverse_range(float(row["policyShift"])),
     ])
-    return mean([productivity, representative, risk])
+    administrative_feasibility = inverse01(float(row.get("administrativeCost", 0.0)))
+    return mean([productivity, representative, risk, administrative_feasibility])
 
 
 def family_for(name: str) -> str:
@@ -78,6 +83,8 @@ def family_for(name: str) -> str:
         return "Reversibility and objection"
     if "lobby" in lower or "capture" in lower or "advocate" in lower or "voucher" in lower or "blind" in lower:
         return "Anti-capture"
+    if "portfolio" in lower or "hybrid" in lower:
+        return "Portfolio hybrid"
     if "adaptive" in lower or "risk-routed" in lower or "strategy" in lower or "norm erosion" in lower or "deterioration" in lower:
         return "Adaptive strategy"
     return "Other"
@@ -127,7 +134,7 @@ def write_summary(rows: list[dict[str, str]]) -> None:
         by_family.setdefault(row["family"], []).append(row)
 
     lines = [
-        "# Family Champion Screen",
+        "# Family Scenario Screen",
         "",
         "Supplemental breadth-catalog screen over the runnable --all-scenarios set. Long default-pass parameter sweeps remain archived as explicit --scenarios keys, but are not included in this breadth screen.",
         "",
@@ -135,21 +142,22 @@ def write_summary(rows: list[dict[str, str]]) -> None:
         "- Legislators: 101",
         "- Bills per run: 60",
         "- Seed: 20260428",
-        "- Selection rule: within each scenario family, the champion is the highest directional score in this fixed baseline screen.",
+        "- Selection rule: within each scenario family, the reported scenario has the highest directional score in this fixed baseline screen.",
         "",
-        "| Family | Champion | Directional | Productivity | Compromise | Low-support | Welfare |",
-        "| --- | --- | ---: | ---: | ---: | ---: | ---: |",
+        "| Family | Top scenario | Directional | Productivity | Compromise | Weak mandate | Admin cost | Welfare |",
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for family in sorted(by_family):
         champion = max(by_family[family], key=lambda row: float(row["directionalScore"]))
         lines.append(
             f"| {family} | {champion['scenario']} | {float(champion['directionalScore']):.3f} | "
             f"{float(champion['productivity']):.3f} | {float(champion['compromise']):.3f} | "
-            f"{float(champion['lowSupport']):.3f} | {float(champion['welfare']):.3f} |"
+            f"{float(champion.get('weakPublicMandatePassage', '0')):.3f} | "
+            f"{float(champion.get('administrativeCost', '0')):.3f} | {float(champion['welfare']):.3f} |"
         )
     lines.extend([
         "",
-        "The screen exists to reduce cherry-picking risk: the main paper reports a compact breadth-first campaign, while this supplement shows which breadth-catalog variants would win under a fixed within-family rule.",
+        "The screen exists to reduce cherry-picking risk: the main paper reports a compact breadth-first campaign, while this supplement shows which breadth-catalog variants score highest under a fixed within-family rule.",
     ])
     REPORT_MD.write_text("\n".join(lines) + "\n")
 

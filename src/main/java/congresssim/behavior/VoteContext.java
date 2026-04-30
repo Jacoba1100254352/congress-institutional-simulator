@@ -18,6 +18,10 @@ public final class VoteContext {
         return partyPositions.getOrDefault(party, 0.0);
     }
 
+    public Map<String, Double> partyPositions() {
+        return partyPositions;
+    }
+
     public Random random() {
         return random;
     }

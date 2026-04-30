@@ -488,7 +488,6 @@ public final class CampaignRunner {
             "parliamentary-coalition-confidence",
             "citizen-initiative-referendum",
             "simple-majority-alternatives-pairwise",
-            "simple-majority-alternatives-strategic",
             "citizen-assembly-threshold",
             "public-interest-majority",
             "agenda-lottery-majority",
@@ -497,14 +496,48 @@ public final class CampaignRunner {
             "harm-weighted-majority",
             "compensation-majority",
             "package-bargaining-majority",
+            "multidimensional-package-majority",
             "law-registry-majority",
             "public-objection-majority",
             "anti-capture-majority-bundle",
             "risk-routed-majority",
+            "portfolio-hybrid-legislature",
             "norm-erosion-majority",
             "default-pass",
             "default-pass-challenge",
             "default-pass-multiround-mediation-challenge"
+    );
+    private static final List<String> ABLATION_SCENARIOS = List.of(
+            "current-system",
+            "simple-majority",
+            "simple-majority-mediation",
+            "simple-majority-lobby-firewall",
+            "public-interest-majority",
+            "simple-majority-alternatives-pairwise",
+            "risk-routed-majority",
+            "risk-routed-no-citizen-majority",
+            "harm-weighted-majority",
+            "compensation-majority",
+            "affected-consent-majority",
+            "package-bargaining-majority",
+            "multidimensional-package-majority",
+            "law-registry-majority",
+            "anti-capture-majority-bundle"
+    );
+    private static final List<String> MANIPULATION_STRESS_SCENARIOS = List.of(
+            "current-system",
+            "simple-majority",
+            "simple-majority-alternatives-pairwise",
+            "simple-majority-alternatives-strategic",
+            "citizen-assembly-threshold",
+            "citizen-assembly-manipulation-stress",
+            "agenda-lottery-majority",
+            "public-objection-majority",
+            "public-objection-astroturf-majority",
+            "harm-weighted-majority",
+            "harm-weighted-loose-claims-majority",
+            "anti-capture-majority-bundle",
+            "default-pass"
     );
 
     private CampaignRunner() {
@@ -938,11 +971,53 @@ public final class CampaignRunner {
             long seed
     ) throws IOException {
         return run(
-                "Simulation Campaign v21 Paper",
+                "Main Comparison Campaign",
                 "simulation-campaign-v21-paper",
                 outputDir,
                 v21PaperCases(legislators, bills),
                 PAPER_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runAblationAnalysis(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        List<ExperimentCase> cases = new ArrayList<>(v8Cases(legislators, bills));
+        cases.addAll(v21AdversarialCases(legislators, bills));
+        return run(
+                "Mechanism Ablation Analysis",
+                "simulation-ablation-analysis",
+                outputDir,
+                cases,
+                ABLATION_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
+    public static CampaignResult runManipulationStress(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        return run(
+                "Manipulation Stress Campaign",
+                "simulation-manipulation-stress",
+                outputDir,
+                manipulationStressCases(legislators, bills),
+                MANIPULATION_STRESS_SCENARIOS,
                 runs,
                 legislators,
                 bills,
@@ -1148,6 +1223,39 @@ public final class CampaignRunner {
         );
     }
 
+    private static List<ExperimentCase> manipulationStressCases(int legislators, int bills) {
+        return List.of(
+                experiment("baseline", "Baseline",
+                        "Ordinary synthetic legislature used as the stress reference point.",
+                        legislators, bills, 3, 0.62, 0.64, 0.48, 0.64, 0.52,
+                        PartySystemProfile.IDEOLOGICAL_BINS, 1.0),
+                experiment("proposal-flooding", "Proposal Flooding",
+                        "Three times as many proposals reach the institutional process.",
+                        legislators, Math.max(1, bills * 3), 3, 0.66, 0.68, 0.58, 0.58, 0.42,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0),
+                experiment("capture-flooding", "Capture And Flooding",
+                        "High proposal pressure, strong lobbying, weaker public responsiveness, and lower compromise culture.",
+                        legislators, Math.max(1, bills * 3), 2, 0.84, 0.84, 0.92, 0.44, 0.28,
+                        PartySystemProfile.IDEOLOGICAL_BINS, 1.0),
+                experiment("clone-decoy-pressure", "Clone/Decoy Tournament Pressure",
+                        "Highly polarized, low-compromise environment intended to expose alternative-selection manipulation.",
+                        legislators, Math.max(1, bills * 2), 4, 0.80, 0.76, 0.62, 0.54, 0.24,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0),
+                experiment("rights-harm-pressure", "Rights-Harm Pressure",
+                        "Broadly supported proposals can impose concentrated rights-like harm.",
+                        legislators, bills, 4, 0.70, 0.70, 0.52, 0.66, 0.44,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.CONCENTRATED_RIGHTS_HARM),
+                experiment("popular-harmful-pressure", "Popular Harmful Pressure",
+                        "Popular proposals can carry low generated welfare and concentrated harm.",
+                        legislators, bills, 3, 0.66, 0.66, 0.72, 0.62, 0.52,
+                        PartySystemProfile.IDEOLOGICAL_BINS, 1.0, ProposalShockProfile.POPULAR_HARMFUL_BILL),
+                experiment("anti-lobbying-backlash", "Anti-Lobbying Backlash",
+                        "Anti-lobbying reforms are more common but face stronger defensive organized-interest pressure.",
+                        legislators, bills, 4, 0.64, 0.64, 0.90, 0.70, 0.50,
+                        PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.ANTI_LOBBYING_BACKLASH)
+        );
+    }
+
     private static ExperimentCase experiment(
             String key,
             String name,
@@ -1250,7 +1358,7 @@ public final class CampaignRunner {
 
     private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,caseWeight,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,directionalScore,representativeQuality,riskControl,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,fastLaneRate,middleLaneRate,highRiskLaneRate,challengeExhaustionRate,falseNegativePassRate,publicWillReviewRate,publicSignalMovement,districtAlignment,crossBlocAdmissionRate,affectedGroupSponsorshipRate,averageCosponsors,proposalBondForfeiture,strategicDecoyRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,caseWeight,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,directionalScore,representativeQuality,riskControl,administrativeFeasibility,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,weakPublicMandatePassage,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,administrativeCost,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,fastLaneRate,middleLaneRate,highRiskLaneRate,challengeExhaustionRate,falseNegativePassRate,publicWillReviewRate,publicSignalMovement,districtAlignment,crossBlocAdmissionRate,affectedGroupSponsorshipRate,averageCosponsors,proposalBondForfeiture,strategicDecoyRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes\n");
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
@@ -1267,6 +1375,7 @@ public final class CampaignRunner {
                     .append(format(report.directionalScore())).append(',')
                     .append(format(report.representativeQualityScore())).append(',')
                     .append(format(report.riskControlScore())).append(',')
+                    .append(format(report.administrativeFeasibilityScore())).append(',')
                     .append(format(report.productivity())).append(',')
                     .append(format(report.floorConsiderationRate())).append(',')
                     .append(format(report.averageEnactedSupport())).append(',')
@@ -1278,6 +1387,7 @@ public final class CampaignRunner {
                     .append(format(report.committeeRejectionRate())).append(',')
                     .append(format(report.challengeRate())).append(',')
                     .append(format(report.controversialPassageRate())).append(',')
+                    .append(format(report.weakPublicMandatePassageRate())).append(',')
                     .append(format(report.popularBillFailureRate())).append(',')
                     .append(format(report.averagePolicyShift())).append(',')
                     .append(format(report.averageProposerGain())).append(',')
@@ -1289,6 +1399,7 @@ public final class CampaignRunner {
                     .append(format(report.defensiveLobbyingShare())).append(',')
                     .append(format(report.captureReturnOnSpend())).append(',')
                     .append(format(report.publicPreferenceDistortion())).append(',')
+                    .append(format(report.administrativeCostIndex())).append(',')
                     .append(format(report.amendmentRate())).append(',')
                     .append(format(report.averageAmendmentMovement())).append(',')
                     .append(format(report.minorityHarmIndex())).append(',')
@@ -1377,11 +1488,11 @@ public final class CampaignRunner {
         builder.append("- `↑` means a higher raw value is usually better.\n");
         builder.append("- `↓` means a lower raw value is usually better; directional scores invert these metrics before combining them.\n");
         builder.append("- `diag.` means the metric is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.\n");
-        builder.append("- `Directional score` is a reading aid, not a final institutional verdict. It averages productivity, representative quality, and risk control. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts low-support passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.\n\n");
+        builder.append("- `Directional score` is a reading aid, not a final institutional verdict. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts chamber low-support passage, weak public-mandate passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.\n\n");
 
         builder.append("## Scenario Averages Across Cases\n\n");
-        builder.append("| Scenario | Directional score ↑ | Quality ↑ | Risk control ↑ | Productivity ↑ | Enacted/run | Floor/run diag. | Welfare ↑ | Low-support ↓ | Minority harm ↓ | Legitimacy ↑ | Policy shift diag. | Proposer gain ↓ | Capture ↓ | Lobby spend diag. | Defensive spend diag. | Amend rate diag. | Compensation diag. | Anti-lobby pass ↑ | Challenge diag. | Floor diag. |\n");
-        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+        builder.append("| Scenario | Directional score ↑ | Quality ↑ | Risk control ↑ | Admin feas. ↑ | Productivity ↑ | Enacted/run | Floor/run diag. | Welfare ↑ | Low-support ↓ | Weak public mandate ↓ | Admin cost ↓ | Minority harm ↓ | Legitimacy ↑ | Policy shift diag. | Proposer gain ↓ | Capture ↓ | Lobby spend diag. | Defensive spend diag. | Amend rate diag. | Compensation diag. | Anti-lobby pass ↑ | Challenge diag. | Floor diag. |\n");
+        builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
         aggregateByScenario.values()
                 .stream()
                 .sorted(Comparator.comparing(ScenarioAggregate::scenarioKey))
@@ -1390,11 +1501,14 @@ public final class CampaignRunner {
                         .append(format(summary.directionalScore())).append(" | ")
                         .append(format(summary.representativeQuality())).append(" | ")
                         .append(format(summary.riskControl())).append(" | ")
+                        .append(format(summary.administrativeFeasibility())).append(" | ")
                         .append(format(summary.productivity())).append(" | ")
                         .append(format(summary.enactedPerRun())).append(" | ")
                         .append(format(summary.floorPerRun())).append(" | ")
                         .append(format(summary.welfare())).append(" | ")
                         .append(format(summary.lowSupport())).append(" | ")
+                        .append(format(summary.weakPublicMandatePassage())).append(" | ")
+                        .append(format(summary.administrativeCost())).append(" | ")
                         .append(format(summary.minorityHarm())).append(" | ")
                         .append(format(summary.legitimacy())).append(" | ")
                         .append(format(summary.policyShift())).append(" | ")
@@ -1916,18 +2030,18 @@ public final class CampaignRunner {
         }
 
         builder.append("## Case Highlights\n\n");
-        builder.append("| Case | Best welfare | Most productive | Lowest low-support passage |\n");
+        builder.append("| Case | Best welfare | Most productive | Lowest weak public-mandate passage |\n");
         builder.append("| --- | --- | --- | --- |\n");
         for (String caseKey : caseKeys(result.rows())) {
             List<CampaignRow> caseRows = rowsForCase(result.rows(), caseKey);
             CampaignRow bestWelfare = max(caseRows, Comparator.comparingDouble(row -> row.report().averagePublicBenefit()));
             CampaignRow mostProductive = max(caseRows, Comparator.comparingDouble(row -> row.report().productivity()));
-            CampaignRow lowestLowSupport = min(caseRows, Comparator.comparingDouble(row -> row.report().controversialPassageRate()));
+            CampaignRow lowestWeakMandate = min(caseRows, Comparator.comparingDouble(row -> row.report().weakPublicMandatePassageRate()));
             builder.append("| ")
                     .append(caseRows.get(0).caseName()).append(" | ")
                     .append(bestWelfare.report().scenarioName()).append(" (").append(format(bestWelfare.report().averagePublicBenefit())).append(") | ")
                     .append(mostProductive.report().scenarioName()).append(" (").append(format(mostProductive.report().productivity())).append(") | ")
-                    .append(lowestLowSupport.report().scenarioName()).append(" (").append(format(lowestLowSupport.report().controversialPassageRate())).append(") |\n");
+                    .append(lowestWeakMandate.report().scenarioName()).append(" (").append(format(lowestWeakMandate.report().weakPublicMandatePassageRate())).append(") |\n");
         }
         builder.append('\n');
 
@@ -1935,8 +2049,8 @@ public final class CampaignRunner {
         if (aggregateByScenario.containsKey("committee-regular-order")
                 && aggregateByScenario.containsKey("risk-routed-majority")) {
             builder.append("- This is a breadth-first paper campaign. Default pass is retained as one burden-shifting stress test, while the main comparison spans conventional thresholds, committee-first regular order, coalition confidence, policy tournaments, citizen review, agenda scarcity, proposal accountability, harm/compensation rules, anti-capture safeguards, adaptive risk routing, and law-registry review.\n");
-            builder.append("- Open default-pass remains the throughput extreme, but its high low-support passage and policy movement make it a diagnostic endpoint rather than the project focus.\n");
-            builder.append("- Policy tournaments and risk-routed majority systems occupy the strongest compromise/productivity middle ground in this synthetic campaign; committee-first, public-interest, citizen, and parliamentary-style gates control risk but give up substantial throughput.\n");
+            builder.append("- Open default-pass remains the throughput extreme, but its high weak public-mandate passage and policy movement make it a diagnostic endpoint rather than the project focus.\n");
+            builder.append("- Policy tournaments and risk-routed majority systems occupy a promising compromise/productivity middle ground in this synthetic campaign, but tournament variants remain sensitive to clone, decoy, and overload stress; committee-first, public-interest, citizen, and parliamentary-style gates control risk but give up substantial throughput.\n");
             builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality, and generated welfare remains conditional on model assumptions.\n");
             builder.append("- The next model extension should deepen non-default families beyond their current prototypes: multidimensional package bargaining, judicial/court intervention, executive emergency/delegated rulemaking, direct-democracy routes, electoral feedback, and media/information ecosystems.\n\n");
         } else if (aggregateByScenario.containsKey("default-pass-constituent-public-will")) {
@@ -1999,8 +2113,8 @@ public final class CampaignRunner {
 
     private static void appendTimelineSection(StringBuilder builder, List<CampaignRow> rows) {
         builder.append("## Timeline Contention Path\n\n");
-        builder.append("This campaign is a stylized longitudinal stress path, not a calibrated history. The contention index is computed as `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * lowSupport`, so it rises when a system blocks more, compromises less, or passes more weak-support bills.\n\n");
-        builder.append("| Era | Scenario | Productivity | Compromise | Gridlock | Low-support | Contention index |\n");
+        builder.append("This campaign is a stylized longitudinal stress path, not a calibrated history. The contention index is computed as `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * weakPublicMandatePassage`, so it rises when a system blocks more, compromises less, or enacts more bills with generated public support below majority.\n\n");
+        builder.append("| Era | Scenario | Productivity | Compromise | Gridlock | Weak public mandate | Contention index |\n");
         builder.append("| --- | --- | ---: | ---: | ---: | ---: | ---: |\n");
         for (CampaignRow eraRow : firstRowsByCase(rows)) {
             for (String scenarioKey : List.of(
@@ -2011,6 +2125,7 @@ public final class CampaignRunner {
                     "simple-majority-alternatives-pairwise",
                     "citizen-assembly-threshold",
                     "risk-routed-majority",
+                    "portfolio-hybrid-legislature",
                     "default-pass",
                     "default-pass-multiround-mediation-challenge"
             )) {
@@ -2025,7 +2140,7 @@ public final class CampaignRunner {
                         .append(format(report.productivity())).append(" | ")
                         .append(format(report.compromiseScore())).append(" | ")
                         .append(format(report.gridlockRate())).append(" | ")
-                        .append(format(report.controversialPassageRate())).append(" | ")
+                        .append(format(report.weakPublicMandatePassageRate())).append(" | ")
                         .append(format(contentionIndex(report))).append(" |\n");
             }
         }
@@ -2074,15 +2189,15 @@ public final class CampaignRunner {
         if (aggregateByScenario.containsKey("committee-regular-order")
                 && aggregateByScenario.containsKey("risk-routed-majority")) {
             ScenarioAggregate currentSystem = aggregateByScenario.get("current-system");
-            builder.append("- The canonical paper campaign is breadth-first: ")
+            builder.append("- The main comparison campaign is breadth-first: ")
                     .append(aggregateByScenario.size())
                     .append(" scenario families are compared across the same synthetic worlds, with default enactment retained as one stress-test family rather than the organizing case.\n");
-            builder.append("- Highest directional score, where lower-better risk metrics are inverted before combination, came from ")
+            builder.append("- The scalar directional score is productivity-sensitive: its highest value came from ")
                     .append(bestDirectional.scenarioName())
                     .append(" at ")
                     .append(format(bestDirectional.directionalScore()))
-                    .append(".\n");
-            builder.append("- Best average welfare came from ")
+                    .append(", which is why the report treats the score as a profile aid rather than a recommendation.\n");
+            builder.append("- Highest average welfare came from ")
                     .append(bestWelfare.scenarioName())
                     .append(" at ")
                     .append(format(bestWelfare.welfare()))
@@ -2100,8 +2215,8 @@ public final class CampaignRunner {
                 builder.append("- Open default-pass averaged ")
                         .append(format(openDefault.productivity()))
                         .append(" productivity, ")
-                        .append(format(openDefault.lowSupport()))
-                        .append(" low-support passage, and ")
+                        .append(format(openDefault.weakPublicMandatePassage()))
+                        .append(" weak public-mandate passage, and ")
                         .append(format(openDefault.policyShift()))
                         .append(" policy shift, so it functions as a throughput/risk endpoint.\n");
             }
@@ -2112,12 +2227,26 @@ public final class CampaignRunner {
                         .append(format(currentSystem.welfare()))
                         .append(" welfare: it protects quality in the synthetic generator partly by allowing few proposals through.\n");
             }
+            ScenarioAggregate portfolio = aggregateByScenario.get("portfolio-hybrid-legislature");
+            ScenarioAggregate pairwise = aggregateByScenario.get("simple-majority-alternatives-pairwise");
+            ScenarioAggregate riskRouted = aggregateByScenario.get("risk-routed-majority");
+            if (portfolio != null && pairwise != null && riskRouted != null) {
+                builder.append("- The portfolio hybrid combines risk routing, pairwise alternatives, citizen/harm review, proposal bonds, anti-capture safeguards, and law review. It averaged ")
+                        .append(format(portfolio.productivity()))
+                        .append(" productivity, ")
+                        .append(format(portfolio.compromise()))
+                        .append(" compromise, ")
+                        .append(format(portfolio.riskControl()))
+                        .append(" risk control, and ")
+                        .append(format(portfolio.directionalScore()))
+                        .append(" directional score, situating it between pairwise alternatives and risk routing rather than replacing the tradeoff frontier.\n");
+            }
             builder.append('\n');
             return;
         }
         if (openDefault == null) {
             builder.append("- This focused campaign does not include the open default-pass baseline, so relative headline deltas are reported in the diagnostic sections below.\n");
-            builder.append("- Best average welfare in this campaign came from ")
+            builder.append("- Highest average welfare in this campaign came from ")
                     .append(bestWelfare.scenarioName())
                     .append(" at ")
                     .append(format(bestWelfare.welfare()))
@@ -2149,8 +2278,8 @@ public final class CampaignRunner {
         }
         builder.append(".\n");
         builder.append("- Open default-pass also averaged ")
-                .append(format(openDefault.lowSupport()))
-                .append(" low-support passage and ")
+                .append(format(openDefault.weakPublicMandatePassage()))
+                .append(" weak public-mandate passage and ")
                 .append(format(openDefault.policyShift()))
                 .append(" policy shift.\n");
         builder.append("- Highest directional score, where lower-better risk metrics are inverted before combination, came from ")
@@ -2303,7 +2432,7 @@ public final class CampaignRunner {
                     .append(format(mediation.compromise() - openDefault.compromise()))
                     .append(" relative to open default-pass.\n");
         }
-        builder.append("- Best average welfare in this campaign came from ")
+        builder.append("- Highest average welfare in this campaign came from ")
                 .append(bestWelfare.scenarioName())
                 .append(" at ")
                 .append(format(bestWelfare.welfare()))
@@ -2423,7 +2552,7 @@ public final class CampaignRunner {
     private static double contentionIndex(ScenarioReport report) {
         return (0.50 * report.gridlockRate())
                 + (0.30 * (1.0 - report.compromiseScore()))
-                + (0.20 * report.controversialPassageRate());
+                + (0.20 * report.weakPublicMandatePassageRate());
     }
 
     private static String csvValue(String value) {
@@ -2449,6 +2578,7 @@ public final class CampaignRunner {
         private double welfare;
         private double compromise;
         private double lowSupport;
+        private double weakPublicMandatePassage;
         private double policyShift;
         private double proposerGain;
         private double lobbyCapture;
@@ -2459,6 +2589,7 @@ public final class CampaignRunner {
         private double defensiveLobbyingShare;
         private double captureReturnOnSpend;
         private double publicPreferenceDistortion;
+        private double administrativeCost;
         private double amendmentRate;
         private double amendmentMovement;
         private double minorityHarm;
@@ -2519,6 +2650,7 @@ public final class CampaignRunner {
             welfare += report.averagePublicBenefit() * weight;
             compromise += report.compromiseScore() * weight;
             lowSupport += report.controversialPassageRate() * weight;
+            weakPublicMandatePassage += report.weakPublicMandatePassageRate() * weight;
             policyShift += report.averagePolicyShift() * weight;
             proposerGain += report.averageProposerGain() * weight;
             lobbyCapture += report.lobbyCaptureIndex() * weight;
@@ -2529,6 +2661,7 @@ public final class CampaignRunner {
             defensiveLobbyingShare += report.defensiveLobbyingShare() * weight;
             captureReturnOnSpend += report.captureReturnOnSpend() * weight;
             publicPreferenceDistortion += report.publicPreferenceDistortion() * weight;
+            administrativeCost += report.administrativeCostIndex() * weight;
             amendmentRate += report.amendmentRate() * weight;
             amendmentMovement += report.averageAmendmentMovement() * weight;
             minorityHarm += report.minorityHarmIndex() * weight;
@@ -2603,6 +2736,7 @@ public final class CampaignRunner {
         private double riskControl() {
             return MetricDefinition.average(
                     MetricDefinition.lowerIsBetter(lowSupport()),
+                    MetricDefinition.lowerIsBetter(weakPublicMandatePassage()),
                     MetricDefinition.lowerIsBetter(minorityHarm()),
                     MetricDefinition.lowerIsBetter(lobbyCapture()),
                     MetricDefinition.lowerIsBetter(publicPreferenceDistortion()),
@@ -2612,11 +2746,16 @@ public final class CampaignRunner {
             );
         }
 
+        private double administrativeFeasibility() {
+            return MetricDefinition.lowerIsBetter(administrativeCost());
+        }
+
         private double directionalScore() {
             return MetricDefinition.average(
                     productivity(),
                     representativeQuality(),
-                    riskControl()
+                    riskControl(),
+                    administrativeFeasibility()
             );
         }
 
@@ -2630,6 +2769,10 @@ public final class CampaignRunner {
 
         private double lowSupport() {
             return lowSupport / weightTotal;
+        }
+
+        private double weakPublicMandatePassage() {
+            return weakPublicMandatePassage / weightTotal;
         }
 
         private double policyShift() {
@@ -2674,6 +2817,10 @@ public final class CampaignRunner {
 
         private double publicPreferenceDistortion() {
             return publicPreferenceDistortion / weightTotal;
+        }
+
+        private double administrativeCost() {
+            return administrativeCost / weightTotal;
         }
 
         private double amendmentRate() {

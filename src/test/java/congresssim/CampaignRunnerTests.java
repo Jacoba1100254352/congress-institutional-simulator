@@ -76,8 +76,9 @@ final class CampaignRunnerTests {
         campaignRunnerWritesWeightedCsvWithStableSchema();
         timelineCampaignHasOrderedContentionCases();
         strategyCampaignIncludesDeepAdaptiveSystems();
-        paperCampaignUsesSingleCanonicalEvidenceBase();
+        paperCampaignUsesSingleEvidenceBase();
         paperCampaignSeedRobustnessSmokeTest();
+        diagnosticCampaignsAreRunnable();
         calibrationRunnerWritesEmpiricalScreeningReports();
         allPredefinedCampaignScenarioListsIncludeCurrentBenchmark();
     }
@@ -161,6 +162,8 @@ final class CampaignRunnerTests {
             assertTrue(lines.getFirst().contains("directionalScore"), "CSV should expose oriented display scores.");
             assertTrue(lines.getFirst().contains("representativeQuality"), "CSV should expose representative quality.");
             assertTrue(lines.getFirst().contains("riskControl"), "CSV should expose inverted risk-control score.");
+            assertTrue(lines.getFirst().contains("weakPublicMandatePassage"), "CSV should expose public-support failure risk.");
+            assertTrue(lines.getFirst().contains("administrativeCost"), "CSV should expose administrative-cost risk.");
             int headerColumns = csvColumnCount(lines.getFirst());
             assertTrue(headerColumns >= 70, "CSV should expose the expanded metric schema.");
             for (int i = 1; i < lines.size(); i++) {
@@ -175,6 +178,8 @@ final class CampaignRunnerTests {
             assertTrue(markdown.contains("## Metric Direction Legend"), "Markdown should explain metric direction.");
             assertTrue(markdown.contains("Directional score ↑"), "Markdown scenario table should label oriented scores.");
             assertTrue(markdown.contains("Low-support ↓"), "Markdown scenario table should label lower-is-better metrics.");
+            assertTrue(markdown.contains("Weak public mandate ↓"), "Markdown scenario table should label weak public-mandate risk.");
+            assertTrue(markdown.contains("Admin cost ↓"), "Markdown scenario table should label administrative cost.");
             assertTrue(markdown.contains("Weighted Two Major Plus Minors"), "Markdown should include party-system case names.");
         } catch (Exception exception) {
             throw new AssertionError("Weighted campaign report generation failed.", exception);
@@ -249,7 +254,7 @@ final class CampaignRunnerTests {
         }
     }
 
-    private static void paperCampaignUsesSingleCanonicalEvidenceBase() {
+    private static void paperCampaignUsesSingleEvidenceBase() {
         try {
             Path outputDir = Path.of("out", "test-campaign-v21-paper");
             Files.createDirectories(outputDir);
@@ -264,31 +269,64 @@ final class CampaignRunnerTests {
                 scenarios.add(row.scenarioKey());
             }
 
-            assertTrue(cases.contains("baseline"), "v21-paper should include broad assumption cases.");
-            assertTrue(cases.contains("adversarial-high-benefit-extreme"), "v21-paper should include adversarial generator cases.");
-            assertTrue(cases.contains("party-system-two-major-minors"), "v21-paper should include party-system sensitivity cases.");
-            assertTrue(cases.contains("era-6-crisis"), "v21-paper should include timeline stress cases.");
-            assertTrue(scenarios.contains("current-system"), "v21-paper should include the stylized U.S.-like benchmark.");
-            assertTrue(scenarios.contains("committee-regular-order"), "v21-paper should include committee-first regular order.");
-            assertTrue(scenarios.contains("leadership-cartel-majority"), "v21-paper should include leadership agenda control.");
-            assertTrue(scenarios.contains("cloture-conference-review"), "v21-paper should include cloture, conference, and judicial review.");
-            assertTrue(scenarios.contains("parliamentary-coalition-confidence"), "v21-paper should include a coalition-confidence design.");
-            assertTrue(scenarios.contains("citizen-initiative-referendum"), "v21-paper should include citizen initiative/referendum.");
-            assertTrue(scenarios.contains("simple-majority-alternatives-pairwise"), "v21-paper should include non-default policy tournaments.");
-            assertTrue(scenarios.contains("harm-weighted-majority"), "v21-paper should include harm-weighted thresholds.");
-            assertTrue(scenarios.contains("package-bargaining-majority"), "v21-paper should include package bargaining.");
-            assertTrue(scenarios.contains("risk-routed-majority"), "v21-paper should include adaptive risk routing.");
-            assertTrue(scenarios.contains("norm-erosion-majority"), "v21-paper should include endogenous norm erosion.");
-            assertTrue(scenarios.contains("default-pass"), "v21-paper should retain default pass as one stress-test family.");
-            assertTrue(Files.readString(result.markdownPath()).contains("Simulation Campaign v21 Paper"), "v21-paper Markdown should identify the report.");
+            assertTrue(cases.contains("baseline"), "main paper campaign should include broad assumption cases.");
+            assertTrue(cases.contains("adversarial-high-benefit-extreme"), "main paper campaign should include adversarial generator cases.");
+            assertTrue(cases.contains("party-system-two-major-minors"), "main paper campaign should include party-system sensitivity cases.");
+            assertTrue(cases.contains("era-6-crisis"), "main paper campaign should include timeline stress cases.");
+            assertTrue(scenarios.contains("current-system"), "main paper campaign should include the stylized U.S.-like benchmark.");
+            assertTrue(scenarios.contains("committee-regular-order"), "main paper campaign should include committee-first regular order.");
+            assertTrue(scenarios.contains("leadership-cartel-majority"), "main paper campaign should include leadership agenda control.");
+            assertTrue(scenarios.contains("cloture-conference-review"), "main paper campaign should include cloture, conference, and judicial review.");
+            assertTrue(scenarios.contains("parliamentary-coalition-confidence"), "main paper campaign should include a coalition-confidence design.");
+            assertTrue(scenarios.contains("citizen-initiative-referendum"), "main paper campaign should include citizen initiative/referendum.");
+            assertTrue(scenarios.contains("simple-majority-alternatives-pairwise"), "main paper campaign should include non-default policy tournaments.");
+            assertTrue(scenarios.contains("harm-weighted-majority"), "main paper campaign should include harm-weighted thresholds.");
+            assertTrue(scenarios.contains("package-bargaining-majority"), "main paper campaign should include package bargaining.");
+            assertTrue(scenarios.contains("multidimensional-package-majority"), "main paper campaign should include multidimensional package bargaining.");
+            assertTrue(scenarios.contains("risk-routed-majority"), "main paper campaign should include adaptive risk routing.");
+            assertTrue(scenarios.contains("portfolio-hybrid-legislature"), "main paper campaign should include the synthesized portfolio hybrid.");
+            assertTrue(scenarios.contains("norm-erosion-majority"), "main paper campaign should include endogenous norm erosion.");
+            assertTrue(scenarios.contains("default-pass"), "main paper campaign should retain default pass as one stress-test family.");
+            assertTrue(Files.readString(result.markdownPath()).contains("Main Comparison Campaign"), "main paper campaign Markdown should identify the report.");
 
             String csv = Files.readString(result.csvPath());
-            assertTrue(csv.contains("party-system-two-major-minors"), "v21-paper CSV should contain party-system rows.");
-            assertTrue(csv.contains("adversarial-high-benefit-extreme"), "v21-paper CSV should contain adversarial generator rows.");
-            assertTrue(csv.contains("era-6-crisis"), "v21-paper CSV should contain timeline rows.");
-            assertTrue(csv.contains("risk-routed-majority"), "v21-paper CSV should contain broad paper comparison scenarios.");
+            assertTrue(csv.contains("party-system-two-major-minors"), "main paper campaign CSV should contain party-system rows.");
+            assertTrue(csv.contains("adversarial-high-benefit-extreme"), "main paper campaign CSV should contain adversarial generator rows.");
+            assertTrue(csv.contains("era-6-crisis"), "main paper campaign CSV should contain timeline rows.");
+            assertTrue(csv.contains("risk-routed-majority"), "main paper campaign CSV should contain broad paper comparison scenarios.");
         } catch (Exception exception) {
             throw new AssertionError("Paper campaign report generation failed.", exception);
+        }
+    }
+
+    private static void diagnosticCampaignsAreRunnable() {
+        try {
+            Path ablationDir = Path.of("out", "test-ablation-analysis");
+            Files.createDirectories(ablationDir);
+            CampaignResult ablation = CampaignRunner.runAblationAnalysis(ablationDir, 1, 17, 4, 141L);
+            Set<String> ablationScenarios = new HashSet<>();
+            for (CampaignRow row : ablation.rows()) {
+                ablationScenarios.add(row.scenarioKey());
+            }
+            assertTrue(ablationScenarios.contains("risk-routed-no-citizen-majority"), "ablation campaign should include risk-routing ablation.");
+            assertTrue(ablationScenarios.contains("multidimensional-package-majority"), "ablation campaign should include multidimensional bargaining.");
+            assertTrue(Files.readString(ablation.markdownPath()).contains("Mechanism Ablation Analysis"), "ablation Markdown should identify the report.");
+
+            Path stressDir = Path.of("out", "test-manipulation-stress");
+            Files.createDirectories(stressDir);
+            CampaignResult stress = CampaignRunner.runManipulationStress(stressDir, 1, 17, 4, 142L);
+            Set<String> stressCases = new HashSet<>();
+            Set<String> stressScenarios = new HashSet<>();
+            for (CampaignRow row : stress.rows()) {
+                stressCases.add(row.caseKey());
+                stressScenarios.add(row.scenarioKey());
+            }
+            assertTrue(stressCases.contains("clone-decoy-pressure"), "manipulation campaign should include clone/decoy pressure.");
+            assertTrue(stressScenarios.contains("simple-majority-alternatives-strategic"), "manipulation campaign should include strategic alternatives.");
+            assertTrue(stressScenarios.contains("citizen-assembly-manipulation-stress"), "manipulation campaign should include panel manipulation stress.");
+            assertTrue(Files.readString(stress.markdownPath()).contains("Manipulation Stress Campaign"), "stress Markdown should identify the report.");
+        } catch (Exception exception) {
+            throw new AssertionError("Diagnostic campaign report generation failed.", exception);
         }
     }
 

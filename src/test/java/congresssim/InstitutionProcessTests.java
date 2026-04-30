@@ -35,6 +35,7 @@ import congresssim.institution.LegislativeProcess;
 import congresssim.institution.LobbyAuditProcess;
 import congresssim.institution.LobbyTransparencyProcess;
 import congresssim.institution.MultiRoundAmendmentProcess;
+import congresssim.institution.MultidimensionalPackageBargainingProcess;
 import congresssim.institution.ProposalAccessRules;
 import congresssim.institution.ProposalBondProcess;
 import congresssim.institution.ProposalCreditProcess;
@@ -105,6 +106,7 @@ final class InstitutionProcessTests {
         proposerStrategyAdaptsTimingHarmAndLobbyExposure();
         coalitionCosponsorshipRecordsSponsors();
         multiRoundMediationReducesHarm();
+        multidimensionalPackageBargainingAddsCrossIssueTradeSignals();
         strategicAlternativesRecordDecoys();
         challengeVouchersReportTokenExhaustion();
         publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
@@ -1309,6 +1311,47 @@ final class InstitutionProcessTests {
         assertTrue(outcome.bill().concentratedHarm() < harmfulBill.concentratedHarm(), "Mediation should reduce concentrated harm.");
         assertTrue(outcome.bill().compensationAdded(), "High-harm mediation should add compensation.");
         assertTrue(Math.abs(outcome.bill().ideologyPosition()) < Math.abs(harmfulBill.ideologyPosition()), "Mediation should move content toward compromise.");
+    }
+
+
+    private static void multidimensionalPackageBargainingAddsCrossIssueTradeSignals() {
+        Bill bill = new Bill(
+                "B-package",
+                "Cross-Issue Package Bill",
+                "L-1",
+                0.62,
+                0.88,
+                0.26,
+                0.72,
+                0.12,
+                0.84,
+                0.34,
+                false,
+                "energy",
+                0.0,
+                0.0,
+                "workers",
+                0.18,
+                0.72,
+                0.28
+        ).withPublicBenefitUncertainty(0.68);
+        VoteContext context = new VoteContext(Map.of("Left", -0.50, "Center", 0.0, "Right", 0.62), new Random(31L), 0.0);
+
+        BillOutcome outcome = new MultidimensionalPackageBargainingProcess(
+                "package test",
+                labeledProcess("package revised"),
+                0.20,
+                4,
+                0.70,
+                0.35,
+                0.60
+        ).consider(bill, context);
+
+        assertTrue(outcome.bill().cosponsorCount() > bill.cosponsorCount(), "Cross-issue package trades should add cosponsor signals.");
+        assertTrue(outcome.bill().outsideBlocCosponsorCount() > bill.outsideBlocCosponsorCount(), "Package trades should broaden outside-bloc support.");
+        assertTrue(outcome.bill().publicBenefitUncertainty() < bill.publicBenefitUncertainty(), "Package bargaining should reduce implementation uncertainty when trade quality is high.");
+        assertTrue(outcome.bill().concentratedHarm() < bill.concentratedHarm(), "Package bargaining should reduce concentrated harm through exemptions or compensation.");
+        assertTrue(outcome.bill().attentionSpend() > bill.attentionSpend(), "Package bargaining should add administrative attention cost.");
     }
 
 

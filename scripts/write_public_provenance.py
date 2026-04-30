@@ -17,6 +17,7 @@ ARTIFACTS = [
     "reports/simulation-campaign-v21-paper.csv",
     "reports/calibration-baseline.csv",
     "reports/seed-robustness-summary.csv",
+    "reports/paper-findings-validation.md",
     "reports/family-champions.md",
     "paper/main.pdf",
     "paper/appendix-odd-d.pdf",
@@ -85,7 +86,7 @@ def main() -> int:
             "platform": platform.platform(),
         },
         "commands": {
-            "campaign": "make campaign-v21-paper",
+            "campaign": "make paper-campaign",
             "calibration": "make calibration-check",
             "seedRobustness": "make seed-robustness-check",
             "paper": "make paper-checks",

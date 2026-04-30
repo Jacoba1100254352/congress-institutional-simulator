@@ -52,6 +52,16 @@ This writes:
 - `reports/simulation-campaign-v21-paper.md`
 - `reports/simulation-campaign-v21-paper-manifest.json`
 
+Validate and summarize paper findings from the generated campaign and seed reports:
+
+```sh
+make findings-validation
+```
+
+This writes:
+
+- `reports/paper-findings-validation.md`
+
 Run empirical benchmark screening:
 
 ```sh
@@ -64,7 +74,20 @@ This writes:
 - `reports/calibration-baseline.md`
 - `reports/calibration-baseline-manifest.json`
 
-Earlier campaigns remain available:
+Run follow-up diagnostics used by the paper:
+
+```sh
+make mechanism-diagnostics
+```
+
+This runs the empirical bridge, mechanism ablation, and manipulation-stress reports:
+
+- `reports/empirical-bridge.csv`
+- `reports/ablation-analysis-summary.csv`
+- `reports/manipulation-stress-summary.csv`
+- `paper/figures/mechanism_diagnostics_table.tex`
+
+Named campaign targets remain available:
 
 ```sh
 make campaign-v0
@@ -88,6 +111,10 @@ make campaign-v17
 make campaign-v18
 make campaign-v19
 make campaign-v20
+make paper-campaign
+make ablation-analysis
+make manipulation-stress
+# Backward-compatible internal target name:
 make campaign-v21-paper
 ```
 
@@ -102,7 +129,7 @@ Calibration and validation details live in [docs/calibration.md](docs/calibratio
 
 ## Current Scenarios
 
-The default CLI and v21 paper campaign now use a representative breadth-first set. Default passage is deliberately kept to three stress-test variants rather than treated as the main family:
+The default CLI and main comparison campaign now use a representative breadth-first set. Default passage is deliberately kept to three stress-test variants rather than treated as the main family:
 
 - `current-system`: stylized U.S.-like conventional benchmark
 - `simple-majority`: unicameral simple majority
@@ -121,10 +148,12 @@ The default CLI and v21 paper campaign now use a representative breadth-first se
 - `harm-weighted-majority`: concentrated-harm thresholds
 - `compensation-majority`: compensation amendments for concentrated harm
 - `package-bargaining-majority`: side payments, implementation delay, and harm-reducing package trades
+- `multidimensional-package-majority`: cross-issue package bargaining with exemptions, phase-ins, and side payments
 - `law-registry-majority`: active-law review and correction
 - `public-objection-majority`: public objection window before majority ratification
 - `anti-capture-majority-bundle`: lobbying transparency, public advocate, audit, and screen bundle
 - `risk-routed-majority`: adaptive risk lanes under majority rule
+- `portfolio-hybrid-legislature`: synthesized hybrid combining risk lanes, alternatives, citizen/harm review, bonds, anti-capture safeguards, and law review
 - `default-pass`: default passage unless 2/3 vote to block
 - `default-pass-challenge`: default passage with scarce challenge vouchers
 - `default-pass-multiround-mediation-challenge`: default passage with mediation plus challenge vouchers
@@ -151,7 +180,7 @@ Core controls:
 - `--format`: `table`, `csv`, or `bars`
 - `--charts`: add ASCII bar charts after the table
 - `--calibrate`: run empirical benchmark screening from `data/calibration/empirical-benchmarks.csv`
-- `--campaign`: run a named campaign, currently `v0` through `v21-paper`
+- `--campaign`: run a named campaign, currently `v0` through `v20`, `paper` / `main-comparison`, `ablation-analysis`, and `manipulation-stress`; the older `v21-paper` name is still accepted
 - `--output-dir`: campaign output directory
 
 ## Architecture
@@ -189,13 +218,13 @@ Metric direction is explicit:
 - `↑` higher is generally better.
 - `↓` lower is generally better; directional comparisons invert these before combining them.
 - `diag.` means the value is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.
-- `directionalScore` is a reader aid that averages `productivity`, `representativeQuality`, and `riskControl`. `representativeQuality` averages welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts low-support passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
+- `directionalScore` is a reader aid that averages `productivity`, `representativeQuality`, `riskControl`, and `administrativeFeasibility`. `representativeQuality` averages welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts chamber low-support passage, weak public-mandate passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift. `administrativeFeasibility` inverts `administrativeCost`.
 
 - `productivity` `↑`: share of introduced bills enacted
 - `floor` `diag.`: share of potential bills that reached floor consideration
 - `caseWeight` `diag.`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`
 - campaign reports also track `enactedPerRun` and `floorPerRun` `diag.` so proposal flooding is visible as institutional load, not only as percentages
-- `directionalScore` `↑`, `representativeQuality` `↑`, and `riskControl` `↑`: derived display scores that orient mixed-sign metrics in the same direction
+- `directionalScore` `↑`, `representativeQuality` `↑`, `riskControl` `↑`, and `administrativeFeasibility` `↑`: derived display scores that orient mixed-sign metrics in the same direction
 - `challengeRate` `diag.`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member challenge escalation
 - `avgSupport` `↑`: average yay share for enacted bills
 - `welfare` `↑`: average public-benefit score for enacted bills
@@ -205,6 +234,8 @@ Metric direction is explicit:
 - `accessD` `diag.`: share of potential bills blocked by proposal-access rules
 - `cmteRej` `diag.`: share of potential bills rejected by a committee gate
 - `lowSupport` `↓`: share of enacted bills with less than 50 percent yay support
+- `weakPublicMandatePassage` `↓`: share of enacted bills with generated public support below 50 percent, regardless of the chamber vote threshold
+- `administrativeCost` `↓`: estimated procedural load from attention spending, review, challenge, amendment, and alternative-selection work
 - `popularFail` `↓`: share of high-public-support bills that fail
 - `policyShift` `diag.`: average absolute movement from the prior status quo; high values may mean useful reform or uncontrolled volatility depending on context
 - `propGain` `↓`: average enacted movement toward the proposer's ideal point
@@ -246,7 +277,7 @@ The research direction is comparative institutional search. The simulator should
 
 Default passage remains useful as an early stress test because it sharply shifts power from affirmative majority formation to blocking coalition formation. The broader design warning is that every legislative structure depends on agenda access, proposal screening, proposer power, information, challenge rights, reversibility, and legitimacy metrics. The first modeling layers therefore focus on those institutional mechanics before media, elections, or richer behavioral systems.
 
-The following campaign notes are historical side logs. They explain how earlier default-pass-heavy iterations were developed, but the current paper campaign is the breadth-first v21 comparison above.
+The following campaign notes are historical side logs. They explain how earlier default-pass-heavy iterations were developed, but the current paper campaign is the breadth-first main comparison above.
 
 The early agenda layer is represented in three comparison scenarios:
 
@@ -402,9 +433,10 @@ The v20 campaign adds focused strategy and calibration comparisons:
 - The deep strategy bundle combines proposer pacing/risk adaptation, lobby-channel learning, issue-budget adaptation, defensive anti-reform behavior, and multi-round mediation.
 - Use it with `make campaign-v20`.
 
-The current v21-paper campaign is the canonical paper evidence base:
+The current main comparison campaign is the paper evidence base:
 
 - It combines broad assumption cases, adversarial proposal-generator cases, weighted party-system sensitivity cases, and rising-contention timeline cases in one CSV.
 - It is breadth-first: stylized U.S.-like and conventional affirmative baselines, committee regular order, coalition confidence, policy tournaments, citizen review, public-interest screening, agenda lotteries, quadratic attention, proposal bonds, harm and compensation rules, package bargaining, public objection, law-registry review, anti-capture safeguards, risk routing, and a small default-pass stress-test family.
-- `make family-champions` runs a supplemental all-catalog screen and writes `reports/all-scenarios-baseline.csv` plus `reports/family-champions.md`.
-- Use it with `make campaign` or `make campaign-v21-paper`.
+- `make family-screen` runs a supplemental all-catalog screen and writes `reports/all-scenarios-baseline.csv` plus `reports/family-champions.md`.
+- `make mechanism-diagnostics` runs empirical-bridge readiness, ablation, and manipulation-stress follow-ups and regenerates the paper diagnostics table.
+- Use it with `make campaign` or `make paper-campaign`; the older `make campaign-v21-paper` target remains for reproducibility.

@@ -34,7 +34,6 @@ SCENARIOS = [
     ("parliamentary-coalition-confidence", "Parliamentary coalition confidence"),
     ("citizen-initiative-referendum", "Citizen initiative and referendum"),
     ("simple-majority-alternatives-pairwise", "Majority pairwise policy tournament"),
-    ("simple-majority-alternatives-strategic", "Strategic policy tournament"),
     ("citizen-assembly-threshold", "Citizen assembly threshold gate"),
     ("public-interest-majority", "Majority + public-interest screen"),
     ("agenda-lottery-majority", "Weighted agenda lottery + majority"),
@@ -43,16 +42,26 @@ SCENARIOS = [
     ("harm-weighted-majority", "Harm-weighted double majority"),
     ("compensation-majority", "Compensation amendments + majority"),
     ("package-bargaining-majority", "Package bargaining + majority"),
+    ("multidimensional-package-majority", "Multidimensional package bargaining + majority"),
     ("law-registry-majority", "Active-law registry + majority review"),
     ("public-objection-majority", "Public objection window + majority"),
     ("anti-capture-majority-bundle", "Majority + anti-capture bundle"),
     ("risk-routed-majority", "Risk-routed majority legislature"),
+    ("portfolio-hybrid-legislature", "Portfolio hybrid legislature"),
     ("norm-erosion-majority", "Endogenous norm erosion + majority"),
     ("default-pass", "Default pass unless 2/3 block"),
     ("default-pass-challenge", "Default pass + challenge vouchers"),
     ("default-pass-multiround-mediation-challenge", "Default pass + mediation + challenge"),
 ]
-FIELDS = ["directionalScore", "productivity", "compromise", "lowSupport", "welfare", "riskControl"]
+FIELDS = [
+    "directionalScore",
+    "productivity",
+    "compromise",
+    "weakPublicMandatePassage",
+    "administrativeCost",
+    "welfare",
+    "riskControl",
+]
 
 
 def broad_case(case_key: str) -> bool:
@@ -143,8 +152,8 @@ def main() -> int:
     lines = [
         "# Seed Robustness Summary",
         "",
-        "Deterministic multi-seed sweep for all v21-paper scenarios.",
-        "The main paper table still reports sensitivity intervals across broad and adversarial assumption cases; this report checks whether paper-scenario relationships are stable across independent base seeds.",
+        "Deterministic multi-seed sweep for all paper comparison scenarios.",
+        "The main paper table reports assumption-sensitivity bands across broad and adversarial campaign cases; this report checks whether paper-scenario relationships are stable across independent base seeds.",
         "",
         f"- Seeds: {', '.join(str(seed) for seed in SEEDS)}",
         f"- Runs per seed: {RUNS}",

@@ -47,9 +47,10 @@ tlmgr --usermode install acmart xstring zref preprint comment draftwatermark env
 make paper
 ```
 
-`make paper` first regenerates the canonical `v21-paper` campaign, then
-generates table/figure fragments from `reports/simulation-campaign-v21-paper.csv`
-before compiling the PDF. Word-count compliance can be checked with:
+`make paper` first regenerates the main comparison campaign, then
+generates the mechanism diagnostics tables from the ablation,
+manipulation-stress, and empirical-bridge reports before compiling the PDF.
+Word-count compliance can be checked with:
 
 ```sh
 make paper-word-count
@@ -85,6 +86,20 @@ present with:
 
 ```sh
 make empirical-validation
+```
+
+Map optional raw empirical summaries to the simulator calibration proxies with:
+
+```sh
+make empirical-bridge
+```
+
+Run mechanism ablations and manipulation stress tests with:
+
+```sh
+make ablation-analysis
+make manipulation-stress
+make mechanism-diagnostics
 ```
 
 Report the breadth-first scenario catalog composition with:

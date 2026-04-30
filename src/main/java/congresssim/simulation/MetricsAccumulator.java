@@ -13,6 +13,7 @@ final class MetricsAccumulator {
     private int totalBills;
     private int enactedBills;
     private int controversialEnactedBills;
+    private int weakPublicMandateEnactedBills;
     private int popularBills;
     private int failedPopularBills;
     private int antiLobbyingBills;
@@ -184,6 +185,9 @@ final class MetricsAccumulator {
         if (support < 0.50) {
             controversialEnactedBills++;
         }
+        if (outcome.bill().publicSupport() < 0.50) {
+            weakPublicMandateEnactedBills++;
+        }
 
         double moderation = 1.0 - Math.abs(outcome.bill().ideologyPosition());
         double proposerConcession = proposerConcession(outcome);
@@ -207,10 +211,12 @@ final class MetricsAccumulator {
         double publicAlignment = enactedBills == 0 ? 0.0 : publicAlignmentSum / enactedBills;
         double privateGainRatio = enactedBills == 0 ? 0.0 : privateGainRatioSum / enactedBills;
         double lobbySpendPerBill = totalBills == 0 ? 0.0 : totalLobbySpendSum / totalBills;
+        double attentionSpendPerBill = totalBills == 0 ? 0.0 : attentionSpendSum / totalBills;
         double defensiveLobbyingShare = totalLobbySpendSum == 0.0 ? 0.0 : defensiveLobbySpendSum / totalLobbySpendSum;
         double captureReturnOnSpend = totalLobbySpendSum == 0.0 ? 0.0 : lobbyCaptureSum / totalLobbySpendSum;
         double publicPreferenceDistortion = enactedBills == 0 ? 0.0 : publicPreferenceDistortionSum / enactedBills;
         double averageAmendmentMovement = totalBills == 0 ? 0.0 : amendmentMovementSum / totalBills;
+        double amendmentRate = ratio(amendedBills, totalBills);
         double minorityHarm = enactedBills == 0 ? 0.0 : minorityHarmSum / enactedBills;
         double concentratedHarmPassage = ratio(enactedConcentratedHarmBills, concentratedHarmBills);
         double compensationRate = ratio(compensationBills, totalBills);
@@ -224,6 +230,18 @@ final class MetricsAccumulator {
         double proposalBondForfeiture = proposalBondReviews == 0 ? 0.0 : proposalBondForfeitureSum / proposalBondReviews;
         double publicSignalMovement = publicWillReviews == 0 ? 0.0 : publicSignalMovementSum / publicWillReviews;
         double districtAlignment = publicWillReviews == 0 ? 0.0 : districtAlignmentSum / publicWillReviews;
+        double administrativeCost = administrativeCostIndex(
+                totalBills,
+                floorConsideredBills,
+                committeeRejectedBills,
+                challengedBills,
+                lawReviews,
+                alternativeRounds,
+                citizenReviews,
+                objectionWindows,
+                amendmentRate,
+                attentionSpendPerBill
+        );
         return new ScenarioReport(
                 scenarioName,
                 totalBills,
@@ -246,7 +264,8 @@ final class MetricsAccumulator {
                 defensiveLobbyingShare,
                 captureReturnOnSpend,
                 publicPreferenceDistortion,
-                ratio(amendedBills, totalBills),
+                ratio(weakPublicMandateEnactedBills, enactedBills),
+                amendmentRate,
                 averageAmendmentMovement,
                 minorityHarm,
                 concentratedHarmPassage,
@@ -288,6 +307,7 @@ final class MetricsAccumulator {
                 ratio(strategicDecoys, strategicAlternativeRounds),
                 gini(floorByProposer),
                 totalBills == 0 ? 0.0 : enactedPublicBenefitSum / totalBills,
+                administrativeCost,
                 ratio(floorConsideredBills, totalBills),
                 ratio(accessDeniedBills, totalBills),
                 ratio(committeeRejectedBills, totalBills),
@@ -303,6 +323,44 @@ final class MetricsAccumulator {
 
     private static double share(double numerator, double denominator) {
         return denominator == 0.0 ? 0.0 : numerator / denominator;
+    }
+
+    private static double administrativeCostIndex(
+            int totalBills,
+            int floorConsideredBills,
+            int committeeRejectedBills,
+            int challengedBills,
+            int lawReviews,
+            int alternativeRounds,
+            int citizenReviews,
+            int objectionWindows,
+            double amendmentRate,
+            double attentionSpendPerBill
+    ) {
+        if (totalBills == 0) {
+            return 0.0;
+        }
+        double floorRate = ratio(floorConsideredBills, totalBills);
+        double committeeRate = ratio(committeeRejectedBills, totalBills);
+        double challengeRate = ratio(challengedBills, totalBills);
+        double lawReviewRate = ratio(lawReviews, totalBills);
+        double alternativeRate = ratio(alternativeRounds, totalBills);
+        double citizenReviewRate = ratio(citizenReviews, totalBills);
+        double objectionRate = ratio(objectionWindows, totalBills);
+        double attentionCost = Math.clamp(attentionSpendPerBill / 3.0, 0.0, 1.0);
+        return Math.clamp(
+                (0.18 * attentionCost)
+                        + (0.14 * amendmentRate)
+                        + (0.14 * alternativeRate)
+                        + (0.12 * citizenReviewRate)
+                        + (0.12 * lawReviewRate)
+                        + (0.10 * objectionRate)
+                        + (0.08 * challengeRate)
+                        + (0.07 * floorRate)
+                        + (0.05 * committeeRate),
+                0.0,
+                1.0
+        );
     }
 
     private static double gini(Map<String, Integer> counts) {
