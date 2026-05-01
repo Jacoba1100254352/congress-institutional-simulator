@@ -163,7 +163,8 @@ supplement-anonymous: paper
 	python3 scripts/build_anonymous_supplement.py
 
 clean-regeneration-check:
-	git diff --no-ext-diff --exit-code -- .
+	# PDF bytes vary across TeX/font environments; paper-checks validates rendered PDFs.
+	git diff --no-ext-diff --exit-code -- . ':(exclude)paper/main.pdf' ':(exclude)paper/appendix-odd-d.pdf'
 
 paper-clean:
 	cd paper && latexmk -C -outdir=build main.tex
