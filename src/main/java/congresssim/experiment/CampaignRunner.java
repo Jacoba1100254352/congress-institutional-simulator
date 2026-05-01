@@ -507,6 +507,58 @@ public final class CampaignRunner {
             "default-pass-challenge",
             "default-pass-multiround-mediation-challenge"
     );
+    private static final List<String> CHAMBER_STRUCTURE_SCENARIOS = List.of(
+            "simple-majority",
+            "bicameral-majority",
+            "current-system",
+            "equal-population-unicameral",
+            "proportional-house-majority",
+            "chamber-incongruence-pr-upper",
+            "malapportioned-upper-chamber",
+            "appointed-upper-chamber",
+            "asymmetric-senate-cloture",
+            "conference-malapportioned-upper",
+            "house-origin-routing",
+            "senate-origin-routing",
+            "emergency-lower-fast-routing",
+            "proposer-chamber-origin-routing",
+            "leadership-routed-origin",
+            "principles-resolution-routing",
+            "second-chamber-preclearance",
+            "revision-council-upper",
+            "suspensive-veto-upper",
+            "limited-navette-upper",
+            "joint-sitting-upper",
+            "upper-amendment-only",
+            "upper-absolute-veto",
+            "upper-territorial-veto",
+            "mediation-committee-upper",
+            "last-offer-bargaining-upper",
+            "lower-override-upper",
+            "committee-regular-order",
+            "balanced-committee-majority",
+            "lottery-committee-majority",
+            "expert-lottery-committee-majority",
+            "opposition-chaired-committee-majority",
+            "committee-deadline-discharge-majority",
+            "committee-minority-hearing-majority",
+            "committee-amendment-majority",
+            "minority-veto-committee-majority",
+            "mixed-citizen-committee-majority",
+            "committee-priority-queue-majority",
+            "committee-veto-player-majority",
+            "committee-fast-track-certifier-majority",
+            "committee-scrutiny-audit-majority",
+            "committee-public-accounts-majority",
+            "committee-legal-drafting-majority",
+            "committee-discharge-target-majority",
+            "eligibility-expertise-majority",
+            "appointment-retention-majority",
+            "recusal-cooling-off-majority",
+            "exante-advisory-majority",
+            "exante-clearance-majority",
+            "independent-insulation-majority"
+    );
     private static final List<String> ABLATION_SCENARIOS = List.of(
             "current-system",
             "simple-majority",
@@ -1025,6 +1077,28 @@ public final class CampaignRunner {
         );
     }
 
+    public static CampaignResult runChamberStructure(
+            Path outputDir,
+            int runs,
+            int legislators,
+            int bills,
+            long seed
+    ) throws IOException {
+        List<ExperimentCase> cases = new ArrayList<>(v21PaperCases(legislators, bills));
+        cases.addAll(v21AdversarialCases(legislators, bills));
+        return run(
+                "Chamber Structure Campaign",
+                "simulation-chamber-structure",
+                outputDir,
+                cases,
+                CHAMBER_STRUCTURE_SCENARIOS,
+                runs,
+                legislators,
+                bills,
+                seed
+        );
+    }
+
     private static CampaignResult run(
             String name,
             String fileStem,
@@ -1358,7 +1432,11 @@ public final class CampaignRunner {
 
     private static String csv(CampaignResult result, int runs) {
         StringBuilder builder = new StringBuilder();
-        builder.append("caseKey,caseName,caseDescription,caseWeight,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,directionalScore,representativeQuality,riskControl,administrativeFeasibility,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,weakPublicMandatePassage,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,administrativeCost,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,fastLaneRate,middleLaneRate,highRiskLaneRate,challengeExhaustionRate,falseNegativePassRate,publicWillReviewRate,publicSignalMovement,districtAlignment,crossBlocAdmissionRate,affectedGroupSponsorshipRate,averageCosponsors,proposalBondForfeiture,strategicDecoyRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes\n");
+        builder.append("caseKey,caseName,caseDescription,caseWeight,scenarioKey,scenario,totalBills,potentialBillsPerRun,enactedBills,enactedPerRun,floorPerRun,directionalScore,representativeQuality,riskControl,administrativeFeasibility,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,weakPublicMandatePassage,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,administrativeCost,amendmentRate,amendmentMovement,minorityHarm,concentratedHarmPassage,compensationRate,legitimacy,activeLawWelfare,reversalRate,timeToCorrectBadLaw,statusQuoVolatility,lowSupportActiveLawShare,selectedAlternativeMedianDistance,proposerAgendaAdvantage,alternativeDiversity,statusQuoWinRate,publicBenefitPerLobbyDollar,directLobbySpendShare,agendaLobbySpendShare,informationLobbySpendShare,publicCampaignSpendShare,litigationThreatSpendShare,citizenReviewRate,citizenCertificationRate,citizenLegitimacy,attentionSpendPerBill,objectionWindowRate,repealWindowReversalRate,fastLaneRate,middleLaneRate,highRiskLaneRate,challengeExhaustionRate,falseNegativePassRate,publicWillReviewRate,publicSignalMovement,districtAlignment,crossBlocAdmissionRate,affectedGroupSponsorshipRate,averageCosponsors,proposalBondForfeiture,strategicDecoyRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes,interChamberConflictRate,secondChamberKillRate,conferenceRate,conferenceSuccessRate,routingDelayCost,shuttleRoundsToAgreement,suspensiveOverrideRate,bicameralDeadlockRate,dischargePetitionRate,committeeOverrideRate,committeeHearingRate,committeeQueueDelay,committeeAmendmentValueAdded,populationSeatDistortion,democraticResponsiveness,seatVoteDistortion,constituencyServiceConcentration,regionalTransferBias");
+        for (String key : ScenarioReport.SUPPLEMENTAL_METRIC_KEYS) {
+            builder.append(',').append(key);
+        }
+        builder.append('\n');
         for (CampaignRow row : result.rows()) {
             ScenarioReport report = row.report();
             builder.append(csvValue(row.caseKey())).append(',')
@@ -1443,7 +1521,29 @@ public final class CampaignRunner {
                     .append(format(report.proposerAccessGini())).append(',')
                     .append(format(report.welfarePerSubmittedBill())).append(',')
                     .append(report.vetoes()).append(',')
-                    .append(report.overriddenVetoes()).append('\n');
+                    .append(report.overriddenVetoes()).append(',')
+                    .append(format(report.interChamberConflictRate())).append(',')
+                    .append(format(report.secondChamberKillRate())).append(',')
+                    .append(format(report.conferenceRate())).append(',')
+                    .append(format(report.conferenceSuccessRate())).append(',')
+                    .append(format(report.routingDelayCost())).append(',')
+                    .append(format(report.shuttleRoundsToAgreement())).append(',')
+                    .append(format(report.suspensiveOverrideRate())).append(',')
+                    .append(format(report.bicameralDeadlockRate())).append(',')
+                    .append(format(report.dischargePetitionRate())).append(',')
+                    .append(format(report.committeeOverrideRate())).append(',')
+                    .append(format(report.committeeHearingRate())).append(',')
+                    .append(format(report.committeeQueueDelay())).append(',')
+                    .append(format(report.committeeAmendmentValueAdded())).append(',')
+                    .append(format(report.populationSeatDistortion())).append(',')
+                    .append(format(report.democraticResponsiveness())).append(',')
+                    .append(format(report.seatVoteDistortion())).append(',')
+                    .append(format(report.constituencyServiceConcentration())).append(',')
+                    .append(format(report.regionalTransferBias()));
+            for (String key : ScenarioReport.SUPPLEMENTAL_METRIC_KEYS) {
+                builder.append(',').append(format(report.supplementalMetric(key)));
+            }
+            builder.append('\n');
         }
         return builder.toString();
     }

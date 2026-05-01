@@ -1,0 +1,17 @@
+{
+  "reportName": "Chamber Structure Campaign",
+  "provenanceFormat": "stable-report-v2",
+  "sourceTree": "tracked submission artifact; inspect repository history for commit identity",
+  "javaRelease": "21",
+  "javaCommand": "congresssim.Main --campaign chamber-structure --runs 80 --legislators 101 --bills 60 --seed 20260428 --output-dir reports",
+  "runs": 80,
+  "legislators": 101,
+  "bills": 60,
+  "seed": 20260428,
+  "caseCount": 34,
+  "scenarioCount": 50,
+  "artifacts": [
+    {"path": "reports/simulation-chamber-structure.csv", "sha256": "43bb5da883c4e4e42cfd396e3e1bb03d15e53c9e9e61c0e2ae936b8535fcf659"},
+    {"path": "reports/simulation-chamber-structure.md", "sha256": "31ee1e569a55026196402a000704be129ee47b818abf9b46f78c2b8b51702c07"}
+  ]
+}

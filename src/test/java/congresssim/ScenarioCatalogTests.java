@@ -238,6 +238,90 @@ final class ScenarioCatalogTests {
                 "Scenario catalog should expose astroturf objection stress variants."
         );
         assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("chamber-incongruence-pr-upper"),
+                "Scenario catalog should expose chamber-incongruence architecture variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("malapportioned-upper-chamber"),
+                "Scenario catalog should expose malapportioned upper-chamber variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("revision-council-upper"),
+                "Scenario catalog should expose bicameral revision-council routing variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("suspensive-veto-upper"),
+                "Scenario catalog should expose bicameral suspensive-veto routing variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("limited-navette-upper"),
+                "Scenario catalog should expose bicameral navette routing variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("joint-sitting-upper"),
+                "Scenario catalog should expose bicameral joint-sitting fallback variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("balanced-committee-majority"),
+                "Scenario catalog should expose forced-balanced committee variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("opposition-chaired-committee-majority"),
+                "Scenario catalog should expose opposition-chaired scrutiny committee variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("committee-deadline-discharge-majority"),
+                "Scenario catalog should expose committee discharge-petition power variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("committee-minority-hearing-majority"),
+                "Scenario catalog should expose committee minority-hearing rights variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("committee-amendment-majority"),
+                "Scenario catalog should expose committee amendment-power variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("equal-population-unicameral"),
+                "Scenario catalog should expose equal-population unicameral chamber variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("proportional-house-majority"),
+                "Scenario catalog should expose proportional lower-house variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("house-origin-routing"),
+                "Scenario catalog should expose chamber-origin routing variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("upper-amendment-only"),
+                "Scenario catalog should expose upper-house amendment-only variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("last-offer-bargaining-upper"),
+                "Scenario catalog should expose last-offer bicameral bargaining variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("mixed-citizen-committee-majority"),
+                "Scenario catalog should expose mixed legislator-citizen committee variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("committee-scrutiny-audit-majority"),
+                "Scenario catalog should expose scrutiny and audit committee variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("eligibility-expertise-majority"),
+                "Scenario catalog should expose eligibility-filtered chamber variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("exante-clearance-majority"),
+                "Scenario catalog should expose ex ante constitutional/legal review variants."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("independent-insulation-majority"),
+                "Scenario catalog should expose independent-institution insulation variants."
+        );
+        assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("default-pass-challenge-minority-bonus"),
                 "Scenario catalog should expose challenge allocation variant keys."
         );

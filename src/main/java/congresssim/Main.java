@@ -247,6 +247,13 @@ public final class Main {
                         options.bills,
                         options.seed
                 );
+                case "chamber-structure", "chambers", "apportionment", "committees" -> CampaignRunner.runChamberStructure(
+                        options.outputDir,
+                        options.runs,
+                        options.legislators,
+                        options.bills,
+                        options.seed
+                );
                 case "manipulation", "manipulation-stress" -> CampaignRunner.runManipulationStress(
                         options.outputDir,
                         options.runs,
@@ -338,10 +345,14 @@ public final class Main {
     }
 
     private static void printCsv(List<ScenarioReport> reports) {
-        System.out.println("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,weakPublicMandatePassage,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,administrativeCost,administrativeFeasibility,amendmentRate,amendmentMovement,falseNegativePassRate,publicWillReviewRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes");
+        StringBuilder header = new StringBuilder("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,weakPublicMandatePassage,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,administrativeCost,administrativeFeasibility,amendmentRate,amendmentMovement,falseNegativePassRate,publicWillReviewRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes,interChamberConflictRate,secondChamberKillRate,conferenceRate,conferenceSuccessRate,routingDelayCost,shuttleRoundsToAgreement,suspensiveOverrideRate,bicameralDeadlockRate,dischargePetitionRate,committeeOverrideRate,committeeHearingRate,committeeQueueDelay,committeeAmendmentValueAdded,populationSeatDistortion,democraticResponsiveness,seatVoteDistortion,constituencyServiceConcentration,regionalTransferBias");
+        for (String key : ScenarioReport.SUPPLEMENTAL_METRIC_KEYS) {
+            header.append(',').append(key);
+        }
+        System.out.println(header);
         for (ScenarioReport report : reports) {
             System.out.printf(Locale.ROOT,
-                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d%n",
+                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f",
                     csvCell(report.scenarioName()),
                     report.totalBills(),
                     report.enactedBills(),
@@ -377,8 +388,30 @@ public final class Main {
                     report.proposerAccessGini(),
                     report.welfarePerSubmittedBill(),
                     report.vetoes(),
-                    report.overriddenVetoes()
+                    report.overriddenVetoes(),
+                    report.interChamberConflictRate(),
+                    report.secondChamberKillRate(),
+                    report.conferenceRate(),
+                    report.conferenceSuccessRate(),
+                    report.routingDelayCost(),
+                    report.shuttleRoundsToAgreement(),
+                    report.suspensiveOverrideRate(),
+                    report.bicameralDeadlockRate(),
+                    report.dischargePetitionRate(),
+                    report.committeeOverrideRate(),
+                    report.committeeHearingRate(),
+                    report.committeeQueueDelay(),
+                    report.committeeAmendmentValueAdded(),
+                    report.populationSeatDistortion(),
+                    report.democraticResponsiveness(),
+                    report.seatVoteDistortion(),
+                    report.constituencyServiceConcentration(),
+                    report.regionalTransferBias()
             );
+            for (String key : ScenarioReport.SUPPLEMENTAL_METRIC_KEYS) {
+                System.out.printf(Locale.ROOT, ",%.6f", report.supplementalMetric(key));
+            }
+            System.out.println();
         }
     }
 
@@ -660,7 +693,7 @@ public final class Main {
                       --format <kind>     table, csv, or bars
                       --charts            Add ASCII bar charts after the table
                       --calibrate         Run empirical benchmark screening instead of scenario comparison
-                      --campaign <name>   Run a named campaign, currently v0 through v20 plus paper/main-comparison
+                      --campaign <name>   Run a named campaign, including v0-v21, paper/main-comparison, chamber-structure, ablation, and manipulation-stress
                       --output-dir <path> Campaign output directory
                       --seed <n>          Reproducible random seed
                       --help              Show this message

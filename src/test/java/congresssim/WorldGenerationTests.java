@@ -39,7 +39,15 @@ import congresssim.institution.QuadraticAttentionBudgetProcess;
 import congresssim.institution.SunsetTrialProcess;
 import congresssim.simulation.CommitteeComposition;
 import congresssim.simulation.CommitteeFactory;
+import congresssim.simulation.CommitteeQuotaRule;
+import congresssim.simulation.CommitteeSelectionConfig;
+import congresssim.simulation.CommitteeSelectionResult;
+import congresssim.simulation.ChairAllocationRule;
+import congresssim.simulation.ChamberArchitectureMetrics;
+import congresssim.simulation.ChamberFactory;
+import congresssim.simulation.ChamberSpec;
 import congresssim.simulation.PartySystemProfile;
+import congresssim.simulation.RepresentationUnit;
 import congresssim.simulation.Scenario;
 import congresssim.simulation.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
@@ -50,6 +58,7 @@ import congresssim.model.Bill;
 import congresssim.model.Legislator;
 import congresssim.model.LobbyCaptureStrategy;
 import congresssim.model.LobbyGroup;
+import congresssim.model.RepresentationProfile;
 import congresssim.model.SimulationWorld;
 import congresssim.model.Vote;
 import congresssim.calibration.CalibrationTarget;
@@ -71,6 +80,13 @@ final class WorldGenerationTests {
 
     static void run() {
         committeeCompositionPresetsSelectDifferentMembers();
+        expandedCommitteeCompositionsSelectInstitutionallyDistinctMembers();
+        configuredCommitteeSelectionPreservesCitizenAdvisoryWeights();
+        chamberRepresentationMetricsDistinguishEqualAndTerritorialApportionment();
+        generatedLegislatorsCarryRepresentationMetadata();
+        chamberSelectionAnnotatesRepresentationMetadata();
+        thresholdAndMagnitudeSweepsChangePartyRepresentation();
+        chamberFactoryBuildsIncongruentChambers();
         partySystemProfilesRepresentMajorAndMinorParties();
         partySystemProfilesKeepIdeologicalOrdering();
         modelValidationRejectsInvalidInputs();
@@ -95,6 +111,254 @@ final class WorldGenerationTests {
         assertTrue(captured.stream().anyMatch(legislator -> legislator.id().equals("L-5")), "Captured committee should select lobby-sensitive members.");
     }
 
+    private static void expandedCommitteeCompositionsSelectInstitutionallyDistinctMembers() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "A", -0.9, 0.2, 0.9, 0.3, 0.2, 0.4),
+                new Legislator("L-2", "A", -0.5, 0.4, 0.8, 0.3, 0.3, 0.4),
+                new Legislator("L-3", "A", -0.2, 0.7, 0.7, 0.5, 0.4, 0.6),
+                new Legislator("L-4", "B", 0.0, 1.0, 0.2, 1.0, 0.0, 1.0),
+                new Legislator("L-5", "B", 0.4, 0.7, 0.3, 0.7, 0.2, 0.8),
+                new Legislator("L-6", "C", 0.8, 0.5, 0.4, 0.6, 0.1, 0.7)
+        );
+
+        List<Legislator> balanced = CommitteeFactory.select(legislators, CommitteeComposition.FORCED_PARTY_BALANCE, 3);
+        Set<String> balancedParties = balanced.stream()
+                .map(Legislator::party)
+                .collect(java.util.stream.Collectors.toSet());
+        assertTrue(balancedParties.size() >= 3, "Forced-balance committees should include available major/minor party blocs.");
+
+        List<Legislator> opposition = CommitteeFactory.select(legislators, CommitteeComposition.OPPOSITION_CHAIRED, 3);
+        assertTrue(!opposition.getFirst().party().equals("A"), "Opposition-chaired committees should put a non-majority member first as chair proxy.");
+
+        List<Legislator> lotteryA = CommitteeFactory.select(legislators, CommitteeComposition.RANDOM_LOTTERY, 3);
+        List<Legislator> lotteryB = CommitteeFactory.select(legislators, CommitteeComposition.RANDOM_LOTTERY, 3);
+        assertTrue(lotteryA.equals(lotteryB), "Random-lottery committees should be deterministic for reproducible campaigns.");
+    }
+
+    private static void configuredCommitteeSelectionPreservesCitizenAdvisoryWeights() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "A", -0.9, 0.2, 0.9, 0.3, 0.2, 0.4),
+                new Legislator("L-2", "A", -0.5, 0.4, 0.8, 0.3, 0.3, 0.4),
+                new Legislator("L-3", "A", -0.2, 0.7, 0.7, 0.5, 0.4, 0.6),
+                new Legislator("L-4", "B", 0.0, 1.0, 0.2, 1.0, 0.0, 1.0),
+                new Legislator("L-5", "B", 0.4, 0.7, 0.3, 0.7, 0.2, 0.8),
+                new Legislator("L-6", "C", 0.8, 0.5, 0.4, 0.6, 0.1, 0.7)
+        );
+        CommitteeSelectionConfig config = new CommitteeSelectionConfig(
+                "budget",
+                44L,
+                CommitteeQuotaRule.FORCED_BALANCE,
+                0.42,
+                0.34,
+                0.12,
+                2,
+                ChairAllocationRule.EXPERT,
+                0.50,
+                0.40,
+                true,
+                4
+        );
+        CommitteeSelectionResult result = CommitteeFactory.select(legislators, config);
+
+        assertTrue(result.members().size() == 4, "Configured committee selection should preserve target size.");
+        assertTrue(result.topicReferralAuthority(), "Configured committees should preserve topic referral authority.");
+        assertTrue(result.citizenAdvisoryWeight() == 0.40, "Mixed citizen committees should preserve citizen advisory weight.");
+        assertTrue(result.legislatorVotingWeight() == 0.60, "Mixed citizen committees should retain complementary legislator vote weight.");
+        assertTrue(result.quorumPartyBalance() == 0.50, "Configured committee selection should preserve quorum-balance rules.");
+    }
+
+    private static void chamberRepresentationMetricsDistinguishEqualAndTerritorialApportionment() {
+        ChamberSpec lower = ChamberSpec.lowerHouse(24);
+        ChamberSpec territorial = ChamberSpec.territorialUpperHouse(24, 0.85);
+        List<RepresentationUnit> lowerUnits = ChamberFactory.representationUnits(lower);
+        List<RepresentationUnit> territorialUnits = ChamberFactory.representationUnits(territorial);
+
+        assertTrue(
+                Math.abs(ChamberArchitectureMetrics.malapportionmentIndex(lowerUnits)) <= 0.000001,
+                "Equal-population units should have no apportionment distortion."
+        );
+        assertTrue(
+                ChamberArchitectureMetrics.malapportionmentIndex(territorialUnits) > 0.20,
+                "Territorial upper chambers should expose malapportionment distortion."
+        );
+        assertTrue(
+                ChamberArchitectureMetrics.perCitizenVotingPowerVariance(territorialUnits) > 0.0,
+                "Territorial weighting should create per-citizen voting-power variance."
+        );
+        assertTrue(
+                ChamberArchitectureMetrics.democraticResponsiveness(lowerUnits)
+                        > ChamberArchitectureMetrics.democraticResponsiveness(territorialUnits),
+                "Equal-population elected chambers should score as more democratically responsive than malapportioned chambers."
+        );
+        assertTrue(
+                ChamberArchitectureMetrics.regionalTransferBias(territorialUnits) > 0.0,
+                "Malapportioned territorial chambers should expose regional transfer bias."
+        );
+    }
+
+    private static void generatedLegislatorsCarryRepresentationMetadata() {
+        WorldSpec spec = new WorldSpec(
+                33,
+                5,
+                4,
+                0.62,
+                0.58,
+                0.35,
+                0.60,
+                0.55,
+                PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES,
+                1.0
+        );
+        SimulationWorld world = new WorldGenerator().generate(spec, 8844L);
+
+        for (Legislator legislator : world.legislators()) {
+            RepresentationProfile profile = legislator.representationProfile();
+            assertTrue(profile.populationRepresented() > 0.0, "Generated legislators should carry population metadata.");
+            assertTrue(profile.districtMagnitude() == 1, "Generated baseline legislators should carry district magnitude.");
+            assertTrue(!profile.regionLabel().isBlank(), "Generated legislators should carry a region label.");
+            assertTrue(!profile.selectionMode().isBlank(), "Generated legislators should carry selection-mode metadata.");
+            assertTrue(profile.lowerHouseTermLength() > 0, "Generated legislators should carry lower-house term metadata.");
+            assertTrue(profile.upperHouseTermLength() > 0, "Generated legislators should carry upper-house term metadata.");
+            assertTrue(profile.renewalCycleLength() > 0, "Generated legislators should carry renewal-cycle metadata.");
+            assertTrue(profile.nextRenewalRound() > 0, "Generated legislators should carry next-renewal metadata.");
+        }
+    }
+
+    private static void chamberSelectionAnnotatesRepresentationMetadata() {
+        WorldSpec spec = new WorldSpec(
+                45,
+                5,
+                5,
+                0.58,
+                0.56,
+                0.30,
+                0.62,
+                0.58,
+                PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES,
+                1.0
+        );
+        SimulationWorld world = new WorldGenerator().generate(spec, 9821L);
+        ChamberSpec appointedSpec = ChamberSpec.appointedUpperHouse(15, 0.40);
+        List<Legislator> appointedUpper = ChamberFactory.select(world.legislators(), appointedSpec, 9L);
+        long appointedMembers = appointedUpper.stream()
+                .filter(legislator -> legislator.representationProfile().appointed())
+                .count();
+
+        assertTrue(appointedUpper.size() == 15, "Chamber selection should preserve requested size.");
+        assertTrue(appointedMembers > 0, "Mixed appointed chambers should annotate appointed members.");
+        assertTrue(
+                appointedUpper.stream().allMatch(legislator ->
+                        legislator.representationProfile().chamberEligibility().equals(appointedSpec.name())),
+                "Chamber-selected legislators should carry chamber-specific eligibility metadata."
+        );
+        assertTrue(
+                ChamberArchitectureMetrics.appointedSeatShare(ChamberFactory.representationUnits(appointedSpec)) >= 0.35,
+                "Partial-appointed chamber specs should expose appointed-seat share."
+        );
+        Map<Integer, Long> renewalCohorts = appointedUpper.stream()
+                .collect(java.util.stream.Collectors.groupingBy(
+                        legislator -> legislator.representationProfile().renewalCohort(),
+                        java.util.stream.Collectors.counting()
+                ));
+        assertTrue(renewalCohorts.size() >= 2, "Staggered chambers should assign multiple renewal cohorts.");
+        assertTrue(
+                renewalCohorts.keySet().stream().allMatch(cohort -> cohort >= 0 && cohort < appointedSpec.renewalCohortCount()),
+                "Renewal cohorts should stay within the chamber spec's configured range."
+        );
+        assertTrue(
+                appointedUpper.stream().allMatch(legislator ->
+                        legislator.representationProfile().nextRenewalRound()
+                                <= legislator.representationProfile().renewalCycleLength()),
+                "Next-renewal rounds should stay inside the configured renewal cycle."
+        );
+        assertTrue(
+                appointedUpper.stream()
+                        .map(legislator -> legislator.representationProfile().nextRenewalRound())
+                        .distinct()
+                        .count() >= 2,
+                "Staggered chambers should expose multiple next-renewal rounds."
+        );
+    }
+
+    private static void thresholdAndMagnitudeSweepsChangePartyRepresentation() {
+        WorldSpec spec = new WorldSpec(
+                121,
+                5,
+                7,
+                0.58,
+                0.56,
+                0.30,
+                0.62,
+                0.58,
+                PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES,
+                1.0
+        );
+        SimulationWorld world = new WorldGenerator().generate(spec, 7722L);
+        List<Legislator> lowMagnitude = ChamberFactory.select(
+                world.legislators(),
+                ChamberSpec.proportionalHouse(60, 2, 0.00),
+                1L
+        );
+        List<Legislator> highMagnitude = ChamberFactory.select(
+                world.legislators(),
+                ChamberSpec.proportionalHouse(60, 12, 0.00),
+                1L
+        );
+        List<Legislator> legalThreshold = ChamberFactory.select(
+                world.legislators(),
+                ChamberSpec.proportionalHouse(60, 12, 0.12),
+                1L
+        );
+
+        assertTrue(
+                ChamberArchitectureMetrics.effectivePartyCount(highMagnitude)
+                        >= ChamberArchitectureMetrics.effectivePartyCount(lowMagnitude),
+                "Larger district magnitude should not reduce effective party count in proportional allocation."
+        );
+        assertTrue(
+                ChamberArchitectureMetrics.effectivePartyCount(legalThreshold)
+                        <= ChamberArchitectureMetrics.effectivePartyCount(highMagnitude),
+                "Higher legal thresholds should not increase effective party count."
+        );
+        assertTrue(
+                ChamberArchitectureMetrics.seatVoteDistortion(world.legislators(), legalThreshold)
+                        >= ChamberArchitectureMetrics.seatVoteDistortion(world.legislators(), highMagnitude),
+                "Thresholds should not reduce seat-vote distortion in this controlled sweep."
+        );
+    }
+
+    private static void chamberFactoryBuildsIncongruentChambers() {
+        WorldSpec spec = new WorldSpec(
+                101,
+                6,
+                5,
+                0.62,
+                0.58,
+                0.35,
+                0.60,
+                0.55,
+                PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES,
+                1.0
+        );
+        SimulationWorld world = new WorldGenerator().generate(spec, 551L);
+        List<Legislator> lower = ChamberFactory.select(world.legislators(), ChamberSpec.lowerHouse(101), 1L);
+        List<Legislator> upper = ChamberFactory.select(
+                world.legislators(),
+                ChamberSpec.proportionalHouse(35, 7, 0.04),
+                2L
+        );
+
+        assertTrue(lower.size() == 101, "Lower-house chamber spec should select the requested lower-house size.");
+        assertTrue(upper.size() == 35, "Upper-house chamber spec should select the requested upper-house size.");
+        assertTrue(
+                ChamberArchitectureMetrics.chamberIncongruenceIndex(lower, upper) >= 0.0,
+                "Chamber incongruence index should be computable for generated chambers."
+        );
+        assertTrue(
+                upper.stream().map(Legislator::party).distinct().count() >= 2,
+                "Proportional upper chambers should preserve multiparty representation in this generated profile."
+        );
+    }
 
     private static void partySystemProfilesRepresentMajorAndMinorParties() {
         WorldSpec twoMajorWithMinors = new WorldSpec(

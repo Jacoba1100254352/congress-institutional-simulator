@@ -1,0 +1,11 @@
+package congresssim.institution;
+
+public enum ExAnteReviewMode {
+    OPTIONAL_REFERRAL,
+    MANDATORY_HIGH_RISK,
+    ADVISORY_OPINION,
+    SUSPENSIVE_OBJECTION,
+    MANDATORY_CLEARANCE,
+    QUALIFIED_OVERRIDE,
+    DEADLINE_LIMITED
+}

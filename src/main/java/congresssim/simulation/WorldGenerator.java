@@ -5,6 +5,7 @@ import congresssim.model.Legislator;
 import congresssim.model.LobbyCaptureStrategy;
 import congresssim.model.LobbyGroup;
 import congresssim.model.PolicyState;
+import congresssim.model.RepresentationProfile;
 import congresssim.model.SimulationWorld;
 import congresssim.util.Values;
 
@@ -75,7 +76,7 @@ public final class WorldGenerator {
                     Values.clamp(0.34 + random.nextDouble() * 0.58, 0.0, 1.0)
             ));
         }
-        return assignPartySystem(legislators, spec, random);
+        return assignRepresentationProfiles(assignPartySystem(legislators, spec, random), spec);
     }
 
     private List<Bill> generateBills(WorldSpec spec, List<Legislator> legislators, Random random) {
@@ -413,6 +414,39 @@ public final class WorldGenerator {
             ));
         }
         return assigned;
+    }
+
+    private static List<Legislator> assignRepresentationProfiles(List<Legislator> legislators, WorldSpec spec) {
+        List<Legislator> sorted = new ArrayList<>(legislators);
+        sorted.sort(Comparator.comparingDouble(Legislator::districtPreference));
+        Map<String, RepresentationProfile> profilesById = new HashMap<>();
+        int regionCount = Math.max(3, Math.min(12, spec.legislatorCount() / 5));
+        for (int i = 0; i < sorted.size(); i++) {
+            Legislator legislator = sorted.get(i);
+            int regionIndex = Math.min(regionCount - 1, (int) Math.floor((double) i * regionCount / sorted.size()));
+            profilesById.put(legislator.id(), new RepresentationProfile(
+                    "lower-and-upper-eligible",
+                    1.0 / spec.legislatorCount(),
+                    1,
+                    "R" + (regionIndex + 1),
+                    "ELECTED_SINGLE_MEMBER",
+                    false,
+                    2,
+                    6,
+                    regionIndex % 3,
+                    6,
+                    Math.max(1, (regionIndex % 3) + 1) * 2,
+                    "general-electorate"
+            ));
+        }
+
+        List<Legislator> annotated = new ArrayList<>();
+        for (Legislator legislator : legislators) {
+            annotated.add(legislator.withRepresentationProfile(
+                    profilesById.getOrDefault(legislator.id(), RepresentationProfile.standardElected())
+            ));
+        }
+        return annotated;
     }
 
     private static int[] partySeatTargets(WorldSpec spec, Random random) {

@@ -159,6 +159,27 @@ final class SimulatorInvariantTests {
             assertRatio(report.welfarePerSubmittedBill(), "Welfare per submitted bill should be a ratio.");
             assertTrue(report.vetoes() >= 0, "Veto count should be nonnegative.");
             assertTrue(report.overriddenVetoes() >= 0 && report.overriddenVetoes() <= report.vetoes(), "Overridden vetoes should be bounded by vetoes.");
+            assertRatio(report.interChamberConflictRate(), "Inter-chamber conflict rate should be a ratio.");
+            assertRatio(report.secondChamberKillRate(), "Second-chamber kill rate should be a ratio.");
+            assertRatio(report.conferenceRate(), "Conference rate should be a ratio.");
+            assertRatio(report.conferenceSuccessRate(), "Conference success rate should be a ratio.");
+            assertNonNegativeFinite(report.routingDelayCost(), "Routing delay cost should be finite and nonnegative.");
+            assertNonNegativeFinite(report.shuttleRoundsToAgreement(), "Shuttle rounds to agreement should be finite and nonnegative.");
+            assertRatio(report.suspensiveOverrideRate(), "Suspensive override rate should be a ratio.");
+            assertRatio(report.bicameralDeadlockRate(), "Bicameral deadlock rate should be a ratio.");
+            assertRatio(report.dischargePetitionRate(), "Discharge petition rate should be a ratio.");
+            assertRatio(report.committeeOverrideRate(), "Committee override rate should be a ratio.");
+            assertRatio(report.committeeHearingRate(), "Committee hearing rate should be a ratio.");
+            assertNonNegativeFinite(report.committeeQueueDelay(), "Committee queue delay should be finite and nonnegative.");
+            assertRatio(report.committeeAmendmentValueAdded(), "Committee amendment value-added should be a ratio.");
+            assertRatio(report.populationSeatDistortion(), "Population-seat distortion should be a ratio.");
+            assertRatio(report.democraticResponsiveness(), "Democratic responsiveness should be a ratio.");
+            assertRatio(report.seatVoteDistortion(), "Seat-vote distortion should be a ratio.");
+            assertRatio(report.constituencyServiceConcentration(), "Constituency-service concentration should be a ratio.");
+            assertRatio(report.regionalTransferBias(), "Regional transfer bias should be a ratio.");
+            for (String key : ScenarioReport.SUPPLEMENTAL_METRIC_KEYS) {
+                assertRatio(report.supplementalMetric(key), "Supplemental metric " + key + " should be a ratio.");
+            }
         }
     }
 

@@ -89,9 +89,20 @@ All main results come from one reported comparison campaign. The campaign combin
 
 Scenario selection follows a fixed coverage rule: include conventional baselines, the stylized U.S.-like benchmark, and one readable family representative for each implemented non-default design class, plus three default-enactment stress tests. Non-default representatives include leadership agenda control, regular order, cloture with conference and review, coalition confidence, direct initiative, policy tournaments, citizen review, agenda scarcity, proposal accountability, affected-group protection, package bargaining, anti-capture safeguards, public objection, risk routing, norm erosion, law review, and one synthesized portfolio hybrid. The hybrid was added after comparing the first campaign results: it gives low-risk bills a fast lane, sends middle-risk bills through pairwise alternatives and mediation, sends high-risk bills through citizen and harm review, and wraps the system in proposer bonds, lobbying safeguards, and law-registry correction. When a family has many implemented variants, the paper uses the variant that best represents the family mechanism rather than the variant with the highest observed score. A supplemental \texttt{make family-screen} run evaluates every explicit scenario key and reports the highest-scoring scenario within each family under a fixed baseline rule; stressed policy-tournament variants with clone and decoy flooding remain there rather than being counted as a second main policy-tournament row. Earlier generated reports keep deeper default-pass sweeps as a side log, but the main comparison campaign treats default enactment as one comparison family rather than the organizing case.
 
+The simulator now includes a separate chamber-structure supplement for seat allocation, chamber routing, committee assignment, committee power, eligibility/appointment filters, and independent ex ante review. This supplement is not merged into the main evidence table because it asks a different design question: how representation architecture and intermediate institutions change the same productivity/compromise tradeoff. Its scenarios vary equal-population and proportional chambers, malapportioned and appointed upper chambers, origination rules, upper-house amendment or veto powers, navette, mediation, last-offer bargaining, lower-house override, committee selection rules, mixed citizen committees, public-accounts and legal-review committees, recusal and cooling-off rules, and insulated fiscal/electoral/audit review bodies.
+
 Calibration is a screening step, not a parameter fit. \texttt{make calibrate} compares conventional baselines with broad benchmark ranges derived from Voteview, Congress.gov, govinfo, Comparative Agendas Project, ParlGov, lobbying-disclosure records, Center for Effective Lawmaking measures, and V-Dem indicators \citep{Voteview2021,CongressGovData,GovinfoBillStatus2020,ComparativeAgendasProject,ParlGov2024,SenateLDA,VoldenWiseman2014,VDemDataset}. These are proxy checks for gross plausibility, not validation against raw institutional data. The current screen passes all tracked checks, including the stylized U.S.-like benchmark's enactment rate and floor load.
 
 \input{figures/design_space_coverage}
+\input{figures/chamber_family_table}
+
+\begin{figure}[H]
+  \centering
+  \input{figures/chamber_productivity_compromise}
+  \caption{Chamber-structure family champions from the supplemental chamber campaign. The axes keep the paper's central comparison visible, while grayscale intensity marks the generated malapportionment index. The figure is a structural sensitivity view, not a replacement for the main scenario comparison.}
+  \label{fig:chamber-productivity-compromise}
+  \Description{Scatter plot of chamber family champion productivity and compromise, with darker points indicating higher malapportionment.}
+\end{figure}
 
 \section{Results}
 
@@ -143,7 +154,7 @@ The exploratory result therefore does not support a single dominant passage rule
 
 The model is deliberately stylized. It uses one primary policy dimension, generated legislators, generated public support, generated public benefit, simplified issue domains, and abstract lobbying units. Public benefit is internal to the generator, so welfare comparisons are conditional on model assumptions. This creates a circularity risk: systems that screen extreme, uncertain, or lobby-heavy bills may look better partly because the generator often encodes those features as lower expected public value. Adversarial generator cases partially relax this assumption, but the paper still treats welfare as a shared synthetic signal, not as an empirical estimate of social welfare.
 
-The calibration layer screens conventional baselines against named empirical ranges, but it does not fit raw datasets. It should be strengthened with adapters for bill histories, roll-call coalitions, topic throughput, lobbying distributions, district-level public opinion, and sponsor success before the model is used for stronger claims about real Congress. Strategic behavior also remains bounded. Proposers and lobby groups adapt, and norm erosion can raise procedural delay, but parties, committees, coalitions, courts, agencies, media, and elections do not yet co-evolve over long horizons. Citizen panels, initiatives, objection windows, tournaments, audits, challenge tokens, judicial review, and law-registry review are optimistic mechanism prototypes: their transaction costs, manipulation risks, and administrative burdens are represented only indirectly through diagnostics such as attention spending, amendment load, objection use, review use, and volatility. Package bargaining is also only a proxy for multidimensional compromise; it can model side-payment and delay costs, but not real omnibus bargaining, jurisdictional trades, or distributive coalition formation.
+The calibration layer screens conventional baselines against named empirical ranges, but it does not fit raw datasets. It should be strengthened with adapters for bill histories, roll-call coalitions, topic throughput, lobbying distributions, district-level public opinion, and sponsor success before the model is used for stronger claims about real Congress. Strategic behavior also remains bounded. Proposers and lobby groups adapt, and norm erosion can raise procedural delay, but parties, committees, coalitions, courts, agencies, media, and elections do not yet co-evolve over long horizons. Chamber-structure scenarios are especially stylized: apportionment, independence, appointment, committee expertise, and review-body insulation are modeled as sensitivity parameters, not calibrated constitutional facts. Citizen panels, initiatives, objection windows, tournaments, audits, challenge tokens, judicial review, and law-registry review are optimistic mechanism prototypes: their transaction costs, manipulation risks, and administrative burdens are represented only indirectly through diagnostics such as attention spending, amendment load, objection use, review use, and volatility. Package bargaining is also only a proxy for multidimensional compromise; it can model side-payment and delay costs, but not real omnibus bargaining, jurisdictional trades, or distributive coalition formation.
 
 \section{Reproducibility}
 
@@ -157,6 +168,7 @@ make manipulation-stress
 make seed-robustness-check
 make family-screen
 make catalog-breadth
+make chamber-structure
 make validation-readiness
 make empirical-validation
 make paper

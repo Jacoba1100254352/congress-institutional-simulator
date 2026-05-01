@@ -84,6 +84,9 @@ def copy_reports() -> None:
         "empirical-bridge.*",
         "simulation-ablation-analysis.*",
         "simulation-manipulation-stress.*",
+        "simulation-chamber-structure.*",
+        "chamber-family-champions.*",
+        "chamber-stress-screen.*",
         "catalog-breadth.*",
         "empirical-validation-readiness.*",
         "empirical-validation-summary.*",
@@ -106,13 +109,15 @@ def write_readme() -> None:
         "make findings-validation\n"
         "make family-screen\n"
         "make catalog-breadth\n"
+        "make chamber-structure\n"
         "make empirical-validation\n"
         "make paper\n"
         "```\n\n"
         "The main evidence artifact is `reports/simulation-campaign-v21-paper.csv`. "
         "Calibration screening output is in `reports/calibration-baseline.csv`, the "
         "generated findings audit is in `reports/paper-findings-validation.md`, and the "
-        "supplemental breadth-catalog screen is in `reports/family-champions.md`.\n"
+        "supplemental breadth-catalog screen is in `reports/family-champions.md`, and "
+        "the chamber-structure supplement is in `reports/chamber-family-champions.md`.\n"
     )
 
 

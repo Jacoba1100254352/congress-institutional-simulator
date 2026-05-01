@@ -57,6 +57,14 @@ def family_for(name: str) -> str:
     lower = name.lower()
     if "default pass" in lower:
         return "Default-pass side family"
+    if "equal-population" in lower or "proportional lower" in lower or "appointed upper" in lower or "malapportioned" in lower:
+        return "Chamber apportionment"
+    if "origin" in lower or "routing" in lower or "preclearance" in lower or "navette" in lower or "joint-sitting" in lower or "upper-house" in lower or "last-offer" in lower or "mediation committee" in lower:
+        return "Chamber routing and conflict"
+    if "eligibility" in lower or "appointment and retention" in lower or "recusal" in lower or "cooling-off" in lower:
+        return "Selection and retention"
+    if "ex ante" in lower or "clearance" in lower or "insulation" in lower:
+        return "Independent review"
     if "current" in lower or "u.s.-like" in lower or "congress" in lower or "bicameral" in lower or "veto" in lower:
         return "Conventional benchmark"
     if "leadership" in lower or "cloture" in lower or "conference" in lower or "judicial" in lower:

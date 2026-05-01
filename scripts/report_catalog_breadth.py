@@ -30,6 +30,14 @@ def family(key: str) -> str:
         return "Default-pass archived/stress"
     if key in {"current-system", "current-congress-workflow", "simple-majority", "supermajority-60", "bicameral-majority", "presidential-veto"}:
         return "Conventional benchmark"
+    if any(token in key for token in ["equal-population", "proportional-house", "malapportioned-upper", "appointed-upper", "chamber-incongruence"]):
+        return "Chamber apportionment"
+    if any(token in key for token in ["origin-routing", "preclearance", "navette", "joint-sitting", "upper-", "last-offer", "lower-override", "routing"]):
+        return "Chamber routing/conflict"
+    if any(token in key for token in ["eligibility", "appointment-retention", "recusal-cooling"]):
+        return "Selection/retention"
+    if any(token in key for token in ["exante", "insulation"]):
+        return "Independent review"
     if "leadership" in key or "cloture" in key or "committee" in key:
         return "Leadership/procedure"
     if "initiative" in key:

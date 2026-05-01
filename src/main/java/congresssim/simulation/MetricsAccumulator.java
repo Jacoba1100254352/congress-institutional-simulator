@@ -28,6 +28,28 @@ final class MetricsAccumulator {
     private int challengedBills;
     private int vetoes;
     private int overriddenVetoes;
+    private int bicameralVotes;
+    private int interChamberConflicts;
+    private int secondChamberKills;
+    private int conferenceBills;
+    private int successfulConferences;
+    private double routingDelayCostSum;
+    private int shuttleAgreements;
+    private int shuttleRounds;
+    private int suspensiveOverrides;
+    private int bicameralDeadlocks;
+    private int committeePowerReviews;
+    private int committeeDischarges;
+    private int committeeHearings;
+    private double committeeQueueDelaySum;
+    private double committeeAmendmentValueSum;
+    private int chamberArchitectureReviews;
+    private double populationSeatDistortionSum;
+    private double democraticResponsivenessSum;
+    private double seatVoteDistortionSum;
+    private double constituencyServiceConcentrationSum;
+    private double regionalTransferBiasSum;
+    private final Map<String, Double> supplementalMetricSums = new HashMap<>();
     private double enactedSupportSum;
     private double enactedPublicBenefitSum;
     private double compromiseSum;
@@ -140,6 +162,25 @@ final class MetricsAccumulator {
         proposalBondForfeitureSum += signals.proposalBondForfeiture();
         strategicAlternativeRounds += signals.strategicAlternativeRounds();
         strategicDecoys += signals.strategicDecoys();
+        routingDelayCostSum += signals.routingDelayCost();
+        shuttleAgreements += signals.shuttleAgreements();
+        shuttleRounds += signals.shuttleRounds();
+        suspensiveOverrides += signals.suspensiveOverrides();
+        bicameralDeadlocks += signals.bicameralDeadlocks();
+        committeePowerReviews += signals.committeePowerReviews();
+        committeeDischarges += signals.committeeDischarges();
+        committeeHearings += signals.committeeHearings();
+        committeeQueueDelaySum += signals.committeeQueueDelay();
+        committeeAmendmentValueSum += signals.committeeAmendmentValue();
+        chamberArchitectureReviews += signals.chamberArchitectureReviews();
+        populationSeatDistortionSum += signals.populationSeatDistortion();
+        democraticResponsivenessSum += signals.democraticResponsiveness();
+        seatVoteDistortionSum += signals.seatVoteDistortion();
+        constituencyServiceConcentrationSum += signals.constituencyServiceConcentration();
+        regionalTransferBiasSum += signals.regionalTransferBias();
+        for (Map.Entry<String, Double> entry : signals.supplementalMetrics().entrySet()) {
+            supplementalMetricSums.merge(entry.getKey(), entry.getValue(), Double::sum);
+        }
         if (outcome.agendaDisposition() == AgendaDisposition.FLOOR_CONSIDERED) {
             floorConsideredBills++;
             floorByProposer.merge(outcome.bill().proposerId(), 1, Integer::sum);
@@ -162,6 +203,23 @@ final class MetricsAccumulator {
             vetoes++;
             if (outcome.presidentialAction().overridden()) {
                 overriddenVetoes++;
+            }
+        }
+        if (outcome.chamberResults().size() >= 2) {
+            bicameralVotes++;
+            boolean firstPassed = outcome.chamberResults().get(0).passed();
+            boolean secondPassed = outcome.chamberResults().get(1).passed();
+            if (firstPassed != secondPassed) {
+                interChamberConflicts++;
+            }
+            if (firstPassed && !secondPassed) {
+                secondChamberKills++;
+            }
+            if (outcome.chamberResults().size() >= 4) {
+                conferenceBills++;
+                if (outcome.enacted()) {
+                    successfulConferences++;
+                }
             }
         }
         if (outcome.bill().antiLobbyingReform()) {
@@ -230,6 +288,19 @@ final class MetricsAccumulator {
         double proposalBondForfeiture = proposalBondReviews == 0 ? 0.0 : proposalBondForfeitureSum / proposalBondReviews;
         double publicSignalMovement = publicWillReviews == 0 ? 0.0 : publicSignalMovementSum / publicWillReviews;
         double districtAlignment = publicWillReviews == 0 ? 0.0 : districtAlignmentSum / publicWillReviews;
+        double routingDelayCost = bicameralVotes == 0 ? 0.0 : routingDelayCostSum / bicameralVotes;
+        double shuttleRoundsToAgreement = shuttleAgreements == 0 ? 0.0 : (double) shuttleRounds / shuttleAgreements;
+        double committeeQueueDelay = committeePowerReviews == 0 ? 0.0 : committeeQueueDelaySum / committeePowerReviews;
+        double committeeAmendmentValueAdded = committeePowerReviews == 0 ? 0.0 : committeeAmendmentValueSum / committeePowerReviews;
+        double populationSeatDistortion = chamberArchitectureReviews == 0 ? 0.0 : populationSeatDistortionSum / chamberArchitectureReviews;
+        double democraticResponsiveness = chamberArchitectureReviews == 0 ? 0.0 : democraticResponsivenessSum / chamberArchitectureReviews;
+        double seatVoteDistortion = chamberArchitectureReviews == 0 ? 0.0 : seatVoteDistortionSum / chamberArchitectureReviews;
+        double constituencyServiceConcentration = chamberArchitectureReviews == 0 ? 0.0 : constituencyServiceConcentrationSum / chamberArchitectureReviews;
+        double regionalTransferBias = chamberArchitectureReviews == 0 ? 0.0 : regionalTransferBiasSum / chamberArchitectureReviews;
+        Map<String, Double> supplementalMetrics = new HashMap<>();
+        for (Map.Entry<String, Double> entry : supplementalMetricSums.entrySet()) {
+            supplementalMetrics.put(entry.getKey(), totalBills == 0 ? 0.0 : entry.getValue() / totalBills);
+        }
         double administrativeCost = administrativeCostIndex(
                 totalBills,
                 floorConsideredBills,
@@ -313,7 +384,26 @@ final class MetricsAccumulator {
                 ratio(committeeRejectedBills, totalBills),
                 ratio(challengedBills, totalBills),
                 vetoes,
-                overriddenVetoes
+                overriddenVetoes,
+                ratio(interChamberConflicts, bicameralVotes),
+                ratio(secondChamberKills, bicameralVotes),
+                ratio(conferenceBills, totalBills),
+                ratio(successfulConferences, conferenceBills),
+                routingDelayCost,
+                shuttleRoundsToAgreement,
+                ratio(suspensiveOverrides, bicameralVotes),
+                ratio(bicameralDeadlocks, bicameralVotes),
+                ratio(committeeDischarges, committeePowerReviews),
+                ratio(committeeDischarges, committeeRejectedBills + committeeDischarges),
+                ratio(committeeHearings, committeePowerReviews),
+                committeeQueueDelay,
+                committeeAmendmentValueAdded,
+                populationSeatDistortion,
+                democraticResponsiveness,
+                seatVoteDistortion,
+                constituencyServiceConcentration,
+                regionalTransferBias,
+                supplementalMetrics
         );
     }
 

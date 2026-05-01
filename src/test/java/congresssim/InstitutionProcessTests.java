@@ -13,6 +13,9 @@ import congresssim.institution.AlternativeSelectionRule;
 import congresssim.institution.AmendmentMediationProcess;
 import congresssim.institution.BillOutcome;
 import congresssim.institution.BudgetedLobbyingProcess;
+import congresssim.institution.BicameralConflictMode;
+import congresssim.institution.BicameralOriginRule;
+import congresssim.institution.BicameralRoutingProcess;
 import congresssim.institution.Chamber;
 import congresssim.institution.ChallengeEscalationProcess;
 import congresssim.institution.ChallengeTokenAllocation;
@@ -22,12 +25,20 @@ import congresssim.institution.CitizenPanelReviewProcess;
 import congresssim.institution.CoalitionCosponsorshipProcess;
 import congresssim.institution.CommitteeGatekeepingProcess;
 import congresssim.institution.CommitteeInformationProcess;
+import congresssim.institution.CommitteePowerConfig;
+import congresssim.institution.CommitteePowerProcess;
+import congresssim.institution.CommitteeRoleMode;
 import congresssim.institution.CompetingAlternativesProcess;
 import congresssim.institution.ConferenceCommitteeProcess;
 import congresssim.institution.ConstituentPublicWillProcess;
 import congresssim.institution.CitizenInitiativeProcess;
 import congresssim.institution.DefaultPassUnlessVetoedRule;
 import congresssim.institution.DistributionalHarmProcess;
+import congresssim.institution.EligibilityDiagnosticsProcess;
+import congresssim.institution.EligibilityRule;
+import congresssim.institution.ExAnteReviewMode;
+import congresssim.institution.ExAnteReviewProcess;
+import congresssim.institution.IndependentInstitutionBundle;
 import congresssim.institution.InstitutionalNormErosionProcess;
 import congresssim.institution.JudicialReviewProcess;
 import congresssim.institution.LawRegistryProcess;
@@ -79,6 +90,8 @@ final class InstitutionProcessTests {
         currentSystemAgendaDoesNotUseTrueGeneratedBenefit();
         leadershipAgendaUsesMajorityAndObservableSignals();
         conferenceCommitteeRevisesNearMissBills();
+        bicameralRoutingCanReviseOrOverrideSecondChamberConflict();
+        bicameralRoutingSupportsOriginationAndLastOfferBargaining();
         judicialReviewCanInvalidateRightsLikeHarm();
         citizenInitiativeCanBypassLegislativeFloor();
         normErosionCreatesEndogenousDelay();
@@ -114,6 +127,10 @@ final class InstitutionProcessTests {
         challengeVouchersRouteHighRiskBillsToActiveVote();
         challengeEscalationRoutesBroadlyContestedBillsToActiveVote();
         committeeGateBlocksBillsBeforeFloor();
+        committeePowerCanDischargeOrAmendBills();
+        committeeRolesEmitCaptureAndHearingDiagnostics();
+        eligibilityFiltersEmitRecusalAndExclusionDiagnostics();
+        exAnteReviewCanBlockOrReduceLegalRisk();
         committeeInformationMovesPublicSignalTowardBenefit();
     }
 
@@ -221,6 +238,137 @@ final class InstitutionProcessTests {
         assertTrue(Math.abs(outcome.bill().ideologyPosition()) < Math.abs(bill.ideologyPosition()), "Conference revision should move content toward the bargaining target.");
     }
 
+    private static void bicameralRoutingCanReviseOrOverrideSecondChamberConflict() {
+        List<Legislator> firstMembers = List.of(legislator("H-1"), legislator("H-2"), legislator("H-3"));
+        List<Legislator> secondMembers = List.of(legislator("S-1"), legislator("S-2"), legislator("S-3"));
+        Chamber lower = new Chamber(
+                "Lower",
+                firstMembers,
+                (legislator, bill, context) -> Vote.YAY,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        Chamber upper = new Chamber(
+                "Upper",
+                secondMembers,
+                (legislator, bill, context) -> bill.ideologyPosition() <= 0.55 ? Vote.YAY : Vote.NAY,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        Bill bill = new Bill("B-route", "Routing Bill", "L-1", 0.0, 0.92, 0.56, 0.64, 0.05, 0.70)
+                .withPublicBenefitUncertainty(0.20);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
+
+        BillOutcome revisionOutcome = new BicameralRoutingProcess(
+                "revision routing test",
+                lower,
+                upper,
+                (legislator, routedBill, routedContext) -> Vote.YAY,
+                BicameralOriginRule.LOWER_FIRST,
+                BicameralConflictMode.REVISION_COUNCIL,
+                AffirmativeThresholdRule.simpleMajority(),
+                0.30,
+                0.0,
+                0.60,
+                0.10,
+                0.67,
+                2
+        ).consider(bill, context);
+
+        assertTrue(revisionOutcome.enacted(), "Revision council should enact after content moves enough for the upper chamber.");
+        assertTrue(revisionOutcome.chamberResults().size() == 4, "Revision council should record initial and revised votes.");
+        assertTrue(revisionOutcome.bill().amendmentMovement() > 0.0, "Revision council should amend the bill.");
+
+        BillOutcome suspensiveOutcome = new BicameralRoutingProcess(
+                "suspensive routing test",
+                lower,
+                upper,
+                (legislator, routedBill, routedContext) -> Vote.YAY,
+                BicameralOriginRule.LOWER_FIRST,
+                BicameralConflictMode.SUSPENSIVE_VETO,
+                AffirmativeThresholdRule.simpleMajority(),
+                0.30,
+                0.0,
+                0.40,
+                0.10,
+                0.67,
+                2
+        ).consider(bill, context);
+
+        assertTrue(suspensiveOutcome.enacted(), "Suspensive veto should be overridden by a strong originating-chamber vote.");
+        assertTrue(suspensiveOutcome.chamberResults().size() == 3, "Suspensive override should add an explicit override record.");
+    }
+
+
+    private static void bicameralRoutingSupportsOriginationAndLastOfferBargaining() {
+        List<Legislator> lowerMembers = List.of(legislator("H-1"), legislator("H-2"), legislator("H-3"));
+        List<Legislator> upperMembers = List.of(legislator("S-1"), legislator("S-2"), legislator("S-3"));
+        Chamber lower = new Chamber(
+                "Lower",
+                lowerMembers,
+                (legislator, bill, context) -> Vote.YAY,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        Chamber upper = new Chamber(
+                "Upper",
+                upperMembers,
+                (legislator, bill, context) -> bill.ideologyPosition() <= 0.62 ? Vote.YAY : Vote.NAY,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        Bill bill = new Bill("B-origin", "Origin Bill", "L-1", 0.0, 0.90, 0.56, 0.66, 0.10, 0.72)
+                .withPublicBenefitUncertainty(0.20);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(7L), 0.0);
+
+        BillOutcome senateOrigin = new BicameralRoutingProcess(
+                "senate origin test",
+                lower,
+                upper,
+                (legislator, routedBill, routedContext) -> Vote.YAY,
+                BicameralOriginRule.SENATE_ORIGIN_ONLY,
+                BicameralConflictMode.SECOND_CHAMBER_KILL,
+                AffirmativeThresholdRule.simpleMajority(),
+                0.30,
+                0.0,
+                0.42,
+                0.10,
+                0.67,
+                2
+        ).consider(bill, context);
+
+        assertTrue(
+                senateOrigin.chamberResults().getFirst().chamberName().equals("Upper"),
+                "Senate-origin routing should start in the upper chamber."
+        );
+
+        BillOutcome bargain = new BicameralRoutingProcess(
+                "last offer test",
+                lower,
+                upper,
+                (legislator, routedBill, routedContext) -> Vote.YAY,
+                BicameralOriginRule.LOWER_FIRST,
+                BicameralConflictMode.LAST_OFFER_BARGAINING,
+                AffirmativeThresholdRule.simpleMajority(),
+                0.30,
+                0.0,
+                0.55,
+                0.10,
+                0.67,
+                2
+        ).consider(bill, context);
+
+        assertTrue(
+                bargain.finalReason().contains("last-offer"),
+                "Last-offer bargaining should use the explicit conflict path."
+        );
+        assertTrue(
+                bargain.statusQuoAfter() == context.currentPolicyPosition()
+                        || bargain.statusQuoAfter() == bargain.bill().ideologyPosition(),
+                "Last-offer bargaining should end with exactly one selected bill or the status quo."
+        );
+        assertTrue(
+                bargain.signals().supplementalMetrics().containsKey("firstMoverWinRate"),
+                "Bicameral routing should report supplemental routing diagnostics."
+        );
+    }
+
     private static void judicialReviewCanInvalidateRightsLikeHarm() {
         LegislativeProcess enactEverything = new LegislativeProcess() {
             @Override
@@ -251,7 +399,7 @@ final class InstitutionProcessTests {
                 0.20,
                 0.50,
                 0.85,
-                0.70,
+                0.50,
                 false,
                 "rights",
                 0.0,
@@ -638,7 +786,7 @@ final class InstitutionProcessTests {
                 0.74,
                 0.15,
                 0.82,
-                0.70,
+                0.50,
                 true,
                 "democracy",
                 0.0,
@@ -1587,6 +1735,248 @@ final class InstitutionProcessTests {
     }
 
 
+    private static void committeePowerCanDischargeOrAmendBills() {
+        List<Legislator> committeeMembers = List.of(
+                legislator("C-1"),
+                legislator("C-2"),
+                legislator("C-3")
+        );
+        Chamber rejectingCommittee = new Chamber(
+                "Rejecting committee",
+                committeeMembers,
+                (legislator, bill, context) -> Vote.NAY,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        LegislativeProcess floorWouldPass = new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "floor would pass";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "floor would pass"
+                );
+            }
+        };
+        Bill popularBill = new Bill("B-discharge", "Discharge Bill", "L-1", 0.0, 0.20, 0.86, 0.72, 0.0, 0.82)
+                .withCosponsorship(10, 3, false)
+                .withPublicBenefitUncertainty(0.12);
+        BillOutcome discharged = new CommitteePowerProcess(
+                "committee discharge test",
+                rejectingCommittee,
+                floorWouldPass,
+                0.52,
+                0.80,
+                0.20,
+                0.40
+        ).consider(popularBill, new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0));
+
+        assertTrue(discharged.enacted(), "Discharge petition should move a high-public-pressure bill around committee burial.");
+        assertTrue(discharged.signals().committeeDischarges() == 1, "Discharge diagnostics should be recorded.");
+
+        Chamber approvingCommittee = new Chamber(
+                "Approving committee",
+                committeeMembers,
+                (legislator, bill, context) -> Vote.YAY,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        Bill harmfulBill = new Bill(
+                "B-amend",
+                "Amendment Bill",
+                "L-1",
+                0.0,
+                0.82,
+                0.52,
+                0.68,
+                0.0,
+                0.72,
+                0.20,
+                false,
+                "rights",
+                0.0,
+                0.0,
+                "affected group",
+                0.12,
+                0.70,
+                0.16
+        );
+        BillOutcome amended = new CommitteePowerProcess(
+                "committee amendment test",
+                approvingCommittee,
+                floorWouldPass,
+                0.50,
+                0.50,
+                0.80,
+                0.30
+        ).consider(harmfulBill, new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0));
+
+        assertTrue(amended.signals().committeeHearings() == 1, "Minority hearing rights should be recorded for high-harm bills.");
+        assertTrue(amended.signals().committeeAmendmentValue() > 0.0, "Committee amendment value should be recorded.");
+        assertTrue(amended.bill().concentratedHarm() < harmfulBill.concentratedHarm(), "Committee amendment should reduce concentrated harm.");
+    }
+
+
+    private static void committeeRolesEmitCaptureAndHearingDiagnostics() {
+        List<Legislator> committeeMembers = List.of(
+                new Legislator("C-1", "A", -0.3, 0.7, 0.4, 0.7, 0.1, 0.8),
+                new Legislator("C-2", "B", 0.0, 0.8, 0.4, 0.8, 0.1, 0.8),
+                new Legislator("C-3", "C", 0.3, 0.7, 0.4, 0.7, 0.1, 0.8)
+        );
+        Chamber committee = new Chamber(
+                "Audit committee",
+                committeeMembers,
+                (legislator, bill, context) -> Vote.YAY,
+                AffirmativeThresholdRule.simpleMajority()
+        );
+        CommitteePowerConfig config = new CommitteePowerConfig(
+                CommitteeRoleMode.SCRUTINY_AUDIT,
+                0.40,
+                0.20,
+                0.86,
+                0.70,
+                0.20,
+                0.30,
+                0.82,
+                0.58,
+                0.84,
+                0.36,
+                0.50,
+                false,
+                true
+        );
+        Bill bill = new Bill(
+                "B-audit",
+                "Audit Bill",
+                "C-1",
+                -0.2,
+                0.62,
+                0.54,
+                0.70,
+                0.45,
+                0.72,
+                0.50,
+                false,
+                "rights",
+                0.0,
+                0.0,
+                "affected",
+                0.14,
+                0.74,
+                0.20
+        ).withCosponsorship(6, 4, true);
+        BillOutcome outcome = new CommitteePowerProcess(
+                "committee diagnostics",
+                committee,
+                enactEverything(),
+                0.32,
+                config
+        ).consider(bill, new VoteContext(Map.of("A", -0.2, "B", 0.0, "C", 0.2), new Random(4L), 0.0));
+
+        assertTrue(
+                outcome.signals().supplementalMetrics().getOrDefault("committeeExpertiseScore", 0.0) > 0.80,
+                "Configured committee information accuracy should be reported as expertise proxy."
+        );
+        assertTrue(
+                outcome.signals().supplementalMetrics().getOrDefault("minorityCommitteeAccessRate", 0.0) > 0.0,
+                "Affected-group hearing access should be reported."
+        );
+        assertTrue(
+                outcome.signals().supplementalMetrics().getOrDefault("auditFollowThroughRate", 0.0) > 0.0,
+                "Audit and scrutiny roles should report follow-through diagnostics."
+        );
+    }
+
+
+    private static void eligibilityFiltersEmitRecusalAndExclusionDiagnostics() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "A", -0.4, 0.8, 0.3, 0.9, 0.1, 0.9),
+                new Legislator("L-2", "A", -0.2, 0.7, 0.4, 0.8, 0.2, 0.8),
+                new Legislator("L-3", "B", 0.0, 0.4, 0.8, 0.4, 0.9, 0.4),
+                new Legislator("L-4", "B", 0.3, 0.6, 0.6, 0.5, 0.7, 0.5),
+                new Legislator("L-5", "C", 0.5, 0.7, 0.5, 0.7, 0.2, 0.7)
+        );
+        List<Legislator> eligible = legislators.stream()
+                .filter(EligibilityRule.recusalCoolingOff()::eligible)
+                .toList();
+        if (eligible.isEmpty()) {
+            eligible = List.of(legislators.getFirst(), legislators.get(1));
+        }
+        Bill bill = new Bill("B-recusal", "Recusal Bill", "L-3", 0.0, 0.30, 0.62, 0.66, 0.6, 0.70)
+                .withPublicBenefitUncertainty(0.26);
+        BillOutcome outcome = new EligibilityDiagnosticsProcess(
+                "eligibility diagnostics",
+                legislators,
+                eligible,
+                EligibilityRule.recusalCoolingOff(),
+                enactEverything()
+        ).consider(bill, new VoteContext(Map.of("A", -0.3, "B", 0.2, "C", 0.5), new Random(5L), 0.0));
+
+        assertTrue(
+                outcome.signals().supplementalMetrics().getOrDefault("eligibilityExclusionRate", 0.0) > 0.0,
+                "Eligibility filters should report excluded candidates."
+        );
+        assertTrue(
+                outcome.signals().supplementalMetrics().containsKey("recusalRate"),
+                "Recusal rules should report a recusal diagnostic."
+        );
+        assertTrue(
+                outcome.signals().supplementalMetrics().getOrDefault("revolvingDoorTransitionRate", 1.0) < 1.0,
+                "Cooling-off rules should reduce the revolving-door transition proxy."
+        );
+    }
+
+
+    private static void exAnteReviewCanBlockOrReduceLegalRisk() {
+        Bill highRisk = new Bill(
+                "B-clearance",
+                "Clearance Bill",
+                "L-1",
+                0.6,
+                0.92,
+                0.18,
+                0.24,
+                0.7,
+                0.86,
+                0.70,
+                false,
+                "rights",
+                0.0,
+                0.0,
+                "affected",
+                0.04,
+                0.94,
+                0.40
+        ).withPublicBenefitUncertainty(0.88);
+        VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(6L), 0.0);
+        BillOutcome blocked = new ExAnteReviewProcess(
+                "clearance test",
+                ExAnteReviewMode.MANDATORY_CLEARANCE,
+                IndependentInstitutionBundle.strongInsulation(),
+                0.40,
+                0.80,
+                enactEverything()
+        ).consider(highRisk, context);
+
+        assertFalse(blocked.enacted(), "Mandatory clearance should block severe rights-risk bills without override support.");
+        assertTrue(
+                blocked.signals().supplementalMetrics().getOrDefault("exAnteReviewRate", 0.0) == 1.0,
+                "Mandatory clearance should report review."
+        );
+        assertTrue(
+                blocked.signals().supplementalMetrics().getOrDefault("exPostInvalidationRate", 1.0) < 0.50,
+                "Strong ex ante review should reduce later invalidation risk proxy."
+        );
+    }
+
+
     private static void committeeInformationMovesPublicSignalTowardBenefit() {
         Bill bill = new Bill("B-test", "Test Bill", "L-1", 0.0, 0.1, 0.20, 0.90, 0.0, 0.50);
         List<Legislator> committeeMembers = List.of(
@@ -1629,6 +2019,29 @@ final class InstitutionProcessTests {
                 outcome.bill().publicSupport() < bill.publicBenefit(),
                 "Information review should improve the signal without making it perfectly omniscient."
         );
+    }
+
+
+    private static LegislativeProcess enactEverything() {
+        return new LegislativeProcess() {
+            @Override
+            public String name() {
+                return "enact everything";
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return new BillOutcome(
+                        bill,
+                        context.currentPolicyPosition(),
+                        bill.ideologyPosition(),
+                        true,
+                        List.of(),
+                        congresssim.institution.PresidentialAction.none(),
+                        "enacted"
+                );
+            }
+        };
     }
 
 }

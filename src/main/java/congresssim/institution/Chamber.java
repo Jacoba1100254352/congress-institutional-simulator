@@ -24,6 +24,14 @@ public final class Chamber {
         this.votingRule = votingRule;
     }
 
+    public String name() {
+        return name;
+    }
+
+    public List<Legislator> legislators() {
+        return legislators;
+    }
+
     public ChamberVoteResult voteOn(Bill bill, VoteContext context) {
         int yay = 0;
         int nay = 0;
@@ -41,4 +49,3 @@ public final class Chamber {
         return new ChamberVoteResult(name, votingRule.name(), yay, nay, passed);
     }
 }
-
