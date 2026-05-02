@@ -1,64 +1,71 @@
 package congresssim;
 
+import congresssim.institution.accountability.EligibilityDiagnosticsProcess;
+import congresssim.institution.accountability.EligibilityRule;
+import congresssim.institution.accountability.LawRegistryProcess;
+import congresssim.institution.accountability.ProposalBondProcess;
+import congresssim.institution.accountability.ProposalCreditProcess;
+import congresssim.institution.accountability.QuadraticAttentionBudgetProcess;
+import congresssim.institution.accountability.SunsetTrialProcess;
+import congresssim.institution.agenda.AdaptiveTrackProcess;
+import congresssim.institution.agenda.AgendaDisposition;
+import congresssim.institution.agenda.AgendaLotteryProcess;
+import congresssim.institution.agenda.ChallengeEscalationProcess;
+import congresssim.institution.agenda.ChallengeTokenAllocation;
+import congresssim.institution.agenda.ChallengeVoucherProcess;
+import congresssim.institution.agenda.ProposalAccessRules;
+import congresssim.institution.bargaining.AlternativeSelectionRule;
+import congresssim.institution.bargaining.AmendmentMediationProcess;
+import congresssim.institution.bargaining.CoalitionCosponsorshipProcess;
+import congresssim.institution.bargaining.CompetingAlternativesProcess;
+import congresssim.institution.bargaining.MultiRoundAmendmentProcess;
+import congresssim.institution.bargaining.MultidimensionalPackageBargainingProcess;
+import congresssim.institution.bargaining.OmnibusBargainingProcess;
+import congresssim.institution.chamber.BicameralConflictMode;
+import congresssim.institution.chamber.BicameralOriginRule;
+import congresssim.institution.chamber.BicameralRoutingProcess;
+import congresssim.institution.chamber.Chamber;
+import congresssim.institution.chamber.ConferenceCommitteeProcess;
+import congresssim.institution.chamber.ConstitutionalCourtArchitectureProcess;
+import congresssim.institution.chamber.DistrictPopulationProcess;
+import congresssim.institution.chamber.PresidentialAction;
+import congresssim.institution.committee.CommitteeGatekeepingProcess;
+import congresssim.institution.committee.CommitteeInformationProcess;
+import congresssim.institution.committee.CommitteePowerConfig;
+import congresssim.institution.committee.CommitteePowerProcess;
+import congresssim.institution.committee.CommitteeRoleMode;
+import congresssim.institution.core.BillOutcome;
+import congresssim.institution.core.LegislativeProcess;
+import congresssim.institution.distribution.DistributionalHarmProcess;
+import congresssim.institution.lobbying.BudgetedLobbyingProcess;
+import congresssim.institution.lobbying.InfluenceSystemProcess;
+import congresssim.institution.lobbying.LobbyAuditProcess;
+import congresssim.institution.lobbying.LobbyTransparencyProcess;
+import congresssim.institution.publicinput.CitizenInitiativeProcess;
+import congresssim.institution.publicinput.CitizenPanelMode;
+import congresssim.institution.publicinput.CitizenPanelReviewProcess;
+import congresssim.institution.publicinput.ConstituentPublicWillProcess;
+import congresssim.institution.publicinput.PublicObjectionWindowProcess;
+import congresssim.institution.review.ExAnteReviewMode;
+import congresssim.institution.review.ExAnteReviewProcess;
+import congresssim.institution.review.IndependentInstitutionBundle;
+import congresssim.institution.review.JudicialReviewProcess;
+import congresssim.institution.strategy.InstitutionalNormErosionProcess;
+import congresssim.institution.strategy.LongHorizonStrategyProcess;
+import congresssim.institution.strategy.ProposerStrategyProcess;
+import congresssim.institution.voting.AffirmativeThresholdRule;
+import congresssim.institution.voting.DefaultPassUnlessVetoedRule;
+
 import congresssim.behavior.VoteContext;
 import congresssim.behavior.VotingStrategy;
 import congresssim.experiment.CampaignResult;
 import congresssim.experiment.CampaignRunner;
 import congresssim.experiment.CampaignRow;
-import congresssim.institution.AdaptiveTrackProcess;
-import congresssim.institution.AffirmativeThresholdRule;
-import congresssim.institution.AgendaDisposition;
-import congresssim.institution.AgendaLotteryProcess;
-import congresssim.institution.AlternativeSelectionRule;
-import congresssim.institution.AmendmentMediationProcess;
-import congresssim.institution.BillOutcome;
-import congresssim.institution.BudgetedLobbyingProcess;
-import congresssim.institution.BicameralConflictMode;
-import congresssim.institution.BicameralOriginRule;
-import congresssim.institution.BicameralRoutingProcess;
-import congresssim.institution.Chamber;
-import congresssim.institution.ChallengeEscalationProcess;
-import congresssim.institution.ChallengeTokenAllocation;
-import congresssim.institution.ChallengeVoucherProcess;
-import congresssim.institution.CitizenPanelMode;
-import congresssim.institution.CitizenPanelReviewProcess;
-import congresssim.institution.CoalitionCosponsorshipProcess;
-import congresssim.institution.CommitteeGatekeepingProcess;
-import congresssim.institution.CommitteeInformationProcess;
-import congresssim.institution.CommitteePowerConfig;
-import congresssim.institution.CommitteePowerProcess;
-import congresssim.institution.CommitteeRoleMode;
-import congresssim.institution.CompetingAlternativesProcess;
-import congresssim.institution.ConferenceCommitteeProcess;
-import congresssim.institution.ConstituentPublicWillProcess;
-import congresssim.institution.CitizenInitiativeProcess;
-import congresssim.institution.DefaultPassUnlessVetoedRule;
-import congresssim.institution.DistributionalHarmProcess;
-import congresssim.institution.EligibilityDiagnosticsProcess;
-import congresssim.institution.EligibilityRule;
-import congresssim.institution.ExAnteReviewMode;
-import congresssim.institution.ExAnteReviewProcess;
-import congresssim.institution.IndependentInstitutionBundle;
-import congresssim.institution.InstitutionalNormErosionProcess;
-import congresssim.institution.JudicialReviewProcess;
-import congresssim.institution.LawRegistryProcess;
-import congresssim.institution.LegislativeProcess;
-import congresssim.institution.LobbyAuditProcess;
-import congresssim.institution.LobbyTransparencyProcess;
-import congresssim.institution.MultiRoundAmendmentProcess;
-import congresssim.institution.MultidimensionalPackageBargainingProcess;
-import congresssim.institution.ProposalAccessRules;
-import congresssim.institution.ProposalBondProcess;
-import congresssim.institution.ProposalCreditProcess;
-import congresssim.institution.ProposerStrategyProcess;
-import congresssim.institution.PublicObjectionWindowProcess;
-import congresssim.institution.QuadraticAttentionBudgetProcess;
-import congresssim.institution.SunsetTrialProcess;
 import congresssim.simulation.CommitteeComposition;
 import congresssim.simulation.CommitteeFactory;
 import congresssim.simulation.PartySystemProfile;
 import congresssim.simulation.Scenario;
-import congresssim.simulation.ScenarioCatalog;
+import congresssim.simulation.catalog.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
 import congresssim.simulation.WorldGenerator;
@@ -114,12 +121,17 @@ final class InstitutionProcessTests {
         quadraticAttentionBudgetDeniesExpensiveProposals();
         publicObjectionWindowRoutesContestedBills();
         constituentPublicWillRevisesSignals();
+        districtPopulationModelEmitsConstituentDiagnostics();
         proposalBondForfeitsLowQualityBills();
         proposerStrategyModeratesThenWithdrawsWeakBills();
         proposerStrategyAdaptsTimingHarmAndLobbyExposure();
+        longHorizonLearningAdaptsStrategyAcrossBills();
         coalitionCosponsorshipRecordsSponsors();
         multiRoundMediationReducesHarm();
         multidimensionalPackageBargainingAddsCrossIssueTradeSignals();
+        omnibusBargainingEmitsPackageDiagnostics();
+        influenceSystemModelsShadowAndPublicOffsets();
+        constitutionalCourtArchitectureCanInvalidateAndReportTransparency();
         strategicAlternativesRecordDecoys();
         challengeVouchersReportTokenExhaustion();
         publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms();
@@ -134,7 +146,6 @@ final class InstitutionProcessTests {
         committeeInformationMovesPublicSignalTowardBenefit();
     }
 
-
     private static void simpleMajorityRequiresMoreYaysThanNays() {
         AffirmativeThresholdRule rule = AffirmativeThresholdRule.simpleMajority();
         assertTrue(rule.passes(6, 4), "6-4 should pass simple majority.");
@@ -142,13 +153,11 @@ final class InstitutionProcessTests {
         assertFalse(rule.passes(4, 6), "4-6 should fail simple majority.");
     }
 
-
     private static void defaultPassRequiresBlockingSupermajority() {
         DefaultPassUnlessVetoedRule rule = new DefaultPassUnlessVetoedRule(2.0 / 3.0);
         assertTrue(rule.passes(4, 6), "6 nays out of 10 should not clear a 2/3 block threshold.");
         assertFalse(rule.passes(3, 7), "7 nays out of 10 should block default passage.");
     }
-
 
     private static void proposalAccessCanDenyLowViabilityBills() {
         Bill bill = new Bill("B-test", "Test Bill", "L-1", 0.8, 0.9, 0.20, 0.75, 0.0, 0.50);
@@ -158,7 +167,6 @@ final class InstitutionProcessTests {
                 "Low-support or distant bills should be denied proposal access."
         );
     }
-
 
     private static void currentSystemAgendaDoesNotUseTrueGeneratedBenefit() {
         Bill lowTrueBenefit = new Bill("B-current", "Current Gate Bill", "L-1", 0.0, 0.10, 0.62, 0.05, 0.10, 0.58);
@@ -297,7 +305,6 @@ final class InstitutionProcessTests {
         assertTrue(suspensiveOutcome.chamberResults().size() == 3, "Suspensive override should add an explicit override record.");
     }
 
-
     private static void bicameralRoutingSupportsOriginationAndLastOfferBargaining() {
         List<Legislator> lowerMembers = List.of(legislator("H-1"), legislator("H-2"), legislator("H-3"));
         List<Legislator> upperMembers = List.of(legislator("S-1"), legislator("S-2"), legislator("S-3"));
@@ -384,7 +391,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "enacted"
                 );
             }
@@ -483,7 +490,6 @@ final class InstitutionProcessTests {
         assertTrue(delayed, "High contention should sometimes create endogenous procedural delay.");
     }
 
-
     private static void proposalCostsCanDenyLowValueBills() {
         Bill bill = new Bill("B-test", "Test Bill", "L-1", 0.0, 0.02, 0.15, 0.20, 0.0, 0.20);
         VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
@@ -492,7 +498,6 @@ final class InstitutionProcessTests {
                 "Low-value proposals should fail the proposal-cost screen."
         );
     }
-
 
     private static void crossBlocCosponsorshipRequiresOutsideSupport() {
         List<Legislator> legislators = List.of(
@@ -520,7 +525,6 @@ final class InstitutionProcessTests {
         );
     }
 
-
     private static void adaptiveTrackRoutesBillsByRisk() {
         LegislativeProcess fast = labeledProcess("fast lane");
         LegislativeProcess middle = labeledProcess("middle lane");
@@ -547,7 +551,6 @@ final class InstitutionProcessTests {
         );
     }
 
-
     private static void sunsetTrialExpiresRiskyLowBenefitBills() {
         LegislativeProcess enactEverything = new LegislativeProcess() {
             @Override
@@ -563,7 +566,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "enacted"
                 );
             }
@@ -581,7 +584,6 @@ final class InstitutionProcessTests {
         assertTrue(renewed.enacted(), "Strong bills should survive sunset review.");
     }
 
-
     private static void proposalCreditsLearnFromProposalQuality() {
         LegislativeProcess enactEverything = new LegislativeProcess() {
             @Override
@@ -597,7 +599,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "enacted"
                 );
             }
@@ -626,7 +628,6 @@ final class InstitutionProcessTests {
         );
     }
 
-
     private static void lobbyTransparencyReducesCapturedBillPressure() {
         Bill capturedBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.10, 0.40, 0.20, 0.90, 0.70, 0.90, false);
         VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
@@ -654,7 +655,6 @@ final class InstitutionProcessTests {
                 .consider(capturedBill, context);
     }
 
-
     private static void budgetedLobbyingSpendsDefensivelyAgainstAntiLobbyingReforms() {
         Bill antiLobbyingBill = new Bill("B-reform", "Anti-Lobbying Reform", "L-1", 0.0, 0.05, 0.75, 0.85, -0.30, 0.85, 0.0, true, "democracy", 0.0, 0.0);
         VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
@@ -677,7 +677,6 @@ final class InstitutionProcessTests {
         new BudgetedLobbyingProcess("budgeted lobbying test", capturePressuredBill, groups, 0.30, 0.50, 0.25)
                 .consider(antiLobbyingBill, context);
     }
-
 
     private static void budgetedLobbyingRecordsChannelSpecificSpend() {
         Bill captureBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.55, 0.28, 0.30, 0.45, 0.80, 0.80, false, "energy", 0.0, 0.0);
@@ -842,7 +841,6 @@ final class InstitutionProcessTests {
         );
     }
 
-
     private static void amendmentMediationMovesRiskyBillsTowardMedian() {
         Bill riskyBill = new Bill("B-mediate", "Risky Bill", "L-3", 0.9, 0.95, 0.18, 0.32, 0.70, 0.90);
         VoteContext context = new VoteContext(Map.of("Left", -0.6, "Center", 0.0, "Right", 0.6), new Random(1L), 0.0);
@@ -883,7 +881,6 @@ final class InstitutionProcessTests {
                 0.10
         ).consider(riskyBill, context);
     }
-
 
     private static void distributionalHarmProcessCompensatesAffectedGroups() {
         Bill harmfulBill = new Bill(
@@ -926,7 +923,6 @@ final class InstitutionProcessTests {
                 .consider(harmfulBill, context);
     }
 
-
     private static void lawRegistryReviewsAndRepealsBadActiveLaws() {
         LegislativeProcess enactEverything = new LegislativeProcess() {
             @Override
@@ -942,7 +938,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "enacted"
                 );
             }
@@ -962,7 +958,6 @@ final class InstitutionProcessTests {
         assertTrue(reviewed.signals().lawReversals() > 0, "Low-benefit active laws should be reversed.");
         assertTrue(reviewed.statusQuoAfter() < badLaw.ideologyPosition(), "Registry reversal should roll back status-quo movement.");
     }
-
 
     private static void competingAlternativesSelectCompromiseBeforeFinalVote() {
         List<Legislator> legislators = List.of(
@@ -988,7 +983,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "selected alternative enacted"
                 );
             }
@@ -1009,7 +1004,6 @@ final class InstitutionProcessTests {
         assertTrue(outcome.signals().alternativeRounds() == 1, "Alternative tournaments should record a tournament round.");
         assertTrue(outcome.signals().alternativesConsidered() == 2, "Original bill plus generated alternative should be counted.");
     }
-
 
     private static void citizenPanelRoutesUncertifiedBillsToReview() {
         LegislativeProcess certified = labeledProcess("certified default lane");
@@ -1055,7 +1049,6 @@ final class InstitutionProcessTests {
         assertFalse(outcome.bill().citizenCertified(), "The revised bill should retain the certification result.");
     }
 
-
     private static void agendaLotteryRationsFloorSlots() {
         Bill firstBill = new Bill("B-lottery-1", "Lottery Bill 1", "L-1", 0.0, 0.10, 0.65, 0.70, 0.0, 0.40);
         Bill secondBill = new Bill("B-lottery-2", "Lottery Bill 2", "L-2", 0.0, -0.10, 0.55, 0.60, 0.0, 0.40);
@@ -1076,7 +1069,6 @@ final class InstitutionProcessTests {
         assertTrue(denied == 1, "A half-size agenda lottery should admit exactly one of two bills.");
     }
 
-
     private static void quadraticAttentionBudgetDeniesExpensiveProposals() {
         QuadraticAttentionBudgetProcess process = new QuadraticAttentionBudgetProcess(
                 "attention test",
@@ -1092,7 +1084,6 @@ final class InstitutionProcessTests {
 
         assertTrue(outcome.agendaDisposition() == AgendaDisposition.ACCESS_DENIED, "Insufficient attention credits should deny costly proposals.");
     }
-
 
     private static void publicObjectionWindowRoutesContestedBills() {
         PublicObjectionWindowProcess process = new PublicObjectionWindowProcess(
@@ -1130,7 +1121,6 @@ final class InstitutionProcessTests {
         assertTrue(outcome.finalReason().equals("active review lane"), "Contested bills should route to active review.");
         assertTrue(outcome.signals().objectionWindows() == 1, "Triggered objection windows should be recorded.");
     }
-
 
     private static void constituentPublicWillRevisesSignals() {
         List<Legislator> legislators = List.of(
@@ -1175,6 +1165,35 @@ final class InstitutionProcessTests {
         assertTrue(outcome.bill().publicBenefitUncertainty() < bill.publicBenefitUncertainty(), "Public-will review should reduce uncertainty when update strength is high.");
     }
 
+    private static void districtPopulationModelEmitsConstituentDiagnostics() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "A", -0.45, 0.6, 0.4, 0.8, 0.2, 0.6, -0.50, 0.90, 0.70),
+                new Legislator("L-2", "B", 0.35, 0.7, 0.4, 0.8, 0.2, 0.6, 0.40, 0.60, 0.35),
+                new Legislator("L-3", "C", 0.05, 0.8, 0.4, 0.8, 0.2, 0.6, 0.10, 0.50, 0.55)
+        );
+        Bill bill = new Bill("B-pop", "Population Bill", "L-1", -0.4, 0.62, 0.40, 0.68, 0.10, 0.66)
+                .withAffectedGroup("workers", 0.34, 0.58, 0.28);
+
+        BillOutcome outcome = new DistrictPopulationProcess(
+                "population test",
+                enactEverything(),
+                legislators,
+                5,
+                0.50,
+                0.70,
+                0.80
+        ).consider(bill, new VoteContext(Map.of("A", -0.4, "B", 0.4), new Random(11L), 0.0));
+
+        assertTrue(outcome.bill().publicSignalMovement() > 0.0, "Population process should revise public-will signals.");
+        assertRatio(
+                outcome.signals().supplementalMetrics().getOrDefault("districtPreferenceVariance", -1.0),
+                "District preference variance should be reported."
+        );
+        assertRatio(
+                outcome.signals().supplementalMetrics().getOrDefault("affectedGroupRepresentationGap", -1.0),
+                "Affected-group representation gap should be reported."
+        );
+    }
 
     private static void proposalBondForfeitsLowQualityBills() {
         LegislativeProcess enactEverything = new LegislativeProcess() {
@@ -1191,7 +1210,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "enacted"
                 );
             }
@@ -1237,7 +1256,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "enacted"
                 );
             }
@@ -1311,7 +1330,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "enacted"
                 );
             }
@@ -1366,6 +1385,34 @@ final class InstitutionProcessTests {
         );
     }
 
+    private static void longHorizonLearningAdaptsStrategyAcrossBills() {
+        List<Legislator> legislators = List.of(
+                new Legislator("L-1", "A", -0.3, 0.5, 0.5, 0.5, 0.4, 0.5),
+                new Legislator("L-2", "B", 0.2, 0.7, 0.4, 0.5, 0.4, 0.5),
+                new Legislator("L-3", "B", 0.4, 0.7, 0.4, 0.5, 0.4, 0.5)
+        );
+        LongHorizonStrategyProcess process = new LongHorizonStrategyProcess(
+                "learning test",
+                enactEverything(),
+                legislators,
+                2,
+                0.75,
+                0.70
+        );
+        VoteContext context = new VoteContext(Map.of("A", -0.3, "B", 0.3), new Random(12L), 0.0);
+        Bill risky = new Bill("B-learn-1", "Risky", "L-1", -0.3, 0.92, 0.24, 0.40, 0.80, 0.70)
+                .withAffectedGroup("tenants", 0.20, 0.74, 0.34);
+        BillOutcome outcome = process.consider(risky, context);
+
+        assertRatio(
+                outcome.signals().supplementalMetrics().getOrDefault("strategyLearningPressure", -1.0),
+                "Long-horizon learning pressure should be reported."
+        );
+        assertRatio(
+                outcome.signals().supplementalMetrics().getOrDefault("riskySubmissionRate", -1.0),
+                "Risky submission diagnostic should be reported."
+        );
+    }
 
     private static void coalitionCosponsorshipRecordsSponsors() {
         List<Legislator> legislators = List.of(
@@ -1416,7 +1463,6 @@ final class InstitutionProcessTests {
         assertTrue(outcome.bill().publicSupport() > bill.publicSupport(), "Credit discount should boost support signal for broad sponsorship.");
     }
 
-
     private static void multiRoundMediationReducesHarm() {
         List<Legislator> legislators = List.of(
                 new Legislator("L-1", "Left", -0.50, 0.9, 0.3, 0.9, 0.1, 0.9, -0.45, 0.9, 0.8),
@@ -1461,7 +1507,6 @@ final class InstitutionProcessTests {
         assertTrue(Math.abs(outcome.bill().ideologyPosition()) < Math.abs(harmfulBill.ideologyPosition()), "Mediation should move content toward compromise.");
     }
 
-
     private static void multidimensionalPackageBargainingAddsCrossIssueTradeSignals() {
         Bill bill = new Bill(
                 "B-package",
@@ -1502,6 +1547,92 @@ final class InstitutionProcessTests {
         assertTrue(outcome.bill().attentionSpend() > bill.attentionSpend(), "Package bargaining should add administrative attention cost.");
     }
 
+    private static void omnibusBargainingEmitsPackageDiagnostics() {
+        Bill bill = new Bill("B-omni", "Omnibus Bill", "L-1", 0.0, 0.82, 0.34, 0.70, 0.20, 0.80)
+                .withAffectedGroup("rural", 0.26, 0.66, 0.30)
+                .withPublicBenefitUncertainty(0.40);
+        BillOutcome outcome = new OmnibusBargainingProcess(
+                "omnibus test",
+                enactEverything(),
+                6,
+                0.70,
+                0.62,
+                0.70
+        ).consider(bill, new VoteContext(Map.of("A", -0.2, "B", 0.3), new Random(13L), 0.0));
+
+        assertTrue(outcome.bill().attentionSpend() > 0.0, "Omnibus bargaining should add procedural attention cost.");
+        assertRatio(
+                outcome.signals().supplementalMetrics().getOrDefault("packageDealDepth", -1.0),
+                "Package deal depth should be reported."
+        );
+        assertRatio(
+                outcome.signals().supplementalMetrics().getOrDefault("omnibusComplexity", -1.0),
+                "Omnibus complexity should be reported."
+        );
+    }
+
+    private static void influenceSystemModelsShadowAndPublicOffsets() {
+        LobbyGroup group = new LobbyGroup(
+                "G-1",
+                "energy",
+                Map.of("energy", 1.0, "democracy", 0.8),
+                0.8,
+                3.0,
+                0.9,
+                1.4,
+                0.8,
+                0.7,
+                LobbyCaptureStrategy.AGENDA_ACCESS,
+                0.35
+        );
+        Bill bill = new Bill("B-infl", "Influence Bill", "L-1", 0.0, 0.72, 0.38, 0.50, 0.62, 0.70, 0.76, false, "energy", 0.0, 0.0);
+        BillOutcome outcome = new InfluenceSystemProcess(
+                "influence test",
+                enactEverything(),
+                List.of(group),
+                0.62,
+                0.58,
+                0.66,
+                0.44
+        ).consider(bill, new VoteContext(Map.of("A", 0.0), new Random(14L), 0.0));
+
+        assertTrue(outcome.bill().lobbySpend() > 0.0, "Influence system should add observed plus shadow influence spend.");
+        assertRatio(
+                outcome.signals().supplementalMetrics().getOrDefault("shadowLobbyingShare", -1.0),
+                "Shadow lobbying share should be reported."
+        );
+        assertRatio(
+                outcome.signals().supplementalMetrics().getOrDefault("influenceSystemResilience", -1.0),
+                "Influence-system resilience should be reported."
+        );
+    }
+
+    private static void constitutionalCourtArchitectureCanInvalidateAndReportTransparency() {
+        Bill bill = new Bill("B-court-arch", "Court Architecture Bill", "L-1", 0.0, 0.95, 0.42, 0.42, 0.60, 0.90)
+                .withAffectedGroup("rights", 0.06, 0.96, 0.40)
+                .withPublicBenefitUncertainty(0.70);
+        BillOutcome outcome = new ConstitutionalCourtArchitectureProcess(
+                "court architecture test",
+                enactEverything(),
+                13,
+                0.45,
+                0.34,
+                0.42,
+                0.20,
+                0.72,
+                false
+        ).consider(bill, new VoteContext(Map.of("A", 0.0), new Random(15L), 0.0));
+
+        assertFalse(outcome.enacted(), "High-risk bill should be invalidated under a permissive court threshold.");
+        assertRatio(
+                outcome.signals().supplementalMetrics().getOrDefault("courtIndependenceScore", -1.0),
+                "Court independence should be reported."
+        );
+        assertTrue(
+                outcome.signals().supplementalMetrics().getOrDefault("constitutionalInvalidationRate", 0.0) == 1.0,
+                "Invalidation diagnostic should be recorded."
+        );
+    }
 
     private static void strategicAlternativesRecordDecoys() {
         List<Legislator> legislators = List.of(
@@ -1528,7 +1659,6 @@ final class InstitutionProcessTests {
         assertTrue(outcome.signals().strategicDecoys() == 4, "Clone and decoy proposals should be counted.");
     }
 
-
     private static void challengeVouchersReportTokenExhaustion() {
         List<Legislator> legislators = List.of(
                 new Legislator("L-1", "Opposition", -0.9, 0.7, 0.6, 0.8, 0.2, 0.8),
@@ -1554,7 +1684,6 @@ final class InstitutionProcessTests {
         assertTrue(outcome.signals().falseNegativePasses() == 1, "Bad unchallenged enactment should be counted as a false negative.");
     }
 
-
     private static void publicInterestScreenBlocksCapturedBillsButAllowsAntiLobbyingReforms() {
         VoteContext context = new VoteContext(Map.of("Test", 0.0), new Random(1L), 0.0);
         Bill capturedBill = new Bill("B-capture", "Capture Bill", "L-1", 0.0, 0.10, 0.30, 0.18, 0.95, 0.80, 0.95, false);
@@ -1574,7 +1703,6 @@ final class InstitutionProcessTests {
         );
     }
 
-
     private static void lobbyAuditCanReverseCapturedEnactments() {
         LegislativeProcess enactEverything = new LegislativeProcess() {
             @Override
@@ -1590,7 +1718,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "enacted"
                 );
             }
@@ -1603,7 +1731,6 @@ final class InstitutionProcessTests {
         assertFalse(outcome.enacted(), "Failed anti-capture audits should reverse captured enactments when configured.");
         assertTrue(outcome.statusQuoAfter() == context.currentPolicyPosition(), "Audit reversals should roll back the status quo.");
     }
-
 
     private static void challengeVouchersRouteHighRiskBillsToActiveVote() {
         List<Legislator> legislators = List.of(
@@ -1625,7 +1752,7 @@ final class InstitutionProcessTests {
                         context.currentPolicyPosition(),
                         false,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "failed active vote"
                 );
             }
@@ -1647,7 +1774,6 @@ final class InstitutionProcessTests {
         assertFalse(outcome.enacted(), "Challenged bills should use the configured active-vote path.");
     }
 
-
     private static void challengeEscalationRoutesBroadlyContestedBillsToActiveVote() {
         List<Legislator> legislators = List.of(
                 new Legislator("L-1", "Opposition", -0.9, 0.7, 0.6, 0.8, 0.2, 0.8),
@@ -1668,7 +1794,7 @@ final class InstitutionProcessTests {
                         context.currentPolicyPosition(),
                         false,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "failed active vote"
                 );
             }
@@ -1688,7 +1814,6 @@ final class InstitutionProcessTests {
         assertTrue(outcome.challenged(), "Broadly contested bills should trigger q-member escalation.");
         assertFalse(outcome.enacted(), "Escalated bills should use the configured active-vote path.");
     }
-
 
     private static void committeeGateBlocksBillsBeforeFloor() {
         List<Legislator> committeeMembers = List.of(
@@ -1717,7 +1842,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "floor would pass"
                 );
             }
@@ -1733,7 +1858,6 @@ final class InstitutionProcessTests {
                 "Committee rejection should be recorded as the agenda disposition."
         );
     }
-
 
     private static void committeePowerCanDischargeOrAmendBills() {
         List<Legislator> committeeMembers = List.of(
@@ -1761,7 +1885,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "floor would pass"
                 );
             }
@@ -1822,7 +1946,6 @@ final class InstitutionProcessTests {
         assertTrue(amended.signals().committeeAmendmentValue() > 0.0, "Committee amendment value should be recorded.");
         assertTrue(amended.bill().concentratedHarm() < harmfulBill.concentratedHarm(), "Committee amendment should reduce concentrated harm.");
     }
-
 
     private static void committeeRolesEmitCaptureAndHearingDiagnostics() {
         List<Legislator> committeeMembers = List.of(
@@ -1894,7 +2017,6 @@ final class InstitutionProcessTests {
         );
     }
 
-
     private static void eligibilityFiltersEmitRecusalAndExclusionDiagnostics() {
         List<Legislator> legislators = List.of(
                 new Legislator("L-1", "A", -0.4, 0.8, 0.3, 0.9, 0.1, 0.9),
@@ -1932,7 +2054,6 @@ final class InstitutionProcessTests {
                 "Cooling-off rules should reduce the revolving-door transition proxy."
         );
     }
-
 
     private static void exAnteReviewCanBlockOrReduceLegalRisk() {
         Bill highRisk = new Bill(
@@ -1976,7 +2097,6 @@ final class InstitutionProcessTests {
         );
     }
 
-
     private static void committeeInformationMovesPublicSignalTowardBenefit() {
         Bill bill = new Bill("B-test", "Test Bill", "L-1", 0.0, 0.1, 0.20, 0.90, 0.0, 0.50);
         List<Legislator> committeeMembers = List.of(
@@ -1997,7 +2117,7 @@ final class InstitutionProcessTests {
                         context.currentPolicyPosition(),
                         false,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "captured"
                 );
             }
@@ -2021,7 +2141,6 @@ final class InstitutionProcessTests {
         );
     }
 
-
     private static LegislativeProcess enactEverything() {
         return new LegislativeProcess() {
             @Override
@@ -2037,7 +2156,7 @@ final class InstitutionProcessTests {
                         bill.ideologyPosition(),
                         true,
                         List.of(),
-                        congresssim.institution.PresidentialAction.none(),
+                        congresssim.institution.chamber.PresidentialAction.none(),
                         "enacted"
                 );
             }

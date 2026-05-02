@@ -7,43 +7,11 @@ import congresssim.calibration.CalibrationRunner.CalibrationRunResult;
 import congresssim.experiment.CampaignResult;
 import congresssim.experiment.CampaignRunner;
 import congresssim.experiment.CampaignRow;
-import congresssim.institution.AdaptiveTrackProcess;
-import congresssim.institution.AffirmativeThresholdRule;
-import congresssim.institution.AgendaDisposition;
-import congresssim.institution.AgendaLotteryProcess;
-import congresssim.institution.AlternativeSelectionRule;
-import congresssim.institution.AmendmentMediationProcess;
-import congresssim.institution.BillOutcome;
-import congresssim.institution.BudgetedLobbyingProcess;
-import congresssim.institution.Chamber;
-import congresssim.institution.ChallengeEscalationProcess;
-import congresssim.institution.ChallengeTokenAllocation;
-import congresssim.institution.ChallengeVoucherProcess;
-import congresssim.institution.CitizenPanelMode;
-import congresssim.institution.CitizenPanelReviewProcess;
-import congresssim.institution.CoalitionCosponsorshipProcess;
-import congresssim.institution.CommitteeGatekeepingProcess;
-import congresssim.institution.CommitteeInformationProcess;
-import congresssim.institution.CompetingAlternativesProcess;
-import congresssim.institution.ConstituentPublicWillProcess;
-import congresssim.institution.DefaultPassUnlessVetoedRule;
-import congresssim.institution.DistributionalHarmProcess;
-import congresssim.institution.LawRegistryProcess;
-import congresssim.institution.LegislativeProcess;
-import congresssim.institution.LobbyAuditProcess;
-import congresssim.institution.LobbyTransparencyProcess;
-import congresssim.institution.MultiRoundAmendmentProcess;
-import congresssim.institution.ProposalAccessRules;
-import congresssim.institution.ProposalBondProcess;
-import congresssim.institution.ProposalCreditProcess;
-import congresssim.institution.PublicObjectionWindowProcess;
-import congresssim.institution.QuadraticAttentionBudgetProcess;
-import congresssim.institution.SunsetTrialProcess;
 import congresssim.simulation.CommitteeComposition;
 import congresssim.simulation.CommitteeFactory;
 import congresssim.simulation.PartySystemProfile;
 import congresssim.simulation.Scenario;
-import congresssim.simulation.ScenarioCatalog;
+import congresssim.simulation.catalog.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
 import congresssim.simulation.WorldGenerator;
@@ -138,7 +106,7 @@ final class CampaignRunnerTests {
             Files.deleteIfExists(outputDir.resolve("simulation-campaign-v18.md"));
 
             CampaignResult result = CampaignRunner.runV18(outputDir, 1, 17, 3, 91L);
-            assertTrue(result.rows().size() > 0, "Weighted campaign should produce result rows.");
+            assertTrue(!result.rows().isEmpty(), "Weighted campaign should produce result rows.");
 
             Set<String> cases = new HashSet<>();
             Set<String> scenarios = new HashSet<>();
@@ -194,7 +162,7 @@ final class CampaignRunnerTests {
             Files.deleteIfExists(outputDir.resolve("simulation-campaign-v19.md"));
 
             CampaignResult result = CampaignRunner.runV19(outputDir, 2, 17, 6, 92L);
-            assertTrue(result.rows().size() > 0, "Timeline campaign should produce result rows.");
+            assertTrue(!result.rows().isEmpty(), "Timeline campaign should produce result rows.");
 
             Set<String> cases = new HashSet<>();
             Set<String> scenarios = new HashSet<>();

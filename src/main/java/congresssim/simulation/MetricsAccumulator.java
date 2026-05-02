@@ -1,10 +1,10 @@
 package congresssim.simulation;
 
-import congresssim.institution.BillOutcome;
-import congresssim.institution.AgendaDisposition;
-import congresssim.institution.AffectedGroupScoring;
-import congresssim.institution.LobbyCaptureScoring;
-import congresssim.institution.OutcomeSignals;
+import congresssim.institution.agenda.AgendaDisposition;
+import congresssim.institution.core.BillOutcome;
+import congresssim.institution.core.OutcomeSignals;
+import congresssim.institution.distribution.AffectedGroupScoring;
+import congresssim.institution.lobbying.LobbyCaptureScoring;
 
 import java.util.HashMap;
 import java.util.Map;

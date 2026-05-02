@@ -1,7 +1,9 @@
 package congresssim.experiment;
 
+import congresssim.institution.chamber.Chamber;
+
 import congresssim.simulation.Scenario;
-import congresssim.simulation.ScenarioCatalog;
+import congresssim.simulation.catalog.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
 import congresssim.simulation.MetricDefinition;
@@ -448,10 +450,13 @@ public final class CampaignRunner {
             "cloture-conference-review",
             "parliamentary-coalition-confidence",
             "citizen-initiative-referendum",
+            "district-population-majority",
             "simple-majority-alternatives-pairwise",
             "citizen-assembly-threshold",
             "package-bargaining-majority",
+            "omnibus-bargaining-majority",
             "risk-routed-majority",
+            "expanded-portfolio-hybrid-legislature",
             "norm-erosion-majority",
             "default-pass",
             "default-pass-challenge",
@@ -485,8 +490,10 @@ public final class CampaignRunner {
             "leadership-cartel-majority",
             "committee-regular-order",
             "cloture-conference-review",
+            "constitutional-court-architecture-majority",
             "parliamentary-coalition-confidence",
             "citizen-initiative-referendum",
+            "district-population-majority",
             "simple-majority-alternatives-pairwise",
             "citizen-assembly-threshold",
             "public-interest-majority",
@@ -497,12 +504,16 @@ public final class CampaignRunner {
             "compensation-majority",
             "package-bargaining-majority",
             "multidimensional-package-majority",
+            "omnibus-bargaining-majority",
             "law-registry-majority",
             "public-objection-majority",
             "anti-capture-majority-bundle",
+            "influence-system-majority",
             "risk-routed-majority",
             "portfolio-hybrid-legislature",
+            "expanded-portfolio-hybrid-legislature",
             "norm-erosion-majority",
+            "long-horizon-learning-majority",
             "default-pass",
             "default-pass-challenge",
             "default-pass-multiround-mediation-challenge"
@@ -2226,6 +2237,7 @@ public final class CampaignRunner {
                     "citizen-assembly-threshold",
                     "risk-routed-majority",
                     "portfolio-hybrid-legislature",
+                    "expanded-portfolio-hybrid-legislature",
                     "default-pass",
                     "default-pass-multiround-mediation-challenge"
             )) {
@@ -2328,6 +2340,7 @@ public final class CampaignRunner {
                         .append(" welfare: it protects quality in the synthetic generator partly by allowing few proposals through.\n");
             }
             ScenarioAggregate portfolio = aggregateByScenario.get("portfolio-hybrid-legislature");
+            ScenarioAggregate expandedPortfolio = aggregateByScenario.get("expanded-portfolio-hybrid-legislature");
             ScenarioAggregate pairwise = aggregateByScenario.get("simple-majority-alternatives-pairwise");
             ScenarioAggregate riskRouted = aggregateByScenario.get("risk-routed-majority");
             if (portfolio != null && pairwise != null && riskRouted != null) {
@@ -2340,6 +2353,17 @@ public final class CampaignRunner {
                         .append(" risk control, and ")
                         .append(format(portfolio.directionalScore()))
                         .append(" directional score, situating it between pairwise alternatives and risk routing rather than replacing the tradeoff frontier.\n");
+            }
+            if (expandedPortfolio != null) {
+                builder.append("- The expanded portfolio hybrid adds district-public, long-horizon strategy, omnibus bargaining, influence-system, and constitutional-court architecture proxies. It averaged ")
+                        .append(format(expandedPortfolio.productivity()))
+                        .append(" productivity, ")
+                        .append(format(expandedPortfolio.compromise()))
+                        .append(" compromise, ")
+                        .append(format(expandedPortfolio.riskControl()))
+                        .append(" risk control, and ")
+                        .append(format(expandedPortfolio.directionalScore()))
+                        .append(" directional score; its value is diagnostic because extra safeguards also increase complexity.\n");
             }
             builder.append('\n');
             return;

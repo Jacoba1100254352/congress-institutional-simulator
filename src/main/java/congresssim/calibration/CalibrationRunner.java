@@ -1,7 +1,7 @@
 package congresssim.calibration;
 
 import congresssim.simulation.Scenario;
-import congresssim.simulation.ScenarioCatalog;
+import congresssim.simulation.catalog.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
 import congresssim.simulation.WorldSpec;

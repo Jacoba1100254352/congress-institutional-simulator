@@ -1,8 +1,9 @@
 package congresssim.simulation;
 
+import congresssim.institution.core.BillOutcome;
+import congresssim.institution.core.LegislativeProcess;
+
 import congresssim.behavior.VoteContext;
-import congresssim.institution.BillOutcome;
-import congresssim.institution.LegislativeProcess;
 import congresssim.model.Bill;
 import congresssim.model.PolicyState;
 import congresssim.model.SimulationWorld;

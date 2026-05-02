@@ -55,150 +55,192 @@ cloture-conference-review,"Cloture, conference, and judicial review",weakPublicM
 cloture-conference-review,"Cloture, conference, and judicial review",administrativeCost,5,0.033192,0.032625,0.033625,0.001000
 cloture-conference-review,"Cloture, conference, and judicial review",welfare,5,0.677717,0.650208,0.691375,0.041167
 cloture-conference-review,"Cloture, conference, and judicial review",riskControl,5,0.929833,0.926958,0.932833,0.005875
-parliamentary-coalition-confidence,Parliamentary coalition confidence,directionalScore,5,0.672108,0.671792,0.672667,0.000875
-parliamentary-coalition-confidence,Parliamentary coalition confidence,productivity,5,0.226200,0.225333,0.227583,0.002250
-parliamentary-coalition-confidence,Parliamentary coalition confidence,compromise,5,0.292000,0.290042,0.294000,0.003958
-parliamentary-coalition-confidence,Parliamentary coalition confidence,weakPublicMandatePassage,5,0.066883,0.064167,0.070292,0.006125
-parliamentary-coalition-confidence,Parliamentary coalition confidence,administrativeCost,5,0.019575,0.019417,0.019667,0.000250
-parliamentary-coalition-confidence,Parliamentary coalition confidence,welfare,5,0.638400,0.636750,0.640708,0.003958
-parliamentary-coalition-confidence,Parliamentary coalition confidence,riskControl,5,0.904175,0.903417,0.904875,0.001458
-citizen-initiative-referendum,Citizen initiative and referendum,directionalScore,5,0.693475,0.693083,0.693917,0.000833
-citizen-initiative-referendum,Citizen initiative and referendum,productivity,5,0.429583,0.425875,0.431625,0.005750
-citizen-initiative-referendum,Citizen initiative and referendum,compromise,5,0.222392,0.219500,0.225333,0.005833
-citizen-initiative-referendum,Citizen initiative and referendum,weakPublicMandatePassage,5,0.222342,0.217833,0.225583,0.007750
+constitutional-court-architecture-majority,Constitutional court architecture,directionalScore,5,0.652667,0.651667,0.653292,0.001625
+constitutional-court-architecture-majority,Constitutional court architecture,productivity,5,0.319867,0.316625,0.323292,0.006667
+constitutional-court-architecture-majority,Constitutional court architecture,compromise,5,0.246933,0.244708,0.248708,0.004000
+constitutional-court-architecture-majority,Constitutional court architecture,weakPublicMandatePassage,5,0.213125,0.210208,0.216583,0.006375
+constitutional-court-architecture-majority,Constitutional court architecture,administrativeCost,5,0.108442,0.107958,0.108917,0.000958
+constitutional-court-architecture-majority,Constitutional court architecture,welfare,5,0.601100,0.598417,0.602542,0.004125
+constitutional-court-architecture-majority,Constitutional court architecture,riskControl,5,0.834817,0.832667,0.836375,0.003708
+parliamentary-coalition-confidence,Parliamentary coalition confidence,directionalScore,5,0.672183,0.671792,0.672667,0.000875
+parliamentary-coalition-confidence,Parliamentary coalition confidence,productivity,5,0.226558,0.225833,0.227833,0.002000
+parliamentary-coalition-confidence,Parliamentary coalition confidence,compromise,5,0.292508,0.291958,0.293792,0.001833
+parliamentary-coalition-confidence,Parliamentary coalition confidence,weakPublicMandatePassage,5,0.067150,0.064292,0.070167,0.005875
+parliamentary-coalition-confidence,Parliamentary coalition confidence,administrativeCost,5,0.019533,0.019292,0.019667,0.000375
+parliamentary-coalition-confidence,Parliamentary coalition confidence,welfare,5,0.638500,0.637417,0.640375,0.002958
+parliamentary-coalition-confidence,Parliamentary coalition confidence,riskControl,5,0.904125,0.903667,0.904750,0.001083
+citizen-initiative-referendum,Citizen initiative and referendum,directionalScore,5,0.693675,0.693458,0.693792,0.000333
+citizen-initiative-referendum,Citizen initiative and referendum,productivity,5,0.430058,0.427833,0.431917,0.004083
+citizen-initiative-referendum,Citizen initiative and referendum,compromise,5,0.222617,0.220167,0.224667,0.004500
+citizen-initiative-referendum,Citizen initiative and referendum,weakPublicMandatePassage,5,0.222625,0.219458,0.226042,0.006583
 citizen-initiative-referendum,Citizen initiative and referendum,administrativeCost,5,0.070000,0.070000,0.070000,0.000000
-citizen-initiative-referendum,Citizen initiative and referendum,welfare,5,0.591950,0.590125,0.594125,0.004000
-citizen-initiative-referendum,Citizen initiative and referendum,riskControl,5,0.834408,0.833000,0.835375,0.002375
-simple-majority-alternatives-pairwise,Majority pairwise policy tournament,directionalScore,5,0.712067,0.711542,0.712917,0.001375
-simple-majority-alternatives-pairwise,Majority pairwise policy tournament,productivity,5,0.541850,0.540208,0.543375,0.003167
-simple-majority-alternatives-pairwise,Majority pairwise policy tournament,compromise,5,0.504450,0.498500,0.516833,0.018333
-simple-majority-alternatives-pairwise,Majority pairwise policy tournament,weakPublicMandatePassage,5,0.001808,0.001125,0.002125,0.001000
-simple-majority-alternatives-pairwise,Majority pairwise policy tournament,administrativeCost,5,0.285242,0.284833,0.285708,0.000875
-simple-majority-alternatives-pairwise,Majority pairwise policy tournament,welfare,5,0.627242,0.626167,0.627958,0.001792
-simple-majority-alternatives-pairwise,Majority pairwise policy tournament,riskControl,5,0.936817,0.936333,0.937708,0.001375
-citizen-assembly-threshold,Citizen assembly threshold gate,directionalScore,5,0.631092,0.630375,0.631500,0.001125
-citizen-assembly-threshold,Citizen assembly threshold gate,productivity,5,0.197742,0.195667,0.200042,0.004375
-citizen-assembly-threshold,Citizen assembly threshold gate,compromise,5,0.283525,0.279542,0.286958,0.007417
-citizen-assembly-threshold,Citizen assembly threshold gate,weakPublicMandatePassage,5,0.060900,0.058042,0.063083,0.005042
+citizen-initiative-referendum,Citizen initiative and referendum,welfare,5,0.591758,0.589708,0.592875,0.003167
+citizen-initiative-referendum,Citizen initiative and referendum,riskControl,5,0.834450,0.833417,0.835333,0.001917
+district-population-majority,District-population public-will model,directionalScore,5,0.654408,0.653625,0.655125,0.001500
+district-population-majority,District-population public-will model,productivity,5,0.268483,0.264625,0.270667,0.006042
+district-population-majority,District-population public-will model,compromise,5,0.262725,0.261250,0.264417,0.003167
+district-population-majority,District-population public-will model,weakPublicMandatePassage,5,0.346292,0.340958,0.353333,0.012375
+district-population-majority,District-population public-will model,administrativeCost,5,0.070000,0.070000,0.070000,0.000000
+district-population-majority,District-population public-will model,welfare,5,0.617583,0.615792,0.619667,0.003875
+district-population-majority,District-population public-will model,riskControl,5,0.856208,0.855292,0.857208,0.001917
+simple-majority-alternatives-pairwise,Majority pairwise policy tournament,directionalScore,5,0.712058,0.711583,0.712667,0.001083
+simple-majority-alternatives-pairwise,Majority pairwise policy tournament,productivity,5,0.542133,0.540083,0.544167,0.004083
+simple-majority-alternatives-pairwise,Majority pairwise policy tournament,compromise,5,0.504450,0.499042,0.516458,0.017417
+simple-majority-alternatives-pairwise,Majority pairwise policy tournament,weakPublicMandatePassage,5,0.001933,0.001667,0.002333,0.000667
+simple-majority-alternatives-pairwise,Majority pairwise policy tournament,administrativeCost,5,0.285317,0.284875,0.285917,0.001042
+simple-majority-alternatives-pairwise,Majority pairwise policy tournament,welfare,5,0.627267,0.625750,0.628375,0.002625
+simple-majority-alternatives-pairwise,Majority pairwise policy tournament,riskControl,5,0.936833,0.936375,0.937667,0.001292
+citizen-assembly-threshold,Citizen assembly threshold gate,directionalScore,5,0.631142,0.630583,0.631917,0.001333
+citizen-assembly-threshold,Citizen assembly threshold gate,productivity,5,0.197933,0.196583,0.200167,0.003583
+citizen-assembly-threshold,Citizen assembly threshold gate,compromise,5,0.282125,0.279875,0.284542,0.004667
+citizen-assembly-threshold,Citizen assembly threshold gate,weakPublicMandatePassage,5,0.060458,0.055083,0.063833,0.008750
 citizen-assembly-threshold,Citizen assembly threshold gate,administrativeCost,5,0.190000,0.190000,0.190000,0.000000
-citizen-assembly-threshold,Citizen assembly threshold gate,welfare,5,0.686025,0.684292,0.687333,0.003042
-citizen-assembly-threshold,Citizen assembly threshold gate,riskControl,5,0.906233,0.905458,0.907083,0.001625
-public-interest-majority,Majority + public-interest screen,directionalScore,5,0.657050,0.656625,0.657750,0.001125
-public-interest-majority,Majority + public-interest screen,productivity,5,0.245983,0.240667,0.248583,0.007917
-public-interest-majority,Majority + public-interest screen,compromise,5,0.248117,0.245458,0.249875,0.004417
-public-interest-majority,Majority + public-interest screen,weakPublicMandatePassage,5,0.181292,0.170792,0.186208,0.015417
+citizen-assembly-threshold,Citizen assembly threshold gate,welfare,5,0.685525,0.683917,0.686417,0.002500
+citizen-assembly-threshold,Citizen assembly threshold gate,riskControl,5,0.906683,0.905667,0.907583,0.001917
+public-interest-majority,Majority + public-interest screen,directionalScore,5,0.657383,0.656333,0.658083,0.001750
+public-interest-majority,Majority + public-interest screen,productivity,5,0.247558,0.246708,0.248375,0.001667
+public-interest-majority,Majority + public-interest screen,compromise,5,0.248692,0.245000,0.252542,0.007542
+public-interest-majority,Majority + public-interest screen,weakPublicMandatePassage,5,0.185417,0.180875,0.192667,0.011792
 public-interest-majority,Majority + public-interest screen,administrativeCost,5,0.059492,0.059417,0.059708,0.000292
-public-interest-majority,Majority + public-interest screen,welfare,5,0.626467,0.624917,0.631000,0.006083
-public-interest-majority,Majority + public-interest screen,riskControl,5,0.872900,0.871792,0.874500,0.002708
-agenda-lottery-majority,Weighted agenda lottery + majority,directionalScore,5,0.647208,0.646958,0.647625,0.000667
-agenda-lottery-majority,Weighted agenda lottery + majority,productivity,5,0.172567,0.171833,0.173583,0.001750
-agenda-lottery-majority,Weighted agenda lottery + majority,compromise,5,0.252567,0.249333,0.255167,0.005833
-agenda-lottery-majority,Weighted agenda lottery + majority,weakPublicMandatePassage,5,0.176967,0.175292,0.180042,0.004750
+public-interest-majority,Majority + public-interest screen,welfare,5,0.627717,0.625958,0.630833,0.004875
+public-interest-majority,Majority + public-interest screen,riskControl,5,0.872417,0.870500,0.873583,0.003083
+agenda-lottery-majority,Weighted agenda lottery + majority,directionalScore,5,0.646975,0.646625,0.647583,0.000958
+agenda-lottery-majority,Weighted agenda lottery + majority,productivity,5,0.171833,0.169625,0.173583,0.003958
+agenda-lottery-majority,Weighted agenda lottery + majority,compromise,5,0.252158,0.248625,0.256833,0.008208
+agenda-lottery-majority,Weighted agenda lottery + majority,weakPublicMandatePassage,5,0.178525,0.176042,0.180625,0.004583
 agenda-lottery-majority,Weighted agenda lottery + majority,administrativeCost,5,0.032750,0.032750,0.032750,0.000000
-agenda-lottery-majority,Weighted agenda lottery + majority,welfare,5,0.628667,0.626292,0.630458,0.004167
-agenda-lottery-majority,Weighted agenda lottery + majority,riskControl,5,0.877908,0.877500,0.878583,0.001083
-quadratic-attention-majority,Quadratic attention budget + majority,directionalScore,5,0.620258,0.619875,0.620583,0.000708
-quadratic-attention-majority,Quadratic attention budget + majority,productivity,5,0.248033,0.245875,0.249625,0.003750
-quadratic-attention-majority,Quadratic attention budget + majority,compromise,5,0.265583,0.263292,0.267167,0.003875
-quadratic-attention-majority,Quadratic attention budget + majority,weakPublicMandatePassage,5,0.175900,0.171167,0.179500,0.008333
-quadratic-attention-majority,Quadratic attention budget + majority,administrativeCost,5,0.219358,0.219167,0.219542,0.000375
-quadratic-attention-majority,Quadratic attention budget + majority,welfare,5,0.626317,0.624750,0.627833,0.003083
-quadratic-attention-majority,Quadratic attention budget + majority,riskControl,5,0.877842,0.876917,0.878917,0.002000
-proposal-bond-majority,Proposal bonds + majority,directionalScore,5,0.665933,0.665708,0.666208,0.000500
-proposal-bond-majority,Proposal bonds + majority,productivity,5,0.318800,0.317583,0.319583,0.002000
-proposal-bond-majority,Proposal bonds + majority,compromise,5,0.247067,0.244375,0.248542,0.004167
-proposal-bond-majority,Proposal bonds + majority,weakPublicMandatePassage,5,0.211700,0.207208,0.214583,0.007375
-proposal-bond-majority,Proposal bonds + majority,administrativeCost,5,0.069475,0.069417,0.069500,0.000083
-proposal-bond-majority,Proposal bonds + majority,welfare,5,0.607550,0.606417,0.609292,0.002875
-proposal-bond-majority,Proposal bonds + majority,riskControl,5,0.852333,0.851333,0.853250,0.001917
-harm-weighted-majority,Harm-weighted double majority,directionalScore,5,0.662575,0.661958,0.663208,0.001250
-harm-weighted-majority,Harm-weighted double majority,productivity,5,0.271192,0.268042,0.274750,0.006708
-harm-weighted-majority,Harm-weighted double majority,compromise,5,0.263208,0.259875,0.265500,0.005625
-harm-weighted-majority,Harm-weighted double majority,weakPublicMandatePassage,5,0.196775,0.192750,0.199958,0.007208
+agenda-lottery-majority,Weighted agenda lottery + majority,welfare,5,0.630033,0.628583,0.631625,0.003042
+agenda-lottery-majority,Weighted agenda lottery + majority,riskControl,5,0.877750,0.876250,0.878750,0.002500
+quadratic-attention-majority,Quadratic attention budget + majority,directionalScore,5,0.620075,0.619625,0.620500,0.000875
+quadratic-attention-majority,Quadratic attention budget + majority,productivity,5,0.247408,0.242333,0.249458,0.007125
+quadratic-attention-majority,Quadratic attention budget + majority,compromise,5,0.266433,0.264667,0.267917,0.003250
+quadratic-attention-majority,Quadratic attention budget + majority,weakPublicMandatePassage,5,0.178142,0.167458,0.187875,0.020417
+quadratic-attention-majority,Quadratic attention budget + majority,administrativeCost,5,0.219442,0.219292,0.219500,0.000208
+quadratic-attention-majority,Quadratic attention budget + majority,welfare,5,0.626042,0.624458,0.627292,0.002833
+quadratic-attention-majority,Quadratic attention budget + majority,riskControl,5,0.877758,0.875625,0.879542,0.003917
+proposal-bond-majority,Proposal bonds + majority,directionalScore,5,0.666158,0.665792,0.666375,0.000583
+proposal-bond-majority,Proposal bonds + majority,productivity,5,0.319475,0.319042,0.320542,0.001500
+proposal-bond-majority,Proposal bonds + majority,compromise,5,0.246042,0.243417,0.247792,0.004375
+proposal-bond-majority,Proposal bonds + majority,weakPublicMandatePassage,5,0.211475,0.208417,0.214958,0.006542
+proposal-bond-majority,Proposal bonds + majority,administrativeCost,5,0.069475,0.069458,0.069500,0.000042
+proposal-bond-majority,Proposal bonds + majority,welfare,5,0.608792,0.607542,0.610958,0.003417
+proposal-bond-majority,Proposal bonds + majority,riskControl,5,0.852625,0.851458,0.853542,0.002083
+harm-weighted-majority,Harm-weighted double majority,directionalScore,5,0.662642,0.661375,0.663333,0.001958
+harm-weighted-majority,Harm-weighted double majority,productivity,5,0.272125,0.266125,0.276833,0.010708
+harm-weighted-majority,Harm-weighted double majority,compromise,5,0.262325,0.260417,0.265417,0.005000
+harm-weighted-majority,Harm-weighted double majority,weakPublicMandatePassage,5,0.196875,0.193333,0.200125,0.006792
 harm-weighted-majority,Harm-weighted double majority,administrativeCost,5,0.070000,0.070000,0.070000,0.000000
-harm-weighted-majority,Harm-weighted double majority,welfare,5,0.615717,0.614500,0.617250,0.002750
-harm-weighted-majority,Harm-weighted double majority,riskControl,5,0.877392,0.876917,0.878583,0.001667
-compensation-majority,Compensation amendments + majority,directionalScore,5,0.662500,0.662083,0.663000,0.000917
-compensation-majority,Compensation amendments + majority,productivity,5,0.320608,0.319917,0.321583,0.001667
-compensation-majority,Compensation amendments + majority,compromise,5,0.245708,0.243167,0.246917,0.003750
-compensation-majority,Compensation amendments + majority,weakPublicMandatePassage,5,0.212533,0.208500,0.216625,0.008125
+harm-weighted-majority,Harm-weighted double majority,welfare,5,0.615592,0.611292,0.619042,0.007750
+harm-weighted-majority,Harm-weighted double majority,riskControl,5,0.877425,0.876417,0.879167,0.002750
+compensation-majority,Compensation amendments + majority,directionalScore,5,0.662467,0.661583,0.664000,0.002417
+compensation-majority,Compensation amendments + majority,productivity,5,0.320175,0.316583,0.324125,0.007542
+compensation-majority,Compensation amendments + majority,compromise,5,0.246492,0.243375,0.248625,0.005250
+compensation-majority,Compensation amendments + majority,weakPublicMandatePassage,5,0.211067,0.203333,0.219500,0.016167
 compensation-majority,Compensation amendments + majority,administrativeCost,5,0.070000,0.070000,0.070000,0.000000
-compensation-majority,Compensation amendments + majority,welfare,5,0.601758,0.600167,0.603250,0.003083
-compensation-majority,Compensation amendments + majority,riskControl,5,0.835458,0.833500,0.836750,0.003250
-package-bargaining-majority,Package bargaining + majority,directionalScore,5,0.655525,0.654208,0.656208,0.002000
-package-bargaining-majority,Package bargaining + majority,productivity,5,0.330283,0.325083,0.334500,0.009417
-package-bargaining-majority,Package bargaining + majority,compromise,5,0.243425,0.240875,0.246417,0.005542
-package-bargaining-majority,Package bargaining + majority,weakPublicMandatePassage,5,0.219858,0.213042,0.226000,0.012958
-package-bargaining-majority,Package bargaining + majority,administrativeCost,5,0.109767,0.109417,0.110500,0.001083
-package-bargaining-majority,Package bargaining + majority,welfare,5,0.600592,0.598833,0.602208,0.003375
-package-bargaining-majority,Package bargaining + majority,riskControl,5,0.841292,0.840208,0.844042,0.003833
-multidimensional-package-majority,Multidimensional package bargaining + majority,directionalScore,5,0.640783,0.639417,0.641875,0.002458
-multidimensional-package-majority,Multidimensional package bargaining + majority,productivity,5,0.343000,0.339375,0.347542,0.008167
-multidimensional-package-majority,Multidimensional package bargaining + majority,compromise,5,0.241183,0.239083,0.243167,0.004083
-multidimensional-package-majority,Multidimensional package bargaining + majority,weakPublicMandatePassage,5,0.215608,0.208958,0.220708,0.011750
-multidimensional-package-majority,Multidimensional package bargaining + majority,administrativeCost,5,0.172758,0.171667,0.173750,0.002083
-multidimensional-package-majority,Multidimensional package bargaining + majority,welfare,5,0.581700,0.580333,0.584458,0.004125
-multidimensional-package-majority,Multidimensional package bargaining + majority,riskControl,5,0.835475,0.834083,0.836042,0.001958
-law-registry-majority,Active-law registry + majority review,directionalScore,5,0.654642,0.654125,0.655083,0.000958
-law-registry-majority,Active-law registry + majority review,productivity,5,0.345183,0.342750,0.347125,0.004375
-law-registry-majority,Active-law registry + majority review,compromise,5,0.237358,0.235000,0.239875,0.004875
-law-registry-majority,Active-law registry + majority review,weakPublicMandatePassage,5,0.241592,0.237292,0.244542,0.007250
-law-registry-majority,Active-law registry + majority review,administrativeCost,5,0.118033,0.117458,0.119167,0.001708
-law-registry-majority,Active-law registry + majority review,welfare,5,0.595625,0.594875,0.596500,0.001625
-law-registry-majority,Active-law registry + majority review,riskControl,5,0.835825,0.834292,0.837083,0.002792
-public-objection-majority,Public objection window + majority,directionalScore,5,0.643883,0.643250,0.644417,0.001167
-public-objection-majority,Public objection window + majority,productivity,5,0.228283,0.224458,0.230375,0.005917
-public-objection-majority,Public objection window + majority,compromise,5,0.285492,0.284208,0.286250,0.002042
-public-objection-majority,Public objection window + majority,weakPublicMandatePassage,5,0.122633,0.116667,0.130250,0.013583
-public-objection-majority,Public objection window + majority,administrativeCost,5,0.134508,0.134167,0.135000,0.000833
-public-objection-majority,Public objection window + majority,welfare,5,0.642667,0.641375,0.645250,0.003875
-public-objection-majority,Public objection window + majority,riskControl,5,0.892975,0.891042,0.894083,0.003042
-anti-capture-majority-bundle,Majority + anti-capture bundle,directionalScore,5,0.676417,0.675250,0.677083,0.001833
-anti-capture-majority-bundle,Majority + anti-capture bundle,productivity,5,0.308008,0.305583,0.309917,0.004333
-anti-capture-majority-bundle,Majority + anti-capture bundle,compromise,5,0.249767,0.247458,0.251958,0.004500
-anti-capture-majority-bundle,Majority + anti-capture bundle,weakPublicMandatePassage,5,0.153200,0.147000,0.159000,0.012000
-anti-capture-majority-bundle,Majority + anti-capture bundle,administrativeCost,5,0.064992,0.064917,0.065042,0.000125
-anti-capture-majority-bundle,Majority + anti-capture bundle,welfare,5,0.649308,0.647292,0.651875,0.004583
-anti-capture-majority-bundle,Majority + anti-capture bundle,riskControl,5,0.884042,0.883167,0.884667,0.001500
-risk-routed-majority,Risk-routed majority legislature,directionalScore,5,0.686375,0.685875,0.687375,0.001500
-risk-routed-majority,Risk-routed majority legislature,productivity,5,0.530925,0.526333,0.534125,0.007792
-risk-routed-majority,Risk-routed majority legislature,compromise,5,0.263992,0.263000,0.265208,0.002208
-risk-routed-majority,Risk-routed majority legislature,weakPublicMandatePassage,5,0.233817,0.225583,0.237417,0.011833
-risk-routed-majority,Risk-routed majority legislature,administrativeCost,5,0.170642,0.170292,0.171083,0.000792
-risk-routed-majority,Risk-routed majority legislature,welfare,5,0.508192,0.506333,0.510292,0.003958
-risk-routed-majority,Risk-routed majority legislature,riskControl,5,0.840758,0.838125,0.844125,0.006000
-portfolio-hybrid-legislature,Portfolio hybrid legislature,directionalScore,5,0.705525,0.705292,0.706042,0.000750
-portfolio-hybrid-legislature,Portfolio hybrid legislature,productivity,5,0.503233,0.501167,0.504917,0.003750
-portfolio-hybrid-legislature,Portfolio hybrid legislature,compromise,5,0.423225,0.418208,0.431500,0.013292
-portfolio-hybrid-legislature,Portfolio hybrid legislature,weakPublicMandatePassage,5,0.029992,0.028208,0.031667,0.003458
-portfolio-hybrid-legislature,Portfolio hybrid legislature,administrativeCost,5,0.238758,0.237875,0.239417,0.001542
-portfolio-hybrid-legislature,Portfolio hybrid legislature,welfare,5,0.618142,0.616208,0.619625,0.003417
-portfolio-hybrid-legislature,Portfolio hybrid legislature,riskControl,5,0.932400,0.932167,0.932625,0.000458
-norm-erosion-majority,Endogenous norm erosion + majority,directionalScore,5,0.631750,0.631333,0.632458,0.001125
-norm-erosion-majority,Endogenous norm erosion + majority,productivity,5,0.325792,0.324625,0.327083,0.002458
-norm-erosion-majority,Endogenous norm erosion + majority,compromise,5,0.239667,0.237000,0.243000,0.006000
-norm-erosion-majority,Endogenous norm erosion + majority,weakPublicMandatePassage,5,0.249458,0.247250,0.252708,0.005458
-norm-erosion-majority,Endogenous norm erosion + majority,administrativeCost,5,0.199242,0.199125,0.199375,0.000250
-norm-erosion-majority,Endogenous norm erosion + majority,welfare,5,0.603425,0.601417,0.604750,0.003333
-norm-erosion-majority,Endogenous norm erosion + majority,riskControl,5,0.843192,0.842250,0.845250,0.003000
-default-pass,Default pass unless 2/3 block,directionalScore,5,0.725308,0.724292,0.726000,0.001708
-default-pass,Default pass unless 2/3 block,productivity,5,0.864683,0.862208,0.867042,0.004833
-default-pass,Default pass unless 2/3 block,compromise,5,0.136408,0.135958,0.137708,0.001750
-default-pass,Default pass unless 2/3 block,weakPublicMandatePassage,5,0.472883,0.470500,0.476667,0.006167
+compensation-majority,Compensation amendments + majority,welfare,5,0.601675,0.599917,0.603750,0.003833
+compensation-majority,Compensation amendments + majority,riskControl,5,0.835667,0.833750,0.838333,0.004583
+package-bargaining-majority,Package bargaining + majority,directionalScore,5,0.655525,0.655125,0.655833,0.000708
+package-bargaining-majority,Package bargaining + majority,productivity,5,0.330883,0.329333,0.332500,0.003167
+package-bargaining-majority,Package bargaining + majority,compromise,5,0.243550,0.242125,0.245125,0.003000
+package-bargaining-majority,Package bargaining + majority,weakPublicMandatePassage,5,0.221133,0.214583,0.224750,0.010167
+package-bargaining-majority,Package bargaining + majority,administrativeCost,5,0.109667,0.109125,0.110417,0.001292
+package-bargaining-majority,Package bargaining + majority,welfare,5,0.599933,0.597625,0.602292,0.004667
+package-bargaining-majority,Package bargaining + majority,riskControl,5,0.840750,0.840125,0.841417,0.001292
+multidimensional-package-majority,Multidimensional package bargaining + majority,directionalScore,5,0.640667,0.639750,0.642083,0.002333
+multidimensional-package-majority,Multidimensional package bargaining + majority,productivity,5,0.341467,0.338292,0.345417,0.007125
+multidimensional-package-majority,Multidimensional package bargaining + majority,compromise,5,0.240300,0.238583,0.243208,0.004625
+multidimensional-package-majority,Multidimensional package bargaining + majority,weakPublicMandatePassage,5,0.216933,0.211708,0.222042,0.010333
+multidimensional-package-majority,Multidimensional package bargaining + majority,administrativeCost,5,0.172783,0.171458,0.173958,0.002500
+multidimensional-package-majority,Multidimensional package bargaining + majority,welfare,5,0.581383,0.580000,0.582292,0.002292
+multidimensional-package-majority,Multidimensional package bargaining + majority,riskControl,5,0.836800,0.834667,0.839125,0.004458
+omnibus-bargaining-majority,Omnibus bargaining + majority,directionalScore,5,0.630083,0.629333,0.630583,0.001250
+omnibus-bargaining-majority,Omnibus bargaining + majority,productivity,5,0.376258,0.372833,0.379375,0.006542
+omnibus-bargaining-majority,Omnibus bargaining + majority,compromise,5,0.237192,0.236000,0.238208,0.002208
+omnibus-bargaining-majority,Omnibus bargaining + majority,weakPublicMandatePassage,5,0.157600,0.153583,0.162042,0.008458
+omnibus-bargaining-majority,Omnibus bargaining + majority,administrativeCost,5,0.262400,0.261542,0.263500,0.001958
+omnibus-bargaining-majority,Omnibus bargaining + majority,welfare,5,0.577142,0.576042,0.578042,0.002000
+omnibus-bargaining-majority,Omnibus bargaining + majority,riskControl,5,0.847217,0.845375,0.848875,0.003500
+law-registry-majority,Active-law registry + majority review,directionalScore,5,0.654617,0.653958,0.655375,0.001417
+law-registry-majority,Active-law registry + majority review,productivity,5,0.345158,0.340875,0.349792,0.008917
+law-registry-majority,Active-law registry + majority review,compromise,5,0.237575,0.235833,0.239875,0.004042
+law-registry-majority,Active-law registry + majority review,weakPublicMandatePassage,5,0.242925,0.239292,0.247625,0.008333
+law-registry-majority,Active-law registry + majority review,administrativeCost,5,0.118133,0.116625,0.119500,0.002875
+law-registry-majority,Active-law registry + majority review,welfare,5,0.595858,0.594917,0.596583,0.001667
+law-registry-majority,Active-law registry + majority review,riskControl,5,0.835975,0.833292,0.838708,0.005417
+public-objection-majority,Public objection window + majority,directionalScore,5,0.644250,0.643792,0.644667,0.000875
+public-objection-majority,Public objection window + majority,productivity,5,0.229967,0.228750,0.231458,0.002708
+public-objection-majority,Public objection window + majority,compromise,5,0.284558,0.281667,0.287083,0.005417
+public-objection-majority,Public objection window + majority,weakPublicMandatePassage,5,0.119750,0.113625,0.125458,0.011833
+public-objection-majority,Public objection window + majority,administrativeCost,5,0.134383,0.134250,0.134667,0.000417
+public-objection-majority,Public objection window + majority,welfare,5,0.642158,0.641125,0.643625,0.002500
+public-objection-majority,Public objection window + majority,riskControl,5,0.893083,0.892000,0.894292,0.002292
+anti-capture-majority-bundle,Majority + anti-capture bundle,directionalScore,5,0.676417,0.675167,0.677208,0.002042
+anti-capture-majority-bundle,Majority + anti-capture bundle,productivity,5,0.308200,0.306083,0.310875,0.004792
+anti-capture-majority-bundle,Majority + anti-capture bundle,compromise,5,0.247642,0.245083,0.249875,0.004792
+anti-capture-majority-bundle,Majority + anti-capture bundle,weakPublicMandatePassage,5,0.150875,0.144833,0.154333,0.009500
+anti-capture-majority-bundle,Majority + anti-capture bundle,administrativeCost,5,0.065000,0.064917,0.065042,0.000125
+anti-capture-majority-bundle,Majority + anti-capture bundle,welfare,5,0.649617,0.647750,0.651250,0.003500
+anti-capture-majority-bundle,Majority + anti-capture bundle,riskControl,5,0.884242,0.882667,0.885833,0.003167
+influence-system-majority,Campaign-finance influence system,directionalScore,5,0.674550,0.673458,0.675292,0.001833
+influence-system-majority,Campaign-finance influence system,productivity,5,0.316967,0.313917,0.320167,0.006250
+influence-system-majority,Campaign-finance influence system,compromise,5,0.244950,0.242708,0.248250,0.005542
+influence-system-majority,Campaign-finance influence system,weakPublicMandatePassage,5,0.141875,0.139958,0.145750,0.005792
+influence-system-majority,Campaign-finance influence system,administrativeCost,5,0.062175,0.062083,0.062292,0.000208
+influence-system-majority,Campaign-finance influence system,welfare,5,0.622083,0.618958,0.625083,0.006125
+influence-system-majority,Campaign-finance influence system,riskControl,5,0.871100,0.870542,0.871667,0.001125
+risk-routed-majority,Risk-routed majority legislature,directionalScore,5,0.686808,0.686125,0.687667,0.001542
+risk-routed-majority,Risk-routed majority legislature,productivity,5,0.530892,0.529375,0.532833,0.003458
+risk-routed-majority,Risk-routed majority legislature,compromise,5,0.263883,0.263083,0.264958,0.001875
+risk-routed-majority,Risk-routed majority legislature,weakPublicMandatePassage,5,0.234783,0.232417,0.237417,0.005000
+risk-routed-majority,Risk-routed majority legislature,administrativeCost,5,0.170642,0.170250,0.171125,0.000875
+risk-routed-majority,Risk-routed majority legislature,welfare,5,0.508050,0.506667,0.509042,0.002375
+risk-routed-majority,Risk-routed majority legislature,riskControl,5,0.842458,0.840250,0.844792,0.004542
+portfolio-hybrid-legislature,Portfolio hybrid legislature,directionalScore,5,0.705592,0.705167,0.705875,0.000708
+portfolio-hybrid-legislature,Portfolio hybrid legislature,productivity,5,0.502592,0.501375,0.504125,0.002750
+portfolio-hybrid-legislature,Portfolio hybrid legislature,compromise,5,0.423533,0.419208,0.431792,0.012583
+portfolio-hybrid-legislature,Portfolio hybrid legislature,weakPublicMandatePassage,5,0.029383,0.026875,0.031208,0.004333
+portfolio-hybrid-legislature,Portfolio hybrid legislature,administrativeCost,5,0.238558,0.237958,0.238917,0.000958
+portfolio-hybrid-legislature,Portfolio hybrid legislature,welfare,5,0.618208,0.616500,0.619458,0.002958
+portfolio-hybrid-legislature,Portfolio hybrid legislature,riskControl,5,0.932817,0.932458,0.933083,0.000625
+expanded-portfolio-hybrid-legislature,Expanded portfolio hybrid legislature,directionalScore,5,0.675575,0.674917,0.676250,0.001333
+expanded-portfolio-hybrid-legislature,Expanded portfolio hybrid legislature,productivity,5,0.781317,0.778542,0.783708,0.005167
+expanded-portfolio-hybrid-legislature,Expanded portfolio hybrid legislature,compromise,5,0.464942,0.460042,0.476125,0.016083
+expanded-portfolio-hybrid-legislature,Expanded portfolio hybrid legislature,weakPublicMandatePassage,5,0.002508,0.002042,0.002917,0.000875
+expanded-portfolio-hybrid-legislature,Expanded portfolio hybrid legislature,administrativeCost,5,0.605433,0.603625,0.606750,0.003125
+expanded-portfolio-hybrid-legislature,Expanded portfolio hybrid legislature,welfare,5,0.555642,0.554917,0.556958,0.002042
+expanded-portfolio-hybrid-legislature,Expanded portfolio hybrid legislature,riskControl,5,0.902250,0.899500,0.905625,0.006125
+norm-erosion-majority,Endogenous norm erosion + majority,directionalScore,5,0.631792,0.631167,0.632500,0.001333
+norm-erosion-majority,Endogenous norm erosion + majority,productivity,5,0.324958,0.322625,0.327708,0.005083
+norm-erosion-majority,Endogenous norm erosion + majority,compromise,5,0.240275,0.238333,0.241625,0.003292
+norm-erosion-majority,Endogenous norm erosion + majority,weakPublicMandatePassage,5,0.247808,0.244708,0.250875,0.006167
+norm-erosion-majority,Endogenous norm erosion + majority,administrativeCost,5,0.199275,0.199167,0.199417,0.000250
+norm-erosion-majority,Endogenous norm erosion + majority,welfare,5,0.604250,0.602917,0.605875,0.002958
+norm-erosion-majority,Endogenous norm erosion + majority,riskControl,5,0.843883,0.843250,0.844292,0.001042
+long-horizon-learning-majority,Long-horizon strategic learning,directionalScore,5,0.679175,0.678292,0.680167,0.001875
+long-horizon-learning-majority,Long-horizon strategic learning,productivity,5,0.590908,0.587167,0.593708,0.006542
+long-horizon-learning-majority,Long-horizon strategic learning,compromise,5,0.269867,0.269125,0.270542,0.001417
+long-horizon-learning-majority,Long-horizon strategic learning,weakPublicMandatePassage,5,0.243108,0.241000,0.244333,0.003333
+long-horizon-learning-majority,Long-horizon strategic learning,administrativeCost,5,0.209967,0.209917,0.210000,0.000083
+long-horizon-learning-majority,Long-horizon strategic learning,welfare,5,0.483333,0.482500,0.485083,0.002583
+long-horizon-learning-majority,Long-horizon strategic learning,riskControl,5,0.796900,0.793958,0.799250,0.005292
+default-pass,Default pass unless 2/3 block,directionalScore,5,0.725292,0.724125,0.726000,0.001875
+default-pass,Default pass unless 2/3 block,productivity,5,0.864617,0.862667,0.866667,0.004000
+default-pass,Default pass unless 2/3 block,compromise,5,0.136458,0.135833,0.137750,0.001917
+default-pass,Default pass unless 2/3 block,weakPublicMandatePassage,5,0.472908,0.470167,0.475792,0.005625
 default-pass,Default pass unless 2/3 block,administrativeCost,5,0.070000,0.070000,0.070000,0.000000
-default-pass,Default pass unless 2/3 block,welfare,5,0.500525,0.499792,0.501583,0.001792
-default-pass,Default pass unless 2/3 block,riskControl,5,0.630225,0.628333,0.631667,0.003333
-default-pass-challenge,Default pass + challenge vouchers,directionalScore,5,0.683500,0.682750,0.684375,0.001625
-default-pass-challenge,Default pass + challenge vouchers,productivity,5,0.659367,0.657000,0.661958,0.004958
-default-pass-challenge,Default pass + challenge vouchers,compromise,5,0.160150,0.159250,0.161667,0.002417
-default-pass-challenge,Default pass + challenge vouchers,weakPublicMandatePassage,5,0.449350,0.445833,0.451958,0.006125
-default-pass-challenge,Default pass + challenge vouchers,administrativeCost,5,0.105175,0.105083,0.105250,0.000167
-default-pass-challenge,Default pass + challenge vouchers,welfare,5,0.513158,0.512667,0.513917,0.001250
-default-pass-challenge,Default pass + challenge vouchers,riskControl,5,0.693108,0.691583,0.694750,0.003167
-default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,directionalScore,5,0.707800,0.706208,0.709792,0.003583
-default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,productivity,5,0.801967,0.799500,0.806000,0.006500
-default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,compromise,5,0.243000,0.242292,0.243667,0.001375
-default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,weakPublicMandatePassage,5,0.374908,0.371875,0.376833,0.004958
-default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,administrativeCost,5,0.206208,0.205833,0.206542,0.000708
-default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,welfare,5,0.459742,0.458875,0.460167,0.001292
-default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,riskControl,5,0.725875,0.720792,0.730125,0.009333
+default-pass,Default pass unless 2/3 block,welfare,5,0.500358,0.499750,0.501208,0.001458
+default-pass,Default pass unless 2/3 block,riskControl,5,0.630308,0.627542,0.631875,0.004333
+default-pass-challenge,Default pass + challenge vouchers,directionalScore,5,0.683283,0.681708,0.684958,0.003250
+default-pass-challenge,Default pass + challenge vouchers,productivity,5,0.658417,0.654958,0.661292,0.006333
+default-pass-challenge,Default pass + challenge vouchers,compromise,5,0.160075,0.159042,0.162083,0.003042
+default-pass-challenge,Default pass + challenge vouchers,weakPublicMandatePassage,5,0.449458,0.444667,0.451500,0.006833
+default-pass-challenge,Default pass + challenge vouchers,administrativeCost,5,0.105175,0.105125,0.105250,0.000125
+default-pass-challenge,Default pass + challenge vouchers,welfare,5,0.513158,0.512292,0.514208,0.001917
+default-pass-challenge,Default pass + challenge vouchers,riskControl,5,0.693125,0.690792,0.695708,0.004917
+default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,directionalScore,5,0.708283,0.706708,0.709958,0.003250
+default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,productivity,5,0.801750,0.797917,0.805833,0.007917
+default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,compromise,5,0.243075,0.242083,0.244208,0.002125
+default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,weakPublicMandatePassage,5,0.374658,0.371542,0.377333,0.005792
+default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,administrativeCost,5,0.206275,0.205833,0.206625,0.000792
+default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,welfare,5,0.459925,0.458833,0.460958,0.002125
+default-pass-multiround-mediation-challenge,Default pass + mediation + challenge,riskControl,5,0.727783,0.722417,0.730375,0.007958

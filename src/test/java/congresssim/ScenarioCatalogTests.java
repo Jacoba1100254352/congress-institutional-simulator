@@ -5,43 +5,11 @@ import congresssim.behavior.VotingStrategy;
 import congresssim.experiment.CampaignResult;
 import congresssim.experiment.CampaignRunner;
 import congresssim.experiment.CampaignRow;
-import congresssim.institution.AdaptiveTrackProcess;
-import congresssim.institution.AffirmativeThresholdRule;
-import congresssim.institution.AgendaDisposition;
-import congresssim.institution.AgendaLotteryProcess;
-import congresssim.institution.AlternativeSelectionRule;
-import congresssim.institution.AmendmentMediationProcess;
-import congresssim.institution.BillOutcome;
-import congresssim.institution.BudgetedLobbyingProcess;
-import congresssim.institution.Chamber;
-import congresssim.institution.ChallengeEscalationProcess;
-import congresssim.institution.ChallengeTokenAllocation;
-import congresssim.institution.ChallengeVoucherProcess;
-import congresssim.institution.CitizenPanelMode;
-import congresssim.institution.CitizenPanelReviewProcess;
-import congresssim.institution.CoalitionCosponsorshipProcess;
-import congresssim.institution.CommitteeGatekeepingProcess;
-import congresssim.institution.CommitteeInformationProcess;
-import congresssim.institution.CompetingAlternativesProcess;
-import congresssim.institution.ConstituentPublicWillProcess;
-import congresssim.institution.DefaultPassUnlessVetoedRule;
-import congresssim.institution.DistributionalHarmProcess;
-import congresssim.institution.LawRegistryProcess;
-import congresssim.institution.LegislativeProcess;
-import congresssim.institution.LobbyAuditProcess;
-import congresssim.institution.LobbyTransparencyProcess;
-import congresssim.institution.MultiRoundAmendmentProcess;
-import congresssim.institution.ProposalAccessRules;
-import congresssim.institution.ProposalBondProcess;
-import congresssim.institution.ProposalCreditProcess;
-import congresssim.institution.PublicObjectionWindowProcess;
-import congresssim.institution.QuadraticAttentionBudgetProcess;
-import congresssim.institution.SunsetTrialProcess;
 import congresssim.simulation.CommitteeComposition;
 import congresssim.simulation.CommitteeFactory;
 import congresssim.simulation.PartySystemProfile;
 import congresssim.simulation.Scenario;
-import congresssim.simulation.ScenarioCatalog;
+import congresssim.simulation.catalog.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
 import congresssim.simulation.WorldGenerator;
@@ -204,6 +172,30 @@ final class ScenarioCatalogTests {
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("portfolio-hybrid-legislature"),
                 "Scenario catalog should expose the synthesized portfolio hybrid design."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("expanded-portfolio-hybrid-legislature"),
+                "Scenario catalog should expose the expanded research-depth portfolio design."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("district-population-majority"),
+                "Scenario catalog should expose district-population public-will designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("long-horizon-learning-majority"),
+                "Scenario catalog should expose long-horizon strategy-learning designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("omnibus-bargaining-majority"),
+                "Scenario catalog should expose fuller omnibus bargaining designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("influence-system-majority"),
+                "Scenario catalog should expose linked influence-system designs."
+        );
+        assertTrue(
+                ScenarioCatalog.scenarioKeys().contains("constitutional-court-architecture-majority"),
+                "Scenario catalog should expose constitutional-court architecture designs."
         );
         assertTrue(
                 ScenarioCatalog.scenarioKeys().contains("norm-erosion-majority"),

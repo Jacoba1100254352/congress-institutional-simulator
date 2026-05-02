@@ -9,9 +9,9 @@
   "bills": 60,
   "seed": 20260428,
   "caseCount": 34,
-  "scenarioCount": 29,
+  "scenarioCount": 35,
   "artifacts": [
-    {"path": "reports/simulation-campaign-v21-paper.csv", "sha256": "22bf7803d6c55694504497b3b84d2410b17009fb6648129fdeb5a6e27f27c239"},
-    {"path": "reports/simulation-campaign-v21-paper.md", "sha256": "79f94ab94f5def335f0b6d17a17bf674c7ee17d9773961a50748458675dfd427"}
+    {"path": "reports/simulation-campaign-v21-paper.csv", "sha256": "554c92f6be3c1ccfc7b2635d6588b790101b6be1d50badc5b537b97c0851fcbe"},
+    {"path": "reports/simulation-campaign-v21-paper.md", "sha256": "e4b40ae7a639ddaefec243ae173d203deed6153fef00124a437a499ccec0efac"}
   ]
 }

@@ -23,8 +23,10 @@ TABLE_SCENARIOS = [
     ("leadership-cartel-majority", "LEAD"),
     ("committee-regular-order", "COMM"),
     ("cloture-conference-review", "PROC"),
+    ("constitutional-court-architecture-majority", "COURT"),
     ("parliamentary-coalition-confidence", "PARL"),
     ("citizen-initiative-referendum", "INIT"),
+    ("district-population-majority", "DIST"),
     ("simple-majority-alternatives-pairwise", "PAIR"),
     ("citizen-assembly-threshold", "JURY"),
     ("public-interest-majority", "SCR"),
@@ -35,12 +37,16 @@ TABLE_SCENARIOS = [
     ("compensation-majority", "COMP"),
     ("package-bargaining-majority", "PKG"),
     ("multidimensional-package-majority", "MPKG"),
+    ("omnibus-bargaining-majority", "OMNI"),
     ("law-registry-majority", "LAW"),
     ("public-objection-majority", "OBJ"),
     ("anti-capture-majority-bundle", "CAP"),
+    ("influence-system-majority", "INFL"),
     ("risk-routed-majority", "RISK"),
     ("portfolio-hybrid-legislature", "PORT"),
+    ("expanded-portfolio-hybrid-legislature", "XPORT"),
     ("norm-erosion-majority", "NORM"),
+    ("long-horizon-learning-majority", "LEARN"),
     ("default-pass", "DP"),
     ("default-pass-challenge", "DPC"),
     ("default-pass-multiround-mediation-challenge", "DPM"),
@@ -60,6 +66,7 @@ MAIN_TABLE_SCENARIOS = [
     ("anti-capture-majority-bundle", "CAP"),
     ("risk-routed-majority", "RISK"),
     ("portfolio-hybrid-legislature", "PORT"),
+    ("expanded-portfolio-hybrid-legislature", "XPORT"),
     ("law-registry-majority", "LAW"),
     ("default-pass", "DP"),
     ("default-pass-multiround-mediation-challenge", "DPM"),
@@ -467,6 +474,8 @@ def write_design_space_coverage_table() -> None:
     rows = [
         ("Conventional", "SM S60 BIC VETO CUR", "Thresholds/vetoes", "Bottlenecks"),
         ("Procedure", "LEAD PROC COMM", "Agenda control", "Queue capture"),
+        ("Courts", "COURT", "Review architecture", "Juridification"),
+        ("Public model", "DIST", "District publics", "Proxy opinion"),
         ("Agenda gates", "SCR LOT", "Screen/lottery", "Gate bias"),
         ("Coalition", "PARL", "Confidence/access", "Bloc cartels"),
         ("Direct democracy", "INIT", "Initiative path", "Campaign bias"),
@@ -474,11 +483,11 @@ def write_design_space_coverage_table() -> None:
         ("Mini-public", "JURY", "Citizen burden shift", "Manipulation"),
         ("Scarcity", "QAB BOND", "Credits/bonds", "Hoarding"),
         ("Harm rules", "HARM COMP", "Minority protection", "Holdouts"),
-        ("Bargaining", "PKG MPKG", "Package trades", "Proxy limits"),
+        ("Bargaining", "PKG MPKG OMNI", "Package trades", "Proxy limits"),
         ("Correction", "LAW OBJ", "Review/objection", "Instability"),
-        ("Anti-capture", "CAP", "Lobby safeguards", "Evasion"),
-        ("Adaptive", "RISK NORM", "Risk/norm routing", "Gaming"),
-        ("Portfolio", "PORT", "Mechanism bundle", "Complexity"),
+        ("Anti-capture", "CAP INFL", "Lobby safeguards", "Evasion"),
+        ("Adaptive", "RISK NORM LEARN", "Risk/norm/learning", "Gaming"),
+        ("Portfolio", "PORT XPORT", "Mechanism bundle", "Complexity"),
         ("Default stress", "DP DPC DPM", "Burden shift", "False silence"),
         ("Out of scope", "---", "Elections/media/etc.", "Endogeneity"),
     ]
@@ -567,7 +576,7 @@ def figure_label_width(label: str) -> float:
 
 def label_box(label_x: float, label_y: float, label: str, anchor: str) -> tuple[float, float, float, float]:
     width = figure_label_width(label)
-    # Mirror scripts/check_figure_labels.py: comments record one label coordinate,
+    # Mirror scripts/checks/check_figure_labels.py: comments record one label coordinate,
     # and the checker treats that coordinate as the label center regardless of
     # TeX anchoring.
     return label_x - (width / 2.0), label_x + (width / 2.0), label_y - 2.0, label_y + 2.0
@@ -960,6 +969,7 @@ def write_timeline_contention(
         ("simple-majority-alternatives-pairwise", "PAIR", "black!80"),
         ("citizen-assembly-threshold", "JURY", "black!45"),
         ("risk-routed-majority", "RISK", "black!35"),
+        ("expanded-portfolio-hybrid-legislature", "XPORT", "black"),
         ("default-pass", "DP", "black!25"),
         ("default-pass-multiround-mediation-challenge", "DPM", "black!60"),
     ]
@@ -1024,15 +1034,16 @@ def write_timeline_contention(
             lines.append(f"\\put({fmt(x)},{fmt(y)}){{\\makebox(0,0){{\\color{{{color}}}\\rule{{{point_size}}}{{{point_size}}}}}}}")
 
     legend_positions = [
-        (20.0, 82.8),
-        (43.0, 82.8),
-        (66.0, 82.8),
-        (89.0, 82.8),
-        (20.0, 78.8),
-        (43.0, 78.8),
-        (66.0, 78.8),
-        (89.0, 78.8),
-        (20.0, 74.8),
+        (16.0, 82.8),
+        (38.0, 82.8),
+        (60.0, 82.8),
+        (82.0, 82.8),
+        (104.0, 82.8),
+        (16.0, 78.8),
+        (38.0, 78.8),
+        (60.0, 78.8),
+        (82.0, 78.8),
+        (104.0, 78.8),
     ]
     for (scenario_key, label, color), (x, y) in zip(scenarios, legend_positions):
         swatch = "1.8mm" if scenario_key == CURRENT_SYSTEM_KEY else "1.3mm"

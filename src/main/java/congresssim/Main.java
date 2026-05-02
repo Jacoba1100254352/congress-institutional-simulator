@@ -4,7 +4,7 @@ import congresssim.calibration.CalibrationRunner;
 import congresssim.calibration.CalibrationRunner.CalibrationRunResult;
 import congresssim.experiment.CampaignResult;
 import congresssim.experiment.CampaignRunner;
-import congresssim.simulation.ScenarioCatalog;
+import congresssim.simulation.catalog.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
 import congresssim.simulation.WorldSpec;
