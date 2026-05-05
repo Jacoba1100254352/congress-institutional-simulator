@@ -78,11 +78,12 @@ def run_campaign(seed: int) -> Path:
     output_dir = RAW_DIR / str(seed)
     output_dir.mkdir(parents=True, exist_ok=True)
     java_props = os.environ.get("JAVA_PROPS", "-Dcongresssim.javaRelease=21").split()
+    app_cp = os.environ.get("APP_CP", "out/congresssim.jar")
     command = [
         "java",
         *java_props,
         "-cp",
-        "out/main",
+        app_cp,
         "congresssim.Main",
         "--campaign",
         "v21-paper",

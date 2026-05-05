@@ -60,6 +60,17 @@ This writes:
 - `reports/simulation-campaign-v21-paper-manifest.json`
 - `reports/scenario-selection-manifest.md` after `make paper`
 
+Build and verify the LaTeX paper and checked-in PDFs:
+
+```sh
+make paper-checks
+```
+
+This regenerates `paper/main.pdf`, `paper/appendix-odd-d.pdf`, and
+`paper/pdf-manifest.json`. The manifest records stable source and extracted-text
+hashes so CI can detect stale paper PDFs even though raw PDF bytes are excluded
+from clean-regeneration checks across TeX environments.
+
 Validate and summarize paper findings from the generated campaign and seed reports:
 
 ```sh

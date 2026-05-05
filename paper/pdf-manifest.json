@@ -1,0 +1,131 @@
+{
+  "generatedBy": "paper/scripts/write_pdf_manifest.py",
+  "pdfs": [
+    {
+      "normalizedTextBytes": 44279,
+      "normalizedTextSha256": "090328d3ed6b8c55a9ebfdf0783eef30a7a8c8c61dc23ebd36510ad39429c7aa",
+      "pages": 12,
+      "path": "paper/main.pdf",
+      "sizeBytes": 469954
+    },
+    {
+      "normalizedTextBytes": 29586,
+      "normalizedTextSha256": "9f54410a7d74b0fa6da42589047427de2e8c8a6e6392e106b9e961b75fa6934d",
+      "pages": 8,
+      "path": "paper/appendix-odd-d.pdf",
+      "sizeBytes": 406251
+    }
+  ],
+  "schema": 1,
+  "sourceInputSha256": "133465510e641effca879faa79b46112bff582e6759dcef51a503ddc2d05d081",
+  "sourceInputs": [
+    {
+      "path": "Makefile",
+      "sha256": "4bb8f928d6f265fa8f16373bab9abcdef7fc1dd597307837277c22629b67bc7b"
+    },
+    {
+      "path": "paper/ACM-Reference-Format.bst",
+      "sha256": "7ac84e9445948a5a731af40c86db073e9bedaf323ac9c0ded150b05a1212fadd"
+    },
+    {
+      "path": "paper/acmart.cls",
+      "sha256": "62955c736b8f4d0f26571676405764ef0e9c9d5e75b507e715fcfa0c6abf68ff"
+    },
+    {
+      "path": "paper/appendix-odd-d.tex",
+      "sha256": "13a1b008c690e37249185dfb33bc0c6c1f3362c1e3be6ecec6503c3aa30ee07f"
+    },
+    {
+      "path": "paper/figures/broad_system_comparison.tex",
+      "sha256": "d279fe56b555798b7cb4726cf7315901189d5e382782d20216205d47cf093183"
+    },
+    {
+      "path": "paper/figures/chamber_family_table.tex",
+      "sha256": "0fea96dd9a488e7045cae53290ddf528765fdfcf8a44820968da1ed204099239"
+    },
+    {
+      "path": "paper/figures/chamber_productivity_compromise.tex",
+      "sha256": "7e7f5b34acae66166a8fc97634ca3ee63b5dcc530715d9c2b4712dceabb99896"
+    },
+    {
+      "path": "paper/figures/compromise_productivity.tex",
+      "sha256": "9f95cd2b24833da36de4cabc2d5e35b7168fd3b0b27f7f5cfc175b7677f571b3"
+    },
+    {
+      "path": "paper/figures/default_pass_deltas.tex",
+      "sha256": "3526a475282ec44d8efea27ecc2ec93e424067b6b8d3e3f991fc1cf5b9054926"
+    },
+    {
+      "path": "paper/figures/design_space_coverage.tex",
+      "sha256": "018eea6b68887e0a28fce32232bd21bb97b76a4aaafa0345d387f25480192261"
+    },
+    {
+      "path": "paper/figures/directional_scoreboard.tex",
+      "sha256": "0decfc6328b89c7334e8f75088197eb2d81c7bdcab0af64c885ab9a778393cbc"
+    },
+    {
+      "path": "paper/figures/empirical_bridge_table.tex",
+      "sha256": "1c505876779f28129b7f34574065e30dbf4f0686b7946420dc72ae4c4694260b"
+    },
+    {
+      "path": "paper/figures/mechanism_diagnostics_table.tex",
+      "sha256": "2a7cddec2a690d9c0e1a9f8183a213aae92829abfb9710844f1c1e29590689fa"
+    },
+    {
+      "path": "paper/figures/pareto_front_table.tex",
+      "sha256": "d799055b37a2e44c87b436fc22026c1cd07a067b3a0739c4bce3035abce3adaa"
+    },
+    {
+      "path": "paper/figures/productivity_low_support.tex",
+      "sha256": "d3d3e24f266be3e28543e99d4d089749ebf9b6345e2b56b2a9a37a877b765ca5"
+    },
+    {
+      "path": "paper/figures/scenario_averages_full_table.tex",
+      "sha256": "aa650760e535fa229e095863a248f2af933bfec889c11c5be433442629fdbb09"
+    },
+    {
+      "path": "paper/figures/scenario_averages_table.tex",
+      "sha256": "dec8cf0cf81e257ee02faaf67350917b3e94476c92432b47b226e595705f4c41"
+    },
+    {
+      "path": "paper/figures/timeline_contention.tex",
+      "sha256": "ebe4587d938c4dbd5af91c608d126621582baa940542b46852ab090087985c6a"
+    },
+    {
+      "path": "paper/main.tex",
+      "sha256": "f391dd21cfbb438ce576058e994674b66cbf6544131a8c26ba36f7909e9f75d9"
+    },
+    {
+      "path": "paper/references.bib",
+      "sha256": "d42bb6a066079b4e42435c7aefae337cf58f82851a43a5c4a8ba6fd764ea5631"
+    },
+    {
+      "path": "paper/scripts/check_word_count.py",
+      "sha256": "e4041dc879a9b9efcc4bb51e89bd14bac7413e3df717fb467adf0e1fdc16b4b5"
+    },
+    {
+      "path": "paper/scripts/generate_figures.py",
+      "sha256": "90c7a211e0b299a1200d304d6c521690020ccc3199623a4fe471049313b2892f"
+    },
+    {
+      "path": "paper/scripts/write_pdf_manifest.py",
+      "sha256": "9acb5fd0656edad239acabc991e1dbc7cc597cbc54df01cef8f736191a11d773"
+    },
+    {
+      "path": "scripts/checks/check_paper_anonymity.py",
+      "sha256": "17a59c43e3006752b81ff2137360e19d2fa9dbe1ef43b0ee7819c74bfd3dd758"
+    },
+    {
+      "path": "scripts/checks/check_pdf_render.py",
+      "sha256": "96c3bf8dca4b3e5527c7445edcf7dfc164db78b562bd14e953b1e09936c4f6ee"
+    },
+    {
+      "path": "scripts/checks/check_table_figure_consistency.py",
+      "sha256": "45e6381cc9cc76ecb2ddef698daf1d20a6860bedda57ae7abbfb486f863a5ccc"
+    },
+    {
+      "path": "scripts/reporting/write_paper_diagnostics.py",
+      "sha256": "d95e3ee94b600203860532e0aaf32a78a49f06a0747b80cac4001a82ef0673b2"
+    }
+  ]
+}

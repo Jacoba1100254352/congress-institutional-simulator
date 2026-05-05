@@ -115,12 +115,17 @@ with:
 make public-provenance
 ```
 
-The generated PDF is written to:
+The generated PDFs are written to:
 
 ```text
 paper/main.pdf
+paper/appendix-odd-d.pdf
+paper/pdf-manifest.json
 ```
 
-The intermediate build directory is ignored by Git. The stable `paper/main.pdf`
-artifact is intentionally tracked so the repository contains the current paper
-PDF without requiring a local LaTeX build first.
+The intermediate build directory is ignored by Git. The stable
+`paper/main.pdf` and `paper/appendix-odd-d.pdf` artifacts are intentionally
+tracked so the repository contains the current paper PDFs without requiring a
+local LaTeX build first. `paper/pdf-manifest.json` records stable source and
+extracted-text hashes for those PDFs; run `make paper-checks` before treating
+paper-facing output as ready.
