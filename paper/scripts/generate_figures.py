@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PAPER_CSV_PATH = ROOT / "reports" / "simulation-campaign-v21-paper.csv"
 SEED_ROBUSTNESS_CSV_PATH = ROOT / "reports" / "seed-robustness-summary.csv"
 FIGURE_DIR = ROOT / "paper" / "figures"
+REPORT_DIR = ROOT / "reports"
 CURRENT_SYSTEM_KEY = "current-system"
 TABLE_SCENARIOS = [
     (CURRENT_SYSTEM_KEY, "CUR"),
@@ -71,6 +72,149 @@ MAIN_TABLE_SCENARIOS = [
     ("default-pass", "DP"),
     ("default-pass-multiround-mediation-challenge", "DPM"),
 ]
+MAIN_SCENARIO_KEYS = {key for key, _label in MAIN_TABLE_SCENARIOS}
+SELECTION_RATIONALES = {
+    CURRENT_SYSTEM_KEY: (
+        "Conventional benchmark",
+        "Stylized U.S.-like conventional benchmark used as the red baseline; included for comparison, not as a calibrated model of Congress.",
+    ),
+    "simple-majority": (
+        "Conventional threshold",
+        "Minimal affirmative-vote baseline that isolates the effect of ordinary majority passage.",
+    ),
+    "supermajority-60": (
+        "Conventional threshold",
+        "Higher-threshold baseline for separating risk suppression from throughput loss.",
+    ),
+    "bicameral-majority": (
+        "Conventional threshold",
+        "Adds second-chamber consent while keeping a conventional majority decision rule.",
+    ),
+    "presidential-veto": (
+        "Conventional veto",
+        "Adds executive veto and override pressure to the bicameral baseline.",
+    ),
+    "leadership-cartel-majority": (
+        "Agenda control",
+        "Represents leadership-controlled floor access and majority-cartel agenda power.",
+    ),
+    "committee-regular-order": (
+        "Committee gate",
+        "Represents committee-first screening before floor consideration.",
+    ),
+    "cloture-conference-review": (
+        "Procedural legislature",
+        "Represents cloture-like delay, conference revision, and post-passage review.",
+    ),
+    "constitutional-court-architecture-majority": (
+        "Constitutional review",
+        "Represents an ex post legal-review architecture as a risk-control layer.",
+    ),
+    "parliamentary-coalition-confidence": (
+        "Coalition parliamentarism",
+        "Represents confidence/access discipline and cross-bloc coalition bargaining.",
+    ),
+    "citizen-initiative-referendum": (
+        "Direct democracy",
+        "Represents a non-legislator proposal/ratification channel.",
+    ),
+    "district-population-majority": (
+        "Public representation",
+        "Represents district-public signals and population-alignment pressure.",
+    ),
+    "simple-majority-alternatives-pairwise": (
+        "Policy tournament",
+        "Main alternative-selection representative; tests agenda manipulation by comparing multiple substitutes before final ratification.",
+    ),
+    "citizen-assembly-threshold": (
+        "Mini-public review",
+        "Represents citizen-panel certification changing the burden of proof.",
+    ),
+    "public-interest-majority": (
+        "Public-interest screening",
+        "Represents a welfare/support screen without default enactment.",
+    ),
+    "agenda-lottery-majority": (
+        "Agenda allocation",
+        "Represents weighted/randomized agenda access without a permanent gatekeeper.",
+    ),
+    "quadratic-attention-majority": (
+        "Agenda scarcity",
+        "Represents quadratic attention costs for scarce proposal and procedural capacity.",
+    ),
+    "proposal-bond-majority": (
+        "Proposal accountability",
+        "Represents refundable proposer accountability tied to estimated proposal quality.",
+    ),
+    "harm-weighted-majority": (
+        "Affected-group protection",
+        "Represents higher thresholds when concentrated harm is generated.",
+    ),
+    "compensation-majority": (
+        "Distributional justice",
+        "Represents compensation amendments for concentrated losses.",
+    ),
+    "package-bargaining-majority": (
+        "Package bargaining",
+        "Represents side payments, delay, and harm-reducing package trades.",
+    ),
+    "multidimensional-package-majority": (
+        "Multidimensional bargaining",
+        "Main package-bargaining representative; tests whether richer cross-issue trades improve compromise after administrative load is counted.",
+    ),
+    "omnibus-bargaining-majority": (
+        "Omnibus bargaining",
+        "Represents omnibus-style package formation and bundled coalition trades.",
+    ),
+    "law-registry-majority": (
+        "Correction/reversibility",
+        "Represents persistent laws, review, renewal, and rollback after enactment.",
+    ),
+    "public-objection-majority": (
+        "Contestatory public review",
+        "Represents objection windows and public contestation before or after enactment.",
+    ),
+    "anti-capture-majority-bundle": (
+        "Anti-capture",
+        "Main anti-lobbying representative; combines transparency, public advocate, audit, and access screen safeguards.",
+    ),
+    "influence-system-majority": (
+        "Influence system",
+        "Represents explicit campaign-finance and organized-influence pressure beyond bill-level lobbying.",
+    ),
+    "risk-routed-majority": (
+        "Adaptive routing",
+        "Represents risk-based fast, middle, and high-review lanes under affirmative majority rule.",
+    ),
+    "portfolio-hybrid-legislature": (
+        "Synthesized hybrid",
+        "Main design hypothesis combining fast lanes, alternatives, citizen/harm review, bonds, anti-capture safeguards, and law review.",
+    ),
+    "expanded-portfolio-hybrid-legislature": (
+        "Expanded hybrid",
+        "Stress-tests the portfolio idea with added district, learning, influence, package, and court modules.",
+    ),
+    "norm-erosion-majority": (
+        "Norm erosion",
+        "Represents parameterized procedural deterioration and rising contention.",
+    ),
+    "long-horizon-learning-majority": (
+        "Actor learning",
+        "Represents bounded long-horizon proposer and lobby adaptation across sessions.",
+    ),
+    "default-pass": (
+        "Default-enactment stress test",
+        "Kept as the open default-enactment endpoint rather than the organizing case.",
+    ),
+    "default-pass-challenge": (
+        "Default-enactment stress test",
+        "Tests whether scarce challenge rights reduce default-enactment risk.",
+    ),
+    "default-pass-multiround-mediation-challenge": (
+        "Default-enactment stress test",
+        "Tests a guarded default-enactment variant with mediation and challenge vouchers.",
+    ),
+}
 
 
 def broad_case(case_key: str) -> bool:
@@ -223,19 +367,18 @@ def latex_escape(value: str) -> str:
     )
 
 
-def mean_ci(values: list[float]) -> tuple[float, float]:
+def mean_half_range(values: list[float]) -> tuple[float, float]:
     if not values:
         return 0.0, 0.0
     avg = sum(values) / len(values)
     if len(values) == 1:
         return avg, 0.0
-    variance = sum((value - avg) ** 2 for value in values) / (len(values) - 1)
-    return avg, 1.96 * ((variance ** 0.5) / (len(values) ** 0.5))
+    return avg, (max(values) - min(values)) / 2.0
 
 
 def table_value(values: list[float], decimals: int = 3) -> str:
-    avg, ci = mean_ci(values)
-    return f"{avg:.{decimals}f}$\\pm${ci:.{decimals}f}"
+    avg, half_range = mean_half_range(values)
+    return f"{avg:.{decimals}f}$\\pm${half_range:.{decimals}f}"
 
 
 def read_seed_directional_intervals(path: Path) -> dict[str, tuple[float, float]]:
@@ -286,6 +429,47 @@ def scenario_name(rows: list[dict[str, str]], scenario_key: str) -> str:
     return scenario_key
 
 
+def write_scenario_selection_manifest(rows: list[dict[str, str]]) -> None:
+    REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    present_keys = {row["scenarioKey"] for row in rows}
+    lines = [
+        "# Scenario Selection Manifest",
+        "",
+        "Generated by `paper/scripts/generate_figures.py` from the main comparison campaign.",
+        "",
+        "Selection rule: include conventional baselines, the stylized U.S.-like benchmark, one readable representative for each implemented non-default design family, and three default-enactment stress tests. Where a family has many implemented variants, the representative is chosen for mechanism clarity rather than for highest observed score. Supplemental family-screen reports evaluate broader catalog champions under a fixed rule.",
+        "",
+        "| Label | Scenario key | Scenario name | Paper role | Family | Selection rationale |",
+        "|---|---|---|---|---|---|",
+    ]
+    for scenario_key, label in TABLE_SCENARIOS:
+        if scenario_key not in present_keys:
+            continue
+        family, rationale = SELECTION_RATIONALES.get(
+            scenario_key,
+            ("Uncategorized", "Included because it appears in the generated paper scenario list."),
+        )
+        role = "Main Table 1" if scenario_key in MAIN_SCENARIO_KEYS else "Appendix/full comparison"
+        lines.append(
+            "| "
+            + " | ".join([
+                label,
+                f"`{scenario_key}`",
+                scenario_name(rows, scenario_key),
+                role,
+                family,
+                rationale,
+            ])
+            + " |"
+        )
+    lines.extend([
+        "",
+        "Historical default-pass sweeps remain available through catalog and campaign reports, but they are not used as the organizing frame for the main paper comparison.",
+        "",
+    ])
+    (REPORT_DIR / "scenario-selection-manifest.md").write_text("\n".join(lines))
+
+
 def pareto_front(
     averages: dict[str, dict[str, float]],
     fields: tuple[str, ...],
@@ -322,11 +506,15 @@ def write_pareto_front_table(rows: list[dict[str, str]], averages: dict[str, dic
     front = pareto_front(averages, ("productivity", "compromise", "riskControl"))
     lines = [
         "% Auto-generated by paper/scripts/generate_figures.py",
-        "\\begin{table}",
-        "  \\caption{Non-dominated scenarios under the three displayed objectives: productivity, compromise, and risk control. Administrative cost and weak public-mandate passage are shown as caveats, not frontier dimensions.}",
-        "  \\label{tab:pareto-front}",
-        "  \\Description{A generated Pareto-front table listing non-dominated scenarios under productivity, compromise, and risk control, with weak public-mandate and administrative-cost caveats.}",
-        "  \\scriptsize",
+        "\\begin{table*}",
+        "  \\centering",
+        "  \\begin{minipage}[t]{0.39\\textwidth}",
+        "    \\centering",
+        "    \\caption{Pareto-front scenarios under productivity, compromise, and risk control.}",
+        "    \\label{tab:pareto-front}",
+        "    \\scriptsize",
+        "    \\setlength{\\tabcolsep}{2.2pt}",
+        "    \\resizebox{\\linewidth}{!}{%",
         "  \\begin{tabular}{llrrrrr}",
         "    \\toprule",
         "    Label & Role & Prod. $\\uparrow$ & Comp. $\\uparrow$ & Risk $\\uparrow$ & Weak mand. $\\downarrow$ & Admin $\\downarrow$ \\\\",
@@ -358,26 +546,32 @@ def write_pareto_front_table(rows: list[dict[str, str]], averages: dict[str, dic
     lines.extend([
         "    \\bottomrule",
         "  \\end{tabular}",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} The frontier changes if administrative feasibility, welfare, or rights/harm priorities are treated as hard objectives rather than caveats.",
-        "\\end{table}",
+        "    }",
+        "    \\par\\smallskip\\scriptsize \\emph{Note:} The frontier changes if administrative feasibility, welfare, or rights/harm priorities are hard objectives.",
+        "  \\end{minipage}\\hfill",
+        "  \\begin{minipage}[t]{0.58\\textwidth}",
+        "    \\centering",
+        "    \\input{figures/mechanism_diagnostics_table}",
+        "  \\end{minipage}",
+        "  \\Description{Two generated side-by-side tables. The first lists Pareto-front scenarios under productivity, compromise, and risk control; the second lists selected mechanism ablations and manipulation stress tests.}",
+        "\\end{table*}",
         "",
     ])
     (FIGURE_DIR / "pareto_front_table.tex").write_text("\n".join(lines))
 
 
 def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
-    seed_intervals = read_seed_directional_intervals(SEED_ROBUSTNESS_CSV_PATH)
     lines = [
         "% Auto-generated by paper/scripts/generate_figures.py",
         "\\begin{table*}",
-        "  \\caption{Representative family comparison from the main campaign. Metric entries are mean$\\pm$assumption-sensitivity band across broad and adversarial cases. Directional score is shown only as a diagnostic reading aid; the full scenario table is in the appendix and supplement.}",
+        "  \\caption{Representative family comparison from the main campaign. Metric entries are mean$\\pm$case half-range across broad and adversarial cases. The full table with directional and seed diagnostics is in the appendix and supplement.}",
         "  \\label{tab:scenario-averages}",
         "  \\Description{A generated compact table comparing representative institutional families from the main comparison campaign.}",
         "  \\scriptsize",
         "  \\resizebox{\\textwidth}{!}{%",
-        "  \\begin{tabular}{llrrrrrrr}",
+        "  \\begin{tabular}{llrrrrr}",
         "    \\toprule",
-        "    Label & Representative system & Prod. $\\uparrow$ & Comp. $\\uparrow$ & Weak mand. $\\downarrow$ & Risk ctrl. $\\uparrow$ & Admin $\\downarrow$ & Dir. diag. $\\uparrow$ & Seed dir. $\\uparrow$ \\\\",
+        "    Label & Representative system & Prod. $\\uparrow$ & Comp. $\\uparrow$ & Weak mand. $\\downarrow$ & Risk ctrl. $\\uparrow$ & Admin $\\downarrow$ \\\\",
         "    \\midrule",
     ]
     for scenario_key, label in MAIN_TABLE_SCENARIOS:
@@ -389,8 +583,6 @@ def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
             table_value(scenario_case_values(rows, scenario_key, "weakPublicMandatePassage")),
             table_value(scenario_case_values(rows, scenario_key, "riskControl")),
             table_value(scenario_case_values(rows, scenario_key, "administrativeCost")),
-            table_value(scenario_case_values(rows, scenario_key, "directionalScore")),
-            seed_interval_value(seed_intervals, scenario_key),
         ]
         scenario = latex_escape(scenario_name(rows, scenario_key))
         if scenario_key == CURRENT_SYSTEM_KEY:
@@ -410,7 +602,7 @@ def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "    \\bottomrule",
         "  \\end{tabular}%",
         "  }",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} Assumption-sensitivity bands come from the main campaign CSV and are not statistical confidence intervals. Seed dir. comes from \\texttt{seed-robustness-summary.csv}. Red marks the stylized U.S.-like conventional benchmark.",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Red marks the stylized U.S.-like conventional benchmark.",
         "\\end{table*}",
         "",
     ])
@@ -422,7 +614,7 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
     lines = [
         "% Auto-generated by paper/scripts/generate_figures.py",
         "\\begin{table*}",
-        "  \\caption{Full scenario averages from the main comparison campaign. Metric entries are mean$\\pm$assumption-sensitivity band across broad and adversarial cases; Seed dir. reports directional-score mean$\\pm$half-range across the independent seed sweep.}",
+        "  \\caption{Full scenario averages from the main comparison campaign. Metric entries are mean$\\pm$case half-range across broad and adversarial cases; Seed dir. reports directional-score mean$\\pm$half-range across the independent seed sweep.}",
         "  \\label{tab:scenario-averages-full}",
         "  \\Description{A generated full table comparing all paper scenarios using the main comparison campaign.}",
         "  \\scriptsize",
@@ -463,7 +655,7 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "    \\bottomrule",
         "  \\end{tabular}%",
         "  }",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} Assumption-sensitivity bands are descriptive variation across campaign cases, not statistical confidence intervals. Directional, productivity, compromise, weak public-mandate passage, administrative cost, and risk-control values are normalized scores or rates. \\emph{Enacted/run} is an absolute institutional-load count.",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Directional, productivity, compromise, weak public-mandate passage, administrative cost, and risk-control values are normalized scores or rates. \\emph{Enacted/run} is an absolute institutional-load count.",
         "\\end{table*}",
         "",
     ])
@@ -1072,6 +1264,7 @@ def main() -> None:
     timeline_cases, timeline_values = read_timeline(PAPER_CSV_PATH, case_filter=timeline_case)
     write_compact_scenario_averages_table(broad_rows)
     write_full_scenario_averages_table(broad_rows)
+    write_scenario_selection_manifest(broad_rows)
     write_pareto_front_table(broad_rows, base_averages)
     write_design_space_coverage_table()
     write_productivity_low_support(base_averages)

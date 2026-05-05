@@ -3,9 +3,18 @@ TEST_SOURCES := $(shell find src/test/java -name '*.java')
 JAVA_RELEASE ?= 21
 JAVA_PROPS ?= -Dcongresssim.javaRelease=$(JAVA_RELEASE)
 
-.PHONY: build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper chamber-structure chamber-structure-summary seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness fetch-validation-samples empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper paper-word-count paper-checks paper-anonymity-check figure-label-check pdf-render-check table-figure-consistency-check supplement-anonymous clean-regeneration-check paper-clean test ci clean
+.PHONY: check-java build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper chamber-structure chamber-structure-summary seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness fetch-validation-samples empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper paper-word-count paper-checks paper-anonymity-check figure-label-check pdf-render-check table-figure-consistency-check supplement-anonymous clean-regeneration-check paper-clean test ci clean
 
-build:
+check-java:
+	@actual="$$(javac -version 2>&1 | awk '{print $$2}' | cut -d. -f1)"; \
+	if [ "$$actual" != "$(JAVA_RELEASE)" ]; then \
+		echo "Expected javac $(JAVA_RELEASE), found $$actual. Set Java $(JAVA_RELEASE) on PATH before running this Makefile."; \
+		echo "macOS: export JAVA_HOME=\$$(/usr/libexec/java_home -v $(JAVA_RELEASE)); export PATH=\$$JAVA_HOME/bin:\$$PATH"; \
+		exit 1; \
+	fi
+
+build: check-java
+	rm -rf out/main
 	mkdir -p out/main
 	javac --release $(JAVA_RELEASE) -d out/main $(MAIN_SOURCES)
 

@@ -18,6 +18,13 @@ The current model intentionally includes only the parts needed to compare instit
 
 ## Run
 
+The Makefile requires `javac` 21 on `PATH`. On macOS, use:
+
+```sh
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+export PATH="$JAVA_HOME/bin:$PATH"
+```
+
 ```sh
 make run
 ```
@@ -51,6 +58,7 @@ This writes:
 - `reports/simulation-campaign-v21-paper.csv`
 - `reports/simulation-campaign-v21-paper.md`
 - `reports/simulation-campaign-v21-paper-manifest.json`
+- `reports/scenario-selection-manifest.md` after `make paper`
 
 Validate and summarize paper findings from the generated campaign and seed reports:
 
