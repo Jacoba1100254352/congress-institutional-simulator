@@ -3,10 +3,10 @@
   "pdfs": [
     {
       "normalizedTextBytes": 44279,
-      "normalizedTextSha256": "090328d3ed6b8c55a9ebfdf0783eef30a7a8c8c61dc23ebd36510ad39429c7aa",
+      "normalizedTextSha256": "2f97c6a789f6d6649b11a691d0cbfe893eb4023708dd2c383fdf70c6bd19c2b9",
       "pages": 12,
       "path": "paper/main.pdf",
-      "sizeBytes": 469954
+      "sizeBytes": 469979
     },
     {
       "normalizedTextBytes": 29586,
@@ -17,11 +17,11 @@
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "19104f1d7c6eef7ab307eee16b25c36e3a04e48535a2535a5dddd711a582bec7",
+  "sourceInputSha256": "aed7e87e066ad39a90c1c4c0f3d4f4c4446ffa9b34e410181b78777e3bc0caac",
   "sourceInputs": [
     {
       "path": "Makefile",
-      "sha256": "2094e39428df4ed3c3e03cf285a7d13cc84a4917bf77914388e7c0e13ab5bfc3"
+      "sha256": "e2e5758926a777dc467b5986ea3bec4b77aac8e440fdf778ab7f40feecc7c08e"
     },
     {
       "path": "paper/ACM-Reference-Format.bst",
@@ -45,11 +45,11 @@
     },
     {
       "path": "paper/figures/chamber_productivity_compromise.tex",
-      "sha256": "7e7f5b34acae66166a8fc97634ca3ee63b5dcc530715d9c2b4712dceabb99896"
+      "sha256": "bd2e1379f15959a7001cb23071be11952f6fcbc348ec306eab97047f9bf74748"
     },
     {
       "path": "paper/figures/compromise_productivity.tex",
-      "sha256": "9f95cd2b24833da36de4cabc2d5e35b7168fd3b0b27f7f5cfc175b7677f571b3"
+      "sha256": "b49bea48e67fadec49a0156b0ee9f05f2aae991cafb260a6c3b145b1d184398a"
     },
     {
       "path": "paper/figures/default_pass_deltas.tex",
@@ -77,7 +77,7 @@
     },
     {
       "path": "paper/figures/productivity_low_support.tex",
-      "sha256": "d3d3e24f266be3e28543e99d4d089749ebf9b6345e2b56b2a9a37a877b765ca5"
+      "sha256": "b3ee7f52f2714e0c475a167b0336651a5ee70f7170833709b4bc92dbba043c3b"
     },
     {
       "path": "paper/figures/scenario_averages_full_table.tex",
@@ -89,7 +89,7 @@
     },
     {
       "path": "paper/figures/timeline_contention.tex",
-      "sha256": "ebe4587d938c4dbd5af91c608d126621582baa940542b46852ab090087985c6a"
+      "sha256": "06c922e26dc2dcca28fb17e235571d02ec38b42263fffe9b94fc0edd4574850a"
     },
     {
       "path": "paper/main.tex",
@@ -105,7 +105,7 @@
     },
     {
       "path": "paper/scripts/generate_figures.py",
-      "sha256": "90c7a211e0b299a1200d304d6c521690020ccc3199623a4fe471049313b2892f"
+      "sha256": "b7877c12ce5f5a9798fc19d7b8fd713000a321faf653f6598b025fce610c1477"
     },
     {
       "path": "paper/scripts/write_pdf_manifest.py",
@@ -121,7 +121,7 @@
     },
     {
       "path": "scripts/checks/check_table_figure_consistency.py",
-      "sha256": "45e6381cc9cc76ecb2ddef698daf1d20a6860bedda57ae7abbfb486f863a5ccc"
+      "sha256": "1a4d8f2805e64202c628a00ad0b79374cbb9a9d72d6322c057295bbdfb2f17b1"
     },
     {
       "path": "scripts/reporting/write_paper_diagnostics.py",

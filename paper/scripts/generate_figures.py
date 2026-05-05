@@ -737,11 +737,12 @@ def append_labeled_square(
     label_x = x + dx
     label_y = y + dy
     label_anchor_value = label_anchor(dx, anchor)
+    has_leader = leader and (abs(dx) > 2.2 or abs(dy) > 2.2)
     lines.append(
         f"\\put({fmt(x)},{fmt(y)})"
         f"{{\\makebox(0,0){{\\color{{{color}}}\\rule{{{point_size}}}{{{point_size}}}}}}}"
     )
-    if leader and (abs(dx) > 2.2 or abs(dy) > 2.2):
+    if has_leader:
         leader_color = "red!55" if color == "red" else "black!35"
         end_x = label_x - 1.2 if label_anchor_value == "l" else label_x + 1.2
         mid_x = (x + end_x) / 2.0
@@ -755,7 +756,11 @@ def append_labeled_square(
             + "}",
             "\\linethickness{0.25mm}",
         ])
-    lines.append(f"% point-label label={label} x={fmt(label_x)} y={fmt(label_y)}")
+    lines.append(
+        f"% point-label label={label} pointX={fmt(x)} pointY={fmt(y)} "
+        f"labelX={fmt(label_x)} labelY={fmt(label_y)} "
+        f"anchor={label_anchor_value} leader={1 if has_leader else 0}"
+    )
     lines.append(
         f"\\put({fmt(label_x)},{fmt(label_y)})"
         f"{{\\makebox(0,0)[{label_anchor_value}]{{\\color{{{color}}}{label}}}}}"
@@ -768,10 +773,16 @@ def figure_label_width(label: str) -> float:
 
 def label_box(label_x: float, label_y: float, label: str, anchor: str) -> tuple[float, float, float, float]:
     width = figure_label_width(label)
-    # Mirror scripts/checks/check_figure_labels.py: comments record one label coordinate,
-    # and the checker treats that coordinate as the label center regardless of
-    # TeX anchoring.
-    return label_x - (width / 2.0), label_x + (width / 2.0), label_y - 2.0, label_y + 2.0
+    if anchor == "l":
+        left = label_x
+        right = label_x + width
+    elif anchor == "r":
+        left = label_x - width
+        right = label_x
+    else:
+        left = label_x - (width / 2.0)
+        right = label_x + (width / 2.0)
+    return left, right, label_y - 2.0, label_y + 2.0
 
 
 def boxes_overlap(left_a: float, right_a: float, bottom_a: float, top_a: float,
@@ -779,48 +790,61 @@ def boxes_overlap(left_a: float, right_a: float, bottom_a: float, top_a: float,
     return left_a < right_b and right_a > left_b and bottom_a < top_b and top_a > bottom_b
 
 
+def expanded_box(box: tuple[float, float, float, float], padding_x: float = 0.7,
+                 padding_y: float = 0.55) -> tuple[float, float, float, float]:
+    left, right, bottom, top = box
+    return left - padding_x, right + padding_x, bottom - padding_y, top + padding_y
+
+
+def point_box(x: float, y: float) -> tuple[float, float, float, float]:
+    return x - 1.9, x + 1.9, y - 1.9, y + 1.9
+
+
+def clamp_label_position(
+    label_x: float,
+    label_y: float,
+    label: str,
+    anchor: str,
+    picture_width: float,
+    picture_height: float,
+) -> tuple[float, float]:
+    margin = 0.8
+    left, right, bottom, top = label_box(label_x, label_y, label, anchor)
+    if left < margin:
+        label_x += margin - left
+    elif right > picture_width - margin:
+        label_x -= right - (picture_width - margin)
+    left, right, bottom, top = label_box(label_x, label_y, label, anchor)
+    if bottom < margin:
+        label_y += margin - bottom
+    elif top > picture_height - margin:
+        label_y -= top - (picture_height - margin)
+    return label_x, label_y
+
+
 def auto_label_offsets(
     points: list[tuple[str, str, float, float]],
     picture_width: float,
     picture_height: float,
 ) -> dict[str, tuple[float, float, str]]:
-    candidates = [
-        (3.2, 5.2, "l"),
-        (3.2, -5.2, "l"),
-        (-3.2, 5.2, "r"),
-        (-3.2, -5.2, "r"),
-        (6.8, 0.8, "l"),
-        (-6.8, 0.8, "r"),
-        (0.0, 7.4, "c"),
-        (0.0, -7.4, "c"),
-        (8.2, 5.8, "l"),
-        (8.2, -5.8, "l"),
-        (-8.2, 5.8, "r"),
-        (-8.2, -5.8, "r"),
-        (11.0, 0.0, "l"),
-        (-11.0, 0.0, "r"),
-        (4.8, 9.4, "l"),
-        (-4.8, 9.4, "r"),
-        (4.8, -9.4, "l"),
-        (-4.8, -9.4, "r"),
-        (13.0, 5.0, "l"),
-        (-13.0, 5.0, "r"),
-        (13.0, -5.0, "l"),
-        (-13.0, -5.0, "r"),
-        (0.0, 11.8, "c"),
-        (0.0, -11.8, "c"),
-        (9.5, 11.2, "l"),
-        (-9.5, 11.2, "r"),
-        (9.5, -11.2, "l"),
-        (-9.5, -11.2, "r"),
-        (17.0, 0.0, "l"),
-        (-17.0, 0.0, "r"),
-        (15.0, 10.0, "l"),
-        (-15.0, 10.0, "r"),
-        (15.0, -10.0, "l"),
-        (-15.0, -10.0, "r"),
-    ]
+    candidates: list[tuple[float, float, str]] = []
+    for radius_x, radius_y in ((3.8, 5.8), (7.2, 7.0), (10.6, 8.8), (14.0, 10.8), (18.0, 12.0)):
+        candidates.extend([
+            (radius_x, radius_y, "l"),
+            (-radius_x, radius_y, "r"),
+            (radius_x, -radius_y, "l"),
+            (-radius_x, -radius_y, "r"),
+            (radius_x + 2.8, 0.9, "l"),
+            (-(radius_x + 2.8), 0.9, "r"),
+            (0.0, radius_y + 2.0, "c"),
+            (0.0, -(radius_y + 2.0), "c"),
+            (radius_x + 4.5, radius_y * 0.55, "l"),
+            (-(radius_x + 4.5), radius_y * 0.55, "r"),
+            (radius_x + 4.5, -radius_y * 0.55, "l"),
+            (-(radius_x + 4.5), -radius_y * 0.55, "r"),
+        ])
     placed: list[tuple[float, float, float, float]] = []
+    plotted_point_boxes = [point_box(x, y) for _key, _label, x, y in points]
     placements: dict[str, tuple[float, float, str]] = {}
     fallback_slots: list[tuple[float, float, str]] = []
     for y in (80.0, 76.0, 72.0, 68.0, 64.0, 60.0, 56.0, 52.0, 48.0, 44.0):
@@ -829,35 +853,66 @@ def auto_label_offsets(
     for x in (18.0, 30.0, 42.0, 54.0, 66.0, 78.0, 90.0, 102.0):
         fallback_slots.append((x, 4.0, "c"))
         fallback_slots.append((x, picture_height - 4.0, "c"))
-    ordered = sorted(points, key=lambda item: (item[0] != CURRENT_SYSTEM_KEY, item[3], item[2]))
+    def local_density(point: tuple[str, str, float, float]) -> int:
+        _key, _label, x, y = point
+        return sum(1 for _other_key, _other_label, other_x, other_y in points
+                   if math.hypot(x - other_x, y - other_y) <= 12.0)
+
+    ordered = sorted(points, key=lambda item: (item[0] != CURRENT_SYSTEM_KEY, -local_density(item), item[3], item[2]))
     for key, label, x, y in ordered:
         selected = candidates[-1]
         selected_box: tuple[float, float, float, float] | None = None
         for dx, dy, anchor in candidates:
-            label_x = max(1.0, min(picture_width - 1.0, x + dx))
-            label_y = max(1.0, min(picture_height - 1.0, y + dy))
+            label_x, label_y = clamp_label_position(
+                x + dx,
+                y + dy,
+                label,
+                anchor,
+                picture_width,
+                picture_height,
+            )
             box = label_box(label_x, label_y, label, anchor)
             if box[0] < 0.5 or box[1] > picture_width - 0.5 or box[2] < 0.5 or box[3] > picture_height - 0.5:
                 continue
-            if any(boxes_overlap(*box, *existing) for existing in placed):
+            padded_box = expanded_box(box)
+            if any(boxes_overlap(*padded_box, *point) for point in plotted_point_boxes):
+                continue
+            if any(boxes_overlap(*padded_box, *existing) for existing in placed):
                 continue
             selected = (label_x - x, label_y - y, anchor)
-            selected_box = box
+            selected_box = padded_box
             break
         if selected_box is None:
             for label_x, label_y, anchor in fallback_slots:
+                label_x, label_y = clamp_label_position(
+                    label_x,
+                    label_y,
+                    label,
+                    anchor,
+                    picture_width,
+                    picture_height,
+                )
                 box = label_box(label_x, label_y, label, anchor)
-                if any(boxes_overlap(*box, *existing) for existing in placed):
+                padded_box = expanded_box(box)
+                if any(boxes_overlap(*padded_box, *point) for point in plotted_point_boxes):
+                    continue
+                if any(boxes_overlap(*padded_box, *existing) for existing in placed):
                     continue
                 selected = (label_x - x, label_y - y, anchor)
-                selected_box = box
+                selected_box = padded_box
                 break
         if selected_box is None:
             dx, dy, anchor = selected
-            label_x = max(1.0, min(picture_width - 1.0, x + dx))
-            label_y = max(1.0, min(picture_height - 1.0, y + dy))
+            label_x, label_y = clamp_label_position(
+                x + dx,
+                y + dy,
+                label,
+                anchor,
+                picture_width,
+                picture_height,
+            )
             selected = (label_x - x, label_y - y, anchor)
-            selected_box = label_box(label_x, label_y, label, anchor)
+            selected_box = expanded_box(label_box(label_x, label_y, label, anchor))
         placements[key] = selected
         placed.append(selected_box)
     return placements
@@ -1226,16 +1281,16 @@ def write_timeline_contention(
             lines.append(f"\\put({fmt(x)},{fmt(y)}){{\\makebox(0,0){{\\color{{{color}}}\\rule{{{point_size}}}{{{point_size}}}}}}}")
 
     legend_positions = [
-        (16.0, 82.8),
-        (38.0, 82.8),
-        (60.0, 82.8),
-        (82.0, 82.8),
-        (104.0, 82.8),
-        (16.0, 78.8),
-        (38.0, 78.8),
-        (60.0, 78.8),
-        (82.0, 78.8),
-        (104.0, 78.8),
+        (16.0, 82.3),
+        (38.0, 82.3),
+        (60.0, 82.3),
+        (82.0, 82.3),
+        (104.0, 82.3),
+        (16.0, 76.5),
+        (38.0, 76.5),
+        (60.0, 76.5),
+        (82.0, 76.5),
+        (104.0, 76.5),
     ]
     for (scenario_key, label, color), (x, y) in zip(scenarios, legend_positions):
         swatch = "1.8mm" if scenario_key == CURRENT_SYSTEM_KEY else "1.3mm"

@@ -149,6 +149,129 @@ def label_for(family_name: str) -> str:
     return labels.get(family_name, "OTHER")
 
 
+def label_width(label: str) -> float:
+    return max(4.4, len(label) * 1.18)
+
+
+def label_box(label_x: float, label_y: float, label: str, anchor: str) -> tuple[float, float, float, float]:
+    width = label_width(label)
+    if anchor == "l":
+        left = label_x
+        right = label_x + width
+    elif anchor == "r":
+        left = label_x - width
+        right = label_x
+    else:
+        left = label_x - width / 2.0
+        right = label_x + width / 2.0
+    return left, right, label_y - 2.0, label_y + 2.0
+
+
+def point_box(x: float, y: float) -> tuple[float, float, float, float]:
+    return x - 1.9, x + 1.9, y - 1.9, y + 1.9
+
+
+def expanded_box(box: tuple[float, float, float, float], padding_x: float = 0.7,
+                 padding_y: float = 0.55) -> tuple[float, float, float, float]:
+    left, right, bottom, top = box
+    return left - padding_x, right + padding_x, bottom - padding_y, top + padding_y
+
+
+def boxes_overlap(left_a: float, right_a: float, bottom_a: float, top_a: float,
+                  left_b: float, right_b: float, bottom_b: float, top_b: float) -> bool:
+    return left_a < right_b and right_a > left_b and bottom_a < top_b and top_a > bottom_b
+
+
+def clamp_label_position(
+    label_x: float,
+    label_y: float,
+    label: str,
+    anchor: str,
+    picture_width: float,
+    picture_height: float,
+) -> tuple[float, float]:
+    margin = 0.8
+    left, right, bottom, top = label_box(label_x, label_y, label, anchor)
+    if left < margin:
+        label_x += margin - left
+    elif right > picture_width - margin:
+        label_x -= right - (picture_width - margin)
+    left, right, bottom, top = label_box(label_x, label_y, label, anchor)
+    if bottom < margin:
+        label_y += margin - bottom
+    elif top > picture_height - margin:
+        label_y -= top - (picture_height - margin)
+    return label_x, label_y
+
+
+def auto_label_offsets(
+    points: list[tuple[str, float, float]],
+    picture_width: float,
+    picture_height: float,
+) -> dict[str, tuple[float, float, str]]:
+    candidates: list[tuple[float, float, str]] = []
+    for radius_x, radius_y in ((4.0, 6.4), (7.8, 8.0), (11.8, 9.8), (15.8, 11.2), (19.5, 12.4)):
+        candidates.extend([
+            (radius_x, radius_y, "l"),
+            (-radius_x, radius_y, "r"),
+            (radius_x, -radius_y, "l"),
+            (-radius_x, -radius_y, "r"),
+            (radius_x + 3.2, 0.9, "l"),
+            (-(radius_x + 3.2), 0.9, "r"),
+            (0.0, radius_y + 2.0, "c"),
+            (0.0, -(radius_y + 2.0), "c"),
+            (radius_x + 5.0, radius_y * 0.55, "l"),
+            (-(radius_x + 5.0), radius_y * 0.55, "r"),
+            (radius_x + 5.0, -radius_y * 0.55, "l"),
+            (-(radius_x + 5.0), -radius_y * 0.55, "r"),
+        ])
+    placed: list[tuple[float, float, float, float]] = []
+    point_boxes = [point_box(x, y) for _label, x, y in points]
+    placements: dict[str, tuple[float, float, str]] = {}
+    def local_density(point: tuple[str, float, float]) -> int:
+        _label, x, y = point
+        return sum(1 for _other_label, other_x, other_y in points
+                   if ((x - other_x) ** 2 + (y - other_y) ** 2) ** 0.5 <= 12.0)
+
+    ordered = sorted(points, key=lambda item: (-local_density(item), item[1], -item[2]))
+    for label, x, y in ordered:
+        selected: tuple[float, float, str] | None = None
+        selected_box: tuple[float, float, float, float] | None = None
+        for dx, dy, anchor in candidates:
+            label_x, label_y = clamp_label_position(
+                x + dx,
+                y + dy,
+                label,
+                anchor,
+                picture_width,
+                picture_height,
+            )
+            box = label_box(label_x, label_y, label, anchor)
+            padded_box = expanded_box(box)
+            if any(boxes_overlap(*padded_box, *point) for point in point_boxes):
+                continue
+            if any(boxes_overlap(*padded_box, *existing) for existing in placed):
+                continue
+            selected = (label_x - x, label_y - y, anchor)
+            selected_box = padded_box
+            break
+        if selected is None:
+            dx, dy, anchor = candidates[-1]
+            label_x, label_y = clamp_label_position(
+                x + dx,
+                y + dy,
+                label,
+                anchor,
+                picture_width,
+                picture_height,
+            )
+            selected = (label_x - x, label_y - y, anchor)
+            selected_box = expanded_box(label_box(label_x, label_y, label, anchor))
+        placements[label] = selected
+        placed.append(selected_box)
+    return placements
+
+
 def write_paper_table(champs: list[dict[str, str]]) -> None:
     rows = [
         r"\begin{table}",
@@ -180,6 +303,18 @@ def write_paper_figure(champs: list[dict[str, str]]) -> None:
     height = 58.0
     left = 22.0
     bottom = 14.0
+    picture_width = 128.0
+    picture_height = 84.0
+    point_rows: list[tuple[dict[str, str], str, float, float]] = []
+    for row in champs:
+        x = left + max(0.0, min(1.0, f(row, "productivity"))) * width
+        y = bottom + max(0.0, min(1.0, f(row, "compromise"))) * height
+        point_rows.append((row, label_for(row["family"]), x, y))
+    placements = auto_label_offsets(
+        [(label, x, y) for _row, label, x, y in point_rows],
+        picture_width,
+        picture_height,
+    )
     lines = [
         "% Auto-generated by scripts/reporting/summarize_chamber_structure.py",
         r"\begingroup",
@@ -197,24 +332,26 @@ def write_paper_figure(champs: list[dict[str, str]]) -> None:
         lines.append(fr"\put({left - 4.0:.1f},{y:.1f}){{\makebox(0,0)[r]{{{label}}}}}")
     lines.append(fr"\put({left:.1f},{bottom:.1f}){{\line(1,0){{{width:.1f}}}}}")
     lines.append(fr"\put({left:.1f},{bottom:.1f}){{\line(0,1){{{height:.1f}}}}}")
-    offsets = [(3, 5, "l"), (-3, 5, "r"), (3, -5, "l"), (-3, -5, "r"), (5, 1, "l"), (-5, 1, "r")]
-    for index, row in enumerate(champs):
-        x = left + max(0.0, min(1.0, f(row, "productivity"))) * width
-        y = bottom + max(0.0, min(1.0, f(row, "compromise"))) * height
+    for row, label, x, y in point_rows:
         # Keep the light end printable. The previous black!15 floor made most
         # non-malapportioned labels nearly indistinguishable from the grid.
         malapportionment = max(0.0, min(1.0, f(row, "malapportionmentIndex")))
         intensity = int(round(45 + 45 * malapportionment))
-        label = label_for(row["family"])
-        dx, dy, align = offsets[index % len(offsets)]
+        dx, dy, align = placements[label]
+        label_x = x + dx
+        label_y = y + dy
         color = "red" if row["family"] == "Conventional benchmark" else f"black!{intensity}"
         size = "2.0" if row["family"] == "Conventional benchmark" else "1.6"
         lines.append(fr"\put({x:.1f},{y:.1f}){{\makebox(0,0){{\color{{{color}}}\rule{{{size}mm}}{{{size}mm}}}}}}")
         lines.append(r"\linethickness{0.10mm}")
         leader_color = "red!55" if row["family"] == "Conventional benchmark" else "black!50"
-        lines.append(fr"{{\color{{{leader_color}}}\qbezier[6]({x:.1f},{y:.1f})({x + dx / 2:.1f},{y + dy / 2:.1f})({x + dx:.1f},{y + dy:.1f})}}")
+        lines.append(fr"{{\color{{{leader_color}}}\qbezier[6]({x:.1f},{y:.1f})({x + dx / 2:.1f},{y + dy / 2:.1f})({label_x:.1f},{label_y:.1f})}}")
         lines.append(r"\linethickness{0.25mm}")
-        lines.append(fr"\put({x + dx:.1f},{y + dy:.1f}){{\makebox(0,0)[{align}]{{\color{{{color}}}{label}}}}}")
+        lines.append(
+            f"% point-label label={label} pointX={x:.1f} pointY={y:.1f} "
+            f"labelX={label_x:.1f} labelY={label_y:.1f} anchor={align} leader=1"
+        )
+        lines.append(fr"\put({label_x:.1f},{label_y:.1f}){{\makebox(0,0)[{align}]{{\color{{{color}}}{label}}}}}")
     lines.append(fr"\put({left + width / 2:.1f},{bottom - 10.0:.1f}){{\makebox(0,0){{Productivity $\uparrow$}}}}")
     lines.append(fr"\put({left - 15.0:.1f},{bottom + height / 2:.1f}){{\rotatebox{{90}}{{Compromise $\uparrow$}}}}")
     lines.append(fr"\put({left + width - 18.0:.1f},{bottom + height + 4.0:.1f}){{\makebox(0,0)[l]{{darker = more malapportioned}}}}")

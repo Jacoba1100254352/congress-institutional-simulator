@@ -15,7 +15,7 @@ SCATTERS = [
 ]
 
 
-LABEL_RE = re.compile(r"% point-label label=(.*?) x=([-0-9.]+) y=([-0-9.]+)")
+LABEL_RE = re.compile(r"% point-label label=(.*?)(?: x=| pointX=)")
 ROW_RE = re.compile(r"^\s*(.*?)\s*&\s*(.*?)\s*&")
 
 

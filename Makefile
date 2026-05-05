@@ -152,7 +152,7 @@ mechanism-diagnostics: empirical-bridge ablation-analysis manipulation-stress
 public-provenance:
 	python3 scripts/reporting/write_public_provenance.py
 
-paper-assets: paper-campaign mechanism-diagnostics
+paper-assets: paper-campaign mechanism-diagnostics chamber-structure-summary
 	python3 paper/scripts/generate_figures.py
 
 paper: paper-assets
