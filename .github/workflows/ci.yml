@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Tests, calibration, and paper build
+    name: Tests, calibration, and PDF freshness
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -18,10 +18,10 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      - name: Install paper dependencies
+      - name: Install PDF check dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-bibtex-extra poppler-utils
+          sudo apt-get install -y --no-install-recommends poppler-utils
 
       - name: Run simulator CI
-        run: make ci
+        run: make github-ci

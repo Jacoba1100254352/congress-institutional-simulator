@@ -71,6 +71,10 @@ This regenerates `paper/main.pdf`, `paper/appendix-odd-d.pdf`, and
 hashes so CI can detect stale paper PDFs even though raw PDF bytes are excluded
 from clean-regeneration checks across TeX environments.
 
+GitHub Actions uses `make github-ci`, which regenerates paper inputs and checks
+the committed PDFs against `paper/pdf-manifest.json` without reinstalling a full
+TeX distribution on every push. Local `make ci` remains the full rebuild path.
+
 Validate and summarize paper findings from the generated campaign and seed reports:
 
 ```sh

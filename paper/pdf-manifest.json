@@ -17,11 +17,11 @@
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "133465510e641effca879faa79b46112bff582e6759dcef51a503ddc2d05d081",
+  "sourceInputSha256": "19104f1d7c6eef7ab307eee16b25c36e3a04e48535a2535a5dddd711a582bec7",
   "sourceInputs": [
     {
       "path": "Makefile",
-      "sha256": "4bb8f928d6f265fa8f16373bab9abcdef7fc1dd597307837277c22629b67bc7b"
+      "sha256": "2094e39428df4ed3c3e03cf285a7d13cc84a4917bf77914388e7c0e13ab5bfc3"
     },
     {
       "path": "paper/ACM-Reference-Format.bst",

@@ -5,7 +5,7 @@ JAVA_PROPS ?= -Dcongresssim.javaRelease=$(JAVA_RELEASE)
 APP_JAR := out/congresssim.jar
 APP_CP := $(APP_JAR)
 
-.PHONY: check-java build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper chamber-structure chamber-structure-summary seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness fetch-validation-samples empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper paper-word-count paper-checks paper-anonymity-check figure-label-check pdf-render-check pdf-manifest-check table-figure-consistency-check supplement-anonymous clean-regeneration-check paper-clean test ci clean
+.PHONY: check-java build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper chamber-structure chamber-structure-summary seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness fetch-validation-samples empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper-assets paper paper-word-count paper-checks paper-freshness-check paper-anonymity-check figure-label-check pdf-render-check pdf-manifest-check table-figure-consistency-check supplement-anonymous supplement-anonymous-current clean-regeneration-check paper-clean test ci github-ci clean
 
 check-java:
 	@actual="$$(javac -version 2>&1 | awk '{print $$2}' | cut -d. -f1)"; \
@@ -152,8 +152,10 @@ mechanism-diagnostics: empirical-bridge ablation-analysis manipulation-stress
 public-provenance:
 	python3 scripts/reporting/write_public_provenance.py
 
-paper: paper-campaign mechanism-diagnostics
+paper-assets: paper-campaign mechanism-diagnostics
 	python3 paper/scripts/generate_figures.py
+
+paper: paper-assets
 	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
 	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build appendix-odd-d.tex
 	cp paper/build/main.pdf paper/main.pdf
@@ -164,6 +166,14 @@ paper-word-count: paper
 	python3 paper/scripts/check_word_count.py paper/main.pdf --max 6000
 
 paper-checks: paper
+	python3 paper/scripts/check_word_count.py paper/main.pdf --max 6000
+	python3 scripts/checks/check_paper_anonymity.py paper/main.pdf paper/appendix-odd-d.pdf
+	python3 scripts/checks/check_figure_labels.py
+	python3 scripts/checks/check_table_figure_consistency.py
+	python3 scripts/checks/check_pdf_render.py paper/main.pdf paper/appendix-odd-d.pdf
+	python3 paper/scripts/write_pdf_manifest.py --check
+
+paper-freshness-check: paper-assets
 	python3 paper/scripts/check_word_count.py paper/main.pdf --max 6000
 	python3 scripts/checks/check_paper_anonymity.py paper/main.pdf paper/appendix-odd-d.pdf
 	python3 scripts/checks/check_figure_labels.py
@@ -189,6 +199,9 @@ table-figure-consistency-check: paper
 supplement-anonymous: paper
 	python3 scripts/packaging/build_anonymous_supplement.py
 
+supplement-anonymous-current:
+	python3 scripts/packaging/build_anonymous_supplement.py
+
 clean-regeneration-check:
 	# PDF bytes vary across TeX/font environments; paper/pdf-manifest.json tracks stable PDF freshness.
 	git diff --no-ext-diff --exit-code -- . ':(exclude)paper/main.pdf' ':(exclude)paper/appendix-odd-d.pdf'
@@ -204,6 +217,8 @@ test: build
 	java $(JAVA_PROPS) -cp $(APP_CP):out/test congresssim.SimulatorTests
 
 ci: test calibration-check seed-robustness-check validation-readiness empirical-validation catalog-breadth paper-checks supplement-anonymous clean-regeneration-check
+
+github-ci: test calibration-check seed-robustness-check validation-readiness empirical-validation catalog-breadth paper-freshness-check supplement-anonymous-current clean-regeneration-check
 
 clean:
 	rm -rf out
