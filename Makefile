@@ -5,7 +5,7 @@ JAVA_PROPS ?= -Dcongresssim.javaRelease=$(JAVA_RELEASE)
 APP_JAR := out/congresssim.jar
 APP_CP := $(APP_JAR)
 
-.PHONY: check-java build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper chamber-structure chamber-structure-summary seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness fetch-validation-samples build-bill-progression-raw empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper-assets paper paper-word-count paper-checks paper-freshness-check paper-anonymity-check figure-label-check pdf-render-check pdf-manifest-check table-figure-consistency-check supplement-anonymous supplement-anonymous-current clean-regeneration-check paper-clean test ci github-ci clean
+.PHONY: check-java build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper chamber-structure chamber-structure-summary seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness fetch-validation-samples build-bill-progression-raw build-core-raw-validation empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper-assets paper paper-word-count paper-checks paper-freshness-check paper-anonymity-check figure-label-check pdf-render-check pdf-manifest-check table-figure-consistency-check supplement-anonymous supplement-anonymous-current clean-regeneration-check paper-clean test ci github-ci clean
 
 check-java:
 	@actual="$$(javac -version 2>&1 | awk '{print $$2}' | cut -d. -f1)"; \
@@ -134,6 +134,9 @@ fetch-validation-samples:
 
 build-bill-progression-raw:
 	python3 scripts/validation/build_bill_progression_dataset.py $(ARGS)
+
+build-core-raw-validation:
+	python3 scripts/validation/build_core_raw_validation_datasets.py $(ARGS)
 
 empirical-validation:
 	python3 scripts/validation/run_empirical_validation.py

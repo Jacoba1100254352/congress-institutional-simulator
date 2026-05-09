@@ -16,20 +16,20 @@ Executable empirical-screening run for the conventional simulator baseline. This
 
 | Check | Scenario | Metric | Range | Observed | Pass |
 | --- | --- | --- | ---: | ---: | --- |
-| current-system-enactment-rate | current-system | productivity | 0.010--0.120 | 0.038 | yes |
-| current-system-floor-load | current-system | floor | 0.050--0.450 | 0.218 | yes |
-| party-unity-support-band | current-system | averageEnactedSupport | 0.500--0.820 | 0.668 | yes |
+| current-system-enactment-rate | current-system | productivity | 0.010--0.070 | 0.038 | yes |
+| current-system-floor-load | current-system | floor | 0.080--0.320 | 0.218 | yes |
+| party-unity-support-band | current-system | averageEnactedSupport | 0.560--0.780 | 0.668 | yes |
 | veto-frequency-band | presidential-veto | vetoesPerRun | 0.000--8.000 | 2.600 | yes |
-| sponsor-success-concentration | current-system | proposerAccessGini | 0.050--0.750 | 0.137 | yes |
+| sponsor-success-concentration | current-system | proposerAccessGini | 0.050--0.550 | 0.137 | yes |
 | lobbying-spend-observable | default-pass-budgeted-lobbying | lobbySpendPerBill | 0.010--1.500 | 0.092 | yes |
 | topic-throughput-yield | simple-majority | welfarePerSubmittedBill | 0.050--0.450 | 0.145 | yes |
 
 ## Sources
 
-- current-system-enactment-rate: Congress.gov bulk data and govinfo BILLSTATUS collections. Broad screening range for ordinary U.S.-style bill attrition
-- current-system-floor-load: Congress.gov bulk data and govinfo BILLSTATUS collections. Keeps the benchmark from treating every introduced bill as a floor bill
-- party-unity-support-band: Voteview roll-call and party-unity data. Screens whether party loyalty and polarization generate plausible winning coalition support
+- current-system-enactment-rate: Congress.gov bulk data and govinfo BILLSTATUS collections. Screening range tightened around the committed bill-progression raw sample while retaining abstraction margin
+- current-system-floor-load: Congress.gov bulk data and govinfo BILLSTATUS collections. Tightened screen to keep the benchmark from treating every introduced bill as a floor bill
+- party-unity-support-band: Voteview roll-call and party-unity data. Screens winning coalition size against the committed Voteview roll-call sample
 - veto-frequency-band: Congress.gov action histories and CRS presidential veto summaries. Loose range because run length is abstract
-- sponsor-success-concentration: Center for Effective Lawmaking member-level effectiveness scores. Screens whether proposer access is neither perfectly equal nor fully concentrated
+- sponsor-success-concentration: Center for Effective Lawmaking and Congress.gov sponsor samples. Screens whether proposer access is neither perfectly equal nor fully concentrated
 - lobbying-spend-observable: U.S. Senate Lobbying Disclosure Act filings. Abstract budget-unit observability check rather than dollar calibration
 - topic-throughput-yield: Comparative Agendas Project topic coding. Coarse screen for generated issue-domain throughput before topic-specific calibration

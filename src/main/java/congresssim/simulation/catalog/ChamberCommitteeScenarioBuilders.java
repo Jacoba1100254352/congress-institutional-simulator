@@ -639,7 +639,28 @@ final class ChamberCommitteeScenarioBuilders {
                         0.68,
                         0.82
                 );
-                process = new CommitteeGatekeepingProcess(name(), committee, process);
+                process = new CommitteePowerProcess(
+                        name(),
+                        committee,
+                        process,
+                        0.52,
+                        new CommitteePowerConfig(
+                                CommitteeRoleMode.PRIORITY_QUEUE,
+                                0.58,
+                                0.62,
+                                0.58,
+                                0.34,
+                                0.26,
+                                0.44,
+                                0.34,
+                                0.70,
+                                0.44,
+                                0.58,
+                                0.22,
+                                true,
+                                false
+                        )
+                );
                 process = new CommitteeInformationProcess(name(), committeeMembers, 0.74, 0.50, process);
                 return new ProposalAccessProcess(
                         name(),

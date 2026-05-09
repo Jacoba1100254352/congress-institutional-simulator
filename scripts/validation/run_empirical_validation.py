@@ -180,14 +180,17 @@ def validate_sponsor_success(results: list[dict[str, str]]) -> None:
         append_missing(results, path.name, "Add sponsor-level introduced/enacted counts to compute sponsor success concentration.")
         return
     success_rates: list[float] = []
+    introduced_counts: list[float] = []
     enacted_counts: list[float] = []
     for row in rows(path):
         introduced = numeric(row.get("introduced", ""))
         enacted = numeric(row.get("enacted", ""))
         if introduced > 0.0:
             success_rates.append(enacted / introduced)
+        introduced_counts.append(introduced)
         enacted_counts.append(enacted)
     append(results, path.name, "sponsorSuccessRate", mean(success_rates), "Mean sponsor enactment rate.")
+    append(results, path.name, "sponsorIntroductionGini", gini(introduced_counts), "Gini concentration of introduced bills by sponsor.")
     append(results, path.name, "sponsorSuccessGini", gini(enacted_counts), "Gini concentration of enacted bills by sponsor.")
 
 

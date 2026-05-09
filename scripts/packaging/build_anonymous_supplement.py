@@ -86,6 +86,7 @@ def copy_reports() -> None:
         "chamber-stress-screen.*",
         "catalog-breadth.*",
         "scenario-selection-manifest.*",
+        "core-raw-validation-build.*",
         "empirical-validation-readiness.*",
         "empirical-validation-summary.*",
     ):
@@ -108,6 +109,7 @@ def write_readme() -> None:
         "make family-screen\n"
         "make catalog-breadth\n"
         "make chamber-structure\n"
+        "make build-core-raw-validation ARGS=\"--derive-congress-from-bill-progression\"\n"
         "make empirical-validation\n"
         "make paper\n"
         "```\n\n"
@@ -117,7 +119,8 @@ def write_readme() -> None:
         "supplemental breadth-catalog screen is in `reports/family-champions.md`, "
         "representative selection audit is in `reports/representative-vs-family-champions.md`, "
         "scenario-selection rationale is in `reports/scenario-selection-manifest.md`, "
-        "and the chamber-structure supplement is in `reports/chamber-family-champions.md`.\n"
+        "the chamber-structure supplement is in `reports/chamber-family-champions.md`, "
+        "and the raw-validation build summary is in `reports/core-raw-validation-build.md`.\n"
     )
 
 

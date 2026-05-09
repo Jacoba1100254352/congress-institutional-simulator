@@ -1,9 +1,11 @@
 # Empirical Validation Readiness
 
 This directory is a scaffold for raw-data validation. It is not used to fit the
-current paper results, but the repository now includes one documented raw sample
-for bill progression so the empirical bridge can exercise a real agenda-access
-signal rather than only missing-data placeholders.
+current paper results, but the repository now includes documented raw samples
+for bill progression, Voteview roll calls, lobbying disclosures, topic
+throughput, sponsor proposal concentration, and committee-report signals so the
+empirical bridge can exercise several real agenda-access and representation
+signals rather than only missing-data placeholders.
 
 Expected optional raw validation inputs under `data/validation/raw/`:
 
@@ -84,3 +86,16 @@ This writes `data/validation/raw/bill_progression.csv` and
 `data/validation/raw/bill_progression.metadata.md`. It is still a sample rather
 than a full congressional census, so paper claims should describe it as an
 empirical bridge or plausibility check, not final validation.
+
+The broader raw-validation sample can be generated with:
+
+```sh
+make build-core-raw-validation ARGS="--env-file /path/to/.env --derive-congress-from-bill-progression --preserve-sponsor-success"
+```
+
+That builder uses Voteview static CSVs, the existing Congress.gov bill-action
+sample, optional Congress.gov bill-detail sponsor enrichment, and Senate LDA
+filings. It is intentionally bounded and documented. Committee activity is
+currently an action-derived committee-report signal rather than a full hearing
+calendar, and the sponsor sample is a proposal-access bridge rather than a final
+Center for Effective Lawmaking replacement.
