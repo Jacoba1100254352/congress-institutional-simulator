@@ -13,6 +13,8 @@ import congresssim.institution.agenda.AgendaLotteryProcess;
 import congresssim.institution.agenda.ChallengeEscalationProcess;
 import congresssim.institution.agenda.ChallengeTokenAllocation;
 import congresssim.institution.agenda.ChallengeVoucherProcess;
+import congresssim.institution.agenda.FloorRuleSchedulingProcess;
+import congresssim.institution.agenda.OpenFloorCalendarProcess;
 import congresssim.institution.agenda.ProposalAccessRules;
 import congresssim.institution.bargaining.AlternativeSelectionRule;
 import congresssim.institution.bargaining.AmendmentMediationProcess;
@@ -42,6 +44,7 @@ import congresssim.institution.lobbying.InfluenceSystemProcess;
 import congresssim.institution.lobbying.LobbyAuditProcess;
 import congresssim.institution.lobbying.LobbyTransparencyProcess;
 import congresssim.institution.publicinput.CitizenInitiativeProcess;
+import congresssim.institution.publicinput.CitizenAgendaPetitionProcess;
 import congresssim.institution.publicinput.CitizenPanelMode;
 import congresssim.institution.publicinput.CitizenPanelReviewProcess;
 import congresssim.institution.publicinput.ConstituentPublicWillProcess;
@@ -101,6 +104,9 @@ final class InstitutionProcessTests {
         bicameralRoutingSupportsOriginationAndLastOfferBargaining();
         judicialReviewCanInvalidateRightsLikeHarm();
         citizenInitiativeCanBypassLegislativeFloor();
+        citizenAgendaPetitionsCanForceFloorAccess();
+        openFloorCalendarRoutesReviewWithoutPureBlockage();
+        floorRuleSchedulingModelsClosedRulesAndDischargeBackstops();
         normErosionCreatesEndogenousDelay();
         proposalCostsCanDenyLowValueBills();
         crossBlocCosponsorshipRequiresOutsideSupport();
@@ -449,6 +455,115 @@ final class InstitutionProcessTests {
         assertTrue(outcome.chamberResults().size() == 1, "Citizen referendum should be recorded as a public vote result.");
         assertTrue(outcome.chamberResults().getFirst().chamberName().equals("Citizen referendum"), "The public vote should be labeled as a referendum.");
         assertTrue(outcome.signals().publicWillReviews() == 1, "Citizen initiative review should contribute public-will diagnostics.");
+    }
+
+    private static void citizenAgendaPetitionsCanForceFloorAccess() {
+        Bill bill = new Bill("B-petition", "Petition Bill", "L-1", 0.0, 0.2, 0.78, 0.72, 0.0, 0.70);
+        BillOutcome outcome = new CitizenAgendaPetitionProcess(
+                "test petition agenda",
+                denyEverything("regular agenda denied"),
+                enactEverything(),
+                0.45,
+                0.30,
+                0.16,
+                0.40,
+                0.12
+        ).consider(bill, new VoteContext(Map.of("Test", 0.0), new Random(5L), 0.0));
+
+        assertTrue(outcome.enacted(), "Citizen petition should bypass ordinary agenda denial when public mandate is high.");
+        assertTrue(
+                outcome.signals().supplementalMetrics().getOrDefault("citizenAgendaPetitionRate", 0.0) == 1.0,
+                "Citizen petition routing should report a petition-rate diagnostic."
+        );
+        assertTrue(
+                outcome.signals().publicWillReviews() == 1,
+                "Citizen petition routing should record public-will signal review."
+        );
+        assertTrue(
+                outcome.signals().supplementalMetrics().getOrDefault("costlyPublicMandateSignal", 0.0) > 0.0,
+                "Citizen petition routing should distinguish costly mandate signals from raw volume."
+        );
+    }
+
+    private static void openFloorCalendarRoutesReviewWithoutPureBlockage() {
+        Bill highRisk = new Bill("B-risk", "Risky public bill", "L-1", 0.0, 0.82, 0.46, 0.70, 0.0, 0.86)
+                .withAffectedGroup("workers", 0.25, 0.78, 0.26);
+        BillOutcome reviewed = new OpenFloorCalendarProcess(
+                "test open calendar",
+                denyEverything("ordinary floor should not run"),
+                enactEverything(),
+                0.30,
+                0.30,
+                0.70,
+                0.10,
+                0.80
+        ).consider(highRisk, new VoteContext(Map.of("Test", 0.0), new Random(7L), 0.0));
+
+        assertTrue(reviewed.enacted(), "High-risk but public-mandated bills should route to review, not be buried.");
+        assertTrue(
+                reviewed.bill().attentionSpend() > highRisk.attentionSpend(),
+                "Open calendar review should carry an explicit delay/attention cost."
+        );
+        assertTrue(
+                reviewed.signals().supplementalMetrics().getOrDefault("openCalendarRate", 0.0) == 1.0,
+                "Open calendar should report admitted calendar access."
+        );
+
+        Bill captured = new Bill("B-capture", "Captured Bill", "L-1", 0.0, 0.4, 0.10, 0.20, 0.95, 0.44, 0.95, false);
+        BillOutcome blocked = new OpenFloorCalendarProcess(
+                "test open calendar capture screen",
+                enactEverything(),
+                enactEverything(),
+                0.45,
+                0.60,
+                0.42,
+                0.10,
+                0.80
+        ).consider(captured, new VoteContext(Map.of("Test", 0.0), new Random(8L), 0.0));
+
+        assertFalse(blocked.enacted(), "Open calendar should still block low-mandate captured agenda abuse.");
+        assertTrue(
+                blocked.agendaDisposition() == AgendaDisposition.ACCESS_DENIED,
+                "Captured low-mandate bills should be denied before floor access."
+        );
+    }
+
+    private static void floorRuleSchedulingModelsClosedRulesAndDischargeBackstops() {
+        FloorRuleSchedulingProcess process = new FloorRuleSchedulingProcess(
+                "test floor rules",
+                enactEverything(),
+                0.24,
+                0.72,
+                0.14,
+                0.66,
+                0.80
+        );
+        Bill publicBill = new Bill("B-public-rule", "Public Rule Bill", "L-1", 0.0, 0.12, 0.88, 0.66, 0.05, 0.86)
+                .withCosponsorship(14, 6, false);
+        BillOutcome publicOutcome = process.consider(
+                publicBill,
+                new VoteContext(Map.of("Test", 0.0), new Random(17L), 0.0)
+        );
+        assertTrue(publicOutcome.enacted(), "High-mandate bills should be scheduled through the floor-rule layer.");
+        assertTrue(
+                publicOutcome.signals().supplementalMetrics().getOrDefault("dischargeBackstopUse", 0.0) > 0.0,
+                "High public mandate should trigger a discharge or public-pressure backstop."
+        );
+
+        Bill capturedBill = new Bill("B-closed-rule", "Captured Rule Bill", "L-1", 0.0, 0.82, 0.12, 0.24, 0.95, 0.28, 0.95, false);
+        BillOutcome capturedOutcome = process.consider(
+                capturedBill,
+                new VoteContext(Map.of("Test", 0.0), new Random(18L), 0.0)
+        );
+        assertFalse(capturedOutcome.enacted(), "Low-mandate captured bills should be vulnerable to status-quo fallback.");
+        assertTrue(
+                capturedOutcome.signals().supplementalMetrics().getOrDefault("closedRuleRate", 0.0) > 0.0,
+                "Captured low-mandate bills should report closed-rule pressure."
+        );
+        assertTrue(
+                capturedOutcome.signals().supplementalMetrics().getOrDefault("statusQuoFallbackPressure", 0.0) > 0.0,
+                "Floor scheduling should report status-quo fallback pressure."
+        );
     }
 
     private static void normErosionCreatesEndogenousDelay() {
@@ -948,15 +1063,26 @@ final class InstitutionProcessTests {
         Bill badLaw = new Bill("B-bad-law", "Bad Law", "L-1", 0.0, 0.80, 0.12, 0.12, 0.80, 0.90);
         Bill nextBill = new Bill("B-next", "Next Bill", "L-1", 0.0, 0.10, 0.80, 0.80, 0.0, 0.20);
 
-        process.consider(badLaw, firstContext);
-        BillOutcome reviewed = process.consider(
-                nextBill,
-                new VoteContext(Map.of("Test", 0.0), new Random(2L), badLaw.ideologyPosition())
+        BillOutcome registered = process.consider(badLaw, firstContext);
+        assertTrue(
+                registered.signals().supplementalMetrics().getOrDefault("implementationDelay", 0.0) > 0.0,
+                "Registry should model post-enactment implementation delay for provisional laws."
         );
+        BillOutcome reviewed = registered;
+        for (int i = 0; i < 8 && reviewed.signals().lawReviews() == 0; i++) {
+            reviewed = process.consider(
+                    nextBill,
+                    new VoteContext(Map.of("Test", 0.0), new Random(2L + i), badLaw.ideologyPosition())
+            );
+        }
 
         assertTrue(reviewed.signals().lawReviews() > 0, "Registry should review due provisional laws.");
         assertTrue(reviewed.signals().lawReversals() > 0, "Low-benefit active laws should be reversed.");
         assertTrue(reviewed.statusQuoAfter() < badLaw.ideologyPosition(), "Registry reversal should roll back status-quo movement.");
+        assertTrue(
+                reviewed.signals().supplementalMetrics().getOrDefault("implementationFailureRisk", 0.0) > 0.0,
+                "Registry review should report implementation failure risk."
+        );
     }
 
     private static void competingAlternativesSelectCompromiseBeforeFinalVote() {
@@ -1505,6 +1631,14 @@ final class InstitutionProcessTests {
         assertTrue(outcome.bill().concentratedHarm() < harmfulBill.concentratedHarm(), "Mediation should reduce concentrated harm.");
         assertTrue(outcome.bill().compensationAdded(), "High-harm mediation should add compensation.");
         assertTrue(Math.abs(outcome.bill().ideologyPosition()) < Math.abs(harmfulBill.ideologyPosition()), "Mediation should move content toward compromise.");
+        assertTrue(
+                outcome.signals().supplementalMetrics().getOrDefault("amendmentOverload", 0.0) > 0.0,
+                "Multi-round mediation should report amendment capacity pressure."
+        );
+        assertTrue(
+                outcome.signals().supplementalMetrics().getOrDefault("publicMandateImprovementAfterAmendment", 0.0) > 0.0,
+                "Multi-round mediation should report mandate improvement against the no-amendment counterfactual."
+        );
     }
 
     private static void multidimensionalPackageBargainingAddsCrossIssueTradeSignals() {
@@ -2139,6 +2273,20 @@ final class InstitutionProcessTests {
                 outcome.bill().publicSupport() < bill.publicBenefit(),
                 "Information review should improve the signal without making it perfectly omniscient."
         );
+    }
+
+    private static LegislativeProcess denyEverything(String reason) {
+        return new LegislativeProcess() {
+            @Override
+            public String name() {
+                return reason;
+            }
+
+            @Override
+            public BillOutcome consider(Bill bill, VoteContext context) {
+                return BillOutcome.accessDenied(bill, context.currentPolicyPosition(), reason);
+            }
+        };
     }
 
     private static LegislativeProcess enactEverything() {

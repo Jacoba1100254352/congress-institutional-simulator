@@ -14,6 +14,7 @@ import congresssim.institution.agenda.AgendaLotteryProcess;
 import congresssim.institution.agenda.ChallengeEscalationProcess;
 import congresssim.institution.agenda.ChallengeTokenAllocation;
 import congresssim.institution.agenda.ChallengeVoucherProcess;
+import congresssim.institution.agenda.OpenFloorCalendarProcess;
 import congresssim.institution.agenda.ProposalAccessProcess;
 import congresssim.institution.agenda.ProposalAccessRules;
 import congresssim.institution.bargaining.AlternativeSelectionRule;
@@ -49,6 +50,7 @@ import congresssim.institution.lobbying.InfluenceSystemProcess;
 import congresssim.institution.lobbying.LobbyAuditProcess;
 import congresssim.institution.lobbying.LobbyTransparencyProcess;
 import congresssim.institution.publicinput.CitizenInitiativeProcess;
+import congresssim.institution.publicinput.CitizenAgendaPetitionProcess;
 import congresssim.institution.publicinput.CitizenPanelMode;
 import congresssim.institution.publicinput.CitizenPanelReviewProcess;
 import congresssim.institution.publicinput.ConstituentPublicWillProcess;
@@ -339,6 +341,161 @@ final class BroadSystemScenarioBuilders {
                         0.14,
                         0.61
                 );
+            }
+        };
+    }
+
+    static Scenario majorityWithRandomPublicReviewPanel() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Random public review panel + majority";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new CitizenPanelReviewProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        supermajorityFloorProcess(name(), world, strategy, 0.62),
+                        CitizenPanelMode.THRESHOLD_ADJUSTMENT,
+                        49,
+                        0.20,
+                        0.66,
+                        0.22,
+                        0.57
+                );
+            }
+        };
+    }
+
+    static Scenario majorityWithCitizenAgendaPetitions() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Citizen agenda petitions + majority";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess floor = simpleMajorityFloorProcess(name(), world, strategy);
+                LegislativeProcess regularAgenda = new ProposalAccessProcess(
+                        name() + " regular agenda",
+                        ProposalAccessRules.leadershipAgenda(
+                                world.legislators(),
+                                0.54,
+                                0.44,
+                                0.26,
+                                0.20,
+                                0.24,
+                                0.16
+                        ),
+                        floor
+                );
+                LegislativeProcess petitionBypass = new MultiRoundAmendmentProcess(
+                        name() + " petition deliberation",
+                        floor,
+                        world.legislators(),
+                        2,
+                        0.020,
+                        1.10,
+                        0.045
+                );
+                return new CitizenAgendaPetitionProcess(
+                        name(),
+                        regularAgenda,
+                        petitionBypass,
+                        0.50,
+                        0.34,
+                        0.22,
+                        0.42,
+                        0.22
+                );
+            }
+        };
+    }
+
+    static Scenario majorityWithOpenRuleCalendar() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Open-rule floor calendar + majority";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                LegislativeProcess floor = simpleMajorityFloorProcess(name(), world, strategy);
+                LegislativeProcess review = new MultiRoundAmendmentProcess(
+                        name() + " open-rule amendments",
+                        floor,
+                        world.legislators(),
+                        3,
+                        0.018,
+                        1.16,
+                        0.040
+                );
+                return new OpenFloorCalendarProcess(
+                        name(),
+                        floor,
+                        review,
+                        0.32,
+                        0.47,
+                        0.66,
+                        0.18,
+                        0.78
+                );
+            }
+        };
+    }
+
+    static Scenario majorityWithPairwiseAmendmentTournament() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Pairwise amendment tournament + majority";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.standard();
+                return new CompetingAlternativesProcess(
+                        name(),
+                        simpleMajorityFloorProcess(name(), world, strategy),
+                        world.legislators(),
+                        AlternativeSelectionRule.PAIRWISE_MAJORITY,
+                        4,
+                        true,
+                        0,
+                        0,
+                        0.98,
+                        0.010,
+                        0.0
+                );
+            }
+        };
+    }
+
+    static Scenario majorityWithAntiCaptureProposalAccess() {
+        return new Scenario() {
+            @Override
+            public String name() {
+                return "Anti-capture proposal access + majority";
+            }
+
+            @Override
+            public LegislativeProcess buildProcess(SimulationWorld world) {
+                VotingStrategy strategy = VotingStrategies.antiCapture();
+                LegislativeProcess process = simpleMajorityFloorProcess(name(), world, strategy);
+                process = new LobbyAuditProcess(name(), process, 0.14, 0.76, 0.50, 0.62, true);
+                process = new ProposalAccessProcess(
+                        name(),
+                        ProposalAccessRules.publicInterestScreen(0.50, 0.48, 1.85, 0.58),
+                        process
+                );
+                return new LobbyTransparencyProcess(name(), 0.78, 0.38, process);
             }
         };
     }

@@ -14,6 +14,7 @@ import congresssim.institution.agenda.AgendaLotteryProcess;
 import congresssim.institution.agenda.ChallengeEscalationProcess;
 import congresssim.institution.agenda.ChallengeTokenAllocation;
 import congresssim.institution.agenda.ChallengeVoucherProcess;
+import congresssim.institution.agenda.FloorRuleSchedulingProcess;
 import congresssim.institution.agenda.ProposalAccessProcess;
 import congresssim.institution.agenda.ProposalAccessRules;
 import congresssim.institution.bargaining.AlternativeSelectionRule;
@@ -629,6 +630,15 @@ final class ChamberCommitteeScenarioBuilders {
                         AffirmativeThresholdRule.supermajority(2.0 / 3.0)
                 );
                 process = new JudicialReviewProcess(name(), process, 0.44, 0.68, 0.44);
+                process = new FloorRuleSchedulingProcess(
+                        name(),
+                        process,
+                        0.30,
+                        0.64,
+                        0.16,
+                        0.68,
+                        0.82
+                );
                 process = new CommitteeGatekeepingProcess(name(), committee, process);
                 process = new CommitteeInformationProcess(name(), committeeMembers, 0.74, 0.50, process);
                 return new ProposalAccessProcess(

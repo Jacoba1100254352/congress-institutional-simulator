@@ -6,6 +6,7 @@ from __future__ import annotations
 import re
 import subprocess
 import sys
+import hashlib
 from pathlib import Path
 
 
@@ -14,23 +15,17 @@ DEFAULT_PDFS = [
     Path("paper/appendix-odd-d.pdf"),
 ]
 
-_FIRST = "Jac" + "ob"
-_LAST = "And" + "erson"
-_LOCAL_USER = "jacob" + "anderson"
-_DOMAIN = "github" + ".com/"
-_REPO_USER = "Jacoba" + "1100254352"
+HASHED_BANNED_TERMS = (
+    (14, "f10f60a1f978030d3278bf2c22865cda980beb926d1d0c97c3e9c85ba9252238"),
+    (17, "5d394ce4d14ef833bb98c1b71d7261b96298e805ff4319d9790119fe54c67994"),
+    (13, "ca035de7d1f1c65ceb1493c7147ed1f0eeba3311af52e339a1913816879ffc43"),
+    (14, "ef4fab81da95ac04aba973ee1192997ad0296a18b20c8153b68975969ae6de7d"),
+    (16, "5a170c01d6f4f68b0b95ac4be9c138d40a104975671b607a50d42a6409e11aa0"),
+    (11, "7510bdd3e5310ec7655ac4895dc39b099b1c2f6f337abd455d73043119daf8a8"),
+)
 
 BANNED_PATTERNS = [
-    re.compile(pattern, re.IGNORECASE)
-    for pattern in (
-        _FIRST + r"\s+D\.?\s+" + _LAST,
-        _FIRST + r"\s+" + _LAST,
-        _LOCAL_USER,
-        "jacob" + "danderson",
-        _REPO_USER,
-        re.escape(_DOMAIN),
-        r"/Users/[A-Za-z0-9._-]+",
-    )
+    re.compile(r"/Users/[A-Za-z0-9._-]+", re.IGNORECASE),
 ]
 
 
@@ -70,6 +65,19 @@ def pdf_raw_text(path: Path) -> str:
     return path.read_bytes().decode("latin-1", errors="ignore")
 
 
+def contains_hashed_banned_term(text: str) -> tuple[int, str] | None:
+    normalized = text.lower()
+    for length, expected_hash in HASHED_BANNED_TERMS:
+        if len(normalized) < length:
+            continue
+        for index in range(0, len(normalized) - length + 1):
+            candidate = normalized[index:index + length]
+            digest = hashlib.sha256(candidate.encode()).hexdigest()
+            if digest == expected_hash:
+                return length, expected_hash[:12]
+    return None
+
+
 def main(argv: list[str]) -> int:
     pdfs = [Path(argument) for argument in argv] if argv else DEFAULT_PDFS
     failures: list[str] = []
@@ -80,6 +88,18 @@ def main(argv: list[str]) -> int:
         text = pdf_text(pdf)
         metadata = pdf_metadata(pdf)
         raw_text = pdf_raw_text(pdf)
+        for source_name, source_text in (
+            ("text", text),
+            ("metadata", metadata),
+            ("raw PDF bytes", raw_text),
+        ):
+            hashed_match = contains_hashed_banned_term(source_text)
+            if hashed_match:
+                length, digest_prefix = hashed_match
+                failures.append(
+                    f"{pdf}: {source_name} matched hashed banned identity term "
+                    f"(length={length}, hash={digest_prefix}...)"
+                )
         for pattern in BANNED_PATTERNS:
             if pattern.search(text):
                 failures.append(f"{pdf}: matched banned identity pattern {pattern.pattern!r}")

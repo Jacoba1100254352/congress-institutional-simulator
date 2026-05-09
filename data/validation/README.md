@@ -1,9 +1,11 @@
 # Empirical Validation Readiness
 
-This directory is a scaffold for future raw-data validation. It is not used to
-fit the current paper results.
+This directory is a scaffold for raw-data validation. It is not used to fit the
+current paper results, but the repository now includes one documented raw sample
+for bill progression so the empirical bridge can exercise a real agenda-access
+signal rather than only missing-data placeholders.
 
-Expected optional inputs under `data/validation/raw/`:
+Expected optional raw validation inputs under `data/validation/raw/`:
 
 - `voteview_rollcalls.csv`: roll-call or member-level vote summaries with
   `congress`, `party`, `vote_id`, `vote`, and `ideology` columns.
@@ -28,6 +30,15 @@ Expected optional inputs under `data/validation/raw/`:
 - `court_review.csv`: constitutional-review rows with `case_id`, `issue`,
   `emergency_order`, `invalidated`, `vote_margin`, and `signed_opinion`
   columns.
+- `rulemaking_implementation.csv`: post-enactment implementation rows from
+  Federal Register, Unified Agenda, Regulations.gov, or comparable sources with
+  `law_id`, `proposed_rule_date`, `final_rule_date`, `effective_date`,
+  `comment_count`, `enforcement_capacity`, `nonenforced`, and `underfunded`
+  columns.
+- `law_revision_history.csv`: law-lineage rows from Congress.gov, govinfo,
+  statutory-history datasets, or comparable sources with `law_id`,
+  `enacted_date`, `amended`, `reauthorized`, `repealed`, `expired`, and
+  `invalidated` columns.
 - `comparative_institutions.csv`: comparative institutional rows with
   `country`, `year`, `chambers`, `district_magnitude`, `judicial_review`,
   `party_fragmentation`, and `legislative_productivity` columns.
@@ -39,21 +50,37 @@ itself validate the simulator.
 
 Run `make empirical-validation` after adding one or more raw files to compute
 dataset-specific summary metrics such as party unity, bill attrition, lobbying
-spending concentration, topic throughput, and sponsor success concentration.
+spending concentration, topic throughput, sponsor success concentration,
+committee activity, public-opinion intensity, implementation delay, enforcement
+capacity, and post-enactment correction rates.
 The command writes `reports/empirical-validation-summary.csv` and `.md`; missing
 datasets are reported as missing rather than treated as build failures. These
 adapters are deliberately source-shaped: adding real data still requires a
 documented extraction and cleaning note for each source before the paper should
 claim empirical validation rather than validation readiness.
 
-Optional API smoke-test samples can be fetched with:
+Optional API adapter fixtures can be fetched with:
 
 ```sh
 make fetch-validation-samples ARGS="--env-file /path/to/.env"
 ```
 
 The fetcher currently reads `CONGRESS_API_KEY` and `OPENFEC_API_KEY` when
-available. It writes small normalized samples for bill progression, topic
-throughput, sponsor success, and campaign finance. These samples are useful for
-testing the adapters against real public API shapes, but they are deliberately
-too small and too lightly cleaned to count as empirical validation.
+available. It writes small normalized fixtures under `data/validation/fixtures/`
+for bill progression, topic throughput, sponsor success, and campaign finance.
+These fixtures are useful for testing adapters against public API shapes, but
+they are deliberately too small and too lightly cleaned to count as empirical
+validation. Move or copy only curated, documented extracts into
+`data/validation/raw/`.
+
+A documented raw bill-progression sample can be generated from Congress.gov
+with:
+
+```sh
+make build-bill-progression-raw ARGS="--env-file /path/to/.env --congress 118 --page-limit 60 --offsets 0,500,1500"
+```
+
+This writes `data/validation/raw/bill_progression.csv` and
+`data/validation/raw/bill_progression.metadata.md`. It is still a sample rather
+than a full congressional census, so paper claims should describe it as an
+empirical bridge or plausibility check, not final validation.

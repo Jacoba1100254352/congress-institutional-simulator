@@ -1,23 +1,20 @@
 # Empirical Validation Summary
 
-This report computes validation summaries when optional raw datasets are present under `data/validation/raw/`. Missing rows indicate absent local data, not a simulator failure.
+This report computes validation summaries when optional raw datasets are present under `data/validation/raw/`. Missing rows indicate absent local data, not a simulator failure. Adapter fixtures under `data/validation/fixtures/` are ignored because they test parser shape rather than empirical fit.
 
 | Dataset | Metric | Value | Status | Note |
 | --- | --- | ---: | --- | --- |
 | `voteview_rollcalls.csv` | missing | --- | missing | Add Voteview-like member vote rows to compute party unity and coalition size. |
-| `bill_progression.csv` | floorLoad | 0.480000 | computed | Share of introduced bills receiving floor action. |
-| `bill_progression.csv` | committeeReportRate | 0.266667 | computed | Share of introduced bills reported by committee. |
-| `bill_progression.csv` | enactmentRate | 0.333333 | computed | Share of introduced bills enacted. |
+| `bill_progression.csv` | floorLoad | 0.122222 | computed | Share of introduced bills receiving floor action. |
+| `bill_progression.csv` | committeeReportRate | 0.083333 | computed | Share of introduced bills reported by committee. |
+| `bill_progression.csv` | enactmentRate | 0.016667 | computed | Share of introduced bills enacted. |
 | `lobbying_disclosure.csv` | missing | --- | missing | Add LDA-style client issue spending rows to compute spend concentration. |
-| `topic_throughput.csv` | topicAgendaEntropy | 0.890123 | computed | Normalized diversity of introduced bills across topics. |
-| `topic_throughput.csv` | topicFloorRate | 0.480000 | computed | Topic-weighted floor-consideration rate. |
-| `topic_throughput.csv` | topicEnactmentRate | 0.333333 | computed | Topic-weighted enactment rate. |
-| `sponsor_success.csv` | sponsorSuccessRate | 0.523810 | computed | Mean sponsor enactment rate. |
-| `sponsor_success.csv` | sponsorSuccessGini | 0.492381 | computed | Gini concentration of enacted bills by sponsor. |
+| `topic_throughput.csv` | missing | --- | missing | Add topic-level bill counts to compute agenda diversity and throughput. |
+| `sponsor_success.csv` | missing | --- | missing | Add sponsor-level introduced/enacted counts to compute sponsor success concentration. |
 | `district_public_opinion.csv` | missing | --- | missing | Add district opinion rows to compute public-will intensity and affected-group representation. |
 | `committee_activity.csv` | missing | --- | missing | Add committee activity rows to compute referral, reporting, hearing, and discharge rates. |
-| `campaign_finance.csv` | recipientFinanceGini | 0.980469 | computed | Gini concentration of campaign money by recipient. |
-| `campaign_finance.csv` | industryFinanceEntropy | 0.019252 | computed | Issue/industry diversity of campaign money. |
-| `campaign_finance.csv` | outsideSpendingShare | 0.995979 | computed | Share of campaign money marked independent expenditure. |
+| `campaign_finance.csv` | missing | --- | missing | Add campaign-finance rows to compute private-spending concentration and outside-spending share. |
 | `court_review.csv` | missing | --- | missing | Add constitutional-court review rows to compute emergency-order and invalidation rates. |
+| `rulemaking_implementation.csv` | missing | --- | missing | Add Federal Register/Unified Agenda/Regulations.gov-style rows to compute implementation delay and failure risk. |
+| `law_revision_history.csv` | missing | --- | missing | Add law-lineage rows to compute amendment, reauthorization, repeal, expiration, and invalidation rates. |
 | `comparative_institutions.csv` | missing | --- | missing | Add comparative-institution rows to compute chamber, party-system, and productivity benchmarks. |

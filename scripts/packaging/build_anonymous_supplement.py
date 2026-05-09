@@ -7,6 +7,7 @@ import shutil
 import sys
 import zipfile
 import re
+import hashlib
 from pathlib import Path
 
 
@@ -30,19 +31,14 @@ TEXT_SUFFIXES = {
     "",
 }
 
-_FIRST = "Jac" + "ob"
-_LAST = "And" + "erson"
-_LOCAL_USER = "jacob" + "anderson"
-_REPO_USER = "Jacoba" + "1100254352"
-
-BANNED_STRINGS = [
-    _FIRST + " " + _LAST,
-    _FIRST + " D. " + _LAST,
-    _LOCAL_USER,
-    "jacob" + "danderson",
-    _REPO_USER,
-    "github" + ".com/",
-]
+HASHED_BANNED_TERMS = (
+    (14, "f10f60a1f978030d3278bf2c22865cda980beb926d1d0c97c3e9c85ba9252238"),
+    (17, "5d394ce4d14ef833bb98c1b71d7261b96298e805ff4319d9790119fe54c67994"),
+    (13, "ca035de7d1f1c65ceb1493c7147ed1f0eeba3311af52e339a1913816879ffc43"),
+    (14, "ef4fab81da95ac04aba973ee1192997ad0296a18b20c8153b68975969ae6de7d"),
+    (16, "5a170c01d6f4f68b0b95ac4be9c138d40a104975671b607a50d42a6409e11aa0"),
+    (11, "7510bdd3e5310ec7655ac4895dc39b099b1c2f6f337abd455d73043119daf8a8"),
+)
 BANNED_REGEXES = [
     re.compile(r"/Users/[A-Za-z0-9._-]+"),
 ]
@@ -79,6 +75,7 @@ def copy_reports() -> None:
         "paper-findings-validation.*",
         "all-scenarios-baseline.*",
         "family-champions.*",
+        "representative-vs-family-champions.*",
         "ablation-analysis-summary.*",
         "manipulation-stress-summary.*",
         "empirical-bridge.*",
@@ -114,10 +111,11 @@ def write_readme() -> None:
         "make empirical-validation\n"
         "make paper\n"
         "```\n\n"
-        "The main evidence artifact is `reports/simulation-campaign-v21-paper.csv`. "
+        "The main evidence artifact is the generated main comparison campaign under `reports/`. "
         "Calibration screening output is in `reports/calibration-baseline.csv`, the "
         "generated findings audit is in `reports/paper-findings-validation.md`, and the "
         "supplemental breadth-catalog screen is in `reports/family-champions.md`, "
+        "representative selection audit is in `reports/representative-vs-family-champions.md`, "
         "scenario-selection rationale is in `reports/scenario-selection-manifest.md`, "
         "and the chamber-structure supplement is in `reports/chamber-family-champions.md`.\n"
     )
@@ -130,6 +128,19 @@ def copy_files() -> None:
             shutil.copy2(source, PACKAGE_DIR / file_name)
 
 
+def contains_hashed_banned_term(text: str) -> tuple[int, str] | None:
+    normalized = text.lower()
+    for length, expected_hash in HASHED_BANNED_TERMS:
+        if len(normalized) < length:
+            continue
+        for index in range(0, len(normalized) - length + 1):
+            candidate = normalized[index:index + length]
+            digest = hashlib.sha256(candidate.encode()).hexdigest()
+            if digest == expected_hash:
+                return length, expected_hash[:12]
+    return None
+
+
 def scan_identity() -> list[str]:
     failures: list[str] = []
     for path in PACKAGE_DIR.rglob("*"):
@@ -139,9 +150,13 @@ def scan_identity() -> list[str]:
             text = path.read_text(errors="ignore")
         except UnicodeDecodeError:
             continue
-        for banned in BANNED_STRINGS:
-            if banned.lower() in text.lower():
-                failures.append(f"{path.relative_to(PACKAGE_DIR)} contains {banned!r}")
+        hashed_match = contains_hashed_banned_term(text)
+        if hashed_match:
+            length, digest_prefix = hashed_match
+            failures.append(
+                f"{path.relative_to(PACKAGE_DIR)} contains hashed banned identity term "
+                f"(length={length}, hash={digest_prefix}...)"
+            )
         for pattern in BANNED_REGEXES:
             if pattern.search(text):
                 failures.append(f"{path.relative_to(PACKAGE_DIR)} matches {pattern.pattern!r}")

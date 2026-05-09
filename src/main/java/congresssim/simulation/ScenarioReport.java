@@ -174,7 +174,36 @@ public record ScenarioReport(
             "emergencyOrderExpirationRate",
             "signedOpinionDisclosureRate",
             "constitutionalInvalidationRate",
-            "courtReviewPressure"
+            "courtReviewPressure",
+            "citizenAgendaPetitionRate",
+            "petitionMandateStrength",
+            "petitionCaptureDistortion",
+            "costlyPublicMandateSignal",
+            "cheapSignalDistortion",
+            "publicMandateIntensity",
+            "openCalendarRate",
+            "calendarDelayCost",
+            "amendmentOpenness",
+            "floorSchedulingDelay",
+            "closedRuleRate",
+            "openRuleRate",
+            "dischargeBackstopUse",
+            "statusQuoFallbackPressure",
+            "leadershipSchedulingBias",
+            "rulesCommitteeCaptureIndex",
+            "amendmentOverload",
+            "poisonPillRate",
+            "proposerAdvantageReduction",
+            "publicMandateImprovementAfterAmendment",
+            "affectedHarmReductionByAmendment",
+            "amendmentRoundUse",
+            "implementationDelay",
+            "implementationCapacity",
+            "implementationFailureRisk",
+            "nonEnforcementRisk",
+            "underfundingRisk",
+            "renewalLobbyPressure",
+            "sunsetBeforeImplementationRate"
     );
 
     public ScenarioReport {
@@ -187,11 +216,40 @@ public record ScenarioReport(
 
     public double representativeQualityScore() {
         return MetricDefinition.average(
+                enactedPolicyQualityScore(),
+                policyYieldScore(),
+                publicMandateLegitimacyScore()
+        );
+    }
+
+    public double enactedPolicyQualityScore() {
+        return MetricDefinition.average(
                 averagePublicBenefit,
                 averageEnactedSupport,
                 compromiseScore,
                 publicAlignmentScore,
                 legitimacyScore
+        );
+    }
+
+    public double policyYieldScore() {
+        return MetricDefinition.higherIsBetter(welfarePerSubmittedBill);
+    }
+
+    public double blockageRelianceRate() {
+        return MetricDefinition.average(
+                accessDenialRate,
+                committeeRejectionRate,
+                Math.max(0.0, 1.0 - floorConsiderationRate)
+        );
+    }
+
+    public double publicMandateLegitimacyScore() {
+        return MetricDefinition.average(
+                averageEnactedSupport,
+                publicAlignmentScore,
+                legitimacyScore,
+                MetricDefinition.lowerIsBetter(weakPublicMandatePassageRate)
         );
     }
 

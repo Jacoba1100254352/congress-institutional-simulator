@@ -15,6 +15,7 @@ OUT_MD = Path("reports/empirical-bridge.md")
 BRIDGE = [
     ("Bill attrition", "bill_progression.csv", "enactmentRate", "current-system-enactment-rate"),
     ("Floor consideration", "bill_progression.csv", "floorLoad", "current-system-floor-load"),
+    ("Committee reporting from bill actions", "bill_progression.csv", "committeeReportRate", "current-system-floor-load"),
     ("Roll-call coalition size", "voteview_rollcalls.csv", "coalitionSize", "party-unity-support-band"),
     ("Party unity", "voteview_rollcalls.csv", "partyUnity", "party-unity-support-band"),
     ("Sponsor success concentration", "sponsor_success.csv", "sponsorSuccessGini", "sponsor-success-concentration"),

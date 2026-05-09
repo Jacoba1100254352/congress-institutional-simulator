@@ -6,6 +6,7 @@ from __future__ import annotations
 import csv
 import math
 from collections import Counter, defaultdict
+from datetime import date
 from pathlib import Path
 
 
@@ -28,6 +29,21 @@ def numeric(value: str, default: float = 0.0) -> float:
 
 def truthy(value: str) -> bool:
     return value.strip().lower() in {"1", "true", "t", "yes", "y", "passed", "enacted"}
+
+
+def parse_date(value: str) -> date | None:
+    try:
+        return date.fromisoformat(value.strip()[:10])
+    except (TypeError, ValueError):
+        return None
+
+
+def days_between(start: str, end: str) -> float | None:
+    start_date = parse_date(start)
+    end_date = parse_date(end)
+    if start_date is None or end_date is None:
+        return None
+    return max(0, (end_date - start_date).days)
 
 
 def mean(values: list[float]) -> float:
@@ -250,6 +266,64 @@ def validate_court_review(results: list[dict[str, str]]) -> None:
     append(results, path.name, "meanVoteMargin", mean(margins), "Mean vote margin or coalition margin in court review.")
 
 
+def validate_rulemaking_implementation(results: list[dict[str, str]]) -> None:
+    path = RAW_DIR / "rulemaking_implementation.csv"
+    if not path.exists():
+        append_missing(results, path.name, "Add Federal Register/Unified Agenda/Regulations.gov-style rows to compute implementation delay and failure risk.")
+        return
+    data = rows(path)
+    proposed_to_final = [
+        value for value in (
+            days_between(row.get("proposed_rule_date", ""), row.get("final_rule_date", ""))
+            for row in data
+        )
+        if value is not None
+    ]
+    final_to_effective = [
+        value for value in (
+            days_between(row.get("final_rule_date", ""), row.get("effective_date", ""))
+            for row in data
+        )
+        if value is not None
+    ]
+    comments = [numeric(row.get("comment_count", "")) for row in data]
+    capacities = [numeric(row.get("enforcement_capacity", "")) for row in data]
+    nonenforced = sum(1 for row in data if truthy(row.get("nonenforced", "")))
+    underfunded = sum(1 for row in data if truthy(row.get("underfunded", "")))
+    total = len(data)
+    append(results, path.name, "meanProposedToFinalDays", mean(proposed_to_final), "Mean days between proposed and final rule where dates are available.")
+    append(results, path.name, "meanFinalToEffectiveDays", mean(final_to_effective), "Mean days between final rule and effective date where dates are available.")
+    append(results, path.name, "meanCommentCount", mean(comments), "Mean public-comment volume by implementation row.")
+    append(results, path.name, "meanEnforcementCapacity", mean(capacities), "Mean encoded implementation or enforcement capacity.")
+    append(results, path.name, "nonEnforcementShare", nonenforced / total if total else 0.0, "Share of implementation rows marked nonenforced.")
+    append(results, path.name, "underfundedShare", underfunded / total if total else 0.0, "Share of implementation rows marked underfunded.")
+
+
+def validate_law_revision_history(results: list[dict[str, str]]) -> None:
+    path = RAW_DIR / "law_revision_history.csv"
+    if not path.exists():
+        append_missing(results, path.name, "Add law-lineage rows to compute amendment, reauthorization, repeal, expiration, and invalidation rates.")
+        return
+    data = rows(path)
+    total = len(data)
+    amended = sum(1 for row in data if truthy(row.get("amended", "")))
+    reauthorized = sum(1 for row in data if truthy(row.get("reauthorized", "")))
+    repealed = sum(1 for row in data if truthy(row.get("repealed", "")))
+    expired = sum(1 for row in data if truthy(row.get("expired", "")))
+    invalidated = sum(1 for row in data if truthy(row.get("invalidated", "")))
+    correction = sum(
+        1
+        for row in data
+        if any(truthy(row.get(column, "")) for column in ("amended", "reauthorized", "repealed", "expired", "invalidated"))
+    )
+    append(results, path.name, "lawAmendmentRate", amended / total if total else 0.0, "Share of tracked laws later amended.")
+    append(results, path.name, "reauthorizationRate", reauthorized / total if total else 0.0, "Share of tracked laws later reauthorized.")
+    append(results, path.name, "repealRate", repealed / total if total else 0.0, "Share of tracked laws later repealed.")
+    append(results, path.name, "expirationRate", expired / total if total else 0.0, "Share of tracked laws that expired.")
+    append(results, path.name, "postEnactmentInvalidationRate", invalidated / total if total else 0.0, "Share of tracked laws later invalidated.")
+    append(results, path.name, "postEnactmentCorrectionRate", correction / total if total else 0.0, "Share of tracked laws with any post-enactment correction event.")
+
+
 def validate_comparative_institutions(results: list[dict[str, str]]) -> None:
     path = RAW_DIR / "comparative_institutions.csv"
     if not path.exists():
@@ -278,7 +352,7 @@ def write_reports(results: list[dict[str, str]]) -> None:
     lines = [
         "# Empirical Validation Summary",
         "",
-        "This report computes validation summaries when optional raw datasets are present under `data/validation/raw/`. Missing rows indicate absent local data, not a simulator failure.",
+        "This report computes validation summaries when optional raw datasets are present under `data/validation/raw/`. Missing rows indicate absent local data, not a simulator failure. Adapter fixtures under `data/validation/fixtures/` are ignored because they test parser shape rather than empirical fit.",
         "",
         "| Dataset | Metric | Value | Status | Note |",
         "| --- | --- | ---: | --- | --- |",
@@ -300,6 +374,8 @@ def main() -> int:
     validate_committee_activity(results)
     validate_campaign_finance(results)
     validate_court_review(results)
+    validate_rulemaking_implementation(results)
+    validate_law_revision_history(results)
     validate_comparative_institutions(results)
     write_reports(results)
     print(f"Wrote {REPORT_CSV}")

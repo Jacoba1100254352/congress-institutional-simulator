@@ -9,6 +9,7 @@ from pathlib import Path
 
 
 RAW_DIR = Path("data/validation/raw")
+FIXTURE_DIR = Path("data/validation/fixtures")
 REPORT = Path("reports/empirical-validation-readiness.md")
 
 
@@ -66,6 +67,16 @@ DATASETS = [
         ("case_id", "issue", "emergency_order", "invalidated", "vote_margin", "signed_opinion"),
     ),
     DatasetSpec(
+        "rulemaking_implementation.csv",
+        "post-enactment implementation delay, enforcement capacity, comment, and nonenforcement checks",
+        ("law_id", "proposed_rule_date", "final_rule_date", "effective_date", "comment_count", "enforcement_capacity", "nonenforced", "underfunded"),
+    ),
+    DatasetSpec(
+        "law_revision_history.csv",
+        "post-enactment amendment, reauthorization, repeal, expiration, and invalidation checks",
+        ("law_id", "enacted_date", "amended", "reauthorized", "repealed", "expired", "invalidated"),
+    ),
+    DatasetSpec(
         "comparative_institutions.csv",
         "cross-national chamber, court, party-system, and productivity checks",
         ("country", "year", "chambers", "district_magnitude", "judicial_review", "party_fragmentation", "legislative_productivity"),
@@ -88,7 +99,7 @@ def main() -> int:
     lines = [
         "# Empirical Validation Readiness",
         "",
-        "This report checks whether optional raw empirical inputs are present and shaped for future validation. It is a readiness check, not a validation result.",
+        "This report checks whether optional raw empirical inputs are present and shaped for future validation. It is a readiness check, not a validation result. Adapter fixtures under `data/validation/fixtures/` are intentionally ignored.",
         "",
         "| Dataset | Purpose | Status | Missing columns |",
         "| --- | --- | --- | --- |",
@@ -109,12 +120,14 @@ def main() -> int:
             complete += 1
             lines.append(f"| `{spec.file_name}` | {spec.purpose} | ready | none |")
 
+    fixture_count = len([path for path in FIXTURE_DIR.glob("*.csv") if path.is_file()]) if FIXTURE_DIR.exists() else 0
     lines.extend([
         "",
         f"- Files present: {present} / {len(DATASETS)}",
         f"- Files with required columns: {complete} / {len(DATASETS)}",
+        f"- Adapter fixture CSVs ignored: {fixture_count}",
         "",
-        "Next empirical step: add curated raw files and document source-specific transformations. The adapters now cover roll calls, bill progress, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, and comparative institutions.",
+        "Next empirical step: add curated raw files and document source-specific transformations. The adapters now cover roll calls, bill progress, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
     ])
     REPORT.write_text("\n".join(lines) + "\n")
     print(f"Wrote {REPORT}")

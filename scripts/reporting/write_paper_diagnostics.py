@@ -70,6 +70,25 @@ def short(value: str) -> str:
     return SHORT_LABELS.get(value, value)
 
 
+def compact_status(value: str) -> str:
+    if value == "raw summary available":
+        return "ready"
+    if value == "needs raw dataset":
+        return "missing raw"
+    if value == "missing calibration target":
+        return "no proxy"
+    return value
+
+
+def compact_value(value: str) -> str:
+    if not value:
+        return "---"
+    try:
+        return f"{float(value):.3f}"
+    except ValueError:
+        return value
+
+
 def write_mechanism_table() -> None:
     ablations = [
         row for row in read(ABLATION)
@@ -137,19 +156,24 @@ def write_bridge_table() -> None:
         "  \\label{tab:empirical-bridge}",
         "  \\Description{A generated table mapping desired empirical validation signals to optional raw inputs and simulator proxies.}",
         "  \\scriptsize",
-        "  \\begin{tabular}{lll}",
+        "  \\setlength{\\tabcolsep}{2.6pt}",
+        "  \\resizebox{\\linewidth}{!}{%",
+        "  \\begin{tabular}{llll}",
         "    \\toprule",
-        "    Signal & Simulator proxy & Status \\\\",
+        "    Signal & Raw & Simulator proxy & Status \\\\",
         "    \\midrule",
     ]
     for row in rows[:6]:
         proxy = f"{row['simulatorScenario']}/{row['simulatorMetric']}" if row["simulatorScenario"] else "---"
+        raw_value = compact_value(row["rawValue"])
+        raw = f"{row['rawMetric']}={raw_value}"
         lines.append(
-            f"    {tex(row['signal'])} & {tex(proxy)} & {tex(row['bridgeStatus'])} \\\\"
+            f"    {tex(row['signal'])} & {tex(raw)} & {tex(proxy)} & {tex(compact_status(row['bridgeStatus']))} \\\\"
         )
     lines.extend([
         "    \\bottomrule",
         "  \\end{tabular}",
+        "  }",
         "\\end{table}",
     ])
     OUT_BRIDGE.write_text("\n".join(lines) + "\n")

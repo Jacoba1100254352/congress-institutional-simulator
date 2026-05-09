@@ -12,6 +12,7 @@ import congresssim.util.Values;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public final class LawRegistryProcess implements LegislativeProcess {
     private final String name;
@@ -55,14 +56,35 @@ public final class LawRegistryProcess implements LegislativeProcess {
         round++;
         BillOutcome outcome = innerProcess.consider(bill, context);
         if (outcome.enacted() && AdaptiveTrackProcess.riskScore(outcome.bill(), context) >= provisionalRiskThreshold) {
+            ImplementationState implementation = implementationState(outcome.bill(), context);
             laws.add(new LawRecord(
                     outcome.bill(),
                     outcome.statusQuoBefore(),
                     outcome.statusQuoAfter(),
                     round,
+                    round + implementation.delayRounds(),
                     round + reviewDelayRounds,
+                    implementation.capacity(),
+                    implementation.underfunded(),
+                    implementation.nonenforced(),
+                    implementation.stayed(),
+                    implementation.renewalLobbyPressure(),
                     true
             ));
+            outcome = outcome.withSignals(OutcomeSignals.diagnostics(Map.of(
+                    "implementationDelay",
+                    (double) implementation.delayRounds(),
+                    "implementationCapacity",
+                    implementation.capacity(),
+                    "implementationFailureRisk",
+                    implementation.failureRisk(),
+                    "nonEnforcementRisk",
+                    implementation.nonenforced() ? 1.0 : 0.0,
+                    "underfundingRisk",
+                    implementation.underfunded() ? 1.0 : 0.0,
+                    "renewalLobbyPressure",
+                    implementation.renewalLobbyPressure()
+            )));
         }
         return reviewDueLaws(outcome, context);
     }
@@ -79,7 +101,18 @@ public final class LawRegistryProcess implements LegislativeProcess {
                 continue;
             }
 
-            double reviewScore = reviewScore(law.sourceBill(), context);
+            if (law.effectiveRound() > round) {
+                updated.add(law.withReviewDueRound(law.effectiveRound() + Math.max(1, reviewDelayRounds / 2)));
+                signals = signals.plus(OutcomeSignals.diagnostics(Map.of(
+                        "sunsetBeforeImplementationRate",
+                        1.0,
+                        "implementationDelay",
+                        (double) Math.max(0, law.effectiveRound() - law.enactedRound())
+                )));
+                continue;
+            }
+
+            double reviewScore = reviewScore(law, context);
             boolean renewed = reviewScore >= renewalThreshold;
             boolean reversed = !renewed;
             if (reversed) {
@@ -92,7 +125,13 @@ public final class LawRegistryProcess implements LegislativeProcess {
                         law.previousStatusQuo(),
                         law.enactedPosition(),
                         law.enactedRound(),
+                        law.effectiveRound(),
                         round + reviewDelayRounds,
+                        law.implementationCapacity(),
+                        law.underfunded(),
+                        law.nonenforced(),
+                        law.stayed(),
+                        law.renewalLobbyPressure(),
                         true
                 ));
             }
@@ -102,7 +141,18 @@ public final class LawRegistryProcess implements LegislativeProcess {
                     activeLawWelfare(updated),
                     lowSupportActiveLawShare(updated),
                     round - law.enactedRound()
-            ));
+            )).plus(OutcomeSignals.diagnostics(Map.of(
+                    "implementationCapacity",
+                    law.implementationCapacity(),
+                    "implementationFailureRisk",
+                    implementationFailureRisk(law),
+                    "nonEnforcementRisk",
+                    law.nonenforced() ? 1.0 : 0.0,
+                    "underfundingRisk",
+                    law.underfunded() ? 1.0 : 0.0,
+                    "renewalLobbyPressure",
+                    law.renewalLobbyPressure()
+            )));
         }
 
         laws.clear();
@@ -130,15 +180,78 @@ public final class LawRegistryProcess implements LegislativeProcess {
         return currentStatusQuo - (rollbackRate * enactedShift);
     }
 
-    private static double reviewScore(Bill bill, VoteContext context) {
+    private static double reviewScore(LawRecord law, VoteContext context) {
+        Bill bill = law.sourceBill();
         double risk = AdaptiveTrackProcess.riskScore(bill, context);
         double harmPenalty = AffectedGroupScoring.minorityHarm(bill) * 0.18;
+        double implementationPenalty = (0.16 * (1.0 - law.implementationCapacity()))
+                + (law.underfunded() ? 0.08 : 0.0)
+                + (law.nonenforced() ? 0.12 : 0.0)
+                + (law.stayed() ? 0.10 : 0.0);
+        double renewalPressureBias = 0.08 * law.renewalLobbyPressure();
         return Values.clamp(
                 (0.42 * bill.publicBenefit())
                         + (0.30 * bill.publicSupport())
                         + (0.16 * bill.affectedGroupSupport())
                         + (0.12 * (1.0 - risk))
-                        - harmPenalty,
+                        + renewalPressureBias
+                        - harmPenalty
+                        - implementationPenalty,
+                0.0,
+                1.0
+        );
+    }
+
+    private ImplementationState implementationState(Bill bill, VoteContext context) {
+        double gaussian = context.random().nextGaussian();
+        int delayRounds = Math.max(1, (int) Math.round(
+                1.0
+                        + (reviewDelayRounds * (0.35 + (0.85 * bill.publicBenefitUncertainty())))
+                        + (Math.max(0.0, bill.litigationThreatSpend()) * 0.08)
+                        + gaussian
+        ));
+        double capacity = Values.clamp(
+                0.58
+                        + (0.18 * bill.publicBenefit())
+                        + (0.14 * bill.publicSupport())
+                        - (0.24 * bill.publicBenefitUncertainty())
+                        - (0.12 * AffectedGroupScoring.minorityHarm(bill))
+                        - (0.06 * bill.litigationThreatSpend() / 10.0)
+                        + (context.random().nextGaussian() * 0.04),
+                0.0,
+                1.0
+        );
+        boolean underfunded = capacity < 0.48
+                || (bill.publicBenefitUncertainty() > 0.62 && bill.publicSupport() < 0.56);
+        boolean nonenforced = capacity < 0.34
+                || (bill.lobbyPressure() > 0.55 && bill.publicBenefit() < 0.46);
+        boolean stayed = bill.litigationThreatSpend() > 1.80
+                || (AffectedGroupScoring.minorityHarm(bill) > 0.62 && bill.publicBenefitUncertainty() > 0.48);
+        double renewalLobbyPressure = Values.clamp(
+                (0.36 * Math.max(0.0, bill.privateGain() - bill.publicBenefit()))
+                        + (0.24 * Math.max(0.0, bill.lobbyPressure()))
+                        + (0.16 * bill.defensiveLobbySpend() / 10.0)
+                        + (0.14 * bill.agendaLobbySpend() / 10.0)
+                        + (0.10 * bill.litigationThreatSpend() / 10.0),
+                0.0,
+                1.0
+        );
+        return new ImplementationState(
+                delayRounds,
+                capacity,
+                underfunded,
+                nonenforced,
+                stayed,
+                renewalLobbyPressure
+        );
+    }
+
+    private static double implementationFailureRisk(LawRecord law) {
+        return Values.clamp(
+                (0.45 * (1.0 - law.implementationCapacity()))
+                        + (law.underfunded() ? 0.18 : 0.0)
+                        + (law.nonenforced() ? 0.24 : 0.0)
+                        + (law.stayed() ? 0.13 : 0.0),
                 0.0,
                 1.0
         );
@@ -170,5 +283,25 @@ public final class LawRegistryProcess implements LegislativeProcess {
             }
         }
         return count == 0 ? 0.0 : (double) lowSupport / count;
+    }
+
+    private record ImplementationState(
+            int delayRounds,
+            double capacity,
+            boolean underfunded,
+            boolean nonenforced,
+            boolean stayed,
+            double renewalLobbyPressure
+    ) {
+        double failureRisk() {
+            return Values.clamp(
+                    (0.45 * (1.0 - capacity))
+                            + (underfunded ? 0.18 : 0.0)
+                            + (nonenforced ? 0.24 : 0.0)
+                            + (stayed ? 0.13 : 0.0),
+                    0.0,
+                    1.0
+            );
+        }
     }
 }

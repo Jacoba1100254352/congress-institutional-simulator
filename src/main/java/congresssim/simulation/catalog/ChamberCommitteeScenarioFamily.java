@@ -315,6 +315,10 @@ final class ChamberCommitteeScenarioFamily {
                 "Majority + minority-veto committee seat",
                 CommitteeComposition.MINORITY_VETO_HIGH_RISK
                 )),
+                new ScenarioEntry("proportional-committee-assignment-majority", majorityWithCommitteeComposition(
+                "Majority + proportional committee assignment",
+                CommitteeComposition.PROPORTIONAL_PARTY
+                )),
                 new ScenarioEntry("mixed-citizen-committee-majority", majorityWithConfiguredCommittee(
                 "Majority + mixed legislator-citizen committee",
                 new CommitteeSelectionConfig(

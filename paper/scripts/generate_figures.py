@@ -12,25 +12,33 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PAPER_CSV_PATH = ROOT / "reports" / "simulation-campaign-v21-paper.csv"
 SEED_ROBUSTNESS_CSV_PATH = ROOT / "reports" / "seed-robustness-summary.csv"
+FAMILY_SCREEN_CSV_PATH = ROOT / "reports" / "all-scenarios-baseline.csv"
 FIGURE_DIR = ROOT / "paper" / "figures"
 REPORT_DIR = ROOT / "reports"
 CURRENT_SYSTEM_KEY = "current-system"
 TABLE_SCENARIOS = [
     (CURRENT_SYSTEM_KEY, "CUR"),
+    ("current-congress-workflow", "FLOW"),
     ("simple-majority", "SM"),
     ("supermajority-60", "S60"),
     ("bicameral-majority", "BIC"),
     ("presidential-veto", "VETO"),
     ("leadership-cartel-majority", "LEAD"),
     ("committee-regular-order", "COMM"),
+    ("proportional-committee-assignment-majority", "PCOM"),
+    ("committee-discharge-target-majority", "DIS"),
     ("cloture-conference-review", "PROC"),
     ("constitutional-court-architecture-majority", "COURT"),
     ("parliamentary-coalition-confidence", "PARL"),
     ("citizen-initiative-referendum", "INIT"),
+    ("citizens-agenda-petition-majority", "PET"),
     ("district-population-majority", "DIST"),
     ("simple-majority-alternatives-pairwise", "PAIR"),
+    ("pairwise-amendment-tournament-majority", "AMT"),
     ("citizen-assembly-threshold", "JURY"),
+    ("random-public-review-panel-majority", "RPAN"),
     ("public-interest-majority", "SCR"),
+    ("open-rule-calendar-majority", "OPEN"),
     ("agenda-lottery-majority", "LOT"),
     ("quadratic-attention-majority", "QAB"),
     ("proposal-bond-majority", "BOND"),
@@ -42,6 +50,7 @@ TABLE_SCENARIOS = [
     ("law-registry-majority", "LAW"),
     ("public-objection-majority", "OBJ"),
     ("anti-capture-majority-bundle", "CAP"),
+    ("anti-capture-access-majority", "ACG"),
     ("influence-system-majority", "INFL"),
     ("risk-routed-majority", "RISK"),
     ("portfolio-hybrid-legislature", "PORT"),
@@ -54,17 +63,25 @@ TABLE_SCENARIOS = [
 ]
 MAIN_TABLE_SCENARIOS = [
     (CURRENT_SYSTEM_KEY, "CUR"),
+    ("current-congress-workflow", "FLOW"),
     ("simple-majority", "SM"),
     ("committee-regular-order", "COMM"),
+    ("proportional-committee-assignment-majority", "PCOM"),
+    ("committee-discharge-target-majority", "DIS"),
     ("parliamentary-coalition-confidence", "PARL"),
     ("citizen-initiative-referendum", "INIT"),
+    ("citizens-agenda-petition-majority", "PET"),
     ("simple-majority-alternatives-pairwise", "PAIR"),
+    ("pairwise-amendment-tournament-majority", "AMT"),
     ("citizen-assembly-threshold", "JURY"),
+    ("random-public-review-panel-majority", "RPAN"),
+    ("open-rule-calendar-majority", "OPEN"),
     ("quadratic-attention-majority", "QAB"),
     ("proposal-bond-majority", "BOND"),
     ("harm-weighted-majority", "HARM"),
     ("multidimensional-package-majority", "MPKG"),
     ("anti-capture-majority-bundle", "CAP"),
+    ("anti-capture-access-majority", "ACG"),
     ("risk-routed-majority", "RISK"),
     ("portfolio-hybrid-legislature", "PORT"),
     ("expanded-portfolio-hybrid-legislature", "XPORT"),
@@ -73,10 +90,42 @@ MAIN_TABLE_SCENARIOS = [
     ("default-pass-multiround-mediation-challenge", "DPM"),
 ]
 MAIN_SCENARIO_KEYS = {key for key, _label in MAIN_TABLE_SCENARIOS}
+COMPACT_SCENARIO_NAMES = {
+    CURRENT_SYSTEM_KEY: "Stylized U.S.-like benchmark",
+    "current-congress-workflow": "Current workflow model",
+    "simple-majority": "Simple majority",
+    "committee-regular-order": "Committee regular order",
+    "proportional-committee-assignment-majority": "Proportional committees",
+    "committee-discharge-target-majority": "Discharge petition",
+    "parliamentary-coalition-confidence": "Parliamentary coalition",
+    "citizen-initiative-referendum": "Citizen initiative",
+    "citizens-agenda-petition-majority": "Citizen agenda petition",
+    "simple-majority-alternatives-pairwise": "Pairwise alternatives",
+    "pairwise-amendment-tournament-majority": "Amendment tournament",
+    "citizen-assembly-threshold": "Citizen jury gate",
+    "random-public-review-panel-majority": "Random public panel",
+    "open-rule-calendar-majority": "Open floor calendar",
+    "quadratic-attention-majority": "Attention budget",
+    "proposal-bond-majority": "Proposal bond",
+    "harm-weighted-majority": "Harm-weighted majority",
+    "multidimensional-package-majority": "Package bargaining",
+    "anti-capture-majority-bundle": "Anti-capture bundle",
+    "anti-capture-access-majority": "Anti-capture access",
+    "risk-routed-majority": "Risk-routed majority",
+    "portfolio-hybrid-legislature": "Portfolio hybrid",
+    "expanded-portfolio-hybrid-legislature": "Expanded portfolio",
+    "law-registry-majority": "Law registry",
+    "default-pass": "Default enactment",
+    "default-pass-multiround-mediation-challenge": "Default + mediation",
+}
 SELECTION_RATIONALES = {
     CURRENT_SYSTEM_KEY: (
         "Conventional benchmark",
         "Stylized U.S.-like conventional benchmark used as the red baseline; included for comparison, not as a calibrated model of Congress.",
+    ),
+    "current-congress-workflow": (
+        "Agenda-control benchmark",
+        "Adds leadership access, committee queueing, floor-rule scheduling, conference, veto, and judicial-review layers to the conventional benchmark.",
     ),
     "simple-majority": (
         "Conventional threshold",
@@ -102,6 +151,14 @@ SELECTION_RATIONALES = {
         "Committee gate",
         "Represents committee-first screening before floor consideration.",
     ),
+    "proportional-committee-assignment-majority": (
+        "Committee assignment",
+        "Represents party-proportional committee assignment rather than leadership-stacked committee selection.",
+    ),
+    "committee-discharge-target-majority": (
+        "Committee bypass",
+        "Represents discharge-petition reform as a backstop against committee burial.",
+    ),
     "cloture-conference-review": (
         "Procedural legislature",
         "Represents cloture-like delay, conference revision, and post-passage review.",
@@ -118,6 +175,10 @@ SELECTION_RATIONALES = {
         "Direct democracy",
         "Represents a non-legislator proposal/ratification channel.",
     ),
+    "citizens-agenda-petition-majority": (
+        "Public agenda access",
+        "Represents citizen petition pressure forcing agenda access without replacing legislative final passage.",
+    ),
     "district-population-majority": (
         "Public representation",
         "Represents district-public signals and population-alignment pressure.",
@@ -126,13 +187,25 @@ SELECTION_RATIONALES = {
         "Policy tournament",
         "Main alternative-selection representative; tests agenda manipulation by comparing multiple substitutes before final ratification.",
     ),
+    "pairwise-amendment-tournament-majority": (
+        "Amendment control",
+        "Represents pairwise selection among amended versions before final legislative ratification.",
+    ),
     "citizen-assembly-threshold": (
         "Mini-public review",
         "Represents citizen-panel certification changing the burden of proof.",
     ),
+    "random-public-review-panel-majority": (
+        "Mini-public review",
+        "Represents a smaller, noisier public review panel as a realism stress variant.",
+    ),
     "public-interest-majority": (
         "Public-interest screening",
         "Represents a welfare/support screen without default enactment.",
+    ),
+    "open-rule-calendar-majority": (
+        "Open floor calendar",
+        "Represents a default-open floor calendar with abusive-access screening and high-risk amendment routing.",
     ),
     "agenda-lottery-majority": (
         "Agenda allocation",
@@ -177,6 +250,10 @@ SELECTION_RATIONALES = {
     "anti-capture-majority-bundle": (
         "Anti-capture",
         "Main anti-lobbying representative; combines transparency, public advocate, audit, and access screen safeguards.",
+    ),
+    "anti-capture-access-majority": (
+        "Anti-capture access",
+        "Represents proposal-access firewalls and audits targeted specifically at pre-floor capture.",
     ),
     "influence-system-majority": (
         "Influence system",
@@ -295,12 +372,29 @@ def mean(values: list[float]) -> float:
 
 
 def add_directional_scores(values: dict[str, float]) -> None:
-    representative_quality = mean([
+    enacted_policy_quality = values.get("enactedPolicyQuality", mean([
         clamp01(values.get("welfare", 0.0)),
         clamp01(values.get("avgSupport", 0.0)),
         clamp01(values.get("compromise", 0.0)),
         clamp01(values.get("publicAlignment", 0.0)),
         clamp01(values.get("legitimacy", 0.0)),
+    ]))
+    policy_yield = values.get("policyYield", clamp01(values.get("welfarePerSubmittedBill", 0.0)))
+    blockage_reliance = values.get("blockageReliance", mean([
+        clamp01(values.get("accessDenied", 0.0)),
+        clamp01(values.get("committeeRejected", 0.0)),
+        inverse01(values.get("floor", 0.0)),
+    ]))
+    public_mandate_legitimacy = values.get("publicMandateLegitimacy", mean([
+        clamp01(values.get("avgSupport", 0.0)),
+        clamp01(values.get("publicAlignment", 0.0)),
+        clamp01(values.get("legitimacy", 0.0)),
+        inverse01(values.get("weakPublicMandatePassage", 0.0)),
+    ]))
+    representative_quality = mean([
+        enacted_policy_quality,
+        policy_yield,
+        public_mandate_legitimacy,
     ])
     risk_control = mean([
         inverse01(values.get("lowSupport", 0.0)),
@@ -313,6 +407,10 @@ def add_directional_scores(values: dict[str, float]) -> None:
         inverse_range(values.get("policyShift", 0.0)),
     ])
     administrative_feasibility = inverse01(values.get("administrativeCost", 0.0))
+    values["enactedPolicyQuality"] = enacted_policy_quality
+    values["policyYield"] = policy_yield
+    values["blockageReliance"] = blockage_reliance
+    values["publicMandateLegitimacy"] = public_mandate_legitimacy
     values["representativeQuality"] = representative_quality
     values["riskControl"] = risk_control
     values["administrativeFeasibility"] = administrative_feasibility
@@ -429,6 +527,10 @@ def scenario_name(rows: list[dict[str, str]], scenario_key: str) -> str:
     return scenario_key
 
 
+def compact_scenario_name(rows: list[dict[str, str]], scenario_key: str) -> str:
+    return COMPACT_SCENARIO_NAMES.get(scenario_key, scenario_name(rows, scenario_key))
+
+
 def write_scenario_selection_manifest(rows: list[dict[str, str]]) -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     present_keys = {row["scenarioKey"] for row in rows}
@@ -468,6 +570,143 @@ def write_scenario_selection_manifest(rows: list[dict[str, str]]) -> None:
         "",
     ])
     (REPORT_DIR / "scenario-selection-manifest.md").write_text("\n".join(lines))
+
+
+def read_family_screen_rows(path: Path) -> list[dict[str, str]]:
+    if not path.exists():
+        return []
+    with path.open(newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def write_representative_champion_comparison(rows: list[dict[str, str]]) -> None:
+    family_rows = read_family_screen_rows(FAMILY_SCREEN_CSV_PATH)
+    out_tex = FIGURE_DIR / "representative_champion_table.tex"
+    out_csv = REPORT_DIR / "representative-vs-family-champions.csv"
+    out_md = REPORT_DIR / "representative-vs-family-champions.md"
+    if not family_rows:
+        message = "Run `make family-screen` before generating this representative-selection audit."
+        out_tex.write_text(
+            "% Auto-generated by paper/scripts/generate_figures.py\n"
+            "\\begin{table*}\n"
+            "  \\caption{Representative-versus-family-champion selection audit.}\n"
+            "  \\label{tab:representative-family-champions}\n"
+            "  \\Description{Placeholder table for the family-champion selection audit.}\n"
+            f"  \\small {latex_escape(message)}\n"
+            "\\end{table*}\n"
+        )
+        out_md.write_text("# Representative vs. Family Champions\n\n" + message + "\n")
+        return
+
+    by_name = {row["scenario"]: row for row in family_rows}
+    by_family: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for row in family_rows:
+        by_family[row["family"]].append(row)
+
+    comparison_rows: list[dict[str, str]] = []
+    for scenario_key, label in MAIN_TABLE_SCENARIOS:
+        selected_name = scenario_name(rows, scenario_key)
+        selected = by_name.get(selected_name)
+        if selected is None:
+            continue
+        family = selected["family"]
+        champion = max(by_family[family], key=lambda row: float(row["directionalScore"]))
+        selected_score = float(selected["directionalScore"])
+        champion_score = float(champion["directionalScore"])
+        comparison_rows.append({
+            "label": label,
+            "family": family,
+            "representativeScenario": selected_name,
+            "representativeDirectional": f"{selected_score:.6f}",
+            "championScenario": champion["scenario"],
+            "championDirectional": f"{champion_score:.6f}",
+            "directionalGap": f"{selected_score - champion_score:.6f}",
+            "sameAsChampion": "yes" if selected_name == champion["scenario"] else "no",
+        })
+
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
+    with out_csv.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "label",
+                "family",
+                "representativeScenario",
+                "representativeDirectional",
+                "championScenario",
+                "championDirectional",
+                "directionalGap",
+                "sameAsChampion",
+            ],
+            lineterminator="\n",
+        )
+        writer.writeheader()
+        writer.writerows(comparison_rows)
+
+    md_lines = [
+        "# Representative vs. Family Champions",
+        "",
+        "This generated audit compares each main-table representative that also appears in the breadth-catalog screen with the highest directional-score scenario in that screen's family. Scores come from the fixed `make family-screen` baseline, not from the main campaign.",
+        "",
+        "| Label | Family | Representative | Rep. dir. | Family champion | Champ. dir. | Gap | Same? |",
+        "| --- | --- | --- | ---: | --- | ---: | ---: | --- |",
+    ]
+    for row in comparison_rows:
+        md_lines.append(
+            f"| {row['label']} | {row['family']} | {row['representativeScenario']} | "
+            f"{float(row['representativeDirectional']):.3f} | {row['championScenario']} | "
+            f"{float(row['championDirectional']):.3f} | {float(row['directionalGap']):+.3f} | "
+            f"{row['sameAsChampion']} |"
+        )
+    md_lines.extend([
+        "",
+        "Negative gaps are expected when the paper chooses a readable family representative instead of the within-family top scorer. This table exists to make that judgment visible rather than implicit.",
+    ])
+    out_md.write_text("\n".join(md_lines) + "\n")
+
+    notable = [
+        row for row in comparison_rows
+        if row["sameAsChampion"] == "no" and abs(float(row["directionalGap"])) >= 0.010
+    ]
+    if not notable:
+        notable = [row for row in comparison_rows if row["sameAsChampion"] == "no"][:6]
+    lines = [
+        "% Auto-generated by paper/scripts/generate_figures.py",
+        "\\begin{table*}",
+        "  \\caption{Representative-versus-family-champion audit. Scores are from the fixed supplemental family-screen baseline, not the main comparison campaign. Negative gaps show cases where the paper uses a readable representative rather than the within-family top scorer.}",
+        "  \\label{tab:representative-family-champions}",
+        "  \\Description{A generated audit table comparing selected paper representatives with highest-scoring family-screen variants.}",
+        "  \\scriptsize",
+        "  \\resizebox{\\textwidth}{!}{%",
+        "  \\begin{tabular}{lllrrr}",
+        "    \\toprule",
+        "    Label & Family & Family-screen champion & Rep. dir. & Champ. dir. & Gap \\\\",
+        "    \\midrule",
+    ]
+    for row in notable[:12]:
+        lines.append(
+            "    "
+            + latex_escape(row["label"])
+            + " & "
+            + latex_escape(row["family"])
+            + " & "
+            + latex_escape(row["championScenario"])
+            + " & "
+            + f"{float(row['representativeDirectional']):.3f}"
+            + " & "
+            + f"{float(row['championDirectional']):.3f}"
+            + " & "
+            + f"{float(row['directionalGap']):+.3f}"
+            + " \\\\"
+        )
+    lines.extend([
+        "    \\bottomrule",
+        "  \\end{tabular}%",
+        "  }",
+        "\\end{table*}",
+        "",
+    ])
+    out_tex.write_text("\n".join(lines))
 
 
 def pareto_front(
@@ -564,14 +803,14 @@ def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
     lines = [
         "% Auto-generated by paper/scripts/generate_figures.py",
         "\\begin{table*}",
-        "  \\caption{Representative family comparison from the main campaign. Metric entries are mean$\\pm$case half-range across broad and adversarial cases. The full table with directional and seed diagnostics is in the appendix and supplement.}",
+        "  \\caption{Representative family comparison from the main campaign. Entries are mean$\\pm$case half-range; full names and seed diagnostics are in the appendix and supplement.}",
         "  \\label{tab:scenario-averages}",
         "  \\Description{A generated compact table comparing representative institutional families from the main comparison campaign.}",
         "  \\scriptsize",
         "  \\resizebox{\\textwidth}{!}{%",
-        "  \\begin{tabular}{llrrrrr}",
+        "  \\begin{tabular}{llrrrrrrr}",
         "    \\toprule",
-        "    Label & Representative system & Prod. $\\uparrow$ & Comp. $\\uparrow$ & Weak mand. $\\downarrow$ & Risk ctrl. $\\uparrow$ & Admin $\\downarrow$ \\\\",
+        "    Label & Representative system & Prod. $\\uparrow$ & Yield $\\uparrow$ & Comp. $\\uparrow$ & Weak mand. $\\downarrow$ & Block dep. $\\downarrow$ & Risk ctrl. $\\uparrow$ & Admin $\\downarrow$ \\\\",
         "    \\midrule",
     ]
     for scenario_key, label in MAIN_TABLE_SCENARIOS:
@@ -579,12 +818,14 @@ def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
             continue
         cells = [
             table_value(scenario_case_values(rows, scenario_key, "productivity")),
+            table_value(scenario_case_values(rows, scenario_key, "policyYield")),
             table_value(scenario_case_values(rows, scenario_key, "compromise")),
             table_value(scenario_case_values(rows, scenario_key, "weakPublicMandatePassage")),
+            table_value(scenario_case_values(rows, scenario_key, "blockageReliance")),
             table_value(scenario_case_values(rows, scenario_key, "riskControl")),
             table_value(scenario_case_values(rows, scenario_key, "administrativeCost")),
         ]
-        scenario = latex_escape(scenario_name(rows, scenario_key))
+        scenario = latex_escape(compact_scenario_name(rows, scenario_key))
         if scenario_key == CURRENT_SYSTEM_KEY:
             label = f"\\textcolor{{red}}{{\\textbf{{{label}}}}}"
             scenario = f"\\textcolor{{red}}{{\\textbf{{{scenario}}}}}"
@@ -602,7 +843,7 @@ def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "    \\bottomrule",
         "  \\end{tabular}%",
         "  }",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Red marks the stylized U.S.-like conventional benchmark.",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} Yield is welfare per submitted proposal, so systems do not receive the same interpretation for merely blocking most bills. Block dep. is pre-floor blockage reliance. Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Red marks the stylized U.S.-like conventional benchmark.",
         "\\end{table*}",
         "",
     ])
@@ -619,9 +860,9 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "  \\Description{A generated full table comparing all paper scenarios using the main comparison campaign.}",
         "  \\scriptsize",
         "  \\resizebox{\\textwidth}{!}{%",
-        "  \\begin{tabular}{llrrrrrrrr}",
+        "  \\begin{tabular}{llrrrrrrrrrr}",
         "    \\toprule",
-        "    Label & Scenario & Directional $\\uparrow$ & Seed dir. $\\uparrow$ & Prod. $\\uparrow$ & Comp. $\\uparrow$ & Enacted/run & Weak mandate $\\downarrow$ & Admin cost $\\downarrow$ & Risk ctrl. $\\uparrow$ \\\\",
+        "    Label & Scenario & Directional $\\uparrow$ & Seed dir. $\\uparrow$ & Prod. $\\uparrow$ & Yield $\\uparrow$ & Comp. $\\uparrow$ & Enacted/run & Weak mandate $\\downarrow$ & Block dep. $\\downarrow$ & Admin cost $\\downarrow$ & Risk ctrl. $\\uparrow$ \\\\",
         "    \\midrule",
     ]
     for scenario_key, label in TABLE_SCENARIOS:
@@ -631,9 +872,11 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
             table_value(scenario_case_values(rows, scenario_key, "directionalScore")),
             seed_interval_value(seed_intervals, scenario_key),
             table_value(scenario_case_values(rows, scenario_key, "productivity")),
+            table_value(scenario_case_values(rows, scenario_key, "policyYield")),
             table_value(scenario_case_values(rows, scenario_key, "compromise")),
             table_value(scenario_case_values(rows, scenario_key, "enactedPerRun"), 2),
             table_value(scenario_case_values(rows, scenario_key, "weakPublicMandatePassage")),
+            table_value(scenario_case_values(rows, scenario_key, "blockageReliance")),
             table_value(scenario_case_values(rows, scenario_key, "administrativeCost")),
             table_value(scenario_case_values(rows, scenario_key, "riskControl")),
         ]
@@ -655,7 +898,7 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "    \\bottomrule",
         "  \\end{tabular}%",
         "  }",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Directional, productivity, compromise, weak public-mandate passage, administrative cost, and risk-control values are normalized scores or rates. \\emph{Enacted/run} is an absolute institutional-load count.",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Directional, productivity, yield, compromise, weak public-mandate passage, blockage reliance, administrative cost, and risk-control values are normalized scores or rates. \\emph{Enacted/run} is an absolute institutional-load count.",
         "\\end{table*}",
         "",
     ])
@@ -665,19 +908,20 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
 def write_design_space_coverage_table() -> None:
     rows = [
         ("Conventional", "SM S60 BIC VETO CUR", "Thresholds/vetoes", "Bottlenecks"),
-        ("Procedure", "LEAD PROC COMM", "Agenda control", "Queue capture"),
+        ("Procedure", "LEAD PROC COMM DIS", "Agenda control", "Queue capture"),
         ("Courts", "COURT", "Review architecture", "Juridification"),
         ("Public model", "DIST", "District publics", "Proxy opinion"),
-        ("Agenda gates", "SCR LOT", "Screen/lottery", "Gate bias"),
+        ("Agenda gates", "SCR LOT OPEN", "Screen/lottery/calendar", "Gate bias"),
+        ("Committee design", "PCOM", "Proportional assignment", "Committee capture"),
         ("Coalition", "PARL", "Confidence/access", "Bloc cartels"),
-        ("Direct democracy", "INIT", "Initiative path", "Campaign bias"),
-        ("Tournaments", "PAIR", "Alternatives", "Clones/decoys"),
-        ("Mini-public", "JURY", "Citizen burden shift", "Manipulation"),
+        ("Direct democracy", "INIT PET", "Initiative/petition paths", "Campaign bias"),
+        ("Tournaments", "PAIR AMT", "Alternatives/amendments", "Clones/decoys"),
+        ("Mini-public", "JURY RPAN", "Citizen burden shift", "Manipulation"),
         ("Scarcity", "QAB BOND", "Credits/bonds", "Hoarding"),
         ("Harm rules", "HARM COMP", "Minority protection", "Holdouts"),
         ("Bargaining", "PKG MPKG OMNI", "Package trades", "Proxy limits"),
         ("Correction", "LAW OBJ", "Review/objection", "Instability"),
-        ("Anti-capture", "CAP INFL", "Lobby safeguards", "Evasion"),
+        ("Anti-capture", "CAP ACG INFL", "Lobby safeguards", "Evasion"),
         ("Adaptive", "RISK NORM LEARN", "Risk/norm/learning", "Gaming"),
         ("Portfolio", "PORT XPORT", "Mechanism bundle", "Complexity"),
         ("Default stress", "DP DPC DPM", "Burden shift", "False silence"),
@@ -1320,6 +1564,7 @@ def main() -> None:
     write_compact_scenario_averages_table(broad_rows)
     write_full_scenario_averages_table(broad_rows)
     write_scenario_selection_manifest(broad_rows)
+    write_representative_champion_comparison(broad_rows)
     write_pareto_front_table(broad_rows, base_averages)
     write_design_space_coverage_table()
     write_productivity_low_support(base_averages)

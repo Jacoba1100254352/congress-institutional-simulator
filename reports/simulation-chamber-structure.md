@@ -8,7 +8,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 - legislators: 101
 - base bills per run: 60
 - base seed: 20260428
-- scenarios per case: 50
+- scenarios per case: 51
 - experiment cases: 34
 
 ## Case Weights
@@ -56,7 +56,7 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 
 - This focused campaign does not include the open default-pass baseline, so relative headline deltas are reported in the diagnostic sections below.
 - Highest average welfare in this campaign came from Committee amendment and revision power at 0.695.
-- Highest productivity came from Appointment and retention eligibility filter at 0.362, while highest compromise came from Stylized U.S.-like conventional benchmark at 0.364.
+- Highest productivity came from Bicameral malapportioned upper chamber + conference at 0.361, while highest compromise came from Stylized U.S.-like conventional benchmark at 0.364.
 - Highest directional score, where lower-better risk metrics are inverted, came from Appointment and retention eligibility filter at 0.671.
 
 ## Metric Direction Legend
@@ -71,32 +71,32 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 | Scenario | Directional score ↑ | Quality ↑ | Risk control ↑ | Admin feas. ↑ | Productivity ↑ | Enacted/run | Floor/run diag. | Welfare ↑ | Low-support ↓ | Weak public mandate ↓ | Admin cost ↓ | Minority harm ↓ | Legitimacy ↑ | Policy shift diag. | Proposer gain ↓ | Capture ↓ | Lobby spend diag. | Defensive spend diag. | Amend rate diag. | Compensation diag. | Anti-lobby pass ↑ | Challenge diag. | Floor diag. |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Bicameral mixed appointed upper chamber | 0.660 | 0.580 | 0.867 | 0.930 | 0.264 | 19.572 | 83.919 | 0.616 | 0.000 | 0.162 | 0.070 | 0.134 | 0.543 | 0.077 | 0.238 | 0.267 | 0.000 | 0.000 | 0.000 | 0.000 | 0.498 | 0.000 | 1.000 |
-| Appointment and retention eligibility filter | 0.671 | 0.558 | 0.836 | 0.930 | 0.362 | 27.778 | 83.919 | 0.586 | 0.000 | 0.250 | 0.070 | 0.150 | 0.505 | 0.132 | 0.308 | 0.263 | 0.000 | 0.000 | 0.000 | 0.000 | 0.630 | 0.000 | 1.000 |
+| Appointment and retention eligibility filter | 0.671 | 0.558 | 0.836 | 0.930 | 0.359 | 27.623 | 83.919 | 0.587 | 0.000 | 0.250 | 0.070 | 0.150 | 0.505 | 0.132 | 0.310 | 0.264 | 0.000 | 0.000 | 0.000 | 0.000 | 0.632 | 0.000 | 1.000 |
 | Bicameral House majority + upper cloture | 0.647 | 0.606 | 0.886 | 0.930 | 0.166 | 11.972 | 83.919 | 0.634 | 0.000 | 0.120 | 0.070 | 0.125 | 0.577 | 0.038 | 0.183 | 0.280 | 0.000 | 0.000 | 0.000 | 0.000 | 0.310 | 0.000 | 1.000 |
 | Majority + forced-balanced committee | 0.660 | 0.579 | 0.870 | 0.943 | 0.248 | 18.398 | 26.052 | 0.621 | 0.000 | 0.152 | 0.057 | 0.141 | 0.522 | 0.070 | 0.230 | 0.284 | 0.000 | 0.000 | 0.000 | 0.000 | 0.456 | 0.000 | 0.340 |
 | Bicameral simple majority | 0.656 | 0.583 | 0.870 | 0.930 | 0.243 | 17.878 | 83.919 | 0.617 | 0.000 | 0.159 | 0.070 | 0.133 | 0.547 | 0.067 | 0.219 | 0.272 | 0.000 | 0.000 | 0.000 | 0.000 | 0.451 | 0.000 | 1.000 |
 | Bicameral incongruence: district House + PR upper house | 0.659 | 0.576 | 0.864 | 0.930 | 0.266 | 19.782 | 83.919 | 0.613 | 0.000 | 0.169 | 0.070 | 0.135 | 0.539 | 0.080 | 0.245 | 0.269 | 0.000 | 0.000 | 0.000 | 0.000 | 0.496 | 0.000 | 1.000 |
 | Committee amendment and revision power | 0.647 | 0.614 | 0.927 | 0.929 | 0.118 | 9.397 | 11.913 | 0.695 | 0.000 | 0.013 | 0.071 | 0.094 | 0.591 | 0.032 | 0.209 | 0.177 | 0.000 | 0.000 | 0.126 | 0.033 | 0.433 | 0.000 | 0.147 |
 | Committee deadline + discharge petition | 0.656 | 0.592 | 0.895 | 0.918 | 0.219 | 16.808 | 28.873 | 0.641 | 0.000 | 0.051 | 0.082 | 0.106 | 0.568 | 0.071 | 0.249 | 0.238 | 0.000 | 0.000 | 0.176 | 0.065 | 0.521 | 0.000 | 0.366 |
-| Committee discharge-petition target | 0.648 | 0.609 | 0.922 | 0.925 | 0.139 | 10.979 | 13.887 | 0.669 | 0.000 | 0.044 | 0.075 | 0.082 | 0.588 | 0.038 | 0.212 | 0.200 | 0.000 | 0.000 | 0.155 | 0.048 | 0.416 | 0.000 | 0.173 |
-| Committee fast-track certifier | 0.653 | 0.582 | 0.895 | 0.875 | 0.259 | 20.356 | 39.102 | 0.621 | 0.000 | 0.090 | 0.125 | 0.086 | 0.548 | 0.087 | 0.269 | 0.236 | 0.000 | 0.000 | 0.468 | 0.200 | 0.579 | 0.000 | 0.485 |
-| Legal and drafting-quality committee | 0.656 | 0.600 | 0.915 | 0.913 | 0.196 | 15.587 | 20.567 | 0.645 | 0.000 | 0.046 | 0.087 | 0.082 | 0.574 | 0.057 | 0.234 | 0.229 | 0.000 | 0.000 | 0.228 | 0.086 | 0.502 | 0.000 | 0.255 |
+| Committee discharge-petition target | 0.648 | 0.608 | 0.921 | 0.925 | 0.139 | 11.039 | 13.879 | 0.668 | 0.000 | 0.045 | 0.075 | 0.082 | 0.587 | 0.038 | 0.215 | 0.201 | 0.000 | 0.000 | 0.155 | 0.049 | 0.420 | 0.000 | 0.173 |
+| Committee fast-track certifier | 0.653 | 0.582 | 0.895 | 0.875 | 0.259 | 20.334 | 39.115 | 0.621 | 0.000 | 0.090 | 0.125 | 0.086 | 0.548 | 0.087 | 0.266 | 0.237 | 0.000 | 0.000 | 0.468 | 0.200 | 0.579 | 0.000 | 0.485 |
+| Legal and drafting-quality committee | 0.656 | 0.601 | 0.915 | 0.913 | 0.195 | 15.548 | 20.586 | 0.645 | 0.000 | 0.046 | 0.087 | 0.082 | 0.575 | 0.056 | 0.231 | 0.229 | 0.000 | 0.000 | 0.228 | 0.086 | 0.507 | 0.000 | 0.255 |
 | Committee minority-hearing rights | 0.649 | 0.606 | 0.915 | 0.928 | 0.145 | 11.342 | 15.528 | 0.677 | 0.000 | 0.024 | 0.072 | 0.100 | 0.586 | 0.043 | 0.228 | 0.209 | 0.000 | 0.000 | 0.129 | 0.037 | 0.441 | 0.000 | 0.194 |
-| Committee priority queue | 0.653 | 0.595 | 0.905 | 0.917 | 0.194 | 15.270 | 22.368 | 0.641 | 0.000 | 0.067 | 0.083 | 0.092 | 0.569 | 0.060 | 0.240 | 0.233 | 0.000 | 0.000 | 0.194 | 0.068 | 0.479 | 0.000 | 0.279 |
-| Public-accounts committee | 0.652 | 0.608 | 0.923 | 0.918 | 0.159 | 12.843 | 16.266 | 0.662 | 0.000 | 0.046 | 0.082 | 0.060 | 0.592 | 0.045 | 0.221 | 0.211 | 0.000 | 0.000 | 0.199 | 0.071 | 0.450 | 0.000 | 0.199 |
+| Committee priority queue | 0.653 | 0.595 | 0.905 | 0.917 | 0.195 | 15.275 | 22.377 | 0.640 | 0.000 | 0.067 | 0.083 | 0.092 | 0.568 | 0.060 | 0.238 | 0.234 | 0.000 | 0.000 | 0.195 | 0.069 | 0.476 | 0.000 | 0.279 |
+| Public-accounts committee | 0.653 | 0.609 | 0.924 | 0.918 | 0.159 | 12.884 | 16.293 | 0.662 | 0.000 | 0.043 | 0.082 | 0.059 | 0.592 | 0.044 | 0.219 | 0.213 | 0.000 | 0.000 | 0.198 | 0.070 | 0.450 | 0.000 | 0.198 |
 | Committee-first regular order | 0.666 | 0.588 | 0.884 | 0.967 | 0.227 | 16.781 | 21.469 | 0.633 | 0.000 | 0.101 | 0.033 | 0.133 | 0.536 | 0.059 | 0.208 | 0.272 | 0.000 | 0.000 | 0.000 | 0.000 | 0.449 | 0.000 | 0.283 |
-| Committee scrutiny and audit | 0.650 | 0.609 | 0.923 | 0.922 | 0.148 | 11.810 | 14.733 | 0.667 | 0.000 | 0.037 | 0.078 | 0.077 | 0.590 | 0.040 | 0.217 | 0.207 | 0.000 | 0.000 | 0.174 | 0.058 | 0.438 | 0.000 | 0.182 |
-| Committee veto player | 0.636 | 0.588 | 0.938 | 0.935 | 0.084 | 6.749 | 7.800 | 0.685 | 0.000 | 0.017 | 0.065 | 0.068 | 0.586 | 0.021 | 0.197 | 0.128 | 0.000 | 0.000 | 0.092 | 0.022 | 0.342 | 0.000 | 0.096 |
+| Committee scrutiny and audit | 0.650 | 0.609 | 0.923 | 0.922 | 0.149 | 11.866 | 14.774 | 0.667 | 0.000 | 0.036 | 0.078 | 0.076 | 0.590 | 0.041 | 0.221 | 0.208 | 0.000 | 0.000 | 0.175 | 0.058 | 0.443 | 0.000 | 0.183 |
+| Committee veto player | 0.636 | 0.588 | 0.938 | 0.935 | 0.085 | 6.793 | 7.869 | 0.684 | 0.000 | 0.017 | 0.065 | 0.068 | 0.585 | 0.021 | 0.199 | 0.127 | 0.000 | 0.000 | 0.093 | 0.023 | 0.345 | 0.000 | 0.096 |
 | Bicameral malapportioned upper chamber + conference | 0.667 | 0.560 | 0.842 | 0.906 | 0.361 | 27.459 | 83.919 | 0.587 | 0.024 | 0.187 | 0.094 | 0.144 | 0.519 | 0.118 | 0.289 | 0.273 | 0.000 | 0.000 | 0.172 | 0.000 | 0.634 | 0.000 | 1.000 |
 | Stylized U.S.-like conventional benchmark | 0.652 | 0.642 | 0.924 | 0.984 | 0.056 | 4.195 | 18.516 | 0.682 | 0.000 | 0.009 | 0.016 | 0.087 | 0.663 | 0.012 | 0.162 | 0.217 | 0.000 | 0.000 | 0.000 | 0.000 | 0.170 | 0.000 | 0.222 |
-| Expertise eligibility filter | 0.669 | 0.560 | 0.842 | 0.930 | 0.343 | 26.416 | 83.919 | 0.592 | 0.000 | 0.236 | 0.070 | 0.147 | 0.509 | 0.120 | 0.293 | 0.263 | 0.000 | 0.000 | 0.000 | 0.000 | 0.620 | 0.000 | 1.000 |
+| Expertise eligibility filter | 0.669 | 0.560 | 0.843 | 0.930 | 0.343 | 26.397 | 83.919 | 0.592 | 0.000 | 0.236 | 0.070 | 0.148 | 0.509 | 0.119 | 0.290 | 0.262 | 0.000 | 0.000 | 0.000 | 0.000 | 0.618 | 0.000 | 1.000 |
 | Emergency lower-house fast path | 0.662 | 0.576 | 0.863 | 0.930 | 0.279 | 20.734 | 83.919 | 0.614 | 0.000 | 0.173 | 0.070 | 0.135 | 0.537 | 0.083 | 0.240 | 0.269 | 0.000 | 0.000 | 0.000 | 0.000 | 0.518 | 0.000 | 1.000 |
 | Equal-population unicameral chamber | 0.669 | 0.560 | 0.845 | 0.930 | 0.340 | 25.776 | 83.919 | 0.599 | 0.000 | 0.219 | 0.070 | 0.143 | 0.513 | 0.116 | 0.288 | 0.266 | 0.000 | 0.000 | 0.000 | 0.000 | 0.620 | 0.000 | 1.000 |
-| Ex ante advisory review | 0.670 | 0.563 | 0.845 | 0.930 | 0.341 | 25.825 | 83.919 | 0.616 | 0.000 | 0.220 | 0.070 | 0.143 | 0.512 | 0.117 | 0.289 | 0.264 | 0.000 | 0.000 | 0.000 | 0.000 | 0.618 | 0.000 | 1.000 |
-| Mandatory ex ante legal clearance | 0.669 | 0.563 | 0.853 | 0.936 | 0.326 | 24.839 | 77.090 | 0.607 | 0.000 | 0.213 | 0.064 | 0.134 | 0.519 | 0.110 | 0.281 | 0.257 | 0.000 | 0.000 | 0.000 | 0.000 | 0.584 | 0.000 | 0.920 |
+| Ex ante advisory review | 0.670 | 0.563 | 0.845 | 0.930 | 0.340 | 25.745 | 83.919 | 0.616 | 0.000 | 0.221 | 0.070 | 0.144 | 0.512 | 0.116 | 0.285 | 0.265 | 0.000 | 0.000 | 0.000 | 0.000 | 0.614 | 0.000 | 1.000 |
+| Mandatory ex ante legal clearance | 0.669 | 0.563 | 0.853 | 0.936 | 0.325 | 24.808 | 77.090 | 0.607 | 0.000 | 0.213 | 0.064 | 0.135 | 0.519 | 0.109 | 0.281 | 0.257 | 0.000 | 0.000 | 0.000 | 0.000 | 0.581 | 0.000 | 0.920 |
 | Majority + expertise-qualified lottery committee | 0.660 | 0.580 | 0.872 | 0.943 | 0.244 | 18.117 | 27.211 | 0.623 | 0.000 | 0.147 | 0.057 | 0.141 | 0.522 | 0.067 | 0.220 | 0.280 | 0.000 | 0.000 | 0.000 | 0.000 | 0.460 | 0.000 | 0.352 |
 | House-origin-only bicameral routing | 0.664 | 0.572 | 0.858 | 0.922 | 0.302 | 22.613 | 83.919 | 0.606 | 0.003 | 0.174 | 0.078 | 0.137 | 0.533 | 0.091 | 0.249 | 0.271 | 0.000 | 0.000 | 0.054 | 0.000 | 0.560 | 0.000 | 1.000 |
-| Independent fiscal/electoral/audit insulation bundle | 0.670 | 0.564 | 0.845 | 0.930 | 0.340 | 25.814 | 83.919 | 0.620 | 0.000 | 0.222 | 0.070 | 0.144 | 0.512 | 0.116 | 0.282 | 0.265 | 0.000 | 0.000 | 0.000 | 0.000 | 0.616 | 0.000 | 1.000 |
+| Independent fiscal/electoral/audit insulation bundle | 0.670 | 0.564 | 0.846 | 0.930 | 0.340 | 25.843 | 83.919 | 0.621 | 0.000 | 0.219 | 0.070 | 0.143 | 0.513 | 0.116 | 0.287 | 0.264 | 0.000 | 0.000 | 0.000 | 0.000 | 0.617 | 0.000 | 1.000 |
 | Bicameral joint-sitting fallback | 0.664 | 0.569 | 0.853 | 0.930 | 0.304 | 22.853 | 83.919 | 0.608 | 0.026 | 0.189 | 0.070 | 0.138 | 0.527 | 0.096 | 0.260 | 0.267 | 0.000 | 0.000 | 0.000 | 0.000 | 0.564 | 0.000 | 1.000 |
 | Last-offer bicameral bargaining | 0.665 | 0.572 | 0.857 | 0.923 | 0.306 | 22.891 | 83.919 | 0.606 | 0.006 | 0.175 | 0.077 | 0.138 | 0.533 | 0.092 | 0.248 | 0.270 | 0.000 | 0.000 | 0.051 | 0.000 | 0.562 | 0.000 | 1.000 |
 | Leadership-routed chamber origin | 0.659 | 0.577 | 0.864 | 0.930 | 0.267 | 19.836 | 83.919 | 0.614 | 0.000 | 0.171 | 0.070 | 0.135 | 0.539 | 0.080 | 0.242 | 0.270 | 0.000 | 0.000 | 0.000 | 0.000 | 0.499 | 0.000 | 1.000 |
@@ -106,12 +106,13 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 | Bicameral malapportioned territorial upper chamber | 0.660 | 0.577 | 0.864 | 0.930 | 0.269 | 19.942 | 83.919 | 0.613 | 0.000 | 0.171 | 0.070 | 0.135 | 0.539 | 0.080 | 0.243 | 0.269 | 0.000 | 0.000 | 0.000 | 0.000 | 0.499 | 0.000 | 1.000 |
 | Mediation committee bicameral conflict | 0.666 | 0.569 | 0.857 | 0.922 | 0.315 | 23.590 | 83.919 | 0.603 | 0.008 | 0.157 | 0.078 | 0.139 | 0.535 | 0.095 | 0.252 | 0.269 | 0.000 | 0.000 | 0.059 | 0.000 | 0.577 | 0.000 | 1.000 |
 | Majority + minority-veto committee seat | 0.660 | 0.578 | 0.869 | 0.943 | 0.249 | 18.486 | 26.341 | 0.620 | 0.000 | 0.150 | 0.057 | 0.143 | 0.521 | 0.071 | 0.231 | 0.284 | 0.000 | 0.000 | 0.000 | 0.000 | 0.462 | 0.000 | 0.343 |
-| Majority + mixed legislator-citizen committee | 0.648 | 0.605 | 0.919 | 0.923 | 0.145 | 11.517 | 15.061 | 0.661 | 0.000 | 0.052 | 0.077 | 0.079 | 0.586 | 0.040 | 0.219 | 0.209 | 0.000 | 0.000 | 0.167 | 0.053 | 0.414 | 0.000 | 0.186 |
+| Majority + mixed legislator-citizen committee | 0.648 | 0.605 | 0.919 | 0.923 | 0.145 | 11.496 | 15.069 | 0.660 | 0.000 | 0.053 | 0.077 | 0.078 | 0.586 | 0.040 | 0.218 | 0.207 | 0.000 | 0.000 | 0.167 | 0.053 | 0.409 | 0.000 | 0.186 |
 | Majority + opposition-chaired scrutiny committee | 0.660 | 0.578 | 0.869 | 0.943 | 0.252 | 18.684 | 26.216 | 0.620 | 0.000 | 0.152 | 0.057 | 0.142 | 0.521 | 0.073 | 0.237 | 0.282 | 0.000 | 0.000 | 0.000 | 0.000 | 0.466 | 0.000 | 0.342 |
 | Principles resolution before second-chamber drafting | 0.664 | 0.566 | 0.855 | 0.921 | 0.312 | 23.417 | 83.919 | 0.599 | 0.008 | 0.163 | 0.079 | 0.142 | 0.530 | 0.097 | 0.266 | 0.270 | 0.000 | 0.000 | 0.066 | 0.000 | 0.558 | 0.000 | 1.000 |
+| Majority + proportional committee assignment | 0.660 | 0.577 | 0.868 | 0.943 | 0.252 | 18.728 | 25.965 | 0.619 | 0.000 | 0.153 | 0.057 | 0.142 | 0.521 | 0.073 | 0.239 | 0.285 | 0.000 | 0.000 | 0.000 | 0.000 | 0.467 | 0.000 | 0.338 |
 | Proportional lower-house majority | 0.668 | 0.559 | 0.845 | 0.930 | 0.340 | 25.773 | 83.919 | 0.598 | 0.000 | 0.222 | 0.070 | 0.144 | 0.512 | 0.116 | 0.287 | 0.267 | 0.000 | 0.000 | 0.000 | 0.000 | 0.616 | 0.000 | 1.000 |
 | Proposer-chamber origin routing | 0.665 | 0.568 | 0.854 | 0.921 | 0.317 | 23.892 | 83.919 | 0.598 | 0.017 | 0.180 | 0.079 | 0.140 | 0.527 | 0.097 | 0.259 | 0.269 | 0.000 | 0.000 | 0.065 | 0.000 | 0.579 | 0.000 | 1.000 |
-| Recusal and cooling-off eligibility filter | 0.671 | 0.559 | 0.837 | 0.930 | 0.357 | 27.479 | 83.919 | 0.587 | 0.000 | 0.250 | 0.070 | 0.150 | 0.506 | 0.130 | 0.307 | 0.264 | 0.000 | 0.000 | 0.000 | 0.000 | 0.626 | 0.000 | 1.000 |
+| Recusal and cooling-off eligibility filter | 0.671 | 0.558 | 0.835 | 0.930 | 0.360 | 27.724 | 83.919 | 0.585 | 0.000 | 0.254 | 0.070 | 0.150 | 0.504 | 0.131 | 0.306 | 0.265 | 0.000 | 0.000 | 0.000 | 0.000 | 0.621 | 0.000 | 1.000 |
 | Bicameral upper revision council | 0.664 | 0.571 | 0.858 | 0.923 | 0.304 | 22.749 | 83.919 | 0.606 | 0.003 | 0.173 | 0.077 | 0.137 | 0.532 | 0.092 | 0.248 | 0.270 | 0.000 | 0.000 | 0.053 | 0.000 | 0.561 | 0.000 | 1.000 |
 | Second-chamber preclearance routing | 0.664 | 0.569 | 0.855 | 0.930 | 0.301 | 22.589 | 83.919 | 0.608 | 0.021 | 0.188 | 0.070 | 0.138 | 0.528 | 0.095 | 0.259 | 0.265 | 0.000 | 0.000 | 0.000 | 0.000 | 0.565 | 0.000 | 1.000 |
 | Senate-origin-only bicameral routing | 0.662 | 0.570 | 0.856 | 0.921 | 0.299 | 22.425 | 83.919 | 0.604 | 0.005 | 0.179 | 0.079 | 0.139 | 0.530 | 0.093 | 0.260 | 0.272 | 0.000 | 0.000 | 0.062 | 0.000 | 0.543 | 0.000 | 1.000 |
@@ -234,40 +235,40 @@ This campaign is a stylized longitudinal stress path, not a calibrated history. 
 
 | Case | Best welfare | Most productive | Lowest weak public-mandate passage |
 | --- | --- | --- | --- |
-| Baseline | Committee veto player (0.762) | Bicameral malapportioned upper chamber + conference (0.289) | Committee veto player (0.004) |
-| Low Polarization | Committee veto player (0.751) | Bicameral malapportioned upper chamber + conference (0.545) | Committee amendment and revision power (0.005) |
-| High Polarization | Committee veto player (0.784) | Recusal and cooling-off eligibility filter (0.209) | Stylized U.S.-like conventional benchmark (0.000) |
-| Low Party Loyalty | Committee veto player (0.772) | Bicameral malapportioned upper chamber + conference (0.311) | Committee veto player (0.002) |
-| High Party Loyalty | Committee veto player (0.769) | Bicameral malapportioned upper chamber + conference (0.296) | Committee amendment and revision power (0.008) |
-| Low Compromise Culture | Committee veto player (0.774) | Appointment and retention eligibility filter (0.248) | Committee minority-hearing rights (0.004) |
-| High Compromise Culture | Committee veto player (0.755) | Bicameral malapportioned upper chamber + conference (0.370) | Committee veto player (0.004) |
-| Low Lobbying Pressure | Stylized U.S.-like conventional benchmark (0.758) | Bicameral malapportioned upper chamber + conference (0.301) | Committee amendment and revision power (0.004) |
-| High Lobbying Pressure | Committee veto player (0.777) | Recusal and cooling-off eligibility filter (0.262) | Stylized U.S.-like conventional benchmark (0.000) |
-| Weak Constituency Pressure | Committee veto player (0.753) | Expertise eligibility filter (0.271) | Committee amendment and revision power (0.008) |
-| Two-Party System | Committee veto player (0.762) | Bicameral malapportioned upper chamber + conference (0.304) | Committee amendment and revision power (0.005) |
-| Multi-Party System | Committee veto player (0.756) | Bicameral malapportioned upper chamber + conference (0.302) | Committee amendment and revision power (0.008) |
-| High Proposal Pressure | Committee veto player (0.768) | Bicameral malapportioned upper chamber + conference (0.292) | Committee veto player (0.006) |
-| Extreme Proposal Pressure | Committee veto player (0.764) | Bicameral malapportioned upper chamber + conference (0.290) | Committee amendment and revision power (0.006) |
-| Lobby-Fueled Flooding | Committee veto player (0.766) | Appointment and retention eligibility filter (0.256) | Stylized U.S.-like conventional benchmark (0.000) |
-| Low-Compromise Flooding | Committee veto player (0.773) | Recusal and cooling-off eligibility filter (0.209) | Committee amendment and revision power (0.007) |
-| Capture Crisis | Committee veto player (0.744) | Expertise eligibility filter (0.223) | Stylized U.S.-like conventional benchmark (0.005) |
-| Popular Anti-Lobbying Push | Committee veto player (0.787) | Bicameral malapportioned upper chamber + conference (0.378) | Stylized U.S.-like conventional benchmark (0.004) |
-| Weighted Two-Party Baseline | Committee veto player (0.770) | Bicameral malapportioned upper chamber + conference (0.289) | Stylized U.S.-like conventional benchmark (0.004) |
-| Weighted Two Major Plus Minors | Committee veto player (0.764) | Recusal and cooling-off eligibility filter (0.293) | Stylized U.S.-like conventional benchmark (0.000) |
-| Weighted Fragmented Multiparty | Committee veto player (0.757) | Bicameral malapportioned upper chamber + conference (0.345) | Stylized U.S.-like conventional benchmark (0.003) |
-| Weighted Dominant-Party Legislature | Committee veto player (0.768) | Appointment and retention eligibility filter (0.312) | Stylized U.S.-like conventional benchmark (0.000) |
-| Era 1 Low Contention | Committee veto player (0.737) | Bicameral malapportioned upper chamber + conference (0.543) | Committee veto player (0.005) |
+| Baseline | Committee veto player (0.763) | Bicameral malapportioned upper chamber + conference (0.289) | Committee veto player (0.007) |
+| Low Polarization | Committee veto player (0.752) | Bicameral malapportioned upper chamber + conference (0.545) | Committee amendment and revision power (0.005) |
+| High Polarization | Committee veto player (0.781) | Appointment and retention eligibility filter (0.218) | Stylized U.S.-like conventional benchmark (0.000) |
+| Low Party Loyalty | Committee veto player (0.766) | Bicameral malapportioned upper chamber + conference (0.311) | Committee amendment and revision power (0.003) |
+| High Party Loyalty | Committee veto player (0.770) | Bicameral malapportioned upper chamber + conference (0.296) | Committee amendment and revision power (0.008) |
+| Low Compromise Culture | Stylized U.S.-like conventional benchmark (0.773) | Recusal and cooling-off eligibility filter (0.244) | Committee minority-hearing rights (0.004) |
+| High Compromise Culture | Committee veto player (0.756) | Bicameral malapportioned upper chamber + conference (0.370) | Committee veto player (0.007) |
+| Low Lobbying Pressure | Stylized U.S.-like conventional benchmark (0.758) | Appointment and retention eligibility filter (0.303) | Committee amendment and revision power (0.004) |
+| High Lobbying Pressure | Committee veto player (0.779) | Appointment and retention eligibility filter (0.264) | Stylized U.S.-like conventional benchmark (0.000) |
+| Weak Constituency Pressure | Committee veto player (0.751) | Recusal and cooling-off eligibility filter (0.270) | Committee amendment and revision power (0.008) |
+| Two-Party System | Stylized U.S.-like conventional benchmark (0.761) | Recusal and cooling-off eligibility filter (0.306) | Committee amendment and revision power (0.005) |
+| Multi-Party System | Committee veto player (0.764) | Bicameral malapportioned upper chamber + conference (0.302) | Committee veto player (0.004) |
+| High Proposal Pressure | Committee veto player (0.766) | Bicameral malapportioned upper chamber + conference (0.292) | Committee amendment and revision power (0.007) |
+| Extreme Proposal Pressure | Committee veto player (0.763) | Bicameral malapportioned upper chamber + conference (0.290) | Committee veto player (0.005) |
+| Lobby-Fueled Flooding | Committee amendment and revision power (0.762) | Recusal and cooling-off eligibility filter (0.256) | Stylized U.S.-like conventional benchmark (0.000) |
+| Low-Compromise Flooding | Committee veto player (0.771) | Expertise eligibility filter (0.207) | Committee veto player (0.005) |
+| Capture Crisis | Committee veto player (0.747) | Recusal and cooling-off eligibility filter (0.224) | Stylized U.S.-like conventional benchmark (0.005) |
+| Popular Anti-Lobbying Push | Committee veto player (0.783) | Bicameral malapportioned upper chamber + conference (0.378) | Stylized U.S.-like conventional benchmark (0.004) |
+| Weighted Two-Party Baseline | Committee veto player (0.775) | Bicameral malapportioned upper chamber + conference (0.289) | Stylized U.S.-like conventional benchmark (0.004) |
+| Weighted Two Major Plus Minors | Committee veto player (0.764) | Appointment and retention eligibility filter (0.295) | Stylized U.S.-like conventional benchmark (0.000) |
+| Weighted Fragmented Multiparty | Committee veto player (0.760) | Bicameral malapportioned upper chamber + conference (0.345) | Stylized U.S.-like conventional benchmark (0.003) |
+| Weighted Dominant-Party Legislature | Committee veto player (0.764) | Recusal and cooling-off eligibility filter (0.310) | Stylized U.S.-like conventional benchmark (0.000) |
+| Era 1 Low Contention | Committee veto player (0.737) | Bicameral malapportioned upper chamber + conference (0.543) | Committee amendment and revision power (0.007) |
 | Era 2 Normal Contention | Committee veto player (0.760) | Bicameral malapportioned upper chamber + conference (0.441) | Committee veto player (0.005) |
 | Era 3 Polarizing | Committee veto player (0.769) | Bicameral malapportioned upper chamber + conference (0.339) | Committee amendment and revision power (0.005) |
-| Era 4 High Contention | Committee veto player (0.783) | Recusal and cooling-off eligibility filter (0.258) | Committee veto player (0.007) |
-| Era 5 Capture Contention | Committee veto player (0.759) | Appointment and retention eligibility filter (0.199) | Stylized U.S.-like conventional benchmark (0.000) |
-| Era 6 Crisis | Committee veto player (0.762) | Expertise eligibility filter (0.166) | Stylized U.S.-like conventional benchmark (0.000) |
-| Adversarial High-Benefit Extreme Reform | Upper-house territorial veto threshold (0.807) | Committee fast-track certifier (0.188) | Stylized U.S.-like conventional benchmark (0.000) |
-| Adversarial Popular Harmful Bill | Public-accounts committee (0.408) | Bicameral malapportioned upper chamber + conference (0.931) | Committee amendment and revision power (0.000) |
-| Adversarial Moderate Capture | Committee scrutiny and audit (0.529) | Bicameral malapportioned upper chamber + conference (0.983) | Committee minority-hearing rights (0.000) |
-| Adversarial Delayed-Benefit Reform | Committee veto player (0.774) | Committee fast-track certifier (0.344) | Committee amendment and revision power (0.055) |
-| Adversarial Concentrated Rights Harm | Committee amendment and revision power (0.546) | Bicameral malapportioned upper chamber + conference (0.541) | Stylized U.S.-like conventional benchmark (0.000) |
-| Adversarial Anti-Lobbying Backlash | Committee veto player (0.725) | Appointment and retention eligibility filter (0.365) | Stylized U.S.-like conventional benchmark (0.009) |
+| Era 4 High Contention | Stylized U.S.-like conventional benchmark (0.781) | Recusal and cooling-off eligibility filter (0.248) | Committee veto player (0.007) |
+| Era 5 Capture Contention | Committee veto player (0.756) | Recusal and cooling-off eligibility filter (0.200) | Stylized U.S.-like conventional benchmark (0.000) |
+| Era 6 Crisis | Committee veto player (0.769) | Recusal and cooling-off eligibility filter (0.165) | Stylized U.S.-like conventional benchmark (0.000) |
+| Adversarial High-Benefit Extreme Reform | Upper-house territorial veto threshold (0.807) | Committee fast-track certifier (0.207) | Stylized U.S.-like conventional benchmark (0.000) |
+| Adversarial Popular Harmful Bill | Public-accounts committee (0.416) | Bicameral malapportioned upper chamber + conference (0.931) | Committee amendment and revision power (0.000) |
+| Adversarial Moderate Capture | Committee scrutiny and audit (0.526) | Bicameral malapportioned upper chamber + conference (0.983) | Committee minority-hearing rights (0.000) |
+| Adversarial Delayed-Benefit Reform | Committee veto player (0.781) | Committee fast-track certifier (0.349) | Committee amendment and revision power (0.055) |
+| Adversarial Concentrated Rights Harm | Committee veto player (0.550) | Bicameral malapportioned upper chamber + conference (0.541) | Stylized U.S.-like conventional benchmark (0.000) |
+| Adversarial Anti-Lobbying Backlash | Committee veto player (0.726) | Expertise eligibility filter (0.374) | Stylized U.S.-like conventional benchmark (0.009) |
 
 ## Interpretation
 

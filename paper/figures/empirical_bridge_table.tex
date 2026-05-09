@@ -4,16 +4,19 @@
   \label{tab:empirical-bridge}
   \Description{A generated table mapping desired empirical validation signals to optional raw inputs and simulator proxies.}
   \scriptsize
-  \begin{tabular}{lll}
+  \setlength{\tabcolsep}{2.6pt}
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{llll}
     \toprule
-    Signal & Simulator proxy & Status \\
+    Signal & Raw & Simulator proxy & Status \\
     \midrule
-    Bill attrition & current-system/productivity & raw summary available \\
-    Floor consideration & current-system/floor & raw summary available \\
-    Roll-call coalition size & current-system/averageEnactedSupport & needs raw dataset \\
-    Party unity & current-system/averageEnactedSupport & needs raw dataset \\
-    Sponsor success concentration & current-system/proposerAccessGini & raw summary available \\
-    Lobby spending observability & default-pass-budgeted-lobbying/lobbySpendPerBill & needs raw dataset \\
+    Bill attrition & enactmentRate=0.017 & current-system/productivity & ready \\
+    Floor consideration & floorLoad=0.122 & current-system/floor & ready \\
+    Committee reporting from bill actions & committeeReportRate=0.083 & current-system/floor & ready \\
+    Roll-call coalition size & coalitionSize=--- & current-system/averageEnactedSupport & missing raw \\
+    Party unity & partyUnity=--- & current-system/averageEnactedSupport & missing raw \\
+    Sponsor success concentration & sponsorSuccessGini=--- & current-system/proposerAccessGini & missing raw \\
     \bottomrule
   \end{tabular}
+  }
 \end{table}

@@ -2,6 +2,7 @@ package congresssim.institution.bargaining;
 
 import congresssim.institution.core.BillOutcome;
 import congresssim.institution.core.LegislativeProcess;
+import congresssim.institution.core.OutcomeSignals;
 import congresssim.institution.distribution.AffectedGroupScoring;
 import congresssim.institution.lobbying.LobbyCaptureScoring;
 
@@ -13,6 +14,7 @@ import congresssim.util.Values;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public final class MultiRoundAmendmentProcess implements LegislativeProcess {
     private final String name;
@@ -58,11 +60,16 @@ public final class MultiRoundAmendmentProcess implements LegislativeProcess {
     @Override
     public BillOutcome consider(Bill bill, VoteContext context) {
         Bill current = bill;
+        int attemptedRounds = 0;
+        int poisonPills = 0;
+        double capacityPressure = 0.0;
         for (int round = 0; round < maxRounds; round++) {
             double need = amendmentNeed(current, context);
             if (need < 0.18) {
                 break;
             }
+            attemptedRounds++;
+            capacityPressure += need;
             double target = targetPosition(current, context, round);
             double step = Math.min(0.42, 0.18 + (need * 0.34));
             double revisedPosition = Values.clamp(
@@ -74,9 +81,53 @@ public final class MultiRoundAmendmentProcess implements LegislativeProcess {
                 break;
             }
             boolean poisonPill = context.random().nextDouble() < poisonPillProbability * need;
+            if (poisonPill) {
+                poisonPills++;
+            }
             current = reviseBill(current, revisedPosition, round, poisonPill);
         }
-        return innerProcess.consider(current, context);
+        BillOutcome outcome = innerProcess.consider(current, context);
+        return outcome.withSignals(amendmentDiagnostics(bill, current, attemptedRounds, poisonPills, capacityPressure));
+    }
+
+    private OutcomeSignals amendmentDiagnostics(
+            Bill original,
+            Bill revised,
+            int attemptedRounds,
+            int poisonPills,
+            double capacityPressure
+    ) {
+        if (attemptedRounds == 0) {
+            return OutcomeSignals.none();
+        }
+        double originalProposerDistance = Math.abs(original.ideologyPosition() - original.proposerIdeology());
+        double revisedProposerDistance = Math.abs(revised.ideologyPosition() - original.proposerIdeology());
+        double proposerAdvantageReduction = Values.clamp(
+                (revisedProposerDistance - originalProposerDistance) / 2.0,
+                0.0,
+                1.0
+        );
+        double publicMandateImprovement = Values.clamp(
+                (revised.publicSupport() - original.publicSupport()) + (0.50 * (revised.affectedGroupSupport() - original.affectedGroupSupport())),
+                0.0,
+                1.0
+        );
+        double harmReduction = Values.clamp(original.concentratedHarm() - revised.concentratedHarm(), 0.0, 1.0);
+        double overload = Values.clamp(capacityPressure / maxRounds, 0.0, 1.0);
+        return OutcomeSignals.diagnostics(Map.of(
+                "amendmentOverload",
+                overload,
+                "poisonPillRate",
+                (double) poisonPills / attemptedRounds,
+                "proposerAdvantageReduction",
+                proposerAdvantageReduction,
+                "publicMandateImprovementAfterAmendment",
+                publicMandateImprovement,
+                "affectedHarmReductionByAmendment",
+                harmReduction,
+                "amendmentRoundUse",
+                (double) attemptedRounds / maxRounds
+        ));
     }
 
     private Bill reviseBill(Bill bill, double revisedPosition, int round, boolean poisonPill) {

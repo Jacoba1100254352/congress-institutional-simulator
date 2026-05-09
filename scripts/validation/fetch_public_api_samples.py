@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch small public API validation samples.
+"""Fetch small public API adapter fixtures.
 
 This script is intentionally optional. It reads API keys from the current
 environment or from an explicit env file, writes normalized CSVs for the
@@ -20,7 +20,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 
-RAW_DIR = Path("data/validation/raw")
+FIXTURE_DIR = Path("data/validation/fixtures")
 REPORT = Path("reports/public-api-sample-fetch.md")
 USER_AGENT = "congress-institutional-simulator-validation/0.1"
 
@@ -158,14 +158,14 @@ def fetch_congress_samples(api_key: str, congress: int, limit: int, law_limit: i
         if sleep_seconds > 0.0:
             time.sleep(sleep_seconds)
 
-    write_csv(RAW_DIR / "bill_progression.csv", ["bill_id", "introduced", "committee_reported", "floor_considered", "enacted"], bill_rows)
+    write_csv(FIXTURE_DIR / "bill_progression.csv", ["bill_id", "introduced", "committee_reported", "floor_considered", "enacted"], bill_rows)
     write_csv(
-        RAW_DIR / "topic_throughput.csv",
+        FIXTURE_DIR / "topic_throughput.csv",
         ["topic", "introduced", "floor_considered", "enacted"],
         [{"topic": topic, **counts} for topic, counts in sorted(topic_counts.items())],
     )
     write_csv(
-        RAW_DIR / "sponsor_success.csv",
+        FIXTURE_DIR / "sponsor_success.csv",
         ["sponsor_id", "party", "introduced", "enacted"],
         [
             {"sponsor_id": sponsor, "party": party, **counts}
@@ -234,7 +234,7 @@ def fetch_fec_samples(api_key: str, cycle: int, limit: int) -> dict[str, int]:
                 "independent_expenditure": "1",
             })
 
-    write_csv(RAW_DIR / "campaign_finance.csv", ["cycle", "recipient", "industry", "amount", "independent_expenditure"], rows)
+    write_csv(FIXTURE_DIR / "campaign_finance.csv", ["cycle", "recipient", "industry", "amount", "independent_expenditure"], rows)
     return {"campaign_finance_rows": len(rows)}
 
 
@@ -250,7 +250,7 @@ def write_report(congress_stats: dict[str, int] | None, fec_stats: dict[str, int
     lines = [
         "# Public API Validation Sample Fetch",
         "",
-        "This report records the shape of locally fetched public API samples. It does not contain API keys and does not claim empirical validation.",
+        "This report records the shape of locally fetched public API adapter fixtures. It does not contain API keys and does not claim empirical validation.",
         "",
         "| Source | Output | Rows/groups |",
         "| --- | --- | ---: |",
@@ -269,7 +269,7 @@ def write_report(congress_stats: dict[str, int] | None, fec_stats: dict[str, int
         lines.append("| OpenFEC | skipped | 0 |")
     lines.extend([
         "",
-        "Interpretation: these files are adapter smoke-test samples for bill attrition, topic throughput, sponsor success, and campaign-finance concentration. They are too small and too lightly cleaned to validate the simulator.",
+        "Interpretation: these files are adapter fixtures for bill attrition, topic throughput, sponsor success, and campaign-finance concentration. They are too small and too lightly cleaned to validate the simulator, and they are written under `data/validation/fixtures/` rather than `data/validation/raw/`.",
     ])
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     REPORT.write_text("\n".join(lines) + "\n")

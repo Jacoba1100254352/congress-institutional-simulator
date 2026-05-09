@@ -2,26 +2,50 @@
   "generatedBy": "paper/scripts/write_pdf_manifest.py",
   "pdfs": [
     {
-      "normalizedTextBytes": 44279,
-      "normalizedTextSha256": "2f97c6a789f6d6649b11a691d0cbfe893eb4023708dd2c383fdf70c6bd19c2b9",
+      "normalizedTextBytes": 41019,
+      "normalizedTextSha256": "1b960a5bfc237a3ae9a21be2705fbc0004d38e0ba4f1de0f0ee1d850523cb48f",
       "pages": 12,
       "path": "paper/main.pdf",
-      "sizeBytes": 469979
+      "sizeBytes": 469204
     },
     {
-      "normalizedTextBytes": 29586,
-      "normalizedTextSha256": "9f54410a7d74b0fa6da42589047427de2e8c8a6e6392e106b9e961b75fa6934d",
-      "pages": 8,
+      "normalizedTextBytes": 35065,
+      "normalizedTextSha256": "ad271db2e96008f645db935a31eb7e9db201b8575647f3227c5d0f2eaf71c9ce",
+      "pages": 9,
       "path": "paper/appendix-odd-d.pdf",
-      "sizeBytes": 406251
+      "sizeBytes": 411423
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "aed7e87e066ad39a90c1c4c0f3d4f4c4446ffa9b34e410181b78777e3bc0caac",
+  "sourceInputSha256": "f59743b1f1c5fba467adaab23af28426b3150899e77e822b76d2d7aaecb00f1a",
   "sourceInputs": [
     {
       "path": "Makefile",
-      "sha256": "e2e5758926a777dc467b5986ea3bec4b77aac8e440fdf778ab7f40feecc7c08e"
+      "sha256": "5516a5ee7e523f441f6dd9616192bf91270ba8434558705da1dd9bcf61a77d7f"
+    },
+    {
+      "path": "data/calibration/empirical-benchmarks.csv",
+      "sha256": "66b5ca649acba01f6849301655f77b5a8bebad65d7c62fe1f5b49fe308f80a38"
+    },
+    {
+      "path": "data/validation/fixtures/bill_progression.csv",
+      "sha256": "3bf1b3c34ed94fbe91a3e729327e3b60e0a46d55b55936c02e25a829b87fc452"
+    },
+    {
+      "path": "data/validation/fixtures/campaign_finance.csv",
+      "sha256": "668eae93dd9eea26b8ff60ecf45f785e29708339ecf5905573022172ae8211a7"
+    },
+    {
+      "path": "data/validation/fixtures/sponsor_success.csv",
+      "sha256": "d3c7bab710486ffa10570548dca3768fe30b61d1aab9ff12d73fcfe343dad8ba"
+    },
+    {
+      "path": "data/validation/fixtures/topic_throughput.csv",
+      "sha256": "775d7cd1ef2d8ae7a29baaaa16ab4ebf192e528ed38e1751aceb92722e39f847"
+    },
+    {
+      "path": "data/validation/raw/bill_progression.csv",
+      "sha256": "531b87932af70c6ba203b79541ec091cb9b7a86c7ad75769729e4b77799f37ec"
     },
     {
       "path": "paper/ACM-Reference-Format.bst",
@@ -33,11 +57,11 @@
     },
     {
       "path": "paper/appendix-odd-d.tex",
-      "sha256": "13a1b008c690e37249185dfb33bc0c6c1f3362c1e3be6ecec6503c3aa30ee07f"
+      "sha256": "cbb84bc32419793abe60aa52af100dfde0b3eb4098908e66657059a7d9fa3a31"
     },
     {
       "path": "paper/figures/broad_system_comparison.tex",
-      "sha256": "d279fe56b555798b7cb4726cf7315901189d5e382782d20216205d47cf093183"
+      "sha256": "ee30ed4132544ddf11c78db8a8c77078b460f7c63fc8e4f777fdd824435c785a"
     },
     {
       "path": "paper/figures/chamber_family_table.tex",
@@ -45,55 +69,59 @@
     },
     {
       "path": "paper/figures/chamber_productivity_compromise.tex",
-      "sha256": "bd2e1379f15959a7001cb23071be11952f6fcbc348ec306eab97047f9bf74748"
+      "sha256": "6b8f24ffbb3b33e6ff57ae514f76a05b109faa601c46ab1759a55a01fd5a9d35"
     },
     {
       "path": "paper/figures/compromise_productivity.tex",
-      "sha256": "b49bea48e67fadec49a0156b0ee9f05f2aae991cafb260a6c3b145b1d184398a"
+      "sha256": "eb38281abc1cef97faf2eab1fed7fc73127562d26eb9690797e8dacc44564c6d"
     },
     {
       "path": "paper/figures/default_pass_deltas.tex",
-      "sha256": "3526a475282ec44d8efea27ecc2ec93e424067b6b8d3e3f991fc1cf5b9054926"
+      "sha256": "7ba3b2d51b9adb0b554c8b72187c01705e897cd5f9225e828c542455a336464d"
     },
     {
       "path": "paper/figures/design_space_coverage.tex",
-      "sha256": "018eea6b68887e0a28fce32232bd21bb97b76a4aaafa0345d387f25480192261"
+      "sha256": "5a5eba8bf6bd67ac25ba6901f73e8f37067f7be35a329b27ff8b8b6ed12bf52d"
     },
     {
       "path": "paper/figures/directional_scoreboard.tex",
-      "sha256": "0decfc6328b89c7334e8f75088197eb2d81c7bdcab0af64c885ab9a778393cbc"
+      "sha256": "32706d8b8e46a25caedaa988ad9cf0ead4f99fe4dd24b9f1aa739a0a7c7f1036"
     },
     {
       "path": "paper/figures/empirical_bridge_table.tex",
-      "sha256": "1c505876779f28129b7f34574065e30dbf4f0686b7946420dc72ae4c4694260b"
+      "sha256": "82d858a2315bcd91cf27a62389c5956c162461c573f346c519e90ce9cec73f16"
     },
     {
       "path": "paper/figures/mechanism_diagnostics_table.tex",
-      "sha256": "2a7cddec2a690d9c0e1a9f8183a213aae92829abfb9710844f1c1e29590689fa"
+      "sha256": "d647b1366fa8e3ed394235fcae344214a0d4f03d86107f9eee65b2745566a90a"
     },
     {
       "path": "paper/figures/pareto_front_table.tex",
-      "sha256": "d799055b37a2e44c87b436fc22026c1cd07a067b3a0739c4bce3035abce3adaa"
+      "sha256": "145b6c02cb541a552e85bef51e3b649c1dde0e539e2e5b18aee13b208093b53e"
     },
     {
       "path": "paper/figures/productivity_low_support.tex",
-      "sha256": "b3ee7f52f2714e0c475a167b0336651a5ee70f7170833709b4bc92dbba043c3b"
+      "sha256": "16dffa0103d48c11d0fe982e4964b1fadb3065e0b744379a58174201949fdf60"
+    },
+    {
+      "path": "paper/figures/representative_champion_table.tex",
+      "sha256": "24edf96a9c9e778fdc5b8036029d699f039b7b8c299366552a22e9a6a5a6dc04"
     },
     {
       "path": "paper/figures/scenario_averages_full_table.tex",
-      "sha256": "aa650760e535fa229e095863a248f2af933bfec889c11c5be433442629fdbb09"
+      "sha256": "7c0de0b33a89209ee1907028da5f58bb03ecd4854cc86ec6111448dfdf2ad9f0"
     },
     {
       "path": "paper/figures/scenario_averages_table.tex",
-      "sha256": "dec8cf0cf81e257ee02faaf67350917b3e94476c92432b47b226e595705f4c41"
+      "sha256": "aa464a5a69c766d1e8b8e1627781395105629d366138a8b9a19eb4b3b0b20d38"
     },
     {
       "path": "paper/figures/timeline_contention.tex",
-      "sha256": "06c922e26dc2dcca28fb17e235571d02ec38b42263fffe9b94fc0edd4574850a"
+      "sha256": "153ec6cef9dcce6fb38b9bef3fd99b9a96e1cdcfde007fe10b5227e0805b83ba"
     },
     {
       "path": "paper/main.tex",
-      "sha256": "f391dd21cfbb438ce576058e994674b66cbf6544131a8c26ba36f7909e9f75d9"
+      "sha256": "950bc3bfa9302fa27a02adcb321c5d165365e45ab46600b04c3f307c36d5bcc5"
     },
     {
       "path": "paper/references.bib",
@@ -105,27 +133,155 @@
     },
     {
       "path": "paper/scripts/generate_figures.py",
-      "sha256": "b7877c12ce5f5a9798fc19d7b8fd713000a321faf653f6598b025fce610c1477"
+      "sha256": "147996abbda50f6906d6195f552b52dabf85b763267a428d4e7ccbf2d16de218"
     },
     {
       "path": "paper/scripts/write_pdf_manifest.py",
-      "sha256": "9acb5fd0656edad239acabc991e1dbc7cc597cbc54df01cef8f736191a11d773"
+      "sha256": "06764dc7230049a60ef9e6b17880bf6bdbf9f6b42277936eecf35994f60f13c3"
+    },
+    {
+      "path": "reports/ablation-analysis-summary.csv",
+      "sha256": "9f368b93b633d38032b198bd690da575cbc72adf2a1697f4a33bcf31af2d8aa7"
+    },
+    {
+      "path": "reports/all-scenarios-baseline.csv",
+      "sha256": "0a600ea7c427d06943f0f7c358a63eaf615e34ae8f57554b615fb12edc743432"
+    },
+    {
+      "path": "reports/chamber-family-champions.md",
+      "sha256": "49ff863b801368cd924793d688c5e5fc58b0c8fd60be8484eaa581d6f884d9eb"
+    },
+    {
+      "path": "reports/chamber-stress-screen.md",
+      "sha256": "e6374035b42f4d5af039acf1cd42d2caa78939878ffb2323cc8104025aa2898b"
+    },
+    {
+      "path": "reports/empirical-bridge.csv",
+      "sha256": "6af22b888fcd7a0294543d3a56ee5e8b7971450a5cf6f897f5920711ce81f481"
+    },
+    {
+      "path": "reports/empirical-validation-readiness.md",
+      "sha256": "ed4ee25b645cb235bd693f37b8541a0f2b499ad88045dc74afb26c7a29b1ae85"
+    },
+    {
+      "path": "reports/empirical-validation-summary.csv",
+      "sha256": "eae9b8298842f3d631fe4dfc4521f00218c8a7bd55561ac1dc584b83578aac5a"
+    },
+    {
+      "path": "reports/family-champions.md",
+      "sha256": "ee64490f294ae1124ba68e0968cef53ce8cf19f793d67832ff98425aad3473e3"
+    },
+    {
+      "path": "reports/manipulation-stress-summary.csv",
+      "sha256": "90be41fea49570e10044db6d844d1ee83f104da30890e5416ee6856ee3ee5ca7"
+    },
+    {
+      "path": "reports/scenario-selection-manifest.md",
+      "sha256": "e7a25d41b78794da0093ce382628d06d0b0bd66919aa23898960a81b2fe3bb1f"
+    },
+    {
+      "path": "reports/seed-robustness-summary.csv",
+      "sha256": "dfcca67c8fc59b231bdb6276456316821f33cb165aca88a8d5cefd88a04e83a1"
+    },
+    {
+      "path": "reports/simulation-ablation-analysis.csv",
+      "sha256": "401e6f76d813607340d8f73f62254221931b77bda9800d8d55aef5201a56ac1c"
+    },
+    {
+      "path": "reports/simulation-campaign-v21-paper.csv",
+      "sha256": "1e36005c54d3a0ccf1b61904735a144dbd01e9afb600b17e7e6457a6124f0b35"
+    },
+    {
+      "path": "reports/simulation-chamber-structure.csv",
+      "sha256": "2d60b7c9029ddad4392b08dc313d3af8535bbcf0f88eebd41766990b76a29bec"
+    },
+    {
+      "path": "reports/simulation-manipulation-stress.csv",
+      "sha256": "b6f1a6ca2f437ddc0649b3017e257304b9235505d801e54db0c0c714d9e7b871"
+    },
+    {
+      "path": "scripts/checks/check_calibration.py",
+      "sha256": "05b94b656fc3b00809e1c96cd51e006ff4e13bd9fa2bb6dfccc1077550f1fcc4"
+    },
+    {
+      "path": "scripts/checks/check_figure_labels.py",
+      "sha256": "f415d9edf977ec7cf8ee378e4c19f34754e19626c8b876d04f7d253b661ca83b"
     },
     {
       "path": "scripts/checks/check_paper_anonymity.py",
-      "sha256": "17a59c43e3006752b81ff2137360e19d2fa9dbe1ef43b0ee7819c74bfd3dd758"
+      "sha256": "4c044b34d2546dcc6984c567b0b817e5fd448715ef879ac6411776fd1922495c"
     },
     {
       "path": "scripts/checks/check_pdf_render.py",
       "sha256": "96c3bf8dca4b3e5527c7445edcf7dfc164db78b562bd14e953b1e09936c4f6ee"
     },
     {
+      "path": "scripts/checks/check_seed_robustness.py",
+      "sha256": "a4861f891582090198a9624367217680447827e4503df2373cd3adacf1afb763"
+    },
+    {
       "path": "scripts/checks/check_table_figure_consistency.py",
       "sha256": "1a4d8f2805e64202c628a00ad0b79374cbb9a9d72d6322c057295bbdfb2f17b1"
     },
     {
+      "path": "scripts/packaging/build_anonymous_supplement.py",
+      "sha256": "c727c4de58371c5b933eb8fc3ea4b7b1e4783a7690cccba17197a421b54bbed9"
+    },
+    {
+      "path": "scripts/reporting/report_catalog_breadth.py",
+      "sha256": "292264d92876fa02c4db65613312d9528d6553b0cd5835fa98a1efa461bf909c"
+    },
+    {
+      "path": "scripts/reporting/run_family_champions.py",
+      "sha256": "bcb67155288c7c023f3c6d4681120e6d56c4c563baf6ea1ac67ee532a37e027f"
+    },
+    {
+      "path": "scripts/reporting/run_seed_robustness.py",
+      "sha256": "e4510271e381abea58283591f3cd4eecdd7be81f63d8d78a3c4968f64514a880"
+    },
+    {
+      "path": "scripts/reporting/summarize_ablation_analysis.py",
+      "sha256": "2cb9b67d06a92847b0d6e79bd3179f9311120a6b365b0f5a61852d7a136bc2e9"
+    },
+    {
+      "path": "scripts/reporting/summarize_chamber_structure.py",
+      "sha256": "f99847d7b0d492a53a970a263ac4ea9d80cf149a7e7621c034401fd1e14a9fbd"
+    },
+    {
+      "path": "scripts/reporting/summarize_manipulation_stress.py",
+      "sha256": "09be50a0e1850b83f27c0628526fd8b755f4878f2fe0ee47071aada0569a5c23"
+    },
+    {
       "path": "scripts/reporting/write_paper_diagnostics.py",
-      "sha256": "d95e3ee94b600203860532e0aaf32a78a49f06a0747b80cac4001a82ef0673b2"
+      "sha256": "bd73513aef0a36f743b5fb003991020d3984b518c454c02ae33ab5939e16cdd9"
+    },
+    {
+      "path": "scripts/reporting/write_public_provenance.py",
+      "sha256": "64ea173a9ec76ca0bec6e1c80757552d86e3ead8fc359c779e1e4eab19dbee20"
+    },
+    {
+      "path": "scripts/validation/build_bill_progression_dataset.py",
+      "sha256": "67725445aa4670589a1769dd11ec2050b3edc18cddf2497a9784be3547691c6c"
+    },
+    {
+      "path": "scripts/validation/fetch_public_api_samples.py",
+      "sha256": "a92e13c74423d38a72b4e2c6599bcbdca2bf0bd0cb7a00687be42fc3bae4d604"
+    },
+    {
+      "path": "scripts/validation/run_empirical_bridge.py",
+      "sha256": "4cc8bbd60fa153712dbe9e95d57e7842ffa0f7baeb669924601cd3c7a90585a7"
+    },
+    {
+      "path": "scripts/validation/run_empirical_validation.py",
+      "sha256": "9580983de17b7958fb53b49252ed5aeedc81a81e69e224319149060a18ceba46"
+    },
+    {
+      "path": "scripts/validation/validate_empirical_inputs.py",
+      "sha256": "8eb7a7a85c8dce2e775983c2138b5751ab4f47c04c4b78f2eb473777c8cad035"
+    },
+    {
+      "path": "scripts/validation/write_findings_validation.py",
+      "sha256": "fe4422855da62d5c37d3ea45d3122f3c3f346ed813558db956e36abb4bc3edbd"
     }
   ]
 }

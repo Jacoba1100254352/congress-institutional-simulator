@@ -10,26 +10,26 @@ Supplemental breadth-catalog screen over the runnable --all-scenarios set. Long 
 
 | Family | Top scenario | Directional | Productivity | Compromise | Weak mandate | Admin cost | Welfare |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Adaptive strategy | Risk-routed majority legislature | 0.659 | 0.483 | 0.240 | 0.259 | 0.167 | 0.519 |
-| Agenda gate | Majority + public-interest screen | 0.637 | 0.251 | 0.225 | 0.181 | 0.064 | 0.644 |
-| Agenda scarcity and accountability | Proposal bonds + majority | 0.638 | 0.262 | 0.222 | 0.187 | 0.070 | 0.630 |
-| Anti-capture | Majority + anti-capture bundle | 0.651 | 0.285 | 0.228 | 0.137 | 0.067 | 0.664 |
-| Chamber apportionment | Proportional lower-house majority | 0.638 | 0.264 | 0.227 | 0.199 | 0.070 | 0.627 |
-| Chamber routing and conflict | Last-offer bicameral bargaining | 0.633 | 0.226 | 0.258 | 0.118 | 0.076 | 0.649 |
-| Citizen deliberation | Risk-routed majority without citizen review | 0.661 | 0.482 | 0.239 | 0.246 | 0.157 | 0.514 |
-| Coalition access | Parliamentary coalition confidence | 0.643 | 0.173 | 0.283 | 0.052 | 0.015 | 0.709 |
-| Content bargaining | Package bargaining + majority | 0.627 | 0.265 | 0.226 | 0.191 | 0.111 | 0.618 |
-| Conventional benchmark | Bicameral upper revision council | 0.631 | 0.226 | 0.246 | 0.132 | 0.077 | 0.640 |
+| Adaptive strategy | Risk-routed majority legislature | 0.659 | 0.484 | 0.235 | 0.241 | 0.167 | 0.518 |
+| Agenda gate | Committee-first regular order | 0.637 | 0.157 | 0.276 | 0.078 | 0.027 | 0.681 |
+| Agenda scarcity and accountability | Proposal bonds + majority | 0.635 | 0.250 | 0.234 | 0.185 | 0.070 | 0.633 |
+| Anti-capture | Majority + anti-capture bundle | 0.651 | 0.287 | 0.226 | 0.144 | 0.067 | 0.664 |
+| Chamber apportionment | Equal-population unicameral chamber | 0.638 | 0.261 | 0.229 | 0.190 | 0.070 | 0.629 |
+| Chamber routing and conflict | Bicameral limited navette | 0.636 | 0.247 | 0.249 | 0.146 | 0.077 | 0.639 |
+| Citizen deliberation | Risk-routed majority without citizen review | 0.661 | 0.485 | 0.239 | 0.255 | 0.157 | 0.515 |
+| Coalition access | Parliamentary coalition confidence | 0.644 | 0.175 | 0.279 | 0.044 | 0.015 | 0.709 |
+| Content bargaining | Package bargaining + majority | 0.629 | 0.270 | 0.229 | 0.207 | 0.111 | 0.623 |
+| Conventional benchmark | Bicameral upper revision council | 0.631 | 0.223 | 0.259 | 0.158 | 0.077 | 0.640 |
 | Conventional threshold | Unicameral simple majority | 0.637 | 0.271 | 0.217 | 0.197 | 0.070 | 0.621 |
-| Default-pass side family | Default pass unless 2/3 block | 0.725 | 0.843 | 0.104 | 0.498 | 0.070 | 0.487 |
-| Direct democracy | Citizen initiative and referendum | 0.667 | 0.367 | 0.204 | 0.207 | 0.070 | 0.611 |
-| Distributional justice | Compensation amendments + majority | 0.639 | 0.270 | 0.224 | 0.186 | 0.070 | 0.620 |
-| Independent review | Ex ante advisory review | 0.639 | 0.272 | 0.221 | 0.203 | 0.070 | 0.643 |
+| Default-pass side family | Default pass unless 2/3 block | 0.723 | 0.837 | 0.105 | 0.498 | 0.070 | 0.488 |
+| Direct democracy | Citizen initiative and referendum | 0.666 | 0.363 | 0.203 | 0.203 | 0.070 | 0.613 |
+| Distributional justice | Affected-group consent + majority | 0.637 | 0.252 | 0.227 | 0.174 | 0.062 | 0.628 |
+| Independent review | Independent fiscal/electoral/audit insulation bundle | 0.640 | 0.266 | 0.226 | 0.186 | 0.070 | 0.655 |
 | Leadership and procedural veto points | Leadership agenda cartel + majority | 0.635 | 0.167 | 0.241 | 0.092 | 0.027 | 0.678 |
-| Other | Principles resolution before second-chamber drafting | 0.632 | 0.240 | 0.243 | 0.152 | 0.079 | 0.627 |
-| Policy tournament | Unicameral majority + public-benefit alternatives | 0.712 | 0.793 | 0.472 | 0.169 | 0.386 | 0.570 |
-| Portfolio hybrid | Portfolio hybrid legislature | 0.681 | 0.512 | 0.404 | 0.040 | 0.235 | 0.607 |
-| Reversibility and objection | Active-law registry + majority review | 0.633 | 0.279 | 0.221 | 0.208 | 0.094 | 0.621 |
-| Selection and retention | Appointment and retention eligibility filter | 0.641 | 0.282 | 0.220 | 0.222 | 0.070 | 0.612 |
+| Other | Long-horizon strategic learning | 0.665 | 0.561 | 0.242 | 0.274 | 0.210 | 0.490 |
+| Policy tournament | Unicameral majority + public-benefit alternatives | 0.711 | 0.789 | 0.471 | 0.161 | 0.386 | 0.574 |
+| Portfolio hybrid | Portfolio hybrid legislature | 0.682 | 0.511 | 0.404 | 0.042 | 0.229 | 0.606 |
+| Reversibility and objection | Active-law registry + majority review | 0.634 | 0.294 | 0.215 | 0.235 | 0.090 | 0.606 |
+| Selection and retention | Appointment and retention eligibility filter | 0.643 | 0.294 | 0.216 | 0.227 | 0.070 | 0.615 |
 
 The screen exists to reduce cherry-picking risk: the main paper reports a compact breadth-first campaign, while this supplement shows which breadth-catalog variants score highest under a fixed within-family rule.

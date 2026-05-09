@@ -1,76 +1,181 @@
-bill_id,introduced,committee_reported,floor_considered,enacted
-118-sres-1,1,0,1,0
-118-sres-3,1,0,1,0
-118-sres-4,1,0,1,0
-118-sres-6,1,0,1,0
-118-sres-2,1,0,1,0
-118-sres-8,1,0,1,0
-118-sres-9,1,0,1,0
-118-sres-5,1,0,1,0
-118-sres-7,1,0,0,0
-118-hjres-8,1,0,0,0
-118-hr-27,1,0,0,0
-118-hr-49,1,0,0,0
-118-hr-53,1,0,0,0
-118-hr-208,1,0,0,0
-118-hr-31,1,0,0,0
-118-hr-32,1,0,0,0
-118-hr-36,1,0,0,0
-118-hr-37,1,0,0,0
-118-hr-129,1,0,0,0
-118-hr-130,1,0,0,0
-118-hr-138,1,0,0,0
-118-hr-143,1,0,0,0
-118-hr-144,1,0,0,0
-118-hr-146,1,0,0,0
-118-hr-147,1,0,0,0
-118-hr-148,1,0,0,0
-118-hr-149,1,0,0,0
-118-hr-164,1,0,0,0
-118-hr-38,1,0,0,0
-118-hr-151,1,0,0,0
-118-hr-145,1,0,0,0
-118-hconres-3,1,0,1,0
-118-hr-175,1,0,0,0
-118-hr-159,1,0,1,0
-118-hr-132,1,0,0,0
-118-hr-139,1,1,1,0
-118-hr-29,1,0,0,0
-118-hr-150,1,0,0,0
-118-hr-186,1,0,0,0
-118-hr-189,1,0,0,0
-118-hr-209,1,0,0,0
-118-hjres-11,1,0,0,0
-118-hr-190,1,1,0,0
-118-hr-33,1,0,0,0
-118-hr-34,1,0,0,0
-118-hr-35,1,0,0,0
-118-hr-134,1,0,0,0
-118-hr-152,1,0,0,0
-118-hr-188,1,1,0,0
-118-hr-133,1,1,0,0
-118-hr-346,1,0,1,1
-118-hr-423,1,0,1,1
-118-hr-6395,1,1,1,1
-118-hr-3947,1,1,1,1
-118-s-4610,1,0,1,1
-118-hr-3821,1,1,1,1
-118-hr-9468,1,0,1,1
-118-s-141,1,1,1,1
-118-s-656,1,0,1,1
-118-s-3764,1,0,1,1
-118-s-3998,1,0,1,1
-118-hr-6492,1,1,1,1
-118-s-474,1,1,1,1
-118-hjres-7,1,1,1,1
-118-s-1858,1,1,1,1
-118-hr-5861,1,1,1,1
-118-hr-5103,1,1,1,1
-118-hr-82,1,0,1,1
-118-hr-5863,1,1,1,1
-118-hr-9076,1,1,1,1
-118-s-4367,1,1,1,1
-118-hr-9322,1,1,1,1
-118-hr-4984,1,1,1,1
-118-s-2181,1,0,1,1
-118-hr-10065,1,1,1,1
+bill_id,congress,bill_type,bill_number,introduced,committee_reported,floor_considered,enacted,introduced_date,committee_reported_date,floor_action_date,enacted_date,policy_area,sponsor_party,actions_count,source_url
+118-hconres-3,118,hconres,3,1,0,1,0,2023-01-09,,2023-01-11,,Crime and Law Enforcement,R,12,https://www.congress.gov/bill/118th-congress/hconres-bill/3
+118-hconres-5,118,hconres,5,1,0,0,0,2023-01-09,,,,Crime and Law Enforcement,R,3,https://www.congress.gov/bill/118th-congress/hconres-bill/5
+118-hjres-11,118,hjres,11,1,0,0,0,2023-01-09,,,,Congress,R,5,https://www.congress.gov/bill/118th-congress/hjres-bill/11
+118-hjres-8,118,hjres,8,1,0,0,0,2023-01-09,,,,Law,R,3,https://www.congress.gov/bill/118th-congress/hjres-bill/8
+118-hr-129,118,hr,129,1,0,0,0,2023-01-09,,,,Armed Forces and National Security,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/129
+118-hr-130,118,hr,130,1,0,0,0,2023-01-09,,,,Crime and Law Enforcement,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/130
+118-hr-132,118,hr,132,1,0,0,0,2023-01-09,,,,Emergency Management,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/132
+118-hr-133,118,hr,133,1,1,0,0,2023-01-09,2023-12-06,,,Health,R,17,https://www.congress.gov/bill/118th-congress/hr-bill/133
+118-hr-134,118,hr,134,1,0,0,0,2023-01-09,,,,Health,R,6,https://www.congress.gov/bill/118th-congress/hr-bill/134
+118-hr-138,118,hr,138,1,0,0,0,2023-01-09,,,,Finance and Financial Sector,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/138
+118-hr-139,118,hr,139,1,1,1,0,2023-01-09,,2023-02-01,,Government Operations and Politics,R,14,https://www.congress.gov/bill/118th-congress/hr-bill/139
+118-hr-140,118,hr,140,1,1,1,0,2023-01-09,2023-02-28,2023-03-09,,Government Operations and Politics,R,48,https://www.congress.gov/bill/118th-congress/hr-bill/140
+118-hr-143,118,hr,143,1,0,0,0,2023-01-09,,,,Armed Forces and National Security,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/143
+118-hr-144,118,hr,144,1,0,0,0,2023-01-09,,,,Labor and Employment,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/144
+118-hr-145,118,hr,145,1,0,0,0,2023-01-09,,,,"Science, Technology, Communications",R,4,https://www.congress.gov/bill/118th-congress/hr-bill/145
+118-hr-146,118,hr,146,1,0,0,0,2023-01-09,,,,International Affairs,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/146
+118-hr-147,118,hr,147,1,0,0,0,2023-01-09,,,,Commerce,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/147
+118-hr-148,118,hr,148,1,0,0,0,2023-01-09,,,,Crime and Law Enforcement,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/148
+118-hr-149,118,hr,149,1,0,0,0,2023-01-09,,,,Government Operations and Politics,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/149
+118-hr-150,118,hr,150,1,0,0,0,2023-01-09,,,,Energy,R,6,https://www.congress.gov/bill/118th-congress/hr-bill/150
+118-hr-151,118,hr,151,1,0,0,0,2023-01-09,,,,Taxation,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/151
+118-hr-152,118,hr,152,1,0,0,0,2023-01-09,,,,Taxation,R,5,https://www.congress.gov/bill/118th-congress/hr-bill/152
+118-hr-159,118,hr,159,1,0,1,0,2023-01-09,,2023-01-24,,Government Operations and Politics,R,14,https://www.congress.gov/bill/118th-congress/hr-bill/159
+118-hr-164,118,hr,164,1,0,0,0,2023-01-09,,,,Economics and Public Finance,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/164
+118-hr-175,118,hr,175,1,0,0,0,2023-01-09,,,,Crime and Law Enforcement,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/175
+118-hr-186,118,hr,186,1,0,0,0,2023-01-09,,,,Water Resources Development,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/186
+118-hr-188,118,hr,188,1,1,0,0,2023-01-09,2023-06-13,,,Public Lands and Natural Resources,R,12,https://www.congress.gov/bill/118th-congress/hr-bill/188
+118-hr-189,118,hr,189,1,0,0,0,2023-01-09,,,,Public Lands and Natural Resources,R,6,https://www.congress.gov/bill/118th-congress/hr-bill/189
+118-hr-190,118,hr,190,1,1,0,0,2023-01-09,2024-09-11,,,Taxation,R,8,https://www.congress.gov/bill/118th-congress/hr-bill/190
+118-hr-194,118,hr,194,1,0,0,0,2023-01-09,,,,Immigration,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/194
+118-hr-195,118,hr,195,1,0,0,0,2023-01-09,,,,Government Operations and Politics,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/195
+118-hr-199,118,hr,199,1,0,0,0,2023-01-09,,,,International Affairs,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/199
+118-hr-208,118,hr,208,1,0,0,0,2023-01-09,,,,Animals,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/208
+118-hr-209,118,hr,209,1,0,0,0,2023-01-09,,,,Energy,R,7,https://www.congress.gov/bill/118th-congress/hr-bill/209
+118-hr-210,118,hr,210,1,0,0,0,2023-01-09,,,,Environmental Protection,R,6,https://www.congress.gov/bill/118th-congress/hr-bill/210
+118-hr-25,118,hr,25,1,0,0,0,2023-01-09,,,,Taxation,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/25
+118-hr-27,118,hr,27,1,0,0,0,2023-01-09,,,,Crime and Law Enforcement,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/27
+118-hr-29,118,hr,29,1,0,0,0,2023-01-09,,,,Immigration,R,5,https://www.congress.gov/bill/118th-congress/hr-bill/29
+118-hr-30,118,hr,30,1,0,0,0,2023-01-09,,,,Crime and Law Enforcement,D,4,https://www.congress.gov/bill/118th-congress/hr-bill/30
+118-hr-31,118,hr,31,1,0,0,0,2023-01-09,,,,Health,D,4,https://www.congress.gov/bill/118th-congress/hr-bill/31
+118-hr-32,118,hr,32,1,0,0,0,2023-01-09,,,,Taxation,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/32
+118-hr-33,118,hr,33,1,0,0,0,2023-01-09,,,,Health,D,6,https://www.congress.gov/bill/118th-congress/hr-bill/33
+118-hr-34,118,hr,34,1,0,0,0,2023-01-09,,,,Taxation,D,4,https://www.congress.gov/bill/118th-congress/hr-bill/34
+118-hr-35,118,hr,35,1,0,0,0,2023-01-09,,,,Health,D,6,https://www.congress.gov/bill/118th-congress/hr-bill/35
+118-hr-36,118,hr,36,1,0,0,0,2023-01-09,,,,Crime and Law Enforcement,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/36
+118-hr-37,118,hr,37,1,0,0,0,2023-01-09,,,,Crime and Law Enforcement,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/37
+118-hr-38,118,hr,38,1,0,0,0,2023-01-09,,,,Crime and Law Enforcement,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/38
+118-hr-40,118,hr,40,1,0,0,0,2023-01-09,,,,"Civil Rights and Liberties, Minority Issues",D,4,https://www.congress.gov/bill/118th-congress/hr-bill/40
+118-hr-401,118,hr,401,1,0,0,0,2023-01-20,,,,"Science, Technology, Communications",R,3,https://www.congress.gov/bill/118th-congress/hr-bill/401
+118-hr-402,118,hr,402,1,0,0,0,2023-01-20,,,,Immigration,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/402
+118-hr-403,118,hr,403,1,0,0,0,2023-01-20,,,,Health,R,6,https://www.congress.gov/bill/118th-congress/hr-bill/403
+118-hr-408,118,hr,408,1,0,0,0,2023-01-20,,,,Finance and Financial Sector,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/408
+118-hr-41,118,hr,41,1,0,0,0,2023-01-09,,,,Armed Forces and National Security,R,6,https://www.congress.gov/bill/118th-congress/hr-bill/41
+118-hr-410,118,hr,410,1,0,0,0,2023-01-20,,,,Health,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/410
+118-hr-411,118,hr,411,1,0,0,0,2023-01-20,,,,Government Operations and Politics,R,5,https://www.congress.gov/bill/118th-congress/hr-bill/411
+118-hr-417,118,hr,417,1,0,0,0,2023-01-20,,,,Native Americans,D,4,https://www.congress.gov/bill/118th-congress/hr-bill/417
+118-hr-418,118,hr,418,1,0,0,0,2023-01-20,,,,Taxation,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/418
+118-hr-420,118,hr,420,1,0,0,0,2023-01-20,,,,Health,D,6,https://www.congress.gov/bill/118th-congress/hr-bill/420
+118-hr-426,118,hr,426,1,0,0,0,2023-01-20,,,,Taxation,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/426
+118-hr-440,118,hr,440,1,0,0,0,2023-01-20,,,,Finance and Financial Sector,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/440
+118-hr-442,118,hr,442,1,0,0,0,2023-01-20,,,,Government Operations and Politics,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/442
+118-hr-444,118,hr,444,1,0,0,0,2023-01-20,,,,Crime and Law Enforcement,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/444
+118-hr-49,118,hr,49,1,0,0,0,2023-01-09,,,,Government Operations and Politics,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/49
+118-hr-53,118,hr,53,1,0,0,0,2023-01-09,,,,Government Operations and Politics,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/53
+118-hr-883,118,hr,883,1,0,0,0,2023-02-09,,,,Social Welfare,D,7,https://www.congress.gov/bill/118th-congress/hr-bill/883
+118-hr-884,118,hr,884,1,0,0,0,2023-02-09,,,,Taxation,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/884
+118-hr-885,118,hr,885,1,0,0,0,2023-02-09,,,,Health,D,10,https://www.congress.gov/bill/118th-congress/hr-bill/885
+118-hr-886,118,hr,886,1,1,1,0,2023-02-09,2023-05-23,2024-03-11,,Environmental Protection,D,28,https://www.congress.gov/bill/118th-congress/hr-bill/886
+118-hr-887,118,hr,887,1,0,0,0,2023-02-09,,,,Education,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/887
+118-hr-888,118,hr,888,1,0,0,0,2023-02-09,,,,Taxation,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/888
+118-hr-889,118,hr,889,1,0,0,0,2023-02-09,,,,Taxation,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/889
+118-hr-890,118,hr,890,1,1,1,0,2023-02-09,2023-07-12,2024-07-22,,Government Operations and Politics,R,15,https://www.congress.gov/bill/118th-congress/hr-bill/890
+118-hr-891,118,hr,891,1,0,0,0,2023-02-09,,,,Energy,D,5,https://www.congress.gov/bill/118th-congress/hr-bill/891
+118-hr-892,118,hr,892,1,0,0,0,2023-02-09,,,,International Affairs,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/892
+118-hr-893,118,hr,893,1,0,0,0,2023-02-09,,,,Energy,D,5,https://www.congress.gov/bill/118th-congress/hr-bill/893
+118-hr-895,118,hr,895,1,0,1,0,2023-02-09,,2024-05-23,,Crime and Law Enforcement,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/895
+118-hr-896,118,hr,896,1,0,0,0,2023-02-09,,,,Commerce,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/896
+118-hr-897,118,hr,897,1,1,1,0,2023-02-09,2024-05-07,2024-07-08,,Environmental Protection,R,20,https://www.congress.gov/bill/118th-congress/hr-bill/897
+118-hr-902,118,hr,902,1,0,0,0,2023-02-09,,,,Health,D,4,https://www.congress.gov/bill/118th-congress/hr-bill/902
+118-hr-903,118,hr,903,1,0,0,0,2023-02-09,,,,Commerce,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/903
+118-hr-905,118,hr,905,1,0,0,0,2023-02-09,,,,Crime and Law Enforcement,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/905
+118-hr-908,118,hr,908,1,0,0,0,2023-02-09,,,,Taxation,D,4,https://www.congress.gov/bill/118th-congress/hr-bill/908
+118-hr-913,118,hr,913,1,0,0,0,2023-02-09,,,,Energy,D,5,https://www.congress.gov/bill/118th-congress/hr-bill/913
+118-hr-914,118,hr,914,1,0,0,0,2023-02-09,,,,Government Operations and Politics,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/914
+118-hr-915,118,hr,915,1,1,0,0,2023-02-09,2024-11-26,,,Transportation and Public Works,R,10,https://www.congress.gov/bill/118th-congress/hr-bill/915
+118-hr-916,118,hr,916,1,0,0,0,2023-02-09,,,,Crime and Law Enforcement,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/916
+118-hr-920,118,hr,920,1,0,0,0,2023-02-09,,,,Crime and Law Enforcement,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/920
+118-hr-921,118,hr,921,1,0,0,0,2023-02-09,,,,Immigration,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/921
+118-hr-922,118,hr,922,1,0,0,0,2023-02-09,,,,"Science, Technology, Communications",R,6,https://www.congress.gov/bill/118th-congress/hr-bill/922
+118-hr-923,118,hr,923,1,0,0,0,2023-02-09,,,,Energy,R,6,https://www.congress.gov/bill/118th-congress/hr-bill/923
+118-hr-925,118,hr,925,1,0,0,0,2023-02-09,,,,Law,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/925
+118-hr-926,118,hr,926,1,0,0,0,2023-02-09,,,,Law,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/926
+118-hr-927,118,hr,927,1,0,0,0,2023-02-09,,,,Law,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/927
+118-hr-929,118,hr,929,1,1,0,0,2023-02-09,2024-03-12,,,Native Americans,D,11,https://www.congress.gov/bill/118th-congress/hr-bill/929
+118-hr-932,118,hr,932,1,0,0,0,2023-02-09,,,,International Affairs,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/932
+118-hr-934,118,hr,934,1,1,0,0,2023-02-09,2023-09-20,,,Agriculture and Food,R,12,https://www.congress.gov/bill/118th-congress/hr-bill/934
+118-hr-935,118,hr,935,1,0,0,0,2023-02-09,,,,"Civil Rights and Liberties, Minority Issues",R,3,https://www.congress.gov/bill/118th-congress/hr-bill/935
+118-hr-937,118,hr,937,1,0,0,0,2023-02-09,,,,Native Americans,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/937
+118-hr-938,118,hr,938,1,0,0,0,2023-02-09,,,,Education,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/938
+118-hr-939,118,hr,939,1,0,0,0,2023-02-09,,,,Armed Forces and National Security,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/939
+118-hr-942,118,hr,942,1,0,0,0,2023-02-09,,,,"Science, Technology, Communications",R,4,https://www.congress.gov/bill/118th-congress/hr-bill/942
+118-hr-944,118,hr,944,1,0,0,0,2023-02-09,,,,Education,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/944
+118-hr-945,118,hr,945,1,0,0,0,2023-02-09,,,,Agriculture and Food,D,4,https://www.congress.gov/bill/118th-congress/hr-bill/945
+118-hr-946,118,hr,946,1,0,0,0,2023-02-09,,,,Government Operations and Politics,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/946
+118-hr-948,118,hr,948,1,0,0,0,2023-02-09,,,,International Affairs,R,4,https://www.congress.gov/bill/118th-congress/hr-bill/948
+118-hr-949,118,hr,949,1,0,0,0,2023-02-09,,,,Health,D,5,https://www.congress.gov/bill/118th-congress/hr-bill/949
+118-hr-951,118,hr,951,1,0,0,0,2023-02-09,,,,Education,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/951
+118-hr-952,118,hr,952,1,0,0,0,2023-02-09,,,,Health,D,4,https://www.congress.gov/bill/118th-congress/hr-bill/952
+118-hr-953,118,hr,953,1,0,0,0,2023-02-09,,,,Families,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/953
+118-hr-955,118,hr,955,1,0,0,0,2023-02-09,,,,Health,R,7,https://www.congress.gov/bill/118th-congress/hr-bill/955
+118-hr-958,118,hr,958,1,0,0,0,2023-02-09,,,,International Affairs,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/958
+118-hr-961,118,hr,961,1,0,0,0,2023-02-09,,,,Education,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/961
+118-hr-962,118,hr,962,1,0,0,0,2023-02-09,,,,Finance and Financial Sector,R,3,https://www.congress.gov/bill/118th-congress/hr-bill/962
+118-hr-964,118,hr,964,1,0,0,0,2023-02-09,,,,Government Operations and Politics,D,4,https://www.congress.gov/bill/118th-congress/hr-bill/964
+118-hr-966,118,hr,966,1,0,0,0,2023-02-09,,,,Agriculture and Food,D,4,https://www.congress.gov/bill/118th-congress/hr-bill/966
+118-hr-969,118,hr,969,1,0,0,0,2023-02-09,,,,Education,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/969
+118-hr-970,118,hr,970,1,0,0,0,2023-02-09,,,,Energy,R,5,https://www.congress.gov/bill/118th-congress/hr-bill/970
+118-hr-971,118,hr,971,1,0,0,0,2023-02-09,,,,Education,D,3,https://www.congress.gov/bill/118th-congress/hr-bill/971
+118-hr-973,118,hr,973,1,0,0,0,2023-02-09,,,,"Civil Rights and Liberties, Minority Issues",D,4,https://www.congress.gov/bill/118th-congress/hr-bill/973
+118-hres-113,118,hres,113,1,0,0,0,2023-02-09,,,,International Affairs,R,3,https://www.congress.gov/bill/118th-congress/hres-bill/113
+118-hres-114,118,hres,114,1,0,1,0,2023-02-09,,2023-05-17,,Congress,D,12,https://www.congress.gov/bill/118th-congress/hres-bill/114
+118-hres-118,118,hres,118,1,0,0,0,2023-02-09,,,,Health,R,5,https://www.congress.gov/bill/118th-congress/hres-bill/118
+118-hres-119,118,hres,119,1,0,0,0,2023-02-09,,,,Education,D,3,https://www.congress.gov/bill/118th-congress/hres-bill/119
+118-hres-120,118,hres,120,1,0,0,0,2023-02-09,,,,Crime and Law Enforcement,D,3,https://www.congress.gov/bill/118th-congress/hres-bill/120
+118-hres-46,118,hres,46,1,0,0,0,2023-01-20,,,,Congress,R,3,https://www.congress.gov/bill/118th-congress/hres-bill/46
+118-hres-47,118,hres,47,1,0,0,0,2023-01-20,,,,Congress,R,3,https://www.congress.gov/bill/118th-congress/hres-bill/47
+118-s-10,118,s,10,1,1,0,0,2023-01-23,2023-02-16,,,Armed Forces and National Security,D,3,https://www.congress.gov/bill/118th-congress/s-bill/10
+118-s-11,118,s,11,1,0,0,0,2023-01-23,,,,Energy,R,2,https://www.congress.gov/bill/118th-congress/s-bill/11
+118-s-12,118,s,12,1,0,0,0,2023-01-23,,,,Government Operations and Politics,R,2,https://www.congress.gov/bill/118th-congress/s-bill/12
+118-s-13,118,s,13,1,0,0,0,2023-01-23,,,,Health,R,2,https://www.congress.gov/bill/118th-congress/s-bill/13
+118-s-14,118,s,14,1,0,0,0,2023-01-23,,,,Crime and Law Enforcement,D,2,https://www.congress.gov/bill/118th-congress/s-bill/14
+118-s-15,118,s,15,1,0,0,0,2023-01-23,,,,Health,R,2,https://www.congress.gov/bill/118th-congress/s-bill/15
+118-s-16,118,s,16,1,0,0,0,2023-01-23,,,,Education,R,2,https://www.congress.gov/bill/118th-congress/s-bill/16
+118-s-17,118,s,17,1,0,0,0,2023-01-23,,,,Taxation,D,2,https://www.congress.gov/bill/118th-congress/s-bill/17
+118-s-18,118,s,18,1,0,0,0,2023-01-23,,,,Crime and Law Enforcement,R,2,https://www.congress.gov/bill/118th-congress/s-bill/18
+118-s-19,118,s,19,1,0,0,0,2023-01-23,,,,Energy,R,2,https://www.congress.gov/bill/118th-congress/s-bill/19
+118-s-20,118,s,20,1,0,0,0,2023-01-23,,,,Energy,R,2,https://www.congress.gov/bill/118th-congress/s-bill/20
+118-s-21,118,s,21,1,0,0,0,2023-01-23,,,,Public Lands and Natural Resources,D,2,https://www.congress.gov/bill/118th-congress/s-bill/21
+118-s-22,118,s,22,1,0,0,0,2023-01-23,,,,Energy,D,2,https://www.congress.gov/bill/118th-congress/s-bill/22
+118-s-23,118,s,23,1,0,0,0,2023-01-23,,,,Energy,R,2,https://www.congress.gov/bill/118th-congress/s-bill/23
+118-s-24,118,s,24,1,0,0,0,2023-01-23,,,,Housing and Community Development,D,2,https://www.congress.gov/bill/118th-congress/s-bill/24
+118-s-25,118,s,25,1,0,0,0,2023-01-23,,,,Crime and Law Enforcement,D,2,https://www.congress.gov/bill/118th-congress/s-bill/25
+118-s-26,118,s,26,1,0,0,0,2023-01-23,,,,Taxation,R,2,https://www.congress.gov/bill/118th-congress/s-bill/26
+118-s-27,118,s,27,1,0,0,0,2023-01-24,,,,Armed Forces and National Security,R,2,https://www.congress.gov/bill/118th-congress/s-bill/27
+118-s-28,118,s,28,1,0,0,0,2023-01-24,,,,Taxation,D,2,https://www.congress.gov/bill/118th-congress/s-bill/28
+118-s-29,118,s,29,1,0,0,0,2023-01-24,,,,Armed Forces and National Security,R,2,https://www.congress.gov/bill/118th-congress/s-bill/29
+118-s-30,118,s,30,1,1,1,1,2023-01-24,2023-03-07,2023-06-20,2023-07-18,Armed Forces and National Security,D,23,https://www.congress.gov/bill/118th-congress/s-bill/30
+118-s-31,118,s,31,1,0,0,0,2023-01-24,,,,Energy,R,2,https://www.congress.gov/bill/118th-congress/s-bill/31
+118-s-32,118,s,32,1,0,0,0,2023-01-24,,,,Housing and Community Development,D,4,https://www.congress.gov/bill/118th-congress/s-bill/32
+118-s-35,118,s,35,1,0,0,0,2023-01-24,,,,Social Welfare,R,2,https://www.congress.gov/bill/118th-congress/s-bill/35
+118-s-36,118,s,36,1,0,0,0,2023-01-24,,,,Health,R,2,https://www.congress.gov/bill/118th-congress/s-bill/36
+118-s-38,118,s,38,1,1,0,0,2023-01-24,2023-07-25,,,Commerce,D,7,https://www.congress.gov/bill/118th-congress/s-bill/38
+118-s-40,118,s,40,1,0,0,0,2023-01-24,,,,"Civil Rights and Liberties, Minority Issues",D,2,https://www.congress.gov/bill/118th-congress/s-bill/40
+118-s-42,118,s,42,1,0,0,0,2023-01-24,,,,Armed Forces and National Security,D,2,https://www.congress.gov/bill/118th-congress/s-bill/42
+118-s-43,118,s,43,1,0,0,0,2023-01-24,,,,Congress,R,2,https://www.congress.gov/bill/118th-congress/s-bill/43
+118-s-46,118,s,46,1,0,0,0,2023-01-24,,,,Commerce,R,2,https://www.congress.gov/bill/118th-congress/s-bill/46
+118-s-50,118,s,50,1,0,1,1,2023-01-24,,2024-12-09,2024-12-17,Environmental Protection,R,22,https://www.congress.gov/bill/118th-congress/s-bill/50
+118-s-56,118,s,56,1,0,0,0,2023-01-24,,,,Taxation,R,2,https://www.congress.gov/bill/118th-congress/s-bill/56
+118-s-59,118,s,59,1,1,1,1,2023-01-24,2024-12-02,2024-12-16,2024-12-23,Government Operations and Politics,I,25,https://www.congress.gov/bill/118th-congress/s-bill/59
+118-s-6,118,s,6,1,0,0,0,2023-01-23,,,,Congress,R,2,https://www.congress.gov/bill/118th-congress/s-bill/6
+118-s-60,118,s,60,1,0,0,0,2023-01-24,,,,Education,R,2,https://www.congress.gov/bill/118th-congress/s-bill/60
+118-s-7,118,s,7,1,0,0,0,2023-01-23,,,,Law,R,2,https://www.congress.gov/bill/118th-congress/s-bill/7
+118-s-8,118,s,8,1,0,0,0,2023-01-23,,,,Taxation,D,2,https://www.congress.gov/bill/118th-congress/s-bill/8
+118-s-9,118,s,9,1,0,0,0,2023-01-23,,,,Energy,R,2,https://www.congress.gov/bill/118th-congress/s-bill/9
+118-sjres-1,118,sjres,1,1,0,0,0,2023-01-23,,,,Economics and Public Finance,R,2,https://www.congress.gov/bill/118th-congress/sjres-bill/1
+118-sjres-2,118,sjres,2,1,0,0,0,2023-01-23,,,,Congress,R,2,https://www.congress.gov/bill/118th-congress/sjres-bill/2
+118-sjres-3,118,sjres,3,1,0,0,0,2023-01-23,,,,"Civil Rights and Liberties, Minority Issues",D,2,https://www.congress.gov/bill/118th-congress/sjres-bill/3
+118-sjres-4,118,sjres,4,1,0,1,0,2023-01-24,,2023-04-27,,"Civil Rights and Liberties, Minority Issues",D,9,https://www.congress.gov/bill/118th-congress/sjres-bill/4
+118-sres-1,118,sres,1,1,0,1,0,2023-01-03,,2023-01-03,,Congress,D,3,https://www.congress.gov/bill/118th-congress/sres-bill/1
+118-sres-10,118,sres,10,1,0,0,0,2023-01-23,,,,"Civil Rights and Liberties, Minority Issues",R,2,https://www.congress.gov/bill/118th-congress/sres-bill/10
+118-sres-11,118,sres,11,1,0,1,0,2023-01-23,,2023-02-01,,Education,R,6,https://www.congress.gov/bill/118th-congress/sres-bill/11
+118-sres-12,118,sres,12,1,0,0,0,2023-01-23,,,,Health,D,2,https://www.congress.gov/bill/118th-congress/sres-bill/12
+118-sres-2,118,sres,2,1,0,1,0,2023-01-03,,2023-01-03,,Congress,D,4,https://www.congress.gov/bill/118th-congress/sres-bill/2
+118-sres-3,118,sres,3,1,0,1,0,2023-01-03,,2023-01-03,,Congress,D,3,https://www.congress.gov/bill/118th-congress/sres-bill/3
+118-sres-4,118,sres,4,1,0,1,0,2023-01-03,,2023-01-03,,Congress,D,3,https://www.congress.gov/bill/118th-congress/sres-bill/4
+118-sres-5,118,sres,5,1,0,1,0,2023-01-03,,2023-01-03,,Congress,D,4,https://www.congress.gov/bill/118th-congress/sres-bill/5
+118-sres-6,118,sres,6,1,0,1,0,2023-01-03,,2023-01-03,,Congress,D,3,https://www.congress.gov/bill/118th-congress/sres-bill/6
+118-sres-7,118,sres,7,1,0,0,0,2023-01-03,,,,Congress,D,2,https://www.congress.gov/bill/118th-congress/sres-bill/7
+118-sres-8,118,sres,8,1,0,1,0,2023-01-03,,2023-01-03,,Congress,D,3,https://www.congress.gov/bill/118th-congress/sres-bill/8
+118-sres-9,118,sres,9,1,0,1,0,2023-01-03,,2023-01-03,,Congress,D,3,https://www.congress.gov/bill/118th-congress/sres-bill/9

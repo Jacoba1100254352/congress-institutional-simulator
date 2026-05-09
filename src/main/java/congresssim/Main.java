@@ -345,14 +345,14 @@ public final class Main {
     }
 
     private static void printCsv(List<ScenarioReport> reports) {
-        StringBuilder header = new StringBuilder("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,weakPublicMandatePassage,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,administrativeCost,administrativeFeasibility,amendmentRate,amendmentMovement,falseNegativePassRate,publicWillReviewRate,proposerAccessGini,welfarePerSubmittedBill,vetoes,overriddenVetoes,interChamberConflictRate,secondChamberKillRate,conferenceRate,conferenceSuccessRate,routingDelayCost,shuttleRoundsToAgreement,suspensiveOverrideRate,bicameralDeadlockRate,dischargePetitionRate,committeeOverrideRate,committeeHearingRate,committeeQueueDelay,committeeAmendmentValueAdded,populationSeatDistortion,democraticResponsiveness,seatVoteDistortion,constituencyServiceConcentration,regionalTransferBias");
+        StringBuilder header = new StringBuilder("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,weakPublicMandatePassage,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,administrativeCost,administrativeFeasibility,amendmentRate,amendmentMovement,falseNegativePassRate,publicWillReviewRate,proposerAccessGini,welfarePerSubmittedBill,enactedPolicyQuality,policyYield,blockageReliance,publicMandateLegitimacy,vetoes,overriddenVetoes,interChamberConflictRate,secondChamberKillRate,conferenceRate,conferenceSuccessRate,routingDelayCost,shuttleRoundsToAgreement,suspensiveOverrideRate,bicameralDeadlockRate,dischargePetitionRate,committeeOverrideRate,committeeHearingRate,committeeQueueDelay,committeeAmendmentValueAdded,populationSeatDistortion,democraticResponsiveness,seatVoteDistortion,constituencyServiceConcentration,regionalTransferBias");
         for (String key : ScenarioReport.SUPPLEMENTAL_METRIC_KEYS) {
             header.append(',').append(key);
         }
         System.out.println(header);
         for (ScenarioReport report : reports) {
             System.out.printf(Locale.ROOT,
-                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f",
+                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f",
                     csvCell(report.scenarioName()),
                     report.totalBills(),
                     report.enactedBills(),
@@ -387,6 +387,10 @@ public final class Main {
                     report.publicWillReviewRate(),
                     report.proposerAccessGini(),
                     report.welfarePerSubmittedBill(),
+                    report.enactedPolicyQualityScore(),
+                    report.policyYieldScore(),
+                    report.blockageRelianceRate(),
+                    report.publicMandateLegitimacyScore(),
                     report.vetoes(),
                     report.overriddenVetoes(),
                     report.interChamberConflictRate(),

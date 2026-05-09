@@ -1,0 +1,26 @@
+label,family,representativeScenario,representativeDirectional,championScenario,championDirectional,directionalGap,sameAsChampion
+CUR,Conventional benchmark,Stylized U.S.-like conventional benchmark,0.627545,Bicameral upper revision council,0.630535,-0.002990,no
+SM,Conventional threshold,Unicameral simple majority,0.637369,Unicameral simple majority,0.637369,0.000000,yes
+COMM,Agenda gate,Committee-first regular order,0.636864,Committee-first regular order,0.636864,0.000000,yes
+PCOM,Agenda gate,Majority + proportional committee assignment,0.628026,Committee-first regular order,0.636864,-0.008838,no
+DIS,Agenda gate,Committee discharge-petition target,0.626395,Committee-first regular order,0.636864,-0.010469,no
+PARL,Coalition access,Parliamentary coalition confidence,0.644124,Parliamentary coalition confidence,0.644124,0.000000,yes
+INIT,Direct democracy,Citizen initiative and referendum,0.666354,Citizen initiative and referendum,0.666354,0.000000,yes
+PET,Citizen deliberation,Citizen agenda petitions + majority,0.635070,Risk-routed majority without citizen review,0.661471,-0.026401,no
+PAIR,Policy tournament,Unicameral majority + pairwise alternatives,0.685707,Unicameral majority + public-benefit alternatives,0.711211,-0.025504,no
+AMT,Policy tournament,Pairwise amendment tournament + majority,0.685860,Unicameral majority + public-benefit alternatives,0.711211,-0.025351,no
+JURY,Citizen deliberation,Citizen assembly threshold gate,0.602224,Risk-routed majority without citizen review,0.661471,-0.059247,no
+RPAN,Citizen deliberation,Random public review panel + majority,0.604352,Risk-routed majority without citizen review,0.661471,-0.057119,no
+OPEN,Other,Open-rule floor calendar + majority,0.635164,Long-horizon strategic learning,0.664666,-0.029502,no
+QAB,Agenda scarcity and accountability,Quadratic attention budget + majority,0.593278,Proposal bonds + majority,0.635468,-0.042190,no
+BOND,Agenda scarcity and accountability,Proposal bonds + majority,0.635468,Proposal bonds + majority,0.635468,0.000000,yes
+HARM,Distributional justice,Harm-weighted double majority,0.634673,Affected-group consent + majority,0.637016,-0.002343,no
+MPKG,Content bargaining,Multidimensional package bargaining + majority,0.612172,Package bargaining + majority,0.628530,-0.016358,no
+CAP,Anti-capture,Majority + anti-capture bundle,0.651073,Majority + anti-capture bundle,0.651073,0.000000,yes
+ACG,Anti-capture,Anti-capture proposal access + majority,0.643940,Majority + anti-capture bundle,0.651073,-0.007133,no
+RISK,Adaptive strategy,Risk-routed majority legislature,0.659259,Risk-routed majority legislature,0.659259,0.000000,yes
+PORT,Portfolio hybrid,Portfolio hybrid legislature,0.682328,Portfolio hybrid legislature,0.682328,0.000000,yes
+XPORT,Portfolio hybrid,Expanded portfolio hybrid legislature,0.674333,Portfolio hybrid legislature,0.682328,-0.007995,no
+LAW,Reversibility and objection,Active-law registry + majority review,0.634233,Active-law registry + majority review,0.634233,0.000000,yes
+DP,Default-pass side family,Default pass unless 2/3 block,0.723367,Default pass unless 2/3 block,0.723367,0.000000,yes
+DPM,Default-pass side family,Default pass + multi-round mediation + challenge,0.688804,Default pass unless 2/3 block,0.723367,-0.034563,no
