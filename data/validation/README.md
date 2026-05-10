@@ -61,6 +61,13 @@ adapters are deliberately source-shaped: adding real data still requires a
 documented extraction and cleaning note for each source before the paper should
 claim empirical validation rather than validation readiness.
 
+Run `make validation-gap-report` to regenerate the paper-facing boundary report
+and appendix table. That workflow joins readiness, raw summary metrics, and the
+empirical bridge into `reports/empirical-validation-gap-report.*` and
+`paper/figures/empirical_validation_gap_table.tex`. The point is to keep paper
+claims honest: rows with raw inputs can be discussed as empirical bridges, while
+missing rows remain synthetic or speculative model components.
+
 Optional API adapter fixtures can be fetched with:
 
 ```sh

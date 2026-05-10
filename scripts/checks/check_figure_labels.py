@@ -31,9 +31,9 @@ POINT_LABEL_RE = re.compile(
 LEGACY_LABEL_RE = re.compile(r"% (point|legend)-label label=(.*?) x=([-0-9.]+) y=([-0-9.]+)")
 PUT_RE = re.compile(r"\\put\(([-0-9.]+),([-0-9.]+)\)")
 POINT_RULE_RE = re.compile(r"\\rule\{([0-9.]+)mm\}\{\1mm\}")
-LABEL_HEIGHT = 4.0
+LABEL_HEIGHT = 4.5
 LABEL_MARGIN = 0.6
-MAX_LABEL_DISTANCE = 21.0
+MAX_LABEL_DISTANCE = 42.0
 LEADER_DISTANCE = 7.5
 
 
@@ -51,7 +51,7 @@ class FigureLabel:
 
 def label_width(label: str) -> float:
     visible = re.sub(r"\\[A-Za-z]+|[{}$]", "", label)
-    return max(3.8, len(visible) * 1.10)
+    return max(4.2, len(visible) * 1.22)
 
 
 def label_box(label: FigureLabel) -> tuple[float, float, float, float]:

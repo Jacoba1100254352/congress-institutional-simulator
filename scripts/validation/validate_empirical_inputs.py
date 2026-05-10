@@ -11,6 +11,7 @@ from pathlib import Path
 RAW_DIR = Path("data/validation/raw")
 FIXTURE_DIR = Path("data/validation/fixtures")
 REPORT = Path("reports/empirical-validation-readiness.md")
+REPORT_CSV = Path("reports/empirical-validation-readiness.csv")
 
 
 @dataclass(frozen=True)
@@ -96,6 +97,7 @@ def columns(path: Path) -> set[str]:
 
 def main() -> int:
     REPORT.parent.mkdir(parents=True, exist_ok=True)
+    output_rows: list[dict[str, str]] = []
     lines = [
         "# Empirical Validation Readiness",
         "",
@@ -110,15 +112,36 @@ def main() -> int:
         path = RAW_DIR / spec.file_name
         if not path.exists():
             lines.append(f"| `{spec.file_name}` | {spec.purpose} | missing | all |")
+            output_rows.append({
+                "dataset": spec.file_name,
+                "purpose": spec.purpose,
+                "status": "missing",
+                "missingColumns": "all",
+                "requiredColumns": ",".join(spec.required_columns),
+            })
             continue
         present += 1
         found_columns = columns(path)
         missing = [column for column in spec.required_columns if column not in found_columns]
         if missing:
             lines.append(f"| `{spec.file_name}` | {spec.purpose} | incomplete | {', '.join(missing)} |")
+            output_rows.append({
+                "dataset": spec.file_name,
+                "purpose": spec.purpose,
+                "status": "incomplete",
+                "missingColumns": ",".join(missing),
+                "requiredColumns": ",".join(spec.required_columns),
+            })
         else:
             complete += 1
             lines.append(f"| `{spec.file_name}` | {spec.purpose} | ready | none |")
+            output_rows.append({
+                "dataset": spec.file_name,
+                "purpose": spec.purpose,
+                "status": "ready",
+                "missingColumns": "",
+                "requiredColumns": ",".join(spec.required_columns),
+            })
 
     fixture_count = len([path for path in FIXTURE_DIR.glob("*.csv") if path.is_file()]) if FIXTURE_DIR.exists() else 0
     lines.extend([
@@ -130,7 +153,16 @@ def main() -> int:
         "Next empirical step: add curated raw files and document source-specific transformations. The adapters now cover roll calls, bill progress, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
     ])
     REPORT.write_text("\n".join(lines) + "\n")
+    with REPORT_CSV.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["dataset", "purpose", "status", "missingColumns", "requiredColumns"],
+            lineterminator="\n",
+        )
+        writer.writeheader()
+        writer.writerows(output_rows)
     print(f"Wrote {REPORT}")
+    print(f"Wrote {REPORT_CSV}")
     return 0
 
 

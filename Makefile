@@ -5,7 +5,7 @@ JAVA_PROPS ?= -Dcongresssim.javaRelease=$(JAVA_RELEASE)
 APP_JAR := out/congresssim.jar
 APP_CP := $(APP_JAR)
 
-.PHONY: check-java build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper chamber-structure chamber-structure-summary seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness fetch-validation-samples build-bill-progression-raw build-core-raw-validation empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper-assets paper paper-word-count paper-checks paper-freshness-check paper-anonymity-check figure-label-check pdf-render-check pdf-manifest-check table-figure-consistency-check supplement-anonymous supplement-anonymous-current clean-regeneration-check paper-clean test ci github-ci clean
+.PHONY: check-java build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper chamber-structure chamber-structure-summary seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness validation-gap-report fetch-validation-samples build-bill-progression-raw build-core-raw-validation empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper-assets paper paper-word-count paper-checks paper-freshness-check paper-anonymity-check figure-label-check pdf-render-check pdf-manifest-check table-figure-consistency-check supplement-anonymous supplement-anonymous-current clean-regeneration-check paper-clean test ci github-ci clean
 
 check-java:
 	@actual="$$(javac -version 2>&1 | awk '{print $$2}' | cut -d. -f1)"; \
@@ -129,6 +129,9 @@ findings-validation: paper-campaign
 validation-readiness:
 	python3 scripts/validation/validate_empirical_inputs.py
 
+validation-gap-report: validation-readiness empirical-bridge
+	python3 scripts/validation/write_validation_gap_report.py
+
 fetch-validation-samples:
 	python3 scripts/validation/fetch_public_api_samples.py $(ARGS)
 
@@ -158,7 +161,7 @@ mechanism-diagnostics: empirical-bridge ablation-analysis manipulation-stress
 public-provenance:
 	python3 scripts/reporting/write_public_provenance.py
 
-paper-assets: paper-campaign family-screen mechanism-diagnostics chamber-structure
+paper-assets: paper-campaign family-screen mechanism-diagnostics chamber-structure validation-gap-report
 	python3 paper/scripts/generate_figures.py
 
 paper: paper-assets
@@ -222,9 +225,9 @@ test: build
 	javac --release $(JAVA_RELEASE) -cp $(APP_CP) -d out/test $(TEST_SOURCES)
 	java $(JAVA_PROPS) -cp $(APP_CP):out/test congresssim.SimulatorTests
 
-ci: test calibration-check seed-robustness-check validation-readiness empirical-validation catalog-breadth paper-checks supplement-anonymous clean-regeneration-check
+ci: test calibration-check seed-robustness-check validation-gap-report catalog-breadth paper-checks supplement-anonymous clean-regeneration-check
 
-github-ci: test calibration-check seed-robustness-check validation-readiness empirical-validation catalog-breadth paper-freshness-check supplement-anonymous-current clean-regeneration-check
+github-ci: test calibration-check seed-robustness-check validation-gap-report catalog-breadth paper-freshness-check supplement-anonymous-current clean-regeneration-check
 
 clean:
 	rm -rf out

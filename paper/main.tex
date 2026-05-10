@@ -2,6 +2,10 @@
 
 \setcopyright{none}
 \citestyle{acmauthoryear}
+\raggedbottom
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
 
 \acmConference[Collective Intelligence]{ACM Collective Intelligence}{2026}{TBD}
 \acmYear{2026}
@@ -99,9 +103,9 @@ Calibration is a screening step, not a parameter fit. \texttt{make calibrate} co
 \begin{figure}
   \centering
   \input{figures/chamber_productivity_compromise}
-  \caption{Chamber-structure family champions from the supplemental chamber campaign. The axes keep the paper's central comparison visible, while grayscale intensity marks the generated malapportionment index. The figure is a structural sensitivity view, not a replacement for the main scenario comparison.}
+  \caption{Chamber-structure family champions from the supplemental chamber campaign. The axes keep the paper's central productivity/compromise comparison visible; malapportionment remains in Table~\ref{tab:chamber-family-champions} because the champion set has little variation on that metric. The figure is a structural sensitivity view, not a replacement for the main scenario comparison.}
   \label{fig:chamber-productivity-compromise}
-  \Description{Scatter plot of chamber family champion productivity and compromise, with darker points indicating higher malapportionment.}
+  \Description{Scatter plot of chamber family champion productivity and compromise, with the conventional benchmark marked in red.}
 \end{figure}
 
 \section{Results}
@@ -116,55 +120,55 @@ The main results are tradeoffs, not rankings. Pairwise alternatives are the stro
 
 The chamber-structure supplement adds a flatter lesson: architecture changes the tradeoff surface, but no structural family dominates the mechanism-level campaign. Selection/retention filters and independent-review bundles score well; malapportioned upper chambers can raise productivity in some stressed cases, but the supplement exposes their representational cost.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
   \centering
   \begin{minipage}[t]{0.49\textwidth}
     \centering
     \resizebox{\linewidth}{!}{\input{figures/productivity_low_support}}
     \vspace{-0.75\baselineskip}
-    \centerline{\scriptsize (a) Representative-risk burden}
+    \centerline{\small (a) Representative-risk burden}
   \end{minipage}\hfill
   \begin{minipage}[t]{0.49\textwidth}
     \centering
     \resizebox{\linewidth}{!}{\input{figures/compromise_productivity}}
     \vspace{-0.75\baselineskip}
-    \centerline{\scriptsize (b) Compromise score}
+    \centerline{\small (b) Compromise score}
   \end{minipage}
-  \caption{Two productivity tradeoff views for the representative systems in Table~\ref{tab:scenario-averages}, rendered side by side with the same 0--1 productivity axis. Panel (a) plots representative-risk burden, defined as \(1-\)risk control; lower is better. Panel (b) plots compromise under weighted party-system sensitivity cases; higher is better. The stylized U.S.-like benchmark is red and marked with a larger square.}
+  \caption{Two productivity tradeoff views for the representative systems in Table~\ref{tab:scenario-averages}, rendered side by side with matching 0--1 axes. Panel (a) plots representative-risk burden, defined as \(1-\)risk control; lower is better. Panel (b) plots compromise under weighted party-system sensitivity cases; higher is better. The stylized U.S.-like benchmark is red and marked with a larger square.}
   \label{fig:productivity-risk-burden}
   \label{fig:compromise-productivity}
   \Description{Two side-by-side scatter plots with the same productivity axis: one compares productivity against representative-risk burden, and the other compares productivity against compromise score.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \input{figures/directional_scoreboard}
-  \caption{Value-profile matrix for selected systems. Rows follow the labels in Table~\ref{tab:scenario-averages}, and every cell is oriented so darker/larger values are better under the stated metric interpretation. This figure should be read as a profile comparison, not as a single ranking.}
-  \label{fig:directional-scoreboard}
-  \Description{Matrix comparing productivity, compromise, representative quality, risk control, and administrative feasibility for selected institutional scenarios.}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \input{figures/timeline_contention}
-  \caption{Rising-contention stress path from the main comparison campaign. The index combines gridlock, compromise loss, and weak public-mandate passage. Lower is better. This is a parameterized stress path, not an endogenous causal model of polarization.}
-  \label{fig:timeline-contention}
-  \Description{Line chart of contention over six stylized eras.}
 \end{figure}
 
 Three patterns are observed. First, thresholds alone are weak design language: supermajority and conventional baselines suppress weak mandates by suppressing throughput, while open default enactment reverses the problem. Second, agenda and content mechanisms matter across families: alternatives, amendment tournaments, petitions, open calendars, discharge, citizen review, initiatives, objection windows, and harm rules change who can force attention and at what cost. Third, reversibility is separate: judicial and law-registry review reduce exposure to weak or rights-risky laws but can increase volatility.
 
 The exploratory result does not support a single dominant rule. The portfolio hybrid turns the pattern into a testable design: fast lanes for low-risk proposals, stronger consent or revision for risky proposals, proposer accountability, influence disclosure, alternatives before binary ratification, affected-group protection, and review of uncertain laws. Its mixed result is useful: combining good mechanisms improves several risk diagnostics, but adds administrative load and does not dominate simpler pairwise alternatives.
 
+\begin{figure}[H]
+  \centering
+  \resizebox{0.86\linewidth}{!}{\input{figures/directional_scoreboard}}
+  \caption{Value-profile matrix for selected systems. Rows are sorted by the same overall directional score used in Table~\ref{tab:scenario-averages}. Green cells are more favorable and red cells are less favorable under the stated metric interpretation; the red row label marks the stylized U.S.-like benchmark. This figure should be read as a profile comparison, not as a proof of one best system.}
+  \label{fig:directional-scoreboard}
+  \Description{Matrix comparing productivity, compromise, representative quality, risk control, and administrative feasibility for selected institutional scenarios.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{0.66\linewidth}{!}{\input{figures/timeline_contention}}
+  \caption{Rising-contention stress path from the main comparison campaign. The index combines gridlock, compromise loss, and weak public-mandate passage. Lower is better. This is a parameterized stress path, not an endogenous causal model of polarization.}
+  \label{fig:timeline-contention}
+  \Description{Line chart of contention over six stylized eras.}
+\end{figure}
+
 \section{Limitations}
 
 The model is stylized. It uses one primary policy dimension, generated legislators, generated support and benefit, simplified issue domains, and abstract lobbying units. Public-mandate diagnostics distinguish salience and costly affected-group pressure from cheap amplified volume, but they are still proxies. Because public benefit is internal to the generator, welfare comparisons are conditional on model assumptions. Systems that screen extreme, uncertain, or lobby-heavy bills may look better partly because the generator often encodes those features as lower expected public value. Adversarial cases partially relax this assumption, but welfare remains a synthetic signal, not an empirical social-welfare estimate.
 
-The calibration layer screens conventional baselines against empirical ranges, and the empirical bridge currently covers six raw validation inputs. That is enough to make several agenda-access and representation proxies inspectable, but it is not enough for model validation or parameter fitting. The committee and sponsor summaries are derived from sampled Congress.gov bill actions and are especially rough; fixture samples exercise adapter shapes but are not validation data. Strategic behavior remains bounded: proposers and lobby groups adapt, and norm erosion can raise delay, but parties, committees, coalitions, courts, agencies, media, and elections do not yet co-evolve. Chamber scenarios are sensitivity prototypes. Citizen panels, initiatives, objection windows, tournaments, audits, challenge tokens, judicial review, and law-registry review are optimistic prototypes whose costs are represented only indirectly. Package bargaining models side payments, delay, jurisdictional trades, and distributive load, not legal text or appropriations.
+The calibration layer screens conventional baselines against empirical ranges, and the empirical bridge currently covers six raw validation inputs. That is enough to make several agenda-access and representation proxies inspectable, but it is not enough for model validation or parameter fitting. District opinion, campaign finance, court review, implementation feedback, law revision, and cross-national institutional comparison remain validation gaps; findings that depend on those components should be read as synthetic design hypotheses. The committee and sponsor summaries are derived from sampled Congress.gov bill actions and are especially rough; fixture samples exercise adapter shapes but are not validation data. Strategic behavior remains bounded: proposers and lobby groups adapt, and norm erosion can raise delay, but parties, committees, coalitions, courts, agencies, media, and elections do not yet co-evolve. Chamber scenarios are sensitivity prototypes. Citizen panels, initiatives, objection windows, tournaments, audits, challenge tokens, judicial review, and law-registry review are optimistic prototypes whose costs are represented only indirectly. Package bargaining models side payments, delay, jurisdictional trades, and distributive load, not legal text or appropriations.
 
 \section{Reproducibility}
 
-The submitted manuscript is anonymized for double-blind review. The reproducibility package contains source code, generated reports, the ODD+D appendix, and scripts. \texttt{make paper-checks} regenerates the campaign, diagnostics, figures, PDFs, word-count check, anonymity scan, figure-label and table consistency checks, and PDF manifest. \texttt{make supplement-anonymous} builds the double-blind supplement. Optional fixture samples can be refreshed with \texttt{make fetch-validation-samples}; they remain separate from raw validation inputs. \texttt{make build-bill-progression-raw} rebuilds the Congress.gov bill-progression sample, and \texttt{make build-core-raw-validation} rebuilds the broader Voteview, Congress.gov-derived, and LDA bridge samples when network access and any required API key are available.
+The submitted manuscript is anonymized for double-blind review. The reproducibility package contains source code, generated reports, the ODD+D appendix, and scripts. \texttt{make paper-checks} regenerates the campaign, diagnostics, figures, PDFs, word-count check, anonymity scan, figure-label and table consistency checks, and PDF manifest. \texttt{make supplement-anonymous} builds the double-blind supplement. Optional fixture samples can be refreshed with \texttt{make fetch-validation-samples}; they remain separate from raw validation inputs. \texttt{make validation-gap-report} writes the current empirical-boundary report and appendix table. \texttt{make build-bill-progression-raw} rebuilds the Congress.gov bill-progression sample, and \texttt{make build-core-raw-validation} rebuilds the broader Voteview, Congress.gov-derived, and LDA bridge samples when network access and any required API key are available.
 
 \section*{Use of Large Language Model Tools}
 

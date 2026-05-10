@@ -150,7 +150,7 @@ def label_for(family_name: str) -> str:
 
 
 def label_width(label: str) -> float:
-    return max(4.4, len(label) * 1.18)
+    return max(4.4, len(label) * 1.25)
 
 
 def label_box(label_x: float, label_y: float, label: str, anchor: str) -> tuple[float, float, float, float]:
@@ -164,7 +164,7 @@ def label_box(label_x: float, label_y: float, label: str, anchor: str) -> tuple[
     else:
         left = label_x - width / 2.0
         right = label_x + width / 2.0
-    return left, right, label_y - 2.0, label_y + 2.0
+    return left, right, label_y - 2.25, label_y + 2.25
 
 
 def point_box(x: float, y: float) -> tuple[float, float, float, float]:
@@ -333,28 +333,24 @@ def write_paper_figure(champs: list[dict[str, str]]) -> None:
     lines.append(fr"\put({left:.1f},{bottom:.1f}){{\line(1,0){{{width:.1f}}}}}")
     lines.append(fr"\put({left:.1f},{bottom:.1f}){{\line(0,1){{{height:.1f}}}}}")
     for row, label, x, y in point_rows:
-        # Keep the light end printable. The previous black!15 floor made most
-        # non-malapportioned labels nearly indistinguishable from the grid.
-        malapportionment = max(0.0, min(1.0, f(row, "malapportionmentIndex")))
-        intensity = int(round(45 + 45 * malapportionment))
         dx, dy, align = placements[label]
         label_x = x + dx
         label_y = y + dy
-        color = "red" if row["family"] == "Conventional benchmark" else f"black!{intensity}"
+        point_color = "red" if row["family"] == "Conventional benchmark" else "black"
+        label_color = "red" if row["family"] == "Conventional benchmark" else "black"
         size = "2.0" if row["family"] == "Conventional benchmark" else "1.6"
-        lines.append(fr"\put({x:.1f},{y:.1f}){{\makebox(0,0){{\color{{{color}}}\rule{{{size}mm}}{{{size}mm}}}}}}")
+        lines.append(fr"\put({x:.1f},{y:.1f}){{\makebox(0,0){{\color{{{point_color}}}\rule{{{size}mm}}{{{size}mm}}}}}}")
         lines.append(r"\linethickness{0.10mm}")
-        leader_color = "red!55" if row["family"] == "Conventional benchmark" else "black!50"
+        leader_color = "red!55" if row["family"] == "Conventional benchmark" else "black!42"
         lines.append(fr"{{\color{{{leader_color}}}\qbezier[6]({x:.1f},{y:.1f})({x + dx / 2:.1f},{y + dy / 2:.1f})({label_x:.1f},{label_y:.1f})}}")
         lines.append(r"\linethickness{0.25mm}")
         lines.append(
             f"% point-label label={label} pointX={x:.1f} pointY={y:.1f} "
             f"labelX={label_x:.1f} labelY={label_y:.1f} anchor={align} leader=1"
         )
-        lines.append(fr"\put({label_x:.1f},{label_y:.1f}){{\makebox(0,0)[{align}]{{\color{{{color}}}{label}}}}}")
+        lines.append(fr"\put({label_x:.1f},{label_y:.1f}){{\makebox(0,0)[{align}]{{\color{{{label_color}}}{label}}}}}")
     lines.append(fr"\put({left + width / 2:.1f},{bottom - 10.0:.1f}){{\makebox(0,0){{Productivity $\uparrow$}}}}")
-    lines.append(fr"\put({left - 15.0:.1f},{bottom + height / 2:.1f}){{\rotatebox{{90}}{{Compromise $\uparrow$}}}}")
-    lines.append(fr"\put({left + width - 18.0:.1f},{bottom + height + 4.0:.1f}){{\makebox(0,0)[l]{{darker = more malapportioned}}}}")
+    lines.append(fr"\put({left - 15.0:.1f},{bottom + height / 2:.1f}){{\makebox(0,0){{\rotatebox{{90}}{{Compromise $\uparrow$}}}}}}")
     lines.extend([r"\end{picture}", r"\endgroup"])
     PAPER_FIGURE.write_text("\n".join(lines) + "\n")
 

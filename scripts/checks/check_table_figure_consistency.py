@@ -51,7 +51,7 @@ def scatter_labels(path: Path) -> set[str]:
 
 def count_point_squares(path: Path) -> int:
     text = path.read_text()
-    return len(re.findall(r"\\rule\{(?:1\.5|1\.7|1\.9|2\.0)mm\}\{(?:1\.5|1\.7|1\.9|2\.0)mm\}", text))
+    return len(re.findall(r"\\rule\{([0-9.]+)mm\}\{\1mm\}", text))
 
 
 def main() -> int:

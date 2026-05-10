@@ -2,6 +2,7 @@
 
 \setcopyright{none}
 \citestyle{acmauthoryear}
+\raggedbottom
 
 \acmConference[Collective Intelligence]{ACM Collective Intelligence}{2026}{TBD}
 \acmYear{2026}
@@ -126,6 +127,8 @@ Normal scenario runs use synthetic generated worlds. Calibration screening reads
 
 The calibration runner executes conventional scenarios and writes CSV and Markdown pass/fail reports under \texttt{reports/}. The current calibration pass is an empirical screen, not an automatic parameter fitter. Its benchmark ranges are intentionally broad and several are abstract proxies, so passing the screen should be read as minimum plausibility rather than validation. The empirical bridge currently includes six documented raw validation samples: Congress.gov bill progression, Voteview roll calls, Senate LDA lobbying disclosures, and Congress.gov-derived topic, sponsor, and committee summaries. These samples support bill-attrition, floor-load, committee-report, coalition-size, party-unity, sponsor-concentration, topic-throughput, and lobbying-concentration checks. Optional API fixture samples are stored separately from raw validation inputs; they test adapter shapes but are not used as validation evidence. The calibration screen's purpose is to keep ordinary baselines within explicit plausible ranges before interpreting counterfactual mechanisms.
 
+\input{figures/empirical_validation_gap_table}
+
 \section{Submodels}
 
 \subsection{Voting}
@@ -192,7 +195,10 @@ The main reproducibility entrypoints are:
   \item \texttt{make campaign} or \texttt{make paper-campaign}: regenerate the current comparison campaign.
   \item \texttt{make calibrate}: run empirical benchmark screening.
   \item \texttt{make seed-robustness-check}: run multi-seed checks for paper scenarios.
-  \item \texttt{make validation-readiness}, \texttt{make empirical-validation}, and \texttt{make empirical-bridge}: check optional raw inputs, summarize any present data, and map summaries to simulator proxies. Adapter fixtures live separately and do not count as raw validation data.
+  \item \texttt{make validation-readiness}: check optional raw-input shape.
+  \item \texttt{make empirical-validation}: summarize any present raw inputs.
+  \item \texttt{make empirical-bridge}: map raw summaries to simulator proxies.
+  \item \texttt{make validation-gap-report}: generate the paper-facing validation-boundary report. Adapter fixtures live separately and do not count as raw validation data.
   \item \texttt{make build-bill-progression-raw}: rebuild the documented Congress.gov bill-progression raw sample when a Congress.gov API key is available.
   \item \texttt{make build-core-raw-validation}: rebuild the broader Voteview, Congress.gov-derived, and Senate LDA raw bridge samples when network access and any required API key are available.
   \item \texttt{make ablation-analysis}, \texttt{make manipulation-stress}, and \texttt{make mechanism-diagnostics}: run mechanism ablations, manipulation stress tests, and the generated diagnostics table workflow.
