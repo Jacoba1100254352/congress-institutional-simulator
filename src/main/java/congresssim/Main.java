@@ -1,711 +1,699 @@
 package congresssim;
 
+
 import congresssim.calibration.CalibrationRunner;
 import congresssim.calibration.CalibrationRunner.CalibrationRunResult;
 import congresssim.experiment.CampaignResult;
 import congresssim.experiment.CampaignRunner;
-import congresssim.simulation.catalog.ScenarioCatalog;
 import congresssim.simulation.ScenarioReport;
 import congresssim.simulation.Simulator;
 import congresssim.simulation.WorldSpec;
+import congresssim.simulation.catalog.ScenarioCatalog;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.StringJoiner;
+import java.util.*;
 
-public final class Main {
-    private Main() {
-    }
 
-    public static void main(String[] args) {
-        Options options = Options.parse(args);
-        if (options.help) {
-            Options.printUsage();
-            return;
-        }
-        if (options.calibrate) {
-            runCalibration(options);
-            return;
-        }
-        if (options.campaignName != null) {
-            runCampaign(options);
-            return;
-        }
-
-        WorldSpec worldSpec = new WorldSpec(
-                options.legislators,
-                options.bills,
-                options.partyCount,
-                options.polarization,
-                options.partyLoyalty,
-                options.lobbyingSusceptibility,
-                options.constituencySensitivity,
-                options.compromiseCulture
-        );
-
-        Simulator simulator = new Simulator();
-        List<congresssim.simulation.Scenario> scenarios;
-        if (!options.scenarioKeys.isEmpty()) {
-            scenarios = ScenarioCatalog.scenariosForKeys(options.scenarioKeys);
-        } else if (options.allScenarios) {
-            scenarios = ScenarioCatalog.allScenarios();
-        } else {
-            scenarios = ScenarioCatalog.defaultScenarios();
-        }
-        List<ScenarioReport> reports = simulator.compare(
-                scenarios,
-                worldSpec,
-                options.runs,
-                options.seed
-        );
-
-        printReports(options, reports, worldSpec);
-    }
-
-    private static void runCalibration(Options options) {
-        try {
-            CalibrationRunResult result = CalibrationRunner.run(
-                    options.outputDir,
-                    options.runs,
-                    options.legislators,
-                    options.bills,
-                    options.seed
-            );
-            System.out.println("Calibration baseline complete.");
-            System.out.println("CSV: " + result.csvPath());
-            System.out.println("Markdown: " + result.markdownPath());
-        } catch (IOException exception) {
-            throw new IllegalStateException("Unable to write calibration output.", exception);
-        }
-    }
-
-    private static void runCampaign(Options options) {
-        try {
-            CampaignResult result = switch (options.campaignName) {
-                case "v0" -> CampaignRunner.runV0(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v1" -> CampaignRunner.runV1(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v2" -> CampaignRunner.runV2(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v3" -> CampaignRunner.runV3(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v4" -> CampaignRunner.runV4(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v5" -> CampaignRunner.runV5(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v6" -> CampaignRunner.runV6(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v7" -> CampaignRunner.runV7(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v8" -> CampaignRunner.runV8(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v9" -> CampaignRunner.runV9(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v10" -> CampaignRunner.runV10(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v11" -> CampaignRunner.runV11(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v12" -> CampaignRunner.runV12(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v13" -> CampaignRunner.runV13(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v14" -> CampaignRunner.runV14(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v15" -> CampaignRunner.runV15(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v16" -> CampaignRunner.runV16(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v17" -> CampaignRunner.runV17(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v18" -> CampaignRunner.runV18(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v19" -> CampaignRunner.runV19(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v20" -> CampaignRunner.runV20(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "v21", "v21-paper", "paper", "paper-campaign", "main", "main-comparison" -> CampaignRunner.runV21Paper(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "ablation", "ablation-analysis" -> CampaignRunner.runAblationAnalysis(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "chamber-structure", "chambers", "apportionment", "committees" -> CampaignRunner.runChamberStructure(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                case "manipulation", "manipulation-stress" -> CampaignRunner.runManipulationStress(
-                        options.outputDir,
-                        options.runs,
-                        options.legislators,
-                        options.bills,
-                        options.seed
-                );
-                default -> throw new IllegalArgumentException("Unknown campaign: " + options.campaignName);
-            };
-            System.out.println(result.name() + " complete.");
-            System.out.println("CSV: " + result.csvPath());
-            System.out.println("Markdown: " + result.markdownPath());
-        } catch (IOException exception) {
-            throw new IllegalStateException("Unable to write campaign output.", exception);
-        }
-    }
-
-    private static void printReports(Options options, List<ScenarioReport> reports, WorldSpec worldSpec) {
-        if (options.outputFormat == OutputFormat.CSV) {
-            printCsv(reports);
-            return;
-        }
-
-        System.out.println("Congress Institutional Simulator");
-        System.out.printf("runs=%d legislators=%d billsPerRun=%d seed=%d%n%n",
-                options.runs,
-                options.legislators,
-                options.bills,
-                options.seed
-        );
-        System.out.printf(
-                "assumptions: parties=%d partyProfile=%s polarization=%.2f partyLoyalty=%.2f compromise=%.2f constituency=%.2f lobbying=%.2f%n%n",
-                worldSpec.partyCount(),
-                worldSpec.partySystemProfile(),
-                worldSpec.polarization(),
-                worldSpec.partyLoyalty(),
-                worldSpec.compromiseCulture(),
-                worldSpec.constituencySensitivity(),
-                worldSpec.lobbyingSusceptibility()
-        );
-
-        if (options.outputFormat == OutputFormat.BARS) {
-            printCharts(reports);
-            return;
-        }
-
-        System.out.printf("%-48s %8s %8s %10s %8s %8s %8s %8s %8s %9s %9s %10s %10s %10s %10s%n",
-                "Scenario",
-                "Prod",
-                "Floor",
-                "AvgSupport",
-                "Welfare",
-                "Compromise",
-                "Capture",
-                "Spend",
-                "Amend",
-                "AccessD",
-                "CmteRej",
-                "AntiLobby",
-                "LowSupport",
-                "PolicyShift",
-                "PropGain"
-        );
-        System.out.println("-".repeat(161));
-
-        for (ScenarioReport report : reports) {
-            System.out.printf("%-48s %8.3f %8.3f %10.3f %8.3f %8.3f %8.3f %8.3f %8.3f %9.3f %9.3f %10.3f %10.3f %10.3f %10.3f%n",
-                    report.scenarioName(),
-                    report.productivity(),
-                    report.floorConsiderationRate(),
-                    report.averageEnactedSupport(),
-                    report.averagePublicBenefit(),
-                    report.compromiseScore(),
-                    report.lobbyCaptureIndex(),
-                    report.lobbySpendPerBill(),
-                    report.amendmentRate(),
-                    report.accessDenialRate(),
-                    report.committeeRejectionRate(),
-                    report.antiLobbyingSuccessRate(),
-                    report.controversialPassageRate(),
-                    report.averagePolicyShift(),
-                    report.averageProposerGain()
-            );
-        }
-
-        if (options.charts || options.outputFormat == OutputFormat.BARS) {
-            printCharts(reports);
-        }
-    }
-
-    private static void printCsv(List<ScenarioReport> reports) {
-        StringBuilder header = new StringBuilder("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,weakPublicMandatePassage,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,administrativeCost,administrativeFeasibility,amendmentRate,amendmentMovement,falseNegativePassRate,publicWillReviewRate,proposerAccessGini,welfarePerSubmittedBill,enactedPolicyQuality,policyYield,blockageReliance,publicMandateLegitimacy,vetoes,overriddenVetoes,interChamberConflictRate,secondChamberKillRate,conferenceRate,conferenceSuccessRate,routingDelayCost,shuttleRoundsToAgreement,suspensiveOverrideRate,bicameralDeadlockRate,dischargePetitionRate,committeeOverrideRate,committeeHearingRate,committeeQueueDelay,committeeAmendmentValueAdded,populationSeatDistortion,democraticResponsiveness,seatVoteDistortion,constituencyServiceConcentration,regionalTransferBias");
-        for (String key : ScenarioReport.SUPPLEMENTAL_METRIC_KEYS) {
-            header.append(',').append(key);
-        }
-        System.out.println(header);
-        for (ScenarioReport report : reports) {
-            System.out.printf(Locale.ROOT,
-                    "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f",
-                    csvCell(report.scenarioName()),
-                    report.totalBills(),
-                    report.enactedBills(),
-                    report.productivity(),
-                    report.floorConsiderationRate(),
-                    report.averageEnactedSupport(),
-                    report.averagePublicBenefit(),
-                    report.cooperationScore(),
-                    report.compromiseScore(),
-                    report.gridlockRate(),
-                    report.accessDenialRate(),
-                    report.committeeRejectionRate(),
-                    report.challengeRate(),
-                    report.controversialPassageRate(),
-                    report.weakPublicMandatePassageRate(),
-                    report.popularBillFailureRate(),
-                    report.averagePolicyShift(),
-                    report.averageProposerGain(),
-                    report.lobbyCaptureIndex(),
-                    report.publicAlignmentScore(),
-                    report.antiLobbyingSuccessRate(),
-                    report.privateGainRatio(),
-                    report.lobbySpendPerBill(),
-                    report.defensiveLobbyingShare(),
-                    report.captureReturnOnSpend(),
-                    report.publicPreferenceDistortion(),
-                    report.administrativeCostIndex(),
-                    report.administrativeFeasibilityScore(),
-                    report.amendmentRate(),
-                    report.averageAmendmentMovement(),
-                    report.falseNegativePassRate(),
-                    report.publicWillReviewRate(),
-                    report.proposerAccessGini(),
-                    report.welfarePerSubmittedBill(),
-                    report.enactedPolicyQualityScore(),
-                    report.policyYieldScore(),
-                    report.blockageRelianceRate(),
-                    report.publicMandateLegitimacyScore(),
-                    report.vetoes(),
-                    report.overriddenVetoes(),
-                    report.interChamberConflictRate(),
-                    report.secondChamberKillRate(),
-                    report.conferenceRate(),
-                    report.conferenceSuccessRate(),
-                    report.routingDelayCost(),
-                    report.shuttleRoundsToAgreement(),
-                    report.suspensiveOverrideRate(),
-                    report.bicameralDeadlockRate(),
-                    report.dischargePetitionRate(),
-                    report.committeeOverrideRate(),
-                    report.committeeHearingRate(),
-                    report.committeeQueueDelay(),
-                    report.committeeAmendmentValueAdded(),
-                    report.populationSeatDistortion(),
-                    report.democraticResponsiveness(),
-                    report.seatVoteDistortion(),
-                    report.constituencyServiceConcentration(),
-                    report.regionalTransferBias()
-            );
-            for (String key : ScenarioReport.SUPPLEMENTAL_METRIC_KEYS) {
-                System.out.printf(Locale.ROOT, ",%.6f", report.supplementalMetric(key));
-            }
-            System.out.println();
-        }
-    }
-
-    private static String csvCell(String value) {
-        if (value.indexOf(',') < 0 && value.indexOf('"') < 0 && value.indexOf('\n') < 0 && value.indexOf('\r') < 0) {
-            return value;
-        }
-        return "\"" + value.replace("\"", "\"\"") + "\"";
-    }
-
-    private static void printCharts(List<ScenarioReport> reports) {
-        System.out.println();
-        printChart("Productivity", reports, Metric.PRODUCTIVITY);
-        printChart("Public welfare", reports, Metric.PUBLIC_WELFARE);
-        printChart("Low-support passage", reports, Metric.LOW_SUPPORT);
-        printChart("Policy shift", reports, Metric.POLICY_SHIFT);
-    }
-
-    private static void printChart(String title, List<ScenarioReport> reports, Metric metric) {
-        System.out.println(title);
-        for (ScenarioReport report : reports) {
-            double value = metric.value(report);
-            System.out.printf(Locale.ROOT,
-                    "  %-48s %s %.3f%n",
-                    report.scenarioName(),
-                    bar(value, 24),
-                    value
-            );
-        }
-        System.out.println();
-    }
-
-    private static String bar(double value, int width) {
-        double normalized = Math.clamp(value, 0.0, 1.0);
-        int filled = (int) Math.round(normalized * width);
-        return "[" + "#".repeat(filled) + ".".repeat(width - filled) + "]";
-    }
-
-    private enum Metric {
-        PRODUCTIVITY {
-            @Override
-            double value(ScenarioReport report) {
-                return report.productivity();
-            }
-        },
-        LOW_SUPPORT {
-            @Override
-            double value(ScenarioReport report) {
-                return report.controversialPassageRate();
-            }
-        },
-        PUBLIC_WELFARE {
-            @Override
-            double value(ScenarioReport report) {
-                return report.averagePublicBenefit();
-            }
-        },
-        POLICY_SHIFT {
-            @Override
-            double value(ScenarioReport report) {
-                return report.averagePolicyShift();
-            }
-        };
-
-        abstract double value(ScenarioReport report);
-    }
-
-    private enum OutputFormat {
-        TABLE,
-        CSV,
-        BARS
-    }
-
-    private static final class Options {
-        private final int runs;
-        private final int legislators;
-        private final int bills;
-        private final int partyCount;
-        private final double polarization;
-        private final double partyLoyalty;
-        private final double lobbyingSusceptibility;
-        private final double constituencySensitivity;
-        private final double compromiseCulture;
-        private final List<String> scenarioKeys;
-        private final OutputFormat outputFormat;
-        private final boolean charts;
-        private final boolean calibrate;
-        private final boolean allScenarios;
-        private final String campaignName;
-        private final Path outputDir;
-        private final long seed;
-        private final boolean help;
-
-        private Options(
-                int runs,
-                int legislators,
-                int bills,
-                int partyCount,
-                double polarization,
-                double partyLoyalty,
-                double lobbyingSusceptibility,
-                double constituencySensitivity,
-                double compromiseCulture,
-                List<String> scenarioKeys,
-                OutputFormat outputFormat,
-                boolean charts,
-                boolean calibrate,
-                boolean allScenarios,
-                String campaignName,
-                Path outputDir,
-                long seed,
-                boolean help
-        ) {
-            this.runs = runs;
-            this.legislators = legislators;
-            this.bills = bills;
-            this.partyCount = partyCount;
-            this.polarization = polarization;
-            this.partyLoyalty = partyLoyalty;
-            this.lobbyingSusceptibility = lobbyingSusceptibility;
-            this.constituencySensitivity = constituencySensitivity;
-            this.compromiseCulture = compromiseCulture;
-            this.scenarioKeys = List.copyOf(scenarioKeys);
-            this.outputFormat = outputFormat;
-            this.charts = charts;
-            this.calibrate = calibrate;
-            this.allScenarios = allScenarios;
-            this.campaignName = campaignName;
-            this.outputDir = outputDir;
-            this.seed = seed;
-            this.help = help;
-        }
-
-        private static Options parse(String[] args) {
-            int runs = 250;
-            int legislators = 101;
-            int bills = 60;
-            int partyCount = 3;
-            double polarization = 0.72;
-            double partyLoyalty = 0.68;
-            double lobbyingSusceptibility = 0.48;
-            double constituencySensitivity = 0.64;
-            double compromiseCulture = 0.52;
-            List<String> scenarioKeys = new ArrayList<>();
-            OutputFormat outputFormat = OutputFormat.TABLE;
-            boolean charts = false;
-            boolean calibrate = false;
-            boolean allScenarios = false;
-            String campaignName = null;
-            Path outputDir = Path.of("reports");
-            long seed = 20260428L;
-            boolean help = false;
-
-            for (int i = 0; i < args.length; i++) {
-                String arg = args[i];
-                switch (arg) {
-                    case "--runs" -> runs = parseInt(args, ++i, arg);
-                    case "--legislators" -> legislators = parseInt(args, ++i, arg);
-                    case "--bills" -> bills = parseInt(args, ++i, arg);
-                    case "--party-count" -> partyCount = parseInt(args, ++i, arg);
-                    case "--polarization" -> polarization = parseDouble(args, ++i, arg);
-                    case "--party-loyalty" -> partyLoyalty = parseDouble(args, ++i, arg);
-                    case "--lobbying" -> lobbyingSusceptibility = parseDouble(args, ++i, arg);
-                    case "--constituency" -> constituencySensitivity = parseDouble(args, ++i, arg);
-                    case "--compromise" -> compromiseCulture = parseDouble(args, ++i, arg);
-                    case "--scenarios" -> scenarioKeys = parseScenarioKeys(args, ++i, arg);
-                    case "--format" -> outputFormat = parseOutputFormat(args, ++i, arg);
-                    case "--charts" -> charts = true;
-                    case "--calibrate" -> calibrate = true;
-                    case "--all-scenarios" -> allScenarios = true;
-                    case "--campaign" -> campaignName = parseString(args, ++i, arg);
-                    case "--output-dir" -> outputDir = Path.of(parseString(args, ++i, arg));
-                    case "--seed" -> seed = parseLong(args, ++i, arg);
-                    case "--help", "-h" -> help = true;
-                    default -> throw new IllegalArgumentException("Unknown argument: " + arg);
-                }
-            }
-
-            if (runs <= 0 || legislators <= 0 || bills <= 0) {
-                throw new IllegalArgumentException("runs, legislators, and bills must all be positive.");
-            }
-            return new Options(
-                    runs,
-                    legislators,
-                    bills,
-                    partyCount,
-                    polarization,
-                    partyLoyalty,
-                    lobbyingSusceptibility,
-                    constituencySensitivity,
-                    compromiseCulture,
-                    scenarioKeys,
-                    outputFormat,
-                    charts,
-                    calibrate,
-                    allScenarios,
-                    campaignName,
-                    outputDir,
-                    seed,
-                    help
-            );
-        }
-
-        private static int parseInt(String[] args, int index, String name) {
-            if (index >= args.length) {
-                throw new IllegalArgumentException(name + " requires a value.");
-            }
-            return Integer.parseInt(args[index]);
-        }
-
-        private static double parseDouble(String[] args, int index, String name) {
-            if (index >= args.length) {
-                throw new IllegalArgumentException(name + " requires a value.");
-            }
-            return Double.parseDouble(args[index]);
-        }
-
-        private static String parseString(String[] args, int index, String name) {
-            if (index >= args.length) {
-                throw new IllegalArgumentException(name + " requires a value.");
-            }
-            return args[index];
-        }
-
-        private static long parseLong(String[] args, int index, String name) {
-            if (index >= args.length) {
-                throw new IllegalArgumentException(name + " requires a value.");
-            }
-            return Long.parseLong(args[index]);
-        }
-
-        private static List<String> parseScenarioKeys(String[] args, int index, String name) {
-            if (index >= args.length) {
-                throw new IllegalArgumentException(name + " requires a comma-separated value.");
-            }
-            return Arrays.stream(args[index].split(","))
-                    .map(String::trim)
-                    .filter(value -> !value.isEmpty())
-                    .toList();
-        }
-
-        private static OutputFormat parseOutputFormat(String[] args, int index, String name) {
-            if (index >= args.length) {
-                throw new IllegalArgumentException(name + " requires table, csv, or bars.");
-            }
-            return switch (args[index].toLowerCase(Locale.ROOT)) {
-                case "table" -> OutputFormat.TABLE;
-                case "csv" -> OutputFormat.CSV;
-                case "bars" -> OutputFormat.BARS;
-                default -> throw new IllegalArgumentException(name + " must be table, csv, or bars.");
-            };
-        }
-
-        private static void printUsage() {
-            StringJoiner defaultScenarioKeys = new StringJoiner(", ");
-            for (String key : ScenarioCatalog.defaultScenarioKeys()) {
-                defaultScenarioKeys.add(key);
-            }
-            StringJoiner scenarioKeys = new StringJoiner(", ");
-            for (String key : ScenarioCatalog.scenarioKeys()) {
-                scenarioKeys.add(key);
-            }
-
-            System.out.println("""
-                    Usage: make run ARGS="--runs 500 --legislators 101 --bills 60 --seed 42 --charts"
-
-                    Options:
-                      --runs <n>          Number of randomized worlds per scenario
-                      --legislators <n>   Number of legislators in the generated Congress
-                      --bills <n>         Number of bills introduced per run
-                      --party-count <n>   Number of generated party labels
-                      --polarization <x>  Ideological clustering, from 0.0 to 1.0
-                      --party-loyalty <x> Party-pressure sensitivity, from 0.0 to 1.0
-                      --compromise <x>    Compromise culture, from 0.0 to 1.0
-                      --constituency <x>  Constituent-pressure sensitivity, from 0.0 to 1.0
-                      --lobbying <x>      Lobby-pressure sensitivity, from 0.0 to 1.0
-                      --scenarios <keys>  Comma-separated scenario keys
-                      --all-scenarios     Compare the breadth-first scenario catalog
-                      --format <kind>     table, csv, or bars
-                      --charts            Add ASCII bar charts after the table
-                      --calibrate         Run empirical benchmark screening instead of scenario comparison
-                      --campaign <name>   Run a named campaign, including v0-v21, paper/main-comparison, chamber-structure, ablation, and manipulation-stress
-                      --output-dir <path> Campaign output directory
-                      --seed <n>          Reproducible random seed
-                      --help              Show this message
-
-                    Default scenario keys when --scenarios is omitted:
-                    """ + defaultScenarioKeys + "\n\n" + """
-                    All scenario keys, including legacy/default-pass side sweeps:
-                    """ + scenarioKeys + "\n");
-        }
-    }
+public final class Main
+{
+	private Main() {
+	}
+	
+	static void main(String[] args) {
+		Options options = Options.parse(args);
+		if (options.help) {
+			Options.printUsage();
+			return;
+		}
+		if (options.calibrate) {
+			runCalibration(options);
+			return;
+		}
+		if (options.campaignName != null) {
+			runCampaign(options);
+			return;
+		}
+		
+		WorldSpec worldSpec = new WorldSpec(
+				options.legislators,
+				options.bills,
+				options.partyCount,
+				options.polarization,
+				options.partyLoyalty,
+				options.lobbyingSusceptibility,
+				options.constituencySensitivity,
+				options.compromiseCulture
+		);
+		
+		Simulator simulator = new Simulator();
+		List<congresssim.simulation.Scenario> scenarios;
+		if (!options.scenarioKeys.isEmpty()) {
+			scenarios = ScenarioCatalog.scenariosForKeys(options.scenarioKeys);
+		} else if (options.allScenarios) {
+			scenarios = ScenarioCatalog.allScenarios();
+		} else {
+			scenarios = ScenarioCatalog.defaultScenarios();
+		}
+		List<ScenarioReport> reports = simulator.compare(
+				scenarios,
+				worldSpec,
+				options.runs,
+				options.seed
+		);
+		
+		printReports(options, reports, worldSpec);
+	}
+	
+	private static void runCalibration(Options options) {
+		try {
+			CalibrationRunResult result = CalibrationRunner.run(
+					options.outputDir,
+					options.runs,
+					options.legislators,
+					options.bills,
+					options.seed
+			);
+			System.out.println("Calibration baseline complete.");
+			System.out.println("CSV: " + result.csvPath());
+			System.out.println("Markdown: " + result.markdownPath());
+		} catch (IOException exception) {
+			throw new IllegalStateException("Unable to write calibration output.", exception);
+		}
+	}
+	
+	private static void runCampaign(Options options) {
+		try {
+			CampaignResult result = switch (options.campaignName) {
+				case "v0" -> CampaignRunner.runV0(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v1" -> CampaignRunner.runV1(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v2" -> CampaignRunner.runV2(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v3" -> CampaignRunner.runV3(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v4" -> CampaignRunner.runV4(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v5" -> CampaignRunner.runV5(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v6" -> CampaignRunner.runV6(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v7" -> CampaignRunner.runV7(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v8" -> CampaignRunner.runV8(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v9" -> CampaignRunner.runV9(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v10" -> CampaignRunner.runV10(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v11" -> CampaignRunner.runV11(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v12" -> CampaignRunner.runV12(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v13" -> CampaignRunner.runV13(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v14" -> CampaignRunner.runV14(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v15" -> CampaignRunner.runV15(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v16" -> CampaignRunner.runV16(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v17" -> CampaignRunner.runV17(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v18" -> CampaignRunner.runV18(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v19" -> CampaignRunner.runV19(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v20" -> CampaignRunner.runV20(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "v21", "v21-paper", "paper", "paper-campaign", "main", "main-comparison" -> CampaignRunner.runV21Paper(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "ablation", "ablation-analysis" -> CampaignRunner.runAblationAnalysis(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "chamber-structure", "chambers", "apportionment", "committees" -> CampaignRunner.runChamberStructure(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				case "manipulation", "manipulation-stress" -> CampaignRunner.runManipulationStress(
+						options.outputDir,
+						options.runs,
+						options.legislators,
+						options.bills,
+						options.seed
+				);
+				default -> throw new IllegalArgumentException("Unknown campaign: " + options.campaignName);
+			};
+			System.out.println(result.name() + " complete.");
+			System.out.println("CSV: " + result.csvPath());
+			System.out.println("Markdown: " + result.markdownPath());
+		} catch (IOException exception) {
+			throw new IllegalStateException("Unable to write campaign output.", exception);
+		}
+	}
+	
+	private static void printReports(Options options, List<ScenarioReport> reports, WorldSpec worldSpec) {
+		if (options.outputFormat == OutputFormat.CSV) {
+			printCsv(reports);
+			return;
+		}
+		
+		System.out.println("Congress Institutional Simulator");
+		System.out.printf("runs=%d legislators=%d billsPerRun=%d seed=%d%n%n",
+		                  options.runs,
+		                  options.legislators,
+		                  options.bills,
+		                  options.seed
+		);
+		System.out.printf(
+				"assumptions: parties=%d partyProfile=%s polarization=%.2f partyLoyalty=%.2f compromise=%.2f constituency=%.2f lobbying=%.2f%n%n",
+				worldSpec.partyCount(),
+				worldSpec.partySystemProfile(),
+				worldSpec.polarization(),
+				worldSpec.partyLoyalty(),
+				worldSpec.compromiseCulture(),
+				worldSpec.constituencySensitivity(),
+				worldSpec.lobbyingSusceptibility()
+		);
+		
+		if (options.outputFormat == OutputFormat.BARS) {
+			printCharts(reports);
+			return;
+		}
+		
+		System.out.printf("%-48s %8s %8s %10s %8s %8s %8s %8s %8s %9s %9s %10s %10s %10s %10s%n",
+		                  "Scenario",
+		                  "Prod",
+		                  "Floor",
+		                  "AvgSupport",
+		                  "Welfare",
+		                  "Compromise",
+		                  "Capture",
+		                  "Spend",
+		                  "Amend",
+		                  "AccessD",
+		                  "CmteRej",
+		                  "AntiLobby",
+		                  "LowSupport",
+		                  "PolicyShift",
+		                  "PropGain"
+		);
+		System.out.println("-".repeat(161));
+		
+		for (ScenarioReport report : reports) {
+			System.out.printf("%-48s %8.3f %8.3f %10.3f %8.3f %8.3f %8.3f %8.3f %8.3f %9.3f %9.3f %10.3f %10.3f %10.3f %10.3f%n",
+			                  report.scenarioName(),
+			                  report.productivity(),
+			                  report.floorConsiderationRate(),
+			                  report.averageEnactedSupport(),
+			                  report.averagePublicBenefit(),
+			                  report.compromiseScore(),
+			                  report.lobbyCaptureIndex(),
+			                  report.lobbySpendPerBill(),
+			                  report.amendmentRate(),
+			                  report.accessDenialRate(),
+			                  report.committeeRejectionRate(),
+			                  report.antiLobbyingSuccessRate(),
+			                  report.controversialPassageRate(),
+			                  report.averagePolicyShift(),
+			                  report.averageProposerGain()
+			);
+		}
+		
+		if (options.charts || options.outputFormat == OutputFormat.BARS) {
+			printCharts(reports);
+		}
+	}
+	
+	private static void printCsv(List<ScenarioReport> reports) {
+		StringBuilder header = new StringBuilder("scenario,totalBills,enactedBills,productivity,floor,avgSupport,welfare,cooperation,compromise,gridlock,accessDenied,committeeRejected,challengeRate,lowSupport,weakPublicMandatePassage,popularFail,policyShift,proposerGain,lobbyCapture,publicAlignment,antiLobbyingSuccess,privateGainRatio,lobbySpendPerBill,defensiveLobbyingShare,captureReturnOnSpend,publicPreferenceDistortion,administrativeCost,administrativeFeasibility,amendmentRate,amendmentMovement,falseNegativePassRate,publicWillReviewRate,proposerAccessGini,welfarePerSubmittedBill,enactedPolicyQuality,policyYield,blockageReliance,publicMandateLegitimacy,vetoes,overriddenVetoes,interChamberConflictRate,secondChamberKillRate,conferenceRate,conferenceSuccessRate,routingDelayCost,shuttleRoundsToAgreement,suspensiveOverrideRate,bicameralDeadlockRate,dischargePetitionRate,committeeOverrideRate,committeeHearingRate,committeeQueueDelay,committeeAmendmentValueAdded,populationSeatDistortion,democraticResponsiveness,seatVoteDistortion,constituencyServiceConcentration,regionalTransferBias");
+		for (String key : ScenarioReport.SUPPLEMENTAL_METRIC_KEYS) {
+			header.append(',').append(key);
+		}
+		System.out.println(header);
+		for (ScenarioReport report : reports) {
+			System.out.printf(Locale.ROOT,
+			                  "%s,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f",
+			                  csvCell(report.scenarioName()),
+			                  report.totalBills(),
+			                  report.enactedBills(),
+			                  report.productivity(),
+			                  report.floorConsiderationRate(),
+			                  report.averageEnactedSupport(),
+			                  report.averagePublicBenefit(),
+			                  report.cooperationScore(),
+			                  report.compromiseScore(),
+			                  report.gridlockRate(),
+			                  report.accessDenialRate(),
+			                  report.committeeRejectionRate(),
+			                  report.challengeRate(),
+			                  report.controversialPassageRate(),
+			                  report.weakPublicMandatePassageRate(),
+			                  report.popularBillFailureRate(),
+			                  report.averagePolicyShift(),
+			                  report.averageProposerGain(),
+			                  report.lobbyCaptureIndex(),
+			                  report.publicAlignmentScore(),
+			                  report.antiLobbyingSuccessRate(),
+			                  report.privateGainRatio(),
+			                  report.lobbySpendPerBill(),
+			                  report.defensiveLobbyingShare(),
+			                  report.captureReturnOnSpend(),
+			                  report.publicPreferenceDistortion(),
+			                  report.administrativeCostIndex(),
+			                  report.administrativeFeasibilityScore(),
+			                  report.amendmentRate(),
+			                  report.averageAmendmentMovement(),
+			                  report.falseNegativePassRate(),
+			                  report.publicWillReviewRate(),
+			                  report.proposerAccessGini(),
+			                  report.welfarePerSubmittedBill(),
+			                  report.enactedPolicyQualityScore(),
+			                  report.policyYieldScore(),
+			                  report.blockageRelianceRate(),
+			                  report.publicMandateLegitimacyScore(),
+			                  report.vetoes(),
+			                  report.overriddenVetoes(),
+			                  report.interChamberConflictRate(),
+			                  report.secondChamberKillRate(),
+			                  report.conferenceRate(),
+			                  report.conferenceSuccessRate(),
+			                  report.routingDelayCost(),
+			                  report.shuttleRoundsToAgreement(),
+			                  report.suspensiveOverrideRate(),
+			                  report.bicameralDeadlockRate(),
+			                  report.dischargePetitionRate(),
+			                  report.committeeOverrideRate(),
+			                  report.committeeHearingRate(),
+			                  report.committeeQueueDelay(),
+			                  report.committeeAmendmentValueAdded(),
+			                  report.populationSeatDistortion(),
+			                  report.democraticResponsiveness(),
+			                  report.seatVoteDistortion(),
+			                  report.constituencyServiceConcentration(),
+			                  report.regionalTransferBias()
+			);
+			for (String key : ScenarioReport.SUPPLEMENTAL_METRIC_KEYS) {
+				System.out.printf(Locale.ROOT, ",%.6f", report.supplementalMetric(key));
+			}
+			System.out.println();
+		}
+	}
+	
+	private static String csvCell(String value) {
+		if (value.indexOf(',') < 0 && value.indexOf('"') < 0 && value.indexOf('\n') < 0 && value.indexOf('\r') < 0) {
+			return value;
+		}
+		return "\"" + value.replace("\"", "\"\"") + "\"";
+	}
+	
+	private static void printCharts(List<ScenarioReport> reports) {
+		System.out.println();
+		printChart("Productivity", reports, Metric.PRODUCTIVITY);
+		printChart("Public welfare", reports, Metric.PUBLIC_WELFARE);
+		printChart("Low-support passage", reports, Metric.LOW_SUPPORT);
+		printChart("Policy shift", reports, Metric.POLICY_SHIFT);
+	}
+	
+	private static void printChart(String title, List<ScenarioReport> reports, Metric metric) {
+		System.out.println(title);
+		for (ScenarioReport report : reports) {
+			double value = metric.value(report);
+			System.out.printf(Locale.ROOT,
+			                  "  %-48s %s %.3f%n",
+			                  report.scenarioName(),
+			                  bar(value, 24),
+			                  value
+			);
+		}
+		System.out.println();
+	}
+	
+	private static String bar(double value, int width) {
+		double normalized = Math.clamp(value, 0.0, 1.0);
+		int filled = (int) Math.round(normalized * width);
+		return "[" + "#".repeat(filled) + ".".repeat(width - filled) + "]";
+	}
+	
+	private enum Metric
+	{
+		PRODUCTIVITY {
+			@Override
+			double value(ScenarioReport report) {
+				return report.productivity();
+			}
+		},
+		LOW_SUPPORT {
+			@Override
+			double value(ScenarioReport report) {
+				return report.controversialPassageRate();
+			}
+		},
+		PUBLIC_WELFARE {
+			@Override
+			double value(ScenarioReport report) {
+				return report.averagePublicBenefit();
+			}
+		},
+		POLICY_SHIFT {
+			@Override
+			double value(ScenarioReport report) {
+				return report.averagePolicyShift();
+			}
+		};
+		
+		abstract double value(ScenarioReport report);
+	}
+	
+	
+	private enum OutputFormat
+	{
+		TABLE,
+		CSV,
+		BARS
+	}
+	
+	
+	private record Options(int runs, int legislators, int bills, int partyCount, double polarization, double partyLoyalty,
+	                       double lobbyingSusceptibility, double constituencySensitivity, double compromiseCulture,
+	                       List<String> scenarioKeys, OutputFormat outputFormat, boolean charts, boolean calibrate, boolean allScenarios,
+	                       String campaignName, Path outputDir, long seed, boolean help)
+		{
+			private Options(
+					int runs,
+					int legislators,
+					int bills,
+					int partyCount,
+					double polarization,
+					double partyLoyalty,
+					double lobbyingSusceptibility,
+					double constituencySensitivity,
+					double compromiseCulture,
+					List<String> scenarioKeys,
+					OutputFormat outputFormat,
+					boolean charts,
+					boolean calibrate,
+					boolean allScenarios,
+					String campaignName,
+					Path outputDir,
+					long seed,
+					boolean help
+			) {
+				this.runs = runs;
+				this.legislators = legislators;
+				this.bills = bills;
+				this.partyCount = partyCount;
+				this.polarization = polarization;
+				this.partyLoyalty = partyLoyalty;
+				this.lobbyingSusceptibility = lobbyingSusceptibility;
+				this.constituencySensitivity = constituencySensitivity;
+				this.compromiseCulture = compromiseCulture;
+				this.scenarioKeys = List.copyOf(scenarioKeys);
+				this.outputFormat = outputFormat;
+				this.charts = charts;
+				this.calibrate = calibrate;
+				this.allScenarios = allScenarios;
+				this.campaignName = campaignName;
+				this.outputDir = outputDir;
+				this.seed = seed;
+				this.help = help;
+			}
+			
+			private static Options parse(String[] args) {
+				int runs = 250;
+				int legislators = 101;
+				int bills = 60;
+				int partyCount = 3;
+				double polarization = 0.72;
+				double partyLoyalty = 0.68;
+				double lobbyingSusceptibility = 0.48;
+				double constituencySensitivity = 0.64;
+				double compromiseCulture = 0.52;
+				List<String> scenarioKeys = new ArrayList<>();
+				OutputFormat outputFormat = OutputFormat.TABLE;
+				boolean charts = false;
+				boolean calibrate = false;
+				boolean allScenarios = false;
+				String campaignName = null;
+				Path outputDir = Path.of("reports");
+				long seed = 20260428L;
+				boolean help = false;
+				
+				for (int i = 0; i < args.length; i++) {
+					String arg = args[i];
+					switch (arg) {
+						case "--runs" -> runs = parseInt(args, ++i, arg);
+						case "--legislators" -> legislators = parseInt(args, ++i, arg);
+						case "--bills" -> bills = parseInt(args, ++i, arg);
+						case "--party-count" -> partyCount = parseInt(args, ++i, arg);
+						case "--polarization" -> polarization = parseDouble(args, ++i, arg);
+						case "--party-loyalty" -> partyLoyalty = parseDouble(args, ++i, arg);
+						case "--lobbying" -> lobbyingSusceptibility = parseDouble(args, ++i, arg);
+						case "--constituency" -> constituencySensitivity = parseDouble(args, ++i, arg);
+						case "--compromise" -> compromiseCulture = parseDouble(args, ++i, arg);
+						case "--scenarios" -> scenarioKeys = parseScenarioKeys(args, ++i, arg);
+						case "--format" -> outputFormat = parseOutputFormat(args, ++i, arg);
+						case "--charts" -> charts = true;
+						case "--calibrate" -> calibrate = true;
+						case "--all-scenarios" -> allScenarios = true;
+						case "--campaign" -> campaignName = parseString(args, ++i, arg);
+						case "--output-dir" -> outputDir = Path.of(parseString(args, ++i, arg));
+						case "--seed" -> seed = parseLong(args, ++i, arg);
+						case "--help", "-h" -> help = true;
+						default -> throw new IllegalArgumentException("Unknown argument: " + arg);
+					}
+				}
+				
+				if (runs <= 0 || legislators <= 0 || bills <= 0) {
+					throw new IllegalArgumentException("runs, legislators, and bills must all be positive.");
+				}
+				return new Options(
+						runs,
+						legislators,
+						bills,
+						partyCount,
+						polarization,
+						partyLoyalty,
+						lobbyingSusceptibility,
+						constituencySensitivity,
+						compromiseCulture,
+						scenarioKeys,
+						outputFormat,
+						charts,
+						calibrate,
+						allScenarios,
+						campaignName,
+						outputDir,
+						seed,
+						help
+				);
+			}
+			
+			private static int parseInt(String[] args, int index, String name) {
+				if (index >= args.length) {
+					throw new IllegalArgumentException(name + " requires a value.");
+				}
+				return Integer.parseInt(args[index]);
+			}
+			
+			private static double parseDouble(String[] args, int index, String name) {
+				if (index >= args.length) {
+					throw new IllegalArgumentException(name + " requires a value.");
+				}
+				return Double.parseDouble(args[index]);
+			}
+			
+			private static String parseString(String[] args, int index, String name) {
+				if (index >= args.length) {
+					throw new IllegalArgumentException(name + " requires a value.");
+				}
+				return args[index];
+			}
+			
+			private static long parseLong(String[] args, int index, String name) {
+				if (index >= args.length) {
+					throw new IllegalArgumentException(name + " requires a value.");
+				}
+				return Long.parseLong(args[index]);
+			}
+			
+			private static List<String> parseScenarioKeys(String[] args, int index, String name) {
+				if (index >= args.length) {
+					throw new IllegalArgumentException(name + " requires a comma-separated value.");
+				}
+				return Arrays.stream(args[index].split(","))
+				             .map(String::trim)
+				             .filter(value -> !value.isEmpty())
+				             .toList();
+			}
+			
+			private static OutputFormat parseOutputFormat(String[] args, int index, String name) {
+				if (index >= args.length) {
+					throw new IllegalArgumentException(name + " requires table, csv, or bars.");
+				}
+				return switch (args[index].toLowerCase(Locale.ROOT)) {
+					case "table" -> OutputFormat.TABLE;
+					case "csv" -> OutputFormat.CSV;
+					case "bars" -> OutputFormat.BARS;
+					default -> throw new IllegalArgumentException(name + " must be table, csv, or bars.");
+				};
+			}
+			
+			private static void printUsage() {
+				StringJoiner defaultScenarioKeys = new StringJoiner(", ");
+				for (String key : ScenarioCatalog.defaultScenarioKeys()) {
+					defaultScenarioKeys.add(key);
+				}
+				StringJoiner scenarioKeys = new StringJoiner(", ");
+				for (String key : ScenarioCatalog.scenarioKeys()) {
+					scenarioKeys.add(key);
+				}
+				
+				System.out.println("""
+						                   Usage: make run ARGS="--runs 500 --legislators 101 --bills 60 --seed 42 --charts"
+						                   
+						                   Options:
+						                     --runs <n>          Number of randomized worlds per scenario
+						                     --legislators <n>   Number of legislators in the generated Congress
+						                     --bills <n>         Number of bills introduced per run
+						                     --party-count <n>   Number of generated party labels
+						                     --polarization <x>  Ideological clustering, from 0.0 to 1.0
+						                     --party-loyalty <x> Party-pressure sensitivity, from 0.0 to 1.0
+						                     --compromise <x>    Compromise culture, from 0.0 to 1.0
+						                     --constituency <x>  Constituent-pressure sensitivity, from 0.0 to 1.0
+						                     --lobbying <x>      Lobby-pressure sensitivity, from 0.0 to 1.0
+						                     --scenarios <keys>  Comma-separated scenario keys
+						                     --all-scenarios     Compare the breadth-first scenario catalog
+						                     --format <kind>     table, csv, or bars
+						                     --charts            Add ASCII bar charts after the table
+						                     --calibrate         Run empirical benchmark screening instead of scenario comparison
+						                     --campaign <name>   Run a named campaign, including v0-v21, paper/main-comparison, chamber-structure, ablation, and manipulation-stress
+						                     --output-dir <path> Campaign output directory
+						                     --seed <n>          Reproducible random seed
+						                     --help              Show this message
+						                   
+						                   Default scenario keys when --scenarios is omitted:
+						                   """ + defaultScenarioKeys + "\n\n" + """
+						All scenario keys, including legacy/default-pass side sweeps:
+						""" + scenarioKeys + "\n");
+			}
+		}
 }

@@ -6,6 +6,7 @@
 \setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
 \setlength{\floatsep}{8pt plus 2pt minus 2pt}
 \setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\usepackage{tikz}
 
 \acmConference[Collective Intelligence]{ACM Collective Intelligence}{2026}{TBD}
 \acmYear{2026}
@@ -89,6 +90,8 @@ The metric types matter. Some metrics are structural outputs, such as productivi
 
 For display, the paper reports a directional score only as a diagnostic reading aid. Representative quality now combines enacted-policy quality, policy yield per submitted proposal, and public-mandate legitimacy, so a system that looks good mainly by blocking most proposals is distinguished from one that actually produces public-value output. Risk control inverts chamber low-support passage, weak public-mandate passage, minority harm, lobbying capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift. Administrative feasibility inverts estimated procedural load from attention spending, review, challenge, amendment, and alternative selection. The directional score averages productivity, representative quality, risk control, and administrative feasibility, but the analysis emphasizes Pareto tradeoffs because different value profiles favor different institutional designs.
 
+Because this paper's institutional question gives special normative importance to negotiated moderation, the main representative comparison also reports an explicit compromise-priority sensitivity score: 0.30 compromise, 0.20 productivity, 0.20 risk control, 0.15 administrative feasibility, and 0.15 public-mandate legitimacy. This is not an estimated social-welfare function. It is a transparent value profile used to test whether the qualitative ordering changes when compromise receives direct priority.
+
 All main results come from one reported comparison campaign. It combines broad assumptions, adversarial generator cases, weighted party-system cases, and a stylized rising-contention timeline in one CSV. Cases vary polarization, party loyalty, compromise culture, lobbying, constituency pressure, party count, proposal pressure, capture pressure, anti-lobbying reform demand, and six adversarial bill streams: high-benefit extreme reform, popular harmful bills, moderate capture, delayed-benefit reform, concentrated rights-like harm, and anti-lobbying backlash.
 
 Scenario selection follows a fixed coverage rule: include conventional baselines, the stylized U.S.-like benchmark, readable representatives for implemented non-default design classes, and three default-enactment stress tests. The selection manifest records each row's role and rationale; \texttt{make family-screen} reports fixed-rule family champions. The main comparison now includes pre-floor mechanisms directly: proportional committees, discharge petitions, open floor calendars, citizen petitions, amendment tournaments, and anti-capture proposal access. Earlier default-pass sweeps remain side logs, not the organizing evidence base.
@@ -103,7 +106,7 @@ Calibration is a screening step, not a parameter fit. \texttt{make calibrate} co
 \begin{figure}
   \centering
   \input{figures/chamber_productivity_compromise}
-  \caption{Chamber-structure family champions from the supplemental chamber campaign. The axes keep the paper's central productivity/compromise comparison visible; malapportionment remains in Table~\ref{tab:chamber-family-champions} because the champion set has little variation on that metric. The figure is a structural sensitivity view, not a replacement for the main scenario comparison.}
+  \caption{Chamber-structure family champions from the supplemental chamber campaign, zoomed to the observed champion range so clustered family labels remain readable. The axes keep the paper's central productivity/compromise comparison visible; malapportionment remains in Table~\ref{tab:chamber-family-champions} because the champion set has little variation on that metric. The figure is a structural sensitivity view, not a replacement for the main scenario comparison.}
   \label{fig:chamber-productivity-compromise}
   \Description{Scatter plot of chamber family champion productivity and compromise, with the conventional benchmark marked in red.}
 \end{figure}
@@ -114,9 +117,9 @@ Calibration is a screening step, not a parameter fit. \texttt{make calibrate} co
 \input{figures/pareto_front_table}
 \input{figures/empirical_bridge_table}
 
-Table~\ref{tab:scenario-averages} compares representative family examples across broad and adversarial synthetic cases; the appendix reports the full table with directional and seed diagnostics. Table~\ref{tab:pareto-front} shows the narrow productivity/compromise/risk frontier. It is not a recommendation because it excludes administrative feasibility and compresses risk into one objective. Table~\ref{tab:mechanism-diagnostics} adds ablation and manipulation-stress diagnostics, while Table~\ref{tab:empirical-bridge} separates the limited empirical bridge from the synthetic mechanism findings.
+Table~\ref{tab:scenario-averages} compares representative family examples across broad and adversarial synthetic cases, sorted by the compromise-priority sensitivity score; the appendix reports the full table with directional and seed diagnostics. Table~\ref{tab:pareto-front} shows the narrow productivity/compromise/risk frontier. It is not a recommendation because it excludes administrative feasibility and compresses risk into one objective. Table~\ref{tab:mechanism-diagnostics} adds ablation and manipulation-stress diagnostics, while Table~\ref{tab:empirical-bridge} separates the limited empirical bridge from the synthetic mechanism findings.
 
-The main results are tradeoffs, not rankings. Pairwise alternatives are the strongest non-default example: they raise productivity and compromise while reducing weak public-mandate passage, but stress diagnostics show procedural cost and clone/decoy vulnerability. Backward-to-floor systems sharpen the interpretation. Petition and open-calendar variants preserve access while routing risk to deliberation; discharge and proportional-committee variants expose committee-design effects; anti-capture access filters before floor consideration; and amendment tournaments test content control. The portfolio hybrid is a design hypothesis, not a winner. Open default enactment has the highest throughput but the largest weak-mandate burden. The stylized U.S.-like benchmark has low productivity and low weak-mandate passage; Table~\ref{tab:scenario-averages}'s yield and blockage-dependence columns distinguish gatekeeping success from policy production.
+The main results are tradeoffs, not rankings. Under the compromise-priority sensitivity profile, pairwise alternatives and amendment tournaments move to the top because they preserve substantial throughput while producing the highest compromise and strong risk control. The portfolio and expanded-portfolio hybrids remain close behind, while default enactment falls because high productivity no longer offsets weak compromise and weak public-mandate performance. Backward-to-floor systems sharpen the interpretation. Petition and open-calendar variants preserve access while routing risk to deliberation; discharge and proportional-committee variants expose committee-design effects; anti-capture access filters before floor consideration; and amendment tournaments test content control. The portfolio hybrid is a design hypothesis, not a winner. The stylized U.S.-like benchmark has low productivity but stronger compromise, risk, and mandate diagnostics than its directional-score rank suggests; Table~\ref{tab:scenario-averages}'s yield and blockage-dependence columns distinguish gatekeeping success from policy production.
 
 The chamber-structure supplement adds a flatter lesson: architecture changes the tradeoff surface, but no structural family dominates the mechanism-level campaign. Selection/retention filters and independent-review bundles score well; malapportioned upper chambers can raise productivity in some stressed cases, but the supplement exposes their representational cost.
 
@@ -147,17 +150,17 @@ The exploratory result does not support a single dominant rule. The portfolio hy
 \begin{figure}[H]
   \centering
   \resizebox{0.86\linewidth}{!}{\input{figures/directional_scoreboard}}
-  \caption{Value-profile matrix for selected systems. Rows are sorted by the same overall directional score used in Table~\ref{tab:scenario-averages}. Green cells are more favorable and red cells are less favorable under the stated metric interpretation; the red row label marks the stylized U.S.-like benchmark. This figure should be read as a profile comparison, not as a proof of one best system.}
+  \caption{Value-profile matrix for selected systems. Rows are sorted by the compromise-priority sensitivity score used in Table~\ref{tab:scenario-averages}. Green cells are more favorable and red cells are less favorable under the stated metric interpretation; the red row label marks the stylized U.S.-like benchmark. This figure should be read as a profile comparison, not as a proof of one best system.}
   \label{fig:directional-scoreboard}
-  \Description{Matrix comparing productivity, compromise, representative quality, risk control, and administrative feasibility for selected institutional scenarios.}
+  \Description{Matrix comparing compromise-priority score, productivity, compromise, public-mandate legitimacy, risk control, and administrative feasibility for selected institutional scenarios.}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \resizebox{0.66\linewidth}{!}{\input{figures/timeline_contention}}
-  \caption{Rising-contention stress path from the main comparison campaign. The index combines gridlock, compromise loss, and weak public-mandate passage. Lower is better. This is a parameterized stress path, not an endogenous causal model of polarization.}
+  \resizebox{0.78\linewidth}{!}{\input{figures/timeline_contention}}
+  \caption{Selected rising-contention stress paths from the main comparison campaign. The index combines gridlock, compromise loss, and weak public-mandate passage. Lower is better. This is a parameterized stress path, not an endogenous causal model of polarization.}
   \label{fig:timeline-contention}
-  \Description{Line chart of contention over six stylized eras.}
+  \Description{Line chart of selected contention paths over six stylized eras.}
 \end{figure}
 
 \section{Limitations}

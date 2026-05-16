@@ -2,11 +2,11 @@
   "generatedBy": "paper/scripts/write_pdf_manifest.py",
   "pdfs": [
     {
-      "normalizedTextBytes": 41852,
-      "normalizedTextSha256": "a429119bfb8177fcd3beb6bf3f4802ffe7163d51af2feac025817668cb936a75",
+      "normalizedTextBytes": 43692,
+      "normalizedTextSha256": "4a40bae84d566e2c37c03dd882d03a401be90a1679d4096f31bd82de7bfd36d4",
       "pages": 11,
       "path": "paper/main.pdf",
-      "sizeBytes": 470987
+      "sizeBytes": 472658
     },
     {
       "normalizedTextBytes": 37781,
@@ -17,7 +17,7 @@
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "95c01aecebb1289cade3976f0fb65c0b9c1061ec36a706635103812a40735c45",
+  "sourceInputSha256": "cbba145bf4b5b78bd17b5e23d6bc2e39d43ae8e666b64789e951af5698f7ec15",
   "sourceInputs": [
     {
       "path": "Makefile",
@@ -89,7 +89,7 @@
     },
     {
       "path": "paper/figures/chamber_productivity_compromise.tex",
-      "sha256": "6c69a29b33877fdd89f88ab63d9f3bf8e3d750e7238c8e7897d454b6924296d7"
+      "sha256": "3dd2a90bdc3404a340fa68fd72145aa1ff5e5875e54919c5508817a177de6f10"
     },
     {
       "path": "paper/figures/compromise_productivity.tex",
@@ -105,7 +105,7 @@
     },
     {
       "path": "paper/figures/directional_scoreboard.tex",
-      "sha256": "8d0dd994d6d2aa5fbe2ad4247beab1e1fc17a549bd4bfc8fb243f503e7df846e"
+      "sha256": "13f7eb190a13e6a9946ad7b2e80f2fb026e7ebeff511fcfd45f001674150ad9b"
     },
     {
       "path": "paper/figures/empirical_bridge_table.tex",
@@ -137,15 +137,15 @@
     },
     {
       "path": "paper/figures/scenario_averages_table.tex",
-      "sha256": "471e371e594d988ec1968c52b9774a9b9a03de3ffc96e219699bfeddf75fa7ef"
+      "sha256": "971b5c738ac1e20ef6388aa88025411e4a9d3d35dad9964394b34d6286ab41dd"
     },
     {
       "path": "paper/figures/timeline_contention.tex",
-      "sha256": "3a33170cd0d453bc46fe9e7d2a06955e5599e24e60629c6aebc1d486b5b1f586"
+      "sha256": "4f86af878ad980be7eb2d6c96c9823863d2d7dc0721244098a0c8c9793471a88"
     },
     {
       "path": "paper/main.tex",
-      "sha256": "e1ef9c263659eda97109000e436f04a1720152e23295506aa62aa7a1d4659b7d"
+      "sha256": "2791c54c98b58214be3a3cfb01ff135ec7110e8abea51a7173ad942b477cf29d"
     },
     {
       "path": "paper/references.bib",
@@ -157,7 +157,7 @@
     },
     {
       "path": "paper/scripts/generate_figures.py",
-      "sha256": "c2ba602e448bf7d55335b94623ea8e76946ba615f88582b0f3397dc640f5828b"
+      "sha256": "ba5a66f25dfb86b6c0aa99875c068a1b9814e5cc47362498dc79e8cc191c5c56"
     },
     {
       "path": "paper/scripts/write_pdf_manifest.py",
@@ -229,7 +229,7 @@
     },
     {
       "path": "scripts/checks/check_figure_labels.py",
-      "sha256": "8a5b883c4c69e51758951ecadd04bcbdd9b51e7f3bc61b86a84e1729bde322a6"
+      "sha256": "861c0ae0275dc6df3cc29221299dbff616ef0682d75083f5603689d0fda0f214"
     },
     {
       "path": "scripts/checks/check_paper_anonymity.py",
@@ -269,7 +269,7 @@
     },
     {
       "path": "scripts/reporting/summarize_chamber_structure.py",
-      "sha256": "e052674ffa5468da62a9be09248f9e7b3bac2d7d052e74b506f3bd8e3ce63624"
+      "sha256": "415a369ac9100b6f071f910caef7d18d28d274e294bf65a25f24073546115209"
     },
     {
       "path": "scripts/reporting/summarize_manipulation_stress.py",

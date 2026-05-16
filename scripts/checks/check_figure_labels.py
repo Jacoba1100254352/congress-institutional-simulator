@@ -24,6 +24,7 @@ MIN_LABELS = {
 }
 
 PICTURE_RE = re.compile(r"\\begin\{picture\}\(([-0-9.]+),([-0-9.]+)\)")
+FIGURE_BOUNDS_RE = re.compile(r"% figure-bounds width=([-0-9.]+) height=([-0-9.]+)")
 POINT_LABEL_RE = re.compile(
     r"% point-label label=(.*?) pointX=([-0-9.]+) pointY=([-0-9.]+) "
     r"labelX=([-0-9.]+) labelY=([-0-9.]+) anchor=([lrc]) leader=([01])"
@@ -124,11 +125,11 @@ def parse_labels(text: str) -> list[FigureLabel]:
 
 def check_file(path: Path) -> list[str]:
     text = path.read_text()
-    picture = PICTURE_RE.search(text)
-    if not picture:
-        return [f"{path}: missing picture bounds"]
-    width = float(picture.group(1))
-    height = float(picture.group(2))
+    bounds = PICTURE_RE.search(text) or FIGURE_BOUNDS_RE.search(text)
+    if not bounds:
+        return [f"{path}: missing figure bounds"]
+    width = float(bounds.group(1))
+    height = float(bounds.group(2))
     failures: list[str] = []
 
     for match in PUT_RE.finditer(text):

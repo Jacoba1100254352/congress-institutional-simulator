@@ -6,3 +6,8 @@ paper/build/
 .idea/
 *.iml
 no-include/
+
+# Local credential files.
+.env
+.env.local
+.env.*.local

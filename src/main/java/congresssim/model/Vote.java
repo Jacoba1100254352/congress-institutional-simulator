@@ -1,7 +1,9 @@
 package congresssim.model;
 
-public enum Vote {
-    YAY,
-    NAY
+
+public enum Vote
+{
+	YAY,
+	NAY
 }
 

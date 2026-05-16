@@ -1,370 +1,352 @@
 package congresssim;
 
-import congresssim.behavior.VoteContext;
-import congresssim.behavior.VotingStrategy;
-import congresssim.experiment.CampaignResult;
-import congresssim.experiment.CampaignRunner;
-import congresssim.experiment.CampaignRow;
-import congresssim.simulation.CommitteeComposition;
-import congresssim.simulation.CommitteeFactory;
-import congresssim.simulation.PartySystemProfile;
+
 import congresssim.simulation.Scenario;
 import congresssim.simulation.catalog.ScenarioCatalog;
-import congresssim.simulation.ScenarioReport;
-import congresssim.simulation.Simulator;
-import congresssim.simulation.WorldGenerator;
-import congresssim.simulation.WorldSpec;
-import congresssim.model.Bill;
-import congresssim.model.Legislator;
-import congresssim.model.LobbyCaptureStrategy;
-import congresssim.model.LobbyGroup;
-import congresssim.model.SimulationWorld;
-import congresssim.model.Vote;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
-import static congresssim.TestSupport.*;
-final class ScenarioCatalogTests {
-    private ScenarioCatalogTests() {
-    }
-
-    static void run() {
-        scenarioKeysSelectExpectedScenarios();
-        scenarioCatalogHasUniqueKeysAndRunnableNames();
-    }
+import static congresssim.TestSupport.assertThrows;
+import static congresssim.TestSupport.assertTrue;
 
 
-    private static void scenarioKeysSelectExpectedScenarios() {
-        assertTrue(
-                ScenarioCatalog.scenariosForKeys(List.of("default-pass", "default-pass-guarded")).size() == 2,
-                "Scenario keys should select a focused scenario subset."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-challenge"),
-                "Scenario catalog should expose CLI-facing keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-escalation-q12-s082"),
-                "Scenario catalog should expose tokenless escalation sweep keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-cross-bloc"),
-                "Scenario catalog should expose cross-bloc cosponsorship keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-adaptive-track"),
-                "Scenario catalog should expose adaptive-track keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-sunset-trial"),
-                "Scenario catalog should expose sunset-trial keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-earned-credits"),
-                "Scenario catalog should expose earned proposal-credit keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-anti-capture-bundle"),
-                "Scenario catalog should expose anti-capture scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-budgeted-lobbying"),
-                "Scenario catalog should expose budgeted-lobbying scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-mediation"),
-                "Scenario catalog should expose mediation scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-budgeted-lobbying-mediation"),
-                "Scenario catalog should expose budgeted lobbying plus mediation scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-alternatives-pairwise"),
-                "Scenario catalog should expose competing-alternatives scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-lobby-channel-bundle"),
-                "Scenario catalog should expose lobbying-channel scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-citizen-certificate"),
-                "Scenario catalog should expose citizen-panel scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-weighted-agenda-lottery"),
-                "Scenario catalog should expose agenda-lottery scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-quadratic-attention"),
-                "Scenario catalog should expose quadratic attention scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-public-objection"),
-                "Scenario catalog should expose public-objection scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-constituent-public-will"),
-                "Scenario catalog should expose constituent-public-will scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-proposal-bonds"),
-                "Scenario catalog should expose proposal-bond scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-multiround-mediation"),
-                "Scenario catalog should expose multi-round mediation scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-alternatives-strategic"),
-                "Scenario catalog should expose strategic-alternative scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-adaptive-proposers"),
-                "Scenario catalog should expose adaptive proposer scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-strategic-lobbying"),
-                "Scenario catalog should expose strategic lobbying scenario keys."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("current-system"),
-                "Scenario catalog should expose the stylized U.S.-like benchmark key."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("current-congress-workflow"),
-                "Scenario catalog should expose a richer stylized current-Congress workflow benchmark."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("committee-regular-order"),
-                "Scenario catalog should expose non-default committee-first designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("leadership-cartel-majority"),
-                "Scenario catalog should expose non-default leadership agenda-control designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("cloture-conference-review"),
-                "Scenario catalog should expose non-default cloture, conference, and judicial-review designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("citizen-initiative-referendum"),
-                "Scenario catalog should expose direct-democracy initiative designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("parliamentary-coalition-confidence"),
-                "Scenario catalog should expose non-default coalition-confidence designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("simple-majority-alternatives-strategic"),
-                "Scenario catalog should expose non-default strategic policy tournaments."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("risk-routed-majority"),
-                "Scenario catalog should expose non-default adaptive routing designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("portfolio-hybrid-legislature"),
-                "Scenario catalog should expose the synthesized portfolio hybrid design."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("expanded-portfolio-hybrid-legislature"),
-                "Scenario catalog should expose the expanded research-depth portfolio design."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("district-population-majority"),
-                "Scenario catalog should expose district-population public-will designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("long-horizon-learning-majority"),
-                "Scenario catalog should expose long-horizon strategy-learning designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("omnibus-bargaining-majority"),
-                "Scenario catalog should expose fuller omnibus bargaining designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("influence-system-majority"),
-                "Scenario catalog should expose linked influence-system designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("constitutional-court-architecture-majority"),
-                "Scenario catalog should expose constitutional-court architecture designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("norm-erosion-majority"),
-                "Scenario catalog should expose endogenous norm-erosion stress designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("democratic-deterioration-majority"),
-                "Scenario catalog should expose broader endogenous democratic-deterioration stress designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("package-bargaining-majority"),
-                "Scenario catalog should expose non-default package bargaining designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("multidimensional-package-majority"),
-                "Scenario catalog should expose multidimensional package bargaining designs."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("risk-routed-no-citizen-majority"),
-                "Scenario catalog should expose risk-routing ablation variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("citizen-assembly-manipulation-stress"),
-                "Scenario catalog should expose citizen-panel manipulation stress variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("harm-weighted-loose-claims-majority"),
-                "Scenario catalog should expose bad-faith harm-claim stress variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("public-objection-astroturf-majority"),
-                "Scenario catalog should expose astroturf objection stress variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("chamber-incongruence-pr-upper"),
-                "Scenario catalog should expose chamber-incongruence architecture variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("malapportioned-upper-chamber"),
-                "Scenario catalog should expose malapportioned upper-chamber variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("revision-council-upper"),
-                "Scenario catalog should expose bicameral revision-council routing variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("suspensive-veto-upper"),
-                "Scenario catalog should expose bicameral suspensive-veto routing variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("limited-navette-upper"),
-                "Scenario catalog should expose bicameral navette routing variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("joint-sitting-upper"),
-                "Scenario catalog should expose bicameral joint-sitting fallback variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("balanced-committee-majority"),
-                "Scenario catalog should expose forced-balanced committee variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("opposition-chaired-committee-majority"),
-                "Scenario catalog should expose opposition-chaired scrutiny committee variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("committee-deadline-discharge-majority"),
-                "Scenario catalog should expose committee discharge-petition power variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("committee-minority-hearing-majority"),
-                "Scenario catalog should expose committee minority-hearing rights variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("committee-amendment-majority"),
-                "Scenario catalog should expose committee amendment-power variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("equal-population-unicameral"),
-                "Scenario catalog should expose equal-population unicameral chamber variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("proportional-house-majority"),
-                "Scenario catalog should expose proportional lower-house variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("house-origin-routing"),
-                "Scenario catalog should expose chamber-origin routing variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("upper-amendment-only"),
-                "Scenario catalog should expose upper-house amendment-only variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("last-offer-bargaining-upper"),
-                "Scenario catalog should expose last-offer bicameral bargaining variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("mixed-citizen-committee-majority"),
-                "Scenario catalog should expose mixed legislator-citizen committee variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("committee-scrutiny-audit-majority"),
-                "Scenario catalog should expose scrutiny and audit committee variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("eligibility-expertise-majority"),
-                "Scenario catalog should expose eligibility-filtered chamber variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("exante-clearance-majority"),
-                "Scenario catalog should expose ex ante constitutional/legal review variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("independent-insulation-majority"),
-                "Scenario catalog should expose independent-institution insulation variants."
-        );
-        assertTrue(
-                ScenarioCatalog.scenarioKeys().contains("default-pass-challenge-minority-bonus"),
-                "Scenario catalog should expose challenge allocation variant keys."
-        );
-    }
-
-
-    private static void scenarioCatalogHasUniqueKeysAndRunnableNames() {
-        List<String> keys = ScenarioCatalog.scenarioKeys();
-        assertTrue(keys.size() == new HashSet<>(keys).size(), "Scenario keys should be unique.");
-        assertTrue(
-                ScenarioCatalog.defaultScenarios().size() == ScenarioCatalog.defaultScenarioKeys().size(),
-                "Default scenario list should match the default key list."
-        );
-        assertTrue(
-                ScenarioCatalog.defaultScenarioKeys().size() < keys.size(),
-                "Default scenario list should be a representative breadth-first set, not the full historical catalog."
-        );
-        assertTrue(
-                ScenarioCatalog.allScenarios().size() == ScenarioCatalog.allScenarioKeys().size(),
-                "All-scenarios list should match the breadth-first all-scenario key list."
-        );
-        assertTrue(
-                ScenarioCatalog.allScenarioKeys().size() < keys.size(),
-                "Historical scenario keys should remain accessible without making --all-scenarios default-pass-heavy."
-        );
-        long allScenarioDefaultPassCount = ScenarioCatalog.allScenarioKeys().stream()
-                .filter(key -> key.startsWith("default-pass"))
-                .count();
-        long allScenarioNonDefaultCount = ScenarioCatalog.allScenarioKeys().size() - allScenarioDefaultPassCount;
-        assertTrue(
-                allScenarioDefaultPassCount <= 3 && allScenarioNonDefaultCount > allScenarioDefaultPassCount,
-                "--all-scenarios should keep default-pass variants as a small side family."
-        );
-        long defaultPassCount = ScenarioCatalog.defaultScenarioKeys().stream()
-                .filter(key -> key.startsWith("default-pass"))
-                .count();
-        assertTrue(
-                defaultPassCount <= 3,
-                "Default scenario list should keep default-pass as a small side family."
-        );
-
-        Set<String> scenarioNames = new HashSet<>();
-        for (Scenario scenario : ScenarioCatalog.defaultScenarios()) {
-            assertTrue(scenario.name() != null && !scenario.name().isBlank(), "Every scenario should expose a nonblank name.");
-            assertTrue(scenarioNames.add(scenario.name()), "Scenario display names should be unique for reports.");
-        }
-
-        assertThrows(
-                () -> ScenarioCatalog.scenariosForKeys(List.of("missing-scenario-key")),
-                "Unknown scenario keys should fail fast instead of silently changing campaign composition."
-        );
-    }
-
+final class ScenarioCatalogTests
+{
+	private ScenarioCatalogTests() {
+	}
+	
+	static void run() {
+		scenarioKeysSelectExpectedScenarios();
+		scenarioCatalogHasUniqueKeysAndRunnableNames();
+	}
+	
+	
+	private static void scenarioKeysSelectExpectedScenarios() {
+		assertTrue(
+				ScenarioCatalog.scenariosForKeys(List.of("default-pass", "default-pass-guarded")).size() == 2,
+				"Scenario keys should select a focused scenario subset."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-challenge"),
+				"Scenario catalog should expose CLI-facing keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-escalation-q12-s082"),
+				"Scenario catalog should expose tokenless escalation sweep keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-cross-bloc"),
+				"Scenario catalog should expose cross-bloc cosponsorship keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-adaptive-track"),
+				"Scenario catalog should expose adaptive-track keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-sunset-trial"),
+				"Scenario catalog should expose sunset-trial keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-earned-credits"),
+				"Scenario catalog should expose earned proposal-credit keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-anti-capture-bundle"),
+				"Scenario catalog should expose anti-capture scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-budgeted-lobbying"),
+				"Scenario catalog should expose budgeted-lobbying scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-mediation"),
+				"Scenario catalog should expose mediation scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-budgeted-lobbying-mediation"),
+				"Scenario catalog should expose budgeted lobbying plus mediation scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-alternatives-pairwise"),
+				"Scenario catalog should expose competing-alternatives scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-lobby-channel-bundle"),
+				"Scenario catalog should expose lobbying-channel scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-citizen-certificate"),
+				"Scenario catalog should expose citizen-panel scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-weighted-agenda-lottery"),
+				"Scenario catalog should expose agenda-lottery scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-quadratic-attention"),
+				"Scenario catalog should expose quadratic attention scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-public-objection"),
+				"Scenario catalog should expose public-objection scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-constituent-public-will"),
+				"Scenario catalog should expose constituent-public-will scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-proposal-bonds"),
+				"Scenario catalog should expose proposal-bond scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-multiround-mediation"),
+				"Scenario catalog should expose multi-round mediation scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-alternatives-strategic"),
+				"Scenario catalog should expose strategic-alternative scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-adaptive-proposers"),
+				"Scenario catalog should expose adaptive proposer scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-strategic-lobbying"),
+				"Scenario catalog should expose strategic lobbying scenario keys."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("current-system"),
+				"Scenario catalog should expose the stylized U.S.-like benchmark key."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("current-congress-workflow"),
+				"Scenario catalog should expose a richer stylized current-Congress workflow benchmark."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("committee-regular-order"),
+				"Scenario catalog should expose non-default committee-first designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("leadership-cartel-majority"),
+				"Scenario catalog should expose non-default leadership agenda-control designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("cloture-conference-review"),
+				"Scenario catalog should expose non-default cloture, conference, and judicial-review designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("citizen-initiative-referendum"),
+				"Scenario catalog should expose direct-democracy initiative designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("parliamentary-coalition-confidence"),
+				"Scenario catalog should expose non-default coalition-confidence designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("simple-majority-alternatives-strategic"),
+				"Scenario catalog should expose non-default strategic policy tournaments."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("risk-routed-majority"),
+				"Scenario catalog should expose non-default adaptive routing designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("portfolio-hybrid-legislature"),
+				"Scenario catalog should expose the synthesized portfolio hybrid design."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("expanded-portfolio-hybrid-legislature"),
+				"Scenario catalog should expose the expanded research-depth portfolio design."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("district-population-majority"),
+				"Scenario catalog should expose district-population public-will designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("long-horizon-learning-majority"),
+				"Scenario catalog should expose long-horizon strategy-learning designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("omnibus-bargaining-majority"),
+				"Scenario catalog should expose fuller omnibus bargaining designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("influence-system-majority"),
+				"Scenario catalog should expose linked influence-system designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("constitutional-court-architecture-majority"),
+				"Scenario catalog should expose constitutional-court architecture designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("norm-erosion-majority"),
+				"Scenario catalog should expose endogenous norm-erosion stress designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("democratic-deterioration-majority"),
+				"Scenario catalog should expose broader endogenous democratic-deterioration stress designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("package-bargaining-majority"),
+				"Scenario catalog should expose non-default package bargaining designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("multidimensional-package-majority"),
+				"Scenario catalog should expose multidimensional package bargaining designs."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("risk-routed-no-citizen-majority"),
+				"Scenario catalog should expose risk-routing ablation variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("citizen-assembly-manipulation-stress"),
+				"Scenario catalog should expose citizen-panel manipulation stress variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("harm-weighted-loose-claims-majority"),
+				"Scenario catalog should expose bad-faith harm-claim stress variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("public-objection-astroturf-majority"),
+				"Scenario catalog should expose astroturf objection stress variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("chamber-incongruence-pr-upper"),
+				"Scenario catalog should expose chamber-incongruence architecture variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("malapportioned-upper-chamber"),
+				"Scenario catalog should expose malapportioned upper-chamber variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("revision-council-upper"),
+				"Scenario catalog should expose bicameral revision-council routing variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("suspensive-veto-upper"),
+				"Scenario catalog should expose bicameral suspensive-veto routing variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("limited-navette-upper"),
+				"Scenario catalog should expose bicameral navette routing variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("joint-sitting-upper"),
+				"Scenario catalog should expose bicameral joint-sitting fallback variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("balanced-committee-majority"),
+				"Scenario catalog should expose forced-balanced committee variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("opposition-chaired-committee-majority"),
+				"Scenario catalog should expose opposition-chaired scrutiny committee variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("committee-deadline-discharge-majority"),
+				"Scenario catalog should expose committee discharge-petition power variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("committee-minority-hearing-majority"),
+				"Scenario catalog should expose committee minority-hearing rights variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("committee-amendment-majority"),
+				"Scenario catalog should expose committee amendment-power variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("equal-population-unicameral"),
+				"Scenario catalog should expose equal-population unicameral chamber variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("proportional-house-majority"),
+				"Scenario catalog should expose proportional lower-house variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("house-origin-routing"),
+				"Scenario catalog should expose chamber-origin routing variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("upper-amendment-only"),
+				"Scenario catalog should expose upper-house amendment-only variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("last-offer-bargaining-upper"),
+				"Scenario catalog should expose last-offer bicameral bargaining variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("mixed-citizen-committee-majority"),
+				"Scenario catalog should expose mixed legislator-citizen committee variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("committee-scrutiny-audit-majority"),
+				"Scenario catalog should expose scrutiny and audit committee variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("eligibility-expertise-majority"),
+				"Scenario catalog should expose eligibility-filtered chamber variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("exante-clearance-majority"),
+				"Scenario catalog should expose ex ante constitutional/legal review variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("independent-insulation-majority"),
+				"Scenario catalog should expose independent-institution insulation variants."
+		);
+		assertTrue(
+				ScenarioCatalog.scenarioKeys().contains("default-pass-challenge-minority-bonus"),
+				"Scenario catalog should expose challenge allocation variant keys."
+		);
+	}
+	
+	
+	private static void scenarioCatalogHasUniqueKeysAndRunnableNames() {
+		List<String> keys = ScenarioCatalog.scenarioKeys();
+		assertTrue(keys.size() == new HashSet<>(keys).size(), "Scenario keys should be unique.");
+		assertTrue(
+				ScenarioCatalog.defaultScenarios().size() == ScenarioCatalog.defaultScenarioKeys().size(),
+				"Default scenario list should match the default key list."
+		);
+		assertTrue(
+				ScenarioCatalog.defaultScenarioKeys().size() < keys.size(),
+				"Default scenario list should be a representative breadth-first set, not the full historical catalog."
+		);
+		assertTrue(
+				ScenarioCatalog.allScenarios().size() == ScenarioCatalog.allScenarioKeys().size(),
+				"All-scenarios list should match the breadth-first all-scenario key list."
+		);
+		assertTrue(
+				ScenarioCatalog.allScenarioKeys().size() < keys.size(),
+				"Historical scenario keys should remain accessible without making --all-scenarios default-pass-heavy."
+		);
+		long allScenarioDefaultPassCount = ScenarioCatalog.allScenarioKeys().stream()
+		                                                  .filter(key -> key.startsWith("default-pass"))
+		                                                  .count();
+		long allScenarioNonDefaultCount = ScenarioCatalog.allScenarioKeys().size() - allScenarioDefaultPassCount;
+		assertTrue(
+				allScenarioDefaultPassCount <= 3 && allScenarioNonDefaultCount > allScenarioDefaultPassCount,
+				"--all-scenarios should keep default-pass variants as a small side family."
+		);
+		long defaultPassCount = ScenarioCatalog.defaultScenarioKeys().stream()
+		                                       .filter(key -> key.startsWith("default-pass"))
+		                                       .count();
+		assertTrue(
+				defaultPassCount <= 3,
+				"Default scenario list should keep default-pass as a small side family."
+		);
+		
+		Set<String> scenarioNames = new HashSet<>();
+		for (Scenario scenario : ScenarioCatalog.defaultScenarios()) {
+			assertTrue(scenario.name() != null && !scenario.name().isBlank(), "Every scenario should expose a nonblank name.");
+			assertTrue(scenarioNames.add(scenario.name()), "Scenario display names should be unique for reports.");
+		}
+		
+		assertThrows(
+				() -> ScenarioCatalog.scenariosForKeys(List.of("missing-scenario-key")),
+				"Unknown scenario keys should fail fast instead of silently changing campaign composition."
+		);
+	}
 }
