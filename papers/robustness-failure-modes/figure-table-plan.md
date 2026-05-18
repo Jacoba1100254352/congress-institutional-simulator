@@ -1,50 +1,64 @@
 # Figure and Table Plan
 
-## Main Figures
+Final decision: NEEDS ADVERSARY EXPERIMENTS FIRST.
 
-1. Attack-budget degradation curves
-   - Source: new `attack-budget-sweep` outputs.
-   - X-axis: adversary budget.
-   - Y-axis: degradation in risk control, low-support enactment, or admin cost.
-   - One panel per major attack family.
+## Required Main Tables
 
-2. Mechanism failure-mode matrix
+1. Adversary taxonomy table
+   - Source: `adversary-model.md`.
+   - Columns: actor type, objective, information, budget, strategy set, success metric, worst-case degradation metric.
+
+2. Mechanism vulnerability matrix
+   - Rows: mechanism families.
+   - Columns: attack types.
+   - Cell: robust, partial vulnerability, high vulnerability, untested, or not applicable.
+
+3. Attack experiment design table
+   - Rows: required experiments 1-9.
+   - Columns: target mechanisms, adversary, budget, information, success metric, output report.
+
+4. Recovery/correction table
    - Rows: attack types.
-   - Columns: mechanism families.
-   - Cell: worst-case degradation or qualitative vulnerability.
+   - Columns: correction mechanism, recovery rate, residual harm, admin cost.
 
-3. Defense cost-benefit plot
-   - X-axis: administrative cost.
-   - Y-axis: attack reduction.
-   - Shows whether defenses merely shift the failure mode into overload.
+## Required Main Figures
 
-4. Ablation waterfall
-   - Source: `reports/simulation-ablation-analysis.csv`.
-   - Shows the effect of removing alternatives, mediation, harm review, lobbying safeguards, or correction.
+1. Worst-case degradation plot
+   - X-axis: mechanism family.
+   - Y-axis: worst-case degradation under attack.
+   - Facet by attack family or use small multiples.
 
-## Main Tables
+2. Attack success rate plot
+   - X-axis: adversary budget.
+   - Y-axis: success rate.
+   - Lines for information levels.
 
-1. Adversary model table
-   - Objective, information, budget, action set, success criterion.
+3. Robustness/cost frontier
+   - X-axis: administrative burden under attack.
+   - Y-axis: risk-control retention or attack-resistance score.
+   - Shows whether safeguards survive without overload.
 
-2. Attack library table
-   - Attack, targeted mechanism, implementation, expected failure mode.
+4. Median versus worst-case degradation plot
+   - Shows whether average/median behavior hides catastrophic cases.
 
-3. Worst-case summary table
-   - Mechanism family, worst attack, largest degradation, remaining safeguard.
+5. Failure trace diagrams for 2-3 mechanisms
+   - Required examples:
+     - clone/decoy content-selection failure;
+     - astroturf or harm-claim overload;
+     - strategic silence or proposal flooding under burden-shifting.
 
-4. Current baseline stress table
-   - Summarize current `ablation-analysis` and `manipulation-stress` outputs as pilot evidence only.
+## Required Appendix Tables
 
-## Appendix Tables
-
-- Full ablation numeric deltas from `reports/simulation-ablation-analysis.csv`.
-- Full manipulation-stress numeric deltas from `reports/simulation-manipulation-stress.csv`.
-- Attack-intensity sweep results.
+- Full attack-budget sweep output.
+- Full failure traces.
+- Current pilot manipulation-stress table from `reports/manipulation-stress-summary.md`.
+- Current ablation table from `reports/ablation-analysis-summary.md`.
 - Seed robustness for selected adversarial cases.
 
 ## Presentation Rules
 
-- Do not mix ablations and adversarial attacks in the same main table.
-- Use consistent sign conventions: positive values should always mean worse degradation in stress tables, or explicitly invert all metrics.
-- Report worst-case outcomes alongside averages.
+- Do not report only average degradation.
+- Use consistent sign conventions: higher degradation values should mean worse attack outcomes.
+- Mark untested attack/mechanism cells explicitly.
+- Do not rank mechanisms as generally better; rank vulnerabilities under specified adversary models only.
+- Keep current pilot stress results separate from new explicit-adversary results.

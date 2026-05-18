@@ -1,59 +1,90 @@
-# Extended Draft Outline
+# Draft Outline
 
-Status: outline only. A full manuscript should wait for the adversarial-protocol experiments.
+Status: outline only. Do not draft a full manuscript until the explicit adversary experiments have been implemented and run.
+
+Final decision: NEEDS ADVERSARY EXPERIMENTS FIRST.
 
 ## 1. Introduction
 
-- Institutional mechanisms can be evaluated not only by average performance but by how they fail.
-- Legislative mechanisms invite strategic adaptation: clones, objections, harm claims, lobbying camouflage, and overload.
-- The paper asks which mechanism families are most fragile under bounded and budgeted adversaries.
+- Legislative collective-decision mechanisms can fail under strategic manipulation even if average synthetic performance looks acceptable.
+- The paper studies failure modes, not general institutional rankings.
+- Primary question: which mechanism families are robust or fragile under bounded adversaries with different goals, budgets, and information levels?
 
 ## 2. Failure-Mode Theory
 
-- Content-selection manipulation.
-- Objection and public-input overload.
-- Harm-rule exploitation.
-- Anti-capture evasion.
-- Portfolio routing overload.
+- Clone/decoy alternatives and agenda manipulation in content selection.
+- Poison-pill amendments and sequencing attacks.
+- Astroturf objection and public-input overload.
+- Noisy or biased citizen panels.
+- Bad-faith harm claims.
+- Proposal flooding and agenda exhaustion.
+- Lobbying camouflage and defensive lobbying.
+- Administrative overload in layered safeguards.
+- Strategic silence under burden-shifting passage.
 
-## 3. Simulator and Baseline Mechanisms
+## 3. Simulator and Mechanism Families
 
-- Briefly summarize the simulator and refer to the ACM framework paper for architecture.
-- Define mechanism families and baseline metrics.
-- Explain why current results are synthetic stress tests.
+- Briefly describe relevant simulator modules.
+- Mechanism families:
+  - content selection;
+  - agenda/open calendar;
+  - objection/public input;
+  - harm protection;
+  - anti-capture access;
+  - portfolio safeguards;
+  - burden-shifting passage.
+- State that the ACM CI paper owns the framework contribution.
 
 ## 4. Adversary Model
 
-- Objectives, information levels, budgets, and action sets.
-- Success criteria.
-- Attack-intensity sweeps.
+- Actor types.
+- Objectives.
+- Information levels.
+- Budgets.
+- Strategy sets.
+- Success metrics.
+- Worst-case degradation metrics.
 
 ## 5. Experiments
 
-- Baseline ablations.
-- Attack family sweeps.
-- Mechanism-specific attacks.
-- Defensive modules and cost tradeoffs.
+- Clone/decoy attack.
+- Poison-pill amendment attack.
+- Astroturf objection attack.
+- Bad-faith harm-claim attack.
+- Proposal flooding.
+- Lobbying camouflage.
+- Administrative overload.
+- Mixed adversary case.
+- Strategic silence under burden-shifting rules.
 
 ## 6. Results
 
-- Which mechanisms degrade under which attacks.
-- Where defenses work and where they produce overload.
-- Worst-case versus average-case differences.
+Draft only after experiments.
+
+Planned subsections:
+
+- Worst-case and median degradation by family.
+- Attack success rates by budget and information.
+- Mechanism vulnerability matrix.
+- Recovery/correction behavior.
+- Administrative burden under attack.
+- Failure traces.
 
 ## 7. Discussion
 
-- Design hypotheses for robust legislative mechanisms.
-- Why average performance is insufficient.
-- Limits of synthetic adversarial modeling.
+- Which mechanisms fail gracefully and which fail catastrophically.
+- How defensive layers shift risk into administrative overload.
+- Why average-case reporting is insufficient.
+- What failure hypotheses need empirical or adversarial validation.
 
 ## 8. Limitations
 
-- No real strategic adaptation data.
-- Bounded adversaries.
-- No co-evolving parties, courts, agencies, media, or elections.
-- Synthetic public benefit and support.
+- Synthetic adversaries.
+- No empirical attack-rate validation.
+- Bounded information and budget models.
+- No full co-evolution of parties, agencies, courts, media, and elections.
+- Results are failure-mode hypotheses, not real-world forecasts.
 
 ## 9. Conclusion
 
-- Main contribution after new work: an adversarial failure-mode map for legislative mechanism bundles.
+- The future conclusion should emphasize adversarial failure mapping and robustness/cost tradeoffs, not general mechanism superiority.
