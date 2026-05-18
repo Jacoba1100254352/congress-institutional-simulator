@@ -1,51 +1,56 @@
 # Figure and Table Plan
 
-## Main Figures
+Final decision: NEEDS DATA/VALIDATION FIRST.
 
-1. Mechanism-effect decomposition plot
-   - Source: `reports/simulation-campaign-v21-paper.csv` plus new paired-difference report.
-   - Shows paired differences from `CUR` and `SM` for productivity, revision moderation, public support, risk control, and admin cost.
-   - Purpose: distinguish threshold changes from content-transformation changes.
+## Required Main Tables
 
-2. Generator-world sensitivity plot
-   - Source: new generator-correlation campaign plus existing adversarial cases in `reports/scenario-selection-manifest.md`.
-   - Shows how family-level results change across moderation-friendly, reform-friendly, public-opinion-error, and lobbying-information worlds.
+1. Political mechanism inventory
+   - Rows: `CUR`, `SM`, `COMM`, `DIS`, `OPEN`, `VETO`, `BIC`, `ACG`, `CAP`, `SEL`, optional `PORT`.
+   - Columns: political construct, implemented scenario, source module, empirical target, readiness.
 
-3. Cost-budget fairness plot
-   - Source: new cost-budgeted fairness campaign.
-   - Shows output/risk tradeoffs under equal process budgets.
+2. Theory-to-mechanism mapping
+   - Rows: spatial voting, pivotal politics, veto-player theory, committee gatekeeping, agenda control, lobbying, legislative effectiveness, public-support representation.
+   - Columns: model representation, metric, validation target, limitation.
 
-4. Two-dimensional stress plot
-   - Source: new two-dimensional policy campaign.
-   - Shows whether SEL, PORT, CUR, and SM shift when policy is multidimensional.
+3. Empirical validation boundary table
+   - Source: `validation-plan.md`, `reports/empirical-validation-gap-report.md`.
+   - Must mark synthetic-only metrics clearly.
 
-## Main Tables
+4. Benchmark fairness-control table
+   - Lists conventional + committee information gain, conventional + negotiated amendment, conventional + conference compromise, simple majority + mediation, simple majority + committee revision, and cost-constrained comparisons.
 
-1. Institutional hypotheses table
-   - Columns: hypothesis, mechanism families, expected direction, tested metrics.
-   - Purpose: make the political-science contribution explicit.
+5. Baseline calibration target table
+   - Source: expanded `political-baseline-calibration`.
+   - Keep as plausibility/calibration, not full validation.
 
-2. Mechanism-family summary table
-   - Use fewer rows than the ACM appendix.
-   - Combine PAIR/AMT as `SEL`.
+## Required Main Figures
 
-3. Generator assumptions table
-   - Include the moderation-friendly public-benefit assumption.
-   - Explicitly mark synthetic, not empirical.
+1. Paired mechanism comparison plot
+   - Differences versus `CUR` and `SM` within matched synthetic worlds.
 
-4. Empirical flow sanity checks table
-   - Source: `reports/calibration-baseline.csv`, `reports/empirical-bridge.csv`.
-   - Title must remain modest: "Flow sanity checks", not validation.
+2. Cost-constrained fairness tradeoff plot
+   - Productivity, public-support failure, capture, and admin cost under equal review/amendment/attention budgets.
+
+3. Parameter sweep small multiples
+   - Polarization, party loyalty, lobbying pressure, constituency pressure, agenda gate selectivity, and committee information quality.
+
+4. Public-benefit/support sensitivity matrix
+   - Shows whether findings change when support and generated benefit are decoupled.
+
+5. Uncertainty decomposition figure
+   - Separates seed variance from scenario variation.
 
 ## Appendix Tables
 
 - Full scenario averages from `reports/simulation-campaign-v21-paper.csv`.
+- Scenario selection manifest.
 - Seed robustness from `reports/seed-robustness-summary.csv`.
-- Family champions from `reports/family-champions.md`.
-- Exact scenario catalog from `reports/scenario-selection-manifest.md`.
+- Empirical gap report.
+- Chamber or bicameral details if referenced, but keep chamber-specific material limited.
 
-## Tables to Avoid in the Main Paper
+## Figures and Tables to Avoid
 
-- A full 212-column metric export.
-- Any table that presents PAIR and AMT as independent top-performing mechanisms.
-- Mean plus case half-range as the only uncertainty display.
+- A giant all-metric campaign table in the main text.
+- Separate PAIR and AMT rows as independent evidence unless new divergence is demonstrated.
+- A portfolio-hybrid table that makes `PORT` look like a recommended design.
+- Any display that treats synthetic public support as observed opinion.

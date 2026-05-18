@@ -1,59 +1,88 @@
-# Extended Draft Outline
+# Draft Outline
 
-Status: outline only. No full manuscript draft should be written until the missing experiments in `experiment-plan.md` are complete.
+Status: outline only. Do not draft the full paper until `validation-plan.md` and `experiment-plan.md` blockers are resolved.
+
+Final decision: NEEDS DATA/VALIDATION FIRST.
 
 ## 1. Introduction
 
-- Legislative productivity is not equivalent to good lawmaking.
-- Institutional rules affect both proposal access and proposal transformation.
-- The paper asks which political-science hypotheses about thresholds, agenda gates, content selection, lobbying safeguards, and review survive shared synthetic stress tests.
-- Scope: synthetic simulation, not empirical ranking of real institutions.
+- Legislative institutions shape proposal access, bargaining, veto opportunities, and public responsiveness.
+- The paper asks when agenda control, committees, vetoes, lobbying, proposal access, and content improvement change legislative outputs under explicit assumptions.
+- Contribution is institutional model behavior, not the reusable framework.
+- Scope: synthetic political-science simulation with empirical boundary checks, not an empirical ranking of institutions.
 
-## 2. Theory and Hypotheses
+## 2. Political Theory and Hypotheses
 
-- H1: Threshold changes alone mainly shift throughput and blockage.
-- H2: Content-selection stages change output quality diagnostics by altering proposal content before aggregation.
-- H3: Anti-capture and harm safeguards reduce some risk diagnostics while increasing procedural cost.
-- H4: Portfolio mechanisms may improve risk routing but do not necessarily dominate simpler systems.
-- H5: Results depend on assumptions linking public benefit, support, harm, distance, and lobbying.
+- Spatial voting and status-quo-relative preferences.
+- Pivotal politics and threshold/veto structures.
+- Veto-player theory and bicameral/executive/court vetoes.
+- Committee gatekeeping and information.
+- Agenda control and proposal access.
+- Lobbying as information, access, subsidy, and private-gain pressure.
+- Legislative effectiveness and throughput.
+- Public-support representation and mandate failure.
 
-## 3. Model and Data
+Possible hypotheses:
 
-- Short summary of simulator architecture, referring to the ACM framework paper for software design.
-- Formal vote kernel and generator assumptions.
-- Scenario families and mechanism families.
-- Empirical flow sanity checks and their boundary.
+- H1: agenda gates reduce floor load and low-support enactment at the cost of productivity.
+- H2: committee information/revision can improve generated public benefit without merely blocking proposals.
+- H3: veto structures suppress enactment but may not improve representation if they only block.
+- H4: lobbying pressure shifts capture diagnostics unless countered by access or audit rules.
+- H5: content-improvement stages outperform yes/no voting only under specific generator and budget assumptions.
+- H6: public-support findings change when support and generated benefit are decoupled.
 
-## 4. Experiments
+## 3. Model Summary
 
-- Main mechanism comparison.
-- Generator-correlation worlds.
-- Cost-budget fairness controls.
-- Two-dimensional policy stress test.
-- Seed and scenario robustness.
+- Briefly describe the simulator and cite the ACM framework/appendix as methods background.
+- Define mechanism families used in this paper.
+- Define politically relevant metrics.
+- State generator assumptions and public-benefit/support dependence.
 
-## 5. Results
+## 4. Empirical Boundary and Calibration
 
-- Threshold mechanisms versus content-transformation mechanisms.
-- Generator dependence and reversal cases.
-- Benchmark fairness results.
-- Portfolio tradeoffs.
-- Empirical sanity-check boundary.
+- Current flow sanity checks.
+- Missing validation data.
+- Proxy risks.
+- Planned held-out validation design.
+- Clarify that public support, harm, capture, and correction are not validated yet unless new data has been added.
 
-## 6. Discussion
+## 5. Experiment Design
 
-- What the synthetic results can and cannot imply about real legislatures.
-- Implications for legislative simulation methodology.
-- Failure cases and design hypotheses.
+- Baseline calibration targets.
+- Benchmark fairness controls.
+- Parameter sweeps.
+- Paired comparisons.
+- Seed robustness and uncertainty decomposition.
+- Public-benefit/support correlation sensitivity.
 
-## 7. Limitations
+## 6. Results
 
-- Synthetic public benefit and support.
-- One-dimensional baseline.
-- Bounded strategic behavior.
-- Thin empirical calibration.
-- No claim of real-world institutional ranking.
+This section should be drafted only after new experiments.
 
-## 8. Conclusion
+Planned result subsections:
 
-- Main contribution after new work: a political-science stress test of institutional mechanism families under explicit generator assumptions.
+- Agenda control and committee routing.
+- Veto structures and bicameralism.
+- Lobbying pressure and anti-capture access.
+- Content-improvement stages under fair budgets.
+- Generator-sensitivity and reversal cases.
+- Empirical plausibility boundary.
+
+## 7. Discussion
+
+- Which political mechanisms appear behaviorally distinct in the simulator.
+- Which findings depend on generator assumptions.
+- What benchmark fairness controls change.
+- What validation gaps matter most for political-science interpretation.
+
+## 8. Limitations
+
+- Synthetic public benefit and public support.
+- Missing district opinion and influence linkage.
+- Limited strategic adaptation.
+- One-dimensional baseline unless new model is implemented.
+- No claim of institutional superiority.
+
+## 9. Conclusion
+
+- The future conclusion should emphasize political model behavior under explicit assumptions, not a framework claim or reform recommendation.

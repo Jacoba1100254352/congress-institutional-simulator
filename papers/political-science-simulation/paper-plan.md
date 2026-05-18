@@ -1,72 +1,91 @@
-# Paper Plan: Political Science Simulation
+# Paper Plan
+
+## Final Decision
+
+NEEDS DATA/VALIDATION FIRST.
+
+The paper also needs benchmark-fairness experiments before drafting, but the strict first blocker is data/validation. Without stronger empirical boundaries, the paper would look like a synthetic mechanism-ranking paper with political-science vocabulary layered on top.
 
 ## Working Title
 
-Mechanism Bundles, Agenda Control, and Legislative Output in a Synthetic Institutional Simulator
+Agenda Control, Veto Points, and Proposal Transformation in a Synthetic Legislative Simulator
 
 ## Target Venue Category
 
-Computational social science, political methodology, public choice, political simulation, or social simulation.
+Computational social science, political methodology, public choice, legislative studies, or social simulation.
 
 ## One-Sentence Contribution
 
-The paper would test how agenda access, proposal transformation, veto points, lobbying safeguards, and threshold rules shift productivity, revision moderation, public-support diagnostics, risk, and procedural cost in a shared synthetic legislative environment.
+The future paper would evaluate how politically meaningful mechanisms--agenda control, committee routing, vetoes, lobbying pressure, proposal access, and content-improvement stages--shift productivity, representative responsiveness, capture risk, and public-support failure under explicit synthetic and empirically screened benchmark conditions.
 
-## Why This Is Not Redundant With the ACM CI Paper
+## Non-Redundancy With the ACM CI Paper
 
-The ACM paper contributes the reusable framework and frames legislatures as collective-intelligence architectures. This breakout would instead evaluate political-science hypotheses about institutional mechanisms, benchmark fairness, generator assumptions, and legislative-output tradeoffs. It should not repeat the ACM architecture argument except as methods background.
+The ACM CI paper contributes the reusable simulation framework, diagnostic dashboard, and artifact workflow. This paper must contribute institutional theory and model behavior under politically meaningful benchmark conditions. It should cite the ACM paper or appendix only as a methods/source artifact and should not re-argue the framework contribution.
 
-## Current Readiness Decision
+## Implemented Mechanism Inventory
 
-Ready for an extended outline plus experiment plan. Not ready for a full manuscript draft.
+| Political-science construct | Implemented representative(s) | Existing artifacts | Current readiness |
+|---|---|---|---|
+| Stylized U.S.-like benchmark | `current-system` / `CUR` | `CurrentSystemAgendaAccessRule`, `reports/simulation-campaign-v21-paper.csv`, `reports/calibration-baseline.md` | Usable as stylized benchmark, not calibrated Congress. |
+| Simple majority | `simple-majority` / `SM` | `AffirmativeThresholdRule`, manifest row `SM` | Usable baseline. |
+| Committee regular order | `committee-regular-order` / `COMM` | `CommitteeGatekeepingProcess`, manifest row `COMM` | Usable but needs committee empirical targets. |
+| Discharge petition | `committee-discharge-target-majority` / `DIS` | committee/discharge scenario, manifest row `DIS` | Usable as committee-bypass prototype. |
+| Open floor calendar | `open-rule-calendar-majority` / `OPEN` | `OpenFloorCalendarProcess`, manifest row `OPEN` | Usable agenda-access contrast. |
+| Veto/override systems | `presidential-veto`, `cloture-conference-review` | `PresidentialVetoProcess`, `ConferenceCommitteeProcess`, manifest rows `VETO`, `PROC` | Needs clearer veto-player framing and calibration. |
+| Bicameral systems | `bicameral-majority`, chamber campaign | `BicameralProcess`, `BicameralRoutingProcess`, `reports/simulation-chamber-structure.csv` | Use only selectively; chamber paper owns deeper treatment. |
+| Lobbying/capture mechanisms | `default-pass-budgeted-lobbying`, `influence-system-majority`, capture metrics | `BudgetedLobbyingProcess`, `InfluenceSystemProcess`, `LobbyCaptureScoring` | Needs lobbying-to-bill and campaign-finance validation. |
+| Anti-capture access | `anti-capture-access-majority` / `ACG`; `anti-capture-majority-bundle` / `CAP` | `LobbySurchargeProposalAccessRule`, `LobbyAuditProcess`, transparency/audit modules | Usable as synthetic anti-capture scenarios; not empirically validated. |
+| Content-selection mechanisms | `simple-majority-alternatives-pairwise`, `pairwise-amendment-tournament-majority` | `CompetingAlternativesProcess`, `AlternativeSelectionRule`, manifest rows `PAIR`, `AMT` | Must be merged as `SEL` unless new divergence is shown. |
+| Portfolio hybrid | `portfolio-hybrid-legislature` / `PORT` | manifest row `PORT`, source modules across routing/review/access | Include only if theoretically justified as bundled safeguards; do not make it a favored design. |
 
-The existing evidence is broad enough to justify a paper plan, but not strong enough for submission as a political-science simulation paper. The current results are synthetic design hypotheses, not empirical institutional rankings.
+## Political-Theory Framing
 
-## Existing Artifacts and Results It Can Use
+This paper should frame implemented modules through political science concepts:
 
-- `reports/simulation-campaign-v21-paper.csv`: 1628 rows, 212 columns from the canonical main campaign.
-- `reports/simulation-campaign-v21-paper.md`: run configuration, case list, scenario families, and mechanism labels.
-- `reports/scenario-selection-manifest.md`: broad, adversarial, generator-sensitivity, party-system, contention, and fairness-control case rationales.
-- `reports/paper-findings-validation.md`: focus-system summaries and directional/compromise/risk/yield checks.
-- `reports/seed-robustness-summary.csv` and `.md`: deterministic seed sweep summaries.
-- `reports/family-champions.md` and `reports/representative-vs-family-champions.csv`: family-level champion checks.
-- `reports/calibration-baseline.md` and `.csv`: flow sanity screens for the conventional benchmark.
-- `paper/technical-appendix/odd-d-appendix.pdf`: exact generator, vote-kernel, and scenario documentation.
-- Source packages under `src/main/java/congresssim/institution/agenda`, `bargaining`, `committee`, `lobbying`, `publicinput`, `review`, `strategy`, and `voting`.
+- spatial voting: status-quo-relative utility and legislator ideal points;
+- pivotal politics: thresholds, vetoes, blocking coalitions, override rules;
+- veto-player theory: bicameralism, executive veto, court/review layers, supermajority rules;
+- committee gatekeeping: committee-first routing, reporting, discharge, amendment power, information gain;
+- agenda control: leadership cartel, open calendar, proposal access screens, lobbying surcharges, floor scheduling;
+- lobbying as information/access/subsidy: separate technical information, access pressure, private-gain pressure, and campaign-finance influence;
+- legislative effectiveness: throughput, floor load, sponsor access, enactment rates, policy yield;
+- public-support representation: national support, district support, affected-group support, and public-support failure.
 
-Known descriptive findings from current reports:
+## Existing Artifacts It Can Use
 
-- Burden-shifting mechanisms can produce high productivity but worse low-support and risk diagnostics.
-- Content-selection mechanisms such as PAIR/AMT are nearly indistinguishable in the current generator and should be treated as one family in the main narrative.
-- Portfolio variants reduce some capture and risk diagnostics but add process complexity and do not dominate simpler selection mechanisms.
-- Several patterns depend on the moderation-friendly public-benefit generator.
+- `reports/simulation-campaign-v21-paper.csv`: canonical main campaign.
+- `reports/simulation-campaign-v21-paper.md`: run configuration and scenario averages.
+- `reports/scenario-selection-manifest.md`: mechanism labels and selection rationale.
+- `reports/calibration-baseline.md`: current flow sanity checks.
+- `reports/empirical-validation-gap-report.md`: empirical boundary and missing data.
+- `reports/seed-robustness-summary.csv`: seed robustness.
+- `reports/family-champions.md` and `reports/representative-vs-family-champions.csv`: family-level checks.
+- `reports/simulation-chamber-structure.csv`: only for limited bicameral/chamber references.
+- `paper/technical-appendix/odd-d-appendix.pdf`: model and generator details.
+- Source packages under `institution/agenda`, `committee`, `chamber`, `lobbying`, `bargaining`, `voting`, `review`, and `accountability`.
 
-## Missing Experiments or Validation Needed Before Submission
+## Missing Validation Data
 
-- A two-dimensional policy-space sensitivity model with explicit issue dimensions and multidimensional ideal points.
-- Cost-normalized fairness controls that give conventional, simple-majority, PAIR/AMT, and portfolio systems comparable amendment, information, review, and administrative budgets.
-- Stronger calibration or validation against held-out observable legislative-flow metrics.
-- Separate stochastic uncertainty from scenario variation; report seed variance, scenario distribution, and paired within-world differences.
-- Explicit alternative generator worlds for public-benefit/support correlation, lobbying as information, minority-rights harm, and reform-friendly high-distance proposals.
-- Statistical summaries that do not rely on mean plus case half-range as the main uncertainty display.
-- Institutional theory that distinguishes proposal filtering from proposal transformation.
+- District-level public opinion.
+- Campaign finance / OpenFEC.
+- Lobbying-to-bill linkage.
+- Committee hearings, markups, referrals, amendments, and discharge petitions.
+- Court review and invalidation.
+- Implementation and agency enforcement.
+- Law revision, repeal, sunset, and reauthorization.
+- Cross-national parliamentary or bicameral comparisons.
 
-## Go/No-Go Recommendation
+## Required Benchmark Fairness Controls
 
-No-go for a full paper submission now. Go for a focused experiment sweep and extended outline.
+- Conventional benchmark + committee information gain.
+- Conventional benchmark + negotiated amendment.
+- Conventional benchmark + conference compromise.
+- Simple majority + mediation.
+- Simple majority + committee revision.
+- Cost-constrained comparison where each system gets the same review, amendment, information, and attention budget.
 
-## Next Concrete Commands or Repo Tasks
+## Go/No-Go
 
-1. Add an experiment mode for a two-dimensional policy space.
-2. Add a cost-budgeted fairness-control campaign.
-3. Add paired-difference reporting against `CUR` and `SM`.
-4. Re-run:
+No-go for full draft.
 
-```sh
-make campaign
-make seed-robustness
-make calibration-check
-make paper-checks
-```
-
-5. Create a political-science results notebook or script that generates distribution plots from `reports/simulation-campaign-v21-paper.csv`.
+Proceed with data/validation and fairness-control work. Reassess only after validation-plan and experiment-plan milestones are complete.

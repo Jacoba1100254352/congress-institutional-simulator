@@ -1,102 +1,189 @@
 # Experiment Plan
 
-## Current Evidence Baseline
+Final decision: NEEDS DATA/VALIDATION FIRST. These experiments are the second blocker after the validation roadmap: the paper cannot be drafted until both empirical boundaries and benchmark fairness controls improve.
 
-Start from the canonical campaign and diagnostics:
+## Baseline Commands
+
+Run the current paper-facing and model-facing baselines:
 
 ```sh
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+export PATH="$JAVA_HOME/bin:$PATH"
 make campaign
 make seed-robustness
-make findings-validation
 make calibration-check
+make validation-gap-report
 ```
 
-Primary input files:
+Core current outputs:
 
 - `reports/simulation-campaign-v21-paper.csv`
 - `reports/scenario-selection-manifest.md`
-- `reports/paper-findings-validation.md`
-- `reports/seed-robustness-summary.csv`
 - `reports/calibration-baseline.csv`
+- `reports/seed-robustness-summary.csv`
+- `reports/empirical-validation-gap-report.csv`
 
-## Required New Experiment 1: Two-Dimensional Policy Space
+## Experiment 1: Baseline Calibration Targets
 
-Purpose: test whether content-selection, amendment, compromise, and package-bargaining patterns survive when policy is not a one-dimensional line.
+Purpose: keep the stylized U.S.-like benchmark within plausible observable ranges before comparing alternatives.
 
-Implementation tasks:
+Targets:
 
-- Add issue-position vectors for bills and ideal-point vectors for legislators.
-- Support Euclidean or separable status-quo-relative utility.
-- Compute public support and harm by issue or affected group rather than only scalar support.
-- Add a campaign case such as `two-dimensional-policy`.
+- enactment rate;
+- floor load;
+- committee reporting and referral rate;
+- roll-call coalition size;
+- party unity;
+- veto frequency;
+- sponsor access/success concentration;
+- lobbying spending concentration;
+- topic throughput.
 
-Minimum outputs:
+Required output:
 
-- Productivity, revision moderation, public support, low-support enactment, risk control, admin cost.
-- Paired comparison against current one-dimensional baseline.
-- A failure-case note if PAIR/AMT diverge or cycling/agenda dependence appears.
+- `reports/political-baseline-calibration.csv`
+- `reports/political-baseline-calibration.md`
 
-## Required New Experiment 2: Cost-Budgeted Fairness Controls
+Do not treat this as validation of public support, welfare, harm, capture, or correction.
 
-Purpose: test whether content-selection mechanisms outperform because they receive more proposal-improvement opportunities.
+## Experiment 2: Stronger Benchmark Fairness Controls
 
-Design:
+Purpose: test whether content-improvement mechanisms perform well because they receive proposal-revision capacity that conventional systems lack.
 
-- Match `CUR`, `SM`, `SEL`, `PORT`, and burden-shifting systems on an explicit process budget.
-- Budget should include information gain, amendment count, mediation opportunities, review slots, and challenge/objection slots.
-- Add administrative-cost ceiling as a hard constraint, not only a metric.
+Required controls:
 
-Minimum outputs:
+- conventional benchmark + committee information gain;
+- conventional benchmark + negotiated amendment;
+- conventional benchmark + conference compromise;
+- simple majority + mediation;
+- simple majority + committee revision;
+- cost-constrained comparison where each system receives the same review, amendment, information, and attention budget.
 
-- Table of budget assumptions.
-- Paired differences against `CUR` and `SM`.
-- Sensitivity to low, medium, and high process budgets.
+Required outputs:
 
-## Required New Experiment 3: Generator Correlation Worlds
+- paired differences versus `CUR` and `SM`;
+- administrative-budget table;
+- tradeoff plot under equal budgets;
+- failure cases where conventional controls catch up or reverse the pattern.
 
-Purpose: make generator dependence the object of analysis instead of a limitation note.
+Proposed target:
 
-Required worlds:
+```make
+political-fairness-controls
+```
 
-- Moderation-friendly baseline.
-- Reform-friendly high-distance proposals.
-- Public-support-lags-benefit world.
-- Lobbying-information world.
-- Capture-confounded lobbying world.
-- Majority-support-with-minority-harm world.
+## Experiment 3: Parameter Sweeps
 
-Minimum outputs:
+Purpose: align experiments with political theory rather than an all-purpose mechanism catalog.
 
-- Family-level pattern table.
-- Distribution plot of changes in top family or paired regret.
-- Explicit statement of which findings reverse.
+Sweep dimensions:
 
-## Required New Experiment 4: Statistical Presentation
+- polarization;
+- party loyalty;
+- proposal pressure;
+- lobbying pressure;
+- constituency responsiveness;
+- committee information quality;
+- veto strictness and override threshold;
+- agenda gate selectivity;
+- amendment/revision capacity;
+- public-benefit/support correlation.
 
-Purpose: avoid treating scenario half-ranges like confidence intervals.
+Required output:
+
+- `reports/political-parameter-sweeps.csv`
+- `reports/political-parameter-sweeps.md`
+
+## Experiment 4: Paired Comparisons
+
+Purpose: compare mechanisms within the same generated worlds rather than relying only on aggregate averages.
+
+Pairs:
+
+- `CUR` vs `CUR + committee information gain`;
+- `CUR` vs `CUR + negotiated amendment`;
+- `SM` vs `SM + mediation`;
+- `SM` vs `SM + committee revision`;
+- `COMM` vs `DIS`;
+- `VETO` vs `BIC`;
+- `ACG` vs `SM`;
+- `SEL` vs cost-constrained `SM` and cost-constrained `CUR`.
+
+Metrics:
+
+- productivity;
+- floor load;
+- revision moderation;
+- enacted support;
+- low-public-support enactment;
+- capture;
+- minority/concentrated harm;
+- administrative cost;
+- generated public benefit per submitted bill.
+
+## Experiment 5: Seed Robustness and Uncertainty Separation
+
+Purpose: separate stochastic uncertainty from scenario variation.
 
 Tasks:
 
-- Compute seed variance separately from scenario variation.
-- Generate median and IQR by mechanism family.
-- Generate paired within-world differences versus `CUR` and `SM`.
-- Add bootstrap intervals only where the sampling interpretation is appropriate.
+- report seed variance within fixed scenario cases;
+- report scenario distribution separately;
+- add paired confidence/interval summaries only where the sampling interpretation is valid;
+- avoid mean plus case half-range as the main uncertainty display.
 
-## New Data or Validation Work
+Required outputs:
 
-- Expand empirical flow checks beyond the current 7/7 plausibility screens.
-- Add held-out checks if possible: floor scheduling, committee reporting, coalition size, veto frequency, topic mix, and sponsor concentration.
-- Do not claim validation of public benefit, public support, harm, capture, or revision moderation unless new empirical targets are added.
+- seed-variance table;
+- scenario-variation table;
+- paired-difference distribution plot.
 
-## Proposed New Targets
+## Experiment 6: Public-Benefit / Public-Support Correlation Sensitivity
 
-Potential Make targets:
+Purpose: address the central generator-dependence critique.
+
+Required worlds:
+
+- moderation-friendly baseline;
+- reform-friendly high-distance proposals;
+- public support lags generated benefit;
+- lobbying sometimes provides useful information;
+- majority support correlates with concentrated harm;
+- compromise/revision can dilute benefit;
+- public opinion error and noisy support.
+
+Required outputs:
+
+- generator-world matrix;
+- reversal table;
+- plot of mechanism-family sensitivity to support/benefit correlation.
+
+## Experiment 7: Historical Plausibility Checks
+
+Purpose: improve political-science credibility without overclaiming validation.
+
+Checks:
+
+- Congress.gov/govinfo bill progression;
+- Voteview coalition size and party unity;
+- LDA lobbying concentration;
+- committee referral/reporting/markup data;
+- veto frequency;
+- sponsor concentration;
+- CAP/topic throughput;
+- optional cross-national benchmark if data is added.
+
+Required output:
+
+- updated empirical-boundary table that distinguishes flow sanity, proxy checks, and missing validation.
+
+## Proposed Make Targets
 
 ```make
-political-science-campaign
-cost-budget-fairness
-two-dimensional-sensitivity
-paired-difference-report
+political-baseline-calibration
+political-fairness-controls
+political-parameter-sweeps
+political-paired-comparisons
+political-generator-sensitivity
+political-uncertainty-report
 ```
-
-These should write outputs under `reports/`, not inside the paper folder.

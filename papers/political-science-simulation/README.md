@@ -1,16 +1,38 @@
-# Political Science Simulation Breakout
+# Political Science / Computational Social Science Breakout
 
-Status: ready for an extended outline plus experiment plan; not ready for a full manuscript draft.
+Final decision: NEEDS DATA/VALIDATION FIRST.
 
-This candidate paper would use the project as a computational political-science simulation study of agenda control, proposal transformation, thresholds, lobbying pressure, and representation diagnostics. It should not duplicate the ACM CI framework paper, which already claims the reusable architecture and diagnostic dashboard. This breakout must earn its own contribution by adding stronger institutional theory, fair benchmark controls, and validation or calibration work.
+This folder plans a future political science / computational social science paper about institutional model behavior. It must not reuse the ACM CI paper's main contribution. The ACM CI paper owns the reusable-framework claim; this breakout must be about institutional theory, benchmark fairness, and politically meaningful mechanism behavior.
 
-Files in this folder:
+## Working Purpose
 
-- `paper-plan.md`: paper decision, contribution, artifacts, missing evidence, and go/no-go.
-- `claims-ledger.md`: claims that can and cannot be supported by current evidence.
-- `experiment-plan.md`: experiments needed before a submission-grade draft.
-- `figure-table-plan.md`: required visuals and source artifacts.
-- `related-work-targets.md`: literature areas and citation targets to verify.
-- `draft-outline.md`: extended outline only, not a full paper.
+Turn the legislative-mechanism simulator into a deeper computational political science paper about legislative bargaining, agenda control, vetoes, committees, lobbying, public-support proxies, and empirical calibration/validation.
 
-No full manuscript draft was created because the current evidence is still synthetic and generator-dependent.
+## Primary Question
+
+Under what assumptions do agenda control, committee routing, veto structures, lobbying pressure, proposal access, and content-improvement stages change legislative productivity, representative responsiveness, capture risk, and public-support failure?
+
+## Readiness Audit
+
+Not ready for a full draft.
+
+The repository has a broad implemented simulator, a canonical main campaign, mechanism inventories, seed checks, flow sanity checks, and validation-gap reports. It does not yet have enough validation or fair benchmark controls to support a standalone political-science results paper.
+
+The strongest blockers are:
+
+- district-level public opinion is missing;
+- campaign finance and lobbying-to-bill linkage are missing;
+- court review, implementation, law revision, and comparative-institution datasets are missing;
+- conventional benchmarks do not yet receive fully comparable information/amendment/review budgets;
+- public-support and generated public-benefit relationships remain synthetic and generator-dependent;
+- scenario variation and stochastic uncertainty need cleaner separation.
+
+## Files
+
+- `paper-plan.md`: readiness decision, mechanism inventory, theory framing, artifacts, missing work, and go/no-go.
+- `claims-ledger.md`: claim-by-claim support, limitations, and citation/data needs.
+- `experiment-plan.md`: benchmark fairness controls, parameter sweeps, paired comparisons, and uncertainty plan.
+- `validation-plan.md`: missing data inventory and validation sequence.
+- `figure-table-plan.md`: required figures and tables for a future draft.
+- `draft-outline.md`: paper outline only; no full manuscript.
+- `related-work-targets.md`: literature areas to verify before drafting.
