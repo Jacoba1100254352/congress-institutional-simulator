@@ -1,47 +1,59 @@
 # Figure and Table Plan
 
-## Main Figures
+Final decision: NEEDS EXPANDED CHAMBER SCENARIOS AND REPRESENTATION VALIDATION FIRST.
 
-1. Chamber architecture tradeoff plot
-   - Source: `reports/simulation-chamber-structure.csv`.
-   - Shows productivity versus revision moderation or risk control.
-   - Use family-level labels, not every mechanism.
+## Required Main Tables
 
-2. Representation geometry small multiples
-   - Source: new district-support sensitivity campaign.
-   - Panels for district heterogeneity, party geography, and harm concentration.
+1. Chamber architecture taxonomy
+   - Rows: unicameral, bicameral, upper-chamber composition, malapportionment, origin routing, second-chamber power, override, committee assignment, committee power, eligibility/selection/retention, independent review.
+   - Columns: implemented scenario, model variable, expected mechanism, required validation source.
 
-3. Committee information-gain plot
-   - Source: new committee-information campaign.
-   - Shows committee reporting, enacted benefit, floor load, and admin cost.
+2. Representation metric definitions
+   - Define population-weighted support, chamber-weighted support, district support, affected-group support, chamber coalition support, representation gap, malapportionment, committee capture, and review delay.
 
-4. Review architecture correction plot
-   - Source: new review-architecture campaign.
-   - Shows harm reduction or active-law quality against administrative cost.
+3. Validation-data gap table
+   - Source: `validation-plan.md`.
+   - Columns: data need, source family, current status, supported metric, remaining gap.
 
-## Main Tables
+4. Review-body cost/risk table
+   - Rows: ex ante advisory, legal clearance, fiscal/electoral/audit review, independent insulation, constitutional court architecture.
+   - Columns: risk control, review delay, administrative cost, correction/reversal where available.
 
-1. Chamber-design hypothesis table
-   - Columns: chamber feature, expected mechanism, metric affected, empirical analogy.
+## Required Main Figures
 
-2. Chamber variants table
-   - Rows: unicameral, proportional bicameral, malapportioned upper, conference, committee variants, review variants.
+1. Malapportionment vs public-support failure plot
+   - X-axis: malapportionment or population-seat distortion.
+   - Y-axis: population-weighted low-support enactment or representation gap.
 
-3. Paired-difference summary table
-   - Compare each chamber family against equal-population unicameral and current-system benchmark.
+2. Committee capture vs productivity plot
+   - X-axis: committee capture.
+   - Y-axis: productivity or floor load.
+   - Point shape: committee assignment rule.
 
-4. Empirical anchor table
-   - Data source, observable signal, simulator proxy, what it cannot validate.
+3. Bicameral conflict tradeoff plot
+   - X-axis: bicameral conflict/delay.
+   - Y-axis: public-support failure or risk control.
+   - Labels: upper veto, amendment-only, lower override, conference, navette.
 
-## Appendix Tables
+4. Population-weighted vs chamber-weighted support figure
+   - Shows when chamber support diverges from population support.
 
-- Full chamber campaign from `reports/simulation-chamber-structure.csv`.
+5. Review delay/risk frontier
+   - X-axis: review delay or administrative cost.
+   - Y-axis: risk control / harm reduction.
+
+## Required Appendix Tables
+
+- Full chamber campaign table from `reports/simulation-chamber-structure.csv`.
 - Chamber family champions from `reports/chamber-family-champions.md`.
 - Chamber stress screen from `reports/chamber-stress-screen.md`.
-- Full review and committee sensitivity outputs.
+- Full malapportionment sweep.
+- Full committee capture sweep.
+- Full support-weighting report.
 
 ## Presentation Rules
 
-- Do not present chamber supplement rows as if they dominate the mechanism-bundle comparison.
-- Separate representation diagnostics from generated public benefit.
-- Avoid a giant table of all chamber mechanisms in the main paper.
+- Do not present current chamber stress-screen winners as institutional recommendations.
+- Do not use national public support as a substitute for district or affected-group support.
+- Mark synthetic-only representation diagnostics clearly.
+- Separate chamber architecture from general mechanism-bundle comparisons.

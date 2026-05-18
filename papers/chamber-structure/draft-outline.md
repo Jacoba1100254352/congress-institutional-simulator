@@ -1,54 +1,79 @@
-# Extended Draft Outline
+# Draft Outline
 
-Status: outline only. A full manuscript should wait for expanded chamber controls and representation diagnostics.
+Status: outline only. Do not draft a full manuscript until expanded chamber scenarios and representation-validation planning are complete.
+
+Final decision: NEEDS EXPANDED CHAMBER SCENARIOS AND REPRESENTATION VALIDATION FIRST.
 
 ## 1. Introduction
 
-- Chamber architecture changes how preferences, geography, expertise, and veto power enter collective decisions.
-- The paper asks how representation architecture shifts legislative-output diagnostics in a synthetic simulator.
-- Scope: simulation hypotheses, not empirical ranking of chamber designs.
+- Chamber architecture determines how populations, territories, parties, committees, and review bodies enter legislative decisions.
+- The paper studies representation architecture, not general mechanism ranking.
+- Primary question: how do chamber and representation architectures shift productivity, moderation, public-support diagnostics, minority harm, committee capture, malapportionment, and review delay?
 
 ## 2. Theory
 
-- Bicameralism and veto points.
-- Apportionment and representational distortion.
-- Committee information and gatekeeping.
-- Review and correction architecture.
-- District/group harm and public support.
+- Unicameral versus bicameral aggregation.
+- Upper-chamber composition and territorial representation.
+- Malapportionment and population-seat distortion.
+- Chamber-origin routing and second-chamber powers.
+- Lower-house override and bicameral conflict resolution.
+- Committee assignment, power, and capture.
+- Eligibility, selection, retention, and staggered renewal.
+- Independent review bodies and ex ante review.
 
-## 3. Simulator and Chamber Modules
+## 3. Representation Model
 
-- Brief simulator summary.
-- Chamber, committee, distribution, and review modules.
-- Metrics: productivity, revision moderation, public support, risk, admin cost, district/group alignment.
+- Domain-aware status quo.
+- District/population support distributions.
+- Public support, district support, affected-group support, and chamber coalition support.
+- Population-weighted versus chamber-weighted diagnostics.
+- Committee capture and review-delay metrics.
 
-## 4. Experiments
+## 4. Validation Boundary
 
-- Chamber baseline campaign.
-- Representation geometry sensitivity.
-- Bicameral/apportionment controls.
-- Committee information-gain controls.
-- Review architecture sensitivity.
+- Current chamber campaign as sensitivity screen.
+- Missing apportionment, district population, chamber vote, committee assignment, bicameral disagreement, and review-body data.
+- Planned validation sequence.
+- Synthetic-only limitations.
 
-## 5. Results
+## 5. Experiment Design
 
-- Chamber design shifts the tradeoff surface but does not dominate mechanism-level comparison.
-- Committee and review variants as information/correction mechanisms.
-- District heterogeneity and harm concentration effects.
+- Malapportionment sweep.
+- Upper-chamber power sweep.
+- Committee assignment/capture sweep.
+- Eligibility/selection filter sweep.
+- Independent review body sweep.
+- Bicameral conflict and override scenarios.
+- Population-weighted versus chamber-weighted support diagnostics.
 
-## 6. Discussion
+## 6. Results
 
-- What synthetic chamber experiments can reveal.
-- What empirical validation would require.
-- How chamber architecture differs from proposal-transformation mechanisms.
+Draft only after required experiments.
 
-## 7. Limitations
+Planned subsections:
 
-- Synthetic public support.
-- Limited district/group modeling.
-- No real comparative-institution calibration yet.
-- No co-evolving parties/elections.
+- Malapportionment and support failure.
+- Upper-chamber powers and bicameral conflict.
+- Committee assignment, capture, and productivity.
+- Selection/retention filters.
+- Review-body cost/risk tradeoffs.
+- Support weighting and representation gaps.
 
-## 8. Conclusion
+## 7. Discussion
 
-- Main contribution after new work: a chamber-architecture stress test focused on representation and correction mechanisms.
+- Which representation architectures shift tradeoffs in the simulator.
+- Which findings depend on synthetic district/support assumptions.
+- How validation gaps limit chamber claims.
+- How this paper differs from the ACM framework paper.
+
+## 8. Limitations
+
+- Synthetic support and harm.
+- Incomplete district/population validation.
+- Simplified chamber and committee behavior.
+- No full comparative-institution calibration.
+- No institutional design recommendation.
+
+## 9. Conclusion
+
+- The future conclusion should state representation-architecture hypotheses, not institutional rankings.

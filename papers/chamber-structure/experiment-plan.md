@@ -1,110 +1,225 @@
 # Experiment Plan
 
+Final decision: NEEDS EXPANDED CHAMBER SCENARIOS AND REPRESENTATION VALIDATION FIRST.
+
 ## Baseline Commands
 
+Run current chamber artifacts:
+
 ```sh
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+export PATH="$JAVA_HOME/bin:$PATH"
 make chamber-structure
 make chamber-structure-summary
 ```
 
-Baseline files:
+Current outputs:
 
 - `reports/simulation-chamber-structure.csv`
+- `reports/simulation-chamber-structure.md`
 - `reports/chamber-family-champions.md`
 - `reports/chamber-stress-screen.md`
-- `paper/figures/chamber_productivity_compromise.tex`
-- `paper/figures/chamber_family_table.tex`
 
-## Required New Experiment 1: Representation Geometry
+## Required Code Tasks
 
-Purpose: test how district heterogeneity and geographic/party clustering affect chamber outcomes.
+1. Make status quo domain-aware for chamber/representation diagnostics.
+2. Add district/population support distributions.
+3. Split public support into national, district, affected-group, and chamber coalition support.
+4. Add population-weighted and chamber-weighted support diagnostics.
+5. Add committee capture outputs by committee assignment and power configuration.
+6. Add review delay and intervention metrics for independent review bodies.
+7. Add paired chamber-architecture reporting scripts.
 
-Factors:
+## Required Experiment 1: Malapportionment Sweep
 
-- Uniform districts versus polarized districts.
-- Party geography concentrated versus dispersed.
-- Group harm concentrated versus diffuse.
-- Issue domains localized versus national.
+Purpose: test how population-seat distortion changes representation and legislative outcomes.
 
-Outputs:
+Sweep:
 
-- District alignment.
-- Public support by district or group.
-- Low-support enactment.
-- Risk-control and harm diagnostics.
+- equal-population unicameral;
+- proportional lower chamber;
+- territorial upper chamber;
+- malapportioned upper chamber;
+- increasing upper-chamber malapportionment levels;
+- district magnitude variation.
 
-## Required New Experiment 2: Bicameral and Apportionment Controls
+Metrics:
 
-Purpose: isolate bicameralism, upper-chamber composition, and malapportionment.
+- productivity;
+- moderation;
+- population-weighted support;
+- chamber-weighted support;
+- representation gap;
+- low-public-support enactment;
+- minority harm;
+- malapportionment index.
 
-Controls:
+## Required Experiment 2: Upper-Chamber Power Sweep
 
-- Equal-population unicameral.
-- Proportional bicameral.
-- Malapportioned upper chamber.
-- Upper chamber with different term/selection assumptions.
-- Conference committee with and without content revision.
+Purpose: separate upper-chamber composition from upper-chamber power.
 
-Outputs:
+Sweep:
 
-- Paired differences versus equal-population unicameral.
-- Chamber conflict rate.
-- Policy delay and blockage reliance.
-- Group/district alignment.
+- advisory review only;
+- amendment-only power;
+- suspensive veto;
+- absolute veto;
+- cloture-like upper threshold;
+- territorial veto threshold;
+- lower-house override thresholds.
 
-## Required New Experiment 3: Committee Information Gain
+Metrics:
 
-Purpose: test committee design as an information/routing mechanism rather than only a gate.
+- productivity;
+- bicameral conflict;
+- upper veto/amendment rate;
+- lower-house override rate;
+- delay;
+- public-support failure;
+- minority harm.
 
-Factors:
+## Required Experiment 3: Committee Assignment and Capture Sweep
 
-- Random committee assignment.
-- Expertise-based assignment.
-- Party-ratio assignment.
-- Committee amendment power.
-- Committee reporting threshold.
-- Information gain level.
+Purpose: test how committee composition and power affect productivity, capture, and support.
 
-Outputs:
+Sweep:
 
-- Enacted public benefit.
-- Revision moderation.
-- Floor load.
-- Committee reporting rate.
-- Administrative cost.
+- proportional committee assignment;
+- forced-balanced committee;
+- random-lottery committee;
+- expertise-qualified lottery committee;
+- opposition-chaired scrutiny committee;
+- minority-veto committee seat;
+- mixed legislator-citizen committee;
+- captured committee condition;
+- committee amendment/revision power.
 
-## Required New Experiment 4: Review Architecture
+Metrics:
 
-Purpose: separate review/correction from chamber structure.
+- committee reporting rate;
+- committee capture;
+- floor load;
+- productivity;
+- public-support failure;
+- generated public benefit;
+- administrative cost.
 
-Factors:
+## Required Experiment 4: Eligibility and Selection Filter Sweep
 
-- No review.
-- Ex ante advisory review.
-- Ex post rollback.
-- Law registry.
-- Independent review insulation.
-- Review budget constraints.
+Purpose: test appointment, election, eligibility, retention, and renewal rules.
 
-Outputs:
+Sweep:
 
-- Active-law quality.
-- Reversal/correction rate.
-- Harm reduction.
-- Administrative cost.
+- expertise eligibility filter;
+- recusal/cooling-off filter;
+- appointment and retention eligibility filter;
+- elected selection baseline;
+- appointed upper chamber;
+- staggered renewal if implemented;
+- retention filter strength.
 
-## New Code or Data Tasks
+Metrics:
 
-- Add district-level public support output if not already sufficient.
-- Add chamber conflict and committee reporting diagnostics.
-- Add empirical comparison samples for apportionment and committee reporting.
-- Add reporting scripts for chamber paired differences.
+- productivity;
+- moderation;
+- capture;
+- representation gap;
+- support diagnostics;
+- turnover/retention diagnostics if implemented.
+
+## Required Experiment 5: Independent Review Body Sweep
+
+Purpose: test ex ante review and independent bodies as representation/risk/cost mechanisms.
+
+Sweep:
+
+- ex ante advisory review;
+- mandatory legal clearance;
+- fiscal review;
+- electoral review;
+- audit/ethics review;
+- independent insulation bundle;
+- constitutional court architecture;
+- review budget constraints.
+
+Metrics:
+
+- risk control;
+- minority harm;
+- capture;
+- review delay;
+- administrative cost;
+- correction/reversal if available.
+
+## Required Experiment 6: Bicameral Conflict and Override Scenarios
+
+Purpose: study chamber disagreement and resolution pathways.
+
+Sweep:
+
+- house-origin-only routing;
+- senate/upper-origin-only routing;
+- proposer-chamber origin routing;
+- leadership-routed origin;
+- limited navette;
+- conference compromise;
+- mediation committee;
+- principles resolution before second-chamber drafting;
+- lower-house override after disagreement;
+- joint sitting fallback.
+
+Metrics:
+
+- bicameral conflict rate;
+- amendment/revision rate;
+- conference/navette rounds;
+- delay;
+- productivity;
+- representation gap;
+- low-support enactment.
+
+## Required Experiment 7: Population-Weighted vs Chamber-Weighted Support
+
+Purpose: test whether chamber-weighted support masks population-weighted public-support failure.
+
+Conditions:
+
+- equal population/seat distribution;
+- mild malapportionment;
+- severe malapportionment;
+- district support aligned with population;
+- district support polarized by geography;
+- affected-group concentrated harm.
+
+Metrics:
+
+- population-weighted support;
+- chamber-weighted support;
+- lower-chamber support;
+- upper-chamber support;
+- affected-group support;
+- support gap;
+- minority harm.
 
 ## Proposed Make Targets
 
 ```make
 chamber-representation-sensitivity
-committee-information-controls
-review-architecture-sensitivity
-chamber-paired-report
+chamber-malapportionment-sweep
+chamber-upper-power-sweep
+committee-capture-sweep
+selection-retention-sweep
+review-body-sweep
+chamber-conflict-override-sweep
+chamber-support-weighting-report
 ```
+
+## Full Draft Gate
+
+Only draft the paper after:
+
+- all seven required experiments have run;
+- representation diagnostics are domain-aware;
+- support diagnostics distinguish national, district, affected-group, and chamber coalition support;
+- validation plan has source inventories and at least initial apportionment/committee/chamber-vote targets;
+- `make test` passes.
