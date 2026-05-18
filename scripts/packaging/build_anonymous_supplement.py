@@ -54,6 +54,8 @@ def ignore_names(directory: str, names: list[str]) -> set[str]:
         "dist",
         "no-include",
         "ACM-README",
+        "notes",
+        "breakout-paper-plans",
     }
     return {name for name in names if name in ignored}
 
@@ -99,28 +101,28 @@ def write_readme() -> None:
     (PACKAGE_DIR / "README.md").write_text(
         "# Anonymous Reproducibility Supplement\n\n"
         "This double-blind supplement contains source code, generated reports, LaTeX paper sources, "
-        "paper PDFs, and scripts for the legislative mechanism-comparison simulator.\n\n"
-        "Useful commands:\n\n"
+        "paper PDFs, and scripts for the legislative mechanism-comparison simulator. The offline "
+        "paper path is deterministic and does not require network access.\n\n"
+        "Requirements: Java 21, GNU Make, Python 3, and LaTeX with `latexmk` for PDF rebuilding.\n\n"
+        "Recommended reproduction commands:\n\n"
         "```sh\n"
         "make test\n"
-        "make calibration-check\n"
-        "make seed-robustness\n"
-        "make findings-validation\n"
-        "make family-screen\n"
-        "make catalog-breadth\n"
-        "make chamber-structure\n"
-        "make build-core-raw-validation ARGS=\"--derive-congress-from-bill-progression\"\n"
-        "make empirical-validation\n"
-        "make paper\n"
+        "make reproduce-paper-offline\n"
+        "make paper-checks\n"
         "```\n\n"
-        "The main evidence artifact is the generated main comparison campaign under `reports/`. "
-        "Calibration screening output is in `reports/calibration-baseline.csv`, the "
-        "generated findings audit is in `reports/paper-findings-validation.md`, and the "
-        "supplemental breadth-catalog screen is in `reports/family-champions.md`, "
-        "representative selection audit is in `reports/representative-vs-family-champions.md`, "
-        "scenario-selection rationale is in `reports/scenario-selection-manifest.md`, "
-        "the chamber-structure supplement is in `reports/chamber-family-champions.md`, "
-        "and the raw-validation build summary is in `reports/core-raw-validation-build.md`.\n"
+        "`make test` is the quick smoke test. `make reproduce-paper-offline` regenerates the "
+        "main campaign, diagnostics, figures, PDFs, and PDF manifest from fixed seeds. "
+        "`make paper-checks` adds word-count, anonymity, figure-label, table/figure consistency, "
+        "PDF-render, and manifest checks.\n\n"
+        "Main outputs:\n\n"
+        "- `paper/acm-ci-framework/acm-ci-framework.pdf`\n"
+        "- `paper/technical-appendix/odd-d-appendix.pdf`\n"
+        "- `paper/pdf-manifest.json`\n"
+        "- `reports/simulation-campaign-v21-paper.csv`\n"
+        "- generated diagnostic reports under `reports/`\n\n"
+        "Optional live-data refresh targets such as `make fetch-validation-samples`, "
+        "`make build-bill-progression-raw`, and `make build-core-raw-validation` are intentionally "
+        "outside the no-network reproduction path.\n"
     )
 
 

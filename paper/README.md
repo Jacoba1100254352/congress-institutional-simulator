@@ -139,6 +139,5 @@ local LaTeX build first. `paper/pdf-manifest.json` records stable source and
 extracted-text hashes for those PDFs; run `make paper-checks` before treating
 paper-facing output as ready.
 
-Publication-splitting notes are kept under `paper/breakout-paper-plans/`. They
-separate the focused ACM CI framework paper from later political-science,
-failure-mode, and chamber-structure paper candidates.
+Publication-splitting notes are kept under `paper/notes/` for project planning.
+They are not part of the anonymous review artifact.
