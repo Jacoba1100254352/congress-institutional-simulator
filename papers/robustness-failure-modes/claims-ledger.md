@@ -1,0 +1,10 @@
+# Claims Ledger
+
+| Claim | Supporting evidence currently available | Limitation | Citation needed |
+|---|---|---|---|
+| The project already includes ablation and manipulation-stress diagnostics. | `reports/simulation-ablation-analysis.csv`; `reports/simulation-manipulation-stress.csv`; summary markdown files. | Current probes are bounded diagnostics, not a full adversary model. | Robust simulation and adversarial mechanism-design methods. |
+| Content-selection systems are vulnerable to clone, decoy, and agenda-manipulation attacks. | Existing stress categories include clone/decoy probes; source modules include alternatives and tournament mechanisms. | Need mechanism-specific attack generation and worst-case success criteria. | Social choice agenda manipulation and clone alternatives. |
+| Harm-protection mechanisms can be stressed by loose or bad-faith harm claims. | `reports/manipulation-stress-summary.md` includes loose harm claim probes. | Need false-positive/false-negative harm-claim rates and budgeted adversaries. | Rights/harm procedural safeguards and abuse-of-process literature. |
+| Objection or citizen-input paths can be overloaded by astroturf/noise. | `reports/manipulation-stress-summary.md` includes astroturf/noise probes. | Current model does not co-evolve media, parties, courts, or agencies. | Collective action, astroturfing, and participatory governance manipulation. |
+| Removing mechanism components can reveal which modules drive results. | `reports/ablation-analysis-summary.md`; `reports/simulation-ablation-analysis.csv`. | Current sign conventions and mixed metrics make interpretation hard; needs clean decomposition. | Ablation analysis and causal interpretation in simulation. |
+| Existing stress results should be treated as failure hypotheses, not robustness proof. | ACM paper and appendix caveats; bounded strategic behavior limitation. | No adaptive adversaries or worst-case optimization yet. | Simulation validation and adversarial stress-testing literature. |
