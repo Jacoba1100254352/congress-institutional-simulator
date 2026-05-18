@@ -1,16 +1,33 @@
-# Software Artifact Breakout
+# Software / Artifact Paper Plan
 
-Status: ready for an artifact-hardening plan and extended outline; not ready for a full software paper submission.
+Final decision: NEEDS REPRODUCIBILITY AND PACKAGING AUDIT FIRST. DO NOT DRAFT SOFTWARE PAPER YET.
 
-This candidate is the closest to an independent submission because the repository already has Java 21 source, tests, Make targets, fixed seeds, no-network reproduction, generated reports, PDFs, and an ODD+D appendix. It still lacks basic public artifact metadata such as a license, citation metadata, and release/archival packaging.
+This folder evaluates whether the Congress Institutional Simulator can become a standalone open-source software paper, model-description paper, or artifact publication. It is not a results paper and should not repackage the ACM CI framework paper's empirical or mechanism-comparison claims.
 
-Files in this folder:
+## Working Purpose
 
-- `paper-plan.md`: artifact-paper decision, contribution, evidence, missing work, and go/no-go.
-- `claims-ledger.md`: what the current artifact can support.
-- `experiment-plan.md`: artifact-hardening and reproducibility work plan.
-- `figure-table-plan.md`: artifact-paper visuals and tables.
-- `related-work-targets.md`: software-paper and artifact-evaluation targets.
-- `draft-outline.md`: extended outline only.
+Evaluate whether the simulator is sufficiently documented, tested, packaged, and reusable to support a software or model-description publication.
 
-No full manuscript draft was created because a software paper would still need license, citation, release, and API/usage documentation work, and must avoid duplicating the ACM CI framework paper.
+## Primary Question
+
+Is the simulator sufficiently documented, tested, packaged, and reusable to support a software or model-description publication?
+
+## Current Answer
+
+Not yet.
+
+The simulator has a strong internal artifact workflow: Java 21 enforcement, Makefile-first commands, tests, reproducible campaign targets, paper checks, ODD/ODD+D documentation, and an anonymous supplement builder. The repository is not yet ready for a software publication because the packaging layer is incomplete: no license file, no citation metadata, no clean-clone reproduction log, and no release/archival metadata were found.
+
+## Required Files
+
+- `repository-audit.md`: readiness audit against software/artifact criteria.
+- `software-paper-plan.md`: contribution statement, venue fit, and go/no-go.
+- `model-documentation-summary.md`: ODD/ODD+D-style model summary.
+- `reproducibility-checklist.md`: clean-reproduction and packaging checklist.
+- `draft-outline.md`: short paper outline only.
+
+Existing planning files such as `paper-plan.md`, `claims-ledger.md`, `experiment-plan.md`, `figure-table-plan.md`, and `related-work-targets.md` remain supplemental notes.
+
+## Full Draft Rule
+
+Do not draft a software paper unless the repository passes the reproducibility and packaging audit.

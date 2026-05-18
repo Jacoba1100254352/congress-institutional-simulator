@@ -1,71 +1,84 @@
-# Extended Draft Outline
+# Draft Outline
 
-Status: outline only. A full software paper should wait for license, citation metadata, documentation, and clean-checkout reproduction.
+Status: outline only. Do not draft a full software paper until the reproducibility and packaging audit passes.
 
-## 1. Summary
+Final decision: NEEDS REPRODUCIBILITY AND PACKAGING AUDIT FIRST.
 
-- Congress Institutional Simulator is a Java 21 toolkit for synthetic legislative mechanism stress tests.
-- It supports Makefile-first campaign generation, diagnostics, paper assets, and offline reproduction.
-- Scope: simulation and reproducible experimentation, not empirical prediction of Congress.
+## 1. Motivation
 
-## 2. Statement of Need
+- Researchers need inspectable tools for comparing legislative mechanisms under shared synthetic assumptions.
+- Legislative simulation papers often make it difficult to separate model assumptions, mechanism modules, campaign definitions, and generated outputs.
+- The simulator aims to provide a reproducible mechanism-comparison environment with documented assumptions and regenerated paper artifacts.
 
-- Researchers need inspectable tools for comparing institutional mechanisms under shared synthetic assumptions.
-- Existing manuscripts often under-document generator assumptions and reproducibility paths.
-- This artifact provides a reusable simulator and reporting workflow.
+## 2. Software Architecture
 
-## 3. Software Architecture
+- Java 21 core simulator.
+- Makefile-first workflow.
+- Package layout:
+  - `behavior`;
+  - `model`;
+  - `simulation`;
+  - `simulation/catalog`;
+  - `institution/*`;
+  - `experiment`;
+  - `calibration`;
+  - `reporting`;
+  - `util`.
+- Reporting and validation scripts.
+- Paper-generation scripts and LaTeX assets.
 
-- Core simulator.
-- Institutional modules.
-- Campaign runners.
-- Reporting scripts.
-- Validation/sanity-check scripts.
-- Paper-generation pipeline.
+## 3. Model Overview
 
-## 4. Functionality
+- Entities: legislators, bills, lobby groups, institutions, environment.
+- State variables: ideology, support, benefit, lobbying, harm, party, district, status quo, review state.
+- Scheduling: generated world, scenario process chain, bill sequence, metrics, status quo update.
+- Adaptation: proposers, lobby groups, law registries, credits, bonds, challenges.
+- Submodels: voting, agenda access, committees, lobbying, chamber structures, bargaining, public input, review, law registry.
+- Empirical inputs and boundaries.
 
-- Run default simulation.
-- Run canonical campaign.
-- Run chamber, ablation, manipulation, and seed robustness diagnostics.
-- Generate reports and figures.
-- Build ACM paper and ODD+D appendix.
-- Build anonymous supplement.
+## 4. Reproducibility Workflow
 
-## 5. Reproducibility
-
+- `make test`.
+- `make campaign`.
+- `make paper-checks`.
+- `make reproduce-paper-offline`.
+- `make supplement-anonymous`.
 - Fixed seeds.
-- No-network reproduction target.
-- Expected runtimes.
-- Output directories.
-- PDF manifest and checks.
-- Network-dependent optional data rebuilds.
+- Generated reports and manifest checks.
+- Optional network-dependent empirical refreshes.
+
+## 5. Example Use Case
+
+- Add a new legislative mechanism or scenario family.
+- Run it against shared generated worlds.
+- Compare diagnostics against existing benchmark scenarios.
+- Generate reports and figures.
+- Interpret results as synthetic hypotheses, not empirical rankings.
 
 ## 6. Quality Control
 
-- Java tests.
-- Calibration screen.
-- Seed robustness check.
-- Anonymity check.
-- Figure/table consistency checks.
-- PDF render check.
+- Unit/invariant tests.
+- Scenario catalog tests.
+- Calibration screens.
+- Seed robustness.
+- Figure/table consistency.
+- PDF rendering and manifest checks.
+- Anonymous supplement builder.
 
-## 7. Reuse and Extension
+## 7. Limitations
 
-- Adding a mechanism.
-- Adding a campaign.
-- Adding a metric.
-- Adding a report.
-- Boundaries for empirical claims.
+- Synthetic model assumptions.
+- Empirical checks are sanity screens.
+- No license/citation metadata yet.
+- Clean-clone reproduction not yet documented.
+- No public release archive yet.
+- No software-paper claim until packaging audit passes.
 
 ## 8. Availability
 
-- License.
-- Citation metadata.
-- DOI/release archive.
-- Repository location.
-- This section should not be drafted until release metadata exists.
+This section should remain unwritten until:
 
-## 9. Conclusion
-
-- Main contribution after hardening: a reproducible legislative-mechanism simulation toolkit with transparent outputs and paper-generation workflow.
+- license exists;
+- citation metadata exists;
+- release/archive URL exists;
+- clean reproduction log exists.
