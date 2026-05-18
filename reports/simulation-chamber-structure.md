@@ -22,8 +22,8 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 | High Polarization | 1.000 | Legislators are tightly clustered into ideological camps. |
 | Low Party Loyalty | 1.000 | Party pressure is weak and legislators act more independently. |
 | High Party Loyalty | 1.000 | Party pressure is strong. |
-| Low Compromise Culture | 1.000 | Members are less inclined toward moderate, incremental bills. |
-| High Compromise Culture | 1.000 | Members are more inclined toward moderate, incremental bills. |
+| Low Revision-Moderation Culture | 1.000 | Members are less inclined toward moderate, incremental bills. |
+| High Revision-Moderation Culture | 1.000 | Members are more inclined toward moderate, incremental bills. |
 | Low Lobbying Pressure | 1.000 | Lobby pressure is weak. |
 | High Lobbying Pressure | 1.000 | Lobby pressure is strong. |
 | Weak Constituency Pressure | 1.000 | Members are less responsive to public support. |
@@ -32,17 +32,17 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 | High Proposal Pressure | 1.000 | Three times as many potential proposals reach the institutional system. |
 | Extreme Proposal Pressure | 1.000 | Five times as many potential proposals reach the institutional system. |
 | Lobby-Fueled Flooding | 1.000 | High proposal pressure with strong lobbying and weaker constituency pressure. |
-| Low-Compromise Flooding | 1.000 | High proposal pressure in a low-compromise legislature. |
-| Capture Crisis | 1.000 | High lobbying, weak constituency pressure, low compromise, and high proposal pressure. |
+| Low-Revision-Moderation Flooding | 1.000 | High proposal pressure in a low-revision-moderation legislature. |
+| Capture Crisis | 1.000 | High lobbying, weak constituency pressure, low revision moderation, and high proposal pressure. |
 | Popular Anti-Lobbying Push | 1.000 | High lobbying pressure with stronger public responsiveness and more appetite for reform. |
 | Weighted Two-Party Baseline | 0.250 | Classic two-party legislature with ideological left/right sorting. |
 | Weighted Two Major Plus Minors | 0.400 | Five-party legislature with two large ideological parties and smaller minor parties. |
 | Weighted Fragmented Multiparty | 0.200 | Seven-party legislature with more even fragmentation across the ideological range. |
 | Weighted Dominant-Party Legislature | 0.150 | Four-party legislature with one large center-weighted party and smaller opposition parties. |
-| Era 1 Low Contention | 1.000 | Stylized low-contention legislature with several parties, high compromise culture, lower lobbying, and stronger constituency responsiveness. |
+| Era 1 Low Contention | 1.000 | Stylized low-contention legislature with several parties, high revision-moderation culture, lower lobbying, and stronger constituency responsiveness. |
 | Era 2 Normal Contention | 1.000 | Stylized ordinary-contention legislature with two major parties plus minors and moderate party loyalty. |
 | Era 3 Polarizing | 1.000 | Stylized rising-contention legislature with stronger ideological clustering, party loyalty, and lobbying pressure. |
-| Era 4 High Contention | 1.000 | Stylized high-contention legislature with more proposal pressure, higher polarization, and weaker compromise culture. |
+| Era 4 High Contention | 1.000 | Stylized high-contention legislature with more proposal pressure, higher polarization, and weaker revision-moderation culture. |
 | Era 5 Capture Contention | 1.000 | Stylized capture-contention legislature with two-party sorting, higher proposal pressure, strong lobbying, and lower public responsiveness. |
 | Era 6 Crisis | 1.000 | Stylized crisis-contention legislature with severe polarization, high party loyalty, intense lobbying, weak constituency responsiveness, and doubled proposal pressure. |
 | Adversarial High-Benefit Extreme Reform | 1.000 | Extreme proposals can have high generated public benefit but lower initial support and high uncertainty. |
@@ -51,7 +51,7 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 | Adversarial Delayed-Benefit Reform | 1.000 | Beneficial reforms can have low immediate support because benefits are delayed and uncertain. |
 | Adversarial Concentrated Rights Harm | 1.000 | Proposals can be broadly supported while imposing severe concentrated rights-like harm. |
 | Adversarial Anti-Lobbying Backlash | 1.000 | Anti-lobbying reforms are more common, but face stronger defensive lobbying and lower observed support. |
-| Adversarial Compromise Dilution | 1.000 | Some high-distance reforms have high generated value, so moderation can dilute public benefit. |
+| Adversarial Revision Dilution | 1.000 | Some high-distance reforms have high generated value, so moderation can dilute public benefit. |
 | Adversarial Lobby Information | 1.000 | Organized lobbying sometimes supplies useful technical information rather than only capture pressure. |
 | Adversarial Public Opinion Error | 1.000 | Observed public support can be noisy or systematically misaligned with generated public benefit. |
 
@@ -59,7 +59,7 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 
 - This focused campaign does not include the open burden-shifting baseline, so relative headline deltas are reported in the diagnostic sections below.
 - Highest average welfare in this campaign came from Committee amendment and revision power at 0.708.
-- Highest productivity came from Bicameral malapportioned upper chamber + conference at 0.367, while highest compromise came from Stylized U.S.-like conventional benchmark at 0.353.
+- Highest productivity came from Bicameral malapportioned upper chamber + conference at 0.367, while highest revision moderation came from Stylized U.S.-like conventional benchmark at 0.353.
 - Highest directional score, where lower-better risk metrics are inverted, came from Appointment and retention eligibility filter at 0.672.
 
 ## Metric Direction Legend
@@ -67,7 +67,7 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 - `↑` means a higher raw value is usually better.
 - `↓` means a lower raw value is usually better; directional scores invert these metrics before combining them.
 - `diag.` means the metric is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.
-- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
+- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, revision moderation, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
 
 ## Scenario Averages Across Cases
 
@@ -127,9 +127,9 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 
 ## Timeline Contention Path
 
-This campaign is a stylized longitudinal stress path, not a calibrated history. The contention index is computed as `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * weakPublicMandatePassage`, so it rises when a system blocks more, compromises less, or enacts more bills with generated public support below majority.
+This campaign is a stylized longitudinal stress path, not a calibrated history. The contention index is computed as `0.50 * gridlock + 0.30 * (1 - revision moderation) + 0.20 * weakPublicMandatePassage`, so it rises when a system blocks more, produces less revision moderation, or enacts more bills with generated public support below majority.
 
-| Era | Scenario | Productivity | Compromise | Gridlock | Low-public-support enactment | Contention index |
+| Era | Scenario | Productivity | Revision moderation | Gridlock | Low-public-support enactment | Contention index |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | Baseline | Stylized U.S.-like conventional benchmark | 0.050 | 0.363 | 0.950 | 0.008 | 0.668 |
 | Baseline | Unicameral simple majority | 0.272 | 0.219 | 0.728 | 0.192 | 0.637 |
@@ -146,12 +146,12 @@ This campaign is a stylized longitudinal stress path, not a calibrated history. 
 | High Party Loyalty | Stylized U.S.-like conventional benchmark | 0.051 | 0.378 | 0.949 | 0.008 | 0.663 |
 | High Party Loyalty | Unicameral simple majority | 0.267 | 0.234 | 0.733 | 0.193 | 0.635 |
 | High Party Loyalty | Committee-first regular order | 0.164 | 0.281 | 0.836 | 0.093 | 0.652 |
-| Low Compromise Culture | Stylized U.S.-like conventional benchmark | 0.033 | 0.388 | 0.967 | 0.006 | 0.668 |
-| Low Compromise Culture | Unicameral simple majority | 0.213 | 0.242 | 0.788 | 0.140 | 0.649 |
-| Low Compromise Culture | Committee-first regular order | 0.126 | 0.291 | 0.874 | 0.074 | 0.664 |
-| High Compromise Culture | Stylized U.S.-like conventional benchmark | 0.073 | 0.382 | 0.927 | 0.011 | 0.651 |
-| High Compromise Culture | Unicameral simple majority | 0.337 | 0.220 | 0.663 | 0.215 | 0.608 |
-| High Compromise Culture | Committee-first regular order | 0.202 | 0.276 | 0.798 | 0.111 | 0.638 |
+| Low Revision-Moderation Culture | Stylized U.S.-like conventional benchmark | 0.033 | 0.388 | 0.967 | 0.006 | 0.668 |
+| Low Revision-Moderation Culture | Unicameral simple majority | 0.213 | 0.242 | 0.788 | 0.140 | 0.649 |
+| Low Revision-Moderation Culture | Committee-first regular order | 0.126 | 0.291 | 0.874 | 0.074 | 0.664 |
+| High Revision-Moderation Culture | Stylized U.S.-like conventional benchmark | 0.073 | 0.382 | 0.927 | 0.011 | 0.651 |
+| High Revision-Moderation Culture | Unicameral simple majority | 0.337 | 0.220 | 0.663 | 0.215 | 0.608 |
+| High Revision-Moderation Culture | Committee-first regular order | 0.202 | 0.276 | 0.798 | 0.111 | 0.638 |
 | Low Lobbying Pressure | Stylized U.S.-like conventional benchmark | 0.063 | 0.380 | 0.937 | 0.007 | 0.656 |
 | Low Lobbying Pressure | Unicameral simple majority | 0.279 | 0.230 | 0.721 | 0.191 | 0.630 |
 | Low Lobbying Pressure | Committee-first regular order | 0.180 | 0.284 | 0.820 | 0.096 | 0.644 |
@@ -176,9 +176,9 @@ This campaign is a stylized longitudinal stress path, not a calibrated history. 
 | Lobby-Fueled Flooding | Stylized U.S.-like conventional benchmark | 0.023 | 0.371 | 0.977 | 0.000 | 0.677 |
 | Lobby-Fueled Flooding | Unicameral simple majority | 0.223 | 0.236 | 0.777 | 0.220 | 0.662 |
 | Lobby-Fueled Flooding | Committee-first regular order | 0.130 | 0.262 | 0.870 | 0.087 | 0.674 |
-| Low-Compromise Flooding | Stylized U.S.-like conventional benchmark | 0.020 | 0.373 | 0.980 | 0.011 | 0.680 |
-| Low-Compromise Flooding | Unicameral simple majority | 0.161 | 0.250 | 0.839 | 0.148 | 0.674 |
-| Low-Compromise Flooding | Committee-first regular order | 0.093 | 0.287 | 0.907 | 0.077 | 0.683 |
+| Low-Revision-Moderation Flooding | Stylized U.S.-like conventional benchmark | 0.020 | 0.373 | 0.980 | 0.011 | 0.680 |
+| Low-Revision-Moderation Flooding | Unicameral simple majority | 0.161 | 0.250 | 0.839 | 0.148 | 0.674 |
+| Low-Revision-Moderation Flooding | Committee-first regular order | 0.093 | 0.287 | 0.907 | 0.077 | 0.683 |
 | Capture Crisis | Stylized U.S.-like conventional benchmark | 0.015 | 0.368 | 0.985 | 0.005 | 0.683 |
 | Capture Crisis | Unicameral simple majority | 0.180 | 0.226 | 0.820 | 0.232 | 0.688 |
 | Capture Crisis | Committee-first regular order | 0.100 | 0.259 | 0.900 | 0.091 | 0.690 |
@@ -233,9 +233,9 @@ This campaign is a stylized longitudinal stress path, not a calibrated history. 
 | Adversarial Anti-Lobbying Backlash | Stylized U.S.-like conventional benchmark | 0.044 | 0.362 | 0.956 | 0.029 | 0.675 |
 | Adversarial Anti-Lobbying Backlash | Unicameral simple majority | 0.327 | 0.278 | 0.673 | 0.290 | 0.611 |
 | Adversarial Anti-Lobbying Backlash | Committee-first regular order | 0.191 | 0.295 | 0.809 | 0.190 | 0.654 |
-| Adversarial Compromise Dilution | Stylized U.S.-like conventional benchmark | 0.000 | 0.180 | 1.000 | 0.000 | 0.746 |
-| Adversarial Compromise Dilution | Unicameral simple majority | 0.040 | 0.125 | 0.960 | 0.394 | 0.821 |
-| Adversarial Compromise Dilution | Committee-first regular order | 0.019 | 0.129 | 0.981 | 0.033 | 0.759 |
+| Adversarial Revision Dilution | Stylized U.S.-like conventional benchmark | 0.000 | 0.180 | 1.000 | 0.000 | 0.746 |
+| Adversarial Revision Dilution | Unicameral simple majority | 0.040 | 0.125 | 0.960 | 0.394 | 0.821 |
+| Adversarial Revision Dilution | Committee-first regular order | 0.019 | 0.129 | 0.981 | 0.033 | 0.759 |
 | Adversarial Lobby Information | Stylized U.S.-like conventional benchmark | 0.111 | 0.387 | 0.889 | 0.019 | 0.632 |
 | Adversarial Lobby Information | Unicameral simple majority | 0.772 | 0.274 | 0.228 | 0.229 | 0.377 |
 | Adversarial Lobby Information | Committee-first regular order | 0.648 | 0.306 | 0.352 | 0.018 | 0.388 |
@@ -252,8 +252,8 @@ This campaign is a stylized longitudinal stress path, not a calibrated history. 
 | High Polarization | Committee veto player (0.781) | Appointment and retention eligibility filter (0.218) | Stylized U.S.-like conventional benchmark (0.000) |
 | Low Party Loyalty | Committee veto player (0.766) | Bicameral malapportioned upper chamber + conference (0.311) | Committee amendment and revision power (0.003) |
 | High Party Loyalty | Committee veto player (0.770) | Bicameral malapportioned upper chamber + conference (0.296) | Committee amendment and revision power (0.008) |
-| Low Compromise Culture | Stylized U.S.-like conventional benchmark (0.773) | Recusal and cooling-off eligibility filter (0.244) | Committee minority-hearing rights (0.004) |
-| High Compromise Culture | Committee veto player (0.756) | Bicameral malapportioned upper chamber + conference (0.370) | Committee veto player (0.007) |
+| Low Revision-Moderation Culture | Stylized U.S.-like conventional benchmark (0.773) | Recusal and cooling-off eligibility filter (0.244) | Committee minority-hearing rights (0.004) |
+| High Revision-Moderation Culture | Committee veto player (0.756) | Bicameral malapportioned upper chamber + conference (0.370) | Committee veto player (0.007) |
 | Low Lobbying Pressure | Stylized U.S.-like conventional benchmark (0.758) | Appointment and retention eligibility filter (0.303) | Committee amendment and revision power (0.004) |
 | High Lobbying Pressure | Committee veto player (0.779) | Appointment and retention eligibility filter (0.264) | Stylized U.S.-like conventional benchmark (0.000) |
 | Weak Constituency Pressure | Committee veto player (0.751) | Recusal and cooling-off eligibility filter (0.270) | Committee amendment and revision power (0.008) |
@@ -262,7 +262,7 @@ This campaign is a stylized longitudinal stress path, not a calibrated history. 
 | High Proposal Pressure | Committee veto player (0.766) | Bicameral malapportioned upper chamber + conference (0.292) | Committee amendment and revision power (0.007) |
 | Extreme Proposal Pressure | Committee veto player (0.763) | Bicameral malapportioned upper chamber + conference (0.290) | Committee veto player (0.005) |
 | Lobby-Fueled Flooding | Committee amendment and revision power (0.762) | Recusal and cooling-off eligibility filter (0.256) | Stylized U.S.-like conventional benchmark (0.000) |
-| Low-Compromise Flooding | Committee veto player (0.771) | Expertise eligibility filter (0.207) | Committee veto player (0.005) |
+| Low-Revision-Moderation Flooding | Committee veto player (0.771) | Expertise eligibility filter (0.207) | Committee veto player (0.005) |
 | Capture Crisis | Committee veto player (0.747) | Recusal and cooling-off eligibility filter (0.224) | Stylized U.S.-like conventional benchmark (0.005) |
 | Popular Anti-Lobbying Push | Committee veto player (0.783) | Bicameral malapportioned upper chamber + conference (0.378) | Stylized U.S.-like conventional benchmark (0.004) |
 | Weighted Two-Party Baseline | Committee veto player (0.775) | Bicameral malapportioned upper chamber + conference (0.289) | Stylized U.S.-like conventional benchmark (0.004) |
@@ -281,14 +281,14 @@ This campaign is a stylized longitudinal stress path, not a calibrated history. 
 | Adversarial Delayed-Benefit Reform | Committee veto player (0.781) | Committee fast-track certifier (0.338) | Committee amendment and revision power (0.050) |
 | Adversarial Concentrated Rights Harm | Committee veto player (0.541) | Bicameral malapportioned upper chamber + conference (0.552) | Stylized U.S.-like conventional benchmark (0.000) |
 | Adversarial Anti-Lobbying Backlash | Committee veto player (0.726) | Expertise eligibility filter (0.374) | Stylized U.S.-like conventional benchmark (0.009) |
-| Adversarial Compromise Dilution | Committee veto player (0.828) | Committee fast-track certifier (0.186) | Stylized U.S.-like conventional benchmark (0.000) |
+| Adversarial Revision Dilution | Committee veto player (0.828) | Committee fast-track certifier (0.186) | Stylized U.S.-like conventional benchmark (0.000) |
 | Adversarial Lobby Information | Committee veto player (0.782) | Committee fast-track certifier (0.869) | Committee amendment and revision power (0.000) |
 | Adversarial Public Opinion Error | Committee amendment and revision power (0.747) | Appointment and retention eligibility filter (0.346) | Stylized U.S.-like conventional benchmark (0.000) |
 
 ## Interpretation
 
-- Timeline scenarios are stylized stress paths, not historical calibration. They increase polarization, party loyalty, lobbying pressure, and proposal pressure while reducing compromise culture and constituency responsiveness.
-- The timeline comparison should be read as a degradation test: institutions that preserve compromise and productivity under later-era assumptions are more robust than systems that only work in low-contention settings.
+- Timeline scenarios are stylized stress paths, not historical calibration. They increase polarization, party loyalty, lobbying pressure, and proposal pressure while reducing revision-moderation culture and constituency responsiveness.
+- The timeline comparison should be read as a degradation test: institutions that preserve revision moderation and productivity under later-era assumptions are more robust than systems that only work in low-contention settings.
 
 ## Reproduction
 

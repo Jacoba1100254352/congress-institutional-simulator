@@ -257,7 +257,7 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 - `--party-count <n>`: generated party labels.
 - `--polarization <0..1>`: ideological clustering.
 - `--party-loyalty <0..1>`: sensitivity to party pressure.
-- `--compromise <0..1>`: compromise culture.
+- `--compromise <0..1>`: revision-moderation culture; the historical option name is retained for CLI compatibility.
 - `--constituency <0..1>`: sensitivity to public support.
 - `--lobbying <0..1>`: sensitivity to lobby pressure.
 - `--scenarios <keys>`: comma-separated scenario keys.
@@ -387,7 +387,7 @@ Direction markers are used in generated reports and paper figures:
 - `↓`: lower is generally better.
 - `diag.`: context-dependent activity or risk context.
 
-The campaign CSV also includes `directionalScore`, `representativeQuality`, `riskControl`, and `administrativeFeasibility`. These are display scores. `directionalScore` averages productivity, representative quality, risk control, and administrative feasibility. `representativeQuality` combines welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift. `administrativeFeasibility` inverts the administrative-cost index.
+The campaign CSV also includes `directionalScore`, `representativeQuality`, `riskControl`, and `administrativeFeasibility`. These are display scores. `directionalScore` averages productivity, representative quality, risk control, and administrative feasibility. `representativeQuality` combines welfare, enacted support, revision moderation, public alignment, and legitimacy. `riskControl` inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift. `administrativeFeasibility` inverts the administrative-cost index.
 
 - `productivity` `↑`: share of potential bills enacted.
 - `caseWeight` `diag.`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`.
@@ -395,7 +395,7 @@ The campaign CSV also includes `directionalScore`, `representativeQuality`, `ris
 - `avgSupport` `↑`: average yes-vote share for enacted bills.
 - `welfare` `↑`: average public-benefit score for enacted bills.
 - `cooperation` `↑`: productivity weighted by enacted support.
-- `compromise` `↑`: moderation, support, and distance from proposer advantage.
+- `compromise` `↑`: internal metric key reported in the paper as revision moderation; it combines moderation, support, and distance from proposer advantage.
 - `gridlock` `↓`: share of potential bills not enacted.
 - `accessD` `diag.`: share of potential bills denied by proposal-access rules.
 - `cmteRej` `diag.`: share of potential bills rejected by committee.

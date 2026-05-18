@@ -4,11 +4,11 @@ This is an ODD-style model description for the congressional institutional simul
 
 ## Purpose
 
-The model compares legislative institutional designs by running shared generated worlds through different procedural mechanisms. The goal is to study tradeoffs among compromise, productivity, representative responsiveness, minority protection, and resistance to agenda capture.
+The model compares legislative institutional designs by running shared generated worlds through different procedural mechanisms. The goal is to study tradeoffs among revision moderation, productivity, representative responsiveness, minority protection, and resistance to agenda capture.
 
 ## Entities, State Variables, And Scales
 
-**Legislators** have an ID, party label, ideology, compromise preference, party loyalty, constituency sensitivity, lobby sensitivity, reputation sensitivity, district preference, district intensity, and affected-group sensitivity.
+**Legislators** have an ID, party label, ideology, revision-moderation preference, party loyalty, constituency sensitivity, lobby sensitivity, reputation sensitivity, district preference, district intensity, and affected-group sensitivity.
 
 **Bills** have a proposer, proposer ideology, policy position, public support, public benefit, public-benefit uncertainty, lobby pressure, private gain, salience, issue domain, affected group, affected-group support, concentrated harm, and compensation cost. Later institutional processes may add lobbying spend, cosponsors, amendments, citizen-panel certification, attention spend, or compensation.
 
@@ -35,15 +35,15 @@ Scenarios share generated worlds but receive independent deterministic random st
 
 **Basic principles:** Legislative outcomes are shaped by agenda access, voting thresholds, information, lobbying, amendment, public review, reversibility, and strategic proposal selection.
 
-**Emergence:** Aggregate productivity, compromise, capture, and volatility emerge from bill-by-bill interactions with institutional rules.
+**Emergence:** Aggregate productivity, revision moderation, capture, and volatility emerge from bill-by-bill interactions with institutional rules.
 
 **Adaptation:** Proposal credits, proposal bonds, and law review carry state across bills. Optional strategy wrappers add explicit proposer adaptation and lobby channel learning: proposers can adjust proposal volume, delay timing, moderate risky bills, seek cosponsors, reduce lobby exposure, add harm-reducing amendments, or withdraw after low-quality outcomes. Lobby groups can reallocate channel strategy, adjust issue-specific spending intensity, raise or lower overall budget intensity, and escalate defensive spending when anti-lobbying reform appears threatening.
 
-**Objectives:** Legislators vote according to weighted ideological, party, constituency, lobbying, reputational, and compromise influences. Institutions do not optimize one global objective; they produce measurable tradeoffs.
+**Objectives:** Legislators vote according to weighted ideological, party, constituency, lobbying, reputational, and revision-moderation influences. Institutions do not optimize one global objective; they produce measurable tradeoffs.
 
 **Stochasticity:** Worlds, bills, panels, committees, and some routing decisions use seeded randomness. Identical seeds produce identical results.
 
-**Observation:** Campaign reports aggregate outcomes into productivity, floor load, welfare, compromise, low-support passage, public alignment, minority harm, legitimacy, capture, lobbying spend, amendment, law-review, citizen-review, attention, and agenda-concentration metrics.
+**Observation:** Campaign reports aggregate outcomes into productivity, floor load, welfare, revision moderation, low-support passage, public alignment, minority harm, legitimacy, capture, lobbying spend, amendment, law-review, citizen-review, attention, and agenda-concentration metrics.
 
 ## Initialization
 

@@ -8,7 +8,7 @@ Supplemental breadth-catalog screen over the runnable --all-scenarios set. Long 
 - Seed: 20260428
 - Selection rule: within each scenario family, the reported scenario has the highest directional score in this fixed baseline screen.
 
-| Family | Top scenario | Directional | Productivity | Compromise | Low public support | Admin cost | Welfare |
+| Family | Top scenario | Directional | Productivity | Revision moderation | Low public support | Admin cost | Welfare |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Adaptive strategy | Risk-routed majority legislature | 0.659 | 0.484 | 0.235 | 0.241 | 0.167 | 0.518 |
 | Agenda gate | Committee-first regular order | 0.637 | 0.157 | 0.276 | 0.078 | 0.027 | 0.681 |

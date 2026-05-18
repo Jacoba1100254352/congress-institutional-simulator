@@ -54,7 +54,7 @@ final class SimulatorInvariantTests
 			assertRatio(report.averageEnactedSupport(), "Average enacted support should be a ratio.");
 			assertRatio(report.averagePublicBenefit(), "Average public benefit should be a ratio.");
 			assertRatio(report.cooperationScore(), "Cooperation score should be a ratio.");
-			assertRatio(report.compromiseScore(), "Compromise score should be a ratio.");
+			assertRatio(report.compromiseScore(), "Revision-moderation score should be a ratio.");
 			assertRatio(report.representativeQualityScore(), "Representative quality should be a directional ratio.");
 			assertRatio(report.riskControlScore(), "Risk control should be a directional ratio.");
 			assertRatio(report.administrativeFeasibilityScore(), "Administrative feasibility should be a directional ratio.");

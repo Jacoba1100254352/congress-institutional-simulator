@@ -284,7 +284,7 @@ public final class Main
 		                  options.seed
 		);
 		System.out.printf(
-				"assumptions: parties=%d partyProfile=%s polarization=%.2f partyLoyalty=%.2f compromise=%.2f constituency=%.2f lobbying=%.2f%n%n",
+				"assumptions: parties=%d partyProfile=%s polarization=%.2f partyLoyalty=%.2f revisionModeration=%.2f constituency=%.2f lobbying=%.2f%n%n",
 				worldSpec.partyCount(),
 				worldSpec.partySystemProfile(),
 				worldSpec.polarization(),
@@ -305,7 +305,7 @@ public final class Main
 		                  "Floor",
 		                  "AvgSupport",
 		                  "Welfare",
-		                  "Compromise",
+		                  "Rev. moderation",
 		                  "Capture",
 		                  "Spend",
 		                  "Amend",
@@ -677,7 +677,7 @@ public final class Main
 						                     --party-count <n>   Number of generated party labels
 						                     --polarization <x>  Ideological clustering, from 0.0 to 1.0
 						                     --party-loyalty <x> Party-pressure sensitivity, from 0.0 to 1.0
-						                     --compromise <x>    Compromise culture, from 0.0 to 1.0
+						                     --compromise <x>    Revision-moderation culture, from 0.0 to 1.0
 						                     --constituency <x>  Constituent-pressure sensitivity, from 0.0 to 1.0
 						                     --lobbying <x>      Lobby-pressure sensitivity, from 0.0 to 1.0
 						                     --scenarios <keys>  Comma-separated scenario keys

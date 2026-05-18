@@ -15,7 +15,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 
 - This focused campaign does not include the open burden-shifting baseline, so relative headline deltas are reported in the diagnostic sections below.
 - Highest average welfare in this campaign came from Stylized U.S.-like conventional benchmark at 0.680.
-- Highest productivity came from Unicameral majority + pairwise alternatives at 0.557, while highest compromise came from Unicameral majority + pairwise alternatives at 0.508.
+- Highest productivity came from Unicameral majority + pairwise alternatives at 0.557, while highest revision moderation came from Unicameral majority + pairwise alternatives at 0.508.
 - Highest directional score, where lower-better risk metrics are inverted, came from Unicameral majority + pairwise alternatives at 0.715.
 
 ## Metric Direction Legend
@@ -23,7 +23,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 - `↑` means a higher raw value is usually better.
 - `↓` means a lower raw value is usually better; directional scores invert these metrics before combining them.
 - `diag.` means the metric is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.
-- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
+- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, revision moderation, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
 
 ## Scenario Averages Across Cases
 
@@ -54,8 +54,8 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 | High Polarization | Stylized U.S.-like conventional benchmark (0.767) | Unicameral majority + pairwise alternatives (0.492) | Stylized U.S.-like conventional benchmark (0.000) |
 | Low Party Loyalty | Stylized U.S.-like conventional benchmark (0.765) | Unicameral majority + pairwise alternatives (0.546) | Unicameral majority + pairwise alternatives (0.002) |
 | High Party Loyalty | Stylized U.S.-like conventional benchmark (0.763) | Unicameral majority + pairwise alternatives (0.547) | Unicameral majority + pairwise alternatives (0.002) |
-| Low Compromise Culture | Stylized U.S.-like conventional benchmark (0.757) | Unicameral majority + pairwise alternatives (0.533) | Stylized U.S.-like conventional benchmark (0.000) |
-| High Compromise Culture | Stylized U.S.-like conventional benchmark (0.735) | Risk-routed majority legislature (0.583) | Unicameral majority + pairwise alternatives (0.004) |
+| Low Revision-Moderation Culture | Stylized U.S.-like conventional benchmark (0.757) | Unicameral majority + pairwise alternatives (0.533) | Stylized U.S.-like conventional benchmark (0.000) |
+| High Revision-Moderation Culture | Stylized U.S.-like conventional benchmark (0.735) | Risk-routed majority legislature (0.583) | Unicameral majority + pairwise alternatives (0.004) |
 | Low Lobbying Pressure | Stylized U.S.-like conventional benchmark (0.763) | Unicameral majority + pairwise alternatives (0.571) | Unicameral majority + pairwise alternatives (0.002) |
 | High Lobbying Pressure | Stylized U.S.-like conventional benchmark (0.755) | Unicameral majority + pairwise alternatives (0.487) | Unicameral majority + pairwise alternatives (0.005) |
 | Weak Constituency Pressure | Stylized U.S.-like conventional benchmark (0.755) | Unicameral majority + pairwise alternatives (0.530) | Unicameral majority + pairwise alternatives (0.003) |
@@ -64,7 +64,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 | High Proposal Pressure | Stylized U.S.-like conventional benchmark (0.752) | Unicameral majority + pairwise alternatives (0.539) | Unicameral majority + pairwise alternatives (0.001) |
 | Extreme Proposal Pressure | Stylized U.S.-like conventional benchmark (0.747) | Unicameral majority + pairwise alternatives (0.540) | Unicameral majority + pairwise alternatives (0.000) |
 | Lobby-Fueled Flooding | Stylized U.S.-like conventional benchmark (0.733) | Unicameral majority + pairwise alternatives (0.461) | Unicameral majority + pairwise alternatives (0.001) |
-| Low-Compromise Flooding | Stylized U.S.-like conventional benchmark (0.749) | Unicameral majority + pairwise alternatives (0.492) | Unicameral majority + pairwise alternatives (0.001) |
+| Low-Revision-Moderation Flooding | Stylized U.S.-like conventional benchmark (0.749) | Unicameral majority + pairwise alternatives (0.492) | Unicameral majority + pairwise alternatives (0.001) |
 | Capture Crisis | Stylized U.S.-like conventional benchmark (0.707) | Unicameral majority + pairwise alternatives (0.402) | Unicameral majority + pairwise alternatives (0.001) |
 | Popular Anti-Lobbying Push | Stylized U.S.-like conventional benchmark (0.766) | Unicameral majority + pairwise alternatives (0.547) | Unicameral majority + pairwise alternatives (0.001) |
 | Adversarial High-Benefit Extreme Reform | Unicameral majority + pairwise alternatives (0.821) | Unicameral majority + pairwise alternatives (0.645) | Stylized U.S.-like conventional benchmark (0.000) |
@@ -73,7 +73,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 | Adversarial Delayed-Benefit Reform | Unicameral majority + pairwise alternatives (0.811) | Risk-routed majority without citizen review (0.711) | Unicameral majority + pairwise alternatives (0.003) |
 | Adversarial Concentrated Rights Harm | Majority + anti-capture bundle (0.518) | Risk-routed majority without citizen review (0.765) | Unicameral majority + pairwise alternatives (0.000) |
 | Adversarial Anti-Lobbying Backlash | Majority + anti-capture bundle (0.700) | Majority + anti-capture bundle (0.541) | Unicameral majority + pairwise alternatives (0.003) |
-| Adversarial Compromise Dilution | Unicameral majority + pairwise alternatives (0.864) | Risk-routed majority legislature (0.555) | Stylized U.S.-like conventional benchmark (0.000) |
+| Adversarial Revision Dilution | Unicameral majority + pairwise alternatives (0.864) | Risk-routed majority legislature (0.555) | Stylized U.S.-like conventional benchmark (0.000) |
 | Adversarial Lobby Information | Unicameral majority + pairwise alternatives (0.779) | Risk-routed majority legislature (0.877) | Unicameral majority + pairwise alternatives (0.000) |
 | Adversarial Public Opinion Error | Majority + anti-capture bundle (0.540) | Risk-routed majority legislature (0.725) | Stylized U.S.-like conventional benchmark (0.000) |
 

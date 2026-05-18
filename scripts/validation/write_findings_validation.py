@@ -124,7 +124,7 @@ def comparison_line(
     return (
         f"- Versus {label}, `{source}` changes productivity by "
         f"{delta(source_values['productivity'] - target_values['productivity'])}, "
-        f"compromise by {delta(source_values['compromise'] - target_values['compromise'])}, "
+        f"revision moderation by {delta(source_values['compromise'] - target_values['compromise'])}, "
         f"risk control by {delta(source_values['riskControl'] - target_values['riskControl'])}, "
         f"low-public-support enactment by {delta(source_values['weakPublicMandatePassage'] - target_values['weakPublicMandatePassage'])}, "
         f"and lobbying capture by {delta(source_values['lobbyCapture'] - target_values['lobbyCapture'])}."
@@ -140,7 +140,7 @@ def main() -> int:
     seeds = read_seed_directional()
 
     top_directional = rank(broad, "directionalScore")[:8]
-    top_compromise = rank(party, "compromise")[:5] if party else rank(broad, "compromise")[:5]
+    top_revision_moderation = rank(party, "compromise")[:5] if party else rank(broad, "compromise")[:5]
     top_productivity = rank(broad, "productivity")[:5]
     lowest_weak = rank(broad, "weakPublicMandatePassage", reverse=False)[:5]
     highest_welfare = rank(broad, "welfare")[:5]
@@ -160,7 +160,7 @@ def main() -> int:
         "",
         "## Focus Scenario Averages",
         "",
-        "| Key | Scenario | Dir. | Prod. | Comp. | Risk ctrl. | Rep. quality | Low public support | Welfare | Lobby capture | Seed dir. mean [min,max] |",
+        "| Key | Scenario | Dir. | Prod. | Rev. mod. | Risk ctrl. | Rep. quality | Low public support | Welfare | Lobby capture | Seed dir. mean [min,max] |",
         "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for key in FOCUS:
@@ -174,8 +174,8 @@ def main() -> int:
         "- Top directional scores: "
         + ", ".join(f"`{key}` ({fmt(broad[key]['directionalScore'])})" for key in top_directional)
         + ".",
-        "- Top compromise scores under party-system sensitivity cases: "
-        + ", ".join(f"`{key}` ({fmt(party.get(key, broad[key])['compromise'])})" for key in top_compromise)
+        "- Top revision-moderation scores under party-system sensitivity cases: "
+        + ", ".join(f"`{key}` ({fmt(party.get(key, broad[key])['compromise'])})" for key in top_revision_moderation)
         + ".",
         "- Top productivity scores: "
         + ", ".join(f"`{key}` ({fmt(broad[key]['productivity'])})" for key in top_productivity)
@@ -197,7 +197,7 @@ def main() -> int:
             comparison_line(broad, "portfolio-hybrid-legislature", "anti-capture-majority-bundle", "anti-capture bundle"),
             comparison_line(broad, "portfolio-hybrid-legislature", "default-pass", "open default pass"),
             "",
-            "The portfolio variants illustrate the tradeoff between combining safeguards and increasing administrative load. Pairwise alternatives remain the cleanest alternative-selection productivity/compromise result; the hybrid preserves much of that productivity while adding lower lobbying capture and stronger low-public-support controls, but it pays in administrative load and loses some compromise because not every bill enters the pairwise route.",
+            "The portfolio variants illustrate the tradeoff between combining safeguards and increasing administrative load. Pairwise alternatives remain the cleanest alternative-selection productivity/revision-moderation result; the hybrid preserves much of that productivity while adding lower lobbying capture and stronger low-public-support controls, but it pays in administrative load and loses some revision moderation because not every bill enters the pairwise route.",
             "",
             "A portfolio legislature remains one testable mechanism bundle: low-risk bills move quickly; medium-risk bills face alternative comparison and mediation; high-risk or high-harm bills face public/harm review; proposers internalize some outcome risk; organized-interest pressure is visible and audited; enacted high-uncertainty laws are reviewed later.",
         ])

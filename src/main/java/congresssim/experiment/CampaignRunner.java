@@ -1183,9 +1183,9 @@ public final class CampaignRunner
 				           legislators, bills, 3, 0.72, 0.25, 0.48, 0.64, 0.52),
 				experiment("high-party-loyalty", "High Party Loyalty", "Party pressure is strong.",
 				           legislators, bills, 3, 0.72, 0.90, 0.48, 0.64, 0.52),
-				experiment("low-compromise", "Low Compromise Culture", "Members are less inclined toward moderate, incremental bills.",
+				experiment("low-compromise", "Low Revision-Moderation Culture", "Members are less inclined toward moderate, incremental bills.",
 				           legislators, bills, 3, 0.72, 0.68, 0.48, 0.64, 0.18),
-				experiment("high-compromise", "High Compromise Culture", "Members are more inclined toward moderate, incremental bills.",
+				experiment("high-compromise", "High Revision-Moderation Culture", "Members are more inclined toward moderate, incremental bills.",
 				           legislators, bills, 3, 0.72, 0.55, 0.38, 0.70, 0.86),
 				experiment("low-lobbying", "Low Lobbying Pressure", "Lobby pressure is weak.",
 				           legislators, bills, 3, 0.72, 0.68, 0.12, 0.64, 0.52),
@@ -1208,14 +1208,14 @@ public final class CampaignRunner
 		                     legislators, bills * 5, 3, 0.72, 0.68, 0.48, 0.64, 0.52));
 		cases.add(experiment("lobby-fueled-flooding", "Lobby-Fueled Flooding", "High proposal pressure with strong lobbying and weaker constituency pressure.",
 		                     legislators, bills * 3, 3, 0.72, 0.70, 0.88, 0.42, 0.38));
-		cases.add(experiment("low-compromise-flooding", "Low-Compromise Flooding", "High proposal pressure in a low-compromise legislature.",
+		cases.add(experiment("low-compromise-flooding", "Low-Revision-Moderation Flooding", "High proposal pressure in a low-revision-moderation legislature.",
 		                     legislators, bills * 3, 3, 0.82, 0.76, 0.52, 0.54, 0.16));
 		return cases;
 	}
 	
 	private static List<ExperimentCase> v8Cases(int legislators, int bills) {
 		List<ExperimentCase> cases = new ArrayList<>(v1Cases(legislators, bills));
-		cases.add(experiment("capture-crisis", "Capture Crisis", "High lobbying, weak constituency pressure, low compromise, and high proposal pressure.",
+		cases.add(experiment("capture-crisis", "Capture Crisis", "High lobbying, weak constituency pressure, low revision moderation, and high proposal pressure.",
 		                     legislators, bills * 3, 3, 0.78, 0.76, 0.94, 0.34, 0.28));
 		cases.add(experiment("popular-anti-lobbying-push", "Popular Anti-Lobbying Push", "High lobbying pressure with stronger public responsiveness and more appetite for reform.",
 		                     legislators, bills * 2, 3, 0.62, 0.58, 0.86, 0.82, 0.68));
@@ -1246,7 +1246,7 @@ public final class CampaignRunner
 	private static List<ExperimentCase> v19Cases(int legislators, int bills) {
 		return List.of(
 				experiment("era-1-low-contention", "Era 1 Low Contention",
-				           "Stylized low-contention legislature with several parties, high compromise culture, lower lobbying, and stronger constituency responsiveness.",
+				           "Stylized low-contention legislature with several parties, high revision-moderation culture, lower lobbying, and stronger constituency responsiveness.",
 				           legislators, bills, 4, 0.35, 0.45, 0.30, 0.74, 0.82,
 				           PartySystemProfile.FRAGMENTED_MULTIPARTY, 1.0),
 				experiment("era-2-normal", "Era 2 Normal Contention",
@@ -1258,7 +1258,7 @@ public final class CampaignRunner
 				           legislators, bills, 5, 0.65, 0.66, 0.52, 0.62, 0.56,
 				           PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0),
 				experiment("era-4-high-contention", "Era 4 High Contention",
-				           "Stylized high-contention legislature with more proposal pressure, higher polarization, and weaker compromise culture.",
+				           "Stylized high-contention legislature with more proposal pressure, higher polarization, and weaker revision-moderation culture.",
 				           legislators, Math.max(1, bills * 5 / 4), 3, 0.78, 0.78, 0.64, 0.55, 0.40,
 				           PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0),
 				experiment("era-5-capture-contention", "Era 5 Capture Contention",
@@ -1306,7 +1306,7 @@ public final class CampaignRunner
 				           "Anti-lobbying reforms are more common, but face stronger defensive lobbying and lower observed support.",
 				           legislators, bills, 4, 0.64, 0.64, 0.90, 0.70, 0.50,
 				           PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.ANTI_LOBBYING_BACKLASH),
-				experiment("adversarial-compromise-dilution", "Adversarial Compromise Dilution",
+				experiment("adversarial-compromise-dilution", "Adversarial Revision Dilution",
 				           "Some high-distance reforms have high generated value, so moderation can dilute public benefit.",
 				           legislators, bills, 4, 0.68, 0.62, 0.40, 0.58, 0.44,
 				           PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.COMPROMISE_DILUTION),
@@ -1332,11 +1332,11 @@ public final class CampaignRunner
 				           legislators, Math.max(1, bills * 3), 3, 0.66, 0.68, 0.58, 0.58, 0.42,
 				           PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0),
 				experiment("capture-flooding", "Capture And Flooding",
-				           "High proposal pressure, strong lobbying, weaker public responsiveness, and lower compromise culture.",
+				           "High proposal pressure, strong lobbying, weaker public responsiveness, and lower revision-moderation culture.",
 				           legislators, Math.max(1, bills * 3), 2, 0.84, 0.84, 0.92, 0.44, 0.28,
 				           PartySystemProfile.IDEOLOGICAL_BINS, 1.0),
 				experiment("clone-decoy-pressure", "Clone/Decoy Tournament Pressure",
-				           "Highly polarized, low-compromise environment intended to expose alternative-selection manipulation.",
+				           "Highly polarized, low-revision-moderation environment intended to expose alternative-selection manipulation.",
 				           legislators, Math.max(1, bills * 2), 4, 0.80, 0.76, 0.62, 0.54, 0.24,
 				           PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0),
 				experiment("rights-harm-pressure", "Rights-Harm Pressure",
@@ -1616,7 +1616,7 @@ public final class CampaignRunner
 		builder.append("- `↑` means a higher raw value is usually better.\n");
 		builder.append("- `↓` means a lower raw value is usually better; directional scores invert these metrics before combining them.\n");
 		builder.append("- `diag.` means the metric is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.\n");
-		builder.append("- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.\n\n");
+		builder.append("- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, revision moderation, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.\n\n");
 		
 		builder.append("## Scenario Averages Across Cases\n\n");
 		builder.append("| Scenario | Directional score ↑ | Quality ↑ | Risk control ↑ | Admin feas. ↑ | Productivity ↑ | Enacted/run | Floor/run diag. | Welfare ↑ | Low-support ↓ | Low-public-support enactment ↓ | Admin cost ↓ | Minority harm ↓ | Legitimacy ↑ | Policy shift diag. | Proposer gain ↓ | Capture ↓ | Lobby spend diag. | Defensive spend diag. | Amend rate diag. | Compensation diag. | Anti-lobby pass ↑ | Challenge diag. | Floor diag. |\n");
@@ -2046,7 +2046,7 @@ public final class CampaignRunner
 		if (aggregateByScenario.containsKey("default-pass-mediation")) {
 			builder.append("## Mediation Deltas\n\n");
 			builder.append("Delta values compare structured amendment mediation against the matching non-mediated scenario. Amendment rate is the share of potential bills whose policy position moved before final voting.\n\n");
-			builder.append("| Scenario | Baseline | Productivity delta | Welfare delta | Compromise delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Amendment rate | Amendment movement |\n");
+			builder.append("| Scenario | Baseline | Productivity delta | Welfare delta | Revision-moderation delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Amendment rate | Amendment movement |\n");
 			builder.append("| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
 			appendMediationDelta(builder, aggregateByScenario, "default-pass-mediation", "default-pass");
 			appendMediationDelta(builder, aggregateByScenario, "default-pass-budgeted-lobbying-mediation", "default-pass-budgeted-lobbying");
@@ -2178,15 +2178,15 @@ public final class CampaignRunner
 				&& aggregateByScenario.containsKey("risk-routed-majority")) {
 			builder.append("- This paper campaign compares representative conventional, committee, coalition, tournament, citizen-review, agenda-scarcity, proposal-accountability, harm/compensation, anti-capture, adaptive-routing, law-registry, and burden-shifting mechanisms under shared synthetic worlds.\n");
 			builder.append("- Open burden-shifting passage remains the throughput extreme, but its high low-public-support enactment and policy movement make it a diagnostic endpoint.\n");
-			builder.append("- Policy tournaments and risk-routed majority systems occupy a promising compromise/productivity middle ground in this synthetic campaign, but tournament variants remain sensitive to clone, decoy, and overload stress; committee-first, public-interest, citizen, and parliamentary-style gates control risk but give up substantial throughput.\n");
+			builder.append("- Policy tournaments and risk-routed majority systems occupy a promising revision-moderation/productivity middle ground in this synthetic campaign, but tournament variants remain sensitive to clone, decoy, and overload stress; committee-first, public-interest, citizen, and parliamentary-style gates control risk but give up substantial throughput.\n");
 			builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality, and generated welfare remains conditional on model assumptions.\n");
 			builder.append("- Future model extensions should deepen multidimensional package bargaining, judicial/court intervention, executive emergency/delegated rulemaking, direct-democracy routes, electoral feedback, and media/information ecosystems.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-constituent-public-will")) {
 			builder.append("- Roadmap-completion scenarios add district-grounded public signals, refundable proposal bonds, richer cosponsorship diagnostics, multi-round mediation, strategic alternatives, adaptive proposer behavior, strategic lobby-channel learning, challenge allocation/path variants, adaptive-route rates, and proposal-cost variants.\n");
 			builder.append("- Future model extensions should deepen endogeneity: challengers, amendment coalitions, constituent publics, and alternative drafters should adapt to the institutional rules over repeated sessions.\n\n");
 		} else if (hasTimelineCases(result.rows())) {
-			builder.append("- Timeline scenarios are stylized stress paths, not historical calibration. They increase polarization, party loyalty, lobbying pressure, and proposal pressure while reducing compromise culture and constituency responsiveness.\n");
-			builder.append("- The timeline comparison should be read as a degradation test: institutions that preserve compromise and productivity under later-era assumptions are more robust than systems that only work in low-contention settings.\n\n");
+			builder.append("- Timeline scenarios are stylized stress paths, not historical calibration. They increase polarization, party loyalty, lobbying pressure, and proposal pressure while reducing revision-moderation culture and constituency responsiveness.\n");
+			builder.append("- The timeline comparison should be read as a degradation test: institutions that preserve revision moderation and productivity under later-era assumptions are more robust than systems that only work in low-contention settings.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-weighted-agenda-lottery")) {
 			builder.append("- Agenda-scarcity variants test non-committee ways to ration floor attention, including weighted/random lotteries, quadratic credits, and public objection or repeal windows.\n");
 			builder.append("- Future model extensions should add richer constituent and affected-group structure so public objection and citizen-panel signals are grounded in represented districts rather than generated bill fields.\n\n");
@@ -2201,10 +2201,10 @@ public final class CampaignRunner
 			builder.append("- Future model extensions should add deliberative citizen review or richer lobbying channels because the simulator has agenda competition, harm guardrails, law review, and mediation but still lacks an independent public legitimacy screen.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-mediation")) {
 			builder.append("- Structured mediation scenarios let a bounded amendment stage move bills toward the chamber median/status quo before the final yes/no vote.\n");
-			builder.append("- Future model extensions should add richer constituent and affected-group structure because compromise quality should be judged against public will and concentrated harms rather than only chamber support.\n\n");
+			builder.append("- Future model extensions should add richer constituent and affected-group structure because revision quality should be judged against public will and concentrated harms rather than only chamber support.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-budgeted-lobbying")) {
 			builder.append("- Budgeted lobbying scenarios make organized interests explicit actors with budgets, issue targets, and defensive spending against anti-lobbying reform.\n");
-			builder.append("- Future model extensions should add structured amendment or mediation because capture controls and agenda screens still rarely turn narrow bills into better compromises before the final yes/no choice.\n\n");
+			builder.append("- Future model extensions should add structured amendment or mediation because capture controls and agenda screens still rarely turn narrow bills into better revised proposals before the final yes/no choice.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-anti-capture-bundle")) {
 			builder.append("- Anti-capture mechanisms test lobbying as institutional pressure: anti-lobbying bills face organized opposition, while high-private-gain bills create measurable capture risk.\n");
 			builder.append("- Future model extensions should make lobbying groups explicit actors with budgets, issue targets, defensive spending against anti-lobbying bills, and separate channels for money, information, litigation threat, and public campaigns.\n\n");
@@ -2241,8 +2241,8 @@ public final class CampaignRunner
 	
 	private static void appendTimelineSection(StringBuilder builder, List<CampaignRow> rows) {
 		builder.append("## Timeline Contention Path\n\n");
-		builder.append("This campaign is a stylized longitudinal stress path, not a calibrated history. The contention index is computed as `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * weakPublicMandatePassage`, so it rises when a system blocks more, compromises less, or enacts more bills with generated public support below majority.\n\n");
-		builder.append("| Era | Scenario | Productivity | Compromise | Gridlock | Low-public-support enactment | Contention index |\n");
+		builder.append("This campaign is a stylized longitudinal stress path, not a calibrated history. The contention index is computed as `0.50 * gridlock + 0.30 * (1 - revision moderation) + 0.20 * weakPublicMandatePassage`, so it rises when a system blocks more, produces less revision moderation, or enacts more bills with generated public support below majority.\n\n");
+		builder.append("| Era | Scenario | Productivity | Revision moderation | Gridlock | Low-public-support enactment | Contention index |\n");
 		builder.append("| --- | --- | ---: | ---: | ---: | ---: | ---: |\n");
 		for (CampaignRow eraRow : firstRowsByCase(rows)) {
 			for (String scenarioKey : List.of(
@@ -2311,7 +2311,7 @@ public final class CampaignRunner
 		                                                        .stream()
 		                                                        .max(Comparator.comparingDouble(ScenarioAggregate::productivity))
 		                                                        .orElseThrow();
-		ScenarioAggregate bestCompromise = aggregateByScenario.values()
+		ScenarioAggregate bestRevisionModeration = aggregateByScenario.values()
 		                                                      .stream()
 		                                                      .max(Comparator.comparingDouble(ScenarioAggregate::compromise))
 		                                                      .orElseThrow();
@@ -2330,10 +2330,10 @@ public final class CampaignRunner
 			       .append(bestWelfare.scenarioName())
 			       .append(" at ")
 			       .append(format(bestWelfare.welfare()))
-			       .append("; highest compromise came from ")
-			       .append(bestCompromise.scenarioName())
+			       .append("; highest revision moderation came from ")
+			       .append(bestRevisionModeration.scenarioName())
 			       .append(" at ")
-			       .append(format(bestCompromise.compromise()))
+			       .append(format(bestRevisionModeration.compromise()))
 			       .append(".\n");
 			builder.append("- Highest productivity came from ")
 			       .append(bestProductivity.scenarioName())
@@ -2365,7 +2365,7 @@ public final class CampaignRunner
 				       .append(format(portfolio.productivity()))
 				       .append(" productivity, ")
 				       .append(format(portfolio.compromise()))
-				       .append(" compromise, ")
+				       .append(" revision moderation, ")
 				       .append(format(portfolio.riskControl()))
 				       .append(" risk control, and ")
 				       .append(format(portfolio.directionalScore()))
@@ -2376,7 +2376,7 @@ public final class CampaignRunner
 				       .append(format(expandedPortfolio.productivity()))
 				       .append(" productivity, ")
 				       .append(format(expandedPortfolio.compromise()))
-				       .append(" compromise, ")
+				       .append(" revision moderation, ")
 				       .append(format(expandedPortfolio.riskControl()))
 				       .append(" risk control, and ")
 				       .append(format(expandedPortfolio.directionalScore()))
@@ -2396,10 +2396,10 @@ public final class CampaignRunner
 			       .append(bestProductivity.scenarioName())
 			       .append(" at ")
 			       .append(format(bestProductivity.productivity()))
-			       .append(", while highest compromise came from ")
-			       .append(bestCompromise.scenarioName())
+			       .append(", while highest revision moderation came from ")
+			       .append(bestRevisionModeration.scenarioName())
 			       .append(" at ")
-			       .append(format(bestCompromise.compromise()))
+			       .append(format(bestRevisionModeration.compromise()))
 			       .append(".\n");
 			builder.append("- Highest directional score, where lower-better risk metrics are inverted, came from ")
 			       .append(bestDirectional.scenarioName())
@@ -2569,7 +2569,7 @@ public final class CampaignRunner
 		if (mediation != null) {
 			builder.append("- Mediated default-pass amended ")
 			       .append(format(mediation.amendmentRate()))
-			       .append(" of potential bills and changed compromise by ")
+			       .append(" of potential bills and changed revision moderation by ")
 			       .append(format(mediation.compromise() - openDefault.compromise()))
 			       .append(" relative to open default-pass.\n");
 		}

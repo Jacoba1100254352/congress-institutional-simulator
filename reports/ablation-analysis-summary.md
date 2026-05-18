@@ -1,8 +1,8 @@
 # Mechanism Ablation Summary
 
-This report compares selected mechanism bundles with nearby ablations across the ablation campaign's broad and adversarial cases. Positive directional/productivity/compromise deltas favor the full mechanism. Positive low-public-support reduction means fewer weakly supported enactments. Positive admin-cost added means the full mechanism is procedurally heavier.
+This report compares selected mechanism bundles with nearby ablations across the ablation campaign's broad and adversarial cases. Positive directional/productivity/revision-moderation deltas favor the full mechanism. Positive low-public-support reduction means fewer weakly supported enactments. Positive admin-cost added means the full mechanism is procedurally heavier.
 
-| Family | Full scenario | Comparison | Δ directional | Δ productivity | Δ compromise | Low-public-support reduction | Admin cost added | Interpretation |
+| Family | Full scenario | Comparison | Δ directional | Δ productivity | Δ revision moderation | Low-public-support reduction | Admin cost added | Interpretation |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | Policy tournament | `simple-majority-alternatives-pairwise` | `simple-majority` | 0.056 | 0.230 | 0.266 | 0.217 | 0.219 | helps, but with visible process cost |
 | Risk routing | `risk-routed-majority` | `simple-majority` | 0.035 | 0.224 | 0.021 | -0.011 | 0.101 | helps, but with visible process cost |

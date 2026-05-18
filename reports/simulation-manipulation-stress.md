@@ -23,7 +23,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 - `↑` means a higher raw value is usually better.
 - `↓` means a lower raw value is usually better; directional scores invert these metrics before combining them.
 - `diag.` means the metric is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.
-- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
+- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, revision moderation, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
 
 ## Scenario Averages Across Cases
 

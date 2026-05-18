@@ -452,7 +452,7 @@ final class WorldGenerationTests
 		for (Legislator legislator : first.legislators()) {
 			assertTrue(legislatorIds.add(legislator.id()), "Generated legislator IDs should be unique.");
 			assertRatio((legislator.ideology() + 1.0) / 2.0, "Legislator ideology should be inside [-1, 1].");
-			assertRatio(legislator.compromisePreference(), "Compromise preference should be a ratio.");
+			assertRatio(legislator.compromisePreference(), "Revision-moderation preference should be a ratio.");
 			assertRatio(legislator.partyLoyalty(), "Party loyalty should be a ratio.");
 			assertRatio(legislator.constituencySensitivity(), "Constituency sensitivity should be a ratio.");
 			assertRatio(legislator.lobbySensitivity(), "Lobby sensitivity should be a ratio.");

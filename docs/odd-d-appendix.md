@@ -4,7 +4,7 @@ This appendix follows the ODD and ODD+D model-description style for the congress
 
 ## 1. Purpose
 
-The model compares legislative institutional designs under shared generated political worlds. The scientific purpose is to stress-test institutional mechanisms that alter compromise, productivity, representative responsiveness, public-benefit alignment, minority protection, and resistance to capture.
+The model compares legislative institutional designs under shared generated political worlds. The scientific purpose is to stress-test institutional mechanisms that alter revision moderation, productivity, representative responsiveness, public-benefit alignment, minority protection, and resistance to capture.
 
 The model is not intended to forecast a specific Congress. It is a mechanism-comparison simulator: the same generated actors and bills are routed through many institutional systems so differences can be attributed to procedural rules and incentive structures.
 
@@ -12,7 +12,7 @@ The model is not intended to forecast a specific Congress. It is a mechanism-com
 
 **Legislators**
 
-Legislators have an ID, party, ideology, compromise preference, party loyalty, constituency sensitivity, lobbying susceptibility, reputation sensitivity, district preference, district intensity, and affected-group sensitivity. These variables determine how legislators weigh ideology, party pressure, public support, lobbying pressure, compromise incentives, and concentrated harm when casting a final yes-or-no vote.
+Legislators have an ID, party, ideology, revision-moderation preference, party loyalty, constituency sensitivity, lobbying susceptibility, reputation sensitivity, district preference, district intensity, and affected-group sensitivity. These variables determine how legislators weigh ideology, party pressure, public support, lobbying pressure, revision-moderation incentives, and concentrated harm when casting a final yes-or-no vote.
 
 **Bills**
 
@@ -54,7 +54,7 @@ The model assumes legislative outcomes depend on proposal access, agenda scarcit
 
 **Emergence**
 
-System-level productivity, compromise, capture, volatility, legitimacy, and gridlock emerge from many bill-by-bill interactions. No global actor optimizes these metrics directly.
+System-level productivity, revision moderation, capture, volatility, legitimacy, and gridlock emerge from many bill-by-bill interactions. No global actor optimizes these metrics directly.
 
 **Adaptation**
 
@@ -94,7 +94,7 @@ Parties and blocs are modeled through party labels, party positions, party loyal
 
 **Observation**
 
-The model reports productivity, floor load, enacted support, generated public benefit, cooperation, compromise, gridlock, access denial, committee rejection, challenge rate, chamber low-support passage, low-public-support enactment, administrative cost, policy shift, proposer gain, lobby capture, public alignment, anti-lobbying success, private-gain ratio, lobbying spend by channel, public benefit per lobby dollar, amendment rate, amendment movement, minority harm, concentrated-harm passage, compensation rate, legitimacy, law-review metrics, alternative-selection metrics, citizen-review metrics, agenda-scarcity metrics, adaptive-track route rates, false-negative burden-shift passage, public-will review, district alignment, cosponsorship, bond forfeiture, strategic decoys, proposer-access Gini, welfare per submitted bill, vetoes, and overrides.
+The model reports productivity, floor load, enacted support, generated public benefit, cooperation, revision moderation, gridlock, access denial, committee rejection, challenge rate, chamber low-support passage, low-public-support enactment, administrative cost, policy shift, proposer gain, lobby capture, public alignment, anti-lobbying success, private-gain ratio, lobbying spend by channel, public benefit per lobby dollar, amendment rate, amendment movement, minority harm, concentrated-harm passage, compensation rate, legitimacy, law-review metrics, alternative-selection metrics, citizen-review metrics, agenda-scarcity metrics, adaptive-track route rates, false-negative burden-shift passage, public-will review, district alignment, cosponsorship, bond forfeiture, strategic decoys, proposer-access Gini, welfare per submitted bill, vetoes, and overrides.
 
 ## 5. Initialization
 
@@ -122,7 +122,7 @@ The executable checker runs conventional scenarios and writes pass/fail reports 
 
 **Voting**
 
-Legislators cast `YAY` or `NAY` through weighted influences: ideology, party, constituency/public support, lobbying, compromise preference, reputation, and affected-group sensitivity.
+Legislators cast `YAY` or `NAY` through weighted influences: ideology, party, constituency/public support, lobbying, revision-moderation preference, reputation, and affected-group sensitivity.
 
 **Proposal Access**
 
@@ -158,7 +158,7 @@ Competing-alternative processes generate same-domain alternatives and select by 
 
 **Package Bargaining**
 
-Package bargaining approximates side payments, implementation delays, policy concessions, and harm-reducing trades. It is intentionally a proxy: it can test whether compromise-by-packaging changes the productivity/legitimacy tradeoff, but it does not yet model true multidimensional omnibus bargaining or jurisdictional trades.
+Package bargaining approximates side payments, implementation delays, policy concessions, and harm-reducing trades. It is intentionally a proxy: it can test whether package-based revision changes the productivity/legitimacy tradeoff, but it does not yet model true multidimensional omnibus bargaining or jurisdictional trades.
 
 **Law Registry**
 

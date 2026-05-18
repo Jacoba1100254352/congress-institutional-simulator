@@ -97,7 +97,7 @@ def write_champion_md(champs: list[dict[str, str]]) -> None:
         "",
         "Fixed-rule champion screen for the chamber/apportionment/committee campaign. Each row is the highest directional-score scenario within a structural family, averaged across the chamber campaign's baseline, adversarial, party-system, and timeline cases.",
         "",
-        "| Family | Champion | Dir. | Prod. | Comp. | Rep. quality | Risk ctrl. | Malapp. | Low public support |",
+        "| Family | Champion | Dir. | Prod. | Rev. mod. | Rep. quality | Risk ctrl. | Malapp. | Low public support |",
         "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for row in champs:
@@ -119,7 +119,7 @@ def write_stress_md(rows: list[dict[str, str]]) -> None:
         "",
         "Best chamber/committee scenario in each stress case, using the same directional diagnostic as the main report. This is a sensitivity screen, not a validation claim.",
         "",
-        "| Case | Best scenario | Dir. | Prod. | Comp. | Risk ctrl. | Inter-chamber conflict | Committee capture | Ex ante review |",
+        "| Case | Best scenario | Dir. | Prod. | Rev. mod. | Risk ctrl. | Inter-chamber conflict | Committee capture | Ex ante review |",
         "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for case_name in sorted(by_case):
@@ -281,7 +281,7 @@ def write_paper_table(champs: list[dict[str, str]]) -> None:
         r"  \scriptsize",
         r"  \begin{tabular}{llrrrr}",
         r"    \toprule",
-        r"    Label & Family champion & Prod. & Comp. & Risk & Malapp. \\",
+        r"    Label & Family champion & Prod. & Rev. mod. & Risk & Malapp. \\",
         r"    \midrule",
     ]
     for row in champs:
@@ -376,7 +376,7 @@ def write_paper_figure(champs: list[dict[str, str]]) -> None:
         )
         lines.append(fr"\put({label_x:.1f},{label_y:.1f}){{\makebox(0,0)[{align}]{{\color{{{label_color}}}{label}}}}}")
     lines.append(fr"\put({left + width / 2:.1f},{bottom - 10.0:.1f}){{\makebox(0,0){{Productivity $\uparrow$}}}}")
-    lines.append(fr"\put({left - 15.0:.1f},{bottom + height / 2:.1f}){{\makebox(0,0){{\rotatebox{{90}}{{Compromise $\uparrow$}}}}}}")
+    lines.append(fr"\put({left - 15.0:.1f},{bottom + height / 2:.1f}){{\makebox(0,0){{\rotatebox{{90}}{{Rev. moderation $\uparrow$}}}}}}")
     lines.extend([r"\end{picture}", r"\endgroup"])
     PAPER_FIGURE.write_text("\n".join(lines) + "\n")
 

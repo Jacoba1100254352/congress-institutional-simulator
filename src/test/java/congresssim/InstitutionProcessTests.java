@@ -67,7 +67,7 @@ final class InstitutionProcessTests
 		amendmentMediationMovesRiskyBillsTowardMedian();
 		distributionalHarmProcessCompensatesAffectedGroups();
 		lawRegistryReviewsAndRepealsBadActiveLaws();
-		competingAlternativesSelectCompromiseBeforeFinalVote();
+		competingAlternativesSelectModeratedAlternativeBeforeFinalVote();
 		citizenPanelRoutesUncertifiedBillsToReview();
 		agendaLotteryRationsFloorSlots();
 		quadraticAttentionBudgetDeniesExpensiveProposals();
@@ -1043,7 +1043,7 @@ final class InstitutionProcessTests
 		);
 	}
 	
-	private static void competingAlternativesSelectCompromiseBeforeFinalVote() {
+	private static void competingAlternativesSelectModeratedAlternativeBeforeFinalVote() {
 		List<Legislator> legislators = List.of(
 				new Legislator("L-1", "Left", -0.4, 0.8, 0.4, 0.8, 0.1, 0.8),
 				new Legislator("L-2", "Center", 0.0, 0.9, 0.4, 0.9, 0.1, 0.9),

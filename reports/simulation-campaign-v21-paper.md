@@ -22,8 +22,8 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 | High Polarization | 1.000 | Legislators are tightly clustered into ideological camps. |
 | Low Party Loyalty | 1.000 | Party pressure is weak and legislators act more independently. |
 | High Party Loyalty | 1.000 | Party pressure is strong. |
-| Low Compromise Culture | 1.000 | Members are less inclined toward moderate, incremental bills. |
-| High Compromise Culture | 1.000 | Members are more inclined toward moderate, incremental bills. |
+| Low Revision-Moderation Culture | 1.000 | Members are less inclined toward moderate, incremental bills. |
+| High Revision-Moderation Culture | 1.000 | Members are more inclined toward moderate, incremental bills. |
 | Low Lobbying Pressure | 1.000 | Lobby pressure is weak. |
 | High Lobbying Pressure | 1.000 | Lobby pressure is strong. |
 | Weak Constituency Pressure | 1.000 | Members are less responsive to public support. |
@@ -32,17 +32,17 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 | High Proposal Pressure | 1.000 | Three times as many potential proposals reach the institutional system. |
 | Extreme Proposal Pressure | 1.000 | Five times as many potential proposals reach the institutional system. |
 | Lobby-Fueled Flooding | 1.000 | High proposal pressure with strong lobbying and weaker constituency pressure. |
-| Low-Compromise Flooding | 1.000 | High proposal pressure in a low-compromise legislature. |
-| Capture Crisis | 1.000 | High lobbying, weak constituency pressure, low compromise, and high proposal pressure. |
+| Low-Revision-Moderation Flooding | 1.000 | High proposal pressure in a low-revision-moderation legislature. |
+| Capture Crisis | 1.000 | High lobbying, weak constituency pressure, low revision moderation, and high proposal pressure. |
 | Popular Anti-Lobbying Push | 1.000 | High lobbying pressure with stronger public responsiveness and more appetite for reform. |
 | Weighted Two-Party Baseline | 0.250 | Classic two-party legislature with ideological left/right sorting. |
 | Weighted Two Major Plus Minors | 0.400 | Five-party legislature with two large ideological parties and smaller minor parties. |
 | Weighted Fragmented Multiparty | 0.200 | Seven-party legislature with more even fragmentation across the ideological range. |
 | Weighted Dominant-Party Legislature | 0.150 | Four-party legislature with one large center-weighted party and smaller opposition parties. |
-| Era 1 Low Contention | 1.000 | Stylized low-contention legislature with several parties, high compromise culture, lower lobbying, and stronger constituency responsiveness. |
+| Era 1 Low Contention | 1.000 | Stylized low-contention legislature with several parties, high revision-moderation culture, lower lobbying, and stronger constituency responsiveness. |
 | Era 2 Normal Contention | 1.000 | Stylized ordinary-contention legislature with two major parties plus minors and moderate party loyalty. |
 | Era 3 Polarizing | 1.000 | Stylized rising-contention legislature with stronger ideological clustering, party loyalty, and lobbying pressure. |
-| Era 4 High Contention | 1.000 | Stylized high-contention legislature with more proposal pressure, higher polarization, and weaker compromise culture. |
+| Era 4 High Contention | 1.000 | Stylized high-contention legislature with more proposal pressure, higher polarization, and weaker revision-moderation culture. |
 | Era 5 Capture Contention | 1.000 | Stylized capture-contention legislature with two-party sorting, higher proposal pressure, strong lobbying, and lower public responsiveness. |
 | Era 6 Crisis | 1.000 | Stylized crisis-contention legislature with severe polarization, high party loyalty, intense lobbying, weak constituency responsiveness, and doubled proposal pressure. |
 | Adversarial High-Benefit Extreme Reform | 1.000 | Extreme proposals can have high generated public benefit but lower initial support and high uncertainty. |
@@ -51,7 +51,7 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 | Adversarial Delayed-Benefit Reform | 1.000 | Beneficial reforms can have low immediate support because benefits are delayed and uncertain. |
 | Adversarial Concentrated Rights Harm | 1.000 | Proposals can be broadly supported while imposing severe concentrated rights-like harm. |
 | Adversarial Anti-Lobbying Backlash | 1.000 | Anti-lobbying reforms are more common, but face stronger defensive lobbying and lower observed support. |
-| Adversarial Compromise Dilution | 1.000 | Some high-distance reforms have high generated value, so moderation can dilute public benefit. |
+| Adversarial Revision Dilution | 1.000 | Some high-distance reforms have high generated value, so moderation can dilute public benefit. |
 | Adversarial Lobby Information | 1.000 | Organized lobbying sometimes supplies useful technical information rather than only capture pressure. |
 | Adversarial Public Opinion Error | 1.000 | Observed public support can be noisy or systematically misaligned with generated public benefit. |
 
@@ -59,19 +59,19 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 
 - The main comparison campaign compares 44 scenario families across the same synthetic worlds, including a small burden-shifting stress-test family.
 - The scalar directional score is productivity-sensitive: its highest value came from Default pass unless 2/3 block at 0.727, which is why the report treats the score as a profile aid rather than a recommendation.
-- Highest average welfare came from Committee amendment and revision power at 0.721; highest compromise came from Unicameral majority + pairwise alternatives at 0.505.
+- Highest average welfare came from Committee amendment and revision power at 0.721; highest revision moderation came from Unicameral majority + pairwise alternatives at 0.505.
 - Highest productivity came from Default pass unless 2/3 block at 0.866.
 - Open burden-shifting passage averaged 0.866 productivity, 0.475 low-public-support enactment, and 0.629 policy shift, so it functions as a throughput/risk endpoint.
 - The stylized U.S.-like conventional benchmark averaged 0.055 productivity and 0.677 welfare: it protects quality in the synthetic generator partly by allowing few proposals through.
-- The portfolio hybrid combines risk routing, pairwise alternatives, citizen/harm review, proposal bonds, anti-capture safeguards, and law review. It averaged 0.526 productivity, 0.421 compromise, 0.931 risk control, and 0.711 directional score, situating it between pairwise alternatives and risk routing rather than replacing the tradeoff frontier.
-- The expanded portfolio hybrid adds district-public, long-horizon strategy, omnibus bargaining, influence-system, and constitutional-court architecture proxies. It averaged 0.789 productivity, 0.466 compromise, 0.902 risk control, and 0.684 directional score; its value is diagnostic because extra safeguards also increase complexity.
+- The portfolio hybrid combines risk routing, pairwise alternatives, citizen/harm review, proposal bonds, anti-capture safeguards, and law review. It averaged 0.526 productivity, 0.421 revision moderation, 0.931 risk control, and 0.711 directional score, situating it between pairwise alternatives and risk routing rather than replacing the tradeoff frontier.
+- The expanded portfolio hybrid adds district-public, long-horizon strategy, omnibus bargaining, influence-system, and constitutional-court architecture proxies. It averaged 0.789 productivity, 0.466 revision moderation, 0.902 risk control, and 0.684 directional score; its value is diagnostic because extra safeguards also increase complexity.
 
 ## Metric Direction Legend
 
 - `↑` means a higher raw value is usually better.
 - `↓` means a lower raw value is usually better; directional scores invert these metrics before combining them.
 - `diag.` means the metric is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.
-- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
+- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, revision moderation, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
 
 ## Scenario Averages Across Cases
 
@@ -124,9 +124,9 @@ Scenario averages in this campaign are weighted by the case likelihood column be
 
 ## Timeline Contention Path
 
-This campaign is a stylized longitudinal stress path, not a calibrated history. The contention index is computed as `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * weakPublicMandatePassage`, so it rises when a system blocks more, compromises less, or enacts more bills with generated public support below majority.
+This campaign is a stylized longitudinal stress path, not a calibrated history. The contention index is computed as `0.50 * gridlock + 0.30 * (1 - revision moderation) + 0.20 * weakPublicMandatePassage`, so it rises when a system blocks more, produces less revision moderation, or enacts more bills with generated public support below majority.
 
-| Era | Scenario | Productivity | Compromise | Gridlock | Low-public-support enactment | Contention index |
+| Era | Scenario | Productivity | Revision moderation | Gridlock | Low-public-support enactment | Contention index |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | Baseline | Stylized U.S.-like conventional benchmark | 0.048 | 0.378 | 0.952 | 0.000 | 0.663 |
 | Baseline | Unicameral simple majority | 0.259 | 0.230 | 0.741 | 0.183 | 0.638 |
@@ -183,28 +183,28 @@ This campaign is a stylized longitudinal stress path, not a calibrated history. 
 | High Party Loyalty | Expanded portfolio hybrid legislature | 0.802 | 0.453 | 0.198 | 0.003 | 0.264 |
 | High Party Loyalty | Default pass unless 2/3 block | 0.842 | 0.110 | 0.158 | 0.475 | 0.441 |
 | High Party Loyalty | Default pass + multi-round mediation + challenge | 0.709 | 0.222 | 0.291 | 0.389 | 0.457 |
-| Low Compromise Culture | Stylized U.S.-like conventional benchmark | 0.032 | 0.372 | 0.968 | 0.000 | 0.673 |
-| Low Compromise Culture | Unicameral simple majority | 0.209 | 0.242 | 0.791 | 0.147 | 0.652 |
-| Low Compromise Culture | Committee-first regular order | 0.125 | 0.285 | 0.875 | 0.078 | 0.668 |
-| Low Compromise Culture | Parliamentary coalition confidence | 0.148 | 0.291 | 0.852 | 0.017 | 0.642 |
-| Low Compromise Culture | Unicameral majority + pairwise alternatives | 0.527 | 0.470 | 0.473 | 0.002 | 0.396 |
-| Low Compromise Culture | Citizen assembly threshold gate | 0.157 | 0.271 | 0.843 | 0.017 | 0.644 |
-| Low Compromise Culture | Risk-routed majority legislature | 0.373 | 0.237 | 0.628 | 0.207 | 0.584 |
-| Low Compromise Culture | Portfolio hybrid legislature | 0.483 | 0.392 | 0.517 | 0.031 | 0.447 |
-| Low Compromise Culture | Expanded portfolio hybrid legislature | 0.746 | 0.429 | 0.254 | 0.001 | 0.298 |
-| Low Compromise Culture | Default pass unless 2/3 block | 0.827 | 0.103 | 0.173 | 0.495 | 0.455 |
-| Low Compromise Culture | Default pass + multi-round mediation + challenge | 0.678 | 0.213 | 0.322 | 0.407 | 0.479 |
-| High Compromise Culture | Stylized U.S.-like conventional benchmark | 0.070 | 0.372 | 0.930 | 0.006 | 0.654 |
-| High Compromise Culture | Unicameral simple majority | 0.323 | 0.220 | 0.677 | 0.222 | 0.617 |
-| High Compromise Culture | Committee-first regular order | 0.192 | 0.277 | 0.808 | 0.111 | 0.643 |
-| High Compromise Culture | Parliamentary coalition confidence | 0.234 | 0.274 | 0.766 | 0.086 | 0.618 |
-| High Compromise Culture | Unicameral majority + pairwise alternatives | 0.557 | 0.534 | 0.443 | 0.002 | 0.362 |
-| High Compromise Culture | Citizen assembly threshold gate | 0.218 | 0.257 | 0.782 | 0.055 | 0.625 |
-| High Compromise Culture | Risk-routed majority legislature | 0.572 | 0.235 | 0.428 | 0.287 | 0.501 |
-| High Compromise Culture | Portfolio hybrid legislature | 0.557 | 0.417 | 0.443 | 0.052 | 0.407 |
-| High Compromise Culture | Expanded portfolio hybrid legislature | 0.842 | 0.475 | 0.158 | 0.005 | 0.237 |
-| High Compromise Culture | Default pass unless 2/3 block | 0.855 | 0.109 | 0.145 | 0.499 | 0.440 |
-| High Compromise Culture | Default pass + multi-round mediation + challenge | 0.759 | 0.225 | 0.241 | 0.399 | 0.433 |
+| Low Revision-Moderation Culture | Stylized U.S.-like conventional benchmark | 0.032 | 0.372 | 0.968 | 0.000 | 0.673 |
+| Low Revision-Moderation Culture | Unicameral simple majority | 0.209 | 0.242 | 0.791 | 0.147 | 0.652 |
+| Low Revision-Moderation Culture | Committee-first regular order | 0.125 | 0.285 | 0.875 | 0.078 | 0.668 |
+| Low Revision-Moderation Culture | Parliamentary coalition confidence | 0.148 | 0.291 | 0.852 | 0.017 | 0.642 |
+| Low Revision-Moderation Culture | Unicameral majority + pairwise alternatives | 0.527 | 0.470 | 0.473 | 0.002 | 0.396 |
+| Low Revision-Moderation Culture | Citizen assembly threshold gate | 0.157 | 0.271 | 0.843 | 0.017 | 0.644 |
+| Low Revision-Moderation Culture | Risk-routed majority legislature | 0.373 | 0.237 | 0.628 | 0.207 | 0.584 |
+| Low Revision-Moderation Culture | Portfolio hybrid legislature | 0.483 | 0.392 | 0.517 | 0.031 | 0.447 |
+| Low Revision-Moderation Culture | Expanded portfolio hybrid legislature | 0.746 | 0.429 | 0.254 | 0.001 | 0.298 |
+| Low Revision-Moderation Culture | Default pass unless 2/3 block | 0.827 | 0.103 | 0.173 | 0.495 | 0.455 |
+| Low Revision-Moderation Culture | Default pass + multi-round mediation + challenge | 0.678 | 0.213 | 0.322 | 0.407 | 0.479 |
+| High Revision-Moderation Culture | Stylized U.S.-like conventional benchmark | 0.070 | 0.372 | 0.930 | 0.006 | 0.654 |
+| High Revision-Moderation Culture | Unicameral simple majority | 0.323 | 0.220 | 0.677 | 0.222 | 0.617 |
+| High Revision-Moderation Culture | Committee-first regular order | 0.192 | 0.277 | 0.808 | 0.111 | 0.643 |
+| High Revision-Moderation Culture | Parliamentary coalition confidence | 0.234 | 0.274 | 0.766 | 0.086 | 0.618 |
+| High Revision-Moderation Culture | Unicameral majority + pairwise alternatives | 0.557 | 0.534 | 0.443 | 0.002 | 0.362 |
+| High Revision-Moderation Culture | Citizen assembly threshold gate | 0.218 | 0.257 | 0.782 | 0.055 | 0.625 |
+| High Revision-Moderation Culture | Risk-routed majority legislature | 0.572 | 0.235 | 0.428 | 0.287 | 0.501 |
+| High Revision-Moderation Culture | Portfolio hybrid legislature | 0.557 | 0.417 | 0.443 | 0.052 | 0.407 |
+| High Revision-Moderation Culture | Expanded portfolio hybrid legislature | 0.842 | 0.475 | 0.158 | 0.005 | 0.237 |
+| High Revision-Moderation Culture | Default pass unless 2/3 block | 0.855 | 0.109 | 0.145 | 0.499 | 0.440 |
+| High Revision-Moderation Culture | Default pass + multi-round mediation + challenge | 0.759 | 0.225 | 0.241 | 0.399 | 0.433 |
 | Low Lobbying Pressure | Stylized U.S.-like conventional benchmark | 0.057 | 0.383 | 0.943 | 0.007 | 0.658 |
 | Low Lobbying Pressure | Unicameral simple majority | 0.268 | 0.231 | 0.732 | 0.180 | 0.633 |
 | Low Lobbying Pressure | Committee-first regular order | 0.163 | 0.290 | 0.837 | 0.095 | 0.651 |
@@ -293,17 +293,17 @@ This campaign is a stylized longitudinal stress path, not a calibrated history. 
 | Lobby-Fueled Flooding | Expanded portfolio hybrid legislature | 0.608 | 0.425 | 0.392 | 0.003 | 0.369 |
 | Lobby-Fueled Flooding | Default pass unless 2/3 block | 0.841 | 0.107 | 0.159 | 0.514 | 0.450 |
 | Lobby-Fueled Flooding | Default pass + multi-round mediation + challenge | 0.896 | 0.207 | 0.104 | 0.451 | 0.380 |
-| Low-Compromise Flooding | Stylized U.S.-like conventional benchmark | 0.020 | 0.380 | 0.980 | 0.011 | 0.678 |
-| Low-Compromise Flooding | Unicameral simple majority | 0.169 | 0.241 | 0.831 | 0.160 | 0.675 |
-| Low-Compromise Flooding | Committee-first regular order | 0.092 | 0.285 | 0.908 | 0.072 | 0.683 |
-| Low-Compromise Flooding | Parliamentary coalition confidence | 0.099 | 0.315 | 0.901 | 0.013 | 0.659 |
-| Low-Compromise Flooding | Unicameral majority + pairwise alternatives | 0.496 | 0.461 | 0.504 | 0.001 | 0.414 |
-| Low-Compromise Flooding | Citizen assembly threshold gate | 0.125 | 0.266 | 0.875 | 0.017 | 0.661 |
-| Low-Compromise Flooding | Risk-routed majority legislature | 0.343 | 0.234 | 0.657 | 0.214 | 0.601 |
-| Low-Compromise Flooding | Portfolio hybrid legislature | 0.433 | 0.399 | 0.568 | 0.026 | 0.469 |
-| Low-Compromise Flooding | Expanded portfolio hybrid legislature | 0.692 | 0.433 | 0.308 | 0.001 | 0.324 |
-| Low-Compromise Flooding | Default pass unless 2/3 block | 0.837 | 0.091 | 0.163 | 0.522 | 0.459 |
-| Low-Compromise Flooding | Default pass + multi-round mediation + challenge | 0.884 | 0.189 | 0.116 | 0.444 | 0.390 |
+| Low-Revision-Moderation Flooding | Stylized U.S.-like conventional benchmark | 0.020 | 0.380 | 0.980 | 0.011 | 0.678 |
+| Low-Revision-Moderation Flooding | Unicameral simple majority | 0.169 | 0.241 | 0.831 | 0.160 | 0.675 |
+| Low-Revision-Moderation Flooding | Committee-first regular order | 0.092 | 0.285 | 0.908 | 0.072 | 0.683 |
+| Low-Revision-Moderation Flooding | Parliamentary coalition confidence | 0.099 | 0.315 | 0.901 | 0.013 | 0.659 |
+| Low-Revision-Moderation Flooding | Unicameral majority + pairwise alternatives | 0.496 | 0.461 | 0.504 | 0.001 | 0.414 |
+| Low-Revision-Moderation Flooding | Citizen assembly threshold gate | 0.125 | 0.266 | 0.875 | 0.017 | 0.661 |
+| Low-Revision-Moderation Flooding | Risk-routed majority legislature | 0.343 | 0.234 | 0.657 | 0.214 | 0.601 |
+| Low-Revision-Moderation Flooding | Portfolio hybrid legislature | 0.433 | 0.399 | 0.568 | 0.026 | 0.469 |
+| Low-Revision-Moderation Flooding | Expanded portfolio hybrid legislature | 0.692 | 0.433 | 0.308 | 0.001 | 0.324 |
+| Low-Revision-Moderation Flooding | Default pass unless 2/3 block | 0.837 | 0.091 | 0.163 | 0.522 | 0.459 |
+| Low-Revision-Moderation Flooding | Default pass + multi-round mediation + challenge | 0.884 | 0.189 | 0.116 | 0.444 | 0.390 |
 | Capture Crisis | Stylized U.S.-like conventional benchmark | 0.015 | 0.366 | 0.985 | 0.006 | 0.684 |
 | Capture Crisis | Unicameral simple majority | 0.185 | 0.222 | 0.815 | 0.231 | 0.687 |
 | Capture Crisis | Committee-first regular order | 0.102 | 0.259 | 0.898 | 0.085 | 0.688 |
@@ -502,17 +502,17 @@ This campaign is a stylized longitudinal stress path, not a calibrated history. 
 | Adversarial Anti-Lobbying Backlash | Expanded portfolio hybrid legislature | 0.767 | 0.472 | 0.233 | 0.000 | 0.275 |
 | Adversarial Anti-Lobbying Backlash | Default pass unless 2/3 block | 0.899 | 0.208 | 0.101 | 0.578 | 0.404 |
 | Adversarial Anti-Lobbying Backlash | Default pass + multi-round mediation + challenge | 0.707 | 0.316 | 0.293 | 0.461 | 0.444 |
-| Adversarial Compromise Dilution | Stylized U.S.-like conventional benchmark | 0.000 | 0.000 | 1.000 | 0.000 | 0.800 |
-| Adversarial Compromise Dilution | Unicameral simple majority | 0.051 | 0.129 | 0.949 | 0.422 | 0.820 |
-| Adversarial Compromise Dilution | Committee-first regular order | 0.017 | 0.159 | 0.983 | 0.016 | 0.747 |
-| Adversarial Compromise Dilution | Parliamentary coalition confidence | 0.036 | 0.156 | 0.964 | 0.230 | 0.781 |
-| Adversarial Compromise Dilution | Unicameral majority + pairwise alternatives | 0.560 | 0.487 | 0.440 | 0.002 | 0.374 |
-| Adversarial Compromise Dilution | Citizen assembly threshold gate | 0.113 | 0.124 | 0.887 | 0.033 | 0.713 |
-| Adversarial Compromise Dilution | Risk-routed majority legislature | 0.559 | 0.190 | 0.441 | 0.253 | 0.514 |
-| Adversarial Compromise Dilution | Portfolio hybrid legislature | 0.755 | 0.494 | 0.245 | 0.001 | 0.275 |
-| Adversarial Compromise Dilution | Expanded portfolio hybrid legislature | 0.981 | 0.517 | 0.019 | 0.000 | 0.154 |
-| Adversarial Compromise Dilution | Default pass unless 2/3 block | 0.897 | 0.055 | 0.103 | 0.668 | 0.468 |
-| Adversarial Compromise Dilution | Default pass + multi-round mediation + challenge | 0.738 | 0.186 | 0.262 | 0.346 | 0.444 |
+| Adversarial Revision Dilution | Stylized U.S.-like conventional benchmark | 0.000 | 0.000 | 1.000 | 0.000 | 0.800 |
+| Adversarial Revision Dilution | Unicameral simple majority | 0.051 | 0.129 | 0.949 | 0.422 | 0.820 |
+| Adversarial Revision Dilution | Committee-first regular order | 0.017 | 0.159 | 0.983 | 0.016 | 0.747 |
+| Adversarial Revision Dilution | Parliamentary coalition confidence | 0.036 | 0.156 | 0.964 | 0.230 | 0.781 |
+| Adversarial Revision Dilution | Unicameral majority + pairwise alternatives | 0.560 | 0.487 | 0.440 | 0.002 | 0.374 |
+| Adversarial Revision Dilution | Citizen assembly threshold gate | 0.113 | 0.124 | 0.887 | 0.033 | 0.713 |
+| Adversarial Revision Dilution | Risk-routed majority legislature | 0.559 | 0.190 | 0.441 | 0.253 | 0.514 |
+| Adversarial Revision Dilution | Portfolio hybrid legislature | 0.755 | 0.494 | 0.245 | 0.001 | 0.275 |
+| Adversarial Revision Dilution | Expanded portfolio hybrid legislature | 0.981 | 0.517 | 0.019 | 0.000 | 0.154 |
+| Adversarial Revision Dilution | Default pass unless 2/3 block | 0.897 | 0.055 | 0.103 | 0.668 | 0.468 |
+| Adversarial Revision Dilution | Default pass + multi-round mediation + challenge | 0.738 | 0.186 | 0.262 | 0.346 | 0.444 |
 | Adversarial Lobby Information | Stylized U.S.-like conventional benchmark | 0.117 | 0.391 | 0.883 | 0.012 | 0.627 |
 | Adversarial Lobby Information | Unicameral simple majority | 0.772 | 0.271 | 0.228 | 0.225 | 0.378 |
 | Adversarial Lobby Information | Committee-first regular order | 0.640 | 0.303 | 0.360 | 0.018 | 0.393 |
@@ -547,8 +547,8 @@ Delta values compare `default-pass-challenge` against open `default-pass` in the
 | High Polarization | -17.008 | -0.283 | 0.012 | -0.030 | -0.358 | -0.160 | 0.500 |
 | Low Party Loyalty | -15.133 | -0.252 | 0.029 | -0.087 | -0.295 | -0.136 | 0.500 |
 | High Party Loyalty | -15.617 | -0.260 | 0.022 | -0.073 | -0.303 | -0.142 | 0.500 |
-| Low Compromise Culture | -15.958 | -0.266 | 0.021 | -0.054 | -0.308 | -0.144 | 0.500 |
-| High Compromise Culture | -14.850 | -0.248 | 0.026 | -0.102 | -0.284 | -0.135 | 0.500 |
+| Low Revision-Moderation Culture | -15.958 | -0.266 | 0.021 | -0.054 | -0.308 | -0.144 | 0.500 |
+| High Revision-Moderation Culture | -14.850 | -0.248 | 0.026 | -0.102 | -0.284 | -0.135 | 0.500 |
 | Low Lobbying Pressure | -15.742 | -0.262 | 0.023 | -0.073 | -0.300 | -0.139 | 0.500 |
 | High Lobbying Pressure | -15.258 | -0.254 | 0.018 | -0.055 | -0.296 | -0.141 | 0.500 |
 | Weak Constituency Pressure | -18.458 | -0.308 | 0.024 | -0.069 | -0.333 | -0.146 | 0.499 |
@@ -557,7 +557,7 @@ Delta values compare `default-pass-challenge` against open `default-pass` in the
 | High Proposal Pressure | 3.158 | 0.018 | -0.016 | 0.010 | -0.028 | -0.054 | 0.167 |
 | Extreme Proposal Pressure | 21.842 | 0.073 | -0.022 | 0.022 | 0.021 | -0.047 | 0.100 |
 | Lobby-Fueled Flooding | 2.733 | 0.015 | -0.016 | 0.009 | -0.032 | -0.055 | 0.167 |
-| Low-Compromise Flooding | 2.183 | 0.012 | -0.017 | 0.020 | -0.050 | -0.074 | 0.167 |
+| Low-Revision-Moderation Flooding | 2.183 | 0.012 | -0.017 | 0.020 | -0.050 | -0.074 | 0.167 |
 | Capture Crisis | 2.217 | 0.012 | -0.014 | 0.015 | -0.042 | -0.065 | 0.167 |
 | Popular Anti-Lobbying Push | -1.550 | -0.013 | -0.014 | -0.006 | -0.052 | -0.057 | 0.250 |
 | Weighted Two-Party Baseline | -6.183 | -0.103 | -0.005 | -0.018 | -0.149 | -0.087 | 0.333 |
@@ -576,7 +576,7 @@ Delta values compare `default-pass-challenge` against open `default-pass` in the
 | Adversarial Delayed-Benefit Reform | -27.208 | -0.453 | 0.000 | -0.095 | -0.438 | -0.226 | 0.666 |
 | Adversarial Concentrated Rights Harm | -23.858 | -0.398 | 0.030 | -0.227 | -0.332 | -0.183 | 0.651 |
 | Adversarial Anti-Lobbying Backlash | -22.825 | -0.380 | 0.044 | -0.168 | -0.259 | -0.154 | 0.648 |
-| Adversarial Compromise Dilution | -32.800 | -0.547 | -0.001 | 0.015 | -0.582 | -0.188 | 0.663 |
+| Adversarial Revision Dilution | -32.800 | -0.547 | -0.001 | 0.015 | -0.582 | -0.188 | 0.663 |
 | Adversarial Lobby Information | -10.667 | -0.178 | -0.001 | -0.133 | -0.142 | -0.067 | 0.470 |
 | Adversarial Public Opinion Error | -25.525 | -0.425 | -0.020 | -0.157 | -0.422 | -0.202 | 0.664 |
 
@@ -589,8 +589,8 @@ Delta values compare `default-pass-challenge` against open `default-pass` in the
 | High Polarization | Committee amendment and revision power (0.766) | Default pass unless 2/3 block (0.839) | Stylized U.S.-like conventional benchmark (0.000) |
 | Low Party Loyalty | Stylized U.S.-like conventional benchmark (0.759) | Default pass unless 2/3 block (0.842) | Unicameral majority + pairwise alternatives (0.003) |
 | High Party Loyalty | Stylized U.S.-like conventional benchmark (0.755) | Default pass unless 2/3 block (0.842) | Unicameral majority + pairwise alternatives (0.002) |
-| Low Compromise Culture | Stylized U.S.-like conventional benchmark (0.767) | Default pass unless 2/3 block (0.827) | Stylized U.S.-like conventional benchmark (0.000) |
-| High Compromise Culture | Committee amendment and revision power (0.745) | Default pass unless 2/3 block (0.855) | Committee amendment and revision power (0.002) |
+| Low Revision-Moderation Culture | Stylized U.S.-like conventional benchmark (0.767) | Default pass unless 2/3 block (0.827) | Stylized U.S.-like conventional benchmark (0.000) |
+| High Revision-Moderation Culture | Committee amendment and revision power (0.745) | Default pass unless 2/3 block (0.855) | Committee amendment and revision power (0.002) |
 | Low Lobbying Pressure | Stylized U.S.-like conventional benchmark (0.763) | Expanded portfolio hybrid legislature (0.864) | Pairwise amendment tournament + majority (0.003) |
 | High Lobbying Pressure | Committee amendment and revision power (0.764) | Default pass unless 2/3 block (0.831) | Expanded portfolio hybrid legislature (0.002) |
 | Weak Constituency Pressure | Stylized U.S.-like conventional benchmark (0.752) | Default pass unless 2/3 block (0.877) | Unicameral majority + pairwise alternatives (0.003) |
@@ -599,7 +599,7 @@ Delta values compare `default-pass-challenge` against open `default-pass` in the
 | High Proposal Pressure | Stylized U.S.-like conventional benchmark (0.756) | Default pass + multi-round mediation + challenge (0.903) | Unicameral majority + pairwise alternatives (0.001) |
 | Extreme Proposal Pressure | Committee amendment and revision power (0.750) | Default pass + multi-round mediation + challenge (0.941) | Pairwise amendment tournament + majority (0.000) |
 | Lobby-Fueled Flooding | Committee amendment and revision power (0.757) | Default pass + multi-round mediation + challenge (0.896) | Unicameral majority + pairwise alternatives (0.001) |
-| Low-Compromise Flooding | Committee amendment and revision power (0.763) | Default pass + multi-round mediation + challenge (0.884) | Unicameral majority + pairwise alternatives (0.001) |
+| Low-Revision-Moderation Flooding | Committee amendment and revision power (0.763) | Default pass + multi-round mediation + challenge (0.884) | Unicameral majority + pairwise alternatives (0.001) |
 | Capture Crisis | Parliamentary coalition confidence (0.751) | Default pass + multi-round mediation + challenge (0.889) | Pairwise amendment tournament + majority (0.001) |
 | Popular Anti-Lobbying Push | Committee amendment and revision power (0.770) | Default pass + multi-round mediation + challenge (0.865) | Unicameral majority + pairwise alternatives (0.001) |
 | Weighted Two-Party Baseline | Stylized U.S.-like conventional benchmark (0.766) | Default pass unless 2/3 block (0.835) | Parliamentary coalition confidence (0.000) |
@@ -618,7 +618,7 @@ Delta values compare `default-pass-challenge` against open `default-pass` in the
 | Adversarial Delayed-Benefit Reform | Portfolio hybrid legislature (0.819) | Expanded portfolio hybrid legislature (0.985) | Expanded portfolio hybrid legislature (0.000) |
 | Adversarial Concentrated Rights Harm | Citizen assembly threshold gate (0.621) | Default pass unless 2/3 block (0.980) | Unicameral majority + pairwise alternatives (0.000) |
 | Adversarial Anti-Lobbying Backlash | Portfolio hybrid legislature (0.730) | Default pass unless 2/3 block (0.899) | Expanded portfolio hybrid legislature (0.000) |
-| Adversarial Compromise Dilution | Portfolio hybrid legislature (0.882) | Expanded portfolio hybrid legislature (0.981) | Stylized U.S.-like conventional benchmark (0.000) |
+| Adversarial Revision Dilution | Portfolio hybrid legislature (0.882) | Expanded portfolio hybrid legislature (0.981) | Stylized U.S.-like conventional benchmark (0.000) |
 | Adversarial Lobby Information | Unicameral majority + pairwise alternatives (0.781) | Default pass unless 2/3 block (0.996) | Expanded portfolio hybrid legislature (0.000) |
 | Adversarial Public Opinion Error | Committee amendment and revision power (0.724) | Expanded portfolio hybrid legislature (0.939) | Expanded portfolio hybrid legislature (0.000) |
 
@@ -626,7 +626,7 @@ Delta values compare `default-pass-challenge` against open `default-pass` in the
 
 - This paper campaign compares representative conventional, committee, coalition, tournament, citizen-review, agenda-scarcity, proposal-accountability, harm/compensation, anti-capture, adaptive-routing, law-registry, and burden-shifting mechanisms under shared synthetic worlds.
 - Open burden-shifting passage remains the throughput extreme, but its high low-public-support enactment and policy movement make it a diagnostic endpoint.
-- Policy tournaments and risk-routed majority systems occupy a promising compromise/productivity middle ground in this synthetic campaign, but tournament variants remain sensitive to clone, decoy, and overload stress; committee-first, public-interest, citizen, and parliamentary-style gates control risk but give up substantial throughput.
+- Policy tournaments and risk-routed majority systems occupy a promising revision-moderation/productivity middle ground in this synthetic campaign, but tournament variants remain sensitive to clone, decoy, and overload stress; committee-first, public-interest, citizen, and parliamentary-style gates control risk but give up substantial throughput.
 - Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality, and generated welfare remains conditional on model assumptions.
 - Future model extensions should deepen multidimensional package bargaining, judicial/court intervention, executive emergency/delegated rulemaking, direct-democracy routes, electoral feedback, and media/information ecosystems.
 

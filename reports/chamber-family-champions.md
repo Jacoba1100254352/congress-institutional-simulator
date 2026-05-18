@@ -2,7 +2,7 @@
 
 Fixed-rule champion screen for the chamber/apportionment/committee campaign. Each row is the highest directional-score scenario within a structural family, averaged across the chamber campaign's baseline, adversarial, party-system, and timeline cases.
 
-| Family | Champion | Dir. | Prod. | Comp. | Rep. quality | Risk ctrl. | Malapp. | Low public support |
+| Family | Champion | Dir. | Prod. | Rev. mod. | Rep. quality | Risk ctrl. | Malapp. | Low public support |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Bicameral conflict | Mediation committee bicameral conflict | 0.644 | 0.317 | 0.265 | 0.481 | 0.856 | 0.000 | 0.161 |
 | Committee assignment | Committee-first regular order | 0.641 | 0.229 | 0.282 | 0.482 | 0.885 | 0.000 | 0.096 |

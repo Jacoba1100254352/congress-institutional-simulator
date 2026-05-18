@@ -1758,7 +1758,7 @@ def write_broad_system_comparison(averages: dict[str, dict[str, float]]) -> None
     scenarios = [(key, label) for key, label in TABLE_SCENARIOS if key in averages]
     metrics = [
         ("productivity", "Prod.", "black"),
-        ("compromise", "Rev.", "black!55"),
+        ("compromise", "Rev. mod.", "black!55"),
         ("welfare", "Welfare", "black!25"),
     ]
     left_label, left_axis, scale = 34.0, 38.0, 76.0

@@ -11,7 +11,7 @@
   "caseCount": 27,
   "scenarioCount": 15,
   "artifacts": [
-    {"path": "reports/simulation-ablation-analysis.csv", "sha256": "0ad970f826826919ae444b9c90f8b85ec3818f3990eac3cd2d145450b2e15593"},
-    {"path": "reports/simulation-ablation-analysis.md", "sha256": "d52d6afde60c3a25c76f48d829523f8330a49ef0740f3a3090864391e19be00b"}
+    {"path": "reports/simulation-ablation-analysis.csv", "sha256": "820df2e1879d0584fa2d094ec978f8239d97179fcefe81d00dc6f77c2948eade"},
+    {"path": "reports/simulation-ablation-analysis.md", "sha256": "af253c40aaaa8f64aa789f490474f4e420b42023bd57311ae97b38d09380d1df"}
   ]
 }

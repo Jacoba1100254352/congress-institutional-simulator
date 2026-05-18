@@ -135,9 +135,9 @@ def write_outputs(index: dict[tuple[str, str], dict[str, str]]) -> None:
     lines = [
         "# Manipulation Stress Summary",
         "",
-        "Positive directional/compromise loss means the stress condition performed worse than its reference. Positive low-public-support and admin-cost additions are also worse.",
+        "Positive directional/revision-moderation loss means the stress condition performed worse than its reference. Positive low-public-support and admin-cost additions are also worse.",
         "",
-        "| Test | Stressor | Directional loss | Compromise loss | Low-public-support added | Admin cost added | Verdict |",
+        "| Test | Stressor | Directional loss | Revision-moderation loss | Low-public-support added | Admin cost added | Verdict |",
         "| --- | --- | ---: | ---: | ---: | ---: | --- |",
     ]
     for row in rows:

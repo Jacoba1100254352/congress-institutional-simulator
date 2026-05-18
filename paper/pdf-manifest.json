@@ -2,22 +2,22 @@
   "generatedBy": "paper/scripts/write_pdf_manifest.py",
   "pdfs": [
     {
-      "normalizedTextBytes": 36833,
-      "normalizedTextSha256": "ddb6282d8a4956937f9eb933a45d47260e434aab8ec79bbada1579cb69d85bc0",
+      "normalizedTextBytes": 36624,
+      "normalizedTextSha256": "03bc9c8db6f79c32a6ba7ed4f54ff08645f1fa3d196e1b068d7947206c8f2024",
       "pages": 10,
       "path": "paper/acm-ci-framework/acm-ci-framework.pdf",
-      "sizeBytes": 469897
+      "sizeBytes": 469943
     },
     {
-      "normalizedTextBytes": 39193,
-      "normalizedTextSha256": "edf0ff3fcd8efdc5dd749b94880f5afa2b6ad60502ebe3c1e8be05925d87ece1",
+      "normalizedTextBytes": 39455,
+      "normalizedTextSha256": "6134dcd998ce5e5ac9cf3468fff2bb5252a52191d8556369fda7e136ea9267ed",
       "pages": 12,
       "path": "paper/technical-appendix/odd-d-appendix.pdf",
-      "sizeBytes": 479426
+      "sizeBytes": 479643
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "904ac9e3ab2e9200e82cefb3b27d6324a7a9e9f8805e74d57a5dec36b6913783",
+  "sourceInputSha256": "750211aee4156045577132112765b97a648fd43f187bc64b00bf86d69095140b",
   "sourceInputs": [
     {
       "path": "Makefile",
@@ -73,7 +73,7 @@
     },
     {
       "path": "paper/acm-ci-framework/acm-ci-framework.tex",
-      "sha256": "690c334ab4bc753793b0ae07266a0d99ec39d7230d2c2164ac7af07e182abd55"
+      "sha256": "89630e69f5abb3c39c6bf93e82225a4b3e7bc52842b4ad11b6cad8180ed58a34"
     },
     {
       "path": "paper/acmart.cls",
@@ -81,15 +81,15 @@
     },
     {
       "path": "paper/figures/broad_system_comparison.tex",
-      "sha256": "3277ab09c2a041e8d77b0d7f59eaddc3c3e7beecc59fe879e6ae4a525aad9986"
+      "sha256": "49b3ba78c44b92c5b6e49c405e6885931b0b09c2c029114ea7f90450bbb489c2"
     },
     {
       "path": "paper/figures/chamber_family_table.tex",
-      "sha256": "1201e6ae4bbafede659d3a2d2a9522632c65cb8fb4690d5ab0fdbc80aebdcb0a"
+      "sha256": "3118114c304cfd0213e5857d0d0b2b26b4942e90a6ba35ddcb16a7b561c959a5"
     },
     {
       "path": "paper/figures/chamber_productivity_compromise.tex",
-      "sha256": "273afac351789dc392fff928a6326af0f6abf6d9846578451c343ed4d9deadab"
+      "sha256": "c21767f45dbc5f2726122bd4f701cf2f22d4ffa2a27df09148e4ee55da9cda69"
     },
     {
       "path": "paper/figures/compromise_productivity.tex",
@@ -113,7 +113,7 @@
     },
     {
       "path": "paper/figures/empirical_validation_gap_table.tex",
-      "sha256": "94099e65fef01e5688b289743c94c0dffbf2132d710c4286c7ef63a499b2b448"
+      "sha256": "9bf3510536236c01026d04087e40563b44a2dbb4be2399b6ada466e0eb4777f0"
     },
     {
       "path": "paper/figures/mechanism_diagnostics_table.tex",
@@ -165,7 +165,7 @@
     },
     {
       "path": "paper/scripts/generate_figures.py",
-      "sha256": "f4bb6be64cf611cc50aa27a0d53028356572a3b1ba709ff01ec5ece67aaf8f71"
+      "sha256": "856250b4998abe06cbc622077295a4d2194766a86a2c7a678f327127b0f42bcc"
     },
     {
       "path": "paper/scripts/write_pdf_manifest.py",
@@ -173,7 +173,7 @@
     },
     {
       "path": "paper/technical-appendix/odd-d-appendix.tex",
-      "sha256": "09a9c5a251ded46e088bd6e4b52ca8d02bd7e3b9fa79c3190cb8d249e776ba8b"
+      "sha256": "a6fb6167ffcb7b780b89349208dc11d305d84a6155e0332559c51bfdfe9c9650"
     },
     {
       "path": "reports/ablation-analysis-summary.csv",
@@ -185,11 +185,11 @@
     },
     {
       "path": "reports/chamber-family-champions.md",
-      "sha256": "5b91ced126379c05053fff8e25e78bb5db3e847dcfb6c05afa24ab8a3a4aac7e"
+      "sha256": "64766f76136c7cd4c30a88be016f7b1d5c559fecb7ce2af3bcfbcb0403cc9d68"
     },
     {
       "path": "reports/chamber-stress-screen.md",
-      "sha256": "5d76eeb235e036cf2bf14cc1ebf50a21ac419a56b127e56d56c3e4c49cdb450e"
+      "sha256": "3bb7288d3a5ca8de50f758d025b013af00bbd4e827a74e21e61ba5aa3a5ac7a6"
     },
     {
       "path": "reports/empirical-bridge.csv",
@@ -205,7 +205,7 @@
     },
     {
       "path": "reports/family-champions.md",
-      "sha256": "5489513f997f89ec75a0e32f2ad41ed7a21d1cd867ff411d9b3aed2021b2191f"
+      "sha256": "631762253468fdbfdc769374b023c1125d556198b3924967bcbca3710723e961"
     },
     {
       "path": "reports/manipulation-stress-summary.csv",
@@ -221,19 +221,19 @@
     },
     {
       "path": "reports/simulation-ablation-analysis.csv",
-      "sha256": "0ad970f826826919ae444b9c90f8b85ec3818f3990eac3cd2d145450b2e15593"
+      "sha256": "820df2e1879d0584fa2d094ec978f8239d97179fcefe81d00dc6f77c2948eade"
     },
     {
       "path": "reports/simulation-campaign-v21-paper.csv",
-      "sha256": "998420aeb4ddb46a04b8a5d32e2774b566cb8a5911947937b49bc0eb599cc30b"
+      "sha256": "b120d0071c51016048df73e55b24b7c7eed3dec640af51adaa937abdaa09d2bc"
     },
     {
       "path": "reports/simulation-chamber-structure.csv",
-      "sha256": "8357f3f89e728d59e6858b69619c2646ed0707e3c858fba523fad499539956c3"
+      "sha256": "9f64647d78f74fe2b67f66e714f7a8a421ae2488407efffb2b422e621121d76d"
     },
     {
       "path": "reports/simulation-manipulation-stress.csv",
-      "sha256": "b6f1a6ca2f437ddc0649b3017e257304b9235505d801e54db0c0c714d9e7b871"
+      "sha256": "16ee8cc159df1bd35e31122d18b9b0a78ef4d6e1f505a3a6f8249e63e4026266"
     },
     {
       "path": "scripts/checks/check_calibration.py",
@@ -269,7 +269,7 @@
     },
     {
       "path": "scripts/reporting/run_family_champions.py",
-      "sha256": "c1b5fbbe1218b49700ef76697f3f05b75486e07ec83022ca0ff9e6bc59750ed4"
+      "sha256": "0c243f98ee8eb35fa4ddb5739a8c6bb67aee556f1d707285ff6243f7ddf4d457"
     },
     {
       "path": "scripts/reporting/run_seed_robustness.py",
@@ -277,15 +277,15 @@
     },
     {
       "path": "scripts/reporting/summarize_ablation_analysis.py",
-      "sha256": "18d87bbdb140c75a199ecc226f2938cb95d440b4c70695919abef2cc597d9c1d"
+      "sha256": "b8db27cc29a0517629cdf8cc4293b5d18ceca3f123fe6f5be568a851dacbc8a8"
     },
     {
       "path": "scripts/reporting/summarize_chamber_structure.py",
-      "sha256": "ec563e4c59dca2a7cbe2b022f2867f1b10003e627dedd53f1712d2ba408c0073"
+      "sha256": "b036e9e3155e86e1713c3f8b66b77fbe576a79f8756fe0b26097b9211d29839a"
     },
     {
       "path": "scripts/reporting/summarize_manipulation_stress.py",
-      "sha256": "e12dd33dfa274c1c1b837abe726ea4bf59e81403362e647fc96384c42ce95103"
+      "sha256": "614c63142deb6ee1bb5027595aac6255070256ca98fd5129c69698c936b0e865"
     },
     {
       "path": "scripts/reporting/write_paper_diagnostics.py",
@@ -321,11 +321,11 @@
     },
     {
       "path": "scripts/validation/write_findings_validation.py",
-      "sha256": "7c036b6a669ab8fee6eb7bed06df7a7b7de166129db820d2ee0c73845567b007"
+      "sha256": "93eb813ed716ceb82e187c046c55a1dcb17b8aed617cbef51a2c4a0363d0fdaa"
     },
     {
       "path": "scripts/validation/write_validation_gap_report.py",
-      "sha256": "696e42c9bb937fa546d9f87859c95bde6d0aebcff9411fe57fd935a8d4dec701"
+      "sha256": "d74d6527b8208719768cc71f036941236f1ffa48f1fdfceebd7fc30807bdb14b"
     }
   ]
 }
