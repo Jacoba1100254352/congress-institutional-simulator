@@ -15,7 +15,7 @@
 \begin{document}
 
 \title[Legislative Mechanism Bundles]{A Reproducible Simulation Framework for Comparing Legislative Mechanism Bundles}
-\subtitle{Stress Tests for Productivity, Compromise-Like Moderation, Public Support, and Risk}
+\subtitle{Stress Tests for Productivity, Revision Moderation, Public Support, and Risk}
 
 \author{Anonymous Author(s)}
 \renewcommand{\shortauthors}{Anonymous Author(s)}
@@ -24,7 +24,7 @@
 \begin{abstract}
 Legislatures need enough productivity to act, but productivity alone can also mean volatility, agenda capture, or weakly supported lawmaking. This paper presents a reproducible computational framework for comparing selected legislative mechanism bundles under shared synthetic assumptions. The simulator routes the same generated legislatures and bill streams through Congress-style processes that vary agenda access, proposal revision, voting thresholds, alternative selection, public review, lobbying safeguards, affected-group protection, package bargaining, and reversibility.
 
-The contribution is methodological. The framework is designed to make tradeoffs inspectable rather than to rank real institutions. It reports a diagnostic dashboard separating productivity, compromise-like moderation, public support, low-public-support enactment, risk control, administrative cost, and generated public benefit per submitted proposal. A main comparison campaign demonstrates how these metrics separate across representative mechanism families, while scripted diagnostics generate seed, ablation, manipulation-stress, chamber-structure, and empirical flow sanity checks. The reported results are synthetic, generator-dependent design hypotheses.
+The contribution is methodological: a reusable experimental architecture for diagnosing how legislative collective-decision mechanisms shift the relationship among throughput, moderating revision, support, risk, and procedural cost under controlled synthetic worlds. The framework is designed to make tradeoffs inspectable rather than to rank real institutions. It reports a diagnostic dashboard separating productivity, revision moderation, public support, low-public-support enactment, risk control, administrative cost, and generated public benefit per submitted proposal. A main comparison campaign demonstrates how these metrics separate across representative mechanism families, while scripted diagnostics generate seed, ablation, manipulation-stress, chamber-structure, and empirical flow sanity checks. The reported results are synthetic, generator-dependent design hypotheses.
 \end{abstract}
 
 \begin{CCSXML}
@@ -51,19 +51,19 @@ The contribution is methodological. The framework is designed to make tradeoffs 
 \ccsdesc[500]{Computing methodologies~Modeling and simulation}
 \ccsdesc[300]{Applied computing~Law}
 
-\keywords{legislative institutions, institutional design, computational simulation, agenda control, compromise, collective decision-making, voting systems}
+\keywords{legislative institutions, institutional design, computational simulation, agenda control, revision moderation, collective decision-making, voting systems}
 
 \maketitle
 
 \section{Introduction}
 
-The motivating question is whether systematic comparison can distinguish legislative structures that merely pass bills from those that combine productivity, compromise, and representative responsiveness. A legislature can be unified without being democratic; authoritarian systems can appear cohesive because disagreement is suppressed. A useful representative system should instead help actors with competing interests reach compromises connected to public support, public benefit, and the burdens imposed on affected groups.
+The motivating question is whether systematic comparison can distinguish legislative structures that merely pass bills from those that combine productivity, revision, and representative responsiveness. A legislature can be unified without being democratic; authoritarian systems can appear cohesive because disagreement is suppressed. A useful representative system should instead help actors with competing interests revise proposals toward outputs connected to public support, public benefit, and the burdens imposed on affected groups.
 
 The central modeling choice is to treat final passage thresholds as only one part of a larger institutional process that includes proposal access, agenda control, revision, review, and correction. Burden-shifting passage rules are included only as stress tests because they expose how proposal access, objection rights, information, and correction interact with final voting thresholds.
 
 This paper treats legislative institutions as collective-intelligence architectures: procedural rules determine who can contribute proposals, which signals are amplified, how expertise and public support enter decisions, how disagreement is resolved, and how errors are corrected. The simulator is therefore not a forecast of Congress but a tool for comparing institutional aggregation mechanisms under shared synthetic conditions.
 
-The paper asks three questions. First, can a modular simulator distinguish throughput-producing rules from compromise-producing rules under shared synthetic assumptions? Second, which mechanism families remain relevant when productivity, compromise, public support, risk, and administrative burden are evaluated separately? Third, which findings survive sensitivity checks on assumptions, mechanism ablations, and manipulation stressors?
+The paper asks three questions. First, can a modular simulator distinguish throughput-producing rules from rules that produce moderated, broadly supported revisions under shared synthetic assumptions? Second, which mechanism families remain relevant when productivity, revision moderation, public support, risk, and administrative burden are evaluated separately? Third, which findings survive sensitivity checks on assumptions, mechanism ablations, and manipulation stressors?
 
 This paper should be read as a framework and stress-test study, not as a validated model of Congress or a recommendation for constitutional reform. The reported results compare institutional mechanisms under shared synthetic assumptions. Empirical flow checks screen for gross implausibility, while validation against district opinion, implementation, court review, campaign finance, and cross-national institutional data remains future work.
 
@@ -75,14 +75,14 @@ Several tested mechanisms come from adjacent literatures. Lobbying is modeled as
 
 \section{Simulator}
 
-Each run creates a synthetic legislature, bill stream, scalar status quo, and institutional process. Legislators have ideal points \(z_i\in[-1,1]\), party labels, district preferences, and heterogeneous sensitivity to party pressure, constituency pressure, lobbying, reputation, and compromise. Bills have a proposer, policy position \(x_b\), public support \(p_b\), generated public benefit \(g_b\), lobby pressure \(\ell_b\), salience, private gain, issue domain, public-benefit uncertainty, affected-group support, and concentrated harm. Enacted bills update one abstract status quo \(q_t\), so votes evaluate policy movement rather than isolated proposals. Issue domains affect lobbying, harm, committees, and diagnostics, but the baseline model intentionally collapses policy movement into one dimension.
+Each run creates a synthetic legislature, bill stream, scalar status quo, and institutional process. Legislators have ideal points \(z_i\in[-1,1]\), party labels, district preferences, and heterogeneous sensitivity to party pressure, constituency pressure, lobbying, reputation, and moderating revision. Bills have a proposer, policy position \(x_b\), public support \(p_b\), generated public benefit \(g_b\), lobby pressure \(\ell_b\), salience, private gain, issue domain, public-benefit uncertainty, affected-group support, and concentrated harm. Enacted bills update one abstract status quo \(q_t\), so votes evaluate policy movement rather than isolated proposals. Issue domains affect lobbying, harm, committees, and diagnostics, but the baseline model intentionally collapses policy movement into one dimension.
 
-The voting kernel is status-quo-relative. A legislator's spatial utility is \(u_i(x)=-(x-z_i)^2\). For bill \(b\), the vote score is a weighted sum of ideology, party, public support, lobbying, compromise, and reputation terms:
+The voting kernel is status-quo-relative. A legislator's spatial utility is \(u_i(x)=-(x-z_i)^2\). For bill \(b\), the vote score is a weighted sum of ideology, party, public support, lobbying, revision moderation, and reputation terms:
 \[
 s_i(b)=\sum_k w_k f_k(i,b,q_t)+\epsilon_i,\qquad
 \Pr(Y_i=1)=\sigma(\max(-12,\min(12,s_i(b)))).
 \]
-The ideology term uses \(u_i(x_b)-u_i(q_t)\), party pressure uses the same comparison at the party position, constituency pressure is proportional to \(2(p_b-0.5)\), lobbying is proportional to \(\ell_b\), and compromise rewards moderation, public legitimacy, and incremental policy movement. The outcome is stochastic but seed-reproducible.
+The ideology term uses \(u_i(x_b)-u_i(q_t)\), party pressure uses the same comparison at the party position, constituency pressure is proportional to \(2(p_b-0.5)\), lobbying is proportional to \(\ell_b\), and the revision-moderation term rewards moderation, public legitimacy, and incremental policy movement. The outcome is stochastic but seed-reproducible.
 
 Institutional modules then transform the bill lifecycle:
 \[
@@ -92,15 +92,7 @@ Modules can deny access, route to committees, force discharge or open-calendar c
 
 The stylized U.S.-like conventional benchmark uses House majority passage, a Senate 60 percent threshold, presidential veto, two-thirds override, and an agenda-access gate. The gate prevents the benchmark from treating every introduced bill as a floor bill; it schedules bills using observable proxies: public support, salience, policy stability, sponsor-party fit, partisan queue conflict, capture risk, concentrated harm, and uncertainty. It does not observe generated public benefit directly.
 
-The baseline generator is moderation-friendly by construction: generated public benefit increases as \(|x_b|\) decreases, before noise, private-gain penalties, and adversarial-case modifications. That assumption makes content-selection and moderation mechanisms easier to reward. The results section therefore treats the rankings as demonstrations of framework behavior under the implemented generator, and the appendix reports alternative worlds where extreme proposals can be beneficial, compromise can dilute value, lobbying can supply information, public support can be biased, and majority support can coincide with concentrated harm.
-
-\begin{figure}[t]
-  \centering
-  \input{figures/simulation_pipeline}
-  \caption{Modular simulation pipeline. Each institutional bundle intervenes at one or more stages while generated legislatures, bill streams, and status-quo-relative voting remain shared across comparisons.}
-  \label{fig:simulation-pipeline}
-  \Description{Pipeline diagram showing synthetic legislature and bill stream generation, access and agenda gates, revision or selection, voting and review, status quo update, and metric diagnostics, with side labels for mechanism interventions.}
-\end{figure}
+The baseline generator is moderation-friendly by construction: generated public benefit increases as \(|x_b|\) decreases, before noise, private-gain penalties, and adversarial-case modifications. That assumption makes content-selection and moderating-revision mechanisms easier to reward. The results section therefore treats the ordering as a demonstration of framework behavior under the implemented generator, and the appendix reports alternative worlds where extreme proposals can be beneficial, moderation can dilute value, lobbying can supply information, public support can be biased, and majority support can coincide with concentrated harm.
 
 \begin{table*}
   \caption{Key generator and vote-kernel assumptions visible in the main paper. Exact formulas, bounds, scenario constants, and weights are reported in the appendix and code. These are modeling choices, not empirical estimates.}
@@ -111,16 +103,24 @@ The baseline generator is moderation-friendly by construction: generated public 
     \toprule
     Component & Core modeling assumption & Why it matters \\
     \midrule
-    Legislator ideal points & One-dimensional, faction-centered distribution with heterogeneous party, constituency, lobbying, reputation, and compromise sensitivities. & Determines ideological conflict and makes compromise mostly movement along one policy line. \\
+    Legislator ideal points & One-dimensional, faction-centered distribution with heterogeneous party, constituency, lobbying, reputation, and revision-moderation sensitivities. & Determines ideological conflict and makes moderation mostly movement along one policy line. \\
     Status quo and bills & Bills are proposer-centered policy movements evaluated against a scalar status quo; enacted bills update that status quo. & Makes voting status-quo-relative, but collapses multidimensional politics into one abstract dimension. \\
-    Public benefit & Baseline \(g_b\) is moderation-linked: expected benefit rises as \(|x_b|\) decreases, before private-gain penalties, noise, and adversarial-world changes. & This is the most important generator vulnerability because it can advantage content-selection and moderation mechanisms. \\
+    Public benefit & Baseline \(g_b\) is moderation-linked: \(E[g_b]\approx0.34+0.34(1-|x_b|)-0.08\,private_b\), before noise and adversarial-world changes. & This is the most important generator vulnerability because it can advantage content-selection and moderating-revision mechanisms. \\
     Public support & Support is synthetic and correlated with generated benefit, lobbying pressure, private gain, and noise. & Public-support diagnostics are not observed public opinion and inherit generator assumptions. \\
     Lobby/private gain & Lobby pressure is partly tied to private gain, with alternative worlds where lobbying can provide useful information. & Drives capture diagnostics and makes anti-lobbying assumptions visible. \\
     Harm/uncertainty & Concentrated harm and uncertainty rise with distance, salience, private gain, signal mismatch, lobbying, and noise. & Drives risk screens, harm-weighted thresholds, and low-support/risk-control metrics. \\
-    Vote kernel & Legislators combine status-quo-relative spatial utility, party pressure, public support, lobbying, a compromise-like moderation term, reputation, and seeded noise. & The ``compromise'' score is a moderation/revision proxy, not a neutral moral measure of good bargaining. \\
+    Vote kernel & Legislators combine status-quo-relative spatial utility, party pressure, public support, lobbying, a revision-moderation term, reputation, and seeded noise. & The revision-moderation score is a model proxy, not a neutral moral measure of good bargaining. \\
     \bottomrule
   \end{tabular}
 \end{table*}
+
+\begin{figure}[t]
+  \centering
+  \input{figures/simulation_pipeline}
+  \caption{Modular simulation pipeline. Each institutional bundle intervenes at one or more stages while generated legislatures, bill streams, and status-quo-relative voting remain shared across comparisons.}
+  \label{fig:simulation-pipeline}
+  \Description{Pipeline diagram showing synthetic world generation, institutional routing, content transformation, collective decision, correction, and diagnostic dashboard output.}
+\end{figure}
 
 \section{Metrics and Campaign}
 
@@ -139,7 +139,7 @@ The simulator reports a dashboard rather than a single welfare score. Table~\ref
     \midrule
     Productivity & \(\uparrow\) & Share of submitted bills enacted. & Can reward bad throughput. \\
     Yield & \(\uparrow\) & Generated public benefit per submitted proposal. & Synthetic and generator-dependent. \\
-    Compromise & \(\uparrow\) & Moderating revision score combining moderation, legitimacy, and incrementalism. & Not a neutral welfare measure. \\
+    Revision moderation & \(\uparrow\) & Score combining moderation, legitimacy, and incrementalism. & Not a neutral welfare measure. \\
     Public support & \(\uparrow\) & Enacted-bill support composite from generated support signals. & Not observed public opinion. \\
     Low-support enactment & \(\downarrow\) & Enacted bills below 50\% generated support. & Depends on synthetic support threshold. \\
     Risk control & \(\uparrow\) & Inverse composite of harm, capture, low support, proposer gain, and policy shock. & Composite score. \\
@@ -151,27 +151,27 @@ The simulator reports a dashboard rather than a single welfare score. Table~\ref
 
 Yield prevents a system that blocks nearly all proposals from looking equivalent to one that produces generated public value. Risk control aggregates low-support passage, minority harm, lobbying capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shock; administrative feasibility is the inverse of the procedural-load index.
 
-As one sensitivity check, the paper reports a compromise-weighted value profile combining compromise, productivity, risk control, administrative feasibility, and public support. The main interpretation relies on metric-level tradeoffs rather than this scalar score.
+As one sensitivity check, the paper reports a revision-moderation-weighted value profile combining revision moderation, productivity, risk control, administrative feasibility, and public support. The main interpretation relies on metric-level tradeoffs rather than this scalar score.
 
-All main results come from one reported comparison campaign. It combines broad assumptions, adversarial generator cases, weighted party-system cases, and a stylized rising-contention timeline in one CSV. The canonical run uses 120 generated worlds per case, 101 legislators, 60 bills per run, and seed 20260428. Cases vary polarization, party loyalty, compromise culture, lobbying, constituency pressure, party count, proposal pressure, capture pressure, and anti-lobbying reform demand. The adversarial bill-stream cases stress extremity, capture, delayed benefits, concentrated harm, and backlash dynamics.
+All main results come from one reported comparison campaign. It combines broad assumptions, adversarial generator cases, weighted party-system cases, and a stylized rising-contention timeline in one CSV. The canonical run uses 120 generated worlds per case, 101 legislators, 60 bills per run, and seed 20260428. Cases vary polarization, party loyalty, revision-moderation culture, lobbying, constituency pressure, party count, proposal pressure, capture pressure, and anti-lobbying reform demand. The adversarial bill-stream cases stress extremity, capture, delayed benefits, concentrated harm, and backlash dynamics.
 
 Scenario selection follows a fixed coverage rule: include the stylized U.S.-like benchmark, simple majority, committee regular order, discharge petition, open floor calendar, a combined content-selection family, anti-capture access, harm-weighted majority, one burden-shifting stress case, one burden-shifting mediation case, and a portfolio hybrid. The appendix reports the broader scenario catalog and fixed-rule family champions.
 
-The chamber-structure supplement tests representation architecture, committee power, eligibility filters, and ex ante review. It is separate because it asks how those structures shift the same productivity/compromise tradeoff.
+\input{figures/design_space_coverage}
+
+The chamber-structure supplement tests representation architecture, committee power, eligibility filters, and ex ante review. It is separate because it asks how those structures shift the same productivity/revision-moderation tradeoff.
 
 Empirical flow sanity checks are artifact screens, not calibration in the statistical sense. \texttt{make calibrate} compares conventional baselines with broad benchmark ranges derived from Voteview, Congress.gov, govinfo, Comparative Agendas Project, ParlGov, lobbying-disclosure and OpenFEC records, Center for Effective Lawmaking measures, and V-Dem indicators \citep{Voteview2021,CongressGovData,GovinfoBillStatus2020,ComparativeAgendasProject,ParlGov2024,SenateLDA,OpenFECData,VoldenWiseman2014,VDemDataset}. Separate flow checks use six documented empirical comparison samples: a 180-row Congress.gov bill-progression extract, a Voteview roll-call extract, a Senate LDA lobbying-disclosure extract, and Congress.gov-derived topic, sponsor, and committee summaries. These support bill attrition, floor load, committee reporting, coalition size, party unity, topic throughput, sponsor concentration, and lobbying-spend concentration checks.
 
 \input{figures/empirical_bridge_table}
 
-\input{figures/design_space_coverage}
-
 \section{Results}
 
-The main paper uses figures to carry the results argument; detailed numeric tables, Pareto rows, ablation deltas, manipulation-stress losses, and separate PAIR/AMT rows are moved to the appendix.
+The main paper uses a tradeoff figure plus compact tables to carry the results argument; detailed numeric tables, Pareto rows, ablation deltas, manipulation-stress losses, and separate PAIR/AMT rows are moved to the appendix.
 
-Three substantive patterns appear. First, high-throughput systems can also produce low-public-support enactments, so productivity needs to be read beside support and risk diagnostics. Second, content-selection stages have the largest effect under the implemented generator because they alter proposals before final ratification rather than only changing the yes/no threshold. Pairwise alternatives and amendment tournaments are combined as one content-selection family in the main displays; their separate appendix rows are nearly identical and should not be read as independent evidence of robustness. Third, portfolio systems reduce some risks but add administrative load. The stylized U.S.-like benchmark has low productivity but stronger compromise, risk, and support diagnostics than its directional-score rank suggests.
+Three substantive patterns appear. First, high-throughput systems can also produce low-public-support enactments, so productivity needs to be read beside support and risk diagnostics. Second, content-selection stages have the largest effect under the implemented generator because they alter which alternatives enter final aggregation rather than only changing the yes/no threshold. Pairwise alternatives and amendment tournaments are combined as one content-selection family in the main displays; their separate appendix rows are nearly identical and should not be read as independent evidence of robustness. Third, portfolio systems reduce some risks but add administrative load. The stylized U.S.-like benchmark has low productivity but stronger revision moderation, risk, and support diagnostics than its directional profile suggests.
 
-The empirical flow sanity checks do not validate the welfare, compromise, harm, capture, or public-support metrics used in the main comparison; they only screen whether several observable legislative-flow proxies fall in plausible ranges.
+The empirical flow sanity checks do not validate the welfare, revision-moderation, harm, capture, or public-support metrics used in the main comparison; they only screen whether several observable legislative-flow proxies fall in plausible ranges.
 
 The appendix reports generator-sensitivity rows and fairness controls. They show that the framework can expose dependence on generator assumptions, but they do not remove that dependence. The strongest claim supported here is that content-selection stages and portfolio safeguards change the productivity/risk surface under this generator, not that they are generally better legislative institutions.
 
@@ -189,26 +189,20 @@ The chamber-structure supplement is reported in the appendix. It asks a separate
     \centering
     \resizebox{\linewidth}{!}{\input{figures/compromise_productivity}}
     \vspace{-0.75\baselineskip}
-    \centerline{\small (b) Compromise score}
+    \centerline{\small (b) Revision moderation}
   \end{minipage}
-  \caption{Productivity tradeoff views for the representative systems. Panel (a) plots risk control and panel (b) plots compromise-like moderation under weighted party-system sensitivity cases; higher is better on both y-axes. Numbered labels follow the mechanism-family order: 1* CUR, 2 SM, 3 COMM, 4 DIS, 5 OPEN, 6 SEL, 7 ACG, 8 HARM, 9 DP, 10 DPM, 11 PORT. The asterisk and larger square mark the stylized U.S.-like benchmark.}
+  \caption{Productivity tradeoff views for the representative systems. Panel (a) plots risk control and panel (b) plots revision moderation under weighted party-system sensitivity cases; higher is better on both y-axes. Labels are the mechanism-family labels from Table~\ref{tab:design-space-coverage}. The asterisk and larger square mark the stylized U.S.-like benchmark.}
   \label{fig:productivity-tradeoffs}
-  \Description{Two side-by-side scatter plots with the same productivity axis: one compares productivity against risk control, and the other compares productivity against compromise score.}
+  \Description{Two side-by-side scatter plots with the same productivity axis: one compares productivity against risk control, and the other compares productivity against revision moderation.}
 \end{figure}
 
-The burden-shifting stress cases illustrate the same separation. Open burden-shifting passage has high productivity but weak compromise and support diagnostics, while mediation improves some content metrics at additional procedural cost. These results are best read as failure-mode probes rather than as a central reform comparison.
+The burden-shifting stress cases illustrate the same separation. Open burden-shifting passage has high productivity but weak revision-moderation and support diagnostics, while mediation improves some content metrics at additional procedural cost. These results are best read as failure-mode probes rather than as a central reform comparison.
 
 Manipulation-stress cases use bounded adversaries rather than fully co-evolving strategic parties. The adversary can choose clone or decoy proposals, noisier citizen-panel information, loose harm claims, astroturf objection pressure, proposal flooding, or anti-lobbying backlash under fixed information and budget assumptions. Stress objectives are enactment of low-support bills, blockage of high-benefit bills, or administrative overload. Appendix tables report paired losses, while adaptive worst-case search remains future work.
 
 The portfolio variants illustrate the tradeoff between combining safeguards and increasing administrative load. They improve several risk diagnostics but do not dominate simpler alternative-selection mechanisms.
 
-\begin{figure}[H]
-  \centering
-  \resizebox{0.86\linewidth}{!}{\input{figures/directional_scoreboard}}
-  \caption{Selected metric profiles for the main mechanisms. Rows follow the mechanism-family order in Table~\ref{tab:design-space-coverage}. Cell values carry the comparison; shading is a secondary visual cue under the stated metric interpretation, and the asterisk marks the stylized U.S.-like benchmark.}
-  \label{fig:directional-scoreboard}
-  \Description{Matrix comparing one compromise-weighted profile, productivity, compromise, public support, risk control, and administrative feasibility for selected institutional scenarios.}
-\end{figure}
+\input{figures/directional_scoreboard}
 
 \input{figures/robustness_summary_table}
 
@@ -216,7 +210,7 @@ The reported ordering should therefore be read as a hypothesis about mechanism b
 
 \section{Limitations}
 
-The model is stylized. It uses one primary policy dimension, generated legislators, generated support and benefit, simplified issue domains, and abstract lobbying units. The multidimensional package scenario is a cross-issue bargaining proxy, not a full two-dimensional ideal-point model; claims about alternatives, tournaments, compromise, and package bargaining are therefore intentionally narrow. Public-support diagnostics distinguish salience and costly affected-group pressure from cheap amplified volume, but they are still proxies. Because public benefit is internal to the generator, welfare comparisons are conditional on model assumptions. Systems that screen extreme, uncertain, or lobby-heavy bills may look better partly because the generator often encodes those features as lower expected public value. Adversarial cases partially relax this assumption, but welfare remains a synthetic signal.
+The model is stylized. It uses one primary policy dimension, generated legislators, generated support and benefit, simplified issue domains, and abstract lobbying units. The multidimensional package scenario is a cross-issue bargaining proxy, not a full two-dimensional ideal-point model; claims about alternatives, tournaments, revision moderation, and package bargaining are therefore intentionally narrow. Public-support diagnostics distinguish salience and costly affected-group pressure from cheap amplified volume, but they are still proxies. Because public benefit is internal to the generator, welfare comparisons are conditional on model assumptions. Systems that screen extreme, uncertain, or lobby-heavy bills may look better partly because the generator often encodes those features as lower expected public value. Adversarial cases partially relax this assumption, but welfare remains a synthetic signal.
 
 The empirical layer screens conventional baselines against empirical ranges, and the flow sanity checks cover six empirical inputs. That is enough to make several agenda-access and legislative-flow proxies inspectable, but it is not enough for model validation or parameter fitting. District opinion, campaign finance, court review, implementation feedback, law revision, and cross-national institutional comparison remain validation gaps; findings that depend on those components should be read as synthetic design hypotheses. The committee and sponsor summaries are derived from sampled Congress.gov bill actions and are especially rough; fixture samples exercise adapter shapes but are not validation data. Strategic behavior remains bounded: proposers and lobby groups adapt, and norm erosion can raise delay, but parties, committees, coalitions, courts, agencies, media, and elections do not yet co-evolve. Chamber scenarios are sensitivity prototypes. Citizen panels, initiatives, objection windows, tournaments, audits, challenge tokens, judicial review, and law-registry review are optimistic prototypes whose costs are represented only indirectly. Package bargaining models side payments, delay, jurisdictional trades, and distributive load, not legal text or appropriations.
 
@@ -232,7 +226,7 @@ The research question and core simulator idea originated with the human author. 
 
 \section{Conclusion}
 
-This paper contributes a reproducible simulation framework for comparing legislative mechanism bundles as collective-intelligence architectures. The results support the framework's main methodological claim: legislative productivity, compromise-like moderation, public support, risk control, and administrative burden separate under different institutional mechanisms. The reusable contribution is the modular comparison architecture and diagnostic dashboard, not the specific ranking of mechanisms. In the reported synthetic campaigns, content-selection stages often change the productivity/risk surface more than threshold-only baselines, while portfolio variants illustrate the cost of combining safeguards. Future work should replace synthetic proxies with stronger public-opinion, lobbying, court-review, implementation, and bargaining data.
+This paper contributes a reproducible simulation framework for comparing legislative mechanism bundles as collective-intelligence architectures. The reusable contribution is an experimental architecture for making legislative collective-decision tradeoffs inspectable under shared synthetic worlds. The results support the framework's main methodological claim: legislative productivity, revision moderation, public support, risk control, and administrative burden separate under different institutional mechanisms. In the reported synthetic campaigns, content-selection stages often change the productivity/risk surface more than threshold-only baselines, while portfolio variants illustrate the cost of combining safeguards. Future work should replace synthetic proxies with stronger public-opinion, lobbying, court-review, implementation, and bargaining data.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}

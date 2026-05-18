@@ -43,15 +43,37 @@ This appendix documents the congressional institutional simulator using the ODD 
 
 \maketitle
 
+\section{Appendix Roadmap}
+
+\begin{table}[!htbp]
+  \caption{Where to look for common reviewer questions.}
+  \label{tab:appendix-roadmap}
+  \Description{A roadmap table mapping reviewer concerns to appendix tables and sections.}
+  \small
+  \begin{tabular}{p{0.43\linewidth}p{0.45\linewidth}}
+    \toprule
+    Reviewer concern & Where to look \\
+    \midrule
+    What assumptions generate the synthetic worlds? & Table~\ref{tab:appendix-formal-generator} and Section~\ref{sec:appendix-initialization} \\
+    What is empirically checked? & Table~\ref{tab:empirical-validation-gap} and Section~\ref{sec:appendix-input-data} \\
+    What weights enter the vote kernel? & Table~\ref{tab:appendix-vote-features} \\
+    What are the selected main-campaign results? & Table~\ref{tab:scenario-averages}; full CSV in \texttt{reports/simulation-campaign-v21-paper.csv} \\
+    What robustness probes exist? & Tables~\ref{tab:sensitivity-controls}, \ref{tab:pareto-front}, \ref{tab:mechanism-ablation-diagnostics}, and \ref{tab:manipulation-stress-diagnostics} \\
+    What are the main limitations? & Section~\ref{sec:appendix-limitations} \\
+    How is the artifact reproduced? & Section~\ref{sec:appendix-reproducibility} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 \section{Purpose}
 
-The model compares legislative institutional designs under shared generated political worlds. Its purpose is to stress-test mechanisms that alter productivity, compromise-like moderation, representative responsiveness, public-benefit alignment, minority protection, and resistance to capture. It is not a forecast of a specific Congress. It is a mechanism-comparison simulator: the same generated legislators and bills are routed through many institutional processes so differences can be attributed to procedural rules and incentive structures.
+The model compares legislative institutional designs under shared generated political worlds. Its purpose is to stress-test mechanisms that alter productivity, revision moderation, representative responsiveness, public-benefit alignment, minority protection, and resistance to capture. It is not a forecast of a specific Congress. It is a mechanism-comparison simulator: the same generated legislators and bills are routed through many institutional processes so differences can be attributed to procedural rules and incentive structures.
 
 \section{Entities, State Variables, and Scales}
 
 \subsection{Legislators}
 
-Legislators have an identifier, party label, ideology, compromise preference, party loyalty, constituency sensitivity, lobbying susceptibility, reputation sensitivity, district preference, district intensity, affected-group sensitivity, and a representation profile. The representation profile records chamber eligibility, represented population share, district magnitude, region label, elected/appointed mode, lower- and upper-house term lengths, renewal cohort, renewal cycle, next renewal round, and selector body. These values determine how the legislator weighs ideology, party pressure, constituent/public support, lobbying pressure, compromise incentives, reputation, and concentrated harm before casting a final yes-or-no vote.
+Legislators have an identifier, party label, ideology, revision-moderation preference, party loyalty, constituency sensitivity, lobbying susceptibility, reputation sensitivity, district preference, district intensity, affected-group sensitivity, and a representation profile. The representation profile records chamber eligibility, represented population share, district magnitude, region label, elected/appointed mode, lower- and upper-house term lengths, renewal cohort, renewal cycle, next renewal round, and selector body. These values determine how the legislator weighs ideology, party pressure, constituent/public support, lobbying pressure, revision-moderation incentives, reputation, and concentrated harm before casting a final yes-or-no vote.
 
 \subsection{Bills}
 
@@ -89,7 +111,7 @@ The model assumes legislative outcomes are shaped by proposal access, agenda sca
 
 \subsection{Emergence}
 
-Productivity, compromise, capture, volatility, legitimacy, and gridlock emerge from bill-by-bill interactions. No actor directly optimizes the reported global metrics.
+Productivity, revision moderation, capture, volatility, legitimacy, and gridlock emerge from bill-by-bill interactions. No actor directly optimizes the reported global metrics.
 
 \subsection{Adaptation}
 
@@ -113,9 +135,10 @@ World generation, committee composition, citizen panels, bill signals, party-sys
 
 \subsection{Observation}
 
-The simulator reports productivity, floor load, enacted support, generated public benefit, cooperation, compromise, gridlock, access denial, committee rejection, challenge rate, chamber low-support passage, low-public-support enactment, policy shift, proposer gain, lobby capture, public alignment, anti-lobbying success, private-gain ratio, lobbying spend by channel, public benefit per lobby dollar, amendment rate, amendment movement, amendment overload, poison-pill rate, support gain after amendment, minority harm, concentrated-harm passage, compensation rate, legitimacy, enacted-policy quality, policy yield per submitted proposal, blockage reliance, public support, active-law welfare, implementation delay/capacity/failure risk, nonenforcement and underfunding risk, renewal pressure, reversal rate, correction delay, low-support active-law share, selected-alternative distance, proposer agenda advantage, alternative diversity, status-quo win rate, citizen-review metrics, citizen agenda petition metrics, open-calendar metrics, attention spending, objection-window use, public-will review, district alignment, cosponsorship, bond forfeiture, strategic decoys, proposer-access Gini, vetoes, overrides, chamber conflict, malapportionment, population-seat distortion, committee capture, eligibility exclusion, renewal staggering, recusal, ex ante review, review delay, and quiet-capture risk.
+The simulator reports productivity, floor load, enacted support, generated public benefit, cooperation, revision moderation, gridlock, access denial, committee rejection, challenge rate, chamber low-support passage, low-public-support enactment, policy shift, proposer gain, lobby capture, public alignment, anti-lobbying success, private-gain ratio, lobbying spend by channel, public benefit per lobby dollar, amendment rate, amendment movement, amendment overload, poison-pill rate, support gain after amendment, minority harm, concentrated-harm passage, compensation rate, legitimacy, enacted-policy quality, policy yield per submitted proposal, blockage reliance, public support, active-law welfare, implementation delay/capacity/failure risk, nonenforcement and underfunding risk, renewal pressure, reversal rate, correction delay, low-support active-law share, selected-alternative distance, proposer agenda advantage, alternative diversity, status-quo win rate, citizen-review metrics, citizen agenda petition metrics, open-calendar metrics, attention spending, objection-window use, public-will review, district alignment, cosponsorship, bond forfeiture, strategic decoys, proposer-access Gini, vetoes, overrides, chamber conflict, malapportionment, population-seat distortion, committee capture, eligibility exclusion, renewal staggering, recusal, ex ante review, review delay, and quiet-capture risk.
 
 \section{Initialization}
+\label{sec:appendix-initialization}
 
 \texttt{WorldGenerator} creates legislators from party-system and ideology parameters, derives party positions, generates lobby groups by issue domain, chooses a scalar status quo, and generates bills around proposer ideal points. Generated values are bounded by model validation. Party-system profiles include ideological bins, two major parties with minor parties, fragmented multiparty systems, dominant-party systems, and weighted campaign profiles.
 
@@ -131,7 +154,7 @@ The simulator reports productivity, floor load, enacted support, generated publi
     \midrule
     Legislator ideal point & \(z_i\) & faction centers at \(\{-s,0,s\}\), \(s=0.25+0.65\rho\), Gaussian spread, clamp \([-1,1]\) & yes & vote kernel, parties \\
     Party and district signals & party, \(d_i\) & party bins or party-system profile; \(d_i=0.78z_i+N(0,0.18+0.10\rho)\) & yes & party pressure, district diagnostics \\
-    Sensitivities & \(c_i,\pi_i,\kappa_i,\lambda_i,r_i\) & scenario center plus bounded Gaussian noise & yes & compromise, party, constituency, lobby, reputation weights \\
+    Sensitivities & \(c_i,\pi_i,\kappa_i,\lambda_i,r_i\) & scenario center plus bounded Gaussian noise & yes & revision moderation, party, constituency, lobby, reputation weights \\
     Status quo & \(q_0\) & \(N(0,0.18)\), clamp \([-1,1]\); enacted bills update \(q_t\) & no & status-quo-relative voting \\
     Bill position & \(x_b\) & proposer-centered \(z_p+N(0,0.22)\), with adversarial shock variants & yes & vote kernel, policy shift \\
     Public support/benefit & \(p_b,g_b\) & \(g_b=0.34+0.34(1-|x_b|)-0.08 private+N(0,0.18)\); \(p_b=g_b+0.08\ell_b-0.05 private+N(0,0.22)\) & yes & support, yield, risk \\
@@ -143,6 +166,7 @@ The simulator reports productivity, floor load, enacted support, generated publi
 \end{table*}
 
 \section{Input Data and Empirical Flow Checks}
+\label{sec:appendix-input-data}
 
 Normal scenario runs use synthetic generated worlds. Empirical flow sanity checks read the tracked benchmark extract at \texttt{data/calibration/empirical-benchmarks.csv}. The extract maps empirical sources to simulator metrics and broad benchmark ranges. Named sources include Voteview roll-call data \citep{Voteview2021}, Congress.gov and govinfo bill histories \citep{CongressGovData,GovinfoBillStatus2020}, Comparative Agendas Project topic data \citep{ComparativeAgendasProject}, ParlGov party-system data \citep{ParlGov2024}, U.S. Lobbying Disclosure Act filings \citep{SenateLDA}, Center for Effective Lawmaking scores \citep{CenterEffectiveLawmaking,VoldenWiseman2014}, and V-Dem institutional indicators \citep{VDemDataset}.
 
@@ -154,7 +178,7 @@ The executable checker runs conventional scenarios and writes CSV and Markdown p
 
 \subsection{Voting}
 
-Legislators cast \texttt{YAY} or \texttt{NAY} through weighted influences: ideology, party, constituency/public support, lobbying, compromise preference, reputation, and affected-group sensitivity.
+Legislators cast \texttt{YAY} or \texttt{NAY} through weighted influences: ideology, party, constituency/public support, lobbying, revision-moderation preference, reputation, and affected-group sensitivity.
 
 \begin{table*}
   \caption{Vote-score feature functions and weights. The anti-capture kernel changes weights; affected-group variables enter procedural thresholds and metrics rather than the base yes/no vote score.}
@@ -170,7 +194,7 @@ Legislators cast \texttt{YAY} or \texttt{NAY} through weighted influences: ideol
     Party & party loyalty times \(u_{party}(x_b)-u_{party}(q_t)\) & 0.85 & 0.78 \\
     Constituency/public & constituency sensitivity times \(2(p_b-0.5)\) & 0.95 & 1.12 \\
     Lobbying & lobby sensitivity times \(\ell_b\) & 0.55 & 0.14 \\
-    Compromise & compromise preference times \(0.45\) moderation \(+0.35\) public legitimacy \(+0.20\) incrementalism & 0.75 & 0.82 \\
+    Revision moderation & revision-moderation preference times \(0.45\) moderation \(+0.35\) public legitimacy \(+0.20\) incrementalism & 0.75 & 0.82 \\
     Reputation & reputation sensitivity times unpopular-bill and lobby-capture penalties & 0.55 & 0.92 \\
     Noise & seeded Gaussian perturbation before logistic voting & sd 0.25 & sd 0.25 \\
     \bottomrule
@@ -216,14 +240,18 @@ Leadership agenda control schedules bills using observable public support, salie
 
 \subsection{Alternatives, Package Bargaining, Norm Erosion, and Law Registry}
 
-Competing-alternative processes generate same-domain alternatives and select by public benefit, public support, chamber-median proximity, or pairwise majority before final ratification. Pairwise amendment tournaments use the same selector logic for amended versions, making amendment control an explicit pre-ratification stage rather than only a final yes/no vote. Package-bargaining processes approximate compromise through side-payment costs, implementation-delay costs, modest policy movement, and harm-reducing package trades. Norm-erosion processes raise procedural delay and reduce public support signals under high contention. Law-registry processes allow enacted laws to persist, face implementation delay, operate under capacity/nonenforcement/underfunding risk, be renewed under lobbying pressure, and be repealed or partially rolled back after review.
+Competing-alternative processes generate same-domain alternatives and select by public benefit, public support, chamber-median proximity, or pairwise majority before final ratification. Pairwise amendment tournaments use the same selector logic for amended versions, making amendment control an explicit pre-ratification stage rather than only a final yes/no vote. Package-bargaining processes approximate revision through side-payment costs, implementation-delay costs, modest policy movement, and harm-reducing package trades. Norm-erosion processes raise procedural delay and reduce public support signals under high contention. Law-registry processes allow enacted laws to persist, face implementation delay, operate under capacity/nonenforcement/underfunding risk, be renewed under lobbying pressure, and be repealed or partially rolled back after review.
 
 \section{Experimental Design}
 
-The main submitted evidence comes from the main comparison campaign. That campaign joins broad assumption cases, adversarial proposal-generator cases, party-system sensitivity cases, and a stylized rising-contention timeline in one artifact. The main manuscript focuses on the stylized U.S.-like benchmark, simple majority, committee regular order, discharge petition, open floor calendar, a combined content-selection family, anti-capture access, harm-weighted majority, a small burden-shifting stress-test family, and a portfolio hybrid. The appendix tables report separate pairwise-alternative and amendment-tournament rows plus the broader implemented catalog, including leadership agenda control, chamber and committee variants, citizen petitions and initiatives, mini-publics, agenda scarcity, package bargaining, review and correction systems, adaptive routing, norm erosion, and influence-system safeguards. Adversarial generator cases test high-benefit extreme reform, popular harmful bills, moderate capture, delayed-benefit reform, concentrated rights-like harm, anti-lobbying backlash, compromise dilution, useful lobbying information, and public-opinion error. Follow-up diagnostics include mechanism ablations, manipulation-stress campaigns, chamber-structure family/stress screens, and empirical flow sanity checks that map optional raw empirical summaries to simulator proxy metrics.
+The main submitted evidence comes from the main comparison campaign. That campaign joins broad assumption cases, adversarial proposal-generator cases, party-system sensitivity cases, and a stylized rising-contention timeline in one artifact. The main manuscript focuses on the stylized U.S.-like benchmark, simple majority, committee regular order, discharge petition, open floor calendar, a combined content-selection family, anti-capture access, harm-weighted majority, a small burden-shifting stress-test family, and a portfolio hybrid. The appendix tables report separate pairwise-alternative and amendment-tournament rows plus the broader implemented catalog, including leadership agenda control, chamber and committee variants, citizen petitions and initiatives, mini-publics, agenda scarcity, package bargaining, review and correction systems, adaptive routing, norm erosion, and influence-system safeguards. Adversarial generator cases test high-benefit extreme reform, popular harmful bills, moderate capture, delayed-benefit reform, concentrated rights-like harm, anti-lobbying backlash, revision dilution, useful lobbying information, and public-opinion error. Follow-up diagnostics include mechanism ablations, manipulation-stress campaigns, chamber-structure family/stress screens, and empirical flow sanity checks that map optional raw empirical summaries to simulator proxy metrics.
 
 \input{figures/scenario_averages_table}
-\input{figures/scenario_averages_full_table}
+
+The dense full scenario-average table is not repeated in the PDF appendix. Full numeric outputs, including separate pairwise-alternative and amendment-tournament rows, are provided in \texttt{reports/simulation-campaign-v21-paper.csv}; the generated LaTeX full table remains in \texttt{paper/figures/scenario\_averages\_full\_table.tex} for local inspection.
+
+The following sensitivity and fairness probes are not validation evidence. They test whether the framework exposes dependence on generator assumptions and whether major qualitative patterns survive limited alternative worlds.
+
 \input{figures/sensitivity_controls_table}
 \input{figures/pareto_front_table}
 \input{figures/mechanism_diagnostics_table}
@@ -232,7 +260,7 @@ The main submitted evidence comes from the main comparison campaign. That campai
 \begin{figure}
   \centering
   \resizebox{0.9\linewidth}{!}{\input{figures/timeline_contention}}
-  \caption{Appendix rising-contention stress paths from the main comparison campaign. The index is \(0.50\cdot\)gridlock \(+0.30\cdot(1-\)compromise\()+0.20\cdot\)low-public-support enactment. Lower is better.}
+  \caption{Appendix rising-contention stress paths from the main comparison campaign. The index is \(0.50\cdot\)gridlock \(+0.30\cdot(1-\)revision moderation\()+0.20\cdot\)low-public-support enactment. Lower is better.}
   \label{fig:appendix-timeline-contention}
   \Description{Line chart of selected contention paths over six stylized eras.}
 \end{figure}
@@ -246,16 +274,18 @@ The chamber-structure campaign tests representation architecture, committee powe
 \begin{figure}
   \centering
   \input{figures/chamber_productivity_compromise}
-  \caption{Chamber-structure family champions from the supplemental chamber campaign, zoomed to the observed champion range so clustered family labels remain readable. The axes keep the paper's central productivity/compromise comparison visible; malapportionment remains in Table~\ref{tab:chamber-family-champions} because the champion set has little variation on that metric.}
+  \caption{Chamber-structure family champions from the supplemental chamber campaign, zoomed to the observed champion range so clustered family labels remain readable. The axes keep the paper's central productivity/revision-moderation comparison visible; malapportionment remains in Table~\ref{tab:chamber-family-champions} because the champion set has little variation on that metric.}
   \label{fig:chamber-productivity-compromise}
-  \Description{Scatter plot of chamber family champion productivity and compromise, with the conventional benchmark marked by a distinct label and marker.}
+  \Description{Scatter plot of chamber family champion productivity and revision moderation, with the conventional benchmark marked by a distinct label and marker.}
 \end{figure}
 
 \section{Assumptions and Limitations}
+\label{sec:appendix-limitations}
 
 The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The empirical flow layer screens plausible ranges but does not fit raw datasets automatically. Leadership, initiative, conference, judicial, court-architecture, district-public, influence-system, long-horizon learning, and norm-erosion processes are stylized mechanism prototypes rather than detailed institutional models. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment. Omnibus and package bargaining are proxies for side payments, delays, exemptions, jurisdictional trades, distributive load, and harm reduction, not full models of legal text, appropriations, or multidimensional coalition formation.
 
 \section{Reproducibility}
+\label{sec:appendix-reproducibility}
 
 The main reproducibility entrypoints are:
 

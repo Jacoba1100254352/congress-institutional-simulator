@@ -247,7 +247,7 @@ SELECTION_RATIONALES = {
     ),
     "multidimensional-package-majority": (
         "Multidimensional bargaining",
-        "Main package-bargaining representative; tests whether richer cross-issue trades improve compromise after administrative load is counted.",
+        "Main package-bargaining representative; tests whether richer cross-issue trades improve revision moderation after administrative load is counted.",
     ),
     "omnibus-bargaining-majority": (
         "Omnibus bargaining",
@@ -891,12 +891,12 @@ def frontier_role(label: str) -> str:
 def write_pareto_front_table(rows: list[dict[str, str]], averages: dict[str, dict[str, float]]) -> None:
     objective_rows = [
         (
-            "Productivity + compromise + risk",
+            "Productivity + revision moderation + risk",
             frontier_labels(averages, ("productivity", "compromise", "riskControl")),
             "Original narrow frontier.",
         ),
         (
-            "Productivity + compromise + risk + admin",
+            "Productivity + revision moderation + risk + admin",
             frontier_labels(averages, ("productivity", "compromise", "riskControl", "administrativeFeasibility")),
             "Adding administrative feasibility makes most selected systems non-dominated.",
         ),
@@ -966,7 +966,7 @@ def scenario_metric_summary(averages: dict[str, dict[str, float]], scenario_key:
         return f"{label_for_key(scenario_key)} missing"
     return (
         f"{label_for_key(scenario_key)} P {values['productivity']:.2f}, "
-        f"C {values['compromise']:.2f}, R {values['riskControl']:.2f}, "
+        f"M {values['compromise']:.2f}, R {values['riskControl']:.2f}, "
         f"A {values['administrativeCost']:.2f}"
     )
 
@@ -1015,7 +1015,7 @@ def write_sensitivity_controls_table(rows: list[dict[str, str]], averages: dict[
         ),
         (
             "Generator",
-            "Compromise dilution",
+            "Revision dilution",
             case_sensitivity_result(rows, "adversarial-compromise-dilution"),
             "Tests whether moderation can reduce generated public benefit.",
         ),
@@ -1101,7 +1101,7 @@ def write_sensitivity_controls_table(rows: list[dict[str, str]], averages: dict[
         "    \\bottomrule",
         "  \\end{tabular}%",
         "  }",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} P is productivity, C compromise, R risk control, and A administrative cost. Fairness rows compare content-improvement variants; they do not impose a hard cost-constrained reoptimization.",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} P is productivity, M is revision moderation, R is risk control, and A is administrative cost. Fairness rows compare content-improvement variants; they do not impose a hard cost-constrained reoptimization.",
         "\\end{table*}",
         "",
     ])
@@ -1116,13 +1116,13 @@ def write_robustness_summary_table(rows: list[dict[str, str]], averages: dict[st
             "Portfolio leads and content selection remains close; this directly tests the moderation-friendly benefit generator.",
         ),
         (
-            "Compromise dilution",
+            "Revision dilution",
             "Yes",
             "Portfolio leads when moving toward the center can reduce generated value.",
         ),
         (
             "Lobbying information",
-            "No",
+            "No major change",
             "Content selection remains strongest when organized lobbying can carry useful information.",
         ),
         (
@@ -1132,7 +1132,7 @@ def write_robustness_summary_table(rows: list[dict[str, str]], averages: dict[st
         ),
         (
             "Minority-rights harm",
-            "No",
+            "No major change",
             "Content selection remains strongest, but the case targets majority-supported concentrated harm.",
         ),
         (
@@ -1160,7 +1160,7 @@ def write_robustness_summary_table(rows: list[dict[str, str]], averages: dict[st
         "  \\small",
         "  \\begin{tabular}{p{0.25\\textwidth}p{0.16\\textwidth}p{0.50\\textwidth}}",
         "    \\toprule",
-        "    Probe family & Top family changes? & Main implication \\\\",
+        "    Probe family & Main pattern changes? & Main implication \\\\",
         "    \\midrule",
     ]
     for probe, changes, implication in summary_rows:
@@ -1194,7 +1194,7 @@ def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "  \\resizebox{\\textwidth}{!}{%",
         "  \\begin{tabular}{llrrrrrrr}",
         "    \\toprule",
-        "    Label & Representative system & Prod. $\\uparrow$ & Comp. $\\uparrow$ & Public $\\uparrow$ & Low supp. $\\downarrow$ & Risk ctrl. $\\uparrow$ & Admin $\\downarrow$ & Sens. profile $\\uparrow$ \\\\",
+        "    Label & Representative system & Prod. $\\uparrow$ & Rev. mod. $\\uparrow$ & Public $\\uparrow$ & Low supp. $\\downarrow$ & Risk ctrl. $\\uparrow$ & Admin $\\downarrow$ & Example profile $\\uparrow$ \\\\",
         "    \\midrule",
     ]
     for scenario_key, label in sorted_main_table_scenarios(rows):
@@ -1226,7 +1226,7 @@ def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "    \\bottomrule",
         "  \\end{tabular}%",
         "  }",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} Sens. profile is one compromise-weighted sensitivity check: $0.30\\,\\mathrm{Comp.}+0.20\\,\\mathrm{Prod.}+0.20\\,\\mathrm{Risk\\ ctrl.}+0.15\\,\\mathrm{Admin\\ feas.}+0.15\\,\\mathrm{Public}$. Admin feas. is the inverse of the administrative-cost index shown in the Admin column. Low supp. is low-public-support enactment. The asterisk marks the stylized U.S.-like conventional benchmark. Cell values carry the comparison; shading follows the column arrow as a secondary cue.",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} Example profile is one revision-moderation-weighted sensitivity check: $0.30\\,\\mathrm{Rev.\\ mod.}+0.20\\,\\mathrm{Prod.}+0.20\\,\\mathrm{Risk\\ ctrl.}+0.15\\,\\mathrm{Admin\\ feas.}+0.15\\,\\mathrm{Public}$. Admin feas. is the inverse of the administrative-cost index shown in the Admin column. Low supp. is low-public-support enactment. The asterisk marks the stylized U.S.-like conventional benchmark. Cell values carry the comparison; shading follows the column arrow as a secondary cue.",
         "\\end{table*}",
         "",
     ])
@@ -1245,7 +1245,7 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "  \\resizebox{\\textwidth}{!}{%",
         "  \\begin{tabular}{llrrrrrrrrrr}",
         "    \\toprule",
-        "    Label & Scenario & Directional $\\uparrow$ & Seed dir. $\\uparrow$ & Prod. $\\uparrow$ & Yield $\\uparrow$ & Comp. $\\uparrow$ & Enacted/run & Low supp. $\\downarrow$ & Block dep. $\\downarrow$ & Admin cost $\\downarrow$ & Risk ctrl. $\\uparrow$ \\\\",
+        "    Label & Scenario & Directional $\\uparrow$ & Seed dir. $\\uparrow$ & Prod. $\\uparrow$ & Yield $\\uparrow$ & Rev. mod. $\\uparrow$ & Enacted/run & Low supp. $\\downarrow$ & Block dep. $\\downarrow$ & Admin cost $\\downarrow$ & Risk ctrl. $\\uparrow$ \\\\",
         "    \\midrule",
     ]
     for scenario_key, label in TABLE_SCENARIOS:
@@ -1282,7 +1282,7 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "    \\bottomrule",
         "  \\end{tabular}%",
         "  }",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Directional, productivity, yield, compromise, low-public-support enactment, blockage reliance, administrative cost, and risk-control values are normalized scores or rates. \\emph{Enacted/run} is an absolute institutional-load count.",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Directional, productivity, yield, revision moderation, low-public-support enactment, blockage reliance, administrative cost, and risk-control values are normalized scores or rates. \\emph{Enacted/run} is an absolute institutional-load count.",
         "\\end{table*}",
         "",
     ])
@@ -1305,7 +1305,7 @@ def write_design_space_coverage_table() -> None:
     ]
     lines = [
         "% Auto-generated by paper/scripts/generate_figures.py",
-        "\\begin{table*}",
+        "\\begin{table*}[!htbp]",
         "  \\caption{Mechanism families used in the main comparison. Labels match the Results figures; the appendix reports the broader implemented catalog.}",
         "  \\label{tab:design-space-coverage}",
         "  \\Description{A compact generated table showing the main mechanisms represented in the reported comparison, their labels, mechanism themes, and primary stress risks.}",
@@ -1574,12 +1574,12 @@ def auto_label_offsets(
 def table_points(averages: dict[str, dict[str, float]], x_field: str, y_field: str,
                  left: float, bottom: float, width: float, height: float) -> list[tuple[str, str, float, float]]:
     points: list[tuple[str, str, float, float]] = []
-    for index, (key, _label) in enumerate(MAIN_TABLE_SCENARIOS, start=1):
+    for key, label in MAIN_TABLE_SCENARIOS:
         if key not in averages:
             continue
         x = left + clamp01(averages[key][x_field]) * width
         y = bottom + clamp01(averages[key][y_field]) * height
-        points.append((key, numbered_label(index, key), x, y))
+        points.append((key, display_label(label, key), x, y))
     return points
 
 
@@ -1588,12 +1588,12 @@ def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> Non
     picture_width, picture_height = 122.0, 82.0
     y_max = 1.0
     points = []
-    for index, (key, _label) in enumerate(MAIN_TABLE_SCENARIOS, start=1):
+    for key, label in MAIN_TABLE_SCENARIOS:
         if key not in averages:
             continue
         x = left + clamp01(averages[key]["productivity"]) * width
         y = bottom + clamp01(averages[key]["riskControl"]) * height
-        points.append((key, numbered_label(index, key), x, y))
+        points.append((key, display_label(label, key), x, y))
     label_bounds = (left + 2.0, left + width - 2.0, bottom + 4.6, bottom + height - 1.2)
     placements = auto_label_offsets(points, picture_width, picture_height, label_bounds)
     lines = [
@@ -1619,8 +1619,8 @@ def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> Non
         f"\\put({fmt(left)},{fmt(bottom + height)}){{\\line(1,0){{{fmt(width)}}}}}",
     ])
     for key, label, x, y in points:
-        color = "red" if key == CURRENT_SYSTEM_KEY else "black"
-        point_size = "2.1mm" if key == CURRENT_SYSTEM_KEY else "1.7mm"
+        color = "black"
+        point_size = "2.5mm" if key == CURRENT_SYSTEM_KEY else "1.7mm"
         dx, dy, anchor = placements[key]
         append_labeled_square(lines, x, y, label, color, point_size, dx, dy, anchor, leader=True)
     lines.extend([
@@ -1740,12 +1740,12 @@ def write_compromise_productivity(averages: dict[str, dict[str, float]]) -> None
         f"\\put({fmt(left)},{fmt(bottom + height)}){{\\line(1,0){{{fmt(width)}}}}}",
     ])
     for key, label, x, y in points:
-        color = "red" if key == CURRENT_SYSTEM_KEY else "black"
-        point_size = "2.1mm" if key == CURRENT_SYSTEM_KEY else "1.8mm"
+        color = "black"
+        point_size = "2.5mm" if key == CURRENT_SYSTEM_KEY else "1.8mm"
         dx, dy, anchor = placements[key]
         append_labeled_square(lines, x, y, label, color, point_size, dx, dy, anchor, leader=True)
     lines.extend([
-        f"\\put({fmt(left + width / 2.0)},{fmt(bottom + height + 5.8)}){{\\makebox(0,0){{Compromise score (higher is better)}}}}",
+        f"\\put({fmt(left + width / 2.0)},{fmt(bottom + height + 5.8)}){{\\makebox(0,0){{Revision moderation (higher is better)}}}}",
         f"\\put({fmt(left + width / 2.0)},{fmt(2.0)}){{\\makebox(0,0){{Productivity (share enacted; higher is better)}}}}",
         "\\end{picture}",
         "\\endgroup",
@@ -1758,7 +1758,7 @@ def write_broad_system_comparison(averages: dict[str, dict[str, float]]) -> None
     scenarios = [(key, label) for key, label in TABLE_SCENARIOS if key in averages]
     metrics = [
         ("productivity", "Prod.", "black"),
-        ("compromise", "Comp.", "black!55"),
+        ("compromise", "Rev.", "black!55"),
         ("welfare", "Welfare", "black!25"),
     ]
     left_label, left_axis, scale = 34.0, 38.0, 76.0
@@ -1812,51 +1812,45 @@ def write_directional_scoreboard(
     scenarios = [(key, label) for key, label in sorted_main_table_scenarios(rows) if key in averages]
     metrics = [
         ("productivity", "Prod."),
-        ("compromise", "Comp."),
+        ("compromise", "Rev. mod."),
         ("publicMandateLegitimacy", "Public"),
         ("riskControl", "Risk"),
         ("administrativeFeasibility", "Admin"),
-        ("compromisePriorityScore", "Sens."),
+        ("compromisePriorityScore", "Example profile"),
     ]
-    left_label = 20.0
-    left_matrix = 26.0
-    col_width = 16.2
-    top = 75.5
-    row_height = 2.95
-    cell_height = 2.35
     lines = [
         "% Auto-generated by paper/scripts/generate_figures.py",
-        "\\begingroup",
-        "\\setlength{\\unitlength}{1mm}",
-        "\\begin{picture}(128,88)",
-        "\\scriptsize",
+        "\\begin{table*}[!htbp]",
+        "  \\caption{Selected metric profiles for the main mechanisms.}",
+        "  \\label{tab:directional-scoreboard}",
+        "  \\Description{A compact generated table comparing selected normalized metrics for the main mechanism families.}",
+        "  \\small",
+        "  \\setlength{\\tabcolsep}{3.2pt}",
+        "  \\begin{tabular}{@{}lrrrrrr@{}}",
+        "    \\toprule",
+        "    Label & Prod. & Rev. mod. & Public & Risk & Admin & Example profile \\\\",
+        "    \\midrule",
     ]
-    for index, (_field, label) in enumerate(metrics):
-        x = left_matrix + index * col_width
-        lines.extend([
-            f"\\put({fmt(x + col_width / 2.0)},{fmt(84.5)}){{\\makebox(0,0){{\\textbf{{{label}}}}}}}",
-            f"\\put({fmt(x)},{fmt(81.0)}){{\\color{{black!20}}\\line(1,0){{{fmt(col_width)}}}}}",
-        ])
-    for row_index, (key, label) in enumerate(scenarios):
-        y = top - row_index * row_height
-        label_color = "black"
+    for key, label in scenarios:
         label_text = display_label(label, key)
-        label_text = f"\\textbf{{{label_text}}}" if key == CURRENT_SYSTEM_KEY else label_text
-        lines.append(f"\\put({fmt(left_label)},{fmt(y + 0.45)}){{\\makebox(0,0)[r]{{\\color{{{label_color}}}{label_text}}}}}")
-        for metric_index, (field, _short) in enumerate(metrics):
+        cells: list[str] = []
+        for field, _short in metrics:
             value = clamp01(averages[key][field])
             fill, text_color = oriented_score_color(value)
-            x = left_matrix + metric_index * col_width
-            cell_text = f"\\textbf{{{value:.2f}}}" if key == CURRENT_SYSTEM_KEY else f"{value:.2f}"
-            lines.extend([
-                f"\\put({fmt(x)},{fmt(y)}){{\\color{{{fill}}}\\rule{{{fmt(col_width - 0.6)}mm}}{{{fmt(cell_height)}mm}}}}",
-                f"\\put({fmt(x + col_width / 2.0 - 0.3)},{fmt(y + cell_height / 2.0)}){{\\makebox(0,0){{\\color{{{text_color}}}{cell_text}}}}}",
-            ])
+            cell_text = f"{value:.2f}"
+            if key == CURRENT_SYSTEM_KEY:
+                cell_text = f"\\textbf{{{cell_text}}}"
+            cells.append(
+                f"\\colorbox{{{fill}}}{{\\makebox[11mm][c]{{\\strut \\color{{{text_color}}}{cell_text}}}}}"
+            )
+        if key == CURRENT_SYSTEM_KEY:
+            label_text = f"\\textbf{{{label_text}}}"
+        lines.append("    " + label_text + " & " + " & ".join(cells) + " \\\\")
     lines.extend([
-        f"\\put({fmt(left_label)},{fmt(84.5)}){{\\makebox(0,0)[r]{{\\textbf{{Label}}}}}}",
-        f"\\put({fmt(left_matrix + 3.0 * col_width)},{fmt(1.4)}){{\\makebox(0,0){{Rows grouped by mechanism family; values carry the comparison and shading is secondary.}}}}",
-        "\\end{picture}",
-        "\\endgroup",
+        "    \\bottomrule",
+        "  \\end{tabular}",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} Values are normalized to the metric direction shown in Table~\\ref{tab:metric-groups}; grayscale shading is secondary. Admin is administrative feasibility, the inverse of the cost index. The asterisk marks the stylized U.S.-like benchmark.",
+        "\\end{table*}",
         "",
     ])
     (FIGURE_DIR / "directional_scoreboard.tex").write_text("\n".join(lines))

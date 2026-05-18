@@ -63,7 +63,6 @@ def main() -> int:
         labels = []
 
     label_set = set(labels)
-    numbered_labels = {"1*"} | {str(index) for index in range(2, len(labels) + 1)}
     if "CUR*" not in label_set:
         failures.append("scenario table is missing CUR* benchmark label")
     table_text = TABLE.read_text() if TABLE.exists() else ""
@@ -76,21 +75,18 @@ def main() -> int:
         except FileNotFoundError:
             failures.append(f"{scatter}: missing")
             continue
-        uses_numbered_labels = figure_labels == numbered_labels
-        if not uses_numbered_labels:
-            missing = label_set - figure_labels
-            extra = figure_labels - label_set
-            if missing:
-                failures.append(f"{scatter}: labels missing from figure: {', '.join(sorted(missing))}")
-            if extra:
-                failures.append(f"{scatter}: figure labels missing from table: {', '.join(sorted(extra))}")
+        missing = label_set - figure_labels
+        extra = figure_labels - label_set
+        if missing:
+            failures.append(f"{scatter}: labels missing from figure: {', '.join(sorted(missing))}")
+        if extra:
+            failures.append(f"{scatter}: figure labels missing from table: {', '.join(sorted(extra))}")
         square_count = count_point_squares(scatter)
         if square_count != len(figure_labels):
             failures.append(f"{scatter}: found {square_count} plotted squares but {len(figure_labels)} point labels")
         text = scatter.read_text()
-        expected_benchmark_label = "1*" if uses_numbered_labels else "CUR*"
-        if "\\color{red}" not in text or f"label={expected_benchmark_label}" not in text:
-            failures.append(f"{scatter}: CUR benchmark is not visibly marked with red plus a non-color label")
+        if "label=CUR*" not in text or "\\rule{2.5mm}{2.5mm}" not in text:
+            failures.append(f"{scatter}: CUR benchmark is not visibly marked with asterisk plus larger square")
 
     if failures:
         print("Table/figure consistency check failed:", file=sys.stderr)
