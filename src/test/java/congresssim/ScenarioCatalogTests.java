@@ -312,11 +312,11 @@ final class ScenarioCatalogTests
 		);
 		assertTrue(
 				ScenarioCatalog.defaultScenarioKeys().size() < keys.size(),
-				"Default scenario list should be a representative breadth-first set, not the full historical catalog."
+				"Default scenario list should be a representative coverage set, not the full historical catalog."
 		);
 		assertTrue(
 				ScenarioCatalog.allScenarios().size() == ScenarioCatalog.allScenarioKeys().size(),
-				"All-scenarios list should match the breadth-first all-scenario key list."
+				"All-scenarios list should match the representative all-scenario key list."
 		);
 		assertTrue(
 				ScenarioCatalog.allScenarioKeys().size() < keys.size(),

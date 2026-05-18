@@ -1,6 +1,6 @@
 # Empirical Validation Summary
 
-This report computes validation summaries when optional raw datasets are present under `data/validation/raw/`. Missing rows indicate absent local data, not a simulator failure. Adapter fixtures under `data/validation/fixtures/` are ignored because they test parser shape rather than empirical fit.
+This report computes empirical comparison summaries when optional raw datasets are present under `data/validation/raw/`. Missing rows indicate absent local data, not a simulator failure. Adapter fixtures under `data/validation/fixtures/` are ignored because they test parser shape rather than empirical fit.
 
 | Dataset | Metric | Value | Status | Note |
 | --- | --- | ---: | --- | --- |

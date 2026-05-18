@@ -97,7 +97,7 @@ def write_champion_md(champs: list[dict[str, str]]) -> None:
         "",
         "Fixed-rule champion screen for the chamber/apportionment/committee campaign. Each row is the highest directional-score scenario within a structural family, averaged across the chamber campaign's baseline, adversarial, party-system, and timeline cases.",
         "",
-        "| Family | Champion | Dir. | Prod. | Comp. | Rep. quality | Risk ctrl. | Malapp. | Weak mandate |",
+        "| Family | Champion | Dir. | Prod. | Comp. | Rep. quality | Risk ctrl. | Malapp. | Low public support |",
         "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for row in champs:

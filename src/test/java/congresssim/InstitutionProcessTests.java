@@ -447,7 +447,7 @@ final class InstitutionProcessTests
 				0.80
 		).consider(highRisk, new VoteContext(Map.of("Test", 0.0), new Random(7L), 0.0));
 		
-		assertTrue(reviewed.enacted(), "High-risk but public-mandated bills should route to review, not be buried.");
+		assertTrue(reviewed.enacted(), "High-risk but publicly supported bills should route to review, not be buried.");
 		assertTrue(
 				reviewed.bill().attentionSpend() > highRisk.attentionSpend(),
 				"Open calendar review should carry an explicit delay/attention cost."

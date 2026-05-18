@@ -109,6 +109,43 @@ public final class WorldGenerator
 					Values.clamp(concentratedHarm + (antiLobbyingReform ? 0.04 : 0.12), 0.0, 1.0),
 					Values.clamp(0.46 + random.nextGaussian() * 0.12, 0.0, 1.0)
 			};
+			case COMPROMISE_DILUTION -> {
+				double reformPosition = Values.clamp((0.78 * sign) + random.nextGaussian() * 0.13, -1.0, 1.0);
+				double distanceValue = Math.abs(reformPosition);
+				yield new double[] {
+						reformPosition,
+						Values.clamp(0.48 - (0.08 * distanceValue) + random.nextGaussian() * 0.16, 0.0, 1.0),
+						Values.clamp(0.62 + (0.24 * distanceValue) + random.nextGaussian() * 0.10, 0.0, 1.0),
+						Values.clamp(lobbyPressure * 0.30 + random.nextGaussian() * 0.14, -1.0, 1.0),
+						Values.clamp(privateGain * 0.24, 0.0, 1.0),
+						Values.clamp(0.70 + random.nextGaussian() * 0.12, 0.0, 1.0),
+						Values.clamp(0.28 + random.nextGaussian() * 0.14, 0.0, 1.0),
+						Values.clamp(0.52 + random.nextGaussian() * 0.13, 0.0, 1.0)
+				};
+			}
+			case LOBBY_INFORMATION -> new double[] {
+					Values.clamp(ideology * 0.62 + random.nextGaussian() * 0.10, -1.0, 1.0),
+					Values.clamp(0.58 + random.nextGaussian() * 0.14, 0.0, 1.0),
+					Values.clamp(0.68 + (0.12 * Math.max(0.0, lobbyPressure)) + random.nextGaussian() * 0.10, 0.0, 1.0),
+					Values.clamp(0.46 + Math.max(0.0, lobbyPressure) * 0.34 + random.nextGaussian() * 0.12, -1.0, 1.0),
+					Values.clamp(0.22 + random.nextGaussian() * 0.10, 0.0, 1.0),
+					Values.clamp(0.60 + random.nextGaussian() * 0.12, 0.0, 1.0),
+					Values.clamp(0.20 + random.nextGaussian() * 0.12, 0.0, 1.0),
+					Values.clamp(0.18 + random.nextGaussian() * 0.08, 0.0, 1.0)
+			};
+			case PUBLIC_OPINION_ERROR -> {
+				boolean popularButWeak = random.nextBoolean();
+				yield new double[] {
+							Values.clamp(ideology + random.nextGaussian() * 0.12, -1.0, 1.0),
+							Values.clamp((popularButWeak ? 0.74 : 0.36) + random.nextGaussian() * 0.12, 0.0, 1.0),
+							Values.clamp((popularButWeak ? 0.30 : 0.74) + random.nextGaussian() * 0.12, 0.0, 1.0),
+							Values.clamp(lobbyPressure + random.nextGaussian() * 0.16, -1.0, 1.0),
+							Values.clamp(privateGain + (popularButWeak ? 0.18 : -0.10), 0.0, 1.0),
+							Values.clamp(0.66 + random.nextGaussian() * 0.14, 0.0, 1.0),
+							Values.clamp((popularButWeak ? 0.50 : 0.22) + random.nextGaussian() * 0.15, 0.0, 1.0),
+							Values.clamp(0.70 + random.nextGaussian() * 0.10, 0.0, 1.0)
+					};
+				}
 		};
 	}
 	

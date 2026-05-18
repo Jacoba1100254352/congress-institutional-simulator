@@ -1,23 +1,25 @@
 # Paper Build
 
-The working manuscript is `main.tex`, formatted with ACM's `acmart`
-LaTeX class for double-blind review.
+The working ACM CI manuscript is
+`paper/acm-ci-framework/acm-ci-framework.tex`, formatted with ACM's
+`acmart` LaTeX class for double-blind review. The ODD+D technical appendix is
+`paper/technical-appendix/odd-d-appendix.tex`.
 
 ## Target Venue
 
 The best current fit is ACM Collective Intelligence, because its call covers
 computational models, democracy, policymaking, incentive mechanisms, voting
-design, and collective decision-making. The current review build uses ACM's
-single-column template in anonymous review mode:
+design, and collective decision-making. The review build uses ACM's
+single-column template with anonymous author metadata in the manuscript:
 
 ```tex
-\documentclass[manuscript,review,anonymous]{acmart}
+\documentclass[manuscript]{acmart}
 \setcopyright{none}
 ```
 
 The final camera-ready version should restore author metadata, remove
-review-only options, restore the public repository URL if permitted, and add the
-ACM rights metadata supplied after acceptance.
+the anonymous author block, restore the public repository URL if permitted, and
+add the ACM rights metadata supplied after acceptance.
 
 ## Template Source
 
@@ -63,6 +65,12 @@ figure label bounds, table/figure consistency, and rendered-PDF sanity run with:
 make paper-checks
 ```
 
+The no-network artifact reproduction path is:
+
+```sh
+make reproduce-paper-offline
+```
+
 Build the anonymous review supplement with:
 
 ```sh
@@ -75,20 +83,20 @@ Run the selected multi-seed robustness report with:
 make seed-robustness-check
 ```
 
-Check optional raw empirical validation input readiness with:
+Check optional raw empirical comparison input readiness with:
 
 ```sh
 make validation-readiness
 ```
 
-Compute empirical validation summaries from any optional raw inputs that are
+Compute empirical comparison summaries from any optional raw inputs that are
 present with:
 
 ```sh
 make empirical-validation
 ```
 
-Map optional raw empirical summaries to the simulator calibration proxies with:
+Map optional raw empirical summaries to the simulator flow-check proxies with:
 
 ```sh
 make empirical-bridge
@@ -102,7 +110,7 @@ make manipulation-stress
 make mechanism-diagnostics
 ```
 
-Report the breadth-first scenario catalog composition with:
+Report the representative scenario catalog composition with:
 
 ```sh
 make catalog-breadth
@@ -118,14 +126,19 @@ make public-provenance
 The generated PDFs are written to:
 
 ```text
-paper/main.pdf
-paper/appendix-odd-d.pdf
+paper/acm-ci-framework/acm-ci-framework.pdf
+paper/technical-appendix/odd-d-appendix.pdf
 paper/pdf-manifest.json
 ```
 
 The intermediate build directory is ignored by Git. The stable
-`paper/main.pdf` and `paper/appendix-odd-d.pdf` artifacts are intentionally
+`paper/acm-ci-framework/acm-ci-framework.pdf` and
+`paper/technical-appendix/odd-d-appendix.pdf` artifacts are intentionally
 tracked so the repository contains the current paper PDFs without requiring a
 local LaTeX build first. `paper/pdf-manifest.json` records stable source and
 extracted-text hashes for those PDFs; run `make paper-checks` before treating
 paper-facing output as ready.
+
+Publication-splitting notes are kept under `paper/breakout-paper-plans/`. They
+separate the focused ACM CI framework paper from later political-science,
+failure-mode, and chamber-structure paper candidates.

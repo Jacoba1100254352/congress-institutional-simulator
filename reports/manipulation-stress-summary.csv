@@ -5,4 +5,4 @@ Bad-faith harm claims,harm-weighted-majority,harm-weighted-loose-claims-majority
 Astroturf objection pressure,public-objection-majority,public-objection-astroturf-majority,capture-flooding,capture-flooding,lower objection threshold and higher noise,0.012000,-0.006000,0.003000,0.010000,limited observed degradation
 Agenda flooding,agenda-lottery-majority,agenda-lottery-majority,baseline,proposal-flooding,same agenda lottery under proposal flooding,0.008000,-0.011000,0.007000,-0.001000,limited observed degradation
 Anti-capture defensive backlash,anti-capture-majority-bundle,anti-capture-majority-bundle,baseline,anti-lobbying-backlash,same anti-capture bundle under defensive lobbying backlash,-0.066000,-0.089000,-0.065000,-0.003000,stress variant improves this score profile
-Open default-pass capture stress,default-pass,default-pass,baseline,capture-flooding,throughput stress test under capture and flooding,0.021000,0.027000,0.063000,0.000000,material vulnerability
+Open burden-shifting capture stress,default-pass,default-pass,baseline,capture-flooding,throughput stress test under capture and flooding,0.021000,0.027000,0.063000,0.000000,material vulnerability

@@ -167,7 +167,7 @@ public final class CalibrationTargetCatalog
 						"agenda attention and policy-topic throughput over time",
 						"issue-domain bill shares, enacted bill diversity, welfarePerSubmittedBill",
 						"Calibrate issue-domain generation and topic throughput so simulated campaigns are not dominated by one generated domain.",
-						"The current simulator has abstract domains; this is a mapping target for later empirical work."
+						"The simulator has abstract domains; this is a mapping target for later empirical work."
 				),
 				new CalibrationTarget(
 						"parlgov-party-system",

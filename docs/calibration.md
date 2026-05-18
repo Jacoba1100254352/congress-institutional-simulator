@@ -1,6 +1,6 @@
-# Calibration And Validation
+# Empirical Flow Screening
 
-The simulator is still a mechanism-search model, not a fitted forecast of Congress. It now includes an executable empirical-screening pass so conventional baselines can be checked against named real-world data sources before counterfactual systems are interpreted.
+The simulator is a mechanism-comparison model, not a fitted forecast of Congress. It includes an executable empirical-flow screening pass so conventional baselines can be checked against named real-world data sources before counterfactual systems are interpreted.
 
 The tracked benchmark extract lives at:
 
@@ -10,7 +10,7 @@ data/calibration/empirical-benchmarks.csv
 
 The code-level benchmark loader lives in `congresssim.calibration.CalibrationTargetCatalog`.
 
-Run the validation pass with:
+Run the flow-screen pass with:
 
 ```sh
 make calibrate
@@ -23,7 +23,7 @@ This writes:
 
 ## Standard Targets
 
-The broader target list documents what should be calibrated as richer empirical extracts are added.
+The broader target list documents what should be screened as richer empirical extracts are added.
 
 | Target | Dataset | Simulator Metrics | Use |
 | --- | --- | --- | --- |
@@ -49,16 +49,16 @@ The current benchmark extract maps named empirical quantities to simulator metri
 | lobbying-spend-observable | U.S. Senate LDA filings | `default-pass-budgeted-lobbying` | `lobbySpendPerBill` | Confirm explicit lobbying actors generate visible budgeted influence. |
 | topic-throughput-yield | Comparative Agendas Project | `simple-majority` | `welfarePerSubmittedBill` | Prevent generated issue throughput from collapsing to zero. |
 
-## Calibration Workflow
+## Flow-Screen Workflow
 
 1. Load benchmark ranges from `data/calibration/empirical-benchmarks.csv`.
 2. Run conventional scenarios: simple majority, bicameral majority, presidential veto, the stylized U.S.-like benchmark, and explicit budgeted lobbying.
 3. Compute the mapped simulator metric for each benchmark range.
 4. Write a CSV and Markdown report with observed values and pass/fail status.
-5. Use failures as calibration prompts before drawing paper-level conclusions from counterfactual mechanisms.
+5. Use failures as flow-screen prompts before drawing paper-level conclusions from counterfactual mechanisms.
 
-The current pass is deliberately a benchmark screen. It does not yet fit parameters automatically or ingest raw Voteview/Congress.gov/LDA rows during the run. The next validation increment should add raw-data adapters that produce the benchmark extract directly.
+The current pass is deliberately a benchmark screen. It does not yet fit parameters automatically or ingest raw Voteview/Congress.gov/LDA rows during the run. The next empirical increment should add raw-data adapters that produce the benchmark extract directly.
 
 ## Non-Goals
 
-Calibration should not turn the simulator into a Congress replica. The goal is to make ordinary baselines plausible enough that comparisons among institutional mechanisms are harder to dismiss as artifacts of arbitrary generation settings.
+Flow screening should not turn the simulator into a Congress replica. The goal is to make ordinary baselines plausible enough that comparisons among institutional mechanisms are harder to dismiss as artifacts of arbitrary generation settings.

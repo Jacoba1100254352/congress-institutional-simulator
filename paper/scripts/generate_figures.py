@@ -16,15 +16,25 @@ FAMILY_SCREEN_CSV_PATH = ROOT / "reports" / "all-scenarios-baseline.csv"
 FIGURE_DIR = ROOT / "paper" / "figures"
 REPORT_DIR = ROOT / "reports"
 CURRENT_SYSTEM_KEY = "current-system"
+CONTENT_SELECTION_KEY = "content-selection-family"
+CONTENT_SELECTION_COMPONENTS = (
+    "simple-majority-alternatives-pairwise",
+    "pairwise-amendment-tournament-majority",
+)
+VIRTUAL_SCENARIOS = {
+    CONTENT_SELECTION_KEY: CONTENT_SELECTION_COMPONENTS,
+}
 TABLE_SCENARIOS = [
     (CURRENT_SYSTEM_KEY, "CUR"),
     ("current-congress-workflow", "FLOW"),
     ("simple-majority", "SM"),
+    ("simple-majority-mediation", "SMED"),
     ("supermajority-60", "S60"),
     ("bicameral-majority", "BIC"),
     ("presidential-veto", "VETO"),
     ("leadership-cartel-majority", "LEAD"),
     ("committee-regular-order", "COMM"),
+    ("committee-amendment-majority", "CAMD"),
     ("proportional-committee-assignment-majority", "PCOM"),
     ("committee-discharge-target-majority", "DIS"),
     ("cloture-conference-review", "PROC"),
@@ -63,38 +73,29 @@ TABLE_SCENARIOS = [
 ]
 MAIN_TABLE_SCENARIOS = [
     (CURRENT_SYSTEM_KEY, "CUR"),
-    ("current-congress-workflow", "FLOW"),
     ("simple-majority", "SM"),
     ("committee-regular-order", "COMM"),
-    ("proportional-committee-assignment-majority", "PCOM"),
     ("committee-discharge-target-majority", "DIS"),
-    ("parliamentary-coalition-confidence", "PARL"),
-    ("citizen-initiative-referendum", "INIT"),
-    ("citizens-agenda-petition-majority", "PET"),
-    ("simple-majority-alternatives-pairwise", "PAIR"),
-    ("pairwise-amendment-tournament-majority", "AMT"),
-    ("citizen-assembly-threshold", "JURY"),
-    ("random-public-review-panel-majority", "RPAN"),
     ("open-rule-calendar-majority", "OPEN"),
-    ("quadratic-attention-majority", "QAB"),
-    ("proposal-bond-majority", "BOND"),
-    ("harm-weighted-majority", "HARM"),
-    ("multidimensional-package-majority", "MPKG"),
-    ("anti-capture-majority-bundle", "CAP"),
+    (CONTENT_SELECTION_KEY, "SEL"),
     ("anti-capture-access-majority", "ACG"),
-    ("risk-routed-majority", "RISK"),
-    ("portfolio-hybrid-legislature", "PORT"),
-    ("expanded-portfolio-hybrid-legislature", "XPORT"),
-    ("law-registry-majority", "LAW"),
+    ("harm-weighted-majority", "HARM"),
     ("default-pass", "DP"),
     ("default-pass-multiround-mediation-challenge", "DPM"),
+    ("portfolio-hybrid-legislature", "PORT"),
 ]
-MAIN_SCENARIO_KEYS = {key for key, _label in MAIN_TABLE_SCENARIOS}
+MAIN_SCENARIO_KEYS = {
+    actual_key
+    for key, _label in MAIN_TABLE_SCENARIOS
+    for actual_key in VIRTUAL_SCENARIOS.get(key, (key,))
+}
 COMPACT_SCENARIO_NAMES = {
     CURRENT_SYSTEM_KEY: "Stylized U.S.-like benchmark",
     "current-congress-workflow": "Current workflow model",
     "simple-majority": "Simple majority",
+    "simple-majority-mediation": "Simple majority + mediation",
     "committee-regular-order": "Committee regular order",
+    "committee-amendment-majority": "Committee amendment control",
     "proportional-committee-assignment-majority": "Proportional committees",
     "committee-discharge-target-majority": "Discharge petition",
     "parliamentary-coalition-confidence": "Parliamentary coalition",
@@ -102,6 +103,7 @@ COMPACT_SCENARIO_NAMES = {
     "citizens-agenda-petition-majority": "Citizen agenda petition",
     "simple-majority-alternatives-pairwise": "Pairwise alternatives",
     "pairwise-amendment-tournament-majority": "Amendment tournament",
+    CONTENT_SELECTION_KEY: "Content-selection family",
     "citizen-assembly-threshold": "Citizen jury gate",
     "random-public-review-panel-majority": "Random public panel",
     "open-rule-calendar-majority": "Open floor calendar",
@@ -115,13 +117,13 @@ COMPACT_SCENARIO_NAMES = {
     "portfolio-hybrid-legislature": "Portfolio hybrid",
     "expanded-portfolio-hybrid-legislature": "Expanded portfolio",
     "law-registry-majority": "Law registry",
-    "default-pass": "Default enactment",
-    "default-pass-multiround-mediation-challenge": "Default + mediation",
+    "default-pass": "Burden-shifting stress case",
+    "default-pass-multiround-mediation-challenge": "Burden shift + mediation",
 }
 SELECTION_RATIONALES = {
     CURRENT_SYSTEM_KEY: (
         "Conventional benchmark",
-        "Stylized U.S.-like conventional benchmark used as the red baseline; included for comparison, not as a calibrated model of Congress.",
+        "Stylized U.S.-like conventional benchmark used as the marked baseline; included for comparison, not as a calibrated model of Congress.",
     ),
     "current-congress-workflow": (
         "Agenda-control benchmark",
@@ -130,6 +132,10 @@ SELECTION_RATIONALES = {
     "simple-majority": (
         "Conventional threshold",
         "Minimal affirmative-vote baseline that isolates the effect of ordinary majority passage.",
+    ),
+    "simple-majority-mediation": (
+        "Fairness control",
+        "Gives a conventional majority system a mediation content-improvement step so alternative-selection results are not compared only against unmodified yes/no voting.",
     ),
     "supermajority-60": (
         "Conventional threshold",
@@ -150,6 +156,10 @@ SELECTION_RATIONALES = {
     "committee-regular-order": (
         "Committee gate",
         "Represents committee-first screening before floor consideration.",
+    ),
+    "committee-amendment-majority": (
+        "Fairness control",
+        "Gives a committee-centered system information and amendment powers before floor voting.",
     ),
     "proportional-committee-assignment-majority": (
         "Committee assignment",
@@ -191,6 +201,10 @@ SELECTION_RATIONALES = {
         "Amendment control",
         "Represents pairwise selection among amended versions before final legislative ratification.",
     ),
+    CONTENT_SELECTION_KEY: (
+        "Content selection",
+        "Combines pairwise alternatives and amendment tournaments in the main narrative because their synthetic outcomes are nearly identical.",
+    ),
     "citizen-assembly-threshold": (
         "Mini-public review",
         "Represents citizen-panel certification changing the burden of proof.",
@@ -201,7 +215,7 @@ SELECTION_RATIONALES = {
     ),
     "public-interest-majority": (
         "Public-interest screening",
-        "Represents a welfare/support screen without default enactment.",
+        "Represents a welfare/support screen under affirmative majority passage.",
     ),
     "open-rule-calendar-majority": (
         "Open floor calendar",
@@ -264,8 +278,8 @@ SELECTION_RATIONALES = {
         "Represents risk-based fast, middle, and high-review lanes under affirmative majority rule.",
     ),
     "portfolio-hybrid-legislature": (
-        "Synthesized hybrid",
-        "Main design hypothesis combining fast lanes, alternatives, citizen/harm review, bonds, anti-capture safeguards, and law review.",
+        "Portfolio",
+        "Combines fast lanes, alternatives, citizen/harm review, bonds, anti-capture safeguards, and law review to test safeguard complexity.",
     ),
     "expanded-portfolio-hybrid-legislature": (
         "Expanded hybrid",
@@ -280,16 +294,16 @@ SELECTION_RATIONALES = {
         "Represents bounded long-horizon proposer and lobby adaptation across sessions.",
     ),
     "default-pass": (
-        "Default-enactment stress test",
-        "Kept as the open default-enactment endpoint rather than the organizing case.",
+        "Burden-shifting stress test",
+        "Tests open passage unless a blocking coalition forms.",
     ),
     "default-pass-challenge": (
-        "Default-enactment stress test",
-        "Tests whether scarce challenge rights reduce default-enactment risk.",
+        "Burden-shifting stress test",
+        "Tests whether scarce challenge rights reduce burden-shifting passage risk.",
     ),
     "default-pass-multiround-mediation-challenge": (
-        "Default-enactment stress test",
-        "Tests a guarded default-enactment variant with mediation and challenge vouchers.",
+        "Burden-shifting stress test",
+        "Tests a guarded burden-shifting variant with mediation and challenge vouchers.",
     ),
 }
 
@@ -327,6 +341,18 @@ def read_averages(path: Path, weighted: bool = False, case_filter=broad_case) ->
         "challengeRate",
         "compromise",
         "legitimacy",
+        "floor",
+        "accessDenied",
+        "committeeRejected",
+        "welfarePerSubmittedBill",
+        "enactedPolicyQuality",
+        "policyYield",
+        "blockageReliance",
+        "publicMandateLegitimacy",
+        "representativeQuality",
+        "riskControl",
+        "administrativeFeasibility",
+        "directionalScore",
     )
     with path.open(newline="") as handle:
         for row in csv.DictReader(handle):
@@ -424,6 +450,8 @@ def add_directional_scores(values: dict[str, float]) -> None:
     values["representativeQuality"] = representative_quality
     values["riskControl"] = risk_control
     values["administrativeFeasibility"] = administrative_feasibility
+    values["harmControl"] = inverse01(values.get("minorityHarm", 0.0))
+    values["lowSupportAvoidance"] = inverse01(values.get("weakPublicMandatePassage", 0.0))
     values["directionalScore"] = mean([
         clamp01(values.get("productivity", 0.0)),
         representative_quality,
@@ -431,6 +459,19 @@ def add_directional_scores(values: dict[str, float]) -> None:
         administrative_feasibility,
     ])
     values["compromisePriorityScore"] = compromise_priority_score(values)
+
+
+def add_virtual_averages(averages: dict[str, dict[str, float]]) -> None:
+    for virtual_key, components in VIRTUAL_SCENARIOS.items():
+        present = [averages[key] for key in components if key in averages]
+        if not present:
+            continue
+        fields = set().union(*(values.keys() for values in present))
+        averages[virtual_key] = {
+            field: mean([values[field] for values in present if field in values])
+            for field in fields
+        }
+        add_directional_scores(averages[virtual_key])
 
 
 def read_timeline(path: Path, case_filter=timeline_case) -> tuple[list[str], dict[str, dict[str, dict[str, float]]]]:
@@ -485,6 +526,27 @@ def mean_half_range(values: list[float]) -> tuple[float, float]:
     return avg, (max(values) - min(values)) / 2.0
 
 
+def percentile(sorted_values: list[float], fraction: float) -> float:
+    if not sorted_values:
+        return 0.0
+    if len(sorted_values) == 1:
+        return sorted_values[0]
+    position = (len(sorted_values) - 1) * fraction
+    lower = math.floor(position)
+    upper = math.ceil(position)
+    if lower == upper:
+        return sorted_values[lower]
+    weight = position - lower
+    return sorted_values[lower] * (1.0 - weight) + sorted_values[upper] * weight
+
+
+def median_iqr(values: list[float]) -> tuple[float, float, float]:
+    if not values:
+        return 0.0, 0.0, 0.0
+    ordered = sorted(values)
+    return percentile(ordered, 0.50), percentile(ordered, 0.25), percentile(ordered, 0.75)
+
+
 def table_value(values: list[float], decimals: int = 3) -> str:
     avg, half_range = mean_half_range(values)
     return f"{avg:.{decimals}f}$\\pm${half_range:.{decimals}f}"
@@ -498,34 +560,34 @@ def oriented_table_value(
 ) -> str:
     avg, half_range = mean_half_range(values)
     score = inverse01(avg) if direction == "lower" else clamp01(avg)
-    if score >= 0.67:
-        shade = 10 + round(42 * score)
-        color = f"green!{shade}"
-    elif score <= 0.33:
-        shade = 10 + round(42 * (1.0 - score))
-        color = f"red!{shade}"
-    else:
-        distance = abs(score - 0.5) * 2.0
-        shade = 12 + round(18 * distance)
-        color = f"yellow!{shade}"
+    shade = 5 + round(32 * score)
+    color = f"black!{shade}"
     text = f"{avg:.{decimals}f}$\\pm${half_range:.{decimals}f}"
     if bold:
         text = f"\\textbf{{{text}}}"
     return f"\\colorbox{{{color}}}{{\\makebox[13.5mm][c]{{\\strut {text}}}}}"
 
 
+def oriented_median_iqr_value(
+    values: list[float],
+    direction: str,
+    decimals: int = 2,
+    bold: bool = False,
+) -> str:
+    median, q1, q3 = median_iqr(values)
+    score = inverse01(median) if direction == "lower" else clamp01(median)
+    shade = 5 + round(32 * score)
+    color = f"black!{shade}"
+    text = f"{median:.{decimals}f} [{q1:.{decimals}f},{q3:.{decimals}f}]"
+    if bold:
+        text = f"\\textbf{{{text}}}"
+    return f"\\colorbox{{{color}}}{{\\makebox[17.5mm][c]{{\\strut {text}}}}}"
+
+
 def oriented_score_color(score: float) -> tuple[str, str]:
     score = clamp01(score)
-    if score >= 0.67:
-        shade = 10 + round(42 * score)
-        color = f"green!{shade}"
-    elif score <= 0.33:
-        shade = 10 + round(42 * (1.0 - score))
-        color = f"red!{shade}"
-    else:
-        distance = abs(score - 0.5) * 2.0
-        shade = 12 + round(18 * distance)
-        color = f"yellow!{shade}"
+    shade = 5 + round(32 * score)
+    color = f"black!{shade}"
     text_color = "black"
     return color, text_color
 
@@ -553,6 +615,16 @@ def seed_interval_value(intervals: dict[str, tuple[float, float]], scenario_key:
 
 
 def scenario_case_values(rows: list[dict[str, str]], scenario_key: str, field: str) -> list[float]:
+    if scenario_key in VIRTUAL_SCENARIOS:
+        by_case: dict[str, list[float]] = defaultdict(list)
+        for component_key in VIRTUAL_SCENARIOS[scenario_key]:
+            for row in rows:
+                if row["scenarioKey"] != component_key:
+                    continue
+                numeric = {key: float(value) for key, value in row.items() if value and number_like(value)}
+                add_directional_scores(numeric)
+                by_case[row["caseKey"]].append(numeric[field])
+        return [mean(case_values) for _case, case_values in sorted(by_case.items()) if case_values]
     values: list[float] = []
     for row in rows:
         if row["scenarioKey"] != scenario_key:
@@ -568,18 +640,11 @@ def sorted_main_table_scenarios(
     score_field: str = "compromisePriorityScore",
 ) -> list[tuple[str, str]]:
     present_keys = {row["scenarioKey"] for row in rows}
-
-    def score_average(scenario: tuple[str, str]) -> tuple[float, str]:
-        scenario_key, label = scenario
-        values = scenario_case_values(rows, scenario_key, score_field)
-        return (mean(values), label)
-
-    scenarios = [
+    return [
         (scenario_key, label)
         for scenario_key, label in MAIN_TABLE_SCENARIOS
-        if scenario_key in present_keys
+        if scenario_key in present_keys or scenario_key in VIRTUAL_SCENARIOS
     ]
-    return sorted(scenarios, key=score_average, reverse=True)
 
 
 def number_like(value: str) -> bool:
@@ -591,6 +656,8 @@ def number_like(value: str) -> bool:
 
 
 def scenario_name(rows: list[dict[str, str]], scenario_key: str) -> str:
+    if scenario_key == CONTENT_SELECTION_KEY:
+        return "Content-selection family"
     for row in rows:
         if row["scenarioKey"] == scenario_key:
             return row["scenario"]
@@ -601,6 +668,14 @@ def compact_scenario_name(rows: list[dict[str, str]], scenario_key: str) -> str:
     return COMPACT_SCENARIO_NAMES.get(scenario_key, scenario_name(rows, scenario_key))
 
 
+def display_label(label: str, scenario_key: str) -> str:
+    return f"{label}*" if scenario_key == CURRENT_SYSTEM_KEY else label
+
+
+def numbered_label(index: int, scenario_key: str) -> str:
+    return f"{index}*" if scenario_key == CURRENT_SYSTEM_KEY else str(index)
+
+
 def write_scenario_selection_manifest(rows: list[dict[str, str]]) -> None:
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     present_keys = {row["scenarioKey"] for row in rows}
@@ -609,19 +684,19 @@ def write_scenario_selection_manifest(rows: list[dict[str, str]]) -> None:
         "",
         "Generated by `paper/scripts/generate_figures.py` from the main comparison campaign.",
         "",
-        "Selection rule: include conventional baselines, the stylized U.S.-like benchmark, one readable representative for each implemented non-default design family, and three default-enactment stress tests. Where a family has many implemented variants, the representative is chosen for mechanism clarity rather than for highest observed score. Supplemental family-screen reports evaluate broader catalog champions under a fixed rule.",
+        "Selection rule: include the stylized U.S.-like benchmark, simple majority, committee regular order, discharge petition, open floor calendar, a combined content-selection family, anti-capture access, harm-weighted majority, one open burden-shifting stress case, one burden-shifting mediation case, and one portfolio hybrid. Where a family has many implemented variants, the representative is chosen for mechanism clarity rather than for highest observed score. Supplemental family-screen reports evaluate broader catalog champions under a fixed rule.",
         "",
         "| Label | Scenario key | Scenario name | Paper role | Family | Selection rationale |",
         "|---|---|---|---|---|---|",
     ]
     for scenario_key, label in TABLE_SCENARIOS:
-        if scenario_key not in present_keys:
+        if scenario_key not in present_keys and scenario_key not in VIRTUAL_SCENARIOS:
             continue
         family, rationale = SELECTION_RATIONALES.get(
             scenario_key,
             ("Uncategorized", "Included because it appears in the generated paper scenario list."),
         )
-        role = "Main Table 1" if scenario_key in MAIN_SCENARIO_KEYS else "Appendix/full comparison"
+        role = "Main mechanism-family display" if scenario_key in dict(MAIN_TABLE_SCENARIOS) else "Appendix/full comparison"
         lines.append(
             "| "
             + " | ".join([
@@ -636,7 +711,7 @@ def write_scenario_selection_manifest(rows: list[dict[str, str]]) -> None:
         )
     lines.extend([
         "",
-        "Historical default-pass sweeps remain available through catalog and campaign reports, but they are not used as the organizing frame for the main paper comparison.",
+        "Historical burden-shifting sweeps remain available through catalog and campaign reports, but the main paper comparison uses only the two stress-test representatives listed above.",
         "",
     ])
     (REPORT_DIR / "scenario-selection-manifest.md").write_text("\n".join(lines))
@@ -783,7 +858,7 @@ def pareto_front(
     averages: dict[str, dict[str, float]],
     fields: tuple[str, ...],
 ) -> list[str]:
-    keys = [key for key, _label in TABLE_SCENARIOS if key in averages]
+    keys = [key for key, _label in MAIN_TABLE_SCENARIOS if key in averages]
     front: list[str] = []
     for key in keys:
         values = averages[key]
@@ -809,98 +884,335 @@ def frontier_role(label: str) -> str:
         "XPORT": "Portfolio",
         "PAIR": "Alternatives",
         "AMT": "Amendments",
+        "SEL": "Content selection",
     }.get(label, "Frontier")
 
 
 def write_pareto_front_table(rows: list[dict[str, str]], averages: dict[str, dict[str, float]]) -> None:
-    label_by_key = dict(TABLE_SCENARIOS)
-    front = pareto_front(averages, ("productivity", "compromise", "riskControl"))
+    objective_rows = [
+        (
+            "Productivity + compromise + risk",
+            frontier_labels(averages, ("productivity", "compromise", "riskControl")),
+            "Original narrow frontier.",
+        ),
+        (
+            "Productivity + compromise + risk + admin",
+            frontier_labels(averages, ("productivity", "compromise", "riskControl", "administrativeFeasibility")),
+            "Adding administrative feasibility makes most selected systems non-dominated.",
+        ),
+        (
+            "Yield + risk + admin",
+            frontier_labels(averages, ("policyYield", "riskControl", "administrativeFeasibility")),
+            "Prioritizes generated public benefit per submitted proposal.",
+        ),
+        (
+            "Public support + harm + admin",
+            frontier_labels(averages, ("publicMandateLegitimacy", "harmControl", "administrativeFeasibility")),
+            "Prioritizes support, affected-group protection, and feasibility.",
+        ),
+        (
+            "Low-support avoidance + productivity",
+            frontier_labels(averages, ("lowSupportAvoidance", "productivity")),
+            "Makes low-public-support avoidance a hard objective.",
+        ),
+    ]
     lines = [
         "% Auto-generated by paper/scripts/generate_figures.py",
         "\\begin{table*}",
-        "  \\centering",
-        "  \\begin{minipage}[t]{0.48\\textwidth}",
-        "    \\centering",
-        "    \\caption{Pareto-front scenarios under productivity, compromise, and risk control.}",
-        "    \\label{tab:pareto-front}",
-        "    \\footnotesize",
-        "    \\setlength{\\tabcolsep}{1.6pt}",
-        "  \\begin{tabular}{@{}llrrrrr@{}}",
+        "  \\caption{Objective-set frontier sensitivity.}",
+        "  \\label{tab:pareto-front}",
+        "  \\Description{A generated appendix table showing how frontier membership changes under different objective sets.}",
+        "  \\small",
+        "  \\begin{tabular}{p{0.32\\textwidth}p{0.25\\textwidth}p{0.34\\textwidth}}",
         "    \\toprule",
-        "    Label & Role & Prod.$\\uparrow$ & Comp.$\\uparrow$ & Risk$\\uparrow$ & Weak$\\downarrow$ & Adm.$\\downarrow$ \\\\",
+        "    Objective set & Frontier members & Interpretation \\\\",
         "    \\midrule",
     ]
-    for scenario_key in front:
-        label = label_by_key[scenario_key]
-        values = averages[scenario_key]
-        label_cell = label
-        if scenario_key == CURRENT_SYSTEM_KEY:
-            label_cell = f"\\textcolor{{red}}{{\\textbf{{{label}}}}}"
+    for objective, members, interpretation in objective_rows:
         lines.append(
             "    "
-            + label_cell
+            + latex_escape(objective)
             + " & "
-            + latex_escape(frontier_role(label))
+            + latex_escape(members)
             + " & "
-            + f"{values['productivity']:.3f}"
-            + " & "
-            + f"{values['compromise']:.3f}"
-            + " & "
-            + f"{values['riskControl']:.3f}"
-            + " & "
-            + f"{values.get('weakPublicMandatePassage', 0.0):.3f}"
-            + " & "
-            + f"{values.get('administrativeCost', 0.0):.3f}"
+            + latex_escape(interpretation)
             + " \\\\"
         )
     lines.extend([
         "    \\bottomrule",
         "  \\end{tabular}",
-        "    \\par\\smallskip\\footnotesize \\emph{Note:} The frontier changes if administrative feasibility, welfare, or rights/harm priorities are hard objectives.",
-        "  \\end{minipage}\\hfill",
-        "  \\begin{minipage}[t]{0.49\\textwidth}",
-        "    \\centering",
-        "    \\input{figures/mechanism_diagnostics_table}",
-        "  \\end{minipage}",
-        "  \\Description{Two generated side-by-side tables. The first lists Pareto-front scenarios under productivity, compromise, and risk control; the second lists selected mechanism ablations and manipulation stress tests.}",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} This table is a sensitivity diagnostic. Frontier membership depends strongly on the objective set.",
         "\\end{table*}",
         "",
     ])
     (FIGURE_DIR / "pareto_front_table.tex").write_text("\n".join(lines))
 
 
+def row_numeric_scores(row: dict[str, str]) -> dict[str, float]:
+    values = {key: float(value) for key, value in row.items() if value and number_like(value)}
+    add_directional_scores(values)
+    return values
+
+
+def label_for_key(scenario_key: str) -> str:
+    if scenario_key == CONTENT_SELECTION_KEY:
+        return "SEL"
+    return dict(TABLE_SCENARIOS).get(scenario_key, scenario_key)
+
+
+def scenario_metric_summary(averages: dict[str, dict[str, float]], scenario_key: str) -> str:
+    values = averages.get(scenario_key)
+    if values is None:
+        return f"{label_for_key(scenario_key)} missing"
+    return (
+        f"{label_for_key(scenario_key)} P {values['productivity']:.2f}, "
+        f"C {values['compromise']:.2f}, R {values['riskControl']:.2f}, "
+        f"A {values['administrativeCost']:.2f}"
+    )
+
+
+def case_sensitivity_result(rows: list[dict[str, str]], case_key: str) -> str:
+    case_rows = [
+        row for row in rows
+        if row["caseKey"] == case_key and row["scenarioKey"] in MAIN_SCENARIO_KEYS
+    ]
+    if not case_rows:
+        return "case not present"
+    scored = [(row["scenarioKey"], row_numeric_scores(row)) for row in case_rows]
+    content_scores = [
+        values["compromisePriorityScore"]
+        for scenario_key, values in scored
+        if scenario_key in CONTENT_SELECTION_COMPONENTS
+    ]
+    grouped: list[tuple[str, float]] = []
+    if content_scores:
+        grouped.append(("SEL", mean(content_scores)))
+    for scenario_key, values in scored:
+        if scenario_key in CONTENT_SELECTION_COMPONENTS:
+            continue
+        grouped.append((label_for_key(scenario_key), values["compromisePriorityScore"]))
+    grouped.sort(key=lambda item: item[1], reverse=True)
+    top = "; ".join(f"{label} {score:.2f}" for label, score in grouped[:3])
+    parts = [f"top {top}"]
+    dp = next((values for scenario_key, values in scored if scenario_key == "default-pass"), None)
+    if dp is not None:
+        parts.append(f"DP low supp. {dp['weakPublicMandatePassage']:.2f}")
+    return "; ".join(parts)
+
+
+def frontier_labels(averages: dict[str, dict[str, float]], fields: tuple[str, ...]) -> str:
+    labels = [label_for_key(key) for key in pareto_front(averages, fields)]
+    return ", ".join(labels) if labels else "none"
+
+
+def write_sensitivity_controls_table(rows: list[dict[str, str]], averages: dict[str, dict[str, float]]) -> None:
+    sensitivity_rows = [
+        (
+            "Generator",
+            "Extreme-beneficial reform",
+            case_sensitivity_result(rows, "adversarial-high-benefit-extreme"),
+            "Tests whether high-distance proposals can carry high generated public benefit.",
+        ),
+        (
+            "Generator",
+            "Compromise dilution",
+            case_sensitivity_result(rows, "adversarial-compromise-dilution"),
+            "Tests whether moderation can reduce generated public benefit.",
+        ),
+        (
+            "Generator",
+            "Lobby information",
+            case_sensitivity_result(rows, "adversarial-lobby-information"),
+            "Tests useful organized information rather than only capture pressure.",
+        ),
+        (
+            "Generator",
+            "Public-opinion error",
+            case_sensitivity_result(rows, "adversarial-public-opinion-error"),
+            "Tests noisy or systematically biased public-support signals.",
+        ),
+        (
+            "Generator",
+            "Minority-rights harm",
+            case_sensitivity_result(rows, "adversarial-rights-harm"),
+            "Tests majority support paired with concentrated rights-like harm.",
+        ),
+        (
+            "Generator",
+            "Technocratic delay",
+            case_sensitivity_result(rows, "adversarial-delayed-benefit"),
+            "Tests low initial support with delayed generated public benefit.",
+        ),
+        (
+            "Fairness",
+            "Conventional revision",
+            "; ".join([
+                scenario_metric_summary(averages, CURRENT_SYSTEM_KEY),
+                scenario_metric_summary(averages, "cloture-conference-review"),
+            ]),
+            "Gives the conventional family conference/review content improvement.",
+        ),
+        (
+            "Fairness",
+            "Majority mediation",
+            "; ".join([
+                scenario_metric_summary(averages, "simple-majority"),
+                scenario_metric_summary(averages, "simple-majority-mediation"),
+            ]),
+            "Compares simple majority with a mediation content-improvement step.",
+        ),
+        (
+            "Fairness",
+            "Committee amendment",
+            "; ".join([
+                scenario_metric_summary(averages, "committee-regular-order"),
+                scenario_metric_summary(averages, "committee-amendment-majority"),
+            ]),
+            "Compares committee gatekeeping with committee information/amendment power.",
+        ),
+    ]
+    lines = [
+        "% Auto-generated by paper/scripts/generate_figures.py",
+        "\\begin{table*}",
+        "  \\caption{Appendix generator-sensitivity and fairness-control details. These rows summarize robustness probes; they are not validation evidence.}",
+        "  \\label{tab:sensitivity-controls}",
+        "  \\Description{A generated table summarizing generator sensitivity cases and fairness-control comparisons.}",
+        "  \\scriptsize",
+        "  \\setlength{\\tabcolsep}{2.0pt}",
+        "  \\resizebox{\\textwidth}{!}{%",
+        "  \\begin{tabular}{llll}",
+        "    \\toprule",
+        "    Type & Check & Result & Interpretation \\\\",
+        "    \\midrule",
+    ]
+    for kind, check, result, interpretation in sensitivity_rows:
+        lines.append(
+            "    "
+            + latex_escape(kind)
+            + " & "
+            + latex_escape(check)
+            + " & "
+            + latex_escape(result)
+            + " & "
+            + latex_escape(interpretation)
+            + " \\\\"
+        )
+    lines.extend([
+        "    \\bottomrule",
+        "  \\end{tabular}%",
+        "  }",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} P is productivity, C compromise, R risk control, and A administrative cost. Fairness rows compare content-improvement variants; they do not impose a hard cost-constrained reoptimization.",
+        "\\end{table*}",
+        "",
+    ])
+    (FIGURE_DIR / "sensitivity_controls_table.tex").write_text("\n".join(lines))
+
+
+def write_robustness_summary_table(rows: list[dict[str, str]], averages: dict[str, dict[str, float]]) -> None:
+    summary_rows = [
+        (
+            "Extreme-beneficial reform",
+            "Yes",
+            "Portfolio leads and content selection remains close; this directly tests the moderation-friendly benefit generator.",
+        ),
+        (
+            "Compromise dilution",
+            "Yes",
+            "Portfolio leads when moving toward the center can reduce generated value.",
+        ),
+        (
+            "Lobbying information",
+            "No",
+            "Content selection remains strongest when organized lobbying can carry useful information.",
+        ),
+        (
+            "Public-opinion error",
+            "Partial",
+            "Portfolio and content selection are near-tied when support and benefit decouple.",
+        ),
+        (
+            "Minority-rights harm",
+            "No",
+            "Content selection remains strongest, but the case targets majority-supported concentrated harm.",
+        ),
+        (
+            "Cost-constrained fairness",
+            "Unresolved",
+            "Reported fairness rows add conventional revision, mediation, and committee amendment; they do not yet hard-budget process cost.",
+        ),
+        (
+            "Ablation/stress probes",
+            "Failure modes",
+            "No alternatives weakens the content-selection result; clone/decoy, astroturf, and loose-harm cases expose manipulability.",
+        ),
+        (
+            "Objective-set frontier",
+            "Yes",
+            "Adding administrative feasibility or harm/support objectives changes which systems are non-dominated.",
+        ),
+    ]
+    lines = [
+        "% Auto-generated by paper/scripts/generate_figures.py",
+        "\\begin{table*}",
+        "  \\caption{Robustness and failure-mode summary. Raw numeric rows are in the appendix.}",
+        "  \\label{tab:robustness-summary}",
+        "  \\Description{A compact generated table summarizing generator sensitivity, fairness controls, stress tests, and alternative frontier checks.}",
+        "  \\small",
+        "  \\begin{tabular}{p{0.25\\textwidth}p{0.16\\textwidth}p{0.50\\textwidth}}",
+        "    \\toprule",
+        "    Probe family & Top family changes? & Main implication \\\\",
+        "    \\midrule",
+    ]
+    for probe, changes, implication in summary_rows:
+        lines.append(
+            "    "
+            + latex_escape(probe)
+            + " & "
+            + latex_escape(changes)
+            + " & "
+            + latex_escape(implication)
+            + " \\\\"
+        )
+    lines.extend([
+        "    \\bottomrule",
+        "  \\end{tabular}",
+        "\\end{table*}",
+        "",
+    ])
+    (FIGURE_DIR / "robustness_summary_table.tex").write_text("\n".join(lines))
+
+
 def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
     lines = [
         "% Auto-generated by paper/scripts/generate_figures.py",
         "\\begin{table*}",
-        "  \\caption{Representative family comparison from the main campaign, sorted by an explicit compromise-priority sensitivity score rather than an estimated welfare function. Entries are mean$\\pm$case half-range; full names and seed diagnostics are in the appendix and supplement.}",
+        "  \\caption{Selected core metrics from the main campaign, grouped by mechanism family. Entries are median [IQR] across broad and adversarial cases; the appendix reports mean/range, yield, seed diagnostics, and separate PAIR/AMT rows.}",
         "  \\label{tab:scenario-averages}",
         "  \\Description{A generated compact table comparing representative institutional families from the main comparison campaign.}",
         "  \\scriptsize",
         "  \\setlength{\\fboxsep}{0.8pt}",
         "  \\resizebox{\\textwidth}{!}{%",
-        "  \\begin{tabular}{llrrrrrrrrr}",
+        "  \\begin{tabular}{llrrrrrrr}",
         "    \\toprule",
-        "    Label & Representative system & C-pri. $\\uparrow$ & Prod. $\\uparrow$ & Yield $\\uparrow$ & Comp. $\\uparrow$ & Mandate $\\uparrow$ & Weak mand. $\\downarrow$ & Block dep. $\\downarrow$ & Risk ctrl. $\\uparrow$ & Admin $\\downarrow$ \\\\",
+        "    Label & Representative system & Prod. $\\uparrow$ & Comp. $\\uparrow$ & Public $\\uparrow$ & Low supp. $\\downarrow$ & Risk ctrl. $\\uparrow$ & Admin $\\downarrow$ & Sens. profile $\\uparrow$ \\\\",
         "    \\midrule",
     ]
     for scenario_key, label in sorted_main_table_scenarios(rows):
         current = scenario_key == CURRENT_SYSTEM_KEY
         cells = [
-            oriented_table_value(scenario_case_values(rows, scenario_key, "compromisePriorityScore"), "higher", bold=current),
-            oriented_table_value(scenario_case_values(rows, scenario_key, "productivity"), "higher", bold=current),
-            oriented_table_value(scenario_case_values(rows, scenario_key, "policyYield"), "higher", bold=current),
-            oriented_table_value(scenario_case_values(rows, scenario_key, "compromise"), "higher", bold=current),
-            oriented_table_value(scenario_case_values(rows, scenario_key, "publicMandateLegitimacy"), "higher", bold=current),
-            oriented_table_value(scenario_case_values(rows, scenario_key, "weakPublicMandatePassage"), "lower", bold=current),
-            oriented_table_value(scenario_case_values(rows, scenario_key, "blockageReliance"), "lower", bold=current),
-            oriented_table_value(scenario_case_values(rows, scenario_key, "riskControl"), "higher", bold=current),
-            oriented_table_value(scenario_case_values(rows, scenario_key, "administrativeCost"), "lower", bold=current),
+            oriented_median_iqr_value(scenario_case_values(rows, scenario_key, "productivity"), "higher", bold=current),
+            oriented_median_iqr_value(scenario_case_values(rows, scenario_key, "compromise"), "higher", bold=current),
+            oriented_median_iqr_value(scenario_case_values(rows, scenario_key, "publicMandateLegitimacy"), "higher", bold=current),
+            oriented_median_iqr_value(scenario_case_values(rows, scenario_key, "weakPublicMandatePassage"), "lower", bold=current),
+            oriented_median_iqr_value(scenario_case_values(rows, scenario_key, "riskControl"), "higher", bold=current),
+            oriented_median_iqr_value(scenario_case_values(rows, scenario_key, "administrativeCost"), "lower", bold=current),
+            oriented_median_iqr_value(scenario_case_values(rows, scenario_key, "compromisePriorityScore"), "higher", bold=current),
         ]
+        label = display_label(label, scenario_key)
         scenario = latex_escape(compact_scenario_name(rows, scenario_key))
         if current:
-            label = f"\\textcolor{{red}}{{\\textbf{{{label}}}}}"
-            scenario = f"\\textcolor{{red}}{{\\textbf{{{scenario}}}}}"
+            label = f"\\textbf{{{label}}}"
+            scenario = f"\\textbf{{{scenario}}}"
         lines.append(
             "    "
             + label
@@ -914,7 +1226,7 @@ def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "    \\bottomrule",
         "  \\end{tabular}%",
         "  }",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} C-pri. is a transparent sensitivity score: $0.30\\,\\mathrm{Comp.}+0.20\\,\\mathrm{Prod.}+0.20\\,\\mathrm{Risk\\ ctrl.}+0.15\\,\\mathrm{Admin\\ feas.}+0.15\\,\\mathrm{Mandate}$. Admin feas. is the inverse of the administrative-cost index shown in the Admin column. This value profile prioritizes compromise while retaining productivity, risk control, feasibility, and public-mandate legitimacy; it is not an empirically estimated welfare function. Yield is welfare per submitted proposal, so systems do not receive the same interpretation for merely blocking most bills. Block dep. is pre-floor blockage reliance. Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Cell shading is oriented by the column arrow: green is more favorable and red is less favorable. Red label text marks the stylized U.S.-like conventional benchmark.",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} Sens. profile is one compromise-weighted sensitivity check: $0.30\\,\\mathrm{Comp.}+0.20\\,\\mathrm{Prod.}+0.20\\,\\mathrm{Risk\\ ctrl.}+0.15\\,\\mathrm{Admin\\ feas.}+0.15\\,\\mathrm{Public}$. Admin feas. is the inverse of the administrative-cost index shown in the Admin column. Low supp. is low-public-support enactment. The asterisk marks the stylized U.S.-like conventional benchmark. Cell values carry the comparison; shading follows the column arrow as a secondary cue.",
         "\\end{table*}",
         "",
     ])
@@ -933,12 +1245,13 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "  \\resizebox{\\textwidth}{!}{%",
         "  \\begin{tabular}{llrrrrrrrrrr}",
         "    \\toprule",
-        "    Label & Scenario & Directional $\\uparrow$ & Seed dir. $\\uparrow$ & Prod. $\\uparrow$ & Yield $\\uparrow$ & Comp. $\\uparrow$ & Enacted/run & Weak mandate $\\downarrow$ & Block dep. $\\downarrow$ & Admin cost $\\downarrow$ & Risk ctrl. $\\uparrow$ \\\\",
+        "    Label & Scenario & Directional $\\uparrow$ & Seed dir. $\\uparrow$ & Prod. $\\uparrow$ & Yield $\\uparrow$ & Comp. $\\uparrow$ & Enacted/run & Low supp. $\\downarrow$ & Block dep. $\\downarrow$ & Admin cost $\\downarrow$ & Risk ctrl. $\\uparrow$ \\\\",
         "    \\midrule",
     ]
     for scenario_key, label in TABLE_SCENARIOS:
         if not any(row["scenarioKey"] == scenario_key for row in rows):
             continue
+        label = display_label(label, scenario_key)
         cells = [
             table_value(scenario_case_values(rows, scenario_key, "directionalScore")),
             seed_interval_value(seed_intervals, scenario_key),
@@ -953,9 +1266,9 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         ]
         scenario = latex_escape(scenario_name(rows, scenario_key))
         if scenario_key == CURRENT_SYSTEM_KEY:
-            label = f"\\textcolor{{red}}{{\\textbf{{{label}}}}}"
-            scenario = f"\\textcolor{{red}}{{\\textbf{{{scenario}}}}}"
-            cells = [f"\\textcolor{{red}}{{\\textbf{{{cell}}}}}" for cell in cells]
+            label = f"\\textbf{{{label}}}"
+            scenario = f"\\textbf{{{scenario}}}"
+            cells = [f"\\textbf{{{cell}}}" for cell in cells]
         lines.append(
             "    "
             + label
@@ -969,7 +1282,7 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "    \\bottomrule",
         "  \\end{tabular}%",
         "  }",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Directional, productivity, yield, compromise, weak public-mandate passage, blockage reliance, administrative cost, and risk-control values are normalized scores or rates. \\emph{Enacted/run} is an absolute institutional-load count.",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} Case half-ranges are descriptive variation across campaign cases, not statistical confidence intervals. Directional, productivity, yield, compromise, low-public-support enactment, blockage reliance, administrative cost, and risk-control values are normalized scores or rates. \\emph{Enacted/run} is an absolute institutional-load count.",
         "\\end{table*}",
         "",
     ])
@@ -978,32 +1291,24 @@ def write_full_scenario_averages_table(rows: list[dict[str, str]]) -> None:
 
 def write_design_space_coverage_table() -> None:
     rows = [
-        ("Conventional", "SM S60 BIC VETO CUR", "Thresholds/vetoes", "Bottlenecks"),
-        ("Procedure", "LEAD PROC COMM DIS", "Agenda control", "Queue capture"),
-        ("Courts", "COURT", "Review architecture", "Juridification"),
-        ("Public model", "DIST", "District publics", "Proxy opinion"),
-        ("Agenda gates", "SCR LOT OPEN", "Screen/lottery/calendar", "Gate bias"),
-        ("Committee design", "PCOM", "Proportional assignment", "Committee capture"),
-        ("Coalition", "PARL", "Confidence/access", "Bloc cartels"),
-        ("Direct democracy", "INIT PET", "Initiative/petition paths", "Campaign bias"),
-        ("Tournaments", "PAIR AMT", "Alternatives/amendments", "Clones/decoys"),
-        ("Mini-public", "JURY RPAN", "Citizen burden shift", "Manipulation"),
-        ("Scarcity", "QAB BOND", "Credits/bonds", "Hoarding"),
-        ("Harm rules", "HARM COMP", "Minority protection", "Holdouts"),
-        ("Bargaining", "PKG MPKG OMNI", "Package trades", "Proxy limits"),
-        ("Correction", "LAW OBJ", "Review/objection", "Instability"),
-        ("Anti-capture", "CAP ACG INFL", "Lobby safeguards", "Evasion"),
-        ("Adaptive", "RISK NORM LEARN", "Risk/norm/learning", "Gaming"),
-        ("Portfolio", "PORT XPORT", "Mechanism bundle", "Complexity"),
-        ("Default stress", "DP DPC DPM", "Burden shift", "False silence"),
-        ("Out of scope", "---", "Elections/media/etc.", "Endogeneity"),
+        ("Conventional benchmark", "CUR", "House/Senate/veto gate", "Bottlenecks"),
+        ("Simple majority", "SM", "Affirmative threshold", "Low screening"),
+        ("Committee regular order", "COMM", "Committee-first gate", "Burial/capture"),
+        ("Discharge petition", "DIS", "Committee bypass", "Bypass pressure"),
+        ("Open floor calendar", "OPEN", "Default-open agenda", "Floor overload"),
+        ("Content selection", "SEL", "Alternatives/tournament", "Clones/agenda manipulation"),
+        ("Anti-capture access", "ACG", "Pre-floor capture screen", "Gate bias"),
+        ("Harm-weighted majority", "HARM", "Affected-group threshold", "Holdouts"),
+        ("Burden-shifting stress", "DP", "Pass unless blocked", "False silence"),
+        ("Burden shift + mediation", "DPM", "Mediation plus challenge", "Cost/weak consent"),
+        ("Portfolio hybrid", "PORT", "Combined safeguards", "Complexity"),
     ]
     lines = [
         "% Auto-generated by paper/scripts/generate_figures.py",
         "\\begin{table*}",
-        "  \\caption{Compact design-space index for the main comparison campaign. Labels match Table~\\ref{tab:scenario-averages} and the scatter plots; detailed mechanism descriptions are in the appendix and supplement.}",
+        "  \\caption{Mechanism families used in the main comparison. Labels match the Results figures; the appendix reports the broader implemented catalog.}",
         "  \\label{tab:design-space-coverage}",
-        "  \\Description{A compact generated index showing the design families represented in the main comparison campaign, their labels, the mechanism theme, and the primary stress risk.}",
+        "  \\Description{A compact generated table showing the main mechanisms represented in the reported comparison, their labels, mechanism themes, and primary stress risks.}",
         "  \\small",
         "  \\begin{tabular}{@{}llll@{}}",
         "    \\toprule",
@@ -1269,12 +1574,12 @@ def auto_label_offsets(
 def table_points(averages: dict[str, dict[str, float]], x_field: str, y_field: str,
                  left: float, bottom: float, width: float, height: float) -> list[tuple[str, str, float, float]]:
     points: list[tuple[str, str, float, float]] = []
-    for key, label in MAIN_TABLE_SCENARIOS:
+    for index, (key, _label) in enumerate(MAIN_TABLE_SCENARIOS, start=1):
         if key not in averages:
             continue
         x = left + clamp01(averages[key][x_field]) * width
         y = bottom + clamp01(averages[key][y_field]) * height
-        points.append((key, label, x, y))
+        points.append((key, numbered_label(index, key), x, y))
     return points
 
 
@@ -1283,13 +1588,12 @@ def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> Non
     picture_width, picture_height = 122.0, 82.0
     y_max = 1.0
     points = []
-    for key, label in MAIN_TABLE_SCENARIOS:
+    for index, (key, _label) in enumerate(MAIN_TABLE_SCENARIOS, start=1):
         if key not in averages:
             continue
         x = left + clamp01(averages[key]["productivity"]) * width
-        risk_burden = 1.0 - clamp01(averages[key]["riskControl"])
-        y = bottom + clamp01(risk_burden) * height
-        points.append((key, label, x, y))
+        y = bottom + clamp01(averages[key]["riskControl"]) * height
+        points.append((key, numbered_label(index, key), x, y))
     label_bounds = (left + 2.0, left + width - 2.0, bottom + 4.6, bottom + height - 1.2)
     placements = auto_label_offsets(points, picture_width, picture_height, label_bounds)
     lines = [
@@ -1320,7 +1624,7 @@ def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> Non
         dx, dy, anchor = placements[key]
         append_labeled_square(lines, x, y, label, color, point_size, dx, dy, anchor, leader=True)
     lines.extend([
-        f"\\put({fmt(left + width / 2.0)},{fmt(bottom + height + 5.8)}){{\\makebox(0,0){{Representative-risk burden (lower is better)}}}}",
+        f"\\put({fmt(left + width / 2.0)},{fmt(bottom + height + 5.8)}){{\\makebox(0,0){{Risk control (higher is better)}}}}",
         f"\\put({fmt(left + width / 2.0)},{fmt(2.0)}){{\\makebox(0,0){{Productivity (share enacted; higher is better)}}}}",
         "\\end{picture}",
         "\\endgroup",
@@ -1507,12 +1811,12 @@ def write_directional_scoreboard(
 ) -> None:
     scenarios = [(key, label) for key, label in sorted_main_table_scenarios(rows) if key in averages]
     metrics = [
-        ("compromisePriorityScore", "C-pri."),
         ("productivity", "Prod."),
         ("compromise", "Comp."),
-        ("publicMandateLegitimacy", "Mandate"),
+        ("publicMandateLegitimacy", "Public"),
         ("riskControl", "Risk"),
         ("administrativeFeasibility", "Admin"),
+        ("compromisePriorityScore", "Sens."),
     ]
     left_label = 20.0
     left_matrix = 26.0
@@ -1535,8 +1839,9 @@ def write_directional_scoreboard(
         ])
     for row_index, (key, label) in enumerate(scenarios):
         y = top - row_index * row_height
-        label_color = "red" if key == CURRENT_SYSTEM_KEY else "black"
-        label_text = f"\\textbf{{{label}}}" if key == CURRENT_SYSTEM_KEY else label
+        label_color = "black"
+        label_text = display_label(label, key)
+        label_text = f"\\textbf{{{label_text}}}" if key == CURRENT_SYSTEM_KEY else label_text
         lines.append(f"\\put({fmt(left_label)},{fmt(y + 0.45)}){{\\makebox(0,0)[r]{{\\color{{{label_color}}}{label_text}}}}}")
         for metric_index, (field, _short) in enumerate(metrics):
             value = clamp01(averages[key][field])
@@ -1549,7 +1854,7 @@ def write_directional_scoreboard(
             ])
     lines.extend([
         f"\\put({fmt(left_label)},{fmt(84.5)}){{\\makebox(0,0)[r]{{\\textbf{{Label}}}}}}",
-        f"\\put({fmt(left_matrix + 3.0 * col_width)},{fmt(1.4)}){{\\makebox(0,0){{Rows sorted by compromise-priority sensitivity score; green is favorable and red is unfavorable.}}}}",
+        f"\\put({fmt(left_matrix + 3.0 * col_width)},{fmt(1.4)}){{\\makebox(0,0){{Rows grouped by mechanism family; values carry the comparison and shading is secondary.}}}}",
         "\\end{picture}",
         "\\endgroup",
         "",
@@ -1567,7 +1872,7 @@ def write_timeline_contention(
         ("committee-regular-order", "COMM", "black!55", "line width=0.34pt,dash pattern=on 3pt off 1.8pt"),
         ("parliamentary-coalition-confidence", "PARL", "black!70", "line width=0.36pt,dash pattern=on 5pt off 1.8pt"),
         ("simple-majority-alternatives-pairwise", "PAIR", "black!80", "line width=0.36pt"),
-        ("expanded-portfolio-hybrid-legislature", "XPORT", "black", "line width=0.42pt"),
+        ("portfolio-hybrid-legislature", "PORT", "black", "line width=0.42pt"),
         ("default-pass", "DP", "black!25", "line width=0.32pt"),
         ("default-pass-multiround-mediation-challenge", "DPM", "black!60", "line width=0.34pt,dash pattern=on 2pt off 1.6pt"),
     ]
@@ -1664,12 +1969,16 @@ def main() -> None:
     broad_rows = read_case_rows(PAPER_CSV_PATH, broad_case)
     base_averages = read_averages(PAPER_CSV_PATH, case_filter=broad_case)
     party_averages = read_averages(PAPER_CSV_PATH, weighted=True, case_filter=party_case)
+    add_virtual_averages(base_averages)
+    add_virtual_averages(party_averages)
     timeline_cases, timeline_values = read_timeline(PAPER_CSV_PATH, case_filter=timeline_case)
     write_compact_scenario_averages_table(broad_rows)
     write_full_scenario_averages_table(broad_rows)
     write_scenario_selection_manifest(broad_rows)
     write_representative_champion_comparison(broad_rows)
     write_pareto_front_table(broad_rows, base_averages)
+    write_sensitivity_controls_table(broad_rows, base_averages)
+    write_robustness_summary_table(broad_rows, base_averages)
     write_design_space_coverage_table()
     write_productivity_low_support(base_averages)
     write_default_pass_deltas(base_averages)

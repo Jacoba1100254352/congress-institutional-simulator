@@ -25,7 +25,7 @@ def pdf_text(path: Path) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("pdf_path", nargs="?", default="paper/main.pdf")
+    parser.add_argument("pdf_path", nargs="?", default="paper/acm-ci-framework/acm-ci-framework.pdf")
     parser.add_argument("--max", type=int, default=6000)
     args = parser.parse_args()
 

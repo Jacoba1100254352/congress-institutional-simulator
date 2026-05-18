@@ -8,7 +8,7 @@ Supplemental breadth-catalog screen over the runnable --all-scenarios set. Long 
 - Seed: 20260428
 - Selection rule: within each scenario family, the reported scenario has the highest directional score in this fixed baseline screen.
 
-| Family | Top scenario | Directional | Productivity | Compromise | Weak mandate | Admin cost | Welfare |
+| Family | Top scenario | Directional | Productivity | Compromise | Low public support | Admin cost | Welfare |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Adaptive strategy | Risk-routed majority legislature | 0.659 | 0.484 | 0.235 | 0.241 | 0.167 | 0.518 |
 | Agenda gate | Committee-first regular order | 0.637 | 0.157 | 0.276 | 0.078 | 0.027 | 0.681 |
@@ -32,4 +32,4 @@ Supplemental breadth-catalog screen over the runnable --all-scenarios set. Long 
 | Reversibility and objection | Active-law registry + majority review | 0.634 | 0.294 | 0.215 | 0.235 | 0.090 | 0.606 |
 | Selection and retention | Appointment and retention eligibility filter | 0.643 | 0.294 | 0.216 | 0.227 | 0.070 | 0.615 |
 
-The screen exists to reduce cherry-picking risk: the main paper reports a compact breadth-first campaign, while this supplement shows which breadth-catalog variants score highest under a fixed within-family rule.
+The screen exists to reduce cherry-picking risk: the main paper reports a compact representative campaign, while this supplement shows which coverage-catalog variants score highest under a fixed within-family rule.

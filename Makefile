@@ -4,8 +4,12 @@ JAVA_RELEASE ?= 21
 JAVA_PROPS ?= -Dcongresssim.javaRelease=$(JAVA_RELEASE)
 APP_JAR := out/congresssim.jar
 APP_CP := $(APP_JAR)
+PAPER_MAIN_TEX := paper/acm-ci-framework/acm-ci-framework.tex
+PAPER_MAIN_PDF := paper/acm-ci-framework/acm-ci-framework.pdf
+PAPER_APPENDIX_TEX := paper/technical-appendix/odd-d-appendix.tex
+PAPER_APPENDIX_PDF := paper/technical-appendix/odd-d-appendix.pdf
 
-.PHONY: check-java build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper chamber-structure chamber-structure-summary seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness validation-gap-report fetch-validation-samples build-bill-progression-raw build-core-raw-validation empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper-assets paper paper-word-count paper-checks paper-freshness-check paper-anonymity-check figure-label-check pdf-render-check pdf-manifest-check table-figure-consistency-check supplement-anonymous supplement-anonymous-current clean-regeneration-check paper-clean test ci github-ci clean
+.PHONY: check-java build run calibrate calibration-check campaign paper-campaign main-campaign campaign-v0 campaign-v1 campaign-v2 campaign-v3 campaign-v4 campaign-v5 campaign-v6 campaign-v7 campaign-v8 campaign-v9 campaign-v10 campaign-v11 campaign-v12 campaign-v13 campaign-v14 campaign-v15 campaign-v16 campaign-v17 campaign-v18 campaign-v19 campaign-v20 campaign-v21-paper chamber-structure chamber-structure-summary seed-robustness seed-robustness-check family-screen family-champions catalog-breadth findings-validation validation-readiness validation-gap-report fetch-validation-samples build-bill-progression-raw build-core-raw-validation empirical-validation empirical-bridge ablation-analysis manipulation-stress mechanism-diagnostics public-provenance paper-assets paper paper-word-count paper-checks reproduce-paper-offline paper-freshness-check paper-anonymity-check figure-label-check pdf-render-check pdf-manifest-check table-figure-consistency-check supplement-anonymous supplement-anonymous-current clean-regeneration-check paper-clean test ci github-ci clean
 
 check-java:
 	@actual="$$(javac -version 2>&1 | awk '{print $$2}' | cut -d. -f1)"; \
@@ -165,39 +169,41 @@ paper-assets: paper-campaign family-screen mechanism-diagnostics chamber-structu
 	python3 paper/scripts/generate_figures.py
 
 paper: paper-assets
-	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
-	cd paper && TEXINPUTS=.: BIBINPUTS=.: BSTINPUTS=.: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build appendix-odd-d.tex
-	cp paper/build/main.pdf paper/main.pdf
-	cp paper/build/appendix-odd-d.pdf paper/appendix-odd-d.pdf
+	cd paper/acm-ci-framework && TEXINPUTS=..:../figures: BIBINPUTS=..: BSTINPUTS=..: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=../build/acm-ci-framework acm-ci-framework.tex
+	cd paper/technical-appendix && TEXINPUTS=..:../figures: BIBINPUTS=..: BSTINPUTS=..: latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=../build/technical-appendix odd-d-appendix.tex
+	cp paper/build/acm-ci-framework/acm-ci-framework.pdf $(PAPER_MAIN_PDF)
+	cp paper/build/technical-appendix/odd-d-appendix.pdf $(PAPER_APPENDIX_PDF)
 	python3 paper/scripts/write_pdf_manifest.py
 
 paper-word-count: paper
-	python3 paper/scripts/check_word_count.py paper/main.pdf --max 6000
+	python3 paper/scripts/check_word_count.py $(PAPER_MAIN_PDF) --max 6000
 
 paper-checks: paper
-	python3 paper/scripts/check_word_count.py paper/main.pdf --max 6000
-	python3 scripts/checks/check_paper_anonymity.py paper/main.pdf paper/appendix-odd-d.pdf
+	python3 paper/scripts/check_word_count.py $(PAPER_MAIN_PDF) --max 6000
+	python3 scripts/checks/check_paper_anonymity.py $(PAPER_MAIN_PDF) $(PAPER_APPENDIX_PDF)
 	python3 scripts/checks/check_figure_labels.py
 	python3 scripts/checks/check_table_figure_consistency.py
-	python3 scripts/checks/check_pdf_render.py paper/main.pdf paper/appendix-odd-d.pdf
+	python3 scripts/checks/check_pdf_render.py $(PAPER_MAIN_PDF) $(PAPER_APPENDIX_PDF)
 	python3 paper/scripts/write_pdf_manifest.py --check
 
+reproduce-paper-offline: paper-checks
+
 paper-freshness-check: paper-assets
-	python3 paper/scripts/check_word_count.py paper/main.pdf --max 6000
-	python3 scripts/checks/check_paper_anonymity.py paper/main.pdf paper/appendix-odd-d.pdf
+	python3 paper/scripts/check_word_count.py $(PAPER_MAIN_PDF) --max 6000
+	python3 scripts/checks/check_paper_anonymity.py $(PAPER_MAIN_PDF) $(PAPER_APPENDIX_PDF)
 	python3 scripts/checks/check_figure_labels.py
 	python3 scripts/checks/check_table_figure_consistency.py
-	python3 scripts/checks/check_pdf_render.py paper/main.pdf paper/appendix-odd-d.pdf
+	python3 scripts/checks/check_pdf_render.py $(PAPER_MAIN_PDF) $(PAPER_APPENDIX_PDF)
 	python3 paper/scripts/write_pdf_manifest.py --check
 
 paper-anonymity-check: paper
-	python3 scripts/checks/check_paper_anonymity.py paper/main.pdf paper/appendix-odd-d.pdf
+	python3 scripts/checks/check_paper_anonymity.py $(PAPER_MAIN_PDF) $(PAPER_APPENDIX_PDF)
 
 figure-label-check: paper
 	python3 scripts/checks/check_figure_labels.py
 
 pdf-render-check: paper
-	python3 scripts/checks/check_pdf_render.py paper/main.pdf paper/appendix-odd-d.pdf
+	python3 scripts/checks/check_pdf_render.py $(PAPER_MAIN_PDF) $(PAPER_APPENDIX_PDF)
 
 pdf-manifest-check: paper
 	python3 paper/scripts/write_pdf_manifest.py --check
@@ -213,11 +219,11 @@ supplement-anonymous-current:
 
 clean-regeneration-check:
 	# PDF bytes vary across TeX/font environments; paper/pdf-manifest.json tracks stable PDF freshness.
-	git diff --no-ext-diff --exit-code -- . ':(exclude)paper/main.pdf' ':(exclude)paper/appendix-odd-d.pdf'
+	git diff --no-ext-diff --exit-code -- . ':(exclude)$(PAPER_MAIN_PDF)' ':(exclude)$(PAPER_APPENDIX_PDF)'
 
 paper-clean:
-	cd paper && latexmk -C -outdir=build main.tex
-	cd paper && latexmk -C -outdir=build appendix-odd-d.tex
+	cd paper/acm-ci-framework && latexmk -C -outdir=../build/acm-ci-framework acm-ci-framework.tex
+	cd paper/technical-appendix && latexmk -C -outdir=../build/technical-appendix odd-d-appendix.tex
 	rm -rf paper/build
 
 test: build

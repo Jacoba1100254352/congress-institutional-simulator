@@ -21,4 +21,4 @@ This report checks whether optional raw empirical inputs are present and shaped 
 - Files with required columns: 6 / 12
 - Adapter fixture CSVs ignored: 4
 
-Next empirical step: add curated raw files and document source-specific transformations. The adapters now cover roll calls, bill progress, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.
+Next empirical step: add curated raw files and document source-specific transformations. The adapters cover roll calls, bill progress, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.

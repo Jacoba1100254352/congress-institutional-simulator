@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bridge optional raw empirical summaries to simulator calibration targets."""
+"""Map optional raw empirical summaries to simulator flow-check proxies."""
 
 from __future__ import annotations
 
@@ -51,7 +51,7 @@ def read_empirical(path: Path) -> dict[tuple[str, str], dict[str, str]]:
 
 def status(raw: dict[str, str] | None, calibration: dict[str, str] | None) -> str:
     if calibration is None:
-        return "missing calibration target"
+        return "missing flow-check proxy"
     if raw is None or raw.get("status") == "missing":
         return "needs raw dataset"
     if raw.get("status") != "computed":
@@ -87,9 +87,9 @@ def write_outputs() -> None:
         writer.writerows(rows)
 
     lines = [
-        "# Empirical Bridge",
+        "# Empirical Flow Sanity Checks",
         "",
-        "This bridge makes the validation gap explicit. It maps each desired real-world signal to an optional raw-data summary and to the closest current simulator calibration target. Missing raw datasets are reported as work remaining, not as a failed simulator run.",
+        "These checks make the empirical boundary explicit. They map each desired real-world signal to an optional raw-data summary and to the closest simulator flow-check proxy. Missing raw datasets are reported as work remaining, not as a failed simulator run.",
         "",
         "| Signal | Raw input/status | Simulator proxy | Observed | Target range | Bridge status |",
         "| --- | --- | --- | ---: | --- | --- |",

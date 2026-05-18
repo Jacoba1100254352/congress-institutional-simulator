@@ -2,7 +2,7 @@
 
 This is a small individual-legislator simulator for testing how possible legislative systems shape compromise, productivity, public responsiveness, and gridlock.
 
-The first version starts with a deliberately simple legislature: one-dimensional policy space, a scalar status quo, proposers, and comparable institutional regimes. Default passage is included as one stress-test family, but the project goal is broader: search across many possible legislative frameworks and measure which ones best balance compromise, productivity, and representative responsiveness.
+The first version starts with a deliberately simple legislature: one-dimensional policy space, a scalar status quo, proposers, and comparable institutional regimes. Default passage is included as one stress-test family, but the project goal is broader: compare selected legislative mechanism bundles and measure how productivity, compromise-like moderation, public support, risk, and administrative burden separate under shared assumptions.
 
 The current model intentionally includes only the parts needed to compare institutional structures:
 
@@ -66,7 +66,8 @@ Build and verify the LaTeX paper and checked-in PDFs:
 make paper-checks
 ```
 
-This regenerates `paper/main.pdf`, `paper/appendix-odd-d.pdf`, and
+This regenerates `paper/acm-ci-framework/acm-ci-framework.pdf`,
+`paper/technical-appendix/odd-d-appendix.pdf`, and
 `paper/pdf-manifest.json`. The manifest records stable source and extracted-text
 hashes so CI can detect stale paper PDFs even though raw PDF bytes are excluded
 from clean-regeneration checks across TeX environments.
@@ -152,7 +153,7 @@ Calibration and validation details live in [docs/calibration.md](docs/calibratio
 
 ## Current Scenarios
 
-The default CLI and main comparison campaign now use a representative breadth-first set. Default passage is deliberately kept to three stress-test variants rather than treated as the main family:
+The default CLI and main comparison campaign use a representative mechanism set. Burden-shifting passage is deliberately kept to a small stress-test family rather than treated as the main family:
 
 - `current-system`: stylized U.S.-like conventional benchmark
 - `simple-majority`: unicameral simple majority
@@ -241,14 +242,14 @@ Metric direction is explicit:
 - `↑` higher is generally better.
 - `↓` lower is generally better; directional comparisons invert these before combining them.
 - `diag.` means the value is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.
-- `directionalScore` is a reader aid that averages `productivity`, `representativeQuality`, `riskControl`, and `administrativeFeasibility`. `representativeQuality` averages welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts chamber low-support passage, weak public-mandate passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift. `administrativeFeasibility` inverts `administrativeCost`.
+- `directionalScore` is a reader aid that averages `productivity`, `representativeQuality`, `riskControl`, and `administrativeFeasibility`. `representativeQuality` averages welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift. `administrativeFeasibility` inverts `administrativeCost`.
 
 - `productivity` `↑`: share of introduced bills enacted
 - `floor` `diag.`: share of potential bills that reached floor consideration
 - `caseWeight` `diag.`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`
 - campaign reports also track `enactedPerRun` and `floorPerRun` `diag.` so proposal flooding is visible as institutional load, not only as percentages
 - `directionalScore` `↑`, `representativeQuality` `↑`, `riskControl` `↑`, and `administrativeFeasibility` `↑`: derived display scores that orient mixed-sign metrics in the same direction
-- `challengeRate` `diag.`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member challenge escalation
+- `challengeRate` `diag.`: share of potential bills diverted from burden-shifting passage into active voting by challenge vouchers or q-member challenge escalation
 - `avgSupport` `↑`: average yay share for enacted bills
 - `welfare` `↑`: average public-benefit score for enacted bills
 - `cooperation` `↑`: a legacy throughput-support metric, not a unity score
@@ -284,7 +285,7 @@ Metric direction is explicit:
 - `repealWindowReversalRate` `diag.`: share of triggered repeal windows that reverse enactment
 - `fastLaneRate`, `middleLaneRate`, `highRiskLaneRate` `diag.`: adaptive-route shares
 - `challengeExhaustionRate` `↓`: share of potential bills where a challenge would have cleared threshold but no token was available
-- `falseNegativePassRate` `↓`: risky, low-support, or high-harm default enactments that passed unchallenged
+- `falseNegativePassRate` `↓`: risky, low-support, or high-harm burden-shifting enactments that passed unchallenged
 - `publicWillReviewRate`, `publicSignalMovement` `diag.`, `districtAlignment` `↑`: constituent/public-will review diagnostics
 - `crossBlocAdmissionRate`, `affectedGroupSponsorshipRate`, `averageCosponsors` `diag.`: richer cosponsorship diagnostics
 - `proposalBondForfeiture` `diag.`: average proposal-bond loss per potential bill
@@ -296,11 +297,11 @@ These are not claims about real-world validity. They are hooks for comparing rul
 
 ## Research Direction
 
-The research direction is comparative institutional search. The simulator should be able to test ordinary legislative systems, default-pass systems, cross-bloc systems, challenge-token systems, adaptive-track systems, sunset/review systems, and more radical future proposals under shared assumptions.
+The research direction is comparative institutional simulation. The simulator should be able to test ordinary legislative systems, burden-shifting stress cases, cross-bloc systems, challenge-token systems, adaptive-track systems, sunset/review systems, and more radical future proposals under shared assumptions.
 
 Default passage remains useful as an early stress test because it sharply shifts power from affirmative majority formation to blocking coalition formation. The broader design warning is that every legislative structure depends on agenda access, proposal screening, proposer power, information, challenge rights, reversibility, and legitimacy metrics. The first modeling layers therefore focus on those institutional mechanics before media, elections, or richer behavioral systems.
 
-The following campaign notes are historical side logs. They explain how earlier default-pass-heavy iterations were developed, but the current paper campaign is the breadth-first main comparison above.
+The following campaign notes are historical side logs. They explain how earlier default-pass-heavy iterations were developed, but the paper campaign is the representative main comparison above.
 
 The early agenda layer is represented in three comparison scenarios:
 
@@ -420,7 +421,7 @@ The v16 campaign adds agenda-scarcity variants:
 
 - `AgendaLotteryProcess` admits a bounded share of bills by weighted or random draw.
 - `QuadraticAttentionBudgetProcess` makes proposal access consume scarce credits with increasing marginal cost.
-- `PublicObjectionWindowProcess` routes contested bills to active voting or rolls back contested default enactments.
+- `PublicObjectionWindowProcess` routes contested bills to active voting or rolls back contested burden-shifting enactments.
 - Campaign reports now include attention spend, objection-window rate, and repeal-window reversal rate.
 
 The v17 campaign completes the planned roadmap layer:
@@ -445,7 +446,7 @@ The v18 campaign adds weighted party-system sensitivity:
 The v19 campaign adds timeline stress comparisons:
 
 - Six stylized eras raise polarization, party loyalty, lobbying pressure, and proposal pressure while lowering compromise culture and constituency responsiveness.
-- The campaign includes the stylized U.S.-like conventional benchmark alongside conventional affirmative systems, open default-pass, challenge vouchers, public panels, adaptive tracks, policy tournaments, public objection, and law-registry review.
+- The campaign includes the stylized U.S.-like conventional benchmark alongside conventional affirmative systems, burden-shifting passage stress cases, challenge vouchers, public panels, adaptive tracks, policy tournaments, public objection, and law-registry review.
 - The generated report includes a contention path using `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * lowSupport`.
 - The timeline is a stress test, not a historical calibration; it asks which institutional systems degrade gracefully as background politics become more contentious.
 
@@ -459,7 +460,7 @@ The v20 campaign adds focused strategy and calibration comparisons:
 The current main comparison campaign is the paper evidence base:
 
 - It combines broad assumption cases, adversarial proposal-generator cases, weighted party-system sensitivity cases, and rising-contention timeline cases in one CSV.
-- It is breadth-first: stylized U.S.-like and conventional affirmative baselines, committee regular order, coalition confidence, policy tournaments, citizen review, public-interest screening, agenda lotteries, quadratic attention, proposal bonds, harm and compensation rules, package bargaining, public objection, law-registry review, anti-capture safeguards, risk routing, and a small default-pass stress-test family.
+- It is representative rather than exhaustive: stylized U.S.-like and conventional affirmative baselines, committee regular order, coalition confidence, policy tournaments, citizen review, public-interest screening, agenda lotteries, quadratic attention, proposal bonds, harm and compensation rules, package bargaining, public objection, law-registry review, anti-capture safeguards, risk routing, and a small burden-shifting stress-test family.
 - `make family-screen` runs a supplemental all-catalog screen and writes `reports/all-scenarios-baseline.csv` plus `reports/family-champions.md`.
 - `make mechanism-diagnostics` runs empirical-bridge readiness, ablation, and manipulation-stress follow-ups and regenerates the paper diagnostics table.
 - Use it with `make campaign` or `make paper-campaign`; the older `make campaign-v21-paper` target remains for reproducibility.

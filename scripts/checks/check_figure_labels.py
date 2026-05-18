@@ -17,8 +17,8 @@ FIGURES = [
     Path("paper/figures/timeline_contention.tex"),
 ]
 MIN_LABELS = {
-    Path("paper/figures/productivity_low_support.tex"): 15,
-    Path("paper/figures/compromise_productivity.tex"): 15,
+    Path("paper/figures/productivity_low_support.tex"): 11,
+    Path("paper/figures/compromise_productivity.tex"): 11,
     Path("paper/figures/chamber_productivity_compromise.tex"): 8,
     Path("paper/figures/timeline_contention.tex"): 6,
 }

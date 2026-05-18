@@ -13,8 +13,8 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 
 ## Headline Findings
 
-- Open default-pass averaged 0.888 productivity, versus 0.372 for simple majority.
-- Open default-pass also averaged 0.398 weak public-mandate passage and 0.583 policy shift.
+- Open burden-shifting passage averaged 0.888 productivity, versus 0.372 for simple majority.
+- Open burden-shifting passage also averaged 0.398 low-public-support enactment and 0.583 policy shift.
 - Highest directional score, where lower-better risk metrics are inverted before combination, came from Default pass unless 2/3 block at 0.729.
 - Highest average welfare in this campaign came from Citizen assembly threshold gate at 0.646.
 
@@ -23,11 +23,11 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 - `↑` means a higher raw value is usually better.
 - `↓` means a lower raw value is usually better; directional scores invert these metrics before combining them.
 - `diag.` means the metric is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.
-- `Directional score` is a reading aid, not a final institutional verdict. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts chamber low-support passage, weak public-mandate passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
+- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.
 
 ## Scenario Averages Across Cases
 
-| Scenario | Directional score ↑ | Quality ↑ | Risk control ↑ | Admin feas. ↑ | Productivity ↑ | Enacted/run | Floor/run diag. | Welfare ↑ | Low-support ↓ | Weak public mandate ↓ | Admin cost ↓ | Minority harm ↓ | Legitimacy ↑ | Policy shift diag. | Proposer gain ↓ | Capture ↓ | Lobby spend diag. | Defensive spend diag. | Amend rate diag. | Compensation diag. | Anti-lobby pass ↑ | Challenge diag. | Floor diag. |
+| Scenario | Directional score ↑ | Quality ↑ | Risk control ↑ | Admin feas. ↑ | Productivity ↑ | Enacted/run | Floor/run diag. | Welfare ↑ | Low-support ↓ | Low-public-support enactment ↓ | Admin cost ↓ | Minority harm ↓ | Legitimacy ↑ | Policy shift diag. | Proposer gain ↓ | Capture ↓ | Lobby spend diag. | Defensive spend diag. | Amend rate diag. | Compensation diag. | Anti-lobby pass ↑ | Challenge diag. | Floor diag. |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Weighted agenda lottery + majority | 0.645 | 0.556 | 0.862 | 0.968 | 0.196 | 17.076 | 47.571 | 0.576 | 0.000 | 0.134 | 0.032 | 0.192 | 0.514 | 0.071 | 0.293 | 0.291 | 0.000 | 0.000 | 0.000 | 0.000 | 0.367 | 0.000 | 0.464 |
 | Majority + anti-capture bundle | 0.679 | 0.567 | 0.875 | 0.937 | 0.336 | 30.449 | 93.960 | 0.606 | 0.000 | 0.112 | 0.063 | 0.185 | 0.513 | 0.119 | 0.298 | 0.154 | 0.141 | 0.572 | 0.000 | 0.000 | 0.687 | 0.000 | 0.898 |
@@ -45,7 +45,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 
 ## Case Highlights
 
-| Case | Best welfare | Most productive | Lowest weak public-mandate passage |
+| Case | Best welfare | Most productive | Lowest low-public-support enactment |
 | --- | --- | --- | --- |
 | Baseline | Stylized U.S.-like conventional benchmark (0.757) | Default pass unless 2/3 block (0.838) | Stylized U.S.-like conventional benchmark (0.000) |
 | Proposal Flooding | Stylized U.S.-like conventional benchmark (0.736) | Default pass unless 2/3 block (0.833) | Stylized U.S.-like conventional benchmark (0.000) |
@@ -57,7 +57,7 @@ Deterministic batch campaign for comparing institutional regimes across assumpti
 
 ## Interpretation
 
-- The next model extension should sweep challenge-token budgets, challenge thresholds, and proposal-cost mechanisms, because agenda screening is now the central default-pass tradeoff.
+- Future model extensions should sweep challenge-token budgets, challenge thresholds, and proposal-cost mechanisms because agenda screening is central to burden-shifting tradeoffs.
 
 ## Reproduction
 

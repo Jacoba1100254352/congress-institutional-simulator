@@ -4,9 +4,9 @@ This appendix follows the ODD and ODD+D model-description style for the congress
 
 ## 1. Purpose
 
-The model compares legislative institutional designs under shared generated political worlds. The scientific purpose is to search for institutional mechanisms that improve compromise and productivity while preserving representative responsiveness, public-benefit alignment, minority protection, and resistance to capture.
+The model compares legislative institutional designs under shared generated political worlds. The scientific purpose is to stress-test institutional mechanisms that alter compromise, productivity, representative responsiveness, public-benefit alignment, minority protection, and resistance to capture.
 
-The model is not intended to forecast a specific Congress. It is a mechanism-search simulator: the same generated actors and bills are routed through many institutional systems so differences can be attributed to procedural rules and incentive structures.
+The model is not intended to forecast a specific Congress. It is a mechanism-comparison simulator: the same generated actors and bills are routed through many institutional systems so differences can be attributed to procedural rules and incentive structures.
 
 ## 2. Entities And State Variables
 
@@ -26,7 +26,7 @@ Lobby groups have an ID, primary issue domain, issue-preference map, preferred p
 
 Institutional scenarios are composed from legislative-process modules. A process may screen proposal access, modify public signals, allocate lobbying or attention spending, route bills to different tracks, mediate amendments, evaluate affected-group harm, select among alternatives, conduct votes, apply vetoes, register enacted laws, or review laws later.
 
-The main comparison now also includes a synthesized portfolio hybrid. It combines a low-risk fast lane, middle-risk pairwise alternatives and mediation, high-risk citizen and distributional-harm review, proposal bonds, anti-capture safeguards, and law-registry correction. It is a testable institutional hypothesis derived from earlier campaign comparisons, not an assumed optimum.
+The main comparison includes a portfolio hybrid. It combines a low-risk fast lane, middle-risk pairwise alternatives and mediation, high-risk citizen and distributional-harm review, proposal bonds, anti-capture safeguards, and law-registry correction to test the cost of combining safeguards.
 
 **Environment**
 
@@ -94,7 +94,7 @@ Parties and blocs are modeled through party labels, party positions, party loyal
 
 **Observation**
 
-The model reports productivity, floor load, enacted support, public-benefit proxy, cooperation, compromise, gridlock, access denial, committee rejection, challenge rate, chamber low-support passage, weak public-mandate passage, administrative cost, policy shift, proposer gain, lobby capture, public alignment, anti-lobbying success, private-gain ratio, lobbying spend by channel, public benefit per lobby dollar, amendment rate, amendment movement, minority harm, concentrated-harm passage, compensation rate, legitimacy, law-review metrics, alternative-selection metrics, citizen-review metrics, agenda-scarcity metrics, adaptive-track route rates, false-negative default passage, public-will review, district alignment, cosponsorship, bond forfeiture, strategic decoys, proposer-access Gini, welfare per submitted bill, vetoes, and overrides.
+The model reports productivity, floor load, enacted support, generated public benefit, cooperation, compromise, gridlock, access denial, committee rejection, challenge rate, chamber low-support passage, low-public-support enactment, administrative cost, policy shift, proposer gain, lobby capture, public alignment, anti-lobbying success, private-gain ratio, lobbying spend by channel, public benefit per lobby dollar, amendment rate, amendment movement, minority harm, concentrated-harm passage, compensation rate, legitimacy, law-review metrics, alternative-selection metrics, citizen-review metrics, agenda-scarcity metrics, adaptive-track route rates, false-negative burden-shift passage, public-will review, district alignment, cosponsorship, bond forfeiture, strategic decoys, proposer-access Gini, welfare per submitted bill, vetoes, and overrides.
 
 ## 5. Initialization
 
@@ -112,11 +112,11 @@ The main comparison campaign also supports adversarial proposal-generator profil
 
 ## 6. Input Data
 
-Scenario runs use synthetic generated worlds. Calibration screening reads `data/calibration/empirical-benchmarks.csv`, a tracked extract that maps empirical sources to simulator metrics and benchmark ranges.
+Scenario runs use synthetic generated worlds. Empirical flow screening reads `data/calibration/empirical-benchmarks.csv`, a tracked extract that maps empirical sources to simulator metrics and benchmark ranges.
 
 Current empirical sources named by the benchmark layer include Voteview roll-call data, Congress.gov and govinfo bill histories, Comparative Agendas Project topic data, ParlGov party-system data, U.S. Lobbying Disclosure Act filings, Center for Effective Lawmaking scores, and V-Dem institutional indicators.
 
-The calibration runner executes conventional scenarios and writes pass/fail reports to `reports/calibration-baseline.csv` and `reports/calibration-baseline.md`. It is an empirical screen, not an automatic parameter fitter.
+The executable checker runs conventional scenarios and writes pass/fail reports to `reports/calibration-baseline.csv` and `reports/calibration-baseline.md`. It is an empirical flow screen, not an automatic parameter fitter.
 
 ## 7. Submodels
 
@@ -150,7 +150,7 @@ Harm-weighted thresholds, compensation amendments, and affected-group consent me
 
 **Citizen Mini-Publics**
 
-Citizen panels simulate sampling noise, information quality, manipulation risk, informed support, benefit estimates, and legitimacy. Panel output can affect default-pass eligibility, active-vote routing, final threshold, or agenda priority.
+Citizen panels simulate sampling noise, information quality, manipulation risk, informed support, benefit estimates, and legitimacy. Panel output can affect burden-shifting eligibility, active-vote routing, final threshold, or agenda priority.
 
 **Alternatives And Tournaments**
 
@@ -175,17 +175,17 @@ The main campaigns are:
 - roadmap-completion campaign across broad assumption cases.
 - weighted party-system sensitivity campaign.
 - stylized rising-contention timeline.
-- focused strategy and calibration campaign comparing the stylized U.S.-like benchmark, adaptive proposers, strategic lobbying, combined deep strategy, mediation, citizen panels, alternatives, objection windows, and law registry.
-- main paper campaign joining broad assumption cases, adversarial generator cases, party-system sensitivity cases, and rising-contention timeline cases in one CSV artifact for all submitted tables and figures; the campaign includes the portfolio hybrid as a synthesized candidate alongside family representatives.
+- focused strategy and flow-screen campaign comparing the stylized U.S.-like benchmark, adaptive proposers, strategic lobbying, combined deep strategy, mediation, citizen panels, alternatives, objection windows, and law registry.
+- main paper campaign joining broad assumption cases, adversarial generator cases, party-system sensitivity cases, and rising-contention timeline cases in one CSV artifact for all submitted tables and figures; the main manuscript focuses on selected representatives while appendix tables report the broader catalog.
 - family screen: supplemental all-catalog screen that runs every explicit scenario key and reports the highest-scoring scenario within each family under a fixed rule.
 - mechanism diagnostics: ablation comparisons for nearby mechanism removals plus manipulation-stress comparisons for clone proposals, panel manipulation, astroturf objection, bad-faith harm claims, agenda flooding, and capture pressure.
-- empirical bridge: optional raw empirical summaries mapped to the simulator proxy metrics currently used for calibration screening.
+- empirical flow sanity checks: optional raw empirical summaries mapped to the simulator proxy metrics used for broad flow screening.
 
 All campaign rows include scenario labels, case weights, and a stable metric schema.
 
 ## 9. Assumptions And Limitations
 
-The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The calibration layer screens plausible ranges but does not yet fit raw datasets directly. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment. Several mechanisms are optimistic prototypes: citizen panels, objection windows, tournaments, audits, challenge tokens, package bargaining, and law review include diagnostics for procedural cost and strain, but not full real-world implementation cost or strategic manipulation cost.
+The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The empirical flow layer screens plausible ranges but does not yet fit raw datasets directly. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment. Several mechanisms are optimistic prototypes: citizen panels, objection windows, tournaments, audits, challenge tokens, package bargaining, and law review include diagnostics for procedural cost and strain, but not full real-world implementation cost or strategic manipulation cost.
 
 These limitations are intentional at this stage. The model is meant to identify which institutional mechanisms deserve deeper modeling, not to prove that one constitutional design would work in the real world.
 
@@ -203,7 +203,7 @@ Run current campaign:
 make campaign
 ```
 
-Run calibration:
+Run empirical flow screening:
 
 ```sh
 make calibrate

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Report breadth-first versus historical scenario catalog composition."""
+"""Report representative coverage versus historical scenario catalog composition."""
 
 from __future__ import annotations
 
@@ -79,13 +79,13 @@ def family(key: str) -> str:
 def write_report(historical: list[str], breadth: list[str]) -> None:
     archived_default = [key for key in historical if key.startswith("default-pass") and key not in set(breadth)]
     lines = [
-        "# Scenario Catalog Breadth",
+        "# Scenario Catalog Coverage",
         "",
-        "The Java catalog preserves historical default-pass parameter sweeps as addressable scenario keys, but `--all-scenarios` now runs a breadth-first screen: every non-default explicit key plus the small default-pass stress-test family used by the paper.",
+        "The Java catalog preserves historical burden-shifting parameter sweeps as addressable scenario keys, but `--all-scenarios` runs a representative coverage screen: every non-default explicit key plus the small burden-shifting stress-test family used by the paper.",
         "",
         f"- Historical explicit keys: {len(historical)}",
-        f"- Breadth-screen keys run by `--all-scenarios`: {len(breadth)}",
-        f"- Archived default-pass keys excluded from `--all-scenarios`: {len(archived_default)}",
+        f"- Coverage-screen keys run by `--all-scenarios`: {len(breadth)}",
+        f"- Archived burden-shifting keys excluded from `--all-scenarios`: {len(archived_default)}",
         "",
         "| Breadth family | Count |",
         "| --- | ---: |",

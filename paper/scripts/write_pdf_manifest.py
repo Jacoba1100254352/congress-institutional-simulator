@@ -22,14 +22,16 @@ from typing import Iterable
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST_PATH = ROOT / "paper" / "pdf-manifest.json"
 PDF_PATHS = [
-    ROOT / "paper" / "main.pdf",
-    ROOT / "paper" / "appendix-odd-d.pdf",
+    ROOT / "paper" / "acm-ci-framework" / "acm-ci-framework.pdf",
+    ROOT / "paper" / "technical-appendix" / "odd-d-appendix.pdf",
 ]
 INPUT_PATTERNS = [
     "Makefile",
     "data/calibration/*.csv",
     "data/validation/**/*.csv",
     "paper/*.tex",
+    "paper/acm-ci-framework/*.tex",
+    "paper/technical-appendix/*.tex",
     "paper/*.bib",
     "paper/*.bst",
     "paper/acmart.cls",

@@ -102,9 +102,9 @@ def write_outputs(averages: dict[str, dict[str, float]]) -> None:
     lines = [
         "# Mechanism Ablation Summary",
         "",
-        "This report compares selected mechanism bundles with nearby ablations across the ablation campaign's broad and adversarial cases. Positive directional/productivity/compromise deltas favor the full mechanism. Positive weak-mandate reduction means fewer weakly publicly supported enactments. Positive admin-cost added means the full mechanism is procedurally heavier.",
+        "This report compares selected mechanism bundles with nearby ablations across the ablation campaign's broad and adversarial cases. Positive directional/productivity/compromise deltas favor the full mechanism. Positive low-public-support reduction means fewer weakly supported enactments. Positive admin-cost added means the full mechanism is procedurally heavier.",
         "",
-        "| Family | Full scenario | Comparison | Δ directional | Δ productivity | Δ compromise | Weak-mandate reduction | Admin cost added | Interpretation |",
+        "| Family | Full scenario | Comparison | Δ directional | Δ productivity | Δ compromise | Low-public-support reduction | Admin cost added | Interpretation |",
         "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
     ]
     for row in rows:

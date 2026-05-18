@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compute empirical validation summaries from optional raw input datasets."""
+"""Compute empirical comparison summaries from optional raw input datasets."""
 
 from __future__ import annotations
 
@@ -355,7 +355,7 @@ def write_reports(results: list[dict[str, str]]) -> None:
     lines = [
         "# Empirical Validation Summary",
         "",
-        "This report computes validation summaries when optional raw datasets are present under `data/validation/raw/`. Missing rows indicate absent local data, not a simulator failure. Adapter fixtures under `data/validation/fixtures/` are ignored because they test parser shape rather than empirical fit.",
+        "This report computes empirical comparison summaries when optional raw datasets are present under `data/validation/raw/`. Missing rows indicate absent local data, not a simulator failure. Adapter fixtures under `data/validation/fixtures/` are ignored because they test parser shape rather than empirical fit.",
         "",
         "| Dataset | Metric | Value | Status | Note |",
         "| --- | --- | ---: | --- | --- |",

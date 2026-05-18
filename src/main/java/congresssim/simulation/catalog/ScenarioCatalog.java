@@ -14,11 +14,13 @@ public final class ScenarioCatalog
 	private static final List<String> DEFAULT_SCENARIO_KEYS = List.of(
 			"current-system",
 			"simple-majority",
+			"simple-majority-mediation",
 			"supermajority-60",
 			"bicameral-majority",
 			"presidential-veto",
 			"leadership-cartel-majority",
 			"committee-regular-order",
+			"committee-amendment-majority",
 			"cloture-conference-review",
 			"constitutional-court-architecture-majority",
 			"parliamentary-coalition-confidence",

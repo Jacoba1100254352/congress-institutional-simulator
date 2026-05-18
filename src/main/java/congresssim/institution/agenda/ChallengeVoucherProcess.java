@@ -106,7 +106,7 @@ public final class ChallengeVoucherProcess implements LegislativeProcess
 				true,
 				List.of(supportResult),
 				PresidentialAction.none(),
-				"unchallenged default enactment"
+				"unchallenged burden-shifting enactment"
 		).withSignals(OutcomeSignals.challengeDiagnostics(decision.tokenExhausted(), falseNegativePass));
 	}
 	

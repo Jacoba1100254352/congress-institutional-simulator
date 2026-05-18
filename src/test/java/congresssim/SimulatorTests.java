@@ -6,7 +6,7 @@ public final class SimulatorTests
 	private SimulatorTests() {
 	}
 	
-	static void main(String[] args) {
+	public static void main(String[] args) {
 		InstitutionProcessTests.run();
 		WorldGenerationTests.run();
 		ScenarioCatalogTests.run();

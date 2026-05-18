@@ -19,7 +19,7 @@ public final class WeightedVotingStrategy implements VotingStrategy
 	}
 	
 	private static double logistic(double score) {
-		double bounded = Math.max(-12.0, Math.min(12.0, score));
+		double bounded = Math.clamp(score, -12.0, 12.0);
 		return 1.0 / (1.0 + Math.exp(-bounded));
 	}
 	

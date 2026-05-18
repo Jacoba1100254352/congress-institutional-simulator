@@ -133,7 +133,7 @@ final class CampaignRunnerTests
 			assertTrue(markdown.contains("## Metric Direction Legend"), "Markdown should explain metric direction.");
 			assertTrue(markdown.contains("Directional score ↑"), "Markdown scenario table should label oriented scores.");
 			assertTrue(markdown.contains("Low-support ↓"), "Markdown scenario table should label lower-is-better metrics.");
-			assertTrue(markdown.contains("Weak public mandate ↓"), "Markdown scenario table should label weak public-mandate risk.");
+			assertTrue(markdown.contains("Low-public-support enactment ↓"), "Markdown scenario table should label low-public-support risk.");
 			assertTrue(markdown.contains("Admin cost ↓"), "Markdown scenario table should label administrative cost.");
 			assertTrue(markdown.contains("Weighted Two Major Plus Minors"), "Markdown should include party-system case names.");
 		} catch (Exception exception) {
@@ -310,7 +310,7 @@ final class CampaignRunnerTests
 			
 			assertTrue(
 					(defaultProductivityTotal / seeds.length) > (currentProductivityTotal / seeds.length),
-					"Open default-pass should remain the productivity stress-test extreme across smoke-test seeds."
+					"Open burden-shifting passage should remain the productivity stress-test extreme across smoke-test seeds."
 			);
 		} catch (Exception exception) {
 			throw new AssertionError("Paper campaign seed robustness smoke test failed.", exception);

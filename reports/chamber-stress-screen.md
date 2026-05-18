@@ -5,11 +5,14 @@ Best chamber/committee scenario in each stress case, using the same directional 
 | Case | Best scenario | Dir. | Prod. | Comp. | Risk ctrl. | Inter-chamber conflict | Committee capture | Ex ante review |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Adversarial Anti-Lobbying Backlash | Expertise eligibility filter | 0.648 | 0.374 | 0.284 | 0.814 | 0.000 | 0.000 | 0.000 |
-| Adversarial Concentrated Rights Harm | Appointment and retention eligibility filter | 0.669 | 0.508 | 0.257 | 0.767 | 0.000 | 0.000 | 0.000 |
-| Adversarial Delayed-Benefit Reform | Legal and drafting-quality committee | 0.652 | 0.266 | 0.294 | 0.935 | 0.000 | 0.006 | 0.000 |
-| Adversarial High-Benefit Extreme Reform | Legal and drafting-quality committee | 0.611 | 0.128 | 0.175 | 0.931 | 0.000 | 0.009 | 0.000 |
+| Adversarial Compromise Dilution | Legal and drafting-quality committee | 0.609 | 0.112 | 0.196 | 0.936 | 0.000 | 0.007 | 0.000 |
+| Adversarial Concentrated Rights Harm | Appointment and retention eligibility filter | 0.673 | 0.527 | 0.250 | 0.762 | 0.000 | 0.000 | 0.000 |
+| Adversarial Delayed-Benefit Reform | Legal and drafting-quality committee | 0.650 | 0.259 | 0.293 | 0.936 | 0.000 | 0.006 | 0.000 |
+| Adversarial High-Benefit Extreme Reform | Legal and drafting-quality committee | 0.613 | 0.131 | 0.183 | 0.932 | 0.000 | 0.009 | 0.000 |
+| Adversarial Lobby Information | Committee fast-track certifier | 0.783 | 0.869 | 0.292 | 0.809 | 0.000 | 0.096 | 0.000 |
 | Adversarial Moderate Capture | Ex ante advisory review | 0.784 | 0.968 | 0.496 | 0.720 | 0.000 | 0.000 | 0.719 |
 | Adversarial Popular Harmful Bill | Bicameral malapportioned upper chamber + conference | 0.762 | 0.929 | 0.298 | 0.723 | 0.130 | 0.000 | 0.000 |
+| Adversarial Public Opinion Error | Appointment and retention eligibility filter | 0.631 | 0.346 | 0.235 | 0.802 | 0.000 | 0.000 | 0.000 |
 | Baseline | Appointment and retention eligibility filter | 0.640 | 0.286 | 0.217 | 0.865 | 0.000 | 0.000 | 0.000 |
 | Capture Crisis | Recusal and cooling-off eligibility filter | 0.609 | 0.224 | 0.212 | 0.835 | 0.000 | 0.000 | 0.000 |
 | Era 1 Low Contention | Bicameral malapportioned upper chamber + conference | 0.716 | 0.543 | 0.262 | 0.859 | 0.128 | 0.000 | 0.000 |

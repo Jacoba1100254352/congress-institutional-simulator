@@ -8,10 +8,10 @@
   "legislators": 101,
   "bills": 60,
   "seed": 20260428,
-  "caseCount": 24,
+  "caseCount": 27,
   "scenarioCount": 15,
   "artifacts": [
-    {"path": "reports/simulation-ablation-analysis.csv", "sha256": "401e6f76d813607340d8f73f62254221931b77bda9800d8d55aef5201a56ac1c"},
-    {"path": "reports/simulation-ablation-analysis.md", "sha256": "5e16b05c0d426783384d379d74bd93d054dca7e535982c846a731047ddf47b6d"}
+    {"path": "reports/simulation-ablation-analysis.csv", "sha256": "0ad970f826826919ae444b9c90f8b85ec3818f3990eac3cd2d145450b2e15593"},
+    {"path": "reports/simulation-ablation-analysis.md", "sha256": "d52d6afde60c3a25c76f48d829523f8330a49ef0740f3a3090864391e19be00b"}
   ]
 }

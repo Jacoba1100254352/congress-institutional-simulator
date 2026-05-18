@@ -99,7 +99,7 @@ def write_readme() -> None:
     (PACKAGE_DIR / "README.md").write_text(
         "# Anonymous Reproducibility Supplement\n\n"
         "This double-blind supplement contains source code, generated reports, LaTeX paper sources, "
-        "paper PDFs, and scripts for the legislative mechanism-search simulator.\n\n"
+        "paper PDFs, and scripts for the legislative mechanism-comparison simulator.\n\n"
         "Useful commands:\n\n"
         "```sh\n"
         "make test\n"

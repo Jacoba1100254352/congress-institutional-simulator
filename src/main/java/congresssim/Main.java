@@ -20,7 +20,7 @@ public final class Main
 	private Main() {
 	}
 	
-	static void main(String[] args) {
+	public static void main(String[] args) {
 		Options options = Options.parse(args);
 		if (options.help) {
 			Options.printUsage();
@@ -681,7 +681,7 @@ public final class Main
 						                     --constituency <x>  Constituent-pressure sensitivity, from 0.0 to 1.0
 						                     --lobbying <x>      Lobby-pressure sensitivity, from 0.0 to 1.0
 						                     --scenarios <keys>  Comma-separated scenario keys
-						                     --all-scenarios     Compare the breadth-first scenario catalog
+						                     --all-scenarios     Compare the representative scenario catalog
 						                     --format <kind>     table, csv, or bars
 						                     --charts            Add ASCII bar charts after the table
 						                     --calibrate         Run empirical benchmark screening instead of scenario comparison

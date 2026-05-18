@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Write a paper-facing empirical validation gap report.
+"""Write a paper-facing empirical boundary report.
 
-The readiness and empirical-bridge reports intentionally avoid pretending that
+The readiness and empirical-check reports intentionally avoid pretending that
 missing raw data is validation. This script turns that state into a compact
 artifact the paper can cite: what is already inspectable, what is still
 synthetic, and which source family would close each gap.
@@ -67,7 +67,7 @@ GAP_NOTES = {
         "ready",
     ),
     "district_public_opinion.csv": GapNote(
-        "Public mandate",
+        "Public support",
         "District public-will and affected-group legitimacy remain synthetic.",
         "Add district-level MRP/CCES-style opinion, turnout, and affected-population estimates.",
         "high",
@@ -134,7 +134,7 @@ def tex_escape(text: str) -> str:
 
 def paper_status(status: str, bridge: set[str]) -> str:
     if status == "ready" and bridge and bridge <= {"raw summary available"}:
-        return "empirical bridge"
+        return "empirical check"
     if status == "ready":
         return "raw ready"
     if status == "incomplete":
@@ -178,9 +178,9 @@ def main() -> int:
         if row["inputStatus"] != "ready" and row["priority"] == "high"
     ]
     lines = [
-        "# Empirical Validation Gap Report",
+        "# Empirical Boundary Report",
         "",
-        "This report separates what the paper can inspect empirically from what remains a synthetic or speculative model component. It is generated from the validation-readiness and empirical-bridge artifacts.",
+        "This report separates what the paper can inspect empirically from what remains a synthetic or speculative model component. It is generated from the validation-readiness and empirical-check artifacts.",
         "",
         f"- Raw validation inputs ready: {ready} / {len(rows)}",
         f"- Raw validation inputs missing or incomplete: {missing} / {len(rows)}",
@@ -199,12 +199,12 @@ def main() -> int:
 
     table_rows = [
         row for row in rows
-        if row["priority"] == "high" or row["paperStatus"] == "empirical bridge"
+        if row["priority"] == "high" or row["paperStatus"] == "empirical check"
     ]
     tex_lines = [
         r"\begin{table}",
         r"\centering",
-        r"\caption{Empirical validation boundary. Rows marked empirical bridge have shaped raw inputs and simulator proxy summaries; rows marked synthetic only are still modeled without raw-data validation.}",
+        r"\caption{Empirical boundary. Rows marked empirical check have shaped raw inputs and simulator proxy summaries; rows marked synthetic only are still modeled without raw-data support.}",
         r"\label{tab:empirical-validation-gap}",
         r"\small",
         r"\begin{tabular}{p{0.20\linewidth}p{0.20\linewidth}p{0.52\linewidth}}",

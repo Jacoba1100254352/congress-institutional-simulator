@@ -1,10 +1,10 @@
-# Scenario Catalog Breadth
+# Scenario Catalog Coverage
 
-The Java catalog preserves historical default-pass parameter sweeps as addressable scenario keys, but `--all-scenarios` now runs a breadth-first screen: every non-default explicit key plus the small default-pass stress-test family used by the paper.
+The Java catalog preserves historical burden-shifting parameter sweeps as addressable scenario keys, but `--all-scenarios` runs a representative coverage screen: every non-default explicit key plus the small burden-shifting stress-test family used by the paper.
 
 - Historical explicit keys: 196
-- Breadth-screen keys run by `--all-scenarios`: 100
-- Archived default-pass keys excluded from `--all-scenarios`: 96
+- Coverage-screen keys run by `--all-scenarios`: 100
+- Archived burden-shifting keys excluded from `--all-scenarios`: 96
 
 | Breadth family | Count |
 | --- | ---: |

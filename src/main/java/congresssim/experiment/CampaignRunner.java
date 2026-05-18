@@ -475,11 +475,13 @@ public final class CampaignRunner
 	private static final List<String> PAPER_SCENARIOS = List.of(
 			"current-system",
 			"simple-majority",
+			"simple-majority-mediation",
 			"supermajority-60",
 			"bicameral-majority",
 			"presidential-veto",
 			"leadership-cartel-majority",
 			"committee-regular-order",
+			"committee-amendment-majority",
 			"proportional-committee-assignment-majority",
 			"committee-discharge-target-majority",
 			"cloture-conference-review",
@@ -1303,7 +1305,19 @@ public final class CampaignRunner
 				experiment("adversarial-anti-lobbying-backlash", "Adversarial Anti-Lobbying Backlash",
 				           "Anti-lobbying reforms are more common, but face stronger defensive lobbying and lower observed support.",
 				           legislators, bills, 4, 0.64, 0.64, 0.90, 0.70, 0.50,
-				           PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.ANTI_LOBBYING_BACKLASH)
+				           PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.ANTI_LOBBYING_BACKLASH),
+				experiment("adversarial-compromise-dilution", "Adversarial Compromise Dilution",
+				           "Some high-distance reforms have high generated value, so moderation can dilute public benefit.",
+				           legislators, bills, 4, 0.68, 0.62, 0.40, 0.58, 0.44,
+				           PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.COMPROMISE_DILUTION),
+				experiment("adversarial-lobby-information", "Adversarial Lobby Information",
+				           "Organized lobbying sometimes supplies useful technical information rather than only capture pressure.",
+				           legislators, bills, 3, 0.54, 0.58, 0.72, 0.58, 0.50,
+				           PartySystemProfile.IDEOLOGICAL_BINS, 1.0, ProposalShockProfile.LOBBY_INFORMATION),
+				experiment("adversarial-public-opinion-error", "Adversarial Public Opinion Error",
+				           "Observed public support can be noisy or systematically misaligned with generated public benefit.",
+				           legislators, bills, 4, 0.62, 0.64, 0.54, 0.54, 0.46,
+				           PartySystemProfile.TWO_MAJOR_WITH_MINOR_PARTIES, 1.0, ProposalShockProfile.PUBLIC_OPINION_ERROR)
 		);
 	}
 	
@@ -1602,10 +1616,10 @@ public final class CampaignRunner
 		builder.append("- `↑` means a higher raw value is usually better.\n");
 		builder.append("- `↓` means a lower raw value is usually better; directional scores invert these metrics before combining them.\n");
 		builder.append("- `diag.` means the metric is context-dependent and should be read as institutional activity or risk context, not as automatically good or bad.\n");
-		builder.append("- `Directional score` is a reading aid, not a final institutional verdict. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts chamber low-support passage, weak public-mandate passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.\n\n");
+		builder.append("- `Directional score` is a reading aid. It averages productivity, representative quality, risk control, and administrative feasibility. Representative quality averages welfare, enacted support, compromise, public alignment, and legitimacy. Risk control inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift.\n\n");
 		
 		builder.append("## Scenario Averages Across Cases\n\n");
-		builder.append("| Scenario | Directional score ↑ | Quality ↑ | Risk control ↑ | Admin feas. ↑ | Productivity ↑ | Enacted/run | Floor/run diag. | Welfare ↑ | Low-support ↓ | Weak public mandate ↓ | Admin cost ↓ | Minority harm ↓ | Legitimacy ↑ | Policy shift diag. | Proposer gain ↓ | Capture ↓ | Lobby spend diag. | Defensive spend diag. | Amend rate diag. | Compensation diag. | Anti-lobby pass ↑ | Challenge diag. | Floor diag. |\n");
+		builder.append("| Scenario | Directional score ↑ | Quality ↑ | Risk control ↑ | Admin feas. ↑ | Productivity ↑ | Enacted/run | Floor/run diag. | Welfare ↑ | Low-support ↓ | Low-public-support enactment ↓ | Admin cost ↓ | Minority harm ↓ | Legitimacy ↑ | Policy shift diag. | Proposer gain ↓ | Capture ↓ | Lobby spend diag. | Defensive spend diag. | Amend rate diag. | Compensation diag. | Anti-lobby pass ↑ | Challenge diag. | Floor diag. |\n");
 		builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
 		aggregateByScenario.values()
 		                   .stream()
@@ -1642,8 +1656,8 @@ public final class CampaignRunner
 		}
 		
 		if (aggregateByScenario.containsKey("default-pass-challenge")) {
-			builder.append("## Default-Pass Side Note: Challenge-Voucher Deltas\n\n");
-			builder.append("Default enactment is no longer the main paper frame, but the campaign keeps this burden-shifting side comparison. Delta values compare `default-pass-challenge` against open `default-pass` in the same case. The challenge rate is the share of potential bills diverted from default enactment into an active vote.\n\n");
+			builder.append("## Burden-Shifting Side Note: Challenge-Voucher Deltas\n\n");
+			builder.append("Delta values compare `default-pass-challenge` against open `default-pass` in the same case. The challenge rate is the share of potential bills diverted from automatic passage into an active vote.\n\n");
 			builder.append("| Case | Enacted/run delta | Productivity delta | Welfare delta | Low-support delta | Policy-shift delta | Proposer-gain delta | Challenge rate |\n");
 			builder.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
 			for (String caseKey : caseKeys(result.rows())) {
@@ -2123,7 +2137,7 @@ public final class CampaignRunner
 		}
 		
 		if (aggregateByScenario.containsKey("default-pass-informed-guarded")) {
-			builder.append("## Default-Pass Guardrail Deltas\n\n");
+			builder.append("## Burden-Shifting Guardrail Deltas\n\n");
 			builder.append("Delta values compare `default-pass-informed-guarded` against open `default-pass` in the same case. Negative low-support, policy-shift, and proposer-gain deltas are desirable; productivity losses are the tradeoff.\n\n");
 			builder.append("| Case | Productivity delta | Welfare delta | Low-support delta | Policy-shift delta | Proposer-gain delta |\n");
 			builder.append("| --- | ---: | ---: | ---: | ---: | ---: |\n");
@@ -2144,7 +2158,7 @@ public final class CampaignRunner
 		}
 		
 		builder.append("## Case Highlights\n\n");
-		builder.append("| Case | Best welfare | Most productive | Lowest weak public-mandate passage |\n");
+		builder.append("| Case | Best welfare | Most productive | Lowest low-public-support enactment |\n");
 		builder.append("| --- | --- | --- | --- |\n");
 		for (String caseKey : caseKeys(result.rows())) {
 			List<CampaignRow> caseRows = rowsForCase(result.rows(), caseKey);
@@ -2162,63 +2176,63 @@ public final class CampaignRunner
 		builder.append("## Interpretation\n\n");
 		if (aggregateByScenario.containsKey("committee-regular-order")
 				&& aggregateByScenario.containsKey("risk-routed-majority")) {
-			builder.append("- This is a breadth-first paper campaign. Default pass is retained as one burden-shifting stress test, while the main comparison spans conventional thresholds, committee-first regular order, coalition confidence, policy tournaments, citizen review, agenda scarcity, proposal accountability, harm/compensation rules, anti-capture safeguards, adaptive risk routing, and law-registry review.\n");
-			builder.append("- Open default-pass remains the throughput extreme, but its high weak public-mandate passage and policy movement make it a diagnostic endpoint rather than the project focus.\n");
+			builder.append("- This paper campaign compares representative conventional, committee, coalition, tournament, citizen-review, agenda-scarcity, proposal-accountability, harm/compensation, anti-capture, adaptive-routing, law-registry, and burden-shifting mechanisms under shared synthetic worlds.\n");
+			builder.append("- Open burden-shifting passage remains the throughput extreme, but its high low-public-support enactment and policy movement make it a diagnostic endpoint.\n");
 			builder.append("- Policy tournaments and risk-routed majority systems occupy a promising compromise/productivity middle ground in this synthetic campaign, but tournament variants remain sensitive to clone, decoy, and overload stress; committee-first, public-interest, citizen, and parliamentary-style gates control risk but give up substantial throughput.\n");
 			builder.append("- Welfare-oriented comparisons should be read alongside productivity: the same institution can pass fewer bills while improving enacted bill quality, and generated welfare remains conditional on model assumptions.\n");
-			builder.append("- The next model extension should deepen non-default families beyond their current prototypes: multidimensional package bargaining, judicial/court intervention, executive emergency/delegated rulemaking, direct-democracy routes, electoral feedback, and media/information ecosystems.\n\n");
+			builder.append("- Future model extensions should deepen multidimensional package bargaining, judicial/court intervention, executive emergency/delegated rulemaking, direct-democracy routes, electoral feedback, and media/information ecosystems.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-constituent-public-will")) {
 			builder.append("- Roadmap-completion scenarios add district-grounded public signals, refundable proposal bonds, richer cosponsorship diagnostics, multi-round mediation, strategic alternatives, adaptive proposer behavior, strategic lobby-channel learning, challenge allocation/path variants, adaptive-route rates, and proposal-cost variants.\n");
-			builder.append("- The next model extension should deepen endogeneity: challengers, amendment coalitions, constituent publics, and alternative drafters should adapt to the institutional rules over repeated sessions.\n\n");
+			builder.append("- Future model extensions should deepen endogeneity: challengers, amendment coalitions, constituent publics, and alternative drafters should adapt to the institutional rules over repeated sessions.\n\n");
 		} else if (hasTimelineCases(result.rows())) {
 			builder.append("- Timeline scenarios are stylized stress paths, not historical calibration. They increase polarization, party loyalty, lobbying pressure, and proposal pressure while reducing compromise culture and constituency responsiveness.\n");
 			builder.append("- The timeline comparison should be read as a degradation test: institutions that preserve compromise and productivity under later-era assumptions are more robust than systems that only work in low-contention settings.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-weighted-agenda-lottery")) {
 			builder.append("- Agenda-scarcity variants test non-committee ways to ration floor attention, including weighted/random lotteries, quadratic credits, and public objection or repeal windows.\n");
-			builder.append("- The next model extension should add richer constituent and affected-group structure so public objection and citizen-panel signals are grounded in represented districts rather than generated bill fields.\n\n");
+			builder.append("- Future model extensions should add richer constituent and affected-group structure so public objection and citizen-panel signals are grounded in represented districts rather than generated bill fields.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-citizen-certificate")) {
 			builder.append("- Citizen-panel scenarios test whether an independent mini-public can add information and legitimacy without reproducing standing committee control.\n");
-			builder.append("- The next model extension should add agenda-scarcity variants, because the simulator now has independent review but still needs non-committee ways to ration floor attention and public objection capacity.\n\n");
+			builder.append("- Future model extensions should add agenda-scarcity variants because the simulator has independent review but still needs non-committee ways to ration floor attention and public objection capacity.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-lobby-channel-bundle")) {
 			builder.append("- Lobbying-depth scenarios split organized-interest influence into direct pressure, agenda access, information distortion, public campaigns, litigation threats, and defensive spending against reform.\n");
-			builder.append("- The next model extension should add deliberative citizen review, because the simulator now has richer organized-interest pressure but still lacks an independent public legitimacy screen.\n\n");
+			builder.append("- Future model extensions should add deliberative citizen review because the simulator has richer organized-interest pressure but still lacks an independent public legitimacy screen.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-alternatives-pairwise")) {
 			builder.append("- Policy-tournament scenarios test whether agenda-setter power falls when multiple alternatives compete before a final yes/no ratification vote.\n");
-			builder.append("- The next model extension should add deliberative citizen review or richer lobbying channels, because the simulator now has agenda competition, harm guardrails, law review, and mediation but still lacks an independent public legitimacy screen.\n\n");
+			builder.append("- Future model extensions should add deliberative citizen review or richer lobbying channels because the simulator has agenda competition, harm guardrails, law review, and mediation but still lacks an independent public legitimacy screen.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-mediation")) {
 			builder.append("- Structured mediation scenarios let a bounded amendment stage move bills toward the chamber median/status quo before the final yes/no vote.\n");
-			builder.append("- The next model extension should add richer constituent and affected-group structure, because compromise quality should be judged against public will and concentrated harms rather than only chamber support.\n\n");
+			builder.append("- Future model extensions should add richer constituent and affected-group structure because compromise quality should be judged against public will and concentrated harms rather than only chamber support.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-budgeted-lobbying")) {
 			builder.append("- Budgeted lobbying scenarios make organized interests explicit actors with budgets, issue targets, and defensive spending against anti-lobbying reform.\n");
-			builder.append("- The next model extension should add structured amendment or mediation, because capture controls and agenda screens still rarely turn narrow bills into better compromises before the final yes/no choice.\n\n");
+			builder.append("- Future model extensions should add structured amendment or mediation because capture controls and agenda screens still rarely turn narrow bills into better compromises before the final yes/no choice.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-anti-capture-bundle")) {
-			builder.append("- Anti-capture mechanisms test lobbying as institutional pressure: anti-lobbying bills now face organized opposition, while high-private-gain bills create measurable capture risk.\n");
-			builder.append("- The next model extension should make lobbying groups explicit actors with budgets, issue targets, defensive spending against anti-lobbying bills, and separate channels for money, information, litigation threat, and public campaigns.\n\n");
+			builder.append("- Anti-capture mechanisms test lobbying as institutional pressure: anti-lobbying bills face organized opposition, while high-private-gain bills create measurable capture risk.\n");
+			builder.append("- Future model extensions should make lobbying groups explicit actors with budgets, issue targets, defensive spending against anti-lobbying bills, and separate channels for money, information, litigation threat, and public campaigns.\n\n");
 		} else if (aggregateByScenario.containsKey("default-pass-challenge-party-t3-s082")) {
 			builder.append("- The challenge sweep compares token budgets, challenge thresholds, party-held tokens, member-held tokens, and tokenless q-member escalation.\n");
 			if (aggregateByScenario.containsKey("default-pass-cross-bloc")) {
-				builder.append("- Cross-bloc cosponsorship tests coalition breadth as a pre-floor agenda gate, before default-pass or challenge mechanics can operate.\n");
+				builder.append("- Cross-bloc cosponsorship tests coalition breadth as a pre-floor agenda gate before burden-shifting or challenge mechanics can operate.\n");
 				if (aggregateByScenario.containsKey("default-pass-adaptive-track")) {
 					builder.append("- Adaptive procedural tracks test whether low-risk bills can stay in a fast lane while high-risk bills receive stronger review.\n");
 					if (aggregateByScenario.containsKey("default-pass-sunset-trial")) {
-						builder.append("- Sunset trial rules test whether risky default enactments can be made reversible after automatic review.\n");
+						builder.append("- Sunset trial rules test whether risky burden-shifting enactments can be made reversible after automatic review.\n");
 						if (aggregateByScenario.containsKey("default-pass-earned-credits")) {
 							builder.append("- Earned proposal credits test whether agenda access can learn from proposer track records instead of using only fixed up-front costs.\n");
-							builder.append("- The next model extension should add explicit anti-capture systems, because lobbying currently appears mostly as bill-level pressure rather than as self-protective institutional influence.\n\n");
+							builder.append("- Future model extensions should add explicit anti-capture systems because lobbying appears mostly as bill-level pressure rather than as self-protective institutional influence.\n\n");
 						} else {
-							builder.append("- The next model extension should add earned proposal credits, because agenda access still does not learn from proposer track records.\n\n");
+							builder.append("- Future model extensions should add earned proposal credits because agenda access still does not learn from proposer track records.\n\n");
 						}
 					} else {
-						builder.append("- The next model extension should add sunset trial legislation, because the remaining risk is bad-law persistence after enactment.\n\n");
+						builder.append("- Future model extensions should add sunset trial legislation because the remaining risk is bad-law persistence after enactment.\n\n");
 					}
 				} else {
-					builder.append("- The next model extension should add adaptive procedural tracks, because the agenda system now needs to route bills by risk rather than screening every bill with one rule.\n\n");
+					builder.append("- Future model extensions should add adaptive procedural tracks because the agenda system needs to route bills by risk rather than screening every bill with one rule.\n\n");
 				}
 			} else {
-				builder.append("- The next model extension should add coalition-breadth proposal access, because challenge mechanics still operate after a bill enters the agenda.\n\n");
+				builder.append("- Future model extensions should add coalition-breadth proposal access because challenge mechanics still operate after a bill enters the agenda.\n\n");
 			}
 		} else {
-			builder.append("- The next model extension should sweep challenge-token budgets, challenge thresholds, and proposal-cost mechanisms, because agenda screening is now the central default-pass tradeoff.\n\n");
+			builder.append("- Future model extensions should sweep challenge-token budgets, challenge thresholds, and proposal-cost mechanisms because agenda screening is central to burden-shifting tradeoffs.\n\n");
 		}
 		builder.append("## Reproduction\n\n");
 		builder.append("```sh\nmake campaign\n```\n");
@@ -2228,7 +2242,7 @@ public final class CampaignRunner
 	private static void appendTimelineSection(StringBuilder builder, List<CampaignRow> rows) {
 		builder.append("## Timeline Contention Path\n\n");
 		builder.append("This campaign is a stylized longitudinal stress path, not a calibrated history. The contention index is computed as `0.50 * gridlock + 0.30 * (1 - compromise) + 0.20 * weakPublicMandatePassage`, so it rises when a system blocks more, compromises less, or enacts more bills with generated public support below majority.\n\n");
-		builder.append("| Era | Scenario | Productivity | Compromise | Gridlock | Weak public mandate | Contention index |\n");
+		builder.append("| Era | Scenario | Productivity | Compromise | Gridlock | Low-public-support enactment | Contention index |\n");
 		builder.append("| --- | --- | ---: | ---: | ---: | ---: | ---: |\n");
 		for (CampaignRow eraRow : firstRowsByCase(rows)) {
 			for (String scenarioKey : List.of(
@@ -2304,9 +2318,9 @@ public final class CampaignRunner
 		if (aggregateByScenario.containsKey("committee-regular-order")
 				&& aggregateByScenario.containsKey("risk-routed-majority")) {
 			ScenarioAggregate currentSystem = aggregateByScenario.get("current-system");
-			builder.append("- The main comparison campaign is breadth-first: ")
+			builder.append("- The main comparison campaign compares ")
 			       .append(aggregateByScenario.size())
-			       .append(" scenario families are compared across the same synthetic worlds, with default enactment retained as one stress-test family rather than the organizing case.\n");
+			       .append(" scenario families across the same synthetic worlds, including a small burden-shifting stress-test family.\n");
 			builder.append("- The scalar directional score is productivity-sensitive: its highest value came from ")
 			       .append(bestDirectional.scenarioName())
 			       .append(" at ")
@@ -2327,11 +2341,11 @@ public final class CampaignRunner
 			       .append(format(bestProductivity.productivity()))
 			       .append(".\n");
 			if (openDefault != null) {
-				builder.append("- Open default-pass averaged ")
+				builder.append("- Open burden-shifting passage averaged ")
 				       .append(format(openDefault.productivity()))
 				       .append(" productivity, ")
 				       .append(format(openDefault.weakPublicMandatePassage()))
-				       .append(" weak public-mandate passage, and ")
+				       .append(" low-public-support enactment, and ")
 				       .append(format(openDefault.policyShift()))
 				       .append(" policy shift, so it functions as a throughput/risk endpoint.\n");
 			}
@@ -2372,7 +2386,7 @@ public final class CampaignRunner
 			return;
 		}
 		if (openDefault == null) {
-			builder.append("- This focused campaign does not include the open default-pass baseline, so relative headline deltas are reported in the diagnostic sections below.\n");
+			builder.append("- This focused campaign does not include the open burden-shifting baseline, so relative headline deltas are reported in the diagnostic sections below.\n");
 			builder.append("- Highest average welfare in this campaign came from ")
 			       .append(bestWelfare.scenarioName())
 			       .append(" at ")
@@ -2395,7 +2409,7 @@ public final class CampaignRunner
 			return;
 		}
 		
-		builder.append("- Open default-pass averaged ")
+		builder.append("- Open burden-shifting passage averaged ")
 		       .append(format(openDefault.productivity()))
 		       .append(" productivity");
 		if (simpleMajority != null) {
@@ -2404,9 +2418,9 @@ public final class CampaignRunner
 			       .append(" for simple majority");
 		}
 		builder.append(".\n");
-		builder.append("- Open default-pass also averaged ")
+		builder.append("- Open burden-shifting passage also averaged ")
 		       .append(format(openDefault.weakPublicMandatePassage()))
-		       .append(" weak public-mandate passage and ")
+		       .append(" low-public-support enactment and ")
 		       .append(format(openDefault.policyShift()))
 		       .append(" policy shift.\n");
 		builder.append("- Highest directional score, where lower-better risk metrics are inverted before combination, came from ")

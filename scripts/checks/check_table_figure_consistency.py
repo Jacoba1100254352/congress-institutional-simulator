@@ -28,10 +28,10 @@ def normalize_label(value: str) -> str:
     return value.strip()
 
 
-def table_labels() -> set[str]:
+def table_labels() -> list[str]:
     if not TABLE.exists():
         raise FileNotFoundError(TABLE)
-    labels: set[str] = set()
+    labels: list[str] = []
     for line in TABLE.read_text().splitlines():
         match = ROW_RE.match(line)
         if not match:
@@ -39,7 +39,7 @@ def table_labels() -> set[str]:
         label = normalize_label(match.group(1))
         if not label or label in {"Label", "\\toprule", "\\midrule", "\\bottomrule"}:
             continue
-        labels.add(label)
+        labels.append(label)
     return labels
 
 
@@ -60,13 +60,15 @@ def main() -> int:
         labels = table_labels()
     except FileNotFoundError:
         failures.append(f"{TABLE}: missing")
-        labels = set()
+        labels = []
 
-    if "CUR" not in labels:
-        failures.append("scenario table is missing CUR benchmark label")
+    label_set = set(labels)
+    numbered_labels = {"1*"} | {str(index) for index in range(2, len(labels) + 1)}
+    if "CUR*" not in label_set:
+        failures.append("scenario table is missing CUR* benchmark label")
     table_text = TABLE.read_text() if TABLE.exists() else ""
-    if "textcolor{red}" not in table_text or "CUR" not in table_text:
-        failures.append("scenario table does not visibly mark CUR in red")
+    if "CUR*" not in table_text:
+        failures.append("scenario table does not visibly mark CUR with a non-color asterisk")
 
     for scatter in SCATTERS:
         try:
@@ -74,18 +76,21 @@ def main() -> int:
         except FileNotFoundError:
             failures.append(f"{scatter}: missing")
             continue
-        missing = labels - figure_labels
-        extra = figure_labels - labels
-        if missing:
-            failures.append(f"{scatter}: labels missing from figure: {', '.join(sorted(missing))}")
-        if extra:
-            failures.append(f"{scatter}: figure labels missing from table: {', '.join(sorted(extra))}")
+        uses_numbered_labels = figure_labels == numbered_labels
+        if not uses_numbered_labels:
+            missing = label_set - figure_labels
+            extra = figure_labels - label_set
+            if missing:
+                failures.append(f"{scatter}: labels missing from figure: {', '.join(sorted(missing))}")
+            if extra:
+                failures.append(f"{scatter}: figure labels missing from table: {', '.join(sorted(extra))}")
         square_count = count_point_squares(scatter)
         if square_count != len(figure_labels):
             failures.append(f"{scatter}: found {square_count} plotted squares but {len(figure_labels)} point labels")
         text = scatter.read_text()
-        if "\\color{red}" not in text or "label=CUR" not in text:
-            failures.append(f"{scatter}: CUR benchmark is not visibly marked in red")
+        expected_benchmark_label = "1*" if uses_numbered_labels else "CUR*"
+        if "\\color{red}" not in text or f"label={expected_benchmark_label}" not in text:
+            failures.append(f"{scatter}: CUR benchmark is not visibly marked with red plus a non-color label")
 
     if failures:
         print("Table/figure consistency check failed:", file=sys.stderr)

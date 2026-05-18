@@ -11,8 +11,8 @@ from pathlib import Path
 
 
 DEFAULT_PDFS = [
-    Path("paper/main.pdf"),
-    Path("paper/appendix-odd-d.pdf"),
+    Path("paper/acm-ci-framework/acm-ci-framework.pdf"),
+    Path("paper/technical-appendix/odd-d-appendix.pdf"),
 ]
 
 HASHED_BANNED_TERMS = (

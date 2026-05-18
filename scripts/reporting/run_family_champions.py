@@ -153,7 +153,7 @@ def write_summary(rows: list[dict[str, str]]) -> None:
         "- Seed: 20260428",
         "- Selection rule: within each scenario family, the reported scenario has the highest directional score in this fixed baseline screen.",
         "",
-        "| Family | Top scenario | Directional | Productivity | Compromise | Weak mandate | Admin cost | Welfare |",
+        "| Family | Top scenario | Directional | Productivity | Compromise | Low public support | Admin cost | Welfare |",
         "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for family in sorted(by_family):
@@ -166,7 +166,7 @@ def write_summary(rows: list[dict[str, str]]) -> None:
         )
     lines.extend([
         "",
-        "The screen exists to reduce cherry-picking risk: the main paper reports a compact breadth-first campaign, while this supplement shows which breadth-catalog variants score highest under a fixed within-family rule.",
+        "The screen exists to reduce cherry-picking risk: the main paper reports a compact representative campaign, while this supplement shows which coverage-catalog variants score highest under a fixed within-family rule.",
     ])
     REPORT_MD.write_text("\n".join(lines) + "\n")
 

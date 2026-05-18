@@ -157,7 +157,7 @@ Run the v19 timeline stress campaign:
 make campaign-v19
 ```
 
-Run the v20 strategy/calibration campaign:
+Run the v20 strategy/flow-screen campaign:
 
 ```sh
 make campaign-v20
@@ -181,7 +181,7 @@ Run the supplemental all-catalog family screen:
 make family-screen
 ```
 
-Run the empirical validation bridge:
+Run the empirical flow sanity checks:
 
 ```sh
 make empirical-bridge
@@ -213,7 +213,7 @@ make clean
 
 ## Research Documentation
 
-- [Calibration and validation](calibration.md): tracked benchmark extract, external validation targets, and the executable calibration workflow.
+- [Empirical flow screening](calibration.md): tracked benchmark extract, external comparison targets, and the executable flow-screen workflow.
 - [ODD model description](odd-model.md): entities, state variables, scheduling, design concepts, initialization, and submodels.
 - [Full ODD+D appendix](odd-d-appendix.md): submission-ready model documentation covering data, adaptation, submodels, assumptions, and outputs.
 
@@ -272,9 +272,9 @@ make campaign ARGS="--runs 300 --legislators 151 --bills 100 --seed 12345"
 
 ## Scenario Keys
 
-When `--scenarios` is omitted, the CLI now runs the same representative breadth-first set used by the main paper campaign. Default-pass systems remain available, but only three are in the default set so they function as stress tests rather than the project center.
+When `--scenarios` is omitted, the CLI runs the same representative set used by the main paper campaign. Burden-shifting systems remain available, but only three are in the default set so they function as stress tests rather than the project center.
 
-Default breadth-first keys:
+Default representative keys:
 
 - `current-system`
 - `simple-majority`
@@ -387,7 +387,7 @@ Direction markers are used in generated reports and paper figures:
 - `↓`: lower is generally better.
 - `diag.`: context-dependent activity or risk context.
 
-The campaign CSV also includes `directionalScore`, `representativeQuality`, `riskControl`, and `administrativeFeasibility`. These are display scores, not proof that a system is best. `directionalScore` averages productivity, representative quality, risk control, and administrative feasibility. `representativeQuality` combines welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts chamber low-support passage, weak public-mandate passage, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift. `administrativeFeasibility` inverts the administrative-cost index.
+The campaign CSV also includes `directionalScore`, `representativeQuality`, `riskControl`, and `administrativeFeasibility`. These are display scores. `directionalScore` averages productivity, representative quality, risk control, and administrative feasibility. `representativeQuality` combines welfare, enacted support, compromise, public alignment, and legitimacy. `riskControl` inverts chamber low-support passage, low-public-support enactment, minority harm, lobby capture, public-preference distortion, concentrated-harm passage, proposer gain, and policy shift. `administrativeFeasibility` inverts the administrative-cost index.
 
 - `productivity` `↑`: share of potential bills enacted.
 - `caseWeight` `diag.`: likelihood weight used by sensitivity campaigns; ordinary campaigns use `1.0`.
@@ -399,7 +399,7 @@ The campaign CSV also includes `directionalScore`, `representativeQuality`, `ris
 - `gridlock` `↓`: share of potential bills not enacted.
 - `accessD` `diag.`: share of potential bills denied by proposal-access rules.
 - `cmteRej` `diag.`: share of potential bills rejected by committee.
-- `challengeRate` `diag.`: share of potential bills diverted from default enactment into active voting by challenge vouchers or q-member escalation.
+- `challengeRate` `diag.`: share of potential bills diverted from automatic burden-shifting passage into active voting by challenge vouchers or q-member escalation.
 - `lowSupport` `↓`: enacted bills with less than 50 percent yes support.
 - `weakPublicMandatePassage` `↓`: enacted bills with generated public support below 50 percent, regardless of chamber threshold.
 - `administrativeCost` `↓`: estimated procedural load from attention spending, review, challenge, amendment, and alternative-selection work.
@@ -438,7 +438,7 @@ The campaign CSV also includes `directionalScore`, `representativeQuality`, `ris
 - `repealWindowReversalRate` `diag.`: share of triggered repeal windows that reverse enactment.
 - `fastLaneRate`, `middleLaneRate`, `highRiskLaneRate` `diag.`: adaptive-route shares.
 - `challengeExhaustionRate` `↓`: share of potential bills where a challenge would have cleared threshold but no token was available.
-- `falseNegativePassRate` `↓`: risky, low-support, or high-harm default enactments that passed unchallenged.
+- `falseNegativePassRate` `↓`: risky, low-support, or high-harm burden-shifting enactments that passed unchallenged.
 - `publicWillReviewRate`, `publicSignalMovement` `diag.`, `districtAlignment` `↑`: constituent/public-will review diagnostics.
 - `crossBlocAdmissionRate`, `affectedGroupSponsorshipRate`, `averageCosponsors` `diag.`: richer cosponsorship diagnostics.
 - `proposalBondForfeiture` `diag.`: average proposal-bond loss per potential bill.

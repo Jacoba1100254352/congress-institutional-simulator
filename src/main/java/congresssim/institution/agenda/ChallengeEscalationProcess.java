@@ -85,7 +85,7 @@ public final class ChallengeEscalationProcess implements LegislativeProcess
 				true,
 				List.of(supportResult),
 				PresidentialAction.none(),
-				"unchallenged default enactment"
+				"unchallenged burden-shifting enactment"
 		);
 	}
 }

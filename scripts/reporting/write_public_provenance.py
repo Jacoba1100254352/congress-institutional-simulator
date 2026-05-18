@@ -19,8 +19,8 @@ ARTIFACTS = [
     "reports/seed-robustness-summary.csv",
     "reports/paper-findings-validation.md",
     "reports/family-champions.md",
-    "paper/main.pdf",
-    "paper/appendix-odd-d.pdf",
+    "paper/acm-ci-framework/acm-ci-framework.pdf",
+    "paper/technical-appendix/odd-d-appendix.pdf",
 ]
 
 

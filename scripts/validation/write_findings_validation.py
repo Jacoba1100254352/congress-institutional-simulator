@@ -126,7 +126,7 @@ def comparison_line(
         f"{delta(source_values['productivity'] - target_values['productivity'])}, "
         f"compromise by {delta(source_values['compromise'] - target_values['compromise'])}, "
         f"risk control by {delta(source_values['riskControl'] - target_values['riskControl'])}, "
-        f"weak-mandate passage by {delta(source_values['weakPublicMandatePassage'] - target_values['weakPublicMandatePassage'])}, "
+        f"low-public-support enactment by {delta(source_values['weakPublicMandatePassage'] - target_values['weakPublicMandatePassage'])}, "
         f"and lobbying capture by {delta(source_values['lobbyCapture'] - target_values['lobbyCapture'])}."
     )
 
@@ -160,7 +160,7 @@ def main() -> int:
         "",
         "## Focus Scenario Averages",
         "",
-        "| Key | Scenario | Dir. | Prod. | Comp. | Risk ctrl. | Rep. quality | Weak mandate | Welfare | Lobby capture | Seed dir. mean [min,max] |",
+        "| Key | Scenario | Dir. | Prod. | Comp. | Risk ctrl. | Rep. quality | Low public support | Welfare | Lobby capture | Seed dir. mean [min,max] |",
         "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for key in FOCUS:
@@ -180,7 +180,7 @@ def main() -> int:
         "- Top productivity scores: "
         + ", ".join(f"`{key}` ({fmt(broad[key]['productivity'])})" for key in top_productivity)
         + ".",
-        "- Lowest weak public-mandate passage: "
+        "- Lowest low-public-support enactment: "
         + ", ".join(f"`{key}` ({fmt(broad[key]['weakPublicMandatePassage'])})" for key in lowest_weak)
         + ".",
         "- Highest generated welfare: "
@@ -197,9 +197,9 @@ def main() -> int:
             comparison_line(broad, "portfolio-hybrid-legislature", "anti-capture-majority-bundle", "anti-capture bundle"),
             comparison_line(broad, "portfolio-hybrid-legislature", "default-pass", "open default pass"),
             "",
-            "The hybrid is best read as a synthesized candidate rather than a final winner. Pairwise alternatives remain the cleanest non-default productivity/compromise result. The hybrid preserves much of that productivity while adding lower lobbying capture and stronger weak-mandate control, but it pays in administrative load and loses some compromise because not every bill enters the pairwise route.",
+            "The portfolio variants illustrate the tradeoff between combining safeguards and increasing administrative load. Pairwise alternatives remain the cleanest alternative-selection productivity/compromise result; the hybrid preserves much of that productivity while adding lower lobbying capture and stronger low-public-support controls, but it pays in administrative load and loses some compromise because not every bill enters the pairwise route.",
             "",
-            "The design hypothesis to carry forward is a portfolio legislature: low-risk bills should move quickly; medium-risk bills should face alternative comparison and mediation; high-risk or high-harm bills should face public/harm review; proposers should internalize some outcome risk; organized-interest pressure should be visible and audited; enacted high-uncertainty laws should be reviewed later.",
+            "A portfolio legislature remains one testable mechanism bundle: low-risk bills move quickly; medium-risk bills face alternative comparison and mediation; high-risk or high-harm bills face public/harm review; proposers internalize some outcome risk; organized-interest pressure is visible and audited; enacted high-uncertainty laws are reviewed later.",
         ])
 
     REPORT.parent.mkdir(parents=True, exist_ok=True)

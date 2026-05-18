@@ -40,7 +40,7 @@ import static congresssim.simulation.catalog.SharedScenarioBuilders.supermajorit
 
 
 /**
- * Broad non-default system builders used by the breadth-first catalog family.
+ * Broad non-default system builders used by the representative catalog family.
  */
 final class BroadSystemScenarioBuilders
 {
