@@ -1,75 +1,75 @@
-# Paper Plan: Empirical Validation
+# Paper Plan
+
+## Final Decision
+
+BENCHMARK/DATA PIPELINE PLAN ONLY. DO NOT DRAFT FULL PAPER YET.
+
+The current pipeline is useful but not substantially extended beyond flow sanity checks. A full paper should wait until the data pipeline covers more source families, especially public opinion, campaign finance, implementation feedback, and law revision.
 
 ## Working Title
 
-From Flow Sanity Checks to Validation: Empirical Boundaries for a Legislative Mechanism Simulator
+Empirical Boundary Conditions for Legislative Mechanism Simulation
 
 ## Target Venue Category
 
-Future computational social science, political methodology, data/resource, or simulation-validation venue.
+Future data/resource paper, computational social science methods note, political methodology data paper, or social simulation validation paper.
 
 ## One-Sentence Contribution
 
-The paper would develop and test an empirical validation program for mapping observed legislative data to simulator quantities such as agenda flow, coalition structure, lobbying concentration, public support, harm, implementation feedback, and correction.
+The future paper would define and implement a benchmark-data pipeline that maps empirical legislative signals to simulation calibration, sanity-check, proxy, synthetic-only, and missing-model categories.
 
-## Why This Is Not Redundant With the ACM CI Paper
+## What This Paper Is Not
 
-The ACM paper intentionally limits empirical material to flow sanity checks. This breakout would be a validation/data paper only after new empirical datasets and mappings are added.
+- Not proof that the simulator is valid.
+- Not a mechanism-ranking paper.
+- Not a political-science results paper.
+- Not a substitute for district opinion, campaign finance, implementation, court review, or law-revision data.
 
-## Current Readiness Decision
+## Existing Artifacts
 
-Only a future-work plan. Not ready for an extended empirical manuscript.
+- `reports/empirical-validation-readiness.md`: raw-input readiness.
+- `reports/empirical-validation-summary.md`: computed empirical summaries.
+- `reports/empirical-bridge.md`: flow sanity-check mapping.
+- `reports/empirical-validation-gap-report.md`: claim boundaries and missing areas.
+- `reports/core-raw-validation-build.md`: current source-backed sample counts.
+- `reports/calibration-baseline.md`: 7 / 7 broad conventional-baseline screens.
+- `scripts/validation/`: validation and empirical-bridge scripts.
 
-The current empirical files are useful but too small and too indirect for an independent validation paper.
+## Deliverables for Future Paper
 
-## Existing Artifacts and Results It Can Use
+1. Empirical signal taxonomy.
+2. Mapping from empirical signal to simulator metric.
+3. Claim boundary table:
+   - validated;
+   - sanity-checkable;
+   - proxy only;
+   - synthetic only;
+   - not currently modeled.
+4. Data pipeline plan.
+5. Reproducibility plan.
+6. Validation-readiness scorecard.
+7. Missing-data roadmap.
 
-- `reports/calibration-baseline.csv` and `.md`: 7/7 flow checks passed for the conventional benchmark.
-- `reports/empirical-bridge.csv` and `.md`: 19 rows of empirical comparison material.
-- `reports/empirical-validation-gap-report.csv` and `.md`: 12 rows of validation gap reporting.
-- `reports/empirical-validation-readiness.csv` and `.md`: readiness checks.
-- `reports/empirical-validation-summary.csv` and `.md`: summary outputs.
-- `reports/core-raw-validation-build.md`: current raw sample counts.
-- `reports/public-api-sample-fetch.md`: public API sample-fetch notes.
-- Validation scripts under `scripts/validation/`.
+## Current Go/No-Go
 
-Current raw samples include a 180-row Congress.gov-derived bill-progression extract and smaller Voteview, LDA, topic, sponsor, and committee summaries. These do not validate synthetic welfare, support, harm, capture, or correction metrics.
+No-go for full paper draft.
 
-## Missing Experiments or Validation Needed Before Submission
+Go for:
 
-- District-level public opinion data mapped to bills, issue domains, or roll calls.
-- Campaign finance and lobbying data linked to proposal access, sponsorship, and votes.
-- Court review, law revision, implementation, and rollback data.
-- Cross-national institutional comparison data.
-- Held-out validation targets and a real train/test distinction.
-- A validation design that separates calibration, plausibility screening, and prediction.
-- Error metrics and tolerance rules.
+- source registry;
+- expanded data inventory;
+- missing-source acquisition plan;
+- offline summary cache;
+- metric-boundary reports;
+- held-out validation design.
 
-## Go/No-Go Recommendation
+## Full Draft Gate
 
-No-go for a paper. Go only for a staged validation workplan.
+Draft only after:
 
-## Next Concrete Commands or Repo Tasks
-
-Current checks:
-
-```sh
-make validation-readiness
-make validation-gap-report
-make empirical-bridge
-make calibration-check
-```
-
-Optional network-dependent rebuilds:
-
-```sh
-make fetch-validation-samples
-make build-bill-progression-raw
-make build-core-raw-validation
-```
-
-Required new work:
-
-- Add a data inventory with licenses, identifiers, and reproducibility status.
-- Add no-network cached summaries for every empirical check.
-- Add held-out comparison targets before using the word validation in a title.
+- data pipeline includes substantially more than the current ready inputs;
+- public support and campaign finance are integrated or explicitly replaced by a defensible alternative;
+- implementation feedback or law revision data is integrated;
+- source registry and reproducibility manifests are complete;
+- held-out validation design exists;
+- claims remain boundary-focused rather than validation-overclaiming.

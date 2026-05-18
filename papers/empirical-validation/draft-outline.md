@@ -1,55 +1,95 @@
-# Future Draft Outline
+# Draft Outline
 
-Status: future-work outline only. Do not draft until a held-out empirical validation workflow exists.
+Status: outline only. Do not draft the full paper yet.
+
+Final decision: BENCHMARK/DATA PIPELINE PLAN ONLY.
 
 ## 1. Introduction
 
-- Simulation frameworks need empirical boundaries.
-- The current simulator has flow sanity checks, but central normative metrics remain synthetic.
-- The paper asks how to build a validation program for legislative mechanism simulation.
+- Legislative mechanism simulators need empirical boundary conditions.
+- Many politically important model quantities are not directly observable.
+- The paper asks what empirical signals can calibrate, sanity-check, proxy, or validate simulator quantities, and where gaps remain.
+- The contribution is a benchmark construction and validation-readiness framework, not proof that a simulator is valid.
 
-## 2. Validation Concepts
+## 2. Empirical Signal Taxonomy
 
-- Calibration.
-- Plausibility screening.
-- Held-out validation.
-- Predictive validation.
-- Synthetic-only diagnostics.
-
-## 3. Current Empirical Layer
-
-- Existing flow sanity checks.
-- Raw samples and cached summaries.
-- What the checks do and do not validate.
-
-## 4. Data Inventory
-
-- Legislative flow.
-- Roll calls and coalitions.
-- Lobbying and finance.
+- Legislative flow: bill introduction, floor action, committee reporting, enactment.
+- Roll-call behavior: coalition size, party unity, chamber vote patterns.
+- Agenda/topic mix: topic entropy and issue throughput.
+- Sponsor and legislative effectiveness.
+- Lobbying and campaign finance.
 - Public opinion and representation.
-- Courts, implementation, and correction.
-- Cross-national institutions.
+- Committee process.
+- Court review and invalidation.
+- Implementation and rulemaking.
+- Law revision and correction.
+- Comparative institutions.
 
-## 5. Validation Design
+## 3. Current Pipeline
 
-- Train/test split.
-- Error metrics and tolerances.
-- Proxy-risk handling.
-- Reproducible offline summaries.
+- Current ready inputs.
+- Current missing inputs.
+- Current computed summaries.
+- Current flow sanity checks.
+- Current calibration screen.
 
-## 6. Results
+## 4. Metric Mapping and Claim Boundaries
 
-- Only after new work: observed versus simulated flow targets.
-- Held-out validation results.
-- Remaining gaps.
+- Validated.
+- Sanity-checkable.
+- Proxy only.
+- Synthetic only.
+- Not currently modeled.
+- Explain why current central model outputs remain unvalidated.
 
-## 7. Discussion
+## 5. Data Pipeline Design
 
-- Which simulator claims can be empirically bounded.
-- Which metrics remain synthetic.
-- How validation changes mechanism interpretation.
+- Source registry.
+- Raw fetch and cache.
+- Normalization.
+- Summary generation.
+- Metric mapping.
+- Offline reproduction.
+- Held-out validation design.
 
-## 8. Conclusion
+## 6. Validation-Readiness Scorecard
 
-- Main contribution after new work: an empirical validation protocol and boundary map for legislative simulation.
+- Raw input coverage.
+- Flow checks.
+- Public-support readiness.
+- Influence/campaign-finance readiness.
+- Committee process readiness.
+- Court/review readiness.
+- Implementation/correction readiness.
+- Comparative-institution readiness.
+- Reproducibility readiness.
+
+## 7. Missing-Data Roadmap
+
+- Public opinion and affected-group support.
+- OpenFEC/campaign finance.
+- Lobbying-to-bill linkage.
+- Committee hearings/markups/discharge.
+- Court review/invalidation.
+- Federal Register / Unified Agenda / Regulations.gov.
+- Statutory lineage.
+- Cross-national party/chamber systems.
+
+## 8. Discussion
+
+- What can be benchmarked now.
+- What remains synthetic.
+- How the roadmap supports future political-science, chamber, robustness, and software papers.
+- Why validation boundaries matter more than a single fit score.
+
+## 9. Limitations
+
+- Bounded samples.
+- Missing high-priority data.
+- Proxy risks.
+- No held-out validation yet.
+- No claim that simulator rankings are empirically validated.
+
+## 10. Conclusion
+
+- The future paper should close with benchmark-readiness and missing-data priorities, not a validation claim.
