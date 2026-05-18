@@ -47,7 +47,7 @@ Scenarios share generated worlds but receive independent deterministic random st
 
 ## Initialization
 
-`WorldGenerator` creates legislators from a party-system profile, generates lobby groups by issue domain, chooses an initial status quo, and generates bills around proposer ideal points. Generated values are bounded by model-level validation checks.
+`WorldGenerator` creates legislators from a party-system profile, generates lobby groups by issue domain, chooses an initial status quo, and generates bills around proposer ideal points. Generated values are bounded by implementation constraints and broad plausibility checks.
 
 Party-system profiles currently include ideological bins, two major parties with minor parties, fragmented multiparty, and dominant-party systems.
 

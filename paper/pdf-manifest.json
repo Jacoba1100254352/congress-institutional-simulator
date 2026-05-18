@@ -2,22 +2,22 @@
   "generatedBy": "paper/scripts/write_pdf_manifest.py",
   "pdfs": [
     {
-      "normalizedTextBytes": 36624,
-      "normalizedTextSha256": "03bc9c8db6f79c32a6ba7ed4f54ff08645f1fa3d196e1b068d7947206c8f2024",
+      "normalizedTextBytes": 36718,
+      "normalizedTextSha256": "56f9a29b9c41a136c442e030928089523917d71b7c1c857c1c2ca280df5b4ebd",
       "pages": 10,
       "path": "paper/acm-ci-framework/acm-ci-framework.pdf",
-      "sizeBytes": 469943
+      "sizeBytes": 469982
     },
     {
-      "normalizedTextBytes": 39455,
-      "normalizedTextSha256": "6134dcd998ce5e5ac9cf3468fff2bb5252a52191d8556369fda7e136ea9267ed",
+      "normalizedTextBytes": 39495,
+      "normalizedTextSha256": "946ded5f384e182525aea9d3be17f14a6df3aeab8a9924fd8046436b1ee11c4e",
       "pages": 12,
       "path": "paper/technical-appendix/odd-d-appendix.pdf",
-      "sizeBytes": 479643
+      "sizeBytes": 479627
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "750211aee4156045577132112765b97a648fd43f187bc64b00bf86d69095140b",
+  "sourceInputSha256": "941438edb2c2757a1a5b40820cefd4cca0567e798dcac4f9a041cc9143b440b8",
   "sourceInputs": [
     {
       "path": "Makefile",
@@ -73,7 +73,7 @@
     },
     {
       "path": "paper/acm-ci-framework/acm-ci-framework.tex",
-      "sha256": "89630e69f5abb3c39c6bf93e82225a4b3e7bc52842b4ad11b6cad8180ed58a34"
+      "sha256": "e95da2251147437a45c6c27577d0e2f98e8456afa0af1bfd1b6e3469b27ba3a7"
     },
     {
       "path": "paper/acmart.cls",
@@ -133,7 +133,7 @@
     },
     {
       "path": "paper/figures/robustness_summary_table.tex",
-      "sha256": "6531c6f4f5ef42d9fc4ae18e21f2493cf16ace4e57d04366a12974ad3dd07deb"
+      "sha256": "38a12055efeaec8490a1628848978b4bc212594376d904fade1d1ec2b8fa7831"
     },
     {
       "path": "paper/figures/scenario_averages_full_table.tex",
@@ -165,7 +165,7 @@
     },
     {
       "path": "paper/scripts/generate_figures.py",
-      "sha256": "856250b4998abe06cbc622077295a4d2194766a86a2c7a678f327127b0f42bcc"
+      "sha256": "5b110242e8dd64c0ca716132483848fba4d7527b1d83035ed3693adf73c1d231"
     },
     {
       "path": "paper/scripts/write_pdf_manifest.py",
@@ -173,7 +173,7 @@
     },
     {
       "path": "paper/technical-appendix/odd-d-appendix.tex",
-      "sha256": "a6fb6167ffcb7b780b89349208dc11d305d84a6155e0332559c51bfdfe9c9650"
+      "sha256": "24443388a0282b17f7f0778bd46431e69810511e554f116b0ab551f087ff5d19"
     },
     {
       "path": "reports/ablation-analysis-summary.csv",
@@ -261,7 +261,7 @@
     },
     {
       "path": "scripts/packaging/build_anonymous_supplement.py",
-      "sha256": "60468af1484975565f1d9e15e339e9a628155665286bc41f94107215de4aa6c4"
+      "sha256": "8774b392f93878d7bd3f9d5c565fef049f48928dfc93869d92890c98ec7e8e99"
     },
     {
       "path": "scripts/reporting/report_catalog_breadth.py",

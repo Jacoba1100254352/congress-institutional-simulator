@@ -1113,17 +1113,17 @@ def write_robustness_summary_table(rows: list[dict[str, str]], averages: dict[st
         (
             "Extreme-beneficial reform",
             "Yes",
-            "Portfolio leads and content selection remains close; this directly tests the moderation-friendly benefit generator.",
+            "Portfolio has the highest displayed profile and content selection remains close; this directly tests the moderation-friendly benefit generator.",
         ),
         (
             "Revision dilution",
             "Yes",
-            "Portfolio leads when moving toward the center can reduce generated value.",
+            "Portfolio has the highest displayed profile when moving toward the center can reduce generated value.",
         ),
         (
             "Lobbying information",
-            "No major change",
-            "Content selection remains strongest when organized lobbying can carry useful information.",
+            "No major change in displayed pattern",
+            "The content-selection pattern persists when organized lobbying can carry useful information.",
         ),
         (
             "Public-opinion error",
@@ -1132,8 +1132,8 @@ def write_robustness_summary_table(rows: list[dict[str, str]], averages: dict[st
         ),
         (
             "Minority-rights harm",
-            "No major change",
-            "Content selection remains strongest, but the case targets majority-supported concentrated harm.",
+            "No major change in displayed pattern",
+            "The content-selection pattern persists, but the case targets majority-supported concentrated harm.",
         ),
         (
             "Cost-constrained fairness",

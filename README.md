@@ -129,30 +129,7 @@ The supplement builder excludes local build products, private local files,
 project-planning notes, and identity-bearing paths. It writes its own
 reviewer-facing README inside the supplement.
 
-## Standard Simulator Commands
+## Extended Documentation
 
-Run the default simulator:
-
-```sh
-make run
-```
-
-Run the canonical campaign:
-
-```sh
-make campaign
-```
-
-Run the current paper campaign:
-
-```sh
-make paper-campaign
-```
-
-Run follow-up diagnostics used by the paper:
-
-```sh
-make mechanism-diagnostics
-```
-
-Use `make run ARGS="--help"` for the simulator command reference.
+Use [docs/usage.md](docs/usage.md) for the full simulator command reference,
+historical campaign targets, scenario keys, and metric glossary.
