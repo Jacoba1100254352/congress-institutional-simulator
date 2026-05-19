@@ -24,6 +24,11 @@ final class BroadSystemScenarioFamily
 	static List<ScenarioEntry> entries() {
 		return List.of(
 				new ScenarioEntry("simple-majority", unicameral("Unicameral simple majority", AffirmativeThresholdRule.simpleMajority())),
+				new ScenarioEntry("simple-majority-no-support-revision", unicameral(
+						"Simple majority + no support/revision vote kernel",
+						AffirmativeThresholdRule.simpleMajority(),
+						VotingStrategies.withoutSupportOrRevision()
+				)),
 				new ScenarioEntry("simple-majority-mediation", simpleMajorityWithMediation()),
 				new ScenarioEntry("simple-majority-lobby-firewall", unicameral(
 						"Unicameral majority + lobby firewall",

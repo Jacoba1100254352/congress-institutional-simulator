@@ -96,7 +96,7 @@ make build-core-raw-validation
 ```
 
 Some optional rebuilds may require public data access or API credentials. They
-are useful for refreshing empirical flow sanity checks, but they are not part of
+are useful for refreshing empirical flow smoke tests, but they are not part of
 the no-network artifact reproduction path.
 
 ## Main Paper Files

@@ -716,13 +716,29 @@ final class DefaultPassScenarioBuilders
 				);
 			}
 		};
+		}
+
+	static Scenario simpleMajorityWithCompetingAlternatives(
+			String scenarioName,
+			AlternativeSelectionRule selectionRule,
+			int generatedAlternatives,
+			boolean includeStatusQuo
+	) {
+		return simpleMajorityWithCompetingAlternatives(
+				scenarioName,
+				selectionRule,
+				generatedAlternatives,
+				includeStatusQuo,
+				VotingStrategies.standard()
+		);
 	}
 	
 	static Scenario simpleMajorityWithCompetingAlternatives(
 			String scenarioName,
 			AlternativeSelectionRule selectionRule,
 			int generatedAlternatives,
-			boolean includeStatusQuo
+			boolean includeStatusQuo,
+			VotingStrategy strategy
 	) {
 		return new Scenario()
 		{
@@ -733,7 +749,6 @@ final class DefaultPassScenarioBuilders
 			
 			@Override
 			public LegislativeProcess buildProcess(SimulationWorld world) {
-				VotingStrategy strategy = VotingStrategies.standard();
 				return new CompetingAlternativesProcess(
 						name(),
 						simpleMajorityFloorProcess(name(), world, strategy),

@@ -5,9 +5,9 @@
 \raggedbottom
 \usepackage{tikz}
 
-\acmConference[Collective Intelligence]{ACM Collective Intelligence}{2026}{TBD}
+\acmConference[CI 2026]{ACM Collective Intelligence 2026}{September 27--30, 2026}{Virginia Tech Institute for Advanced Computing, near Washington, DC, USA}
 \acmYear{2026}
-\acmBooktitle{Proceedings of ACM Collective Intelligence}
+\acmBooktitle{Proceedings of ACM Collective Intelligence 2026 (CI 2026)}
 
 \begin{document}
 
@@ -18,7 +18,7 @@
 \authorsaddresses{}
 
 \begin{abstract}
-This appendix documents the congressional institutional simulator using the ODD and ODD+D model-description conventions \citep{Grimm2010,Muller2013}. It describes entities, state variables, scheduling, adaptation, input data, submodels, outputs, empirical flow sanity checks, assumptions, and reproducibility commands for the simulator used in \emph{A Reproducible Simulation Framework for Comparing Legislative Mechanism Bundles}.
+This appendix documents the congressional institutional simulator using the ODD and ODD+D model-description conventions \citep{Grimm2010,Muller2013}. It describes entities, state variables, scheduling, adaptation, input data, submodels, outputs, empirical flow smoke tests, assumptions, and reproducibility commands for the simulator used in \emph{A Reproducible Simulation Framework for Comparing Legislative Mechanism Bundles}.
 \end{abstract}
 
 \begin{CCSXML}
@@ -169,7 +169,7 @@ The main manuscript uses only the subset of metrics in its metric table; the ful
 \section{Input Data and Empirical Flow Checks}
 \label{sec:appendix-input-data}
 
-Normal scenario runs use synthetic generated worlds. Empirical flow sanity checks read the tracked benchmark extract at \texttt{data/calibration/empirical-benchmarks.csv}. The extract maps empirical sources to simulator metrics and broad benchmark ranges. Named sources include Voteview roll-call data \citep{Voteview2021}, Congress.gov and govinfo bill histories \citep{CongressGovData,GovinfoBillStatus2020}, Comparative Agendas Project topic data \citep{ComparativeAgendasProject}, ParlGov party-system data \citep{ParlGov2024}, U.S. Lobbying Disclosure Act filings \citep{SenateLDA}, Center for Effective Lawmaking scores \citep{CenterEffectiveLawmaking,VoldenWiseman2014}, and V-Dem institutional indicators \citep{VDemDataset}.
+Normal scenario runs use synthetic generated worlds. Empirical flow smoke tests read the tracked benchmark extract at \texttt{data/calibration/empirical-benchmarks.csv}. The extract maps empirical sources to simulator metrics and broad benchmark ranges. Named sources include Voteview roll-call data \citep{Voteview2021}, Congress.gov and govinfo bill histories \citep{CongressGovData,GovinfoBillStatus2020}, Comparative Agendas Project topic data \citep{ComparativeAgendasProject}, ParlGov party-system data \citep{ParlGov2024}, U.S. Lobbying Disclosure Act filings \citep{SenateLDA}, Center for Effective Lawmaking scores \citep{CenterEffectiveLawmaking,VoldenWiseman2014}, and V-Dem institutional indicators \citep{VDemDataset}.
 
 The executable checker runs conventional scenarios and writes CSV and Markdown pass/fail reports under \texttt{reports/}. The pass is an empirical screen, not an automatic parameter fitter. Its benchmark ranges are intentionally broad and several are abstract proxies, so passing the screen should be read as minimum flow plausibility rather than validation. The empirical comparison checks include six documented samples: Congress.gov bill progression, Voteview roll calls, Senate LDA lobbying disclosures, and Congress.gov-derived topic, sponsor, and committee summaries. These samples support bill-attrition, floor-load, committee-report, coalition-size, party-unity, sponsor-concentration, topic-throughput, and lobbying-concentration checks. Optional API fixture samples are stored separately from raw empirical inputs; they test adapter shapes but are not used as validation evidence.
 
@@ -245,7 +245,7 @@ Competing-alternative processes generate same-domain alternatives and select by 
 
 \section{Experimental Design}
 
-The main submitted evidence comes from the main comparison campaign. That campaign joins broad assumption cases, adversarial proposal-generator cases, party-system sensitivity cases, and a stylized rising-contention timeline in one artifact. The main manuscript focuses on the stylized U.S.-like benchmark, simple majority, committee regular order, discharge petition, open floor calendar, a combined content-selection family, anti-capture access, harm-weighted majority, a small burden-shifting stress-test family, and a portfolio hybrid. The appendix tables report separate pairwise-alternative and amendment-tournament rows plus the broader implemented catalog, including leadership agenda control, chamber and committee variants, citizen petitions and initiatives, mini-publics, agenda scarcity, package bargaining, review and correction systems, adaptive routing, norm erosion, and influence-system safeguards. Adversarial generator cases test high-benefit extreme reform, popular harmful bills, moderate capture, delayed-benefit reform, concentrated rights-like harm, anti-lobbying backlash, revision dilution, useful lobbying information, and public-opinion error. Follow-up diagnostics include mechanism ablations, manipulation-stress campaigns, chamber-structure family/stress screens, and empirical flow sanity checks that map optional raw empirical summaries to simulator proxy metrics.
+The main submitted evidence comes from the main comparison campaign. That campaign joins broad assumption cases, adversarial proposal-generator cases, party-system sensitivity cases, and a stylized rising-contention timeline in one artifact. The main manuscript focuses on the stylized U.S.-like benchmark, simple majority, committee regular order, discharge petition, open floor calendar, a combined content-selection family, anti-capture access, harm-weighted majority, a small burden-shifting stress-test family, and a portfolio hybrid. The appendix tables report separate pairwise-alternative and amendment-tournament rows plus the broader implemented catalog, including leadership agenda control, chamber and committee variants, citizen petitions and initiatives, mini-publics, agenda scarcity, package bargaining, review and correction systems, adaptive routing, norm erosion, and influence-system safeguards. Adversarial generator cases test high-benefit extreme reform, popular harmful bills, moderate capture, delayed-benefit reform, concentrated rights-like harm, anti-lobbying backlash, revision dilution, useful lobbying information, and public-opinion error. Follow-up diagnostics include mechanism ablations, manipulation-stress campaigns, chamber-structure family/stress screens, and empirical flow smoke tests that map optional raw empirical summaries to simulator proxy metrics.
 
 \input{figures/scenario_averages_table}
 
@@ -297,7 +297,7 @@ The main reproducibility entrypoints are:
   \item \texttt{make seed-robustness-check}: run multi-seed checks for paper scenarios.
   \item \texttt{make validation-readiness}: check optional raw-input shape.
   \item \texttt{make empirical-validation}: summarize any present raw inputs.
-  \item \texttt{make empirical-bridge}: map raw summaries to simulator proxies for empirical flow sanity checks.
+  \item \texttt{make empirical-bridge}: map raw summaries to simulator proxies for empirical flow smoke tests.
   \item \texttt{make validation-gap-report}: generate the paper-facing empirical-boundary report. Adapter fixtures live separately and do not count as raw empirical data.
   \item \texttt{make build-bill-progression-raw}: rebuild the documented Congress.gov bill-progression raw sample when a Congress.gov API key is available.
   \item \texttt{make build-core-raw-validation}: rebuild the broader Voteview, Congress.gov-derived, and Senate LDA empirical comparison samples when network access and any required API key are available.
@@ -313,7 +313,7 @@ The review package includes generated campaign reports and PDFs. Public reposito
 
 \section*{Use of Large Language Model Tools}
 
-The research question and core simulator idea originated with the human author. OpenAI ChatGPT/Codex tools available in the authoring environment during the April--May 2026 revision period were used for grammar and style editing, restructuring suggestions, code debugging assistance, and drafting assistance for portions of the simulator implementation, generated-report scripts, and manuscript prose. Tool outputs were edited and checked by the author; references, code outputs, experiments, tables, and claims were manually reviewed against the repository artifacts before inclusion. No large language model is listed as an author.
+The research question and core simulator idea originated with the human author. OpenAI ChatGPT/Codex tools available in the authoring environment during the April--May 2026 revision period were used for grammar and style editing, restructuring suggestions, code debugging assistance, and drafting assistance for portions of the simulator implementation, generated-report scripts, and manuscript prose. LLM tools were not used as authors. Tool outputs were edited and checked by the author; references, code outputs, experiments, tables, figures, and claims were manually reviewed against the repository artifacts before inclusion. No large language model is listed as an author.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}

@@ -179,7 +179,7 @@ The main campaigns are:
 - main paper campaign joining broad assumption cases, adversarial generator cases, party-system sensitivity cases, and rising-contention timeline cases in one CSV artifact for all submitted tables and figures; the main manuscript focuses on selected representatives while appendix tables report the broader catalog.
 - family screen: supplemental all-catalog screen that runs every explicit scenario key and reports the highest-scoring scenario within each family under a fixed rule.
 - mechanism diagnostics: ablation comparisons for nearby mechanism removals plus manipulation-stress comparisons for clone proposals, panel manipulation, astroturf objection, bad-faith harm claims, agenda flooding, and capture pressure.
-- empirical flow sanity checks: optional raw empirical summaries mapped to the simulator proxy metrics used for broad flow screening.
+- empirical flow smoke tests: optional raw empirical summaries mapped to the simulator proxy metrics used for broad flow screening.
 
 All campaign rows include scenario labels, case weights, and a stable metric schema.
 

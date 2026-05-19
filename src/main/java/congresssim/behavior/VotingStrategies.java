@@ -36,4 +36,15 @@ public final class VotingStrategies
 				0.25
 		);
 	}
+
+	public static WeightedVotingStrategy withoutSupportOrRevision() {
+		return new WeightedVotingStrategy(
+				List.of(
+						StandardInfluences.ideology(1.45),
+						StandardInfluences.party(0.85),
+						StandardInfluences.lobbying(0.55)
+				),
+				0.25
+		);
+	}
 }

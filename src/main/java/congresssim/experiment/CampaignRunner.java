@@ -475,6 +475,7 @@ public final class CampaignRunner
 	private static final List<String> PAPER_SCENARIOS = List.of(
 			"current-system",
 			"simple-majority",
+			"simple-majority-no-support-revision",
 			"simple-majority-mediation",
 			"supermajority-60",
 			"bicameral-majority",
@@ -491,6 +492,7 @@ public final class CampaignRunner
 			"citizens-agenda-petition-majority",
 			"district-population-majority",
 			"simple-majority-alternatives-pairwise",
+			"simple-majority-alternatives-pairwise-no-support-revision",
 			"pairwise-amendment-tournament-majority",
 			"citizen-assembly-threshold",
 			"random-public-review-panel-majority",

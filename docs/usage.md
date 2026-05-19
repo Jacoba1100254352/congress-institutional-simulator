@@ -181,7 +181,7 @@ Run the supplemental all-catalog family screen:
 make family-screen
 ```
 
-Run the empirical flow sanity checks:
+Run the empirical flow smoke tests:
 
 ```sh
 make empirical-bridge

@@ -1,6 +1,7 @@
 package congresssim.simulation.catalog;
 
 
+import congresssim.behavior.VotingStrategies;
 import congresssim.institution.bargaining.AlternativeSelectionRule;
 
 import java.util.List;
@@ -24,6 +25,13 @@ final class PolicyTournamentScenarioFamily
 						AlternativeSelectionRule.PAIRWISE_MAJORITY,
 						4,
 						true
+				)),
+				new ScenarioEntry("simple-majority-alternatives-pairwise-no-support-revision", simpleMajorityWithCompetingAlternatives(
+						"Pairwise alternatives + no support/revision vote kernel",
+						AlternativeSelectionRule.PAIRWISE_MAJORITY,
+						4,
+						true,
+						VotingStrategies.withoutSupportOrRevision()
 				)),
 				new ScenarioEntry("simple-majority-alternatives-benefit", simpleMajorityWithCompetingAlternatives(
 						"Unicameral majority + public-benefit alternatives",

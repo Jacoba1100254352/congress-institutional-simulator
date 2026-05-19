@@ -28,6 +28,7 @@ TABLE_SCENARIOS = [
     (CURRENT_SYSTEM_KEY, "CUR"),
     ("current-congress-workflow", "FLOW"),
     ("simple-majority", "SM"),
+    ("simple-majority-no-support-revision", "NSM"),
     ("simple-majority-mediation", "SMED"),
     ("supermajority-60", "S60"),
     ("bicameral-majority", "BIC"),
@@ -44,6 +45,7 @@ TABLE_SCENARIOS = [
     ("citizens-agenda-petition-majority", "PET"),
     ("district-population-majority", "DIST"),
     ("simple-majority-alternatives-pairwise", "PAIR"),
+    ("simple-majority-alternatives-pairwise-no-support-revision", "NSEL"),
     ("pairwise-amendment-tournament-majority", "AMT"),
     ("citizen-assembly-threshold", "JURY"),
     ("random-public-review-panel-majority", "RPAN"),
@@ -93,6 +95,7 @@ COMPACT_SCENARIO_NAMES = {
     CURRENT_SYSTEM_KEY: "Stylized U.S.-like benchmark",
     "current-congress-workflow": "Current workflow model",
     "simple-majority": "Simple majority",
+    "simple-majority-no-support-revision": "Simple majority, no support/revision vote",
     "simple-majority-mediation": "Simple majority + mediation",
     "committee-regular-order": "Committee regular order",
     "committee-amendment-majority": "Committee amendment control",
@@ -102,6 +105,7 @@ COMPACT_SCENARIO_NAMES = {
     "citizen-initiative-referendum": "Citizen initiative",
     "citizens-agenda-petition-majority": "Citizen agenda petition",
     "simple-majority-alternatives-pairwise": "Pairwise alternatives",
+    "simple-majority-alternatives-pairwise-no-support-revision": "Pairwise alternatives, no support/revision vote",
     "pairwise-amendment-tournament-majority": "Amendment tournament",
     CONTENT_SELECTION_KEY: "Content-selection family",
     "citizen-assembly-threshold": "Citizen jury gate",
@@ -132,6 +136,10 @@ SELECTION_RATIONALES = {
     "simple-majority": (
         "Conventional threshold",
         "Minimal affirmative-vote baseline that isolates the effect of ordinary majority passage.",
+    ),
+    "simple-majority-no-support-revision": (
+        "Vote-kernel ablation",
+        "Removes public-support and revision-moderation vote terms while retaining those quantities as evaluation diagnostics.",
     ),
     "simple-majority-mediation": (
         "Fairness control",
@@ -196,6 +204,10 @@ SELECTION_RATIONALES = {
     "simple-majority-alternatives-pairwise": (
         "Policy tournament",
         "Main alternative-selection representative; tests agenda manipulation by comparing multiple substitutes before final ratification.",
+    ),
+    "simple-majority-alternatives-pairwise-no-support-revision": (
+        "Vote-kernel ablation",
+        "Tests whether pairwise content selection still changes diagnostics when public support and revision moderation are not direct vote inputs.",
     ),
     "pairwise-amendment-tournament-majority": (
         "Amendment control",
@@ -606,6 +618,56 @@ def read_seed_directional_intervals(path: Path) -> dict[str, tuple[float, float]
     return intervals
 
 
+def read_seed_metric_intervals(path: Path) -> dict[str, dict[str, tuple[float, float, float]]]:
+    intervals: dict[str, dict[str, tuple[float, float, float]]] = defaultdict(dict)
+    if not path.exists():
+        return intervals
+    with path.open(newline="") as handle:
+        for row in csv.DictReader(handle):
+            intervals[row["scenarioKey"]][row["metric"]] = (
+                float(row["mean"]),
+                float(row["min"]),
+                float(row["max"]),
+            )
+    for virtual_key, components in VIRTUAL_SCENARIOS.items():
+        component_intervals = [intervals[key] for key in components if key in intervals]
+        if not component_intervals:
+            continue
+        for metric in set().union(*(values.keys() for values in component_intervals)):
+            triples = [values[metric] for values in component_intervals if metric in values]
+            if triples:
+                intervals[virtual_key][metric] = (
+                    mean([triple[0] for triple in triples]),
+                    mean([triple[1] for triple in triples]),
+                    mean([triple[2] for triple in triples]),
+                )
+    return intervals
+
+
+def seed_range_text(
+        intervals: dict[str, dict[str, tuple[float, float, float]]],
+        scenario_key: str,
+        metric: str = "directionalScore",
+) -> str:
+    interval = intervals.get(scenario_key, {}).get(metric)
+    if interval is None:
+        return "---"
+    _mean_value, min_value, max_value = interval
+    return f"{min_value:.3f}--{max_value:.3f}"
+
+
+def seed_half_range(
+        intervals: dict[str, dict[str, tuple[float, float, float]]],
+        scenario_key: str,
+        metric: str,
+) -> float:
+    interval = intervals.get(scenario_key, {}).get(metric)
+    if interval is None:
+        return 0.0
+    _mean_value, min_value, max_value = interval
+    return max(0.0, (max_value - min_value) / 2.0)
+
+
 def seed_interval_value(intervals: dict[str, tuple[float, float]], scenario_key: str) -> str:
     interval = intervals.get(scenario_key)
     if interval is None:
@@ -1000,6 +1062,96 @@ def case_sensitivity_result(rows: list[dict[str, str]], case_key: str) -> str:
     return "; ".join(parts)
 
 
+def case_group_values(rows: list[dict[str, str]], case_key: str) -> dict[str, dict[str, float]]:
+    values_by_key: dict[str, dict[str, float]] = {}
+    for row in rows:
+        if row["caseKey"] != case_key:
+            continue
+        numeric = row_numeric_scores(row)
+        values_by_key[row["scenarioKey"]] = numeric
+    content_values = [
+        values_by_key[key]
+        for key in CONTENT_SELECTION_COMPONENTS
+        if key in values_by_key
+    ]
+    if content_values:
+        fields = set().union(*(values.keys() for values in content_values))
+        values_by_key[CONTENT_SELECTION_KEY] = {
+            field: mean([values[field] for values in content_values if field in values])
+            for field in fields
+        }
+        add_directional_scores(values_by_key[CONTENT_SELECTION_KEY])
+    return values_by_key
+
+
+def scenario_profile(values_by_key: dict[str, dict[str, float]], scenario_key: str) -> str:
+    values = values_by_key.get(scenario_key)
+    if values is None:
+        return "---"
+    return f"{values['compromisePriorityScore']:.2f}"
+
+
+def scenario_low_support(values_by_key: dict[str, dict[str, float]], scenario_key: str) -> str:
+    values = values_by_key.get(scenario_key)
+    if values is None:
+        return "---"
+    return f"{values['weakPublicMandatePassage']:.2f}"
+
+
+def rank_map(scores: dict[str, float]) -> dict[str, float]:
+    ordered = sorted(scores.items(), key=lambda item: item[1])
+    ranks: dict[str, float] = {}
+    index = 0
+    while index < len(ordered):
+        tie_end = index + 1
+        while tie_end < len(ordered) and abs(ordered[tie_end][1] - ordered[index][1]) < 1e-9:
+            tie_end += 1
+        average_rank = (index + 1 + tie_end) / 2.0
+        for tie_index in range(index, tie_end):
+            ranks[ordered[tie_index][0]] = average_rank
+        index = tie_end
+    return ranks
+
+
+def pearson(values_a: list[float], values_b: list[float]) -> float:
+    if len(values_a) < 2 or len(values_a) != len(values_b):
+        return 0.0
+    mean_a = mean(values_a)
+    mean_b = mean(values_b)
+    numerator = sum((a - mean_a) * (b - mean_b) for a, b in zip(values_a, values_b))
+    denom_a = math.sqrt(sum((a - mean_a) ** 2 for a in values_a))
+    denom_b = math.sqrt(sum((b - mean_b) ** 2 for b in values_b))
+    if denom_a == 0.0 or denom_b == 0.0:
+        return 0.0
+    return numerator / (denom_a * denom_b)
+
+
+def rank_correlation(
+        baseline_scores: dict[str, float],
+        values_by_key: dict[str, dict[str, float]],
+) -> str:
+    probe_scores = {
+        key: values["compromisePriorityScore"]
+        for key, values in values_by_key.items()
+        if key in baseline_scores
+    }
+    common = sorted(set(baseline_scores) & set(probe_scores))
+    if len(common) < 2:
+        return "---"
+    baseline_ranks = rank_map({key: baseline_scores[key] for key in common})
+    probe_ranks = rank_map({key: probe_scores[key] for key in common})
+    rho = pearson([baseline_ranks[key] for key in common], [probe_ranks[key] for key in common])
+    return f"{rho:.2f}"
+
+
+def baseline_profile_scores(averages: dict[str, dict[str, float]]) -> dict[str, float]:
+    return {
+        key: values["compromisePriorityScore"]
+        for key, values in averages.items()
+        if key in {scenario_key for scenario_key, _label in MAIN_TABLE_SCENARIOS}
+    }
+
+
 def frontier_labels(averages: dict[str, dict[str, float]], fields: tuple[str, ...]) -> str:
     labels = [label_for_key(key) for key in pareto_front(averages, fields)]
     return ", ".join(labels) if labels else "none"
@@ -1109,73 +1261,99 @@ def write_sensitivity_controls_table(rows: list[dict[str, str]], averages: dict[
 
 
 def write_robustness_summary_table(rows: list[dict[str, str]], averages: dict[str, dict[str, float]]) -> None:
-    summary_rows = [
+    baseline_scores = baseline_profile_scores(averages)
+    seed_intervals = read_seed_metric_intervals(SEED_ROBUSTNESS_CSV_PATH)
+    selected_checks = [
         (
-            "Extreme-beneficial reform",
-            "Yes",
-            "Portfolio has the highest displayed profile and content selection remains close; this directly tests the moderation-friendly benefit generator.",
+            "High-benefit extreme",
+            "adversarial-high-benefit-extreme",
+            "Moderation-friendly generator is relaxed by allowing high-distance bills to carry high generated value.",
         ),
         (
             "Revision dilution",
-            "Yes",
-            "Portfolio has the highest displayed profile when moving toward the center can reduce generated value.",
+            "adversarial-compromise-dilution",
+            "Moving toward the center can reduce generated public benefit.",
         ),
         (
-            "Lobbying information",
-            "No major change in displayed pattern",
-            "The content-selection pattern persists when organized lobbying can carry useful information.",
+            "Lobby information",
+            "adversarial-lobby-information",
+            "Organized lobbying can supply useful technical information rather than only capture pressure.",
         ),
         (
             "Public-opinion error",
-            "Partial",
-            "Portfolio and content selection are near-tied when support and benefit decouple.",
+            "adversarial-public-opinion-error",
+            "Generated support and generated benefit are decoupled by noisy or biased support signals.",
         ),
         (
             "Minority-rights harm",
-            "No major change in displayed pattern",
-            "The content-selection pattern persists, but the case targets majority-supported concentrated harm.",
-        ),
-        (
-            "Cost-constrained fairness",
-            "Unresolved",
-            "Reported fairness rows add conventional revision, mediation, and committee amendment; they do not yet hard-budget process cost.",
-        ),
-        (
-            "Ablation/stress probes",
-            "Failure modes",
-            "No alternatives weakens the content-selection result; clone/decoy, astroturf, and loose-harm cases expose manipulability.",
-        ),
-        (
-            "Objective-set frontier",
-            "Yes",
-            "Adding administrative feasibility or harm/support objectives changes which systems are non-dominated.",
+            "adversarial-rights-harm",
+            "Majority-supported bills can impose concentrated rights-like harm.",
         ),
     ]
+    summary_rows: list[tuple[str, str, str, str, str, str]] = []
+    for label, case_key, implication in selected_checks:
+        values_by_key = case_group_values(rows, case_key)
+        summary_rows.append((
+            label,
+            scenario_profile(values_by_key, CONTENT_SELECTION_KEY),
+            scenario_profile(values_by_key, "portfolio-hybrid-legislature"),
+            scenario_low_support(values_by_key, "default-pass"),
+            rank_correlation(baseline_scores, values_by_key),
+            implication,
+        ))
+
+    no_signal_values = case_group_values(rows, "baseline")
+    summary_rows.append((
+        "No support/revision vote",
+        scenario_profile(no_signal_values, "simple-majority-alternatives-pairwise-no-support-revision"),
+        "---",
+        "SM " + scenario_profile(no_signal_values, "simple-majority-no-support-revision"),
+        "---",
+        "Vote-kernel ablation removes public-support and revision-moderation vote inputs while retaining them as diagnostics.",
+    ))
+    summary_rows.append((
+        "Five-seed sweep",
+        seed_range_text(seed_intervals, CONTENT_SELECTION_KEY),
+        seed_range_text(seed_intervals, "portfolio-hybrid-legislature"),
+        seed_range_text(seed_intervals, "default-pass"),
+        "n=5",
+        "Entries show directional-score min--max across independent base seeds; ranges are small relative to mechanism-family differences.",
+    ))
     lines = [
         "% Auto-generated by paper/scripts/generate_figures.py",
         "\\begin{table*}",
-        "  \\caption{Robustness and failure-mode summary. Raw numeric rows are in the appendix.}",
+        "  \\caption{Main robustness checks with numeric evidence.}",
         "  \\label{tab:robustness-summary}",
-        "  \\Description{A compact generated table summarizing generator sensitivity, fairness controls, stress tests, and alternative frontier checks.}",
-        "  \\small",
-        "  \\begin{tabular}{p{0.25\\textwidth}p{0.16\\textwidth}p{0.50\\textwidth}}",
+        "  \\Description{A compact generated table reporting numeric robustness evidence for generator sensitivity, vote-kernel ablation, and seed stability.}",
+        "  \\scriptsize",
+        "  \\setlength{\\tabcolsep}{2.2pt}",
+        "  \\resizebox{\\textwidth}{!}{%",
+        "  \\begin{tabular}{lrrrrp{0.43\\textwidth}}",
         "    \\toprule",
-        "    Probe family & Main pattern changes? & Main implication \\\\",
+        "    Check & SEL & PORT & DP/SM & Rank $\\rho$ & Main implication \\\\",
         "    \\midrule",
     ]
-    for probe, changes, implication in summary_rows:
+    for check, sel, port, dp_or_sm, rho, implication in summary_rows:
         lines.append(
             "    "
-            + latex_escape(probe)
+            + latex_escape(check)
             + " & "
-            + latex_escape(changes)
+            + latex_escape(sel)
+            + " & "
+            + latex_escape(port)
+            + " & "
+            + latex_escape(dp_or_sm)
+            + " & "
+            + latex_escape(rho)
             + " & "
             + latex_escape(implication)
             + " \\\\"
         )
     lines.extend([
         "    \\bottomrule",
-        "  \\end{tabular}",
+        "  \\end{tabular}%",
+        "  }",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} SEL and PORT entries report the example profile except in the seed row, where they report directional-score min--max. DP/SM reports default-pass low-public-support enactment for generator checks, the no-signal simple-majority profile for the vote-kernel ablation, and default-pass seed range for the seed sweep. Rank $\\rho$ is the Spearman correlation of displayed mechanism-family profile ranks against the main broad/adversarial average.",
         "\\end{table*}",
         "",
     ])
@@ -1194,7 +1372,7 @@ def write_compact_scenario_averages_table(rows: list[dict[str, str]]) -> None:
         "  \\resizebox{\\textwidth}{!}{%",
         "  \\begin{tabular}{llrrrrrrr}",
         "    \\toprule",
-        "    Label & Representative system & Prod. $\\uparrow$ & Rev. mod. $\\uparrow$ & Public $\\uparrow$ & Low supp. $\\downarrow$ & Risk ctrl. $\\uparrow$ & Admin $\\downarrow$ & Example profile $\\uparrow$ \\\\",
+        "    Label & Representative system & Prod. $\\uparrow$ & Rev. mod. $\\uparrow$ & Public $\\uparrow$ & Low supp. $\\downarrow$ & Risk ctrl. $\\uparrow$ & Admin feas. $\\uparrow$ & Example profile $\\uparrow$ \\\\",
         "    \\midrule",
     ]
     for scenario_key, label in sorted_main_table_scenarios(rows):
@@ -1583,10 +1761,34 @@ def table_points(averages: dict[str, dict[str, float]], x_field: str, y_field: s
     return points
 
 
+def append_seed_error_bar(
+        lines: list[str],
+        x: float,
+        y: float,
+        x_half: float,
+        y_half: float,
+        width: float,
+        height: float,
+) -> None:
+    x_span = x_half * width
+    y_span = y_half * height
+    if x_span < 0.25 and y_span < 0.25:
+        return
+    if x_span >= 0.25:
+        lines.append(
+            f"\\put({fmt(x - x_span)},{fmt(y)}){{\\color{{black!45}}\\line(1,0){{{fmt(2.0 * x_span)}}}}}"
+        )
+    if y_span >= 0.25:
+        lines.append(
+            f"\\put({fmt(x)},{fmt(y - y_span)}){{\\color{{black!45}}\\line(0,1){{{fmt(2.0 * y_span)}}}}}"
+        )
+
+
 def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> None:
     left, bottom, width, height = 16.0, 13.0, 96.0, 58.0
     picture_width, picture_height = 122.0, 82.0
     y_max = 1.0
+    seed_intervals = read_seed_metric_intervals(SEED_ROBUSTNESS_CSV_PATH)
     points = []
     for key, label in MAIN_TABLE_SCENARIOS:
         if key not in averages:
@@ -1621,6 +1823,15 @@ def write_productivity_low_support(averages: dict[str, dict[str, float]]) -> Non
     for key, label, x, y in points:
         color = "black"
         point_size = "2.5mm" if key == CURRENT_SYSTEM_KEY else "1.7mm"
+        append_seed_error_bar(
+            lines,
+            x,
+            y,
+            seed_half_range(seed_intervals, key, "productivity"),
+            seed_half_range(seed_intervals, key, "riskControl"),
+            width,
+            height,
+        )
         dx, dy, anchor = placements[key]
         append_labeled_square(lines, x, y, label, color, point_size, dx, dy, anchor, leader=True)
     lines.extend([
@@ -1815,7 +2026,7 @@ def write_directional_scoreboard(
         ("compromise", "Rev. mod."),
         ("publicMandateLegitimacy", "Public"),
         ("riskControl", "Risk"),
-        ("administrativeFeasibility", "Admin"),
+        ("administrativeFeasibility", "Admin feas."),
         ("compromisePriorityScore", "Example profile"),
     ]
     lines = [
@@ -1828,7 +2039,7 @@ def write_directional_scoreboard(
         "  \\setlength{\\tabcolsep}{3.2pt}",
         "  \\begin{tabular}{@{}lrrrrrr@{}}",
         "    \\toprule",
-        "    Label & Prod. & Rev. mod. & Public & Risk & Admin & Example profile \\\\",
+        "    Label & Prod. & Rev. mod. & Public & Risk & Admin feas. & Example profile \\\\",
         "    \\midrule",
     ]
     for key, label in scenarios:
@@ -1849,7 +2060,7 @@ def write_directional_scoreboard(
     lines.extend([
         "    \\bottomrule",
         "  \\end{tabular}",
-        "  \\par\\smallskip\\footnotesize \\emph{Note:} Values are normalized to the metric direction shown in Table~\\ref{tab:metric-groups}; grayscale shading is secondary. Admin is administrative feasibility, the inverse of the cost index. The asterisk marks the stylized U.S.-like benchmark.",
+        "  \\par\\smallskip\\footnotesize \\emph{Note:} Values are normalized to the metric direction shown in Table~\\ref{tab:metric-groups}; grayscale shading is secondary. Admin feas. is administrative feasibility, the inverse of the cost index. Example profile is \\(0.30\\)Rev. mod. \\(+0.20\\)Prod. \\(+0.20\\)Risk \\(+0.15\\)Admin feas. \\(+0.15\\)Public. The asterisk marks the stylized U.S.-like benchmark.",
         "\\end{table*}",
         "",
     ])

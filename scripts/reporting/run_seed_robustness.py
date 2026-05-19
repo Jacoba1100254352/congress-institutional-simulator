@@ -25,6 +25,7 @@ RUNS = int(os.environ.get("SEED_ROBUSTNESS_RUNS", "24"))
 SCENARIOS = [
     ("current-system", "Stylized U.S.-like benchmark"),
     ("simple-majority", "Unicameral simple majority"),
+    ("simple-majority-no-support-revision", "Simple majority + no support/revision vote kernel"),
     ("supermajority-60", "Unicameral 60 percent passage"),
     ("bicameral-majority", "Bicameral simple majority"),
     ("presidential-veto", "Bicameral majority + presidential veto"),
@@ -39,6 +40,7 @@ SCENARIOS = [
     ("citizens-agenda-petition-majority", "Citizen agenda petitions + majority"),
     ("district-population-majority", "District-population public-will model"),
     ("simple-majority-alternatives-pairwise", "Majority pairwise policy tournament"),
+    ("simple-majority-alternatives-pairwise-no-support-revision", "Pairwise alternatives + no support/revision vote kernel"),
     ("pairwise-amendment-tournament-majority", "Pairwise amendment tournament + majority"),
     ("citizen-assembly-threshold", "Citizen assembly threshold gate"),
     ("random-public-review-panel-majority", "Random public review panel + majority"),
