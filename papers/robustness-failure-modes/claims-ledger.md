@@ -1,18 +1,60 @@
 # Claims Ledger
 
-Final decision: NEEDS ADVERSARY EXPERIMENTS FIRST.
+## Status
 
-| Claim | Current support | Limitation | Required evidence before draft | Status |
-|---|---|---|---|---|
-| The repo has pilot manipulation-stress diagnostics. | `reports/simulation-manipulation-stress.csv`; `reports/manipulation-stress-summary.md`. | Pilot stressors are not explicit adversary models. | Keep as motivation only. | Supported as pilot. |
-| Policy tournaments are vulnerable to clone/decoy alternatives. | Pilot summary reports material vulnerability for policy tournament clone/decoy attack. | Needs attack budget, information level, success rate, and worst-case degradation. | Clone/decoy experiment with traces. | Conditional. |
-| Amendment/tournament systems are vulnerable to poison-pill attacks. | Mechanisms exist in `institution/bargaining`; no explicit poison-pill experiment yet. | Not tested directly. | Poison-pill amendment experiment. | Not yet supported. |
-| Objection windows can be overloaded by astroturf activity. | Pilot astroturf objection pressure shows limited observed degradation. | Current result is mild and may under-model adversary budget. | Attack-budget sweep and admin overload metrics. | Conditional. |
-| Citizen panels are vulnerable to noisy or biased manipulation. | Pilot citizen-panel manipulation exists. | Limited observed degradation; no panel-manipulator adversary model. | Panel manipulation budget/information sweep. | Conditional. |
-| Harm-weighted systems are vulnerable to bad-faith harm claims. | Pilot loose harm claim stress exists. | Limited observed degradation; no false-positive/false-negative claim model. | Harm-claim adversary experiment. | Conditional. |
-| Open-calendar and burden-shifting systems are vulnerable to proposal flooding. | Proposal flooding and burden-shifting stress reports exist. | Need explicit flooder budgets and high-benefit crowdout metrics. | Proposal flooding experiment. | Conditional. |
-| Anti-capture access systems are vulnerable to lobbying camouflage. | Lobbying/capture modules exist; anti-capture defensive backlash pilot exists. | No camouflage actor or proxy-sponsor model yet. | Lobby camouflage experiment. | Not yet supported. |
-| Portfolio systems can fail through administrative overload. | Portfolio mechanisms and admin-cost metrics exist. | No overload attacker or queue saturation report yet. | Portfolio overload experiment. | Not yet supported. |
-| Burden-shifting systems can fail through strategic silence. | Burden-shifting and challenge-token systems exist. | No strategic-silence model or unused-token metric. | Strategic silence experiment. | Not yet supported. |
-| The future paper can report robustness by mechanism family. | Mechanism families exist. | Must avoid general mechanism rankings; only report vulnerability under specified attacks. | Vulnerability matrix and attack success rates. | Conditional. |
-| A full manuscript is ready now. | No. | Required adversary experiments have not been run. | Complete full draft gate in `experiment-plan.md`. | No-go. |
+Readiness level: claim planning only. Most substantive claims are conditional until explicit adversary experiments exist.
+
+Allowed language now: "pilot stress screens suggest attack surfaces worth testing."
+
+Disallowed language now: "the simulator proves these mechanisms are robust," "this validates institutional design claims," or "these results show which real institutions should be adopted."
+
+## Ledger
+
+| ID | Proposed claim | Current support | Evidence gap | Validation gap | Allowed wording now | Status |
+|---|---|---|---|---|---|---|
+| C1 | The repo can support a robustness breakout distinct from the ACM framework paper. | The simulator has relevant mechanism surfaces and pilot reports. | Needs explicit adversary implementation and reports. | External adversarial behavior is not validated. | The breakout is feasible as a planned extension. | Planning-supported. |
+| C2 | Existing manipulation-stress outputs identify candidate failure modes. | `reports/manipulation-stress-summary.md` reports seven pilot stress comparisons. | Stressors are fixed scenarios, not actor models with budgets and information. | No real attack-rate comparison. | Pilot screens motivate targeted adversary experiments. | Supported as motivation only. |
+| C3 | Clone/decoy pressure is a high-priority content-selection attack. | Current summary reports material vulnerability for policy tournament clone/decoy stress: directional loss 0.087 and revision-moderation loss 0.046. | Needs budget sweep, success rate, same-seed baselines, and traces. | No empirical validation of clone/decoy frequency or actor knowledge. | Clone/decoy stress is the strongest current pilot signal. | Conditional. |
+| C4 | Poison-pill and sequencing attacks are plausible risks for amendment/tournament systems. | Amendment and bargaining mechanisms exist in the simulator. | No direct poison-pill or sequencing experiment has been run. | No empirical rider, amendment, or agenda-order benchmark. | This is a required experiment, not a result. | Unsupported. |
+| C5 | Public-input systems may be vulnerable to astroturf, noise, or panel manipulation. | Current pilot includes citizen-panel manipulation and astroturf objection pressure. | Current observed degradation is limited and not budgeted. | Need public-comment, panel, or objection-process data before external claims. | Current tests show only limited pilot degradation under bounded probes. | Conditional. |
+| C6 | Harm-protection systems may be vulnerable to bad-faith claims. | Current loose-claims stress exists. | Need false-positive and false-negative claim model with administrative burden. | Need claim-process, court, or review data. | Bad-faith harm claims remain an unproven attack surface. | Conditional. |
+| C7 | Proposal flooding can be studied as a capacity attack. | Current agenda-flooding pilot exists. | Current degradation is limited and lacks capacity/queue metrics. | Need empirical bill-volume, agenda, committee, and floor-load anchors. | Proposal flooding is a planned capacity stress test. | Conditional. |
+| C8 | Anti-capture systems may fail through lobbying camouflage. | Lobbying and anti-capture modules exist; defensive backlash pilot exists. | No camouflage/proxy-sponsor adversary is implemented. | Campaign-finance and lobbying-disclosure validation are incomplete. | Camouflage is a required experiment, not a finding. | Unsupported. |
+| C9 | Layered safeguards can trade robustness for administrative cost. | Ablation and portfolio outputs already track administrative cost. | Need overload actor, queue saturation, and recovery metrics. | Administrative cost proxy is not externally calibrated. | Current outputs justify testing overload, not claiming real overload thresholds. | Conditional. |
+| C10 | Average-case performance can hide adversarial failure. | The ACM framework and pilot reports separate baseline metrics from stress probes. | Need median versus worst-case adversary reporting. | No external adversarial benchmark. | The planned paper will test whether averages hide failure cases. | Conditional. |
+| C11 | Burden-shifting mechanisms have strategic-silence risks. | Burden-shifting scenarios and challenge-token concepts exist. | Strategic-silence model is not implemented. | No empirical challenge-token analogue. | Keep as deferred or appendix case. | Deferred. |
+| C12 | A full manuscript is ready. | No. | Experiments, traces, and validation gates are missing. | External validation remains incomplete. | No full manuscript yet. | No-go. |
+| C13 | Mixed adversary portfolios can expose interactions that single-attack probes miss. | No direct evidence yet; the simulator has enough mechanism surfaces to plan this test. | Need fixed-budget mixed attacks, single-attack baselines, interaction metrics, and traces. | No empirical benchmark for coordinated multi-actor attack frequency. | Mixed attacks are required experiments, not current findings. | Unsupported. |
+| C14 | Public-support distortion is analytically separate from formal public-input manipulation. | The simulator tracks public-preference distortion and public signal movement in current reports. | Need an explicit actor that changes public signals while preserving generated support/benefit for evaluation. | No district opinion or public campaign validation yet. | Public-support distortion is a planned attack surface. | Conditional. |
+
+## Evidence Thresholds
+
+A claim can move from conditional to draft-ready only after it has:
+
+- an explicit adversary ID from `adversary-model.md`;
+- same-seed baseline and attack comparisons;
+- low/medium/high budget results;
+- attack success rates;
+- worst-case and median degradation;
+- seed sensitivity for core metrics;
+- at least one auditable failure trace when the claim depends on path behavior;
+- comparison against a same-budget single-attack baseline for mixed adversary claims;
+- validation limits stated next to the claim.
+
+## Conservative Claim Wording
+
+Use:
+
+- "under this bounded adversary";
+- "in the implemented generator";
+- "suggests a synthetic failure-mode hypothesis";
+- "requires external validation before institutional interpretation."
+
+Avoid:
+
+- "proves";
+- "validates";
+- "optimal";
+- "best institution";
+- "real-world attack rate";
+- "general legislative design-space result."

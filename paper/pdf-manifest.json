@@ -2,22 +2,22 @@
   "generatedBy": "paper/scripts/write_pdf_manifest.py",
   "pdfs": [
     {
-      "normalizedTextBytes": 38249,
-      "normalizedTextSha256": "8c4fe90966d1bfd10471d2410b22514c191d9a8737e0d7b5a93db04e03bab093",
+      "normalizedTextBytes": 38251,
+      "normalizedTextSha256": "440dae2d059ce7dda87c41dbe3d7e609e33871b1504b4fc414808ec9f9cfb49e",
       "pages": 10,
       "path": "paper/acm-ci-framework/acm-ci-framework.pdf",
-      "sizeBytes": 471706
+      "sizeBytes": 472248
     },
     {
       "normalizedTextBytes": 39636,
       "normalizedTextSha256": "e5b3a1dab1126522937cb83d0acfb0400819d17ec759e383ef30e098a86b6b0c",
       "pages": 12,
       "path": "paper/technical-appendix/odd-d-appendix.pdf",
-      "sizeBytes": 480303
+      "sizeBytes": 480311
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "aabc3c636c692a1e4390dfc2c02df4025a6a85d41ea139d829efe0c949193bc1",
+  "sourceInputSha256": "407496438f965f9db403b0a6a5d0e6bc649a8e1562e17e5e538a0fd393e65dc3",
   "sourceInputs": [
     {
       "path": "Makefile",
@@ -73,7 +73,7 @@
     },
     {
       "path": "paper/acm-ci-framework/acm-ci-framework.tex",
-      "sha256": "47c72676644df723f19a02c784a0e16a305f0e4b2ee4cbd8a55d3e1c4d525f2d"
+      "sha256": "c644b60ecfe68b700edfbfb0ffac2fe76980f8c79a58faaf1edd35eb4dbe0157"
     },
     {
       "path": "paper/acmart.cls",

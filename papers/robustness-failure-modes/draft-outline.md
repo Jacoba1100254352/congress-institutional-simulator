@@ -20,6 +20,8 @@ Final decision: NEEDS ADVERSARY EXPERIMENTS FIRST.
 - Proposal flooding and agenda exhaustion.
 - Lobbying camouflage and defensive lobbying.
 - Administrative overload in layered safeguards.
+- Public-support distortion and false consensus.
+- Mixed adversary portfolios under fixed budgets.
 - Strategic silence under burden-shifting passage.
 
 ## 3. Simulator and Mechanism Families
