@@ -10,6 +10,19 @@ A future normative institutional-design paper could exist, but only after the em
 
 The safest current role for this idea is a short future-work note: portfolio safeguards, content-selection stages, harm review, anti-capture access, and reversibility are mechanisms worth further study under stronger empirical and adversarial tests.
 
+## Go/No-Go Decision
+
+No-go for any manuscript, abstract, or venue-targeted draft.
+
+Go only for maintaining this evaluation gate and, later, reassessing after the empirical-validation, robustness/failure-mode, political-science, and chamber-structure breakouts have produced stronger evidence.
+
+| Decision point | Current answer | Reason |
+|---|---|---|
+| Independent contribution exists now | No | Current evidence is synthetic and framework-centered. |
+| Evidence supports design recommendations | No | Generator-dependent welfare and support metrics cannot justify real-world adoption. |
+| Evidence supports design hypotheses | Limited | The ACM framework and reports can motivate mechanisms worth further study. |
+| Full draft allowed | No | Robustness, validation, fairness controls, and representation diagnostics are not strong enough. |
+
 ## Evidence Required Before Drafting
 
 Required before reconsidering a normative paper:
@@ -72,3 +85,15 @@ This paper should wait until after:
 5. the software/artifact package has clean reproducibility and packaging metadata if the normative paper relies on public reuse.
 
 Current recommendation: do not create a normative manuscript. Preserve this as an evaluation-only gate.
+
+## Reassessment Trigger
+
+Reopen this file only after all of the following have concrete outputs:
+
+- empirical-validation data pipeline extends beyond the current flow sanity checks;
+- robustness/failure-mode experiments report worst-case degradation and attack success rates;
+- political-science benchmark fairness controls include cost-constrained conventional and simple-majority variants;
+- chamber-structure diagnostics distinguish population-weighted, chamber-weighted, district, affected-group, and chamber coalition support;
+- software/artifact package has clean-clone reproduction and public citation/release metadata.
+
+Until then, any normative language should stay inside limitations, discussion, or future-work sections as design hypotheses worth testing.
