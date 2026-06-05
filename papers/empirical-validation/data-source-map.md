@@ -4,6 +4,8 @@ Final decision: BENCHMARK/DATA PIPELINE PLAN ONLY. DO NOT DRAFT FULL PAPER YET.
 
 This map inventories empirical signals that can calibrate, sanity-check, or eventually validate legislative simulation models. Status reflects current repository artifacts, especially `reports/empirical-validation-readiness.md`, `reports/empirical-validation-summary.md`, `reports/empirical-bridge.md`, and `reports/empirical-validation-gap-report.md`.
 
+Adapter fixtures under `data/validation/fixtures/` are intentionally excluded from readiness scoring. For example, a fixture named `campaign_finance.csv` does not make the OpenFEC/campaign-finance source family ready; the current readiness report requires raw or cached empirical data under the raw validation workflow.
+
 ## Source Inventory
 
 | Source family | Empirical signal | Current repo dataset or report | Current status | Simulator metric/proxy | Boundary |
@@ -44,3 +46,7 @@ These are benchmark signals. They are not proof that the simulator is valid.
 5. Statutory lineage for amendment, repeal, sunset, reauthorization, and expiration.
 6. Court review and invalidation.
 7. Cross-national institutions and party systems.
+
+## Source Registry Need
+
+Add `data/validation/source-registry.csv` before any data/resource paper draft. Required fields: source family, exact source, access method, license or terms, API-key requirement, network requirement, cache path, row count, date range, unit of observation, transformation script, simulator metric family, and boundary category.

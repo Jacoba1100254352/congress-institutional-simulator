@@ -36,6 +36,14 @@ Those artifacts are useful, but they do not validate generated public benefit, p
 - `validation-boundary-table.md`: claim boundary table, readiness scorecard, and missing-data roadmap.
 - `pipeline-plan.md`: data pipeline and reproducibility plan.
 - `paper-plan.md`: paper decision, contribution boundary, and go/no-go.
+- `go-no-go.md`: explicit decision gates for full-paper drafting.
 - `draft-outline.md`: outline only; no full manuscript.
 
 Existing supporting files in this folder may remain as supplemental planning notes.
+
+## Next Concrete Repo Tasks
+
+1. Add `data/validation/source-registry.csv` and generate `reports/empirical-data-inventory.csv`.
+2. Extend raw/cached summaries for district public opinion, campaign finance, implementation feedback, and law revision.
+3. Add a held-out flow-check design that separates calibration ranges from evaluation data.
+4. Keep all current outputs labeled as flow smoke tests, boundary checks, or proxies until held-out validation exists.

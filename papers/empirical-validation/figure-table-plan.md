@@ -33,6 +33,15 @@
 4. Proxy-risk table
    - Example: coalition size is not public opinion; party unity is not public support.
 
+5. Validation-readiness scorecard
+   - Source: `validation-boundary-table.md` and future `reports/empirical-data-inventory.csv`.
+   - Columns: dimension, current status, score, missing upgrade, next command.
+
+6. Missing-data roadmap
+   - Source: `reports/empirical-validation-gap-report.csv`.
+   - Rows: missing source families.
+   - Columns: priority, next source, current boundary, dependent future papers.
+
 ## Appendix Tables
 
 - Raw sample summaries from `reports/core-raw-validation-build.md`.

@@ -98,3 +98,14 @@ empirical-public-support
 empirical-lobbying-linkage
 empirical-correction-data
 ```
+
+## Acceptance Gates
+
+Do not draft a full empirical-validation/data paper until:
+
+1. The source registry exists and covers every source family in `data-source-map.md`.
+2. Current ready source families have row counts, date ranges, units of observation, and license/access notes.
+3. At least public support, campaign finance, and one correction/implementation source are no longer missing, or a defensible narrowed data-paper scope is chosen.
+4. Held-out flow checks exist and report errors or tolerance misses, not only broad pass/fail screens.
+5. Every table explicitly labels each signal as validated, sanity-checkable, proxy-only, synthetic-only, or not modeled.
+6. `make validation-readiness`, `make empirical-bridge`, `make validation-gap-report`, and `make calibration-check` pass.

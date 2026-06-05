@@ -18,6 +18,10 @@ Future data/resource paper, computational social science methods note, political
 
 The future paper would define and implement a benchmark-data pipeline that maps empirical legislative signals to simulation calibration, sanity-check, proxy, synthetic-only, and missing-model categories.
 
+## Why This Is Not Redundant With The ACM CI Framework Paper
+
+The ACM CI paper contributes the simulator architecture and a synthetic framework demonstration. This breakout would contribute empirical boundary infrastructure: a source registry, validation-readiness scorecard, metric-to-signal mapping, held-out-check design, and missing-data roadmap that other simulation papers can reuse. It should not repeat the ACM mechanism comparison or claim that the framework is validated.
+
 ## What This Paper Is Not
 
 - Not proof that the simulator is valid.
@@ -33,6 +37,8 @@ The future paper would define and implement a benchmark-data pipeline that maps 
 - `reports/empirical-validation-gap-report.md`: claim boundaries and missing areas.
 - `reports/core-raw-validation-build.md`: current source-backed sample counts.
 - `reports/calibration-baseline.md`: 7 / 7 broad conventional-baseline screens.
+- `data/validation/raw/`: six current raw empirical summaries.
+- `data/validation/fixtures/`: adapter fixtures, intentionally ignored by readiness scoring.
 - `scripts/validation/`: validation and empirical-bridge scripts.
 
 ## Deliverables for Future Paper
@@ -62,6 +68,39 @@ Go for:
 - offline summary cache;
 - metric-boundary reports;
 - held-out validation design.
+
+## Required New Code Or Data Work
+
+Before a full paper draft:
+
+1. Add `data/validation/source-registry.csv` with licensing, access, date range, row count, cache path, network/API requirement, and simulator-boundary category.
+2. Add a generated `reports/empirical-data-inventory.csv` and Markdown companion.
+3. Add raw or cached summaries for at least public opinion, campaign finance, implementation feedback, and law revision, or explicitly justify replacements.
+4. Add a held-out flow-check target that reports error/tolerance rather than only pass/fail broad ranges.
+5. Keep adapter fixtures separate from raw empirical summaries and preserve the no-network review path.
+
+## Next Concrete Commands
+
+Current refresh:
+
+```sh
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+export PATH="$JAVA_HOME/bin:$PATH"
+make validation-readiness
+make empirical-validation
+make empirical-bridge
+make validation-gap-report
+make calibration-check
+```
+
+Future targets to add:
+
+```make
+empirical-data-inventory
+empirical-flow-heldout
+empirical-summarize-offline
+empirical-boundary-report
+```
 
 ## Full Draft Gate
 
