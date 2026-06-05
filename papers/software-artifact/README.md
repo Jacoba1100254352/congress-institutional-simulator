@@ -20,6 +20,7 @@ The simulator has a strong internal artifact workflow: Java 21 enforcement, Make
 
 ## Required Files
 
+- `go-no-go.md`: explicit software-paper readiness gate.
 - `repository-audit.md`: readiness audit against software/artifact criteria.
 - `software-paper-plan.md`: contribution statement, venue fit, and go/no-go.
 - `model-documentation-summary.md`: ODD/ODD+D-style model summary.
@@ -31,3 +32,10 @@ Existing planning files such as `paper-plan.md`, `claims-ledger.md`, `experiment
 ## Full Draft Rule
 
 Do not draft a software paper unless the repository passes the reproducibility and packaging audit.
+
+## Next Concrete Repo Tasks
+
+1. Add a root `LICENSE`, `CITATION.cff`, and optional `codemeta.json`.
+2. Add `docs/architecture.md`, `docs/output-schema.md`, `docs/adding-a-mechanism.md`, `docs/adding-a-campaign.md`, and `docs/reproducibility.md`.
+3. Run a clean-clone audit with `make test`, `make reproduce-paper-offline`, and `make supplement-anonymous`.
+4. Save the clean-clone log and artifact-bundle audit before drafting a software paper.

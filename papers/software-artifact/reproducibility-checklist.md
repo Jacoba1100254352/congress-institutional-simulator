@@ -56,18 +56,18 @@ Record:
 
 | Item | Required before software paper | Current status |
 |---|---|---|
-| `make test` passes | yes | passed current checkout |
-| `make reproduce-paper-offline` passes clean clone | yes | not verified in this pass |
-| `make supplement-anonymous` passes clean clone | yes | not verified in this pass |
-| Fixed seeds documented | yes | Makefile and docs use fixed seeds |
-| PDF/text manifest check | yes | `paper/pdf-manifest.json` exists; full check not rerun this pass |
-| Output schema documented | yes | missing dedicated `docs/output-schema.md` |
-| Source architecture documented | yes | partially in ODD docs; missing `docs/architecture.md` |
-| Extension guide | yes | missing |
-| License | yes | missing |
-| Citation metadata | yes | missing |
-| Release/archive metadata | yes | missing |
-| Anonymous bundle excludes notes/private files | yes | builder exists; needs clean audit |
+| `make test` passes | yes | pass in current checkout; clean clone not yet logged |
+| `make reproduce-paper-offline` passes clean clone | yes | unverified |
+| `make supplement-anonymous` passes clean clone | yes | unverified |
+| Fixed seeds documented | yes | pass for core Makefile campaigns and docs |
+| PDF/text manifest check | yes | partial; `paper/pdf-manifest.json` exists, full check not rerun in clean clone |
+| Output schema documented | yes | fail; missing dedicated `docs/output-schema.md` |
+| Source architecture documented | yes | partial; ODD docs exist, missing `docs/architecture.md` |
+| Extension guide | yes | fail; missing adding-mechanism/campaign docs |
+| License | yes | fail; missing |
+| Citation metadata | yes | fail; missing |
+| Release/archive metadata | yes | fail; missing |
+| Anonymous bundle excludes notes/private files | yes | unverified; builder exists but bundle needs audit |
 
 ## Reproducibility Claims Allowed Now
 
@@ -94,3 +94,7 @@ Not allowed yet:
 6. Add output schema documentation.
 7. Add extension documentation.
 8. Run anonymous supplement audit.
+
+## Stop Condition
+
+Do not write a software-paper manuscript while any required checklist row is `fail` or `unverified`.

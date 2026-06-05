@@ -76,6 +76,8 @@ Go for artifact hardening:
 - extension guides;
 - public release checklist.
 
+See `go-no-go.md` for the full draft gate.
+
 ## Required New Documentation Before Draft
 
 - `docs/architecture.md`
@@ -98,3 +100,16 @@ Only draft after:
 - architecture and extension docs exist;
 - dependency/environment requirements are documented;
 - stale drafts and local generated artifacts are absent from release bundle.
+
+## Safe Software-Paper Claims Now
+
+- The repository contains a Java 21, Makefile-first simulator with tests and paper-reproduction targets.
+- The current checkout test suite passes under Java 21.
+- The codebase implements modular legislative mechanism families and emits campaign reports, diagnostics, LaTeX figures/tables, and paper PDFs.
+
+## Unsafe Software-Paper Claims Now
+
+- The project is ready as public reusable software.
+- The artifact has been clean-clone reproduced.
+- The artifact is citable or archived.
+- The simulator has empirical predictive validity for Congress or any real legislature.

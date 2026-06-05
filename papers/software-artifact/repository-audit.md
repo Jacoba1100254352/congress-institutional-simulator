@@ -2,7 +2,7 @@
 
 Final decision: NEEDS REPRODUCIBILITY AND PACKAGING AUDIT FIRST.
 
-Audit date: current workspace pass.
+Audit date: 2026-06-05 workspace pass.
 
 ## Summary
 
@@ -19,6 +19,9 @@ Hard blockers:
 Current verification performed in this pass:
 
 - `make test` was run with Java 21 selected explicitly and passed.
+- Repository metadata search found no `LICENSE*`, `COPYING*`, `CITATION.cff`, `codemeta.json`, or `.java-version` at depth 2.
+- Stale draft search found no tracked `main*.pdf`, `main*.tex`, or `*draft*.pdf` files at depth 3.
+- Root `README.md` was inspected and is reproduction-focused.
 - root README, docs, Makefile targets, source layout, tracked PDFs, and metadata files were inspected.
 
 ## Audit Table
@@ -37,8 +40,8 @@ Current verification performed in this pass:
 | Stale drafts removed | mostly pass | Tracked PDFs are descriptive: `acm-ci-framework.pdf`, `odd-d-appendix.pdf`; no tracked `main.pdf` found. | Ensure `paper/notes/` and planning docs are excluded from anonymous/public artifacts as appropriate. |
 | Root README is reproduction-focused | pass | Root README is titled "Reproducing the ACM CI Framework Paper" and lists commands/outputs. | For software publication, add user/developer installation sections or link to docs. |
 | Code organization understandable | partial pass | Packages are organized by `behavior`, `calibration`, `experiment`, `institution/*`, `model`, `simulation`, `reporting`, and `util`; docs exist. | Add `docs/architecture.md` and extension guides. |
-| License exists | fail | No `LICENSE*` or `COPYING*` found. | Add project license before software submission. |
-| Citation file exists | fail | No `CITATION.cff` found. | Add citation metadata before software submission. |
+| License exists | fail | No `LICENSE*` or `COPYING*` found in current audit. | Add project license before software submission. |
+| Citation file exists | fail | No `CITATION.cff` found in current audit. | Add citation metadata before software submission. |
 | Dependency list exists | partial/fail | README lists Java 21, GNU Make, Python 3, LaTeX; project has no external Java dependencies. | Add formal dependency/environment file or `docs/reproducibility.md`. |
 | Model documentation exists | pass | `docs/odd-model.md`, `docs/odd-d-appendix.md`, and `paper/technical-appendix/odd-d-appendix.pdf`. | Summarize for software-paper audience. |
 | Empirical inputs separated from core reproduction | pass | README separates optional network-dependent inputs from offline reproduction. | Add source registry if publishing data-resource artifact. |
@@ -48,9 +51,7 @@ Current verification performed in this pass:
 Command run:
 
 ```sh
-export JAVA_HOME=$(/usr/libexec/java_home -v 21)
-export PATH="$JAVA_HOME/bin:$PATH"
-make test
+env JAVA_HOME="$(/usr/libexec/java_home -v 21)" PATH="$(/usr/libexec/java_home -v 21)/bin:$PATH" make test
 ```
 
 Observed result:
@@ -76,3 +77,14 @@ make supplement-anonymous
 6. Add architecture and extension documentation.
 7. Add release/archive plan.
 8. Confirm anonymous and public artifact bundles exclude stale drafts and strategy notes.
+
+## Audit Commands Used
+
+```sh
+find . -maxdepth 2 \( -iname 'LICENSE*' -o -iname 'COPYING*' -o -iname 'CITATION.cff' -o -iname 'codemeta.json' -o -iname '.java-version' \) -print | sort
+find . -maxdepth 3 -type f \( -iname 'main*.pdf' -o -iname '*draft*.pdf' -o -iname 'main*.tex' \) -print | sort
+find docs -maxdepth 1 -type f -print | sort
+ls -1 paper/acm-ci-framework/*.pdf paper/technical-appendix/*.pdf
+```
+
+The metadata and stale-draft searches returned no matching files except the expected current descriptive PDFs under `paper/acm-ci-framework/` and `paper/technical-appendix/`.

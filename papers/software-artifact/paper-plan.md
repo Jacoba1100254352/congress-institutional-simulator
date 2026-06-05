@@ -54,6 +54,8 @@ No-go for immediate software-paper submission. Go for artifact hardening.
 
 After license/citation/release metadata and clean-checkout reproduction are complete, this could become the strongest breakout candidate.
 
+See `go-no-go.md` for the strict full-draft conditions.
+
 ## Next Concrete Commands or Repo Tasks
 
 Baseline verification:
