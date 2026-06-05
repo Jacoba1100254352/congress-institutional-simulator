@@ -4,6 +4,10 @@ Final decision: NEEDS EXPANDED CHAMBER SCENARIOS AND REPRESENTATION VALIDATION F
 
 ## Required Main Tables
 
+0. Go/no-go and evidence threshold table
+   - Rows: implementation claim, pilot sensitivity claim, representation claim, empirical validation claim, institutional recommendation.
+   - Columns: current status, required evidence, allowed language.
+
 1. Chamber architecture taxonomy
    - Rows: unicameral, bicameral, upper-chamber composition, malapportionment, origin routing, second-chamber power, override, committee assignment, committee power, eligibility/selection/retention, independent review.
    - Columns: implemented scenario, model variable, expected mechanism, required validation source.
@@ -54,6 +58,9 @@ Final decision: NEEDS EXPANDED CHAMBER SCENARIOS AND REPRESENTATION VALIDATION F
 ## Presentation Rules
 
 - Do not present current chamber stress-screen winners as institutional recommendations.
+- Do not present current family champions as final evidence; label them pilot screen outputs.
 - Do not use national public support as a substitute for district or affected-group support.
+- Do not plot malapportionment against public-support failure until population-weighted and chamber-weighted support are separately reported.
 - Mark synthetic-only representation diagnostics clearly.
 - Separate chamber architecture from general mechanism-bundle comparisons.
+- Use "revision moderation" rather than "compromise" in all new figures and tables.

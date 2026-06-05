@@ -6,7 +6,7 @@ The current chamber campaign can screen structural variants, but a stand-alone r
 
 ## Current Problem
 
-The simulator reports productivity, moderation, public-support diagnostics, low-public-support enactment, minority harm, malapportionment, committee capture, inter-chamber conflict, and ex ante review. For a chamber-structure paper, these diagnostics need a stronger representation base:
+The simulator reports productivity, revision-moderation, public-support diagnostics, low-public-support enactment, minority harm, malapportionment, committee capture, inter-chamber conflict, and ex ante review. For a chamber-structure paper, these diagnostics need a stronger representation base:
 
 - status quo should be domain-aware, not only a single abstract baseline;
 - public support should be distributed across districts, groups, and chambers;
@@ -52,7 +52,7 @@ Required model change:
 - Replace or supplement scalar status quo with domain-specific status quo values.
 - Bills should update the status quo for their own issue domain.
 - Cross-domain packages should update multiple domain states only when explicitly modeled.
-- Metrics should report whether a bill's apparent moderation is domain-specific or an artifact of scalar compression.
+- Metrics should report whether a bill's apparent revision moderation is domain-specific or an artifact of scalar compression.
 
 Minimum implementation target:
 

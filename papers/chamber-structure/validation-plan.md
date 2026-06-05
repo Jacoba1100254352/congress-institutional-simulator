@@ -37,6 +37,8 @@ Proposed output:
 - `reports/chamber-validation-data-inventory.csv`
 - `reports/chamber-validation-data-inventory.md`
 
+This inventory should reuse the empirical-validation breakout's source registry where possible, but it must add chamber-specific fields for population-seat distortion, chamber vote patterns, committee assignment, bicameral disagreement, and review-body actions.
+
 ### Phase 2: Apportionment and Population Diagnostics
 
 Add or validate:
@@ -90,6 +92,8 @@ Only after phases 1-5:
 ## Current Boundary
 
 Current chamber outputs should be described as sensitivity screens. They do not validate representation architecture because district population distributions, district public opinion, chamber coalition support, committee assignment records, and review-body data are not yet integrated.
+
+Do not use the words validated, calibrated, representative, or empirically supported for chamber-structure effects unless the relevant source family has been integrated and the claim appears in `claims-ledger.md` as supported.
 
 ## Proposed Make Targets
 

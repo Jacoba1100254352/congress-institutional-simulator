@@ -30,6 +30,34 @@ Current outputs:
 6. Add review delay and intervention metrics for independent review bodies.
 7. Add paired chamber-architecture reporting scripts.
 
+## Required Output Schema
+
+Every new chamber sweep should report at least:
+
+- `scenario`
+- `case`
+- `seed`
+- `mechanism_family`
+- `productivity`
+- `revision_moderation`
+- `national_support`
+- `district_support_mean`
+- `district_support_iqr`
+- `affected_group_support`
+- `lower_chamber_coalition_support`
+- `upper_chamber_coalition_support`
+- `population_weighted_support`
+- `chamber_weighted_support`
+- `representation_gap`
+- `minority_harm`
+- `committee_capture`
+- `bicameral_conflict`
+- `review_delay`
+- `administrative_cost`
+- `domain_status_quo_shift`
+
+The exact names can follow local code style, but the concepts must be separately inspectable. Do not infer population representation from a national support scalar.
+
 ## Required Experiment 1: Malapportionment Sweep
 
 Purpose: test how population-seat distortion changes representation and legislative outcomes.
@@ -46,7 +74,7 @@ Sweep:
 Metrics:
 
 - productivity;
-- moderation;
+- revision moderation;
 - population-weighted support;
 - chamber-weighted support;
 - representation gap;
@@ -121,7 +149,7 @@ Sweep:
 Metrics:
 
 - productivity;
-- moderation;
+- revision moderation;
 - capture;
 - representation gap;
 - support diagnostics;
@@ -214,6 +242,15 @@ chamber-conflict-override-sweep
 chamber-support-weighting-report
 ```
 
+## Acceptance Gates
+
+- Run every sweep as a paired comparison on shared generated worlds.
+- Report seed variation separately from scenario/case variation.
+- Include at least one population-weighted versus chamber-weighted support comparison for each chamber architecture family.
+- Include uncertainty summaries for productivity, revision moderation, support failure, representation gap, committee capture, and review delay.
+- Keep pilot `chamber-family-champions` and `chamber-stress-screen` outputs out of the main evidence table unless they are clearly labeled as screen outputs.
+- Link every validation-related claim to `validation-plan.md` or an implemented validation inventory.
+
 ## Full Draft Gate
 
 Only draft the paper after:
@@ -222,4 +259,5 @@ Only draft the paper after:
 - representation diagnostics are domain-aware;
 - support diagnostics distinguish national, district, affected-group, and chamber coalition support;
 - validation plan has source inventories and at least initial apportionment/committee/chamber-vote targets;
+- same-world pairing, seed uncertainty, and scenario variation are reported separately;
 - `make test` passes.

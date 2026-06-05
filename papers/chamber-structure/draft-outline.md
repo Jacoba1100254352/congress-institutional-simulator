@@ -8,7 +8,7 @@ Final decision: NEEDS EXPANDED CHAMBER SCENARIOS AND REPRESENTATION VALIDATION F
 
 - Chamber architecture determines how populations, territories, parties, committees, and review bodies enter legislative decisions.
 - The paper studies representation architecture, not general mechanism ranking.
-- Primary question: how do chamber and representation architectures shift productivity, moderation, public-support diagnostics, minority harm, committee capture, malapportionment, and review delay?
+- Primary question: how do chamber and representation architectures shift productivity, revision moderation, public-support diagnostics, minority harm, committee capture, malapportionment, and review delay?
 
 ## 2. Theory
 

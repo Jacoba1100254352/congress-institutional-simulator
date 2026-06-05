@@ -47,9 +47,9 @@ The ACM CI paper owns the reusable framework contribution. This paper would inst
 - `reports/simulation-chamber-structure.csv`: focused chamber campaign.
 - `reports/simulation-chamber-structure.md`: run configuration and scenario averages.
 - `reports/chamber-family-champions.md`: fixed-rule family champions.
-- `reports/chamber-stress-screen.md`: stress-case chamber winners.
+- `reports/chamber-stress-screen.md`: stress-case chamber screen outputs.
 - `paper/figures/chamber_family_table.tex`: existing chamber table asset.
-- `paper/figures/chamber_productivity_compromise.tex`: existing chamber plot asset.
+- `paper/figures/chamber_productivity_compromise.tex`: existing chamber plot asset; update the visible label to revision moderation before any manuscript use.
 - Source packages:
   - `src/main/java/congresssim/institution/chamber`
   - `src/main/java/congresssim/institution/committee`
@@ -67,6 +67,7 @@ Use cautiously:
 - Existing reports show chamber and committee variants shift productivity, risk, public-support failure, and review metrics.
 - Family champion and stress-screen reports are sensitivity screens, not validation.
 - Current public-support diagnostics are not yet sufficient for strong representation claims.
+- Existing reports may identify candidate mechanisms for deeper study, but they should not be described as winners, best designs, or policy recommendations.
 
 ## Required Modeling Improvements
 
@@ -74,9 +75,44 @@ Use cautiously:
 2. Add district/population support distributions rather than only a national public-support scalar.
 3. Distinguish public support, district support, affected-group support, and chamber coalition support.
 4. Add validation planning for apportionment, population distributions, chamber voting, committee assignment, referrals/markups, bicameral disagreement, and review bodies.
+5. Report population-weighted and chamber-weighted support separately so malapportionment effects are observable instead of inferred.
+6. Separate stochastic uncertainty from scenario variation in every chamber comparison.
 
 ## Go/No-Go
 
 No-go for full draft.
 
 Go for representation-model upgrades, validation planning, and targeted chamber experiments.
+
+See `go-no-go.md` for the full readiness gate.
+
+## Required New Code and Data Work
+
+- Add report fields for national support, district support summaries, affected-group support, lower/upper chamber coalition support, population-weighted support, chamber-weighted support, and representation gap.
+- Add domain-aware status quo movement to chamber diagnostics.
+- Add committee-capture outputs by assignment and committee-power configuration.
+- Add review-delay, intervention, and correction outputs for independent review bodies.
+- Add validation inventory outputs for apportionment, district population, chamber vote patterns, committee assignment, referral/markup, bicameral disagreement, and review-body data.
+
+## Next Concrete Commands
+
+Existing pilot refresh:
+
+```sh
+env JAVA_HOME="$(/usr/libexec/java_home -v 21)" PATH="$(/usr/libexec/java_home -v 21)/bin:$PATH" make chamber-structure
+env JAVA_HOME="$(/usr/libexec/java_home -v 21)" PATH="$(/usr/libexec/java_home -v 21)/bin:$PATH" make chamber-structure-summary
+```
+
+Targets to add before a full draft:
+
+```text
+chamber-representation-sensitivity
+chamber-malapportionment-sweep
+chamber-upper-power-sweep
+committee-capture-sweep
+selection-retention-sweep
+review-body-sweep
+chamber-conflict-override-sweep
+chamber-support-weighting-report
+chamber-validation-data-inventory
+```

@@ -10,7 +10,7 @@ Develop a paper on how chamber architecture, apportionment, committee assignment
 
 ## Primary Research Question
 
-How do chamber and representation architectures shift productivity, moderation, public-support diagnostics, minority harm, committee capture, malapportionment, and review delay?
+How do chamber and representation architectures shift productivity, revision moderation, public-support diagnostics, minority harm, committee capture, malapportionment, and review delay?
 
 ## Current Readiness
 
@@ -27,6 +27,7 @@ The repository has a substantial chamber campaign and several chamber/committee/
 ## Required Files
 
 - `paper-plan.md`: stand-alone paper decision, core mechanisms, artifacts, and go/no-go.
+- `go-no-go.md`: explicit readiness gate and full-draft conditions.
 - `representation-model.md`: model changes needed for domain-aware representation diagnostics.
 - `validation-plan.md`: data and validation roadmap for representation architecture.
 - `experiment-plan.md`: required chamber experiments and code tasks.
@@ -37,3 +38,10 @@ The repository has a substantial chamber campaign and several chamber/committee/
 ## Full Draft Rule
 
 Do not draft the full paper unless expanded chamber scenarios and representation-validation planning are complete.
+
+## Next Concrete Repo Tasks
+
+1. Add support diagnostics that distinguish national, district, affected-group, lower/upper chamber coalition, population-weighted, and chamber-weighted support.
+2. Add paired sweep targets for malapportionment, upper-chamber power, committee capture, selection/retention, review bodies, bicameral conflict, and support weighting.
+3. Create a chamber validation data inventory before treating any representation claim as more than a synthetic sensitivity result.
+4. Keep current `chamber-family-champions` and `chamber-stress-screen` outputs in the appendix or planning materials only; they are not recommendation tables.
