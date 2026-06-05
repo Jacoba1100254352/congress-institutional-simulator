@@ -93,6 +93,7 @@ Current checks do not validate:
 - Add `reports/political-validation-targets.csv`.
 - Add cached no-network summaries for every empirical input used.
 - Add validation scripts that separate calibration, flow sanity, proxy checks, and held-out validation.
+- Reuse the empirical-validation source registry once it exists; do not create a competing source inventory for this paper.
 
 ## Proposed Make Targets
 
@@ -104,3 +105,7 @@ political-public-opinion-map
 political-lobbying-linkage
 political-correction-data
 ```
+
+## Dependency On Empirical-Validation Breakout
+
+This paper should wait until the empirical-validation breakout reaches at least its level-3 gate: source registry, expanded raw/cached data, and held-out checks. Until then, political-science claims should use "flow smoke test," "proxy," or "synthetic" language rather than "validation."

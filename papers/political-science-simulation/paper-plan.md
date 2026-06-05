@@ -84,6 +84,39 @@ This paper should frame implemented modules through political science concepts:
 - Simple majority + committee revision.
 - Cost-constrained comparison where each system gets the same review, amendment, information, and attention budget.
 
+## Required New Code Or Data Work
+
+Before drafting, add or extend:
+
+1. Political fairness-control scenarios that isolate process capacity from institutional label.
+2. A political paired-comparison report that uses matched seeds/worlds and reports differences versus `CUR` and `SM`.
+3. A cost-budget accounting layer for review, amendment, information, and attention resources.
+4. A public-benefit/public-support sensitivity report that includes decoupled support-benefit worlds.
+5. Empirical source upgrades identified in `../empirical-validation/go-no-go.md`, especially public opinion, campaign finance, and correction/implementation data.
+
+## Next Concrete Commands
+
+Current evidence refresh:
+
+```sh
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+export PATH="$JAVA_HOME/bin:$PATH"
+make campaign
+make seed-robustness
+make calibration-check
+make validation-gap-report
+```
+
+Future targets to add:
+
+```make
+political-fairness-controls
+political-paired-comparisons
+political-uncertainty-report
+political-generator-sensitivity
+political-validation-targets
+```
+
 ## Go/No-Go
 
 No-go for full draft.

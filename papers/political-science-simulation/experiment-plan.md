@@ -187,3 +187,14 @@ political-paired-comparisons
 political-generator-sensitivity
 political-uncertainty-report
 ```
+
+## Acceptance Gates
+
+Do not draft a full political-science paper until:
+
+1. Fairness-control scenarios exist for conventional and simple-majority baselines with comparable information, amendment, review, and attention budgets.
+2. Paired-comparison reports use matched seeds/worlds and report differences versus `CUR` and `SM`.
+3. Seed variance and scenario variation are reported separately.
+4. Generator worlds include at least one support-benefit decoupling case and one lobbying-information case.
+5. Empirical-boundary tables are updated from the empirical-validation roadmap.
+6. Claims about public support, capture, harm, or correction remain explicitly synthetic/proxy-only unless new data is integrated.

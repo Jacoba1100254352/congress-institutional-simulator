@@ -36,3 +36,12 @@ The strongest blockers are:
 - `figure-table-plan.md`: required figures and tables for a future draft.
 - `draft-outline.md`: paper outline only; no full manuscript.
 - `related-work-targets.md`: literature areas to verify before drafting.
+- `go-no-go.md`: explicit readiness gates for drafting.
+
+## Next Concrete Repo Tasks
+
+1. Extend the empirical-validation pipeline first: public opinion, campaign finance, implementation/correction, and source registry remain blockers.
+2. Implement benchmark fairness controls that give conventional and simple-majority baselines comparable information, amendment, review, and attention budgets.
+3. Add paired-comparison reports that compare mechanisms on the same generated worlds.
+4. Separate seed variance from scenario variation in any political-science result table.
+5. Keep `PORT` and content-selection findings as conditional mechanism-behavior hypotheses, not reform rankings.

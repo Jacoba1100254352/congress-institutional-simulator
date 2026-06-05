@@ -23,6 +23,10 @@ Final decision: NEEDS DATA/VALIDATION FIRST.
    - Source: expanded `political-baseline-calibration`.
    - Keep as plausibility/calibration, not full validation.
 
+6. Go/no-go and evidence threshold table
+   - Source: `go-no-go.md` and `claims-ledger.md`.
+   - Purpose: show why the current package is not yet a full draft.
+
 ## Required Main Figures
 
 1. Paired mechanism comparison plot
@@ -54,3 +58,5 @@ Final decision: NEEDS DATA/VALIDATION FIRST.
 - Separate PAIR and AMT rows as independent evidence unless new divergence is demonstrated.
 - A portfolio-hybrid table that makes `PORT` look like a recommended design.
 - Any display that treats synthetic public support as observed opinion.
+- Any table that reports `PAIR` and `AMT` as independent robustness evidence unless new divergence is shown.
+- Any plot that ranks `PORT` as a recommended institutional design.
