@@ -2,7 +2,7 @@
 
 ## Status
 
-Readiness level: figure/table specifications are ready; most figures cannot be generated until adversary experiments are implemented.
+Readiness level: table specifications and bounded A1-A9 source data exist; most main figures still require broader mechanism and seed sweeps, plotted artifacts, and validation.
 
 ## Main Tables
 
@@ -15,7 +15,7 @@ Readiness level: figure/table specifications are ready; most figures cannot be g
 | T5 | Mechanism vulnerability matrix | Report robust, partial vulnerability, high vulnerability, untested, or not applicable by attack family. | Future adversarial-stress output. | Not ready. |
 | T6 | Recovery/correction table | Report recovery rate, residual harm, and admin cost by attack type. | A7 queue-recovery and A8 same-case signal-correction pilots plus future adversarial-stress output. | Partial: bounded A7 queue recovery and A8 signal correction only. |
 | T7 | Validation-needs table | List internal checks, empirical data gaps, and modeling weaknesses. | `validation-needs.md` | Ready now. |
-| T8 | Mixed-attack interaction table | Compare strongest single attack against fixed-budget mixed adversary portfolios. | `reports/adversarial-stress-a9-summary.md` | Ready as A9 pilot appendix only. |
+| T8 | Mixed-attack interaction table | Compare strongest single attack against fixed-budget mixed adversary portfolios. | `reports/adversarial-stress-a9-summary.md` and `reports/adversarial-replication-a9-summary.csv` | Ready as a fixed-specification multi-seed appendix table. |
 | T9 | Pilot failure-trace candidate index | Rank aggregate manipulation-stress comparisons that should receive full traces first. | `reports/adversarial-failure-trace-index.md` | Ready as pilot appendix only. |
 | T10 | Pilot adversary cell map | Show which A1-A9 adversaries currently have only aggregate stress proxies and which have no pilot cell. | `reports/adversarial-pilot-cell-map.md` | Ready as pilot appendix only. |
 | T11 | A1 clone/decoy adversarial-stress summary | Report budget, information level, success rate, median/worst degradation, and trace counts for the first executable A1 pilot. | `reports/adversarial-stress-summary.md` | Ready as A1 pilot appendix only. |
@@ -26,7 +26,8 @@ Readiness level: figure/table specifications are ready; most figures cannot be g
 | T16 | A6 lobbying-camouflage adversarial-stress summary | Report budget, information level, success rate, anti-capture bypass, capture enactment added, visible-spend decline with capture persistence, shadow-share movement, detection decline, observed screen-risk decline, administrative burden, and trace counts for the first executable A6 pilot. | `reports/adversarial-stress-a6-summary.md` | Ready as A6 pilot appendix only. |
 | T17 | A7 administrative-overload adversarial-stress summary | Report budget, information level, capacity saturation, queue overflow, overflow fallback, latent-risk control failure, administrative burden, and post-attack recovery cycles. | `reports/adversarial-stress-a7-summary.md` | Ready as A7 pilot appendix only. |
 | T18 | A8 public-support-distortion adversarial-stress summary | Report mechanism path, budget, information level, residual signal distortion, generated-support error, decision failures, false consensus/opposition, and same-case signal correction. | `reports/adversarial-stress-a8-summary.md` | Ready as A8 pilot appendix only. |
-| T19 | A9 mixed-adversary adversarial-stress summary | Report exact joint allocation, strongest same-budget single control, mixed-only success, interaction degradation, superadditive loss, administrative burden, and bounded recovery/correction outcomes. | `reports/adversarial-stress-a9-summary.md` | Ready as A9 pilot appendix only. |
+| T19 | A9 mixed-adversary adversarial-stress summary | Report exact joint allocation, strongest same-budget single control, mixed-only success, interaction degradation, superadditive loss, administrative burden, and bounded recovery/correction outcomes. | `reports/adversarial-stress-a9-summary.md` | Ready as A9 trace-backed pilot appendix. |
+| T20 | A9 base-seed uncertainty summary | Separate strict mixed-only event recurrence from seed-level mean interaction and superadditive effects. | `reports/adversarial-replication-a9-summary.md` | Ready as a fixed-specification multi-seed appendix table. |
 
 ## Main Figures
 
@@ -38,7 +39,7 @@ Readiness level: figure/table specifications are ready; most figures cannot be g
 | F4 | Robustness/cost frontier | Compare risk-control retention against administrative burden under attack. | Future defense-cost sweep. | Not ready. |
 | F5 | Failure trace diagrams | Explain 2-3 concrete paths from adversary action to institutional outcome. | Future failure traces. | Not ready. |
 | F6 | Recovery/correction plot | Show whether review, substitute selection, rollback, or routing correction reduces attack harm. | A7 queue-recovery and A8 same-case signal-correction pilots plus future correction metrics. | Partial: bounded queue recovery and signal correction only. |
-| F7 | Mixed-attack interaction plot | Show whether mixed adversary portfolios create additive, subadditive, or superadditive degradation. | `reports/adversarial-stress-a9-summary.csv` | Partial: bounded A9 source data exist; multi-seed uncertainty is missing. |
+| F7 | Mixed-attack interaction plot | Show whether mixed adversary portfolios create additive, subadditive, or superadditive degradation. | `reports/adversarial-replication-a9-summary.csv` | Partial: multi-seed source data exist; the plotted figure and alternative A9 specifications remain missing. |
 
 ## Appendix Tables
 
@@ -66,10 +67,11 @@ Readiness level: figure/table specifications are ready; most figures cannot be g
 | A20 | A8 executable per-bill direct-signal and correction traces. | `reports/adversarial-failure-traces-a8.jsonl` |
 | A21 | A9 executable mixed-adversary stress summary. | `reports/adversarial-stress-a9-summary.md` |
 | A22 | A9 executable mixed and single-control traces. | `reports/adversarial-failure-traces-a9.jsonl` |
-| A23 | Full A1-A9 attack-budget sweep output. | Future expanded adversarial-stress summaries |
-| A24 | Full per-bill failure trace index for A1-A9. | Future expanded trace artifact under `reports/` or `out/` |
-| A25 | Seed robustness for selected adversarial cases. | Future adversarial seed sweep |
-| A26 | Validation gap matrix. | `validation-needs.md` plus future validation reports |
+| A23 | A9 base-seed replication and uncertainty output. | `reports/adversarial-replication-a9-summary.md` |
+| A24 | Full A1-A9 attack-budget sweep output. | Future expanded adversarial-stress summaries |
+| A25 | Full per-bill failure trace index for A1-A9. | Future expanded trace artifact under `reports/` or `out/` |
+| A26 | Seed robustness for selected adversarial cases. | Future adversarial seed sweep |
+| A27 | Validation gap matrix. | `validation-needs.md` plus future validation reports |
 
 ## Required Visual Standards
 

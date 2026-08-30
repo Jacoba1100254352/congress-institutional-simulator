@@ -1,0 +1,86 @@
+{
+  "adversaryId": "A9",
+  "baseSeeds": [
+    20260428,
+    20260429,
+    20260430,
+    20260431,
+    20260432,
+    20260433,
+    20260434,
+    20260435,
+    20260436,
+    20260437,
+    20260438,
+    20260439,
+    20260440,
+    20260441,
+    20260442,
+    20260443,
+    20260444,
+    20260445,
+    20260446,
+    20260447,
+    20260448,
+    20260449,
+    20260450,
+    20260451,
+    20260452,
+    20260453,
+    20260454,
+    20260455,
+    20260456,
+    20260457
+  ],
+  "billsPerRun": 60,
+  "canonicalSeedCrossCheck": "matched",
+  "checkpointPolicy": "reuse only when parameters, Java properties, source tree, script, summary hash, and schema match",
+  "checkpointRoot": "out/adversarial-replication-a9",
+  "claimBoundary": "A9 multi-seed synthetic replication only. The fixed base-seed panel is the uncertainty unit; bills and worlds within a seed are not treated as independent replications. Intervals summarize Monte Carlo sensitivity under the fixed A9 mechanisms, allocations, resource conversion, interaction coefficients, review capacity, and recovery assumptions. They are not population intervals, empirical attack-frequency estimates, general mechanism rankings, or evidence for real-world institutional adoption.",
+  "evaluatedTraceRows": 162000,
+  "gateStatus": "a9_fixed_specification_multiseed_complete_broader_robustness_gate_open",
+  "intervalMethod": "two_sided_student_t_on_base_seed_estimates",
+  "javaProperties": [
+    "-Dcongresssim.javaRelease=21"
+  ],
+  "legislators": 101,
+  "manifestVersion": "adversarial-replication-a9-v1",
+  "outputs": [
+    {
+      "path": "reports/adversarial-replication-a9-seed-results.csv",
+      "sha256": "e7ad46af01769408111f3251aa959972dce7c99e11f9921e37db19eca5aaa594"
+    },
+    {
+      "path": "reports/adversarial-replication-a9-summary.csv",
+      "sha256": "d8272f22ccd0860b61a6ac2d081f23658655412709010f44db11e6f2afdaded3"
+    },
+    {
+      "path": "reports/adversarial-replication-a9-summary.md",
+      "sha256": "957a236c5055c595c6eed80a0e19c26f36d70b15ec77469c2b5cbf6354ed3bab"
+    }
+  ],
+  "portfolioCellCount": 18,
+  "rawTracePolicy": "not_written_for_replication; canonical single-seed per-bill traces remain under reports",
+  "replicationUnit": "base_seed",
+  "runsPerSeed": 5,
+  "seedCount": 30,
+  "seedPanelSelection": "fixed_contiguous_integer_panel_starting_at_20260428_before_result_inspection",
+  "seedResultRows": 540,
+  "sourceInputs": [
+    {
+      "path": "src/main/java/congresssim/institution/adversary/A9MixedAdversaryPortfolioStressRunner.java",
+      "sha256": "1964f79ff91982bbb849ec470f489e8d8c7930510acd83915a89be21b89a28e2"
+    },
+    {
+      "path": "scripts/reporting/run_a9_seed_replication.py",
+      "sha256": "275d2a3cbcbe9b664c10c20051df3e93b9475b137597fe9501f8198f5b1654e8"
+    },
+    {
+      "path": "src/main/java/**/*.java",
+      "sha256": "72e0746dcfd268828aea15adf57a91a11629fb04cc06110a866da228eebbb28f"
+    }
+  ],
+  "status": "partial_a9_multiseed_replication",
+  "strictMixedOnlySuccessRows": 2626,
+  "summaryMetricRows": 396
+}

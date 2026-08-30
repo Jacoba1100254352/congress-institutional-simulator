@@ -75,12 +75,18 @@ The repository has useful pilot artifacts:
 - `reports/adversarial-stress-a9-summary.csv`
 - `reports/adversarial-stress-a9-summary.md`
 - `reports/adversarial-failure-traces-a9.jsonl`
+- `reports/adversarial-replication-a9-run-manifest.json`
+- `reports/adversarial-replication-a9-seed-results.csv`
+- `reports/adversarial-replication-a9-summary.csv`
+- `reports/adversarial-replication-a9-summary.md`
 - `reports/adversarial-failure-trace-index.csv`
 - `reports/adversarial-failure-trace-index.md`
 - `reports/adversarial-pilot-cell-map.csv`
 - `reports/adversarial-pilot-cell-map.md`
 
-The adversary catalog and manifest define the first-wave A1-A9 actor schema in the simulator code, and the pilot cell map joins that schema to current aggregate stress evidence. The adversarial-stress summaries and JSONL traces now provide bounded executable pilots for all nine entries, with budget/information cells, same-generated-world baseline pairing, attack success rates, and per-bill traces. A7 additionally reports queue saturation, overflow fallback, and post-attack recovery cycles. A8 preserves generated support and policy attributes as latent evaluation values, compares signal-reliant and constituent-verified paths, and reports same-case signal correction without invoking A3 objection or panel mechanisms. A9 implements the three planned mixed portfolios under exact joint budgets, compares each mixed case with full-budget and allocated-component single controls, and reports mixed-only failure, interaction, superadditive loss, administrative burden, and bounded review/recovery outcomes. These reports are still not enough for a standalone failure-mode paper because broad mechanism coverage, multi-seed adversarial replication, temporal or substantive correction beyond bounded A7-A9 evidence, and external validation remain incomplete.
+The adversary catalog and manifest define the first-wave A1-A9 actor schema in the simulator code, and the pilot cell map joins that schema to current aggregate stress evidence. The adversarial-stress summaries and JSONL traces provide bounded executable pilots for all nine entries, with budget/information cells, same-generated-world baseline pairing, attack success rates, and per-bill traces. A7 additionally reports queue saturation, overflow fallback, and post-attack recovery cycles. A8 preserves generated support and policy attributes as latent evaluation values, compares signal-reliant and constituent-verified paths, and reports same-case signal correction without invoking A3 objection or panel mechanisms. A9 implements the three planned mixed portfolios under exact joint budgets and compares each mixed case with full-budget and allocated-component single controls.
+
+The A9 replication report adds 30 fixed base seeds, five runs per seed, 18 cells, and 162,000 evaluated rows without persisting replication traces. It records 2,626 strict mixed-only failures. Every cell contains at least one such case across the panel, but the seed-level 95 percent interval for mean interaction degradation is below zero in 16 cells, above zero in one, and crosses zero in one. Case-level mixed-only failure therefore does not imply that the mixed portfolio is more damaging on average than the strongest full-budget single attack. The reports remain insufficient for a standalone paper because A1-A8 adversarial seed replication, broad mechanism coverage, alternative A9 specifications, temporal or substantive correction beyond bounded A7-A9 evidence, and external validation remain incomplete.
 
 ## Coverage Check
 
@@ -99,4 +105,4 @@ The current plan covers the requested failure modes as planned experiments or bo
 
 ## Full Draft Rule
 
-Do not draft the full paper until broader mechanism and multi-seed sweeps, correction evidence, and validation boundaries satisfy `go-no-go.md`.
+Do not draft the full paper until A1-A8 seed replication, broader mechanism and A9 specification sweeps, correction evidence, and validation boundaries satisfy `go-no-go.md`.

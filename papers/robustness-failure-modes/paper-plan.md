@@ -4,7 +4,7 @@
 
 Readiness level: 3 of 4 for bounded first-wave implementation, but no full manuscript yet.
 
-Recommendation: proceed now with multi-seed adversarial replication, broader mechanism sweeps, stronger correction tests, and validation; defer manuscript drafting.
+Recommendation: extend the completed fixed-specification A9 replication to A1-A8, broader mechanism and A9 specification sweeps, stronger correction tests, and validation; defer manuscript drafting.
 
 This breakout should become a failure-mode and robustness paper, not a second umbrella paper. The ACM CI framework paper remains the stable core artifact. This paper should only ask how specified legislative mechanisms behave under bounded adversaries with explicit objectives, budgets, information levels, and success metrics.
 
@@ -87,9 +87,12 @@ Existing pilot artifacts can motivate the project but are not publication-ready 
 - `reports/adversarial-stress-a9-run-manifest.json`: machine-readable manifest for the first executable A9 mixed-portfolio stress run.
 - `reports/adversarial-stress-a9-summary.md`: three-portfolio fixed-budget comparison against full-budget and allocated-component single controls.
 - `reports/adversarial-failure-traces-a9.jsonl`: same-world, same-bill, same-status-quo A9 mixed and single-control traces.
+- `reports/adversarial-replication-a9-run-manifest.json`: fixed 30-base-seed panel, source hashes, output hashes, and trace-storage boundary.
+- `reports/adversarial-replication-a9-seed-results.csv`: compact seed-level estimates for all 18 A9 cells.
+- `reports/adversarial-replication-a9-summary.md`: seed-level uncertainty intervals and strict mixed-only event counts across 162,000 evaluated rows.
 - `reports/adversarial-pilot-cell-map.md`: map from the A1-A9 schema to current aggregate pilot stress cells and executable A1-A9 artifacts.
 - `reports/adversarial-failure-trace-index.md`: aggregate pilot trace-candidate ranking.
-- `reports/seed-robustness-summary.md`: multi-seed check for the main comparison campaign, not for explicit adversary attacks.
+- `reports/seed-robustness-summary.md`: multi-seed check for the main comparison campaign; explicit adversary replication is separate and currently available only for A9.
 - `reports/empirical-validation-readiness.md`: empirical readiness screen with 12 of 12 raw validation datasets present.
 - `reports/calibration-baseline.md`: 7 of 7 conventional baseline screens passed, but not an adversarial validation result.
 
@@ -100,6 +103,7 @@ Pilot findings that may be used only as motivation:
 - Citizen-panel manipulation, loose harm claims, astroturf pressure, and proposal flooding show limited observed degradation under current bounded probes.
 - Anti-capture defensive backlash improves the current score profile, which is a warning that the stress setup is not yet a general adversary model.
 - Ablation results show that some modules change metrics, but ablations are not adversary experiments.
+- A9 replication records 2,626 strict mixed-only failures across 30 base seeds and 162,000 evaluated rows, while mean interaction intervals are negative in 16 of 18 cells. Mixed-only event recurrence is therefore not evidence of generally superadditive average degradation.
 
 ## Scope for First Version
 
@@ -148,11 +152,11 @@ Expected future implementation locations:
 | Framework dependency | Stable enough to use as infrastructure. | Ready. |
 | Pilot stress evidence | Aggregate screens and bounded explicit A1-A9 adversary experiments exist, but they do not provide broad or externally validated robustness estimates. | Partial. |
 | Adversary definitions | Planning taxonomy, generated Java-backed A1-A9 catalog, and bounded executable pilots for all nine entries exist. | Ready for bounded first-wave use. |
-| Attack-budget sweeps | Implemented for bounded A1-A9 pilots; broad mechanism and multi-seed sweeps are missing. | Partial. |
-| Worst-case degradation | Reported for bounded A1-A9 pilots; cross-mechanism and multi-seed worst cases are missing. | Partial. |
-| Attack success rates | Computed for bounded A1-A9 pilots, including A9 mixed-only interaction success; externally validated rates are missing. | Partial. |
+| Attack-budget sweeps | Implemented for bounded A1-A9 pilots; fixed-specification A9 has 30-base-seed replication, while broader mechanisms and A1-A8 seed sweeps are missing. | Partial. |
+| Worst-case degradation | Reported for bounded A1-A9 pilots and summarized across seeds for fixed-specification A9; cross-mechanism and A1-A8 multi-seed worst cases are missing. | Partial. |
+| Attack success rates | Computed for bounded A1-A9 pilots and across 30 base seeds for A9 mixed-only success; externally validated rates are missing. | Partial. |
 | Recovery/correction metrics | A7 queue recovery, A8 same-case signal correction, and bounded A9 same-case/queue controls are computed; broader temporal or substantive correction is not. | Partial. |
-| Failure traces | A1-A9 trace JSONL artifacts exist; broader mechanism coverage, multi-seed replication, and temporal or substantive correction beyond bounded A7-A9 evidence are missing. | Partial. |
+| Failure traces | Canonical A1-A9 trace JSONL artifacts exist; A9 replication intentionally retains compact seed summaries rather than duplicate traces. Broader mechanisms, A1-A8 replication, and stronger correction remain missing. | Partial. |
 | Empirical validation | Dataset readiness is partial and attack-rate validation is absent. | Not ready. |
 
 ## Proceed or Defer

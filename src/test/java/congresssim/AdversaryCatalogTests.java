@@ -40,6 +40,7 @@ final class AdversaryCatalogTests
 		a7RunnerWritesTraceAndSummaryArtifacts();
 		a8RunnerWritesTraceAndSummaryArtifacts();
 		a9RunnerWritesTraceAndSummaryArtifacts();
+		a9SummaryOnlyModeOmitsTraceArtifacts();
 	}
 
 	private static void firstWaveAdversaryCatalogHasRequiredSchema() {
@@ -338,6 +339,7 @@ final class AdversaryCatalogTests
 			List<String> summaryLines = Files.readAllLines(summary);
 			List<String> traceLines = Files.readAllLines(traces);
 			assertTrue(summaryLines.size() == 19, "A9 summary should contain one header and eighteen portfolio/budget/information rows.");
+			assertTrue(summaryLines.getFirst().contains("attackSuccessCount"), "A9 summary should report exact success counts alongside rates.");
 			assertTrue(traceLines.size() == 54, "Tiny A9 run should produce eighteen cells times three generated bills.");
 			String firstTrace = traceLines.getFirst();
 			assertTrue(firstTrace.contains("\"adversaryId\":\"A9\""), "A9 trace should identify the adversary.");
@@ -355,6 +357,31 @@ final class AdversaryCatalogTests
 					"A9 traces should include the A5+A6+A8 portfolio.");
 		} catch (Exception exception) {
 			throw new AssertionError("A9 adversarial stress runner failed.", exception);
+		}
+	}
+
+	private static void a9SummaryOnlyModeOmitsTraceArtifacts() {
+		try {
+			Path outputDir = Path.of("out", "test-a9-adversarial-summary-only");
+			Files.createDirectories(outputDir);
+			Path summary = outputDir.resolve("adversarial-stress-a9-summary.csv");
+			Path markdown = outputDir.resolve("adversarial-stress-a9-summary.md");
+			Path traces = outputDir.resolve("adversarial-failure-traces-a9.jsonl");
+			Path manifest = outputDir.resolve("adversarial-stress-a9-run-manifest.json");
+			Files.deleteIfExists(summary);
+			Files.deleteIfExists(markdown);
+			Files.deleteIfExists(traces);
+			Files.deleteIfExists(manifest);
+
+			A9MixedAdversaryPortfolioStressRunner.runSummaryOnly(outputDir, 1, 15, 3, 54321L);
+
+			assertTrue(Files.exists(summary), "A9 summary-only mode should write the summary CSV.");
+			assertTrue(Files.readAllLines(summary).size() == 19, "A9 summary-only mode should retain all eighteen cells.");
+			assertTrue(!Files.exists(markdown), "A9 summary-only mode should not write Markdown.");
+			assertTrue(!Files.exists(traces), "A9 summary-only mode should not write per-bill traces.");
+			assertTrue(!Files.exists(manifest), "A9 summary-only mode should not write a standalone run manifest.");
+		} catch (Exception exception) {
+			throw new AssertionError("A9 summary-only adversarial stress runner failed.", exception);
 		}
 	}
 }

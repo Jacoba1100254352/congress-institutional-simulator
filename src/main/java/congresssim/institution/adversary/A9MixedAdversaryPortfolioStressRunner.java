@@ -314,10 +314,25 @@ public final class A9MixedAdversaryPortfolioStressRunner
 
 	public static void main(String[] args) throws IOException {
 		Path outputDir = args.length == 0 ? Path.of("reports") : Path.of(args[0]);
-		run(outputDir, 5, 101, 60, 20260428L);
+		int runs = args.length > 1 ? Integer.parseInt(args[1]) : 5;
+		int legislators = args.length > 2 ? Integer.parseInt(args[2]) : 101;
+		int bills = args.length > 3 ? Integer.parseInt(args[3]) : 60;
+		long seed = args.length > 4 ? Long.parseLong(args[4]) : 20260428L;
+		boolean summaryOnly = args.length > 5 && "--summary-only".equals(args[5]);
+		if (args.length > 6 || (args.length > 5 && !summaryOnly)) {
+			throw new IllegalArgumentException(
+					"Usage: A9MixedAdversaryPortfolioStressRunner [outputDir] [runs] [legislators] [bills] [seed] [--summary-only]"
+			);
+		}
+		if (summaryOnly) {
+			runSummaryOnly(outputDir, runs, legislators, bills, seed);
+		} else {
+			run(outputDir, runs, legislators, bills, seed);
+		}
 	}
 
 	public static void run(Path outputDir, int runs, int legislators, int bills, long seed) throws IOException {
+		validateRunParameters(runs, legislators, bills);
 		Files.createDirectories(outputDir);
 		List<TraceRow> traces = runTraces(runs, legislators, bills, seed);
 		writeTraceJsonl(outputDir.resolve("adversarial-failure-traces-a9.jsonl"), traces, runs, legislators, bills, seed);
@@ -328,6 +343,20 @@ public final class A9MixedAdversaryPortfolioStressRunner
 		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a9-summary.csv"));
 		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a9-summary.md"));
 		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a9-run-manifest.json"));
+	}
+
+	public static void runSummaryOnly(Path outputDir, int runs, int legislators, int bills, long seed) throws IOException {
+		validateRunParameters(runs, legislators, bills);
+		Files.createDirectories(outputDir);
+		List<TraceRow> traces = runTraces(runs, legislators, bills, seed);
+		writeSummaryCsv(outputDir.resolve("adversarial-stress-a9-summary.csv"), traces, runs, legislators, bills, seed);
+		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a9-summary.csv"));
+	}
+
+	private static void validateRunParameters(int runs, int legislators, int bills) {
+		if (runs <= 0 || legislators <= 0 || bills <= 0) {
+			throw new IllegalArgumentException("Runs, legislators, and bills must all be positive.");
+		}
 	}
 
 	private static List<TraceRow> runTraces(int runs, int legislators, int bills, long seed) {
@@ -1234,7 +1263,7 @@ public final class A9MixedAdversaryPortfolioStressRunner
 			long seed
 	) throws IOException {
 		StringBuilder builder = new StringBuilder();
-		builder.append("adversaryId,attackFamily,caseKey,baselineScenario,attackedScenario,mechanismFamily,portfolioKey,componentAdversaries,componentCount,budgetUnit,budgetValue,informationLevel,runs,legislators,baseBillsPerRun,traceRows,attackSuccessRate,mixedFailureRate,anySameBudgetSingleFailureRate,mixedDominatesStrongestSingleRate,meanMixedDegradation,medianMixedDegradation,worstMixedDegradation,meanStrongestSingleDegradation,medianStrongestSingleDegradation,worstStrongestSingleDegradation,meanInteractionDegradation,medianInteractionDegradation,worstInteractionDegradation,positiveInteractionRate,meanSuperadditiveLoss,medianSuperadditiveLoss,worstSuperadditiveLoss,superadditiveRate,recoveryCorrectionAttemptRate,recoveryCorrectionFailureRate,meanAdministrativeBurdenAdded,worstAdministrativeBurdenAdded,meanStrongestSingleAdministrativeBurdenAdded,meanQueueOverflowAdded,worstQueueOverflowAdded,meanAttackerResourceSpend,recoveryStatus,traceArtifact,claimBoundary\n");
+		builder.append("adversaryId,attackFamily,caseKey,baselineScenario,attackedScenario,mechanismFamily,portfolioKey,componentAdversaries,componentCount,budgetUnit,budgetValue,informationLevel,runs,legislators,baseBillsPerRun,traceRows,attackSuccessCount,mixedFailureCount,anySameBudgetSingleFailureCount,mixedDominatesStrongestSingleCount,positiveInteractionCount,superadditiveCount,recoveryCorrectionAttemptCount,recoveryCorrectionFailureCount,attackSuccessRate,mixedFailureRate,anySameBudgetSingleFailureRate,mixedDominatesStrongestSingleRate,meanMixedDegradation,medianMixedDegradation,worstMixedDegradation,meanStrongestSingleDegradation,medianStrongestSingleDegradation,worstStrongestSingleDegradation,meanInteractionDegradation,medianInteractionDegradation,worstInteractionDegradation,positiveInteractionRate,meanSuperadditiveLoss,medianSuperadditiveLoss,worstSuperadditiveLoss,superadditiveRate,recoveryCorrectionAttemptRate,recoveryCorrectionFailureRate,meanAdministrativeBurdenAdded,worstAdministrativeBurdenAdded,meanStrongestSingleAdministrativeBurdenAdded,meanQueueOverflowAdded,worstQueueOverflowAdded,meanAttackerResourceSpend,recoveryStatus,traceArtifact,claimBoundary\n");
 		for (AttackConfig config : attackConfigs()) {
 			List<TraceRow> group = group(traces, config);
 			builder.append(csv(ADVERSARY_ID)).append(',')
@@ -1253,6 +1282,14 @@ public final class A9MixedAdversaryPortfolioStressRunner
 			       .append(legislators).append(',')
 			       .append(bills).append(',')
 			       .append(group.size()).append(',')
+			       .append(count(group, TraceRow::mixedOnlySuccess)).append(',')
+			       .append(count(group, TraceRow::mixedFailure)).append(',')
+			       .append(count(group, TraceRow::anySameBudgetSingleFailure)).append(',')
+			       .append(count(group, TraceRow::mixedDominatesStrongestSingle)).append(',')
+			       .append(count(group, trace -> trace.interactionDegradation() > INTERACTION_EPSILON)).append(',')
+			       .append(count(group, trace -> trace.superadditiveLoss() > INTERACTION_EPSILON)).append(',')
+			       .append(count(group, A9MixedAdversaryPortfolioStressRunner::correctionAttempted)).append(',')
+			       .append(count(group, A9MixedAdversaryPortfolioStressRunner::recoveryCorrectionFailure)).append(',')
 			       .append(format(rate(group, TraceRow::mixedOnlySuccess))).append(',')
 			       .append(format(rate(group, TraceRow::mixedFailure))).append(',')
 			       .append(format(rate(group, TraceRow::anySameBudgetSingleFailure))).append(',')
@@ -1332,7 +1369,7 @@ public final class A9MixedAdversaryPortfolioStressRunner
 			       .append(format(rate(group, A9MixedAdversaryPortfolioStressRunner::recoveryCorrectionFailure))).append(" | ")
 			       .append(format(mean(group, TraceRow::administrativeBurdenAdded))).append(" |\n");
 		}
-		builder.append("\nGate status: this completes bounded executable coverage for A1-A9 and supplies the required mixed-only comparison design. The robustness breakout remains below manuscript gate until the result is replicated across additional seeds and mechanism variants, temporal or substantive correction is expanded, and external validation anchors the synthetic attack and capacity assumptions.\n");
+		builder.append("\nGate status: this completes bounded executable coverage for A1-A9 and supplies the required mixed-only comparison design. A separate fixed-specification 30-base-seed replication is available in `reports/adversarial-replication-a9-summary.md`. The robustness breakout remains below manuscript gate until A1-A8 seed replication, broader mechanism and alternative A9 specification sweeps, temporal or substantive correction, and external validation are complete.\n");
 		Files.writeString(path, builder.toString());
 	}
 
@@ -1415,13 +1452,17 @@ public final class A9MixedAdversaryPortfolioStressRunner
 		if (rows.isEmpty()) {
 			return 0.0;
 		}
+		return (double) count(rows, flag) / rows.size();
+	}
+
+	private static int count(List<TraceRow> rows, Flag flag) {
 		int count = 0;
 		for (TraceRow row : rows) {
 			if (flag.value(row)) {
 				count++;
 			}
 		}
-		return (double) count / rows.size();
+		return count;
 	}
 
 	private static String recoveryStatus(List<TraceRow> rows) {

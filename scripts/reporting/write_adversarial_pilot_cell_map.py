@@ -22,13 +22,16 @@ EXECUTABLE_OUTPUTS = {
     "A8": (Path("reports/adversarial-stress-a8-summary.csv"), "reports/adversarial-failure-traces-a8.jsonl"),
     "A9": (Path("reports/adversarial-stress-a9-summary.csv"), "reports/adversarial-failure-traces-a9.jsonl"),
 }
+SEED_REPLICATION_OUTPUTS = {
+    "A9": Path("reports/adversarial-replication-a9-summary.csv"),
+}
 
 CLAIM_BOUNDARY = (
     "Catalog-to-pilot map only. Mapped rows identify aggregate manipulation-stress cells "
     "that can seed explicit adversary experiments and bounded executable A1-A9 pilot artifacts. "
-    "They complete first-wave catalog coverage but are not mechanism-wide robustness estimates, "
-    "multi-seed replications, or complete recovery/correction evidence beyond the bounded A7 queue "
-    "recovery, A8 same-case signal correction, and A9 mixed-control/recovery comparisons."
+    "They complete first-wave catalog coverage but are not mechanism-wide robustness estimates or "
+    "complete recovery/correction evidence. A9 has a fixed-specification 30-base-seed replication; "
+    "A1-A8 do not yet have adversarial seed replication."
 )
 
 FIELDNAMES = [
@@ -50,6 +53,8 @@ FIELDNAMES = [
     "attack_success_rate_status",
     "worst_case_status",
     "median_status",
+    "seed_replication_status",
+    "seed_replication_artifact",
     "recovery_status",
     "per_bill_trace_status",
     "manuscript_gate",
@@ -123,6 +128,13 @@ def recovery_status(adversary_id: str, has_executable_pilot: bool) -> str:
     return "not_computed"
 
 
+def seed_replication_status(adversary_id: str) -> tuple[str, str]:
+    artifact = SEED_REPLICATION_OUTPUTS.get(adversary_id)
+    if artifact is None or not artifact.exists():
+        return ("not_available", "none")
+    return ("fixed_specification_base_seed_replication_available", artifact.as_posix())
+
+
 def count_data_rows(path: Path) -> int:
     with path.open(newline="") as handle:
         reader = csv.reader(handle)
@@ -138,7 +150,7 @@ def next_required_artifact(adversary_id: str, traces: list[dict[str, str]]) -> s
         if adversary_id == "A8":
             return "extend to additional signal-dependent mechanisms, seed sensitivity, temporal correction, and external district-opinion validation"
         if adversary_id == "A9":
-            return "replicate mixed portfolios across seeds/mechanisms, expand substantive correction, and externally anchor attack/capacity assumptions"
+            return "vary allocation/resource/interaction specifications, broaden mechanisms, add substantive replay, and externally anchor assumptions"
         return "extend executable pilot to broader mechanisms, seed sensitivity, and recovery traces"
     if not traces:
         return "implement first explicit attacked cell with paired baseline"
@@ -159,6 +171,7 @@ def map_rows(catalog: list[dict[str, str]], traces: list[dict[str, str]]) -> lis
         material_count = sum(row["severity"] == "material_pilot_degradation" for row in mapped_traces)
         executable_pilot_status, executable_summary_rows, executable_trace_artifact = executable_status(adversary_id)
         has_executable_pilot = executable_pilot_status == "partial_executable_pilot_available"
+        replication_status, replication_artifact = seed_replication_status(adversary_id)
         rows.append({
             "adversary_id": adversary_id,
             "name": spec["name"],
@@ -178,6 +191,8 @@ def map_rows(catalog: list[dict[str, str]], traces: list[dict[str, str]]) -> lis
             "attack_success_rate_status": "computed_for_executable_pilot" if has_executable_pilot else "not_computed",
             "worst_case_status": "computed_for_executable_pilot" if has_executable_pilot else "not_computed",
             "median_status": "computed_for_executable_pilot" if has_executable_pilot else "not_computed",
+            "seed_replication_status": replication_status,
+            "seed_replication_artifact": replication_artifact,
             "recovery_status": recovery_status(adversary_id, has_executable_pilot),
             "per_bill_trace_status": "available_for_executable_pilot" if has_executable_pilot else "not_available",
             "manuscript_gate": "not_ready",
@@ -209,19 +224,19 @@ def write_outputs(rows: list[dict[str, str]]) -> None:
         "",
         f"Claim boundary: {CLAIM_BOUNDARY}",
         "",
-        "| ID | Name | Aggregate cells | Aggregate status | Executable status | Executable rows | Trace artifact | Next required artifact |",
-        "| --- | --- | ---: | --- | --- | ---: | --- | --- |",
+        "| ID | Name | Aggregate cells | Executable status | Executable rows | Seed replication | Trace artifact | Next required artifact |",
+        "| --- | --- | ---: | --- | ---: | --- | --- | --- |",
     ]
     for row in rows:
         lines.append(
             f"| {row['adversary_id']} | {escape(row['name'])} | {row['pilot_cell_count']} | "
-            f"{row['pilot_status']} | {row['executable_pilot_status']} | "
-            f"{row['executable_summary_rows']} | {escape(row['executable_trace_artifact'])} | "
+            f"{row['executable_pilot_status']} | {row['executable_summary_rows']} | "
+            f"{row['seed_replication_status']} | {escape(row['executable_trace_artifact'])} | "
             f"{escape(row['next_required_artifact'])} |"
         )
     lines.extend([
         "",
-        "Gate status: every row remains `not_ready`. A1 through A9 now have bounded executable pilot artifacts, but the mapped evidence still lacks broader mechanism coverage, multi-seed replication, temporal or substantive recovery/correction beyond the bounded A7-A9 evidence, and external validation.",
+        "Gate status: every row remains `not_ready`. A1 through A9 have bounded executable pilots and A9 has fixed-specification 30-base-seed replication, but A1-A8 replication, broader mechanism coverage, alternative A9 specifications, temporal or substantive correction, and external validation remain incomplete.",
     ])
     OUT_MD.write_text("\n".join(lines) + "\n")
 

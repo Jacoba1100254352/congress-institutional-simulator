@@ -4,7 +4,7 @@
 
 Readiness level: adversary schema, pilot mapping, and first A1/A2/A3/A4/A5/A6/A7/A8 executable pilots implemented; full adversary program not complete.
 
-The current `make manipulation-stress`, `make failure-trace-report`, `make adversarial-stress-manifest`, and `make ablation-analysis` outputs include pilot screens, schema artifacts, and bounded executable A1 clone/decoy through A9 mixed-adversary stress runs. They are not enough for a standalone paper because A1-A9 still lack broader mechanism coverage and multi-seed adversarial replication, and temporal or substantive recovery/correction remains incomplete beyond bounded A7-A9 evidence.
+The current `make manipulation-stress`, `make failure-trace-report`, `make adversarial-stress-manifest`, `make adversarial-replication-a9`, and `make ablation-analysis` outputs include pilot screens, schema artifacts, bounded executable A1 clone/decoy through A9 mixed-adversary stress runs, and fixed-specification A9 multi-seed replication. They are not enough for a standalone paper because A1-A9 still lack broader mechanism coverage, A1-A8 lack adversarial seed replication, alternative A9 specifications are untested, and temporal or substantive recovery/correction remains incomplete beyond bounded A7-A9 evidence.
 
 ## Existing Baseline Commands
 
@@ -114,9 +114,12 @@ Required outputs:
 - `reports/adversarial-stress-a8-summary.csv` and `.md` (A8 executable pilot exists);
 - `reports/adversarial-failure-traces-a8.jsonl` (A8 executable pilot exists);
 - `reports/adversarial-stress-a9-summary.csv` and `.md` (A9 executable pilot exists);
-- `reports/adversarial-failure-traces-a9.jsonl` (A9 executable pilot exists).
+- `reports/adversarial-failure-traces-a9.jsonl` (A9 executable pilot exists);
+- `reports/adversarial-replication-a9-seed-results.csv` (30-base-seed cell estimates exist);
+- `reports/adversarial-replication-a9-summary.csv` and `.md` (seed-level uncertainty summary exists);
+- `reports/adversarial-replication-a9-run-manifest.json` (source, hash, seed-panel, and storage provenance exists).
 
-Pilot precursor already available: `reports/adversarial-failure-trace-index.csv` and `.md` rank seven aggregate manipulation-stress comparisons as trace candidates. `reports/adversarial-pilot-cell-map.csv` joins those candidates and available executable artifacts to the A1-A9 catalog. The A1-A9 executable pilots now write same-generated-world per-bill traces and attack success summaries for all first-wave entries, including three A9 mixed portfolios with full-budget and allocated-component controls. The full trace requirement remains incomplete for broader mechanism families, multi-seed adversarial replication, and temporal or substantive recovery/correction beyond bounded A7-A9 evidence.
+Pilot precursor already available: `reports/adversarial-failure-trace-index.csv` and `.md` rank seven aggregate manipulation-stress comparisons as trace candidates. `reports/adversarial-pilot-cell-map.csv` joins those candidates and available executable artifacts to the A1-A9 catalog. The A1-A9 executable pilots write same-generated-world per-bill traces and attack success summaries for all first-wave entries, including three A9 mixed portfolios with full-budget and allocated-component controls. A9 additionally has compact 30-base-seed replication without persisting another trace corpus. The full evidence requirement remains incomplete for broader mechanism families, A1-A8 adversarial replication, alternative A9 specifications, and temporal or substantive recovery/correction beyond bounded A7-A9 evidence.
 
 Acceptance checks:
 
@@ -369,7 +372,9 @@ Current A9 pilot status:
 - `reports/adversarial-failure-traces-a9.jsonl` contains 5,400 same-world, same-bill, same-status-quo traces with exact joint allocations, full-budget single controls, and allocated-component controls.
 - The canonical synthetic seed produces 99 traces where the mixed portfolio causes an adverse failure while no full-budget constituent control does.
 - Interaction degradation is mixed degradation minus the strongest full-budget single degradation; superadditive loss is mixed degradation minus the sum of allocated-component single degradations.
-- The current result needs independent seeds, broader mechanism variants, alternative resource and interaction specifications, stronger correction/replay, and external validation before C13 can become draft-ready.
+- `reports/adversarial-replication-a9-summary.md` adds 30 fixed base seeds, five runs per seed, 162,000 evaluated rows, and 2,626 strict mixed-only failures without writing replication traces.
+- Every cell has at least one mixed-only failure across the panel, but seed-level 95 percent intervals for mean interaction degradation are below zero in 16 cells, above zero in one, and cross zero in one. Binary mixed-only failure and average interaction therefore require separate interpretation.
+- The current result still needs broader mechanism variants, alternative allocation/resource/interaction specifications, stronger correction/replay, and external validation before C13 can become draft-ready.
 
 ## Deferred Experiment: Strategic Silence
 

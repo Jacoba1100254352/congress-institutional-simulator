@@ -1,8 +1,8 @@
 # Draft Outline
 
-Status: outline only. Do not draft a full manuscript until broader mechanism and seed coverage, stronger correction evidence, and the required validation boundaries have been implemented and run.
+Status: outline only. Fixed-specification A9 multi-seed evidence is available, but do not draft a full manuscript until A1-A8 seed coverage, broader mechanisms and A9 specifications, stronger correction evidence, and the required validation boundaries have been implemented and run.
 
-Final decision: NEEDS MIXED-ADVERSARY AND EXPANDED ROBUSTNESS EVIDENCE FIRST.
+Final decision: NEEDS A1-A8 REPLICATION, BROADER MECHANISMS, CORRECTION, AND VALIDATION EVIDENCE FIRST.
 
 ## 1. Introduction
 
@@ -72,6 +72,7 @@ Planned subsections:
 - Recovery/correction behavior.
 - Administrative burden under attack.
 - Failure traces.
+- Case-level mixed-only failures versus seed-level average interaction effects.
 
 ## 7. Discussion
 

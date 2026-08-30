@@ -6,7 +6,7 @@ Go for structured planning and implementation.
 
 No-go for a full manuscript.
 
-The evidence is not ready for manuscript drafting because the repo's bounded executable A1-A9 pilots still need broader mechanism coverage and multi-seed adversarial replication, while temporal or substantive recovery/correction remains incomplete beyond bounded A7-A9 evidence. The A9 pilot now supplies the three required fixed-budget portfolios, full-budget and allocated-component single controls, and mixed-only traces, but its interaction rates remain synthetic single-seed results without external attack or resource calibration.
+The evidence is not ready for manuscript drafting because the repo's bounded executable A1-A9 pilots still need broader mechanism coverage and A1-A8 adversarial seed replication, while temporal or substantive recovery/correction remains incomplete beyond bounded A7-A9 evidence. A9 now has a 30-base-seed fixed-specification replication, but alternative allocation, resource-conversion, interaction, and mechanism specifications remain untested and no attack or resource assumptions are externally calibrated.
 
 ## Readiness Level
 
@@ -15,14 +15,14 @@ The evidence is not ready for manuscript drafting because the repo's bounded exe
 | 0 | Idea only. | No. |
 | 1 | Stable framework and paper boundary identified. | Yes. |
 | 2 | Pilot evidence, explicit A1-A9 schema, aggregate trace-index output, pilot cell map, and experiment plan exist. | Yes. |
-| 3 | Explicit adversary experiments implemented and run. | Yes for bounded A1-A9 first-wave pilots. |
+| 3 | Explicit adversary experiments implemented and run. | Yes for bounded A1-A9 first-wave pilots and fixed-specification A9 multi-seed replication. |
 | 4 | Manuscript-ready evidence and validation boundaries complete. | No. |
 
 ## Proceed Now
 
 Proceed with:
 
-- multi-seed adversarial replication for core attack families;
+- extend multi-seed adversarial replication from A9 to A1-A8 core attack families;
 - broader mechanism-family attack sweeps;
 - alternative A9 allocation, resource-conversion, and interaction specifications;
 - substantive correction or replay after selected failures;

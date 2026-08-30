@@ -2,9 +2,9 @@
 
 ## Status
 
-Readiness level: bounded first-wave A1-A9 implementation complete; evidence not yet sufficient for manuscript claims.
+Readiness level: bounded first-wave A1-A9 implementation and fixed-specification A9 seed replication complete; evidence not yet sufficient for manuscript claims.
 
-This file defines bounded adversaries for the robustness paper. All first-wave entries now have explicit executable pilots, but each claim remains limited to the named mechanism, budget, information, seed, and synthetic assumptions until replication and validation are complete.
+This file defines bounded adversaries for the robustness paper. All first-wave entries have explicit executable pilots. A9 has 30-base-seed replication under one fixed specification; A1-A8 remain single-seed pilots. Every claim remains limited to the named mechanism, budget, information, seed panel, and synthetic assumptions until broader replication and validation are complete.
 
 ## Required Fields
 
@@ -96,5 +96,7 @@ Every attack output should include:
 - Pair every attack cell with a same-seed baseline.
 - Report attack success rates, not just mean score deltas.
 - Report worst-case and median degradation separately.
+- Treat the base seed, not bills within a simulated world, as the uncertainty unit for seed replication.
+- Report mixed-only event recurrence separately from average interaction and superadditive effects.
 - Keep untested cells explicit.
 - Treat adversary budgets as modeling assumptions, not observed real-world rates.
