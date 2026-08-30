@@ -17,11 +17,11 @@
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "850550e7e6dd0819656dd23d5aec01687546a4e17fe4bfc68a586f0cbcd28b14",
+  "sourceInputSha256": "84a5388bd0cfb1aef2bad87430fb2c4dacfa00c48d62556959ca11ec87b5f6b0",
   "sourceInputs": [
     {
       "path": "Makefile",
-      "sha256": "b5216d3f30ca4968dc371d36b7c196e4eab4e80cedde574926f60f3e7fd57191"
+      "sha256": "dae111778ee0aea70875f9d7c02832e823762c7fc201ee2c8e49f54192238898"
     },
     {
       "path": "data/calibration/empirical-benchmarks.csv",
@@ -473,7 +473,7 @@
     },
     {
       "path": "scripts/packaging/build_anonymous_supplement.py",
-      "sha256": "1f1dc48bb0912dbf1df514c254f5f7d1b3f0de0fd4558b0f9898439804c45c91"
+      "sha256": "3bb9d87f039caa46cde41f422cbdbf4a96ec7aed6a4cb4bbb7b04281e940a278"
     },
     {
       "path": "scripts/reporting/report_catalog_breadth.py",
@@ -505,7 +505,7 @@
     },
     {
       "path": "scripts/reporting/write_adversarial_pilot_cell_map.py",
-      "sha256": "edc204d10e0bd2a4e45c88bc25070e29830bad094ea5af139ce9ba4f10f3e815"
+      "sha256": "802fc030907018e34b96caf54511557d93b94de1134a0ea01fad32eca367ddfe"
     },
     {
       "path": "scripts/reporting/write_paper_diagnostics.py",
@@ -525,7 +525,7 @@
     },
     {
       "path": "scripts/validation/build_bill_finance_lobbying_member_vote_target_dataset.py",
-      "sha256": "0135cfa5377fc08d459a911e5ac6841f38a50e42686cee7f7415fe6c6d24fb8e"
+      "sha256": "3bcc7ff11f84a6d53edc42d0afa9f3b425ba1c249e9d64afb047048f9af17bd5"
     },
     {
       "path": "scripts/validation/build_bill_finance_lobbying_roll_call_source_dataset.py",
@@ -573,19 +573,19 @@
     },
     {
       "path": "scripts/validation/build_district_public_opinion_acs_context_dataset.py",
-      "sha256": "6a6cfb08638e659961f9fb95c54a308e07c05f6f5cc4eca1fb42b4be9af56a68"
+      "sha256": "868cacd7cc72378a793b2af181b0778d72ac2e4fb71cb4702d9716b843e14e11"
     },
     {
       "path": "scripts/validation/build_district_public_opinion_census_denominator_dataset.py",
-      "sha256": "6533899ce840d1ab5402ff74e7066c1e126dfe8e218f8302a8b1f74724f94a24"
+      "sha256": "6d9f7f91fcf48f2b43f1ae70f96803b362238ce9297336d8c5f4046b42ef9bf1"
     },
     {
       "path": "scripts/validation/build_district_public_opinion_ces_policy_item_candidate_dataset.py",
-      "sha256": "cf026b3a8ae9a2f6773015736189635dfa5534a658c2acc380d83fd40330f43d"
+      "sha256": "ab875cec890e35a6083d6d29af607468743f06e19c91e3224139a7cd25aba333"
     },
     {
       "path": "scripts/validation/build_district_public_opinion_ces_policy_item_codebook_direction_dataset.py",
-      "sha256": "07a2b09d6a875b0c406419eae5d6f8d10831225b7853b6ca3bf170017895f2a2"
+      "sha256": "0fa482efd149b0362e813a225156de5a2e14a3d94dd759db465b70d7d4f0927b"
     },
     {
       "path": "scripts/validation/build_district_public_opinion_ces_policy_item_response_distribution_dataset.py",
@@ -681,7 +681,7 @@
     },
     {
       "path": "scripts/validation/build_statutory_lineage_target_review_packet_dataset.py",
-      "sha256": "3ebbc5abea7d45d49a987ec291352256334273646489f8e19ddfc1ad7724ba8e"
+      "sha256": "cd497da6348919ae4d8ac1c8c9353dec6a8c0f8d2b0f2c43bd318015ba15c1ff"
     },
     {
       "path": "scripts/validation/build_statutory_lineage_target_section_diff_review_dataset.py",
@@ -700,6 +700,10 @@
       "sha256": "a92e13c74423d38a72b4e2c6599bcbdca2bf0bd0cb7a00687be42fc3bae4d604"
     },
     {
+      "path": "scripts/validation/reproducible_metadata.py",
+      "sha256": "6422762282e3578a9b3066d8a94c96499edb4da59ffbb570ce4fa7bd3df3767c"
+    },
+    {
       "path": "scripts/validation/run_empirical_bridge.py",
       "sha256": "0c97434965c555e27dd037bd01db38179eef3133bf1cffda05f5568f4b7e3312"
     },
@@ -710,6 +714,10 @@
     {
       "path": "scripts/validation/run_empirical_validation.py",
       "sha256": "8cb6720dbc8693a2712c2e7702923f15f522b178e9cd5ea4ec9ecedfb97df63d"
+    },
+    {
+      "path": "scripts/validation/test_reproducible_metadata.py",
+      "sha256": "4de5de7c8fe3bdcd6b7464f5a3f4deaa0e7ebf6ea75f191ea289c54d124c2862"
     },
     {
       "path": "scripts/validation/validate_empirical_inputs.py",
