@@ -4,6 +4,14 @@ voteview_rollcalls.csv,coalitionSize,0.604453,computed,Mean winning-side share b
 bill_progression.csv,floorLoad,0.122222,computed,Share of introduced bills receiving floor action.
 bill_progression.csv,committeeReportRate,0.083333,computed,Share of introduced bills reported by committee.
 bill_progression.csv,enactmentRate,0.016667,computed,Share of introduced bills enacted.
+govinfo_bill_census.csv,committeeOrderedReportedRate,0.089407,computed,Share of introduced bills ordered reported by a committee.
+govinfo_bill_census.csv,committeeReportRate,0.064184,computed,Share of introduced bills with a committee report action or report citation.
+govinfo_bill_census.csv,committeeAdvanceRate,0.100292,computed,"Share of introduced bills ordered reported, reported, or discharged."
+govinfo_bill_census.csv,floorLoad,0.066574,computed,Share of introduced bills receiving substantive floor consideration.
+govinfo_bill_census.csv,originPassageRate,0.065777,computed,Share of introduced bills passing their chamber of origin.
+govinfo_bill_census.csv,completedCongressionalPassageRate,0.023762,computed,Share of introduced bills completing congressional passage under the conservative census definition.
+govinfo_bill_census.csv,enactmentRate,0.023762,computed,Share of introduced bills enacted according to GovInfo law records.
+govinfo_bill_census.csv,meanActionsPerBill,4.782092,computed,Mean number of parsed direct bill actions per census row.
 lobbying_disclosure.csv,meanSpend,308.219178,computed,Mean disclosed spending row amount.
 lobbying_disclosure.csv,clientSpendGini,0.976526,computed,Gini concentration of spending by client.
 lobbying_disclosure.csv,issueEntropy,0.891519,computed,Normalized issue diversity in lobbying rows.

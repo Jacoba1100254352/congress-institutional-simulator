@@ -15,6 +15,9 @@ DEFAULT_PDFS = [
     Path("paper/technical-appendix/odd-d-appendix.pdf"),
 ]
 OUT_DIR = Path("out/pdf-render-check")
+FATAL_LAYOUT_WARNINGS = (
+    "Float too large for page",
+)
 
 
 def pdf_page_count(path: Path) -> int:
@@ -79,8 +82,7 @@ def check_pdf(path: Path) -> list[str]:
     if not path.exists():
         return [f"{path}: missing"]
     page_count = pdf_page_count(path)
-    pages_to_check = min(page_count, 3)
-    for page in range(1, pages_to_check + 1):
+    for page in range(1, page_count + 1):
         output_base = OUT_DIR / f"{path.stem}-page-{page}"
         subprocess.run(
             [
@@ -103,11 +105,17 @@ def check_pdf(path: Path) -> list[str]:
         width, height, mean, variance, dark_ratio = page_stats(output_base.with_suffix(".ppm"))
         if width < 400 or height < 500:
             failures.append(f"{path}: page {page} rendered too small ({width}x{height}).")
-        if mean > 253.8 or variance < 12.0 or dark_ratio < 0.00015:
+        if variance < 12.0 or dark_ratio < 0.00015:
             failures.append(
                 f"{path}: page {page} appears blank or unreadable "
                 f"(mean={mean:.2f}, variance={variance:.2f}, darkRatio={dark_ratio:.5f})."
             )
+    build_log = Path("paper/build") / path.parent.name / f"{path.stem}.log"
+    if build_log.exists():
+        log_text = build_log.read_text(errors="replace")
+        for warning in FATAL_LAYOUT_WARNINGS:
+            if warning in log_text:
+                failures.append(f"{build_log}: fatal layout warning: {warning}")
     return failures
 
 

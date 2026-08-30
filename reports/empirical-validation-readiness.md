@@ -5,7 +5,8 @@ This report checks whether optional raw empirical inputs are present and shaped 
 | Dataset | Purpose | Status | Missing columns |
 | --- | --- | --- | --- |
 | `voteview_rollcalls.csv` | party unity, coalition size, and ideological voting checks | ready | none |
-| `bill_progression.csv` | bill attrition, floor load, and enactment-rate checks | ready | none |
+| `bill_progression.csv` | bounded Congress.gov bill-flow and independent source-cross-check rows | ready | none |
+| `govinfo_bill_census.csv` | census-backed bill attrition, committee, floor, passage, and enactment checks | ready | none |
 | `lobbying_disclosure.csv` | lobby spending distribution and issue-pressure checks | ready | none |
 | `topic_throughput.csv` | topic-level throughput and agenda distribution checks | ready | none |
 | `sponsor_success.csv` | sponsor success and proposal-access concentration checks | ready | none |
@@ -17,8 +18,8 @@ This report checks whether optional raw empirical inputs are present and shaped 
 | `law_revision_history.csv` | law revision text flags and optional invalidation-linkage checks | ready | none |
 | `comparative_institutions.csv` | cross-national chamber, court, party-system, and legislative-capacity checks | ready | none |
 
-- Files present: 12 / 12
-- Files with required columns: 12 / 12
+- Files present: 13 / 13
+- Files with required columns: 13 / 13
 - Adapter fixture CSVs ignored: 4
 
-Next empirical step: upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The adapters cover roll calls, bill progress, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.
+Next empirical step: add temporal bill-census replication and continue upgrading bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The adapters cover roll calls, bounded Congress.gov bill progress, the GovInfo bill census, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.

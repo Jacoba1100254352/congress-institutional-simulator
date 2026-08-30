@@ -17,13 +17,13 @@ FULLY_LINKED = {"linked"}
 
 ROADMAP: dict[str, dict[str, str]] = {
     "govinfo bill and action records": {
-        "blockingGap": "Govinfo BILLSTATUS rows now cross-check the cached Congress.gov bill sample when the local linkage cache is present, but the cross-check is still bounded to the sampled bill universe and coarse action flags.",
-        "requiredJoinKeys": "congress,bill_type,bill_number,bill_id,action_date",
-        "targetSourceFamilies": "Congress.gov bill histories",
-        "minimumViableDataset": "The current bounded govinfo BILLSTATUS cross-check plus full bill/action census coverage and reviewed action-text differences.",
-        "acceptanceGate": "BILLSTATUS coverage expands beyond the current sampled universe and action/date differences are reviewed before any stronger bill-flow claim is made.",
-        "futureTarget": "make build-govinfo-billstatus-linkage-raw",
-        "claimUpgradeBoundary": "Supports an independent bounded bill-flow cross-check; still does not validate public welfare, representation, implementation, court outcomes, or model fit.",
+        "blockingGap": "The 117th-Congress H.R./S. census is source-backed and linked, but its deterministic held-out split remains within one Congress and the operational action classifier still needs temporal replication.",
+        "requiredJoinKeys": "congress,bill_type,bill_number,bill_id,action_date,source_xml_sha256,actions_sha256",
+        "targetSourceFamilies": "Congress.gov bill histories; later GovInfo BILLSTATUS Congresses",
+        "minimumViableDataset": "The pinned 117th-Congress census plus at least one later completed-Congress census produced by the same reviewed classifier.",
+        "acceptanceGate": "A later completed Congress reproduces the lifecycle schema with archive pins, record/action hashes, integrity checks, and reviewed action-text or source-date differences before any temporal fit claim is made.",
+        "futureTarget": "make build-govinfo-bill-census-raw ARGS='--congress <completed Congress> --allow-unpinned-source'",
+        "claimUpgradeBoundary": "Supports descriptive census-backed legislative-flow and within-Congress held-out checks; temporal replication would still not validate public welfare, representation, implementation outcomes, or causal model fit.",
     },
     "Voteview roll-call data": {
         "blockingGap": "Roll-call rows now carry Voteview member metadata and a bounded Voteview bill-number crosswalk, but coverage is incomplete and still does not connect roll calls to topic, district public-opinion, public-law, implementation, court, or outcome evidence.",

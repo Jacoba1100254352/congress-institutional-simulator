@@ -22,6 +22,7 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 	private final double queueDelayBase;
 	private final double dischargeMandateThreshold;
 	private final double fallbackBlockThreshold;
+	private final double minimumCalendarPriority;
 	
 	public FloorRuleSchedulingProcess(
 			String name,
@@ -32,11 +33,34 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 			double dischargeMandateThreshold,
 			double fallbackBlockThreshold
 	) {
+		this(
+				name,
+				innerProcess,
+				openRuleNorm,
+				leadershipClosurePressure,
+				queueDelayBase,
+				dischargeMandateThreshold,
+				fallbackBlockThreshold,
+				0.0
+		);
+	}
+
+	public FloorRuleSchedulingProcess(
+			String name,
+			LegislativeProcess innerProcess,
+			double openRuleNorm,
+			double leadershipClosurePressure,
+			double queueDelayBase,
+			double dischargeMandateThreshold,
+			double fallbackBlockThreshold,
+			double minimumCalendarPriority
+	) {
 		Values.requireRange("openRuleNorm", openRuleNorm, 0.0, 1.0);
 		Values.requireRange("leadershipClosurePressure", leadershipClosurePressure, 0.0, 1.0);
 		Values.requireRange("queueDelayBase", queueDelayBase, 0.0, 1.0);
 		Values.requireRange("dischargeMandateThreshold", dischargeMandateThreshold, 0.0, 1.0);
 		Values.requireRange("fallbackBlockThreshold", fallbackBlockThreshold, 0.0, 1.0);
+		Values.requireRange("minimumCalendarPriority", minimumCalendarPriority, 0.0, 1.0);
 		this.name = name;
 		this.innerProcess = innerProcess;
 		this.openRuleNorm = openRuleNorm;
@@ -44,6 +68,7 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 		this.queueDelayBase = queueDelayBase;
 		this.dischargeMandateThreshold = dischargeMandateThreshold;
 		this.fallbackBlockThreshold = fallbackBlockThreshold;
+		this.minimumCalendarPriority = minimumCalendarPriority;
 	}
 	
 	private static double mandateScore(Bill bill) {
@@ -112,6 +137,17 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 				0.0,
 				1.0
 		);
+		double calendarPriority = Values.clamp(
+				(0.40 * mandate)
+						+ (0.20 * (1.0 - risk))
+						+ (0.14 * (1.0 - capture))
+						+ (0.12 * bill.salience())
+						+ (0.08 * bill.publicBenefit())
+						+ (0.06 * Math.clamp(bill.cosponsorCount() / 10.0, 0.0, 1.0)),
+				0.0,
+				1.0
+		);
+		boolean calendarCapacityDenied = !dischargeBackstop && calendarPriority < minimumCalendarPriority;
 		OutcomeSignals signals = OutcomeSignals.diagnostics(Map.of(
 				"floorSchedulingDelay",
 				delay,
@@ -126,8 +162,20 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 				"leadershipSchedulingBias",
 				Values.clamp(closureScore * leadershipClosurePressure, 0.0, 1.0),
 				"rulesCommitteeCaptureIndex",
-				Values.clamp(capture * leadershipClosurePressure * (closedRule ? 1.0 : 0.55), 0.0, 1.0)
+				Values.clamp(capture * leadershipClosurePressure * (closedRule ? 1.0 : 0.55), 0.0, 1.0),
+				"calendarPriorityScore",
+				calendarPriority,
+				"calendarCapacityDenialRate",
+				calendarCapacityDenied ? 1.0 : 0.0
 		));
+
+		if (calendarCapacityDenied) {
+			return BillOutcome.accessDenied(
+					bill,
+					context.currentPolicyPosition(),
+					"floor calendar capacity gate"
+			).withSignals(signals);
+		}
 		
 		if (!dischargeBackstop && statusQuoFallbackPressure >= fallbackBlockThreshold && mandate < 0.36) {
 			return BillOutcome.accessDenied(

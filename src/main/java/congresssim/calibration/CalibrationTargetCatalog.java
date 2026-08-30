@@ -64,26 +64,37 @@ public final class CalibrationTargetCatalog
 	private static List<CalibrationBenchmark> embeddedBenchmarkRanges() {
 		return List.of(
 				new CalibrationBenchmark(
-						"current-system-enactment-rate",
-						"Congress.gov and govinfo bill histories",
-						"share of introduced bills that become law in recent U.S. Congresses",
-						"current-system",
-						"productivity",
-						0.01,
-						0.12,
-						"Congress.gov bill-status bulk data and govinfo BILLS/BILLSTATUS collections",
-						"Broad screening range for stylized U.S.-like conventional attrition; exact Congress-specific targets should be fitted from raw bill histories."
+						"current-congress-committee-advance-rate",
+						"GovInfo 117th-Congress H.R. and S. bill census",
+						"share of introduced bills ordered reported reported or discharged",
+						"current-congress-workflow",
+						"committeeAdvanceRate",
+						0.079,
+						0.120,
+						"GovInfo BILLSTATUS 117th-Congress H.R. and S. census",
+						"Range centered on the deterministic calibration split with a 0.020 abstraction tolerance; held-out rows were not used to select the threshold."
 				),
 				new CalibrationBenchmark(
-						"current-system-floor-load",
-						"Congress.gov and govinfo bill histories",
-						"share of introduced bills receiving floor consideration or final chamber action",
-						"current-system",
+						"current-congress-floor-consideration-rate",
+						"GovInfo 117th-Congress H.R. and S. bill census",
+						"share of introduced bills receiving substantive floor consideration",
+						"current-congress-workflow",
 						"floor",
 						0.05,
-						0.45,
-						"Congress.gov bill-status bulk data and govinfo BILLS/BILLSTATUS collections",
-						"Used to keep the benchmark from treating every introduced bill as a floor bill."
+						0.081,
+						"GovInfo BILLSTATUS 117th-Congress H.R. and S. census",
+						"Range centered on the deterministic calibration split with a 0.015 abstraction tolerance; held-out rows were not used to select the threshold."
+				),
+				new CalibrationBenchmark(
+						"current-congress-enactment-rate",
+						"GovInfo 117th-Congress H.R. and S. bill census",
+						"share of introduced bills enacted",
+						"current-congress-workflow",
+						"productivity",
+						0.012,
+						0.033,
+						"GovInfo BILLSTATUS 117th-Congress H.R. and S. census",
+						"Range centered on the deterministic calibration split with a 0.010 abstraction tolerance; held-out rows were not used to select the threshold."
 				),
 				new CalibrationBenchmark(
 						"party-unity-support-band",

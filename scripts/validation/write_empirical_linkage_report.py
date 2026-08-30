@@ -19,6 +19,7 @@ REGISTRY = Path("data/validation/source-registry.csv")
 VOTEVIEW_MEMBER_CONTEXT = Path("data/validation/raw/voteview_member_context.csv")
 VOTEVIEW_BILL_LINKAGE = Path("data/validation/raw/voteview_bill_linkage.csv")
 GOVINFO_BILLSTATUS_LINKAGE = Path("data/validation/raw/govinfo_billstatus_linkage.csv")
+GOVINFO_BILL_CENSUS = Path("data/validation/raw/govinfo_bill_census.csv")
 SPONSOR_BILL_LINKAGE = Path("data/validation/raw/sponsor_bill_linkage.csv")
 COMPARATIVE_INSTITUTION_LINKAGE = Path("data/validation/raw/comparative_institution_linkage.csv")
 CAMPAIGN_FINANCE_LINKAGE = Path("data/validation/raw/campaign_finance_linkage.csv")
@@ -235,6 +236,42 @@ def govinfo_billstatus_linkage_summary() -> tuple[int, int, int]:
         if normalize(row.get("policy_area_alignment_status")) == "aligned"
     ]
     return len(metadata_rows), len(action_aligned_rows), len(policy_aligned_rows)
+
+
+def govinfo_bill_census_summary() -> tuple[int, int, int, int, int, int]:
+    rows = read_csv(GOVINFO_BILL_CENSUS)
+    source_backed = [
+        row
+        for row in rows
+        if len(row.get("source_xml_sha256", "")) == 64
+        and len(row.get("actions_sha256", "")) == 64
+        and row.get("source_url", "").startswith(
+            "https://www.govinfo.gov/bulkdata/BILLSTATUS/"
+        )
+        and not row.get("integrity_status", "").startswith("invalid:")
+    ]
+    action_count = sum(int(row.get("actions_count") or "0") for row in source_backed)
+    source_date_anomalies = sum(
+        row.get("integrity_status", "").startswith("source_date_anomaly:")
+        for row in source_backed
+    )
+    by_bill = {row.get("bill_id", ""): row for row in source_backed}
+    public_law_rows = read_csv(LAW_REVISION_BILL_LINKAGE)
+    public_law_overlaps = [
+        row for row in public_law_rows if row.get("bill_id", "") in by_bill
+    ]
+    public_law_enacted_aligned = sum(
+        by_bill[row["bill_id"]].get("enacted") == row.get("enacted")
+        for row in public_law_overlaps
+    )
+    return (
+        len(rows),
+        len(source_backed),
+        action_count,
+        source_date_anomalies,
+        len(public_law_overlaps),
+        public_law_enacted_aligned,
+    )
 
 
 def sponsor_bill_linkage_summary() -> tuple[int, int, int, int, int]:
@@ -2033,17 +2070,25 @@ def linkage_rows(registry: list[dict[str, str]]) -> list[dict[str, str]]:
                 "Bills can be joined to the current topic-throughput aggregate by Congress.gov policy area; this is not an independent CAP-coded topic or public-opinion link.",
             ))
         elif family == "govinfo bill and action records":
-            linked, action_aligned, policy_aligned = govinfo_billstatus_linkage_summary()
-            if linked > 0:
+            (
+                census_rows,
+                source_backed_rows,
+                action_count,
+                source_date_anomalies,
+                public_law_overlaps,
+                public_law_enacted_aligned,
+            ) = govinfo_bill_census_summary()
+            bounded_linked, action_aligned, policy_aligned = govinfo_billstatus_linkage_summary()
+            if source_backed_rows > 0:
                 result.append(build_row(
                     source,
                     rows,
-                    linked,
-                    "metadata linked" if linked == len(rows) else "partially linked",
-                    "govinfo BILLSTATUS bulkdata",
-                    "bill_progression.congress,bill_type,bill_number -> govinfo_billstatus_linkage.congress,bill_type,bill_number",
-                    f"Govinfo BILLSTATUS rows independently cross-check the cached Congress.gov bill universe by congress, bill type, and bill number for {linked} bills; {action_aligned} rows align with the local coarse action flags and {policy_aligned} rows align on policy area. This remains bounded to the cached sample and does not provide a full bill census, public-opinion evidence, campaign-finance or lobbying influence, implementation or court outcomes, public benefit, welfare, or model validation.",
-                    "Expand the govinfo BILLSTATUS cross-check beyond the current bounded sample into a full bill/action census and review action-text differences before using it for stronger bill-flow claims.",
+                    source_backed_rows,
+                    "linked" if source_backed_rows == census_rows else "partially linked",
+                    "pinned GovInfo BILLSTATUS bulk archives; Congress.gov public-law linkage; bounded 118th-Congress source cross-check",
+                    "census bill_id -> source_url,source_xml_sha256,actions_sha256; census bill_id -> law_revision_bill_linkage.bill_id",
+                    f"The normalized census preserves record-level GovInfo source URLs, XML hashes, and canonical action hashes for {source_backed_rows} / {census_rows} bills derived from {action_count} direct bill actions. It retains {source_date_anomalies} explicit source-date anomaly rows rather than rewriting them. The separate 117th-Congress Congress.gov public-law linkage overlaps {public_law_overlaps} census bills with {public_law_enacted_aligned} enacted flags aligned, while the bounded 118th-Congress cross-check retains {bounded_linked} identifier matches, {action_aligned} coarse action-flag alignments, and {policy_aligned} policy-area alignments. These are provenance, lifecycle, and cross-source checks only; they do not provide public-opinion evidence, campaign-finance or lobbying influence, implementation or court outcomes, public benefit, welfare, or causal model validation.",
+                    "Add a later completed Congress as a temporal holdout while retaining archive pins, record/action hashes, explicit stage evidence, and source-date anomaly dispositions.",
                 ))
                 continue
             result.append(build_row(
@@ -2053,8 +2098,8 @@ def linkage_rows(registry: list[dict[str, str]]) -> list[dict[str, str]]:
                 "not independently linked",
                 "Congress.gov bill histories",
                 "shared bill_progression.csv raw cache",
-                "This source-family row is represented through the Congress.gov-derived bill sample and calibration notes, so it cannot yet independently cross-check bill actions.",
-                "Build the govinfo BILLSTATUS linkage cache and join it to Congress.gov bills by congress, bill type, and bill number.",
+                "The GovInfo census is missing or has no source-backed rows.",
+                "Build the pinned GovInfo BILLSTATUS census and verify record-level source and action hashes.",
             ))
         elif family == "Voteview roll-call data":
             metadata_linked = count_linked_voteview_rows(rows)

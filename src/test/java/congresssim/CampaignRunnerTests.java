@@ -336,7 +336,7 @@ final class CampaignRunnerTests
 			
 			String csv = Files.readString(result.csvPath());
 			assertTrue(csv.contains("observed"), "Calibration CSV should include observed simulator values.");
-			assertTrue(csv.contains("current-system-enactment-rate"), "Calibration CSV should include current-system attrition.");
+			assertTrue(csv.contains("current-congress-enactment-rate"), "Calibration CSV should include census-backed workflow attrition.");
 			
 			String markdown = Files.readString(result.markdownPath());
 			assertTrue(markdown.contains("Calibration Baseline"), "Calibration Markdown should identify the report.");

@@ -41,8 +41,9 @@ The current benchmark extract maps named empirical quantities to simulator metri
 
 | Check | Source Data | Scenario | Metric | Purpose |
 | --- | --- | --- | --- | --- |
-| current-system-enactment-rate | Congress.gov and govinfo bill histories | `current-system` | `productivity` | Screen whether stylized U.S.-like conventional bill attrition stays plausible. |
-| current-system-floor-load | Congress.gov and govinfo bill histories | `current-system` | `floor` | Prevent the benchmark from treating every introduced bill as a floor bill. |
+| current-congress-committee-advance-rate | GovInfo 117th-Congress H.R./S. census | `current-congress-workflow` | `committeeAdvanceRate` | Screen the share of introduced bills ordered reported, reported, or discharged. |
+| current-congress-floor-consideration-rate | GovInfo 117th-Congress H.R./S. census | `current-congress-workflow` | `floor` | Screen substantive floor consideration after committee advancement. |
+| current-congress-enactment-rate | GovInfo 117th-Congress H.R./S. census | `current-congress-workflow` | `productivity` | Screen final enactment attrition in the lifecycle workflow. |
 | party-unity-support-band | Voteview roll-call votes | `current-system` | `averageEnactedSupport` | Check generated winning coalition support under polarization. |
 | veto-frequency-band | Congress.gov veto actions and CRS summaries | `presidential-veto` | `vetoesPerRun` | Catch implausible executive-veto behavior. |
 | sponsor-success-concentration | Center for Effective Lawmaking | `current-system` | `proposerAccessGini` | Check whether proposer access is neither perfectly equal nor fully concentrated. |
@@ -52,12 +53,12 @@ The current benchmark extract maps named empirical quantities to simulator metri
 ## Flow-Screen Workflow
 
 1. Load benchmark ranges from `data/calibration/empirical-benchmarks.csv`.
-2. Run conventional scenarios: simple majority, bicameral majority, presidential veto, the stylized U.S.-like benchmark, and explicit budgeted lobbying.
+2. Run conventional scenarios: simple majority, bicameral majority, presidential veto, the compact U.S.-like comparator, the census-calibrated current-Congress workflow, and explicit budgeted lobbying.
 3. Compute the mapped simulator metric for each benchmark range.
 4. Write a CSV and Markdown report with observed values and pass/fail status.
 5. Use failures as flow-screen prompts before drawing paper-level conclusions from counterfactual mechanisms.
 
-The current pass is deliberately a benchmark screen. It does not yet fit parameters automatically or ingest raw Voteview/Congress.gov/LDA rows during the run. The next empirical increment should add raw-data adapters that produce the benchmark extract directly.
+The lifecycle calendar threshold is selected by `make legislative-lifecycle-calibration` from the calibration half of the GovInfo census across a fixed 50-seed simulator panel. Floor consideration and enactment enter threshold selection; committee advancement is an upstream workflow check. The held-out half is reported only after selection, and leave-one-seed-out reselection checks panel stability. Other benchmark rows remain screening ranges rather than fitted parameters.
 
 ## Non-Goals
 

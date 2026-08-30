@@ -32,6 +32,8 @@ import java.util.List;
  */
 final class ChamberCommitteeScenarioBuilders
 {
+	private static final double CURRENT_CONGRESS_CALENDAR_PRIORITY = 0.68;
+
 	private ChamberCommitteeScenarioBuilders() {
 	}
 	
@@ -537,6 +539,14 @@ final class ChamberCommitteeScenarioBuilders
 	}
 	
 	static Scenario stylizedCurrentCongressWorkflow() {
+		return stylizedCurrentCongressWorkflow(CURRENT_CONGRESS_CALENDAR_PRIORITY);
+	}
+
+	static double currentCongressCalendarPriority() {
+		return CURRENT_CONGRESS_CALENDAR_PRIORITY;
+	}
+
+	static Scenario stylizedCurrentCongressWorkflow(double minimumCalendarPriority) {
 		return new Scenario()
 		{
 			@Override
@@ -594,7 +604,8 @@ final class ChamberCommitteeScenarioBuilders
 						0.64,
 						0.16,
 						0.68,
-						0.82
+						0.82,
+						minimumCalendarPriority
 				);
 				process = new CommitteePowerProcess(
 						name(),

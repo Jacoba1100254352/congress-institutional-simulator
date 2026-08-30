@@ -2,16 +2,15 @@
 
 This roadmap turns the current linkage audit into source-family-specific upgrade gates. It is not validation evidence; it records the minimum joins needed before stronger empirical claims can be considered.
 
-- Source families needing linkage upgrades: 10 / 13
-- High-priority linkage upgrades: 4 / 10
+- Source families needing linkage upgrades: 9 / 13
+- High-priority linkage upgrades: 4 / 9
 
 Current linkage statuses among roadmap rows:
-- metadata linked: 6
+- metadata linked: 5
 - partially linked: 4
 
 | Source family | Current status | Required join keys | Minimum viable dataset | Acceptance gate |
 | --- | --- | --- | --- | --- |
-| govinfo bill and action records | metadata linked (180 / 180) | `congress,bill_type,bill_number,bill_id,action_date` | The current bounded govinfo BILLSTATUS cross-check plus full bill/action census coverage and reviewed action-text differences. | BILLSTATUS coverage expands beyond the current sampled universe and action/date differences are reviewed before any stronger bill-flow claim is made. |
 | Voteview roll-call data | metadata linked (83636 / 83636) | `congress,chamber,roll_call_id,bill_id,member_id` | The current Voteview member metadata and bounded Voteview bill-number crosswalk plus broader roll-call-to-bill/action coverage across chambers and Congresses. | Roll-call rows join to bill IDs beyond the current bounded overlap and preserve enough member identifiers for sponsor, district, topic, public-law, implementation, or court joins. |
 | QoG and V-Dem comparative institutions | metadata linked (130 / 130) | `iso3,year,chamber_id,institution_family` | The current bounded simulator scenario-family metadata bridge plus country-year chamber metadata and observed legislative-output rows that can join to the comparative institution profile. | Comparative institution rows join beyond the current simulator metadata anchors to observed country-year legislative output, IPU/ParlGov chamber identifiers, bicameral disagreement records, or reviewed chamber-level law-output rows for a documented set of countries. |
 | Senate LDA lobbying disclosures | partially linked (144 / 146) | `filing_uuid,client,issue,issue_topic,policy_area,bill_id,committee,roll_call_id` | The current documented LDA issue-to-policy-area crosswalk, policy-area bill/action context, exact filing-text bill-mention cache, exact bill/action metadata context, bounded stored activity-text position-signal review, high-priority manual review, medium-priority directional packet review, medium-priority position/activity packet review, disposition/target source-review queue, local no-current-match review, external LDA current-bill search review, external LDA mention review, campaign-finance target-scope review, committee/action context report, official govinfo committee/no-direct-committee source review, House Clerk roll-call source review, member-vote target-scope review, and source-acquisition queue plus sponsor/member, direct member target, external campaign-finance target/source, or outcome-causality dispositions where source evidence exists. | Support/opposition and position dispositions are manually confirmed where they affect claims, and any sponsor/member target, committee action, roll-call exposure, or legislative-outcome disposition is recorded only when the filing or public record supports it. |

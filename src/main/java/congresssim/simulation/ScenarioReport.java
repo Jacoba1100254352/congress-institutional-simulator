@@ -99,6 +99,7 @@ public record ScenarioReport(
 )
 {
 	public static final List<String> SUPPLEMENTAL_METRIC_KEYS = List.of(
+			"committeeAdvanceRate",
 			"malapportionmentIndex",
 			"smallConstituencyVetoRate",
 			"populationSupportedButBlockedRate",
@@ -187,6 +188,8 @@ public record ScenarioReport(
 			"calendarDelayCost",
 			"amendmentOpenness",
 			"floorSchedulingDelay",
+			"calendarPriorityScore",
+			"calendarCapacityDenialRate",
 			"closedRuleRate",
 			"openRuleRate",
 			"dischargeBackstopUse",

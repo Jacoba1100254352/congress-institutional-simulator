@@ -514,6 +514,30 @@ final class InstitutionProcessTests
 				capturedOutcome.signals().supplementalMetrics().getOrDefault("statusQuoFallbackPressure", 0.0) > 0.0,
 				"Floor scheduling should report status-quo fallback pressure."
 		);
+
+		FloorRuleSchedulingProcess capacityGate = new FloorRuleSchedulingProcess(
+				"test floor capacity",
+				enactEverything(),
+				0.24,
+				0.72,
+				0.14,
+				0.90,
+				0.95,
+				0.75
+		);
+		BillOutcome capacityDenied = capacityGate.consider(
+				capturedBill,
+				new VoteContext(Map.of("Test", 0.0), new Random(19L), 0.0)
+		);
+		assertFalse(capacityDenied.enacted(), "Low-priority bills should be excluded by a binding floor calendar.");
+		assertTrue(
+				capacityDenied.finalReason().equals("floor calendar capacity gate"),
+				"Calendar-capacity exclusion should remain distinct from status-quo fallback."
+		);
+		assertTrue(
+				capacityDenied.signals().supplementalMetrics().getOrDefault("calendarCapacityDenialRate", 0.0) == 1.0,
+				"Calendar-capacity exclusion should be observable."
+		);
 	}
 	
 	private static void normErosionCreatesEndogenousDelay() {

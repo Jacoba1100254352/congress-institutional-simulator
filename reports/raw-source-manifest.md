@@ -3,14 +3,14 @@
 This registry-backed manifest records the committed raw validation extracts used by the empirical-boundary workflow. It is a reproducibility inventory, not a validation claim.
 
 - Source-family rows: 13
-- Unique raw files: 12
+- Unique raw files: 13
 - Present raw files: 13 / 13
 - Present metadata notes: 13 / 13
 
 | Source family | Dataset | Rows | Metadata | Boundary | Source hash | Claim boundary |
 | --- | --- | ---: | --- | --- | --- | --- |
-| Congress.gov bill histories | `bill_progression.csv` | 180 | `data/validation/raw/bill_progression.metadata.md` | held-out benchmark | `531b87932af7` | Supports held-out legislative-flow benchmarking only; does not validate public benefit or welfare |
-| govinfo bill and action records | `bill_progression.csv` | 180 | `data/validation/raw/bill_progression.metadata.md` | calibration proxy | `531b87932af7` | Supports calibration ranges and source cross-checks; not full validation or a full bill census |
+| Congress.gov bill histories | `bill_progression.csv` | 180 | `data/validation/raw/bill_progression.metadata.md` | calibration proxy | `531b87932af7` | Supports a bounded 118th-Congress Congress.gov to GovInfo source cross-check only; not a bill census model validation public benefit or welfare |
+| govinfo bill and action records | `govinfo_bill_census.csv` | 15066 | `data/validation/raw/govinfo_bill_census.metadata.md` | held-out benchmark | `8e43e521148f` | Supports descriptive census-backed 117th-Congress H.R. and S. legislative-flow benchmarks and deterministic within-Congress held-out checks; not causal model validation public opinion public benefit welfare or institutional ranking |
 | Voteview roll-call data | `voteview_rollcalls.csv` | 83636 | `data/validation/raw/voteview_rollcalls.metadata.md` | held-out benchmark | `6f53461b9484` | Supports held-out roll-call coalition benchmark and party-unity plausibility only; not district public opinion representation or public-support validation |
 | Comparative Agendas topic throughput | `topic_throughput.csv` | 28 | `data/validation/raw/congress_derived.metadata.md` | flow sanity check | `53a1a6b8940d` | Supports agenda-flow plausibility; does not validate public value by topic |
 | QoG and V-Dem comparative institutions | `comparative_institutions.csv` | 130 | `data/validation/raw/comparative_institutions.metadata.md` | held-out benchmark | `a647d1b969f1` | Supports held-out comparative bicameral-context plausibility and bounded simulator scenario-family metadata anchoring only; does not validate institutional fit bicameral disagreement or law-output productivity |

@@ -28,6 +28,7 @@ RAW_SOURCE_MANIFEST = Path("reports/raw-source-manifest.csv")
 RAW_SOURCE_MANIFEST_MD = Path("reports/raw-source-manifest.md")
 BILL_PROGRESSION = Path("data/validation/raw/bill_progression.csv")
 GOVINFO_BILLSTATUS_LINKAGE_RAW = Path("data/validation/raw/govinfo_billstatus_linkage.csv")
+GOVINFO_BILL_CENSUS_RAW = Path("data/validation/raw/govinfo_bill_census.csv")
 GOVINFO_BILLSTATUS_LINKAGE = Path("reports/govinfo-billstatus-linkage.csv")
 GOVINFO_BILLSTATUS_LINKAGE_MD = Path("reports/govinfo-billstatus-linkage.md")
 SPONSOR_SUCCESS = Path("data/validation/raw/sponsor_success.csv")
@@ -859,6 +860,7 @@ def check() -> list[str]:
         roadmap = read_csv(ROADMAP)
         raw_manifest = read_csv(RAW_SOURCE_MANIFEST)
         govinfo_billstatus_linkage = read_csv(GOVINFO_BILLSTATUS_LINKAGE)
+        govinfo_bill_census = read_csv(GOVINFO_BILL_CENSUS_RAW)
         sponsor_bill_linkage = read_csv(SPONSOR_BILL_LINKAGE)
         comparative_institution_linkage = read_csv(COMPARATIVE_INSTITUTION_LINKAGE)
         voteview_member_context = read_csv(VOTEVIEW_MEMBER_CONTEXT)
@@ -1428,20 +1430,36 @@ def check() -> list[str]:
         failures.append(f"{GOVINFO_BILLSTATUS_LINKAGE}: expected at least one govinfo metadata row")
     govinfo_linkage_row = linkage_by_family.get("govinfo bill and action records", {})
     if govinfo_linkage_row:
+        govinfo_source_backed_rows = [
+            row
+            for row in govinfo_bill_census
+            if re.fullmatch(r"[0-9a-f]{64}", row.get("source_xml_sha256", ""))
+            and re.fullmatch(r"[0-9a-f]{64}", row.get("actions_sha256", ""))
+            and row.get("source_url", "").startswith(
+                "https://www.govinfo.gov/bulkdata/BILLSTATUS/"
+            )
+            and not row.get("integrity_status", "").startswith("invalid:")
+        ]
         try:
             govinfo_linked_rows = int(govinfo_linkage_row.get("linkedRows", "0") or "0")
         except ValueError:
             failures.append(f"{LINKAGE}: govinfo bill and action records: linkedRows is not an integer")
         else:
-            if govinfo_linked_rows != len(govinfo_metadata_rows):
+            if govinfo_linked_rows != len(govinfo_source_backed_rows):
                 failures.append(
                     f"{LINKAGE}: govinfo linkedRows {govinfo_linked_rows} "
-                    f"does not match {GOVINFO_BILLSTATUS_LINKAGE} metadata rows {len(govinfo_metadata_rows)}"
+                    f"does not match {GOVINFO_BILL_CENSUS_RAW} source-backed rows "
+                    f"{len(govinfo_source_backed_rows)}"
                 )
-            if govinfo_metadata_rows and govinfo_linkage_row.get("linkageStatus") == "not independently linked":
+            if govinfo_source_backed_rows and govinfo_linkage_row.get("linkageStatus") == "not independently linked":
                 failures.append(
-                    f"{LINKAGE}: govinfo should not remain not independently linked when BILLSTATUS rows are present"
+                    f"{LINKAGE}: govinfo should not remain not independently linked when census rows are source-backed"
                 )
+        if len(govinfo_metadata_rows) != len(govinfo_billstatus_linkage):
+            failures.append(
+                f"{GOVINFO_BILLSTATUS_LINKAGE}: expected every bounded cross-check row "
+                "to carry govinfo_billstatus_metadata status"
+            )
     valid_action_statuses = {"aligned", "flag_difference", "unavailable"}
     valid_policy_statuses = {"aligned", "different", "unavailable"}
     for row in govinfo_billstatus_linkage:

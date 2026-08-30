@@ -13,9 +13,10 @@ OUT_CSV = Path("reports/empirical-bridge.csv")
 OUT_MD = Path("reports/empirical-bridge.md")
 
 BRIDGE = [
-    ("Bill attrition", "bill_progression.csv", "enactmentRate", "current-system-enactment-rate"),
-    ("Floor consideration", "bill_progression.csv", "floorLoad", "current-system-floor-load"),
-    ("Committee reporting from bill actions", "bill_progression.csv", "committeeReportRate", "current-system-floor-load"),
+    ("Bill attrition", "govinfo_bill_census.csv", "enactmentRate", "current-congress-enactment-rate"),
+    ("Floor consideration", "govinfo_bill_census.csv", "floorLoad", "current-congress-floor-consideration-rate"),
+    ("Committee reporting from bill actions", "govinfo_bill_census.csv", "committeeReportRate", ""),
+    ("Committee advancement from bill actions", "govinfo_bill_census.csv", "committeeAdvanceRate", "current-congress-committee-advance-rate"),
     ("Roll-call coalition size", "voteview_rollcalls.csv", "coalitionSize", "party-unity-support-band"),
     ("Party unity", "voteview_rollcalls.csv", "partyUnity", "party-unity-support-band"),
     ("Sponsor proposal concentration", "sponsor_success.csv", "sponsorIntroductionGini", "sponsor-success-concentration"),
@@ -25,7 +26,7 @@ BRIDGE = [
     ("Topic throughput", "topic_throughput.csv", "topicEnactmentRate", "topic-throughput-yield"),
     ("District public will", "district_public_opinion.csv", "intensityWeightedSupport", "district-public-will-alignment"),
     ("District turnout skew", "district_public_opinion.csv", "turnoutGini", "district-turnout-skew-proxy"),
-    ("Committee reporting", "committee_activity.csv", "committeeReportRate", "current-system-floor-load"),
+    ("Committee reporting", "committee_activity.csv", "committeeReportRate", ""),
     ("Campaign finance concentration", "campaign_finance.csv", "recipientFinanceGini", "campaign-finance-observable-band"),
     ("Outside spending share", "campaign_finance.csv", "outsideSpendingShare", "campaign-finance-observable-band"),
     ("Court emergency posture", "court_review.csv", "emergencyOrderRate", "judicial-review-constraint"),

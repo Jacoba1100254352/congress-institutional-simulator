@@ -181,29 +181,39 @@ def main() -> int:
         if row["priority"] == "high" or row["paperStatus"] in {"held-out benchmark", "flow sanity check", "calibration proxy"}
     ]
     tex_lines = [
-        r"\begin{table}",
-        r"\centering",
-        r"\caption{Empirical boundary by source family. Held-out benchmark rows have a deterministic held-out empirical check; flow sanity and calibration proxy rows remain limited empirical screens; any synthetic-only row would lack usable raw inputs.}",
-        r"\label{tab:empirical-validation-gap}",
-        r"\small",
-        r"\begin{tabular}{p{0.20\linewidth}p{0.20\linewidth}p{0.52\linewidth}}",
+        r"\clearpage",
+        r"\begingroup",
+        r"\scriptsize",
+        r"\setlength{\LTpre}{0pt}",
+        r"\setlength{\LTpost}{0pt}",
+        r"\begin{longtable}{>{\raggedright\arraybackslash}p{0.21\linewidth}>{\raggedright\arraybackslash}p{0.18\linewidth}>{\raggedright\arraybackslash}p{0.53\linewidth}}",
+        r"\caption{Empirical boundary by source family. Held-out benchmark rows have a deterministic held-out empirical check; flow sanity and calibration proxy rows remain limited empirical screens. Full next-source acceptance gates appear in the generated empirical-boundary report.}",
+        r"\label{tab:empirical-validation-gap} \\",
         r"\toprule",
-        r"Source family & Status & Claim boundary / next source \\",
+        r"Source family & Status & Claim boundary \\",
         r"\midrule",
+        r"\endfirsthead",
+        r"\multicolumn{3}{l}{\small Empirical boundary by source family (continued)} \\",
+        r"\toprule",
+        r"Source family & Status & Claim boundary \\",
+        r"\midrule",
+        r"\endhead",
+        r"\midrule",
+        r"\multicolumn{3}{r}{\footnotesize Continued on next page} \\",
+        r"\endfoot",
+        r"\bottomrule",
+        r"\endlastfoot",
     ]
     for row in table_rows:
-        boundary = (
-            f"{row['paperBoundary']} Linkage: {row['linkageStatus']}. "
-            f"Next: {row['nextLinkStep']}"
-        )
+        boundary = f"{row['paperBoundary']} Linkage: {row['linkageStatus']}."
         tex_lines.append(
             f"{tex_escape(row['sourceFamily'])} & {tex_escape(row['paperStatus'])} "
             f"({tex_escape(row['priority'])}) & {tex_escape(boundary)} \\\\"
         )
     tex_lines.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}",
+        r"\end{longtable}",
+        r"\endgroup",
+        r"\clearpage",
     ])
     OUT_TEX.write_text("\n".join(tex_lines) + "\n")
 

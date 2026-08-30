@@ -1,6 +1,7 @@
 dataset,purpose,status,missingColumns,requiredColumns
 voteview_rollcalls.csv,"party unity, coalition size, and ideological voting checks",ready,,"congress,party,vote_id,vote,ideology"
-bill_progression.csv,"bill attrition, floor load, and enactment-rate checks",ready,,"bill_id,introduced,committee_reported,floor_considered,enacted"
+bill_progression.csv,bounded Congress.gov bill-flow and independent source-cross-check rows,ready,,"bill_id,introduced,committee_reported,floor_considered,enacted"
+govinfo_bill_census.csv,"census-backed bill attrition, committee, floor, passage, and enactment checks",ready,,"bill_id,introduced,committee_ordered_reported,committee_reported,committee_advanced,floor_considered,passed_origin_chamber,completed_congressional_passage,enacted,actions_count,source_xml_sha256,actions_sha256,integrity_status"
 lobbying_disclosure.csv,lobby spending distribution and issue-pressure checks,ready,,"client,issue,amount,period"
 topic_throughput.csv,topic-level throughput and agenda distribution checks,ready,,"topic,introduced,floor_considered,enacted"
 sponsor_success.csv,sponsor success and proposal-access concentration checks,ready,,"sponsor_id,party,introduced,enacted"

@@ -11,7 +11,7 @@
   "caseCount": 37,
   "scenarioCount": 46,
   "artifacts": [
-    {"path": "reports/simulation-campaign-v21-paper.csv", "sha256": "ec9cc17c99ccd290d0be4a9950a4699a31fd14e5dd0a3e99b838cc305157d707"},
+    {"path": "reports/simulation-campaign-v21-paper.csv", "sha256": "4ef72fc08ac0a0ac737b65ed7ae9617ba3c19cf3820ac92374e14947c7f31a4d"},
     {"path": "reports/simulation-campaign-v21-paper.md", "sha256": "c24d600d83e01afcecb4ad081f1d4af0ce775e076d75ec8e37e8bbcce0b36e69"}
   ]
 }

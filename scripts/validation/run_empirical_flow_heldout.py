@@ -16,7 +16,7 @@ from datetime import date
 from pathlib import Path
 
 
-BILL_RAW = Path("data/validation/raw/bill_progression.csv")
+BILL_CENSUS_RAW = Path("data/validation/raw/govinfo_bill_census.csv")
 VOTEVIEW_RAW = Path("data/validation/raw/voteview_rollcalls.csv")
 SPONSOR_RAW = Path("data/validation/raw/sponsor_success.csv")
 CAMPAIGN_RAW = Path("data/validation/raw/campaign_finance.csv")
@@ -35,20 +35,38 @@ BILL_METRICS = [
     {
         "metric": "enactmentRate",
         "column": "enacted",
-        "target": "current-system-enactment-rate",
+        "target": "current-congress-enactment-rate",
         "notes": "Share of introduced bills enacted.",
     },
     {
         "metric": "floorLoad",
         "column": "floor_considered",
-        "target": "current-system-floor-load",
+        "target": "current-congress-floor-consideration-rate",
         "notes": "Share of introduced bills receiving floor action.",
     },
     {
         "metric": "committeeReportRate",
         "column": "committee_reported",
         "target": "",
-        "notes": "Share of introduced bills reported by committee; reported as a flow benchmark without a separate calibration target.",
+        "notes": "Share of introduced bills with a committee report action or citation; reported without a separate calibration target.",
+    },
+    {
+        "metric": "committeeAdvanceRate",
+        "column": "committee_advanced",
+        "target": "current-congress-committee-advance-rate",
+        "notes": "Share of introduced bills ordered reported, reported, or discharged; matched to the workflow's broader committee-advancement construct.",
+    },
+    {
+        "metric": "originPassageRate",
+        "column": "passed_origin_chamber",
+        "target": "",
+        "notes": "Share of introduced bills passing the chamber of origin; reported without a separate calibration target.",
+    },
+    {
+        "metric": "completedCongressionalPassageRate",
+        "column": "completed_congressional_passage",
+        "target": "",
+        "notes": "Share completing congressional passage under the conservative census definition; reported without a separate calibration target.",
     },
 ]
 
@@ -349,9 +367,11 @@ def status(value: float, target: dict[str, str] | None) -> str:
 
 
 def bill_output(calibration_targets: dict[str, dict[str, str]]) -> list[dict[str, str]]:
-    data = read_csv(BILL_RAW)
+    data = read_csv(BILL_CENSUS_RAW)
     if not data:
-        raise SystemExit(f"{BILL_RAW} is missing or empty; run make build-bill-progression-raw first.")
+        raise SystemExit(
+            f"{BILL_CENSUS_RAW} is missing or empty; run make build-govinfo-bill-census-raw first."
+        )
     calibration_rows = [row for row in data if not stable_hash_heldout(row.get("bill_id", ""))]
     heldout_rows = [row for row in data if stable_hash_heldout(row.get("bill_id", ""))]
     if not calibration_rows or not heldout_rows:
@@ -365,8 +385,8 @@ def bill_output(calibration_targets: dict[str, dict[str, str]]) -> list[dict[str
         heldout_value = bill_rate(heldout_rows, spec["column"])
         all_value = bill_rate(data, spec["column"])
         output.append({
-            "sourceFamily": "Congress.gov bill histories",
-            "dataset": BILL_RAW.name,
+            "sourceFamily": "govinfo bill and action records",
+            "dataset": BILL_CENSUS_RAW.name,
             "splitMethod": "sha256(bill_id) first32bits mod 2 equals 0 held out",
             "totalRows": str(len(data)),
             "calibrationRows": str(len(calibration_rows)),
@@ -591,7 +611,7 @@ def write_reports(rows: list[dict[str, str]]) -> None:
         "",
         "Boundary notes:",
         "",
-        "- Congress.gov bill histories support held-out legislative-flow benchmarking only.",
+        "- The GovInfo bill census supports deterministic within-117th-Congress legislative-flow benchmarking only; a later Congress is still required for temporal replication.",
         "- Voteview roll-call rows support held-out coalition-size and party-unity plausibility only; they do not validate district public opinion, representation, or generated public benefit.",
         "- Sponsor rows support held-out proposal-access concentration benchmarking only; they do not validate full member effectiveness or bill-level sponsor success.",
         "- Campaign-finance rows support held-out concentration and outside-spending observability only; they do not validate bill-level influence or capture.",

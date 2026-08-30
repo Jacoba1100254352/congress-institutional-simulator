@@ -143,6 +143,67 @@ def validate_bill_progression(results: list[dict[str, str]]) -> None:
     append(results, path.name, "enactmentRate", enacted / denominator if denominator else 0.0, "Share of introduced bills enacted.")
 
 
+def validate_govinfo_bill_census(results: list[dict[str, str]]) -> None:
+    path = RAW_DIR / "govinfo_bill_census.csv"
+    if not path.exists():
+        append_missing(
+            results,
+            path.name,
+            "Add the GovInfo H.R./S. census to compute census-backed legislative-flow rates.",
+        )
+        return
+    data = rows(path)
+    introduced = [row for row in data if truthy(row.get("introduced", "1"))]
+    denominator = len(introduced) or len(data)
+    metrics = (
+        (
+            "committeeOrderedReportedRate",
+            "committee_ordered_reported",
+            "Share of introduced bills ordered reported by a committee.",
+        ),
+        (
+            "committeeReportRate",
+            "committee_reported",
+            "Share of introduced bills with a committee report action or report citation.",
+        ),
+        (
+            "committeeAdvanceRate",
+            "committee_advanced",
+            "Share of introduced bills ordered reported, reported, or discharged.",
+        ),
+        (
+            "floorLoad",
+            "floor_considered",
+            "Share of introduced bills receiving substantive floor consideration.",
+        ),
+        (
+            "originPassageRate",
+            "passed_origin_chamber",
+            "Share of introduced bills passing their chamber of origin.",
+        ),
+        (
+            "completedCongressionalPassageRate",
+            "completed_congressional_passage",
+            "Share of introduced bills completing congressional passage under the conservative census definition.",
+        ),
+        (
+            "enactmentRate",
+            "enacted",
+            "Share of introduced bills enacted according to GovInfo law records.",
+        ),
+    )
+    for metric, column, note in metrics:
+        count = sum(1 for row in data if truthy(row.get(column, "")))
+        append(results, path.name, metric, count / denominator if denominator else 0.0, note)
+    append(
+        results,
+        path.name,
+        "meanActionsPerBill",
+        mean([numeric(row.get("actions_count", "")) for row in data]),
+        "Mean number of parsed direct bill actions per census row.",
+    )
+
+
 def validate_lobbying(results: list[dict[str, str]]) -> None:
     path = RAW_DIR / "lobbying_disclosure.csv"
     if not path.exists():
@@ -376,6 +437,7 @@ def main() -> int:
     results: list[dict[str, str]] = []
     validate_voteview(results)
     validate_bill_progression(results)
+    validate_govinfo_bill_census(results)
     validate_lobbying(results)
     validate_topic_throughput(results)
     validate_sponsor_success(results)

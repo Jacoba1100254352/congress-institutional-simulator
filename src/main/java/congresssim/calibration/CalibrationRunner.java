@@ -21,6 +21,7 @@ public final class CalibrationRunner
 			"bicameral-majority",
 			"presidential-veto",
 			"current-system",
+			"current-congress-workflow",
 			"default-pass-budgeted-lobbying",
 			"district-population-majority",
 			"influence-system-majority",
@@ -104,7 +105,7 @@ public final class CalibrationRunner
 			case "proposerAccessGini" -> report.proposerAccessGini();
 			case "lobbySpendPerBill" -> report.lobbySpendPerBill();
 			case "welfarePerSubmittedBill" -> report.welfarePerSubmittedBill();
-			case "turnoutSkewIndex", "campaignFinanceCaptureIndex", "constitutionalInvalidationRate",
+			case "committeeAdvanceRate", "turnoutSkewIndex", "campaignFinanceCaptureIndex", "constitutionalInvalidationRate",
 					"implementationDelay", "implementationCapacity" ->
 					report.supplementalMetric(metric);
 			default -> throw new IllegalArgumentException("Unsupported calibration metric: " + metric);

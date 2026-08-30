@@ -265,6 +265,7 @@ public final class CommitteePowerProcess implements LegislativeProcess
 		};
 		OutcomeSignals base = OutcomeSignals.committeePower(discharged, hearing, queueDelay, amendmentValue);
 		return base.plus(OutcomeSignals.diagnostics(Map.ofEntries(
+				Map.entry("committeeAdvanceRate", rejected ? 0.0 : 1.0),
 				Map.entry("committeeAgendaConcentration", Values.clamp(config.chairNegativeAgendaPower() * (1.0 - config.quorumPartyBalanceRequirement()), 0.0, 1.0)),
 				Map.entry("committeeCaptureIndex", Values.clamp(captureRisk, 0.0, 1.0)),
 				Map.entry("committeeExpertiseScore", Values.clamp(config.informationAccuracy(), 0.0, 1.0)),

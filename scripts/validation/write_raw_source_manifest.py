@@ -21,7 +21,13 @@ DERIVED_METADATA = {
 
 DATE_COLUMNS = (
     "introduced_date",
+    "referred_to_committee_date",
+    "committee_ordered_reported_date",
     "committee_reported_date",
+    "floor_considered_date",
+    "passed_origin_chamber_date",
+    "completed_congressional_passage_date",
+    "presented_to_president_date",
     "floor_action_date",
     "enacted_date",
     "transaction_date",
