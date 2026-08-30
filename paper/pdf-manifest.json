@@ -17,7 +17,7 @@
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "247461639776276543744ded8123df3c6b02dd8f9ae48a3eecd0c5bb38de9bc1",
+  "sourceInputSha256": "850550e7e6dd0819656dd23d5aec01687546a4e17fe4bfc68a586f0cbcd28b14",
   "sourceInputs": [
     {
       "path": "Makefile",
@@ -377,7 +377,7 @@
     },
     {
       "path": "paper/scripts/write_pdf_manifest.py",
-      "sha256": "df7a0cf48117716b326288899d635a8e08c392873955667b13b02926a149519f"
+      "sha256": "bba3228446847233ad72bdcd2ab456ae7aaf647eb0d1ff578d0fa7370760756d"
     },
     {
       "path": "paper/technical-appendix/odd-d-appendix.tex",

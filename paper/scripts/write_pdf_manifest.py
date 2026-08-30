@@ -147,6 +147,62 @@ def build_manifest() -> dict[str, object]:
     }
 
 
+def report_manifest_differences(
+    current: dict[str, object],
+    expected: dict[str, object],
+) -> None:
+    """Print the specific source or PDF fields that made a check fail."""
+
+    for field in ("schema", "generatedBy", "sourceInputSha256"):
+        if current.get(field) != expected.get(field):
+            print(
+                f"Manifest field changed: {field}: "
+                f"checked-in={current.get(field)!r}; regenerated={expected.get(field)!r}",
+                file=sys.stderr,
+            )
+
+    current_sources = {
+        str(entry.get("path")): entry.get("sha256")
+        for entry in current.get("sourceInputs", [])
+        if isinstance(entry, dict)
+    }
+    expected_sources = {
+        str(entry.get("path")): entry.get("sha256")
+        for entry in expected.get("sourceInputs", [])
+        if isinstance(entry, dict)
+    }
+    for path in sorted(current_sources.keys() | expected_sources.keys()):
+        if current_sources.get(path) != expected_sources.get(path):
+            print(
+                f"Source input changed: {path}: "
+                f"checked-in={current_sources.get(path)!r}; "
+                f"regenerated={expected_sources.get(path)!r}",
+                file=sys.stderr,
+            )
+
+    current_pdfs = {
+        str(entry.get("path")): entry
+        for entry in current.get("pdfs", [])
+        if isinstance(entry, dict)
+    }
+    expected_pdfs = {
+        str(entry.get("path")): entry
+        for entry in expected.get("pdfs", [])
+        if isinstance(entry, dict)
+    }
+    for path in sorted(current_pdfs.keys() | expected_pdfs.keys()):
+        current_pdf = current_pdfs.get(path, {})
+        expected_pdf = expected_pdfs.get(path, {})
+        for field in sorted(current_pdf.keys() | expected_pdf.keys()):
+            if current_pdf.get(field) != expected_pdf.get(field):
+                print(
+                    f"PDF manifest field changed: {path} {field}: "
+                    f"checked-in={current_pdf.get(field)!r}; "
+                    f"regenerated={expected_pdf.get(field)!r}",
+                    file=sys.stderr,
+                )
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="fail if the checked-in manifest is stale")
@@ -158,9 +214,16 @@ def main(argv: list[str]) -> int:
         if not MANIFEST_PATH.exists():
             print(f"{rel(MANIFEST_PATH)} is missing; run `make paper`.", file=sys.stderr)
             return 1
-        current = MANIFEST_PATH.read_text()
-        if current != rendered:
+        current_text = MANIFEST_PATH.read_text()
+        if current_text != rendered:
             print(f"{rel(MANIFEST_PATH)} is stale; run `make paper` and commit the updated PDF artifacts.", file=sys.stderr)
+            try:
+                current = json.loads(current_text)
+            except json.JSONDecodeError as error:
+                print(f"Checked-in manifest is invalid JSON: {error}", file=sys.stderr)
+            else:
+                if isinstance(current, dict):
+                    report_manifest_differences(current, expected)
             return 1
         print("PDF manifest check passed.")
         return 0
