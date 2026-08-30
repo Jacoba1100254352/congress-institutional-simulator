@@ -68,7 +68,7 @@ This paper should frame implemented modules through political science concepts:
 
 ## Missing Validation Data
 
-- Bill-topic district public opinion beyond the bounded CES proxy.
+- Exact or closer contemporaneous bill-topic district public opinion beyond the bounded historical related-issue pilot.
 - Campaign-finance linkage beyond bounded OpenFEC concentration, issue-sector, member-context, district-context, and candidate-to-sponsored-bill summaries.
 - Client-to-specific-bill lobbying linkage beyond LDA issue taxonomy and shared-policy-area bill context.
 - Committee hearings, markups, referrals, amendments, and discharge petitions.

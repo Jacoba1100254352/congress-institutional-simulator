@@ -116,6 +116,8 @@ This no-network target regenerates:
 - `reports/campaign-finance-sponsor-bill-context.csv`
 - `reports/district-public-opinion-policy-context.csv`
 - `reports/district-public-opinion-bill-topic-readiness.csv`
+- `reports/district-public-opinion-bill-item-alignment-review.csv`
+- `reports/district-public-opinion-bill-topic-support.csv`
 - `reports/district-public-opinion-source-packets.csv`
 - `reports/district-public-opinion-census-denominators.csv`
 - `reports/district-public-opinion-acs-context.csv`
@@ -185,6 +187,8 @@ make build-district-public-opinion-acs-context-raw
 make build-district-public-opinion-ces-policy-item-candidates-raw
 make build-district-public-opinion-ces-policy-item-response-distributions-raw
 make build-district-public-opinion-ces-policy-item-codebook-direction-raw
+make build-district-public-opinion-bill-text-context-raw
+make build-district-public-opinion-bill-topic-support-raw
 make build-court-review-raw
 make build-court-law-linkage-raw
 make build-rulemaking-implementation-raw
@@ -205,6 +209,13 @@ make build-statutory-lineage-target-review-packets-raw
 make build-comparative-institutions-raw
 make build-comparative-institution-linkage-raw
 ```
+
+The bill-text context, Census denominator, and bill-topic support builders reuse
+their committed raw extracts when the current packet inputs and source pins
+match. Force an intentional live refresh with `ARGS=--refresh`, for example
+`make build-district-public-opinion-bill-topic-support-raw ARGS=--refresh`.
+Live bill-topic support refreshes validate the Dataverse catalog metadata and
+the bytes actually parsed against the pinned file checksums.
 
 For credential-backed source refreshes, copy `.env.example` to `.env` and add
 local values there. The `.env` file is ignored by Git; the tracked template
@@ -332,6 +343,17 @@ labels to observed candidate-variable response codes. The codebook-direction
 review is survey-item wording direction only; it is still not bill-text-aligned
 support/opposition, bill-topic public support, district MRP/small-area evidence,
 affected-group support or harm, public-benefit evidence, or model validation.
+The district public-opinion bill-text context builder fetches official GovInfo
+BILLSTATUS titles, legislative subjects, and the latest CRS summary for all 22
+queued public-law packets. The curated alignment review retains one
+directionally related historical issue item and records 21 negative dispositions
+so broad policy-area matches are not promoted to bill-topic evidence. The
+bill-topic support builder joins only that retained item to pinned annual CCES
+geography and validated-voter weights, writes aggregate-only district rows that
+meet a 30-response threshold, and publishes no respondent identifiers. Its two
+annual estimates are historical related-issue context, not exact or
+contemporaneous bill support, MRP, design-based uncertainty, affected-group
+evidence, causal representation, or model validation.
 The comparative-institutions builder uses QoG Data Finder selected CSV output
 and OWID/V-Dem Grapher CSVs. The comparative-institution linkage builder maps
 those bounded country-year profiles to simulator scenario-family metadata
@@ -598,11 +620,14 @@ to cached govinfo sponsored-bill metadata. `reports/district-public-opinion-poli
 records 66 sponsor-district public-law policy-context rows across 22 public-law
 bills and 11 local policy areas. `reports/district-public-opinion-bill-topic-readiness.*`
 queues those 22 public-law bills for issue-specific support, MRP/small-area,
-and affected-group evidence review while recording 0 current issue-specific
-support or affected-group support/harm rows. `reports/district-public-opinion-source-packets.*`
+and affected-group evidence review. Twenty-one bills remain proxy-only; one bill
+has two privacy-thresholded annual historical related-issue estimates, while
+exact bill support, MRP/small-area, and affected-group support/harm remain at 0.
+`reports/district-public-opinion-source-packets.*`
 turns the same 22-bill queue into survey, MRP/small-area, and affected-population
-source-acquisition packets across 11 policy areas, with 22 packets still carrying
-no acquired external bill-topic dataset. `reports/district-public-opinion-census-denominators.*`
+source-acquisition packets across 11 policy areas. Twenty-one packets still carry
+no acquired external bill-topic dataset; one records only the bounded historical
+related-issue source. `reports/district-public-opinion-census-denominators.*`
 joins those 22 source packets to official Census TIGERweb 116th congressional-district
 2020 population and housing-unit denominators across 21 sponsor districts; this
 is a district-frame denominator only. `reports/district-public-opinion-acs-context.*`
@@ -637,6 +662,20 @@ variable IDs. It records 14 packet rows with at least one binary item-wording
 support/oppose direction and 28 unique attached binary candidate variables, but
 still records 0 bill-text direction-alignment rows, 0 exact bill-topic support
 estimates, and 0 MRP/small-area estimates.
+`reports/district-public-opinion-bill-item-alignment-review.*` then reviews all
+22 packets against official bill titles and CRS summaries, retaining one
+historical related-issue alignment for H.R. 8404 and preserving 21 negative
+dispositions. `reports/district-public-opinion-bill-topic-support.*` reports the
+retained `gaymarriage_legalize` item for NY-10 separately in 2012 and 2016, with
+92 and 280 published responses and weighted support shares of 0.785419 and
+0.728980. The refresh path pins the official annual guides, confirms that the
+source questions `CC326` and `CC16_335` are pre-election items, applies the
+corresponding validated-voter pre-election weights, and verifies all 53,942 and
+64,125 nonmissing cumulative responses against the original annual question
+fields before aggregation. These are privacy-thresholded direct-weighted descriptive estimates;
+they predate enactment, do not use the bill wording, are not pooled, and do not
+provide design-based uncertainty, MRP, affected-group evidence, causal
+representation, or model validation.
 `reports/district-public-opinion-ces-source-freshness.*` compares the cached
 CES source metadata to the live Harvard Dataverse Cumulative CES metadata and
 currently marks the local 2024 cache as stale relative to the official 2006-2025

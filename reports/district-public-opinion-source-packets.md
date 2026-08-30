@@ -1,12 +1,12 @@
 # District Public-Opinion Source Packets
 
-This report converts the bill-topic public-opinion readiness queue into source-acquisition packets. It is a work queue for future data collection, not public-opinion validation evidence.
+This report converts the bill-topic public-opinion readiness queue into source-acquisition packets and records bounded historical source acquisition where completed. It is a work queue, not exact bill-support validation evidence.
 
 - Source packets: 22
 - Policy areas represented: 11
-- Packets without acquired external bill-topic data: 22
+- Packets without acquired external bill-topic data: 21
 
-Claim boundary: packets name plausible survey, MRP/small-area, and affected-population source families for each queued public-law bill. They do not acquire those datasets, estimate support, measure affected-group harm, or validate model outputs.
+Claim boundary: packets name plausible survey, MRP/small-area, and affected-population source families for each queued public-law bill. One packet carries historical related-issue estimates, but no packet provides exact or contemporaneous bill support, affected-group harm, or model validation.
 
 | Packet | Bill ID | Policy area | Target construct | Survey source | Affected-population source | Status |
 | ---: | --- | --- | --- | --- | --- | --- |
@@ -23,7 +23,7 @@ Claim boundary: packets name plausible survey, MRP/small-area, and affected-popu
 | 11 | `117-hr-1652` | Crime and Law Enforcement | crime, policing, sentencing, or law-enforcement bill support | CES/CCES or ANES crime, policing, public-safety, and justice-system items | ACS demographic denominators plus district-level exposure measures selected for the bill target | source_packet_only_no_external_dataset_acquired |
 | 12 | `117-hr-3113` | Public Lands and Natural Resources | public-lands, conservation, resource, or environmental-management bill support | CES/CCES environmental/public-lands items; conservation or resource-policy survey items where district covariates exist | ACS rural, industry, income, housing, tribal/Indigenous where applicable, and land-adjacent denominators by district | source_packet_only_no_external_dataset_acquired |
 | 13 | `117-hr-6943` | Crime and Law Enforcement | crime, policing, sentencing, or law-enforcement bill support | CES/CCES or ANES crime, policing, public-safety, and justice-system items | ACS demographic denominators plus district-level exposure measures selected for the bill target | source_packet_only_no_external_dataset_acquired |
-| 14 | `117-hr-8404` | Civil Rights and Liberties, Minority Issues | civil-rights or minority-rights bill support | CES/CCES, ANES, or issue-specific civil-rights survey items with demographic response fields | ACS race, ethnicity, citizenship, disability, language, age, sex, and household denominators by district | source_packet_only_no_external_dataset_acquired |
+| 14 | `117-hr-8404` | Civil Rights and Liberties, Minority Issues | civil-rights or minority-rights bill support | CES/CCES, ANES, or issue-specific civil-rights survey items with demographic response fields | ACS race, ethnicity, citizenship, disability, language, age, sex, and household denominators by district | historical_related_issue_source_acquired_exact_bill_support_pending |
 | 15 | `117-hr-8454` | Crime and Law Enforcement | crime, policing, sentencing, or law-enforcement bill support | CES/CCES or ANES crime, policing, public-safety, and justice-system items | ACS demographic denominators plus district-level exposure measures selected for the bill target | source_packet_only_no_external_dataset_acquired |
 | 16 | `117-hr-6386` | Government Operations and Politics | government-operations, democracy, ethics, or institutional-reform bill support | CES/CCES government trust, election administration, democracy, or ethics items where wording matches bill target | ACS voting-age, citizenship, language, disability, and access-relevant denominators by district | source_packet_only_no_external_dataset_acquired |
 | 17 | `117-hr-1842` | Finance and Financial Sector | banking, credit, investor, or financial-regulation bill support | CES/CCES economic-regulation items; financial consumer or investor survey items where available | ACS income, homeownership, mortgage, age, poverty, and employment denominators by district | source_packet_only_no_external_dataset_acquired |

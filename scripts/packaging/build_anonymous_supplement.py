@@ -177,11 +177,16 @@ def copy_reports() -> None:
         "campaign-finance-sponsor-bill-context.*",
         "district-public-opinion-policy-context.*",
         "district-public-opinion-bill-topic-readiness.*",
+        "district-public-opinion-bill-item-alignment-review.*",
+        "district-public-opinion-bill-topic-support.*",
         "district-public-opinion-source-packets.*",
         "district-public-opinion-census-denominators.*",
         "district-public-opinion-acs-context.*",
         "district-public-opinion-survey-source-crosswalk.*",
         "district-public-opinion-survey-item-proxy-review.*",
+        "district-public-opinion-ces-policy-item-candidate-review.*",
+        "district-public-opinion-ces-policy-item-response-distribution-review.*",
+        "district-public-opinion-ces-policy-item-codebook-direction-review.*",
         "district-public-opinion-ces-source-freshness.*",
         "voteview-member-context.*",
         "voteview-bill-linkage.*",
@@ -286,11 +291,16 @@ def write_readme() -> None:
         "- `reports/campaign-finance-sponsor-bill-context.csv`\n"
         "- `reports/district-public-opinion-policy-context.csv`\n"
         "- `reports/district-public-opinion-bill-topic-readiness.csv`\n"
+        "- `reports/district-public-opinion-bill-item-alignment-review.csv`\n"
+        "- `reports/district-public-opinion-bill-topic-support.csv`\n"
         "- `reports/district-public-opinion-source-packets.csv`\n"
         "- `reports/district-public-opinion-census-denominators.csv`\n"
         "- `reports/district-public-opinion-acs-context.csv`\n"
         "- `reports/district-public-opinion-survey-source-crosswalk.csv`\n"
         "- `reports/district-public-opinion-survey-item-proxy-review.csv`\n"
+        "- `reports/district-public-opinion-ces-policy-item-candidate-review.csv`\n"
+        "- `reports/district-public-opinion-ces-policy-item-response-distribution-review.csv`\n"
+        "- `reports/district-public-opinion-ces-policy-item-codebook-direction-review.csv`\n"
         "- `reports/district-public-opinion-ces-source-freshness.csv`\n"
         "- `reports/voteview-member-context.csv`\n"
         "- `reports/voteview-bill-linkage.csv`\n"
@@ -351,6 +361,8 @@ def write_readme() -> None:
         "`make build-district-public-opinion-raw`, "
         "`make build-district-public-opinion-linkage-raw`, "
         "`make build-district-public-opinion-policy-context-raw`, "
+        "`make build-district-public-opinion-bill-text-context-raw`, "
+        "`make build-district-public-opinion-bill-topic-support-raw`, "
         "`make build-court-review-raw`, "
         "`make build-court-law-linkage-raw`, "
         "`make build-rulemaking-implementation-raw`, "

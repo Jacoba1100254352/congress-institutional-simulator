@@ -55,6 +55,12 @@ DISTRICT_PUBLIC_OPINION_CES_POLICY_ITEM_RESPONSE_DISTRIBUTION_REVIEW = Path(
 DISTRICT_PUBLIC_OPINION_CES_POLICY_ITEM_CODEBOOK_DIRECTION_REVIEW = Path(
     "reports/district-public-opinion-ces-policy-item-codebook-direction-review.csv"
 )
+DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW = Path(
+    "reports/district-public-opinion-bill-item-alignment-review.csv"
+)
+DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT = Path(
+    "reports/district-public-opinion-bill-topic-support.csv"
+)
 COURT_LAW_LINKAGE = Path("data/validation/raw/court_law_linkage.csv")
 RULEMAKING_IMPLEMENTATION_LINKAGE = Path("data/validation/raw/rulemaking_implementation_linkage.csv")
 RULEMAKING_AUTHORITY_LINKAGE = Path("data/validation/raw/rulemaking_authority_linkage.csv")
@@ -1834,6 +1840,36 @@ def district_opinion_ces_policy_item_codebook_direction_summary() -> tuple[int, 
     )
 
 
+def district_opinion_bill_item_support_summary() -> tuple[int, int, int, int, int, int, int, int, int]:
+    alignment_rows = read_csv(DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW)
+    support_rows = read_csv(DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT)
+    positive_alignments = [
+        row for row in alignment_rows
+        if normalize(row.get("manual_alignment_status"))
+        == "reviewed_aligned_historical_issue_item"
+    ]
+    published_support = [
+        row for row in support_rows
+        if normalize(row.get("weighted_support_share"))
+        and normalize(row.get("historical_related_issue_support_status"))
+        == "privacy_thresholded_direct_weighted_district_estimate_available"
+    ]
+    respondents = sum(
+        int(row.get("response_respondents") or "0") for row in published_support
+    )
+    return (
+        len(alignment_rows),
+        len(positive_alignments),
+        len(alignment_rows) - len(positive_alignments),
+        len(published_support),
+        len({normalize(row.get("bill_id")) for row in published_support}),
+        len({normalize(row.get("sponsor_district_id")) for row in published_support}),
+        len({normalize(row.get("survey_item_id")) for row in published_support}),
+        len({normalize(row.get("survey_year")) for row in published_support}),
+        respondents,
+    )
+
+
 def build_row(
     source: dict[str, str],
     rows: list[dict[str, str]],
@@ -3054,6 +3090,17 @@ def linkage_rows(registry: list[dict[str, str]]) -> list[dict[str, str]]:
                         ces_policy_codebook_binary_items,
                         ces_policy_codebook_direction_types,
                     ) = district_opinion_ces_policy_item_codebook_direction_summary()
+                    (
+                        bill_item_review_rows,
+                        bill_item_positive_alignments,
+                        bill_item_negative_dispositions,
+                        bill_topic_support_rows,
+                        bill_topic_support_bills,
+                        bill_topic_support_districts,
+                        bill_topic_support_items,
+                        bill_topic_support_years,
+                        bill_topic_support_respondents,
+                    ) = district_opinion_bill_item_support_summary()
                     linked_to = "Congress.gov member endpoint and public-law bill sponsor metadata"
                     link_key = "district_public_opinion.district_id -> district_public_opinion_linkage.district_id; district_public_opinion_linkage.bill_id -> law_revision_bill_linkage.bill_id"
                     policy_sentence = ""
@@ -3066,6 +3113,7 @@ def linkage_rows(registry: list[dict[str, str]]) -> list[dict[str, str]]:
                     ces_policy_candidate_sentence = ""
                     ces_policy_distribution_sentence = ""
                     ces_policy_codebook_sentence = ""
+                    bill_item_support_sentence = ""
                     next_step = "Add bill-topic public-opinion mapping, MRP or small-area estimates where needed, and ACS or comparable affected-population joins."
                     if policy_context_rows > 0:
                         linked_to = (
@@ -3323,11 +3371,42 @@ def linkage_rows(registry: list[dict[str, str]]) -> list[dict[str, str]]:
                             "respondent geography, microdata, MRP/small-area estimates, and "
                             "bill-text-specific affected-population, support, and harm sources."
                         )
+                    if bill_topic_support_rows > 0:
+                        linked_to = (
+                            linked_to
+                            + ", source-reviewed official bill-text alignment, and privacy-thresholded historical district issue support"
+                        )
+                        link_key = (
+                            link_key
+                            + "; district_public_opinion_bill_item_alignment_review.bill_id + "
+                            "selected_variable_ids -> district_public_opinion_bill_topic_support.bill_id + survey_item_id; "
+                            "sponsor_districts -> sponsor_district_id"
+                        )
+                        bill_item_support_sentence = (
+                            f" An official bill-text review covers {bill_item_review_rows} public-law "
+                            f"packets, retains {bill_item_positive_alignments} historical related-issue "
+                            f"alignment, and preserves {bill_item_negative_dispositions} negative "
+                            "dispositions against forced policy-area matches. The retained alignment "
+                            f"produces {bill_topic_support_rows} privacy-thresholded annual direct-weighted "
+                            f"district estimates across {bill_topic_support_bills} bill, "
+                            f"{bill_topic_support_districts} district, {bill_topic_support_items} item, "
+                            f"and {bill_topic_support_years} years, representing "
+                            f"{bill_topic_support_respondents} published aggregate responses. "
+                            "The item is directionally related to the bill but predates enactment and "
+                            "does not use the bill wording."
+                        )
+                        next_step = (
+                            "Use the source packets, survey-source crosswalk, ACS district-context, proxy review, "
+                            "candidate-item review, response-code distribution review, codebook review, official "
+                            "bill text, and retained historical related-issue estimates as the bounded frame; then "
+                            "add exact or closer contemporaneous bill-topic questions, design-based uncertainty or "
+                            "MRP where needed, and bill-text-specific affected-population, support, and harm evidence."
+                        )
                     result.append(build_row(
                         source,
                         rows,
                         metadata_linked,
-                        "metadata linked",
+                        "partially linked" if bill_topic_support_rows > 0 else "metadata linked",
                         linked_to,
                         link_key,
                         "District public-opinion rows now join to House-sponsored public-law bill metadata by sponsor district, with support and affected-group-share fields kept separate."
@@ -3341,7 +3420,8 @@ def linkage_rows(registry: list[dict[str, str]]) -> list[dict[str, str]]:
                         + ces_policy_candidate_sentence
                         + ces_policy_distribution_sentence
                         + ces_policy_codebook_sentence
-                        + " This is not bill-topic public support, MRP, bill-text-specific affected-population detail, affected-group harm, representative responsiveness, public-benefit validation, or model validation.",
+                        + bill_item_support_sentence
+                        + " The historical related-issue estimates are not exact or contemporaneous bill support, MRP, design-based uncertainty estimates, bill-text-specific affected-population detail, affected-group harm, representative responsiveness, public-benefit validation, or model validation.",
                         next_step,
                     ))
                     continue

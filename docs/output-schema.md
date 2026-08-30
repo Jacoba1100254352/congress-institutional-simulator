@@ -321,6 +321,20 @@ The current validation pipeline writes:
   and local topic-throughput policy areas. It is not bill-topic public-support,
   MRP, affected-group harm, representative-responsiveness, or public-benefit
   validation.
+- `reports/district-public-opinion-bill-item-alignment-review.csv`:
+  source-reviewed disposition ledger for the 22 official bill packets and CES
+  candidate items. Positive rows are historical related-issue alignments, and
+  negative rows prevent broad policy-area similarity from being treated as a
+  bill-text match.
+- `reports/district-public-opinion-bill-topic-support.csv`:
+  privacy-thresholded annual direct-weighted district aggregates linked only to
+  retained alignment rows, with separate Dataverse catalog checksums and
+  access-stream byte-count/SHA-256 pins. Annual question field, wave, guide,
+  validated-voter weight selection, and cumulative-to-original response-match
+  fields make the weighting path auditable. The current rows are historical
+  related-issue context, not exact or contemporaneous bill support, MRP,
+  design-based uncertainty, affected-group evidence, causal representation, or
+  model validation.
 - `reports/campaign-finance-district-context.csv`: bounded OpenFEC
   candidate-recipient district-context inventory showing which public FEC
   recipient rows can be joined to CES district public-opinion context. It is not
@@ -367,7 +381,8 @@ queue, court/public-law temporal triage report,
 court/public-law direct-review disposition report, campaign-finance
 district-context, campaign-finance member-context report, campaign-finance
 issue-context report, campaign-finance sponsor-bill context report, district
-public-opinion policy-context report, gap report, and paper table agree on
+public-opinion policy-context report, bill-item alignment review, historical
+bill-topic support report, gap report, and paper table agree on
 source-family boundaries, held-out counts, linkage statuses, roadmap coverage,
 and raw row counts.
 

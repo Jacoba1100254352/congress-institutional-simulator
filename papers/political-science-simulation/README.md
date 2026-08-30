@@ -20,7 +20,7 @@ The repository has a broad implemented simulator, a canonical main campaign, mec
 
 The strongest blockers are:
 
-- district-level public opinion is only a bounded CES proxy with sponsor-district bill metadata and bounded bill policy-area context, not bill-topic support or affected-group evidence;
+- district-level public opinion now includes one bounded historical related-issue pilot, but still lacks exact or contemporaneous bill support, design-based uncertainty or MRP, and affected-group evidence;
 - campaign-finance linkage beyond FEC recipient metadata, bounded issue-sector context, matched member context, bounded House-candidate district context, and bounded candidate-to-sponsored-bill context to reviewed targets, committee-action influence, and outcomes, plus lobbying linkage beyond current LDA issue taxonomy, shared-policy-area bill context, and exact filing-text bill identifiers for a bounded public-law subset to sponsor/member targets, committees, roll calls, influence, and outcomes, is missing;
 - full statutory-lineage and emergency-order court review datasets are missing; SCDB merits-case court review, Federal Register final-rule effective dates with bounded document/docket metadata, authority-search matches, and proposed-history matches, Congress.gov law-revision text flags with bounded bill/action metadata, and QoG/OWID/V-Dem comparative-institution profiles with bounded simulator scenario-family metadata anchors are present only as bounded proxies;
 - conventional benchmarks do not yet receive fully comparable information/amendment/review budgets;
@@ -40,7 +40,7 @@ The strongest blockers are:
 
 ## Next Concrete Repo Tasks
 
-1. Extend the empirical-validation pipeline first: bill-topic public opinion beyond sponsor-district bill policy-area context, affected-group mapping, campaign-finance linkage beyond FEC recipient metadata, bounded issue-sector context, matched member context, and House-candidate district context, full statutory lineage/correction beyond Congress.gov bill/action metadata, and fuller implementation-feedback sources remain blockers.
+1. Extend the empirical-validation pipeline first: exact or closer contemporaneous bill-topic public opinion beyond the historical related-issue pilot, affected-group mapping, campaign-finance linkage beyond FEC recipient metadata and bounded context layers, full statutory lineage/correction beyond current review layers, and fuller implementation-feedback sources remain blockers.
 2. Implement benchmark fairness controls that give conventional and simple-majority baselines comparable information, amendment, review, and attention budgets.
 3. Add paired-comparison reports that compare mechanisms on the same generated worlds.
 4. Separate seed variance from scenario variation in any political-science result table.

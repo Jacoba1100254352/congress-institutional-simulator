@@ -16,6 +16,7 @@ from pathlib import Path
 
 POLICY_CONTEXT = Path("reports/district-public-opinion-policy-context.csv")
 NEXT_ACTIONS = Path("reports/bill-law-lifecycle-next-actions.csv")
+HISTORICAL_SUPPORT = Path("reports/district-public-opinion-bill-topic-support.csv")
 OUT_CSV = Path("reports/district-public-opinion-bill-topic-readiness.csv")
 OUT_MD = Path("reports/district-public-opinion-bill-topic-readiness.md")
 
@@ -37,7 +38,13 @@ FIELDNAMES = [
     "proxy_issues",
     "mean_support",
     "mean_affected_group_proxy",
+    "source_reviewed_bill_item_alignment_rows",
     "issue_specific_support_rows",
+    "historical_issue_support_years",
+    "historical_issue_support_items",
+    "historical_weighted_support_min",
+    "historical_weighted_support_max",
+    "exact_bill_support_rows",
     "mrp_or_small_area_rows",
     "affected_group_support_rows",
     "bill_topic_public_opinion_status",
@@ -92,6 +99,7 @@ def action_rank_by_bill(rows: list[dict[str, str]]) -> dict[str, str]:
 def build_rows(
     policy_rows: list[dict[str, str]],
     action_rows: list[dict[str, str]],
+    historical_support_rows: list[dict[str, str]],
 ) -> list[dict[str, str]]:
     rows_by_bill: dict[str, list[dict[str, str]]] = defaultdict(list)
     for row in policy_rows:
@@ -100,6 +108,17 @@ def build_rows(
             rows_by_bill[bill_id].append(row)
 
     ranks = action_rank_by_bill(action_rows)
+    support_by_bill: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for row in historical_support_rows:
+        bill_id = row.get("bill_id", "").strip()
+        if bill_id and row.get("weighted_support_share", "").strip():
+            support_by_bill[bill_id].append(row)
+    unknown_support_bills = sorted(set(support_by_bill) - set(rows_by_bill))
+    if unknown_support_bills:
+        raise SystemExit(
+            f"{HISTORICAL_SUPPORT}: support rows lack policy-context bills: "
+            + ", ".join(unknown_support_bills)
+        )
     sorted_bill_rows = sorted(
         rows_by_bill.items(),
         key=lambda item: (sort_key(ranks.get(item[0], "")), item[0]),
@@ -107,6 +126,7 @@ def build_rows(
 
     output: list[dict[str, str]] = []
     for index, (bill_id, rows) in enumerate(sorted_bill_rows, start=1):
+        historical_rows = support_by_bill.get(bill_id, [])
         issues = sorted({row.get("issue", "") for row in rows if row.get("issue", "")})
         issue_specific_support_rows = [
             row for row in rows
@@ -121,11 +141,17 @@ def build_rows(
             parse_float(row.get("affected_group_share"))
             for row in rows
         ])
-        issue_specific_count = len(issue_specific_support_rows)
+        historical_support_values = [
+            parse_float(row.get("weighted_support_share"))
+            for row in historical_rows
+        ]
+        issue_specific_count = len(issue_specific_support_rows) + len(historical_rows)
 
         bill_topic_status = (
-            "issue_specific_bill_support_available"
-            if issue_specific_count
+            "historical_related_issue_district_support_available_not_exact_bill_support"
+            if historical_rows
+            else "issue_specific_bill_support_available"
+            if issue_specific_support_rows
             else "proxy_only_missing_issue_specific_bill_support"
         )
         mrp_status = "missing_mrp_or_small_area_estimate"
@@ -143,19 +169,41 @@ def build_rows(
             "proxy_issues": "; ".join(issues),
             "mean_support": f"{mean_support:.6f}",
             "mean_affected_group_proxy": f"{mean_affected_group:.6f}",
+            "source_reviewed_bill_item_alignment_rows": "1" if historical_rows else "0",
             "issue_specific_support_rows": str(issue_specific_count),
+            "historical_issue_support_years": unique_join([
+                row.get("survey_year", "") for row in historical_rows
+            ]),
+            "historical_issue_support_items": unique_join([
+                row.get("survey_item_id", "") for row in historical_rows
+            ]),
+            "historical_weighted_support_min": (
+                f"{min(historical_support_values):.6f}"
+                if historical_support_values
+                else ""
+            ),
+            "historical_weighted_support_max": (
+                f"{max(historical_support_values):.6f}"
+                if historical_support_values
+                else ""
+            ),
+            "exact_bill_support_rows": "0",
             "mrp_or_small_area_rows": "0",
             "affected_group_support_rows": "0",
             "bill_topic_public_opinion_status": bill_topic_status,
             "mrp_or_small_area_status": mrp_status,
             "affected_group_status": affected_group_status,
             "next_review_sources": (
-                "bill-topic survey item crosswalk; district MRP or small-area estimate; "
+                "exact or closer contemporaneous bill-topic survey item; district MRP or small-area estimate where needed; "
                 "ACS or comparable affected-population denominator; affected-group support "
                 "or harm source"
             ),
             "review_packet": (
-                f"{bill_id}: map {policy_areas or 'unknown policy area'} to an issue-specific "
+                f"{bill_id}: retain the historical related-issue estimate separately, acquire "
+                "exact or closer contemporaneous bill-topic support, and keep affected-population "
+                "exposure separate from general support."
+                if historical_rows
+                else f"{bill_id}: map {policy_areas or 'unknown policy area'} to an issue-specific "
                 "survey item, estimate or import district support, and keep affected-population "
                 "exposure separate from general support."
             ),
@@ -163,18 +211,36 @@ def build_rows(
                 "cumulative_ces_district_aggregate; sponsor_district_public_law_bill_metadata; "
                 "sponsor_district_bill_policy_area_context; topic_throughput_policy_area; "
                 "bill_topic_public_opinion_readiness_queue"
+                + (
+                    "; source_reviewed_historical_issue_item_alignment; "
+                    "privacy_thresholded_direct_weighted_district_issue_estimate"
+                    if historical_rows
+                    else ""
+                )
             ),
             "missing_links": (
-                "bill_topic_public_opinion; MRP_or_small_area_estimate; "
+                "bill_topic_public_opinion; exact_bill_wording_support; "
+                "contemporaneous_bill_support; "
+                "MRP_or_small_area_estimate; "
                 "issue_specific_affected_group_support; affected_group_harm; "
                 "constituent_contacts; member_vote; causal_representation; public_benefit; "
                 "model_validation"
             ),
-            "source_url": source_urls,
+            "source_url": unique_join(
+                [source_urls]
+                + [
+                    url.strip()
+                    for row in historical_rows
+                    for url in row.get("source_urls", "").split(";")
+                    if url.strip()
+                ]
+            ),
             "claim_boundary": (
-                "Bill-level readiness queue derived from bounded CES district aggregate, "
-                "sponsor-district public-law bill metadata, and policy-area context only; not "
-                "bill-topic public support, MRP or small-area estimation, issue-specific "
+                "Bill-level readiness queue with bounded CES proxy context and, where present, "
+                "privacy-thresholded historical related-issue district estimates. Historical "
+                "items are not exact bill wording or contemporaneous bill support. These rows "
+                "are not bill-topic public support and "
+                "do not provide MRP or small-area estimation, issue-specific "
                 "affected-group support or harm, public benefit, welfare, causal "
                 "representation, or model validation."
             ),
@@ -204,28 +270,32 @@ def write_md(rows: list[dict[str, str]]) -> None:
     proxy_rows = sum(int(row["proxy_row_count"]) for row in rows)
     issue_specific_rows = sum(int(row["issue_specific_support_rows"]) for row in rows)
     affected_group_rows = sum(int(row["affected_group_support_rows"]) for row in rows)
+    historical_rows = sum(
+        int(row["source_reviewed_bill_item_alignment_rows"]) for row in rows
+    )
 
     lines = [
         "# District Public-Opinion Bill-Topic Readiness",
         "",
-        "This report turns the bounded sponsor-district public-opinion policy-context layer into a bill-level source queue for issue-specific public-opinion and affected-group evidence. It is readiness evidence only, not bill-topic support validation.",
+        "This report turns the bounded sponsor-district public-opinion policy-context layer into a bill-level source queue and records privacy-thresholded historical related-issue estimates where source review permits them. It is readiness evidence, not exact bill-support validation.",
         "",
         f"- Public-law bills queued: {len(rows)}",
         f"- Proxy context rows represented: {proxy_rows}",
         f"- Policy areas represented: {len(policy_areas)}",
         f"- Bills still proxy-only for bill-topic support: {len(proxy_only)}",
+        f"- Bills with historical related-issue district support: {historical_rows}",
         f"- Issue-specific support rows present: {issue_specific_rows}",
         f"- Affected-group support/harm rows present: {affected_group_rows}",
         "",
-        "Claim boundary: these rows are derived from CES district aggregate proxies, sponsor-district public-law metadata, and policy-area context only. They do not provide issue-specific bill support, MRP/small-area estimates, affected-group support or harm, public benefit, welfare, causal representation, or model validation.",
+        "Claim boundary: these rows combine CES district aggregate proxies and sponsor-district public-law context with bounded historical related-issue estimates where available. They do not provide exact or contemporaneous bill support, MRP/small-area estimates, affected-group support or harm, public benefit, welfare, causal representation, or model validation.",
         "",
-        "| Rank | Bill ID | Public law | Policy area | Proxy rows | Proxy issues | Status | Next review packet |",
-        "| ---: | --- | --- | --- | ---: | --- | --- | --- |",
+        "| Rank | Bill ID | Public law | Policy area | Proxy rows | Historical estimates | Status | Next review packet |",
+        "| ---: | --- | --- | --- | ---: | ---: | --- | --- |",
     ]
     for row in rows:
         lines.append(
             f"| {row['readiness_rank']} | `{row['bill_id']}` | `{row['public_law_number']}` | "
-            f"{row['policy_area']} | {row['proxy_row_count']} | {row['proxy_issues']} | "
+            f"{row['policy_area']} | {row['proxy_row_count']} | {row['issue_specific_support_rows']} | "
             f"{row['bill_topic_public_opinion_status']} | {row['review_packet']} |"
         )
     OUT_MD.write_text("\n".join(lines) + "\n")
@@ -239,7 +309,8 @@ def main() -> int:
     policy_rows = read_csv(POLICY_CONTEXT)
     if not policy_rows:
         raise SystemExit(f"{POLICY_CONTEXT} is empty.")
-    rows = build_rows(policy_rows, read_csv(NEXT_ACTIONS))
+    historical_support_rows = read_csv(HISTORICAL_SUPPORT) if HISTORICAL_SUPPORT.exists() else []
+    rows = build_rows(policy_rows, read_csv(NEXT_ACTIONS), historical_support_rows)
     if not rows:
         raise SystemExit("No bill-topic public-opinion readiness rows could be built.")
     write_csv(rows)

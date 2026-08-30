@@ -373,6 +373,36 @@ DISTRICT_PUBLIC_OPINION_CES_POLICY_ITEM_CODEBOOK_DIRECTION_REVIEW = Path(
 DISTRICT_PUBLIC_OPINION_CES_POLICY_ITEM_CODEBOOK_DIRECTION_REVIEW_MD = Path(
     "reports/district-public-opinion-ces-policy-item-codebook-direction-review.md"
 )
+DISTRICT_PUBLIC_OPINION_BILL_TEXT_CONTEXT_RAW = Path(
+    "data/validation/raw/district_public_opinion_bill_text_context.csv"
+)
+DISTRICT_PUBLIC_OPINION_BILL_TEXT_CONTEXT_METADATA = Path(
+    "data/validation/raw/district_public_opinion_bill_text_context.metadata.md"
+)
+DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW_RAW = Path(
+    "data/validation/raw/district_public_opinion_bill_item_alignment_review.csv"
+)
+DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW_METADATA = Path(
+    "data/validation/raw/district_public_opinion_bill_item_alignment_review.metadata.md"
+)
+DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW = Path(
+    "reports/district-public-opinion-bill-item-alignment-review.csv"
+)
+DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW_MD = Path(
+    "reports/district-public-opinion-bill-item-alignment-review.md"
+)
+DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW = Path(
+    "data/validation/raw/district_public_opinion_bill_topic_support.csv"
+)
+DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_METADATA = Path(
+    "data/validation/raw/district_public_opinion_bill_topic_support.metadata.md"
+)
+DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT = Path(
+    "reports/district-public-opinion-bill-topic-support.csv"
+)
+DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_MD = Path(
+    "reports/district-public-opinion-bill-topic-support.md"
+)
 GAP_TEX = Path("paper/figures/empirical_validation_gap_table.tex")
 LINKAGE_STATUSES = {"linked", "metadata linked", "partially linked", "not linked", "not independently linked"}
 LINKED_STATUSES = {"linked", "metadata linked", "partially linked"}
@@ -987,10 +1017,31 @@ def check() -> list[str]:
         district_public_opinion_ces_policy_item_codebook_direction_review = read_csv(
             DISTRICT_PUBLIC_OPINION_CES_POLICY_ITEM_CODEBOOK_DIRECTION_REVIEW
         )
+        district_public_opinion_bill_text_context_raw = read_csv(
+            DISTRICT_PUBLIC_OPINION_BILL_TEXT_CONTEXT_RAW
+        )
+        district_public_opinion_bill_item_alignment_review_raw = read_csv(
+            DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW_RAW
+        )
+        district_public_opinion_bill_item_alignment_review = read_csv(
+            DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW
+        )
+        district_public_opinion_bill_topic_support_raw = read_csv(
+            DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW
+        )
+        district_public_opinion_bill_topic_support = read_csv(
+            DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT
+        )
     except FileNotFoundError as exception:
         return [f"missing required empirical-boundary artifact: {exception.filename}"]
     except ValueError as exception:
         return [str(exception)]
+
+    historical_support_by_bill: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for support_row in district_public_opinion_bill_topic_support:
+        support_bill_id = support_row.get("bill_id", "").strip()
+        if support_bill_id:
+            historical_support_by_bill[support_bill_id].append(support_row)
 
     if not registry:
         failures.append(f"{REGISTRY}: no rows")
@@ -5418,6 +5469,12 @@ def check() -> list[str]:
         "public_opinion_proxy_review_status",
         "bill_topic_item_review_status",
         "district_estimation_status",
+        "historical_related_issue_support_estimate_rows",
+        "historical_related_issue_support_years",
+        "historical_related_issue_support_items",
+        "historical_weighted_support_min",
+        "historical_weighted_support_max",
+        "exact_bill_support_status",
         "affected_group_item_status",
         "finance_lobbying_review_status",
         "local_finance_lobbying_status",
@@ -5579,6 +5636,85 @@ def check() -> list[str]:
         ):
             failures.append(
                 f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: missing survey proxy source artifact"
+            )
+        expected_historical_support = historical_support_by_bill.get(bill_id, [])
+        actual_historical_count = parse_int(
+            corpus_row.get("historical_related_issue_support_estimate_rows", "")
+        )
+        if actual_historical_count != len(expected_historical_support):
+            failures.append(
+                f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: historical support row count mismatch"
+            )
+        if expected_historical_support:
+            if (
+                corpus_row.get("district_public_opinion_status", "")
+                != "historical_related_issue_district_support_available_not_exact_bill_support"
+            ):
+                failures.append(
+                    f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: historical public-opinion status mismatch"
+                )
+            if (
+                corpus_row.get("district_estimation_status", "")
+                != "privacy_thresholded_historical_direct_weighted_estimate_available"
+            ):
+                failures.append(
+                    f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: historical district-estimation status mismatch"
+                )
+            if (
+                corpus_row.get("exact_bill_support_status", "")
+                != "not_measured_historical_related_issue_only"
+            ):
+                failures.append(
+                    f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: exact bill-support boundary mismatch"
+                )
+            if str(DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT) not in artifacts:
+                failures.append(
+                    f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: missing historical support source artifact"
+                )
+            expected_support_years = {
+                row.get("survey_year", "").strip()
+                for row in expected_historical_support
+                if row.get("survey_year", "").strip()
+            }
+            if split_semicolon_values(
+                corpus_row, "historical_related_issue_support_years"
+            ) != expected_support_years:
+                failures.append(
+                    f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: historical support years mismatch"
+                )
+            expected_support_items = {
+                row.get("survey_item_id", "").strip()
+                for row in expected_historical_support
+                if row.get("survey_item_id", "").strip()
+            }
+            if split_semicolon_values(
+                corpus_row, "historical_related_issue_support_items"
+            ) != expected_support_items:
+                failures.append(
+                    f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: historical support items mismatch"
+                )
+            expected_support_shares = [
+                float(row["weighted_support_share"])
+                for row in expected_historical_support
+            ]
+            for field, expected_value in (
+                ("historical_weighted_support_min", min(expected_support_shares)),
+                ("historical_weighted_support_max", max(expected_support_shares)),
+            ):
+                try:
+                    actual_value = float(corpus_row.get(field, ""))
+                except ValueError:
+                    failures.append(
+                        f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: invalid {field}"
+                    )
+                else:
+                    if abs(actual_value - expected_value) > 1e-6:
+                        failures.append(
+                            f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: {field} mismatch"
+                        )
+        elif corpus_row.get("exact_bill_support_status", "") != "not_measured":
+            failures.append(
+                f"{BILL_LAW_LIFECYCLE_CORPUS}: {bill_id}: unexpected exact bill-support status"
             )
         if (
             corpus_row.get("campaign_finance_target_scope_status", "")
@@ -13933,7 +14069,13 @@ def check() -> list[str]:
         "proxy_issues",
         "mean_support",
         "mean_affected_group_proxy",
+        "source_reviewed_bill_item_alignment_rows",
         "issue_specific_support_rows",
+        "historical_issue_support_years",
+        "historical_issue_support_items",
+        "historical_weighted_support_min",
+        "historical_weighted_support_max",
+        "exact_bill_support_rows",
         "mrp_or_small_area_rows",
         "affected_group_support_rows",
         "bill_topic_public_opinion_status",
@@ -13969,6 +14111,7 @@ def check() -> list[str]:
         )
     for bill_id, row in readiness_by_bill.items():
         expected_policy_rows = policy_rows_by_bill.get(bill_id, [])
+        expected_historical_rows = historical_support_by_bill.get(bill_id, [])
         expected_issues = {
             policy_row.get("issue", "").strip()
             for policy_row in expected_policy_rows
@@ -13982,12 +14125,17 @@ def check() -> list[str]:
         try:
             proxy_row_count = int(row.get("proxy_row_count", "0") or "0")
             proxy_issue_count = int(row.get("proxy_issue_count", "0") or "0")
+            alignment_rows = int(
+                row.get("source_reviewed_bill_item_alignment_rows", "0") or "0"
+            )
             issue_specific_support_rows = int(row.get("issue_specific_support_rows", "0") or "0")
+            exact_bill_support_rows = int(row.get("exact_bill_support_rows", "0") or "0")
             mrp_rows = int(row.get("mrp_or_small_area_rows", "0") or "0")
             affected_group_rows = int(row.get("affected_group_support_rows", "0") or "0")
         except ValueError:
             failures.append(f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: count fields must be integers")
-            proxy_row_count = proxy_issue_count = issue_specific_support_rows = mrp_rows = affected_group_rows = 0
+            proxy_row_count = proxy_issue_count = alignment_rows = 0
+            issue_specific_support_rows = exact_bill_support_rows = mrp_rows = affected_group_rows = 0
         if proxy_row_count != len(expected_policy_rows):
             failures.append(
                 f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: proxy rows "
@@ -14024,16 +14172,93 @@ def check() -> list[str]:
                 float(row.get(numeric_field, "0") or "0")
             except ValueError:
                 failures.append(f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: {numeric_field} must be numeric")
-        if issue_specific_support_rows != 0 or mrp_rows != 0 or affected_group_rows != 0:
+        if issue_specific_support_rows != len(expected_historical_rows):
             failures.append(
-                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: current readiness rows "
-                "must not claim issue-specific, MRP, or affected-group support evidence"
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: issue-specific rows "
+                f"{issue_specific_support_rows} do not match historical support rows "
+                f"{len(expected_historical_rows)}"
             )
-        if row.get("bill_topic_public_opinion_status") != "proxy_only_missing_issue_specific_bill_support":
+        if alignment_rows != (1 if expected_historical_rows else 0):
             failures.append(
                 f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: "
-                "expected proxy-only bill-topic status"
+                "source-reviewed alignment count does not match historical support coverage"
             )
+        if exact_bill_support_rows != 0 or mrp_rows != 0 or affected_group_rows != 0:
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: exact bill support, "
+                "MRP, and affected-group rows must remain zero"
+            )
+        expected_status = (
+            "historical_related_issue_district_support_available_not_exact_bill_support"
+            if expected_historical_rows
+            else "proxy_only_missing_issue_specific_bill_support"
+        )
+        if row.get("bill_topic_public_opinion_status") != expected_status:
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: "
+                f"expected bill-topic status {expected_status}"
+            )
+        expected_years = {
+            support_row.get("survey_year", "").strip()
+            for support_row in expected_historical_rows
+            if support_row.get("survey_year", "").strip()
+        }
+        actual_years = {
+            value.strip()
+            for value in row.get("historical_issue_support_years", "").split(";")
+            if value.strip()
+        }
+        if actual_years != expected_years:
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: "
+                "historical support years do not match support report"
+            )
+        expected_items = {
+            support_row.get("survey_item_id", "").strip()
+            for support_row in expected_historical_rows
+            if support_row.get("survey_item_id", "").strip()
+        }
+        actual_items = {
+            value.strip()
+            for value in row.get("historical_issue_support_items", "").split(";")
+            if value.strip()
+        }
+        if actual_items != expected_items:
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: "
+                "historical support items do not match support report"
+            )
+        if expected_historical_rows:
+            expected_shares = [
+                float(support_row["weighted_support_share"])
+                for support_row in expected_historical_rows
+            ]
+            for field, expected_value in (
+                ("historical_weighted_support_min", min(expected_shares)),
+                ("historical_weighted_support_max", max(expected_shares)),
+            ):
+                try:
+                    actual_value = float(row.get(field, ""))
+                except ValueError:
+                    failures.append(
+                        f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: "
+                        f"{field} must be numeric"
+                    )
+                else:
+                    if abs(actual_value - expected_value) > 1e-6:
+                        failures.append(
+                            f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: "
+                            f"{field} does not match support report"
+                        )
+            for required_layer in (
+                "source_reviewed_historical_issue_item_alignment",
+                "privacy_thresholded_direct_weighted_district_issue_estimate",
+            ):
+                if required_layer not in row.get("evidence_layers", ""):
+                    failures.append(
+                        f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: "
+                        f"missing historical support evidence layer {required_layer}"
+                    )
         if row.get("mrp_or_small_area_status") != "missing_mrp_or_small_area_estimate":
             failures.append(
                 f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_READINESS}: {bill_id}: "
@@ -14136,11 +14361,27 @@ def check() -> list[str]:
                 f"{DISTRICT_PUBLIC_OPINION_SOURCE_PACKETS}: {bill_id}: "
                 "current_proxy_status does not match readiness status"
             )
-        if row.get("acquisition_status") != "source_packet_only_no_external_dataset_acquired":
+        has_historical_support = bool(historical_support_by_bill.get(bill_id))
+        expected_acquisition_status = (
+            "historical_related_issue_source_acquired_exact_bill_support_pending"
+            if has_historical_support
+            else "source_packet_only_no_external_dataset_acquired"
+        )
+        if row.get("acquisition_status") != expected_acquisition_status:
             failures.append(
                 f"{DISTRICT_PUBLIC_OPINION_SOURCE_PACKETS}: {bill_id}: "
-                "source packets must not claim an acquired external dataset"
+                f"expected acquisition status {expected_acquisition_status}"
             )
+        if has_historical_support:
+            for required_layer in (
+                "source_reviewed_historical_issue_item_alignment",
+                "privacy_thresholded_direct_weighted_district_issue_estimate",
+            ):
+                if required_layer not in row.get("evidence_layers", ""):
+                    failures.append(
+                        f"{DISTRICT_PUBLIC_OPINION_SOURCE_PACKETS}: {bill_id}: "
+                        f"missing historical evidence layer {required_layer}"
+                    )
         for required_text_field in (
             "target_issue_construct",
             "bill_topic_survey_source",
@@ -14189,10 +14430,10 @@ def check() -> list[str]:
         boundary = row.get("claim_boundary", "")
         if (
             "not acquired bill-topic support data" not in boundary
-            or "not MRP" not in boundary
-            or "not affected-population denominators" not in boundary
-            or "not affected-group support or harm" not in boundary
-            or "not model validation" not in boundary
+            or "Packets do not provide MRP" not in boundary
+            or "affected-population denominators" not in boundary
+            or "affected-group support or harm" not in boundary
+            or "model validation" not in boundary
         ):
             failures.append(
                 f"{DISTRICT_PUBLIC_OPINION_SOURCE_PACKETS}: {bill_id}: "
@@ -16243,9 +16484,469 @@ def check() -> list[str]:
             f"{DISTRICT_PUBLIC_OPINION_CES_POLICY_ITEM_CODEBOOK_DIRECTION_REVIEW}: summary count mismatch"
         )
 
+    for metadata_path in (
+        DISTRICT_PUBLIC_OPINION_BILL_TEXT_CONTEXT_METADATA,
+        DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW_METADATA,
+        DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_METADATA,
+    ):
+        if not metadata_path.exists():
+            failures.append(f"{metadata_path}: missing metadata")
+        else:
+            metadata_text = metadata_path.read_text()
+            if "model validation" not in metadata_text:
+                failures.append(f"{metadata_path}: metadata must reject model validation")
+    for report_path in (
+        DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW_MD,
+        DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_MD,
+    ):
+        if not report_path.exists():
+            failures.append(f"{report_path}: missing markdown report")
+
+    required_bill_context_columns = {
+        "packet_rank",
+        "bill_id",
+        "public_law_number",
+        "display_title",
+        "official_title",
+        "latest_summary_text",
+        "govinfo_billstatus_url",
+        "govinfo_billstatus_sha256",
+        "source_status",
+        "claim_boundary",
+    }
+    missing_bill_context_columns = required_bill_context_columns - set(
+        district_public_opinion_bill_text_context_raw[0]
+    )
+    if missing_bill_context_columns:
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_TEXT_CONTEXT_RAW}: missing columns "
+            f"{sorted(missing_bill_context_columns)}"
+        )
+    bill_context_by_bill = by_field(
+        district_public_opinion_bill_text_context_raw, "bill_id"
+    )
+    if len(bill_context_by_bill) != 22 or set(bill_context_by_bill) != set(source_packets_by_bill):
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_TEXT_CONTEXT_RAW}: expected exact 22-packet bill coverage"
+        )
+    for bill_id, context_row in bill_context_by_bill.items():
+        packet_row = source_packets_by_bill.get(bill_id, {})
+        if context_row.get("public_law_number", "") != packet_row.get(
+            "public_law_number", ""
+        ):
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TEXT_CONTEXT_RAW}: {bill_id}: public law mismatch"
+            )
+        if (
+            not context_row.get("latest_summary_text", "").strip()
+            or len(context_row.get("govinfo_billstatus_sha256", "")) != 64
+            or not context_row.get("govinfo_billstatus_url", "").startswith(
+                "https://www.govinfo.gov/bulkdata/BILLSTATUS/"
+            )
+        ):
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TEXT_CONTEXT_RAW}: {bill_id}: incomplete official bill context"
+            )
+        if context_row.get("source_status") != "official_govinfo_billstatus_with_crs_summary":
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TEXT_CONTEXT_RAW}: {bill_id}: invalid source status"
+            )
+
+    required_alignment_columns = {
+        "review_rank",
+        "bill_id",
+        "public_law_number",
+        "manual_alignment_status",
+        "selected_variable_ids",
+        "alignment_strength",
+        "district_estimation_status",
+        "historical_district_estimate_rows",
+        "historical_district_estimate_years",
+        "source_review_notes",
+        "evidence_layers",
+        "missing_links",
+        "claim_boundary",
+    }
+    missing_alignment_columns = required_alignment_columns - set(
+        district_public_opinion_bill_item_alignment_review[0]
+    )
+    if missing_alignment_columns:
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW}: missing columns "
+            f"{sorted(missing_alignment_columns)}"
+        )
+    raw_alignment_by_bill = by_field(
+        district_public_opinion_bill_item_alignment_review_raw, "reviewed_bill_id"
+    )
+    alignment_by_bill = by_field(
+        district_public_opinion_bill_item_alignment_review, "bill_id"
+    )
+    if (
+        len(raw_alignment_by_bill) != 22
+        or set(raw_alignment_by_bill) != set(bill_context_by_bill)
+        or set(alignment_by_bill) != set(bill_context_by_bill)
+    ):
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW}: expected exact 22-bill review coverage"
+        )
+    alignment_statuses = Counter(
+        row.get("manual_alignment_status", "")
+        for row in district_public_opinion_bill_item_alignment_review
+    )
+    positive_alignment_rows = [
+        row
+        for row in district_public_opinion_bill_item_alignment_review
+        if row.get("manual_alignment_status")
+        == "reviewed_aligned_historical_issue_item"
+    ]
+    if len(positive_alignment_rows) != 1 or sum(alignment_statuses.values()) != 22:
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW}: expected 1 positive and 21 negative dispositions"
+        )
+    elif (
+        positive_alignment_rows[0].get("bill_id") != "117-hr-8404"
+        or positive_alignment_rows[0].get("selected_variable_ids")
+        != "gaymarriage_legalize"
+    ):
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW}: unexpected positive alignment"
+        )
+    for bill_id, alignment_row in alignment_by_bill.items():
+        is_positive = (
+            alignment_row.get("manual_alignment_status")
+            == "reviewed_aligned_historical_issue_item"
+        )
+        selected_variables = split_semicolon_values(
+            alignment_row, "selected_variable_ids"
+        )
+        if is_positive and not selected_variables:
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW}: {bill_id}: positive row lacks selected item"
+            )
+        if not is_positive and selected_variables:
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW}: {bill_id}: negative row selects an item"
+            )
+        if not alignment_row.get("source_review_notes", "").strip():
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_ITEM_ALIGNMENT_REVIEW}: {bill_id}: source notes missing"
+            )
+
+    required_support_raw_columns = {
+        "bill_id",
+        "sponsor_district_id",
+        "survey_item_id",
+        "survey_year",
+        "minimum_publishable_respondents",
+        "estimate_status",
+        "privacy_status",
+        "published_response_respondents",
+        "published_support_respondents",
+        "published_oppose_respondents",
+        "unweighted_support_share",
+        "weighted_support_share",
+        "sum_analysis_weights",
+        "sum_squared_analysis_weights",
+        "effective_sample_size",
+        "cumulative_access_file_size_bytes",
+        "cumulative_access_file_sha256",
+        "annual_data_file_id",
+        "annual_data_file_md5",
+        "annual_access_file_size_bytes",
+        "annual_access_file_sha256",
+        "annual_question_field",
+        "annual_question_wave",
+        "annual_question_guide_file_id",
+        "annual_question_guide_file_md5",
+        "annual_weight_field",
+        "annual_weight_selection_status",
+        "cross_source_validated_response_respondents",
+        "cross_source_response_validation_status",
+        "missing_links",
+        "claim_boundary",
+    }
+    missing_support_raw_columns = required_support_raw_columns - set(
+        district_public_opinion_bill_topic_support_raw[0]
+    )
+    if missing_support_raw_columns:
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: missing columns "
+            f"{sorted(missing_support_raw_columns)}"
+        )
+    forbidden_identifier_columns = {"case_id", "respondent_id", "v101"}
+    if forbidden_identifier_columns & {
+        field.lower() for field in district_public_opinion_bill_topic_support_raw[0]
+    }:
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: respondent identifier column leaked"
+        )
+    if len(district_public_opinion_bill_topic_support_raw) != 2:
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: expected two annual aggregate rows"
+        )
+    raw_support_by_key: dict[tuple[str, str, str, str], dict[str, str]] = {}
+    for support_row in district_public_opinion_bill_topic_support_raw:
+        support_key = (
+            support_row.get("bill_id", ""),
+            support_row.get("sponsor_district_id", ""),
+            support_row.get("survey_item_id", ""),
+            support_row.get("survey_year", ""),
+        )
+        if support_key in raw_support_by_key:
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: duplicate key {support_key}"
+            )
+        raw_support_by_key[support_key] = support_row
+        if support_key[:3] != ("117-hr-8404", "NY-10", "gaymarriage_legalize"):
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: unexpected support key {support_key}"
+            )
+        if support_row.get("estimate_status") != (
+            "historical_direct_weighted_district_issue_estimate_available"
+        ):
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: {support_key}: estimate unavailable"
+            )
+        try:
+            minimum_n = int(support_row.get("minimum_publishable_respondents", "0"))
+            response_n = int(support_row.get("published_response_respondents", "0"))
+            support_n = int(support_row.get("published_support_respondents", "0"))
+            oppose_n = int(support_row.get("published_oppose_respondents", "0"))
+            weighted_share = float(support_row.get("weighted_support_share", ""))
+            unweighted_share = float(support_row.get("unweighted_support_share", ""))
+            sum_weights = float(support_row.get("sum_analysis_weights", ""))
+            sum_squared = float(support_row.get("sum_squared_analysis_weights", ""))
+            effective_n = float(support_row.get("effective_sample_size", ""))
+        except ValueError:
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: {support_key}: invalid aggregate values"
+            )
+            continue
+        if (
+            minimum_n != 30
+            or support_n + oppose_n > response_n
+            or support_n + oppose_n < minimum_n
+            or abs(unweighted_share - support_n / (support_n + oppose_n)) > 1e-6
+            or not 0.0 <= weighted_share <= 1.0
+            or sum_weights <= 0.0
+            or sum_squared <= 0.0
+            or abs(effective_n - (sum_weights * sum_weights / sum_squared)) > 1e-5
+            or effective_n > support_n + oppose_n + 1e-6
+        ):
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: {support_key}: aggregate arithmetic or threshold mismatch"
+            )
+        if (
+            "no_case_ids_written" not in support_row.get("privacy_status", "")
+            or "exact_bill_wording_support" not in support_row.get("missing_links", "")
+            or "contemporaneous_bill_support" not in support_row.get("missing_links", "")
+            or "not MRP" not in support_row.get("claim_boundary", "")
+            or "not model validation" not in support_row.get("claim_boundary", "")
+        ):
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: {support_key}: privacy or claim boundary mismatch"
+            )
+        expected_annual_access = {
+            "2012": (
+                "116562350",
+                "7f4ac9d7d0945b5fa65b86d6e19c8e4c770f1edfa3539b3f8653c2d54d6e2b88",
+            ),
+            "2016": (
+                "134761608",
+                "893c72d8d9e0b53ea640ea82b6db346ed424be6fc9fbb0c5c154feaf3eb46299",
+            ),
+        }
+        if (
+            support_row.get("cumulative_access_file_size_bytes") != "55810343"
+            or support_row.get("cumulative_access_file_sha256")
+            != "6f26e0ca719383b9f5de1a86df4f2164a2b65cba9060f5e1ce8640204efc6dfd"
+            or (
+                support_row.get("annual_access_file_size_bytes"),
+                support_row.get("annual_access_file_sha256"),
+            )
+            != expected_annual_access.get(support_key[3], ("", ""))
+        ):
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: {support_key}: access-byte pin mismatch"
+            )
+        expected_annual_question = {
+            "2012": (
+                "CC326",
+                "pre_election",
+                "2688939",
+                "09fe9f595508c5b4254c2a3bb8f77871",
+                "weight_vv",
+                "53942",
+            ),
+            "2016": (
+                "CC16_335",
+                "pre_election",
+                "10803737",
+                "f3df4a99c753ed25472c8d704ae0b458",
+                "commonweight_vv",
+                "64125",
+            ),
+        }
+        actual_annual_question = (
+            support_row.get("annual_question_field"),
+            support_row.get("annual_question_wave"),
+            support_row.get("annual_question_guide_file_id"),
+            support_row.get("annual_question_guide_file_md5"),
+            support_row.get("annual_weight_field"),
+            support_row.get("cross_source_validated_response_respondents"),
+        )
+        if (
+            actual_annual_question
+            != expected_annual_question.get(support_key[3], ("",) * 6)
+            or support_row.get("annual_weight_selection_status")
+            != "official_validated_voter_pre_election_weight"
+            or support_row.get("cross_source_response_validation_status")
+            != "all_nonmissing_cumulative_responses_match_annual_question"
+            or support_row.get("cross_source_validated_response_respondents")
+            != support_row.get("cumulative_item_nonmissing_responses_in_year")
+        ):
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: {support_key}: annual question-wave or weight validation mismatch"
+            )
+    if set(raw_support_by_key) != {
+        ("117-hr-8404", "NY-10", "gaymarriage_legalize", "2012"),
+        ("117-hr-8404", "NY-10", "gaymarriage_legalize", "2016"),
+    }:
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_RAW}: expected 2012 and 2016 estimates"
+        )
+
+    required_support_report_columns = {
+        "estimate_rank",
+        "historical_support_row_id",
+        "bill_id",
+        "sponsor_district_id",
+        "survey_item_id",
+        "survey_year",
+        "historical_related_issue_support_status",
+        "exact_bill_support_status",
+        "contemporaneous_support_status",
+        "mrp_or_small_area_status",
+        "response_respondents",
+        "support_respondents",
+        "oppose_respondents",
+        "weighted_support_share",
+        "effective_sample_size",
+        "privacy_status",
+        "cumulative_access_file_size_bytes",
+        "cumulative_access_file_sha256",
+        "annual_access_file_size_bytes",
+        "annual_access_file_sha256",
+        "annual_question_field",
+        "annual_question_wave",
+        "annual_question_guide_file_id",
+        "annual_question_guide_file_md5",
+        "annual_weight_field",
+        "annual_weight_selection_status",
+        "cross_source_validated_response_respondents",
+        "cross_source_response_validation_status",
+        "missing_links",
+        "claim_boundary",
+    }
+    missing_support_report_columns = required_support_report_columns - set(
+        district_public_opinion_bill_topic_support[0]
+    )
+    if missing_support_report_columns:
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT}: missing columns "
+            f"{sorted(missing_support_report_columns)}"
+        )
+    report_support_by_key = {
+        (
+            row.get("bill_id", ""),
+            row.get("sponsor_district_id", ""),
+            row.get("survey_item_id", ""),
+            row.get("survey_year", ""),
+        ): row
+        for row in district_public_opinion_bill_topic_support
+    }
+    if set(report_support_by_key) != set(raw_support_by_key):
+        failures.append(
+            f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT}: raw/report support key mismatch"
+        )
+    for support_key, report_row in report_support_by_key.items():
+        raw_row = raw_support_by_key.get(support_key, {})
+        for report_field, raw_field in (
+            ("response_respondents", "published_response_respondents"),
+            ("support_respondents", "published_support_respondents"),
+            ("oppose_respondents", "published_oppose_respondents"),
+            ("weighted_support_share", "weighted_support_share"),
+            ("unweighted_support_share", "unweighted_support_share"),
+            ("effective_sample_size", "effective_sample_size"),
+            (
+                "cumulative_access_file_size_bytes",
+                "cumulative_access_file_size_bytes",
+            ),
+            ("cumulative_access_file_sha256", "cumulative_access_file_sha256"),
+            ("annual_access_file_size_bytes", "annual_access_file_size_bytes"),
+            ("annual_access_file_sha256", "annual_access_file_sha256"),
+            ("annual_question_field", "annual_question_field"),
+            ("annual_question_wave", "annual_question_wave"),
+            ("annual_question_guide_file_id", "annual_question_guide_file_id"),
+            ("annual_question_guide_file_md5", "annual_question_guide_file_md5"),
+            ("annual_weight_field", "annual_weight_field"),
+            ("annual_weight_selection_status", "annual_weight_selection_status"),
+            (
+                "cross_source_validated_response_respondents",
+                "cross_source_validated_response_respondents",
+            ),
+            (
+                "cross_source_response_validation_status",
+                "cross_source_response_validation_status",
+            ),
+        ):
+            if report_row.get(report_field, "") != raw_row.get(raw_field, ""):
+                failures.append(
+                    f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT}: {support_key}: {report_field} mismatch"
+                )
+        if (
+            report_row.get("exact_bill_support_status") != "not_measured"
+            or report_row.get("contemporaneous_support_status")
+            != "not_measured_historical_pre_enactment_only"
+            or report_row.get("mrp_or_small_area_status")
+            != "not_performed_direct_weighted_estimate_only"
+        ):
+            failures.append(
+                f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT}: {support_key}: stronger-claim status mismatch"
+            )
+    if DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_METADATA.exists():
+        support_metadata = DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_METADATA.read_text()
+        for phrase in (
+            "Respondent-level records or case identifiers written: 0",
+            "Aggregate estimate rows available: 2",
+            "Minimum publishable support-plus-oppose respondents: 30",
+            "Nonmissing cumulative responses matched to the original annual questions: 118067",
+        ):
+            if phrase not in support_metadata:
+                failures.append(
+                    f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_METADATA}: missing summary phrase {phrase!r}"
+                )
+    if DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_MD.exists():
+        support_md = DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_MD.read_text()
+        for phrase in (
+            "Source-reviewed bill packets without a retained alignment: 21",
+            "Annual estimates represented: 2",
+            "Exact bill-wording estimates: 0",
+            "Respondent-level records or identifiers published: 0",
+            "Nonmissing cumulative responses matched to the original annual questions: 118067",
+        ):
+            if phrase not in support_md:
+                failures.append(
+                    f"{DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT_MD}: missing summary phrase {phrase!r}"
+                )
+
     if district_linkage_row:
         boundary = district_linkage_row.get("linkageBoundary", "")
         next_step = district_linkage_row.get("nextLinkStep", "")
+        if district_linkage_row.get("linkageStatus") != "partially linked":
+            failures.append(
+                f"{LINKAGE}: district public opinion must be partially linked after the historical pilot"
+            )
         if "readiness report queues" not in boundary:
             failures.append(f"{LINKAGE}: district public opinion boundary must mention readiness queue")
         if "source packets" not in next_step:
@@ -16264,6 +16965,18 @@ def check() -> list[str]:
             failures.append(f"{LINKAGE}: district public opinion boundary must mention raw response-distribution review")
         if "codebook response-direction review" not in boundary:
             failures.append(f"{LINKAGE}: district public opinion boundary must mention codebook response-direction review")
+        for required_phrase in (
+            "official bill-text review covers 22",
+            "retains 1 historical related-issue alignment",
+            "21 negative dispositions",
+            "2 privacy-thresholded annual direct-weighted district estimates",
+            "372 published aggregate responses",
+            "does not use the bill wording",
+        ):
+            if required_phrase not in boundary:
+                failures.append(
+                    f"{LINKAGE}: district public opinion boundary missing historical-pilot phrase {required_phrase!r}"
+                )
         if (
             "survey-source crosswalk" not in next_step
             or "ACS district-context" not in next_step

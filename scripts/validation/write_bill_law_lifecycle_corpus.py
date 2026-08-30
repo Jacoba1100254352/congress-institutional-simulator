@@ -14,6 +14,9 @@ COURT_PUBLIC_LAW_DIRECT_REVIEW = Path("reports/court-public-law-direct-review.cs
 DISTRICT_PUBLIC_OPINION_SURVEY_ITEM_PROXY_REVIEW = Path(
     "reports/district-public-opinion-survey-item-proxy-review.csv"
 )
+DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT = Path(
+    "reports/district-public-opinion-bill-topic-support.csv"
+)
 BILL_FINANCE_LOBBYING_LOCAL_CONTEXT_REVIEW = Path(
     "reports/bill-finance-lobbying-local-context-review.csv"
 )
@@ -37,7 +40,8 @@ OUT_MD = Path("reports/bill-law-lifecycle-corpus.md")
 CLAIM_BOUNDARY = (
     "Public-law lifecycle corpus only; rows compile generated source-review, "
     "metadata, proxy, and action-queue statuses from existing reports. The corpus "
-    "does not create bill-topic public support, affected-group harm, bill-specific "
+    "does not convert historical related-issue support into exact or contemporaneous "
+    "bill-topic public support, affected-group harm, bill-specific "
     "campaign-finance or lobbying influence, implementation outcomes, complete "
     "statutory lineage, direct court-review evidence beyond source-reviewed "
     "dispositions, causal effects, welfare evidence, or model validation."
@@ -64,6 +68,12 @@ FIELDNAMES = [
     "public_opinion_proxy_review_status",
     "bill_topic_item_review_status",
     "district_estimation_status",
+    "historical_related_issue_support_estimate_rows",
+    "historical_related_issue_support_years",
+    "historical_related_issue_support_items",
+    "historical_weighted_support_min",
+    "historical_weighted_support_max",
+    "exact_bill_support_status",
     "affected_group_item_status",
     "finance_lobbying_review_status",
     "local_finance_lobbying_status",
@@ -245,6 +255,7 @@ def build_rows() -> list[dict[str, str]]:
     action_rows = require_rows(NEXT_ACTIONS)
     direct_review_rows = require_rows(COURT_PUBLIC_LAW_DIRECT_REVIEW)
     survey_rows = require_rows(DISTRICT_PUBLIC_OPINION_SURVEY_ITEM_PROXY_REVIEW)
+    historical_support_rows = require_rows(DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT)
     local_finance_rows = require_rows(BILL_FINANCE_LOBBYING_LOCAL_CONTEXT_REVIEW)
     external_search_rows = require_rows(BILL_FINANCE_LOBBYING_EXTERNAL_SEARCH_REVIEW)
     mention_packet_rows = require_rows(BILL_FINANCE_LOBBYING_EXTERNAL_LDA_MENTION_REVIEW)
@@ -255,6 +266,7 @@ def build_rows() -> list[dict[str, str]]:
 
     spine_by_bill = by_bill(spine_rows)
     survey_by_bill = by_bill(survey_rows)
+    historical_support_by_bill = group_by_bill(historical_support_rows)
     local_by_bill = by_bill(local_finance_rows)
     external_by_bill = by_bill(external_search_rows)
     target_scope_by_bill = by_bill(target_scope_rows)
@@ -269,6 +281,7 @@ def build_rows() -> list[dict[str, str]]:
         bill_id = action.get("bill_id", "").strip()
         spine = spine_by_bill.get(bill_id, {})
         survey = survey_by_bill.get(bill_id, {})
+        historical_support = historical_support_by_bill.get(bill_id, [])
         local = local_by_bill.get(bill_id, {})
         external = external_by_bill.get(bill_id, {})
         mention_packets = mentions_by_bill.get(bill_id, [])
@@ -302,6 +315,8 @@ def build_rows() -> list[dict[str, str]]:
             source_reviewed_subgate_count += 1
         if survey:
             source_reviewed_subgate_count += 1
+        if historical_support:
+            source_reviewed_subgate_count += 1
         if text_rows:
             source_reviewed_subgate_count += 1
 
@@ -328,6 +343,7 @@ def build_rows() -> list[dict[str, str]]:
         for grouped_rows, path in [
             (direct_rows, COURT_PUBLIC_LAW_DIRECT_REVIEW),
             ([survey] if survey else [], DISTRICT_PUBLIC_OPINION_SURVEY_ITEM_PROXY_REVIEW),
+            (historical_support, DISTRICT_PUBLIC_OPINION_BILL_TOPIC_SUPPORT),
             ([local] if local else [], BILL_FINANCE_LOBBYING_LOCAL_CONTEXT_REVIEW),
             ([external] if external else [], BILL_FINANCE_LOBBYING_EXTERNAL_SEARCH_REVIEW),
             (mention_packets, BILL_FINANCE_LOBBYING_EXTERNAL_LDA_MENTION_REVIEW),
@@ -353,6 +369,9 @@ def build_rows() -> list[dict[str, str]]:
             else "sponsor_metadata_missing"
         )
         public_opinion_status = (
+            "historical_related_issue_district_support_available_not_exact_bill_support"
+            if historical_support
+            else
             compact_status(
                 survey.get("current_proxy_review_status", ""),
                 "survey_item_proxy_review_present",
@@ -407,12 +426,38 @@ def build_rows() -> list[dict[str, str]]:
                 "no_survey_proxy_review_row",
             ),
             "bill_topic_item_review_status": compact_status(
-                survey.get("bill_topic_item_review_status", ""),
+                "source_reviewed_historical_related_issue_item_alignment_available"
+                if historical_support
+                else survey.get("bill_topic_item_review_status", ""),
                 "no_bill_topic_survey_item_review_row",
             ),
             "district_estimation_status": compact_status(
-                survey.get("district_estimation_status", ""),
+                "privacy_thresholded_historical_direct_weighted_estimate_available"
+                if historical_support
+                else survey.get("district_estimation_status", ""),
                 "no_district_estimation_review_row",
+            ),
+            "historical_related_issue_support_estimate_rows": str(len(historical_support)),
+            "historical_related_issue_support_years": unique_join([
+                row.get("survey_year", "") for row in historical_support
+            ]),
+            "historical_related_issue_support_items": unique_join([
+                row.get("survey_item_id", "") for row in historical_support
+            ]),
+            "historical_weighted_support_min": (
+                f"{min(float(row['weighted_support_share']) for row in historical_support):.6f}"
+                if historical_support
+                else ""
+            ),
+            "historical_weighted_support_max": (
+                f"{max(float(row['weighted_support_share']) for row in historical_support):.6f}"
+                if historical_support
+                else ""
+            ),
+            "exact_bill_support_status": (
+                "not_measured_historical_related_issue_only"
+                if historical_support
+                else "not_measured"
             ),
             "affected_group_item_status": compact_status(
                 survey.get("affected_group_item_status", ""),
@@ -496,6 +541,17 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
         if row["bill_topic_item_review_status"] != "no_bill_topic_survey_item_acquired"
         and row["bill_topic_item_review_status"] != "no_bill_topic_survey_item_review_row"
     ]
+    historical_issue_support_rows = [
+        row for row in rows
+        if int(row["historical_related_issue_support_estimate_rows"] or "0") > 0
+    ]
+    exact_bill_topic_item_rows = [
+        row for row in rows
+        if row["exact_bill_support_status"] not in {
+            "not_measured",
+            "not_measured_historical_related_issue_only",
+        }
+    ]
     target_diff_rows = [
         row for row in rows
         if int(row["source_reviewed_target_section_diff_rows"] or "0") > 0
@@ -529,7 +585,9 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
         "",
         f"- Public-law corpus rows: {len(rows)}",
         f"- Rows with district public-opinion proxy review attached: {len(public_opinion_proxy_rows)}",
-        f"- Rows with acquired bill-topic survey items: {len(acquired_bill_topic_item_rows)}",
+        f"- Rows with acquired bill-topic survey items: {len(exact_bill_topic_item_rows)}",
+        f"- Rows with source-reviewed bill-item or related-issue items: {len(acquired_bill_topic_item_rows)}",
+        f"- Rows with privacy-thresholded historical related-issue district estimates: {len(historical_issue_support_rows)}",
         f"- Rows with source-reviewed target-section diff coverage: {len(target_diff_rows)}",
         f"- Rows with reviewed no-structured-U.S.C.-target disposition: {len(no_target_rows)}",
         f"- Rows with campaign-finance target-scope review: {len(finance_target_scope_rows)}",

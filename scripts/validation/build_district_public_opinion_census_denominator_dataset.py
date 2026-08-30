@@ -10,6 +10,7 @@ counts plus geography attributes; it is not ACS affected-group detail.
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import time
@@ -148,6 +149,25 @@ def sponsor_districts(rows: list[dict[str, str]]) -> list[str]:
             if district_id:
                 values.add(district_id)
     return sorted(values)
+
+
+def existing_output_matches(district_ids: list[str]) -> bool:
+    if not OUT_CSV.exists():
+        return False
+    rows = read_csv(OUT_CSV)
+    if len(rows) != len(district_ids):
+        return False
+    if any(set(row) != set(FIELDNAMES) for row in rows):
+        return False
+    actual_ids = [row.get("district_id", "") for row in rows]
+    if actual_ids != district_ids or len(set(actual_ids)) != len(actual_ids):
+        return False
+    return all(
+        row.get("cd_session") == "116"
+        and row.get("denominator_status")
+        == "official_tigerweb_population_housing_denominator"
+        for row in rows
+    )
 
 
 def district_parts(district_id: str) -> tuple[str, str, str]:
@@ -290,13 +310,33 @@ def write_metadata(rows: list[dict[str, str]], districts: list[str]) -> None:
     )
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--refresh",
+        action="store_true",
+        help=(
+            "refetch TIGERweb even if the existing extract matches the current "
+            "district set"
+        ),
+    )
+    return parser.parse_args()
+
+
 def main() -> int:
+    args = parse_args()
     if not SOURCE_PACKETS.exists():
         raise SystemExit(f"{SOURCE_PACKETS} is missing; run make district-public-opinion-source-packets first.")
     packets = read_csv(SOURCE_PACKETS)
     districts = sponsor_districts(packets)
     if not districts:
         raise SystemExit(f"{SOURCE_PACKETS} has no sponsor_districts values.")
+    if not args.refresh and existing_output_matches(districts):
+        rows = read_csv(OUT_CSV)
+        write_metadata(rows, districts)
+        print(f"Reused {OUT_CSV}")
+        print(f"Wrote {OUT_METADATA}")
+        return 0
     rows = build_rows(districts, sleep_seconds=0.05)
     write_csv(rows)
     write_metadata(rows, districts)

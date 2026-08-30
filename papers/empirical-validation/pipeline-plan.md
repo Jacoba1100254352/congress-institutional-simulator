@@ -525,6 +525,25 @@ Rules:
   exist; this is not source-reviewed exact bill-topic support,
   bill-text-aligned support/opposition, MRP/small-area estimation, or
   affected-group evidence.
+- `make build-district-public-opinion-bill-text-context-raw` reuses a matching
+  committed cache by default and, with `ARGS=--refresh`, fetches official
+  GovInfo BILLSTATUS titles, legislative subjects, and latest CRS summaries for
+  all 22 queued packets.
+- `make district-public-opinion-bill-item-alignment-review` records one curated
+  bill-to-item disposition per packet. The current review retains one
+  historical related-issue item and preserves 21 negative dispositions.
+- `make build-district-public-opinion-bill-topic-support-raw` reuses a matching
+  aggregate cache by default. With `ARGS=--refresh`, it joins retained items only
+  to pinned annual CCES geography and validated-voter weights, verifies the
+  downloaded bytes against the pinned checksums, confirms each question's
+  pre-election wave from the pinned annual guide, and checks every nonmissing
+  cumulative response against the original annual question field. It publishes
+  aggregate district rows above the 30-response threshold with no respondent
+  identifiers.
+- `make district-public-opinion-bill-topic-support` writes the two current
+  annual NY-10 estimates as historical related-issue context. It does not pool
+  years or claim exact, contemporaneous, MRP, uncertainty, affected-group,
+  causal, or model-validation evidence.
 
 Candidate targets:
 
@@ -615,11 +634,13 @@ bounded bill policy-area context, a bill-topic readiness queue,
   ACS district context, survey-source crosswalk planning, exact current CES
   proxy-variable review, official CES policy-preference candidate-item
   metadata, unweighted raw CES response-code distributions, and official guide
-  codebook item-direction labels, but not acquired survey item IDs,
-  bill-text-aligned support/opposition, issue-specific bill support,
-  MRP/small-area estimates,
-bill-text-specific affected-population detail, or affected-group evidence;
-implementation is linked
+  codebook item-direction labels. It now also has 22 official bill-text
+  dispositions, one retained historical related-issue alignment, 21 negative
+  dispositions, and two privacy-thresholded annual district aggregates. The
+  retained item is not the bill wording and predates enactment; exact or
+  contemporaneous bill support, design-based uncertainty, MRP/small-area estimates,
+  bill-text-specific affected-population detail, and affected-group evidence
+  remain absent; implementation is linked
 to Federal Register document/docket metadata, bounded authority-search matches,
 bounded proposed-history matches, bounded comment metadata, bounded
 comment-record metadata, and bounded timing metadata; court review is linked only through
@@ -904,7 +925,7 @@ empirical-heldout-check
 Before this can become a data/resource paper:
 
 - all 12 configured raw inputs have usable raw or cached summary inputs;
-- public support has acquired survey item IDs, bill-text direction alignment, bill-topic mapping, and MRP/small-area estimates beyond the current bounded CES district proxy, readiness queue, source-acquisition packets, Census population/housing denominators, broad ACS district context, survey-source crosswalk planning, exact current CES proxy-variable review, official CES policy-preference candidate-item metadata, raw response-code distributions, and codebook item-direction labels, and campaign finance is linked beyond the current bounded concentration, issue-sector, member, district-context, sponsored-bill, local no-exact-match, target-scope, cached bill-action, and source-acquisition queue layers;
+- public support advances beyond the one historical related-issue pilot to exact or closer contemporaneous questions, validated geography, design-based uncertainty or MRP where needed, and bill-text-specific affected-population evidence, and campaign finance is linked beyond the current bounded concentration, issue-sector, member, district-context, sponsored-bill, local no-exact-match, target-scope, cached bill-action, and source-acquisition queue layers;
 - the linkage report shows bill/topic/statute or actor joins for the high-priority public-opinion, finance, implementation, and statutory-lineage areas;
 - implementation, law-revision, and comparative-institution proxy data are present, with bounded comparative scenario-family metadata anchors added and full lineage, observed productivity, and institutional-fit data still documented as future work;
 - source registry documents licensing/access;

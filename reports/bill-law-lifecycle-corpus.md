@@ -5,6 +5,8 @@ This report assembles one bounded packet per public-law row by joining the lifec
 - Public-law corpus rows: 40
 - Rows with district public-opinion proxy review attached: 22
 - Rows with acquired bill-topic survey items: 0
+- Rows with source-reviewed bill-item or related-issue items: 1
+- Rows with privacy-thresholded historical related-issue district estimates: 1
 - Rows with source-reviewed target-section diff coverage: 13
 - Rows with reviewed no-structured-U.S.C.-target disposition: 2
 - Rows with campaign-finance target-scope review: 4
@@ -28,7 +30,7 @@ Next actionable upgrade gates:
 - bill_topic_public_opinion: 7
 - complete_regulations_comments: 1
 
-Claim boundary: Public-law lifecycle corpus only; rows compile generated source-review, metadata, proxy, and action-queue statuses from existing reports. The corpus does not create bill-topic public support, affected-group harm, bill-specific campaign-finance or lobbying influence, implementation outcomes, complete statutory lineage, direct court-review evidence beyond source-reviewed dispositions, causal effects, welfare evidence, or model validation.
+Claim boundary: Public-law lifecycle corpus only; rows compile generated source-review, metadata, proxy, and action-queue statuses from existing reports. The corpus does not convert historical related-issue support into exact or contemporaneous bill-topic public support, affected-group harm, bill-specific campaign-finance or lobbying influence, implementation outcomes, complete statutory lineage, direct court-review evidence beyond source-reviewed dispositions, causal effects, welfare evidence, or model validation.
 
 | Rank | Bill | Public law | Packet status | Next gate | Public opinion | Finance/lobbying | Statutory lineage | Implementation | Court review |
 | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -50,7 +52,7 @@ Claim boundary: Public-law lifecycle corpus only; rows compile generated source-
 | 16 | `117-hr-1652` | `117-27` | bounded_packet_with_source_reviewed_subgate | bill_topic_public_opinion | no_bill_topic_survey_item_acquired | bounded_same_policy_or_bill_identifier_context_only | no_codified_lineage_progress_row | no_rulemaking_implementation_packet | no_queued_court_public_law_overlap |
 | 17 | `117-hr-3113` | `117-114` | bounded_packet_with_source_reviewed_subgate | bill_topic_public_opinion | no_bill_topic_survey_item_acquired | bounded_same_policy_or_bill_identifier_context_only | no_codified_lineage_progress_row | no_rulemaking_implementation_packet | no_queued_court_public_law_overlap |
 | 18 | `117-hr-6943` | `117-172` | bounded_packet_with_source_reviewed_subgate | bill_topic_public_opinion | no_bill_topic_survey_item_acquired | bounded_same_policy_or_bill_identifier_context_only | no_codified_lineage_progress_row | no_rulemaking_implementation_packet | no_queued_court_public_law_overlap |
-| 19 | `117-hr-8404` | `117-228` | bounded_packet_with_source_reviewed_subgate | bill_topic_public_opinion | no_bill_topic_survey_item_acquired | bounded_same_policy_or_bill_identifier_context_only | no_codified_lineage_progress_row | no_rulemaking_implementation_packet | no_queued_court_public_law_overlap |
+| 19 | `117-hr-8404` | `117-228` | bounded_packet_with_source_reviewed_subgate | bill_topic_public_opinion | source_reviewed_historical_related_issue_item_alignment_available | bounded_same_policy_or_bill_identifier_context_only | no_codified_lineage_progress_row | no_rulemaking_implementation_packet | no_queued_court_public_law_overlap |
 | 20 | `117-hr-8454` | `117-215` | bounded_packet_with_source_reviewed_subgate | bill_topic_public_opinion | no_bill_topic_survey_item_acquired | bounded_same_policy_or_bill_identifier_context_only | no_codified_lineage_progress_row | no_rulemaking_implementation_packet | no_queued_court_public_law_overlap |
 | 21 | `117-hr-6386` | `117-295` | bounded_cross_source_packet_with_reviewed_subgates | bill_specific_campaign_finance_or_lobbying_to_bill | no_bill_topic_survey_item_acquired | reviewed_public_fec_openfec_scope_no_bill_specific_campaign_finance_link | no_codified_lineage_progress_row | no_rulemaking_implementation_packet | no_queued_court_public_law_overlap |
 | 22 | `117-s-233` | `117-115` | bounded_packet_with_metadata_or_proxy_context_only | full_bill_progression_census_overlap | no_bill_topic_survey_item_review_row | bounded_same_policy_or_bill_identifier_context_only | no_codified_lineage_progress_row | no_rulemaking_implementation_packet | no_queued_court_public_law_overlap |

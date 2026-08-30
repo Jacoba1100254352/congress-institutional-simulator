@@ -144,6 +144,10 @@ def build_rows(readiness_rows: list[dict[str, str]]) -> list[dict[str, str]]:
     for index, source in enumerate(readiness_rows, start=1):
         policy_area = source.get("policy_area", "")
         packet = packet_for(policy_area)
+        historical_source_acquired = (
+            source.get("source_reviewed_bill_item_alignment_rows", "0").strip() == "1"
+            and int(source.get("issue_specific_support_rows", "0") or "0") > 0
+        )
         rows.append({
             "packet_rank": str(index),
             "readiness_rank": source.get("readiness_rank", ""),
@@ -163,9 +167,17 @@ def build_rows(readiness_rows: list[dict[str, str]]) -> list[dict[str, str]]:
                 "bill_id; public_law_number; policy_area; district_id; issue_topic; "
                 "survey_item_id; mrp_estimate_id; affected_group; affected_population_denominator"
             ),
-            "acquisition_status": "source_packet_only_no_external_dataset_acquired",
+            "acquisition_status": (
+                "historical_related_issue_source_acquired_exact_bill_support_pending"
+                if historical_source_acquired
+                else "source_packet_only_no_external_dataset_acquired"
+            ),
             "next_action": (
-                "Select source item or microdata for the bill topic, build or import district-level "
+                "Retain the privacy-thresholded historical related-issue estimates separately; "
+                "acquire exact or closer contemporaneous bill-topic support, add design-based "
+                "uncertainty or MRP where needed, and add affected-population evidence."
+                if historical_source_acquired
+                else "Select source item or microdata for the bill topic, build or import district-level "
                 "MRP/small-area support, add affected-population denominators, and keep support "
                 "separate from affected-group exposure."
             ),
@@ -173,18 +185,29 @@ def build_rows(readiness_rows: list[dict[str, str]]) -> list[dict[str, str]]:
                 "cumulative_ces_district_aggregate; sponsor_district_public_law_bill_metadata; "
                 "sponsor_district_bill_policy_area_context; bill_topic_public_opinion_readiness_queue; "
                 "public_opinion_source_acquisition_packet"
+                + (
+                    "; source_reviewed_historical_issue_item_alignment; "
+                    "privacy_thresholded_direct_weighted_district_issue_estimate"
+                    if historical_source_acquired
+                    else ""
+                )
             ),
             "missing_links": (
-                "bill_topic_public_opinion; survey_item_crosswalk; MRP_or_small_area_estimate; "
+                "bill_topic_public_opinion; survey_item_crosswalk; "
+                "exact_bill_wording_support; "
+                "contemporaneous_bill_support; MRP_or_small_area_estimate; "
                 "affected_population_denominator; issue_specific_affected_group_support; "
                 "affected_group_harm; causal_representation; public_benefit; model_validation"
             ),
             "source_url": source.get("source_url", ""),
             "claim_boundary": (
-                "Source-acquisition packet derived from bounded CES sponsor-district proxy context "
-                "and policy-area metadata only; not acquired bill-topic support data, not MRP or "
-                "small-area estimates, not affected-population denominators, not affected-group "
-                "support or harm, not public-benefit evidence, and not model validation."
+                "Source-acquisition packet with bounded CES sponsor-district proxy context and, "
+                "where present, a privacy-thresholded historical related-issue district estimate. "
+                "The historical estimate is not exact or contemporaneous bill-topic support; "
+                "packets have not acquired bill-topic support data that are exact or "
+                "contemporaneous to the bill. "
+                "Packets do not provide MRP, affected-population denominators, affected-group "
+                "support or harm, public-benefit evidence, or model validation."
             ),
         })
     return rows
@@ -207,13 +230,13 @@ def write_md(rows: list[dict[str, str]]) -> None:
     lines = [
         "# District Public-Opinion Source Packets",
         "",
-        "This report converts the bill-topic public-opinion readiness queue into source-acquisition packets. It is a work queue for future data collection, not public-opinion validation evidence.",
+        "This report converts the bill-topic public-opinion readiness queue into source-acquisition packets and records bounded historical source acquisition where completed. It is a work queue, not exact bill-support validation evidence.",
         "",
         f"- Source packets: {len(rows)}",
         f"- Policy areas represented: {len(policy_areas)}",
         f"- Packets without acquired external bill-topic data: {len(missing_status_rows)}",
         "",
-        "Claim boundary: packets name plausible survey, MRP/small-area, and affected-population source families for each queued public-law bill. They do not acquire those datasets, estimate support, measure affected-group harm, or validate model outputs.",
+        "Claim boundary: packets name plausible survey, MRP/small-area, and affected-population source families for each queued public-law bill. One packet carries historical related-issue estimates, but no packet provides exact or contemporaneous bill support, affected-group harm, or model validation.",
         "",
         "| Packet | Bill ID | Policy area | Target construct | Survey source | Affected-population source | Status |",
         "| ---: | --- | --- | --- | --- | --- | --- |",

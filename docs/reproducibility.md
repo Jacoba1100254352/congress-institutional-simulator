@@ -103,6 +103,8 @@ make build-campaign-finance-member-context-raw
 make build-campaign-finance-issue-context-raw
 make build-district-public-opinion-linkage-raw
 make build-district-public-opinion-policy-context-raw
+make build-district-public-opinion-bill-text-context-raw
+make build-district-public-opinion-bill-topic-support-raw
 make build-court-law-linkage-raw
 make build-rulemaking-implementation-linkage-raw
 make build-rulemaking-authority-linkage-raw
@@ -144,9 +146,18 @@ make campaign-finance-district-context
 make campaign-finance-issue-context
 make campaign-finance-sponsor-bill-context
 make district-public-opinion-policy-context
+make district-public-opinion-bill-item-alignment-review
+make district-public-opinion-bill-topic-support
 make lobbying-bill-policy-context
 make raw-source-manifest
 ```
+
+The district bill-text context, Census denominator, and bill-topic support raw
+builders reuse matching committed extracts by default. Use `ARGS=--refresh` on
+the corresponding `make build-...-raw` command to refetch the official source.
+For the annual CCES join, a live refresh verifies the Dataverse catalog MD5 and
+independently checks the byte count and SHA-256 of each tabular stream before
+writing aggregate output.
 
 Some optional workflows may require API keys or public data access. Adapter
 fixtures are not validation data. Curated raw extracts belong under
@@ -217,6 +228,19 @@ district-public-opinion linkage rows and topic-throughput rows; it does not
 establish issue-specific public support, MRP/small-area estimates,
 affected-group harm, representative responsiveness, or public-benefit
 validation.
+`make build-district-public-opinion-bill-text-context-raw` refreshes official
+GovInfo BILLSTATUS titles, legislative subjects, and latest CRS summaries for
+the 22 current review packets. `make build-district-public-opinion-bill-topic-support-raw`
+streams pinned Cumulative CES Policy Preferences and annual CCES Common Content
+files for source-reviewed positive alignments only, validates both catalog and
+access-byte provenance, pins the official annual guides, checks that each
+original question is in the pre-election wave, and verifies every nonmissing
+cumulative response against its original annual question field. It then uses
+the documented validated-voter pre-election weight, writes aggregate district
+rows above the 30-response threshold, and writes no respondent identifiers. The
+current two annual rows are historical related-issue context, not exact or
+contemporaneous bill support, MRP, design-based uncertainty, affected-group
+evidence, or model validation.
 `make build-rulemaking-implementation-linkage-raw` refreshes the optional
 Federal Register document-metadata cache used to link final-rule rows to docket,
 RIN, CFR, agency, and Federal Register-exposed Regulations.gov metadata; it does
@@ -397,6 +421,13 @@ validation evidence.
 sponsor-district public-law bill policy-area context rows that join CES district
 proxies to local topic-throughput policy areas; it is not issue-specific
 bill-support, MRP, affected-group harm, or public-benefit validation.
+`reports/district-public-opinion-bill-item-alignment-review.*` records the
+source review of all 22 official bill packets against current CES candidate
+items, including one retained historical related-issue alignment and 21
+negative dispositions. `reports/district-public-opinion-bill-topic-support.*`
+publishes two privacy-thresholded annual NY-10 aggregates for that retained item
+and keeps exact wording, contemporaneous timing, MRP, uncertainty,
+affected-group, causal, and model-validation claims explicitly open.
 `reports/campaign-finance-district-context.*` records the bounded
 House-candidate subset where public FEC recipient metadata can be joined to CES
 district public-opinion context; it does not establish sponsor, bill, issue, or
