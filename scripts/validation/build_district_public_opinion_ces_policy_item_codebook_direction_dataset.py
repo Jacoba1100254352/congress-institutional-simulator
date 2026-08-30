@@ -14,6 +14,8 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+from reproducible_metadata import write_reproducible_metadata
+
 
 CANDIDATES = Path("data/validation/raw/district_public_opinion_ces_policy_item_candidates.csv")
 RAW_DISTRIBUTIONS = Path(
@@ -524,7 +526,7 @@ def write_metadata(rows: list[dict[str, str]]) -> None:
         "",
         "Rows identify guide codebook labels and endpoint directions for source items only. They do not align those item directions to public-law bill text and do not estimate district support.",
     ])
-    OUT_METADATA.write_text("\n".join(lines) + "\n")
+    write_reproducible_metadata(OUT_METADATA, "\n".join(lines) + "\n")
 
 
 def main() -> int:

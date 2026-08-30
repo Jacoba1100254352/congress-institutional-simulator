@@ -13,6 +13,8 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
+from reproducible_metadata import write_reproducible_metadata
+
 
 ROLL_CALL_SOURCE_REVIEW = Path("reports/bill-finance-lobbying-roll-call-source-review.csv")
 CAMPAIGN_TARGET_SCOPE_REVIEW = Path(
@@ -392,7 +394,8 @@ def write_metadata(args: argparse.Namespace, rows: list[dict[str, str]]) -> None
         for row in rows
         if row["roll_call_number"]
     }
-    args.metadata.write_text(
+    write_reproducible_metadata(
+        args.metadata,
         "# Bill Finance/Lobbying Member-Vote Target-Scope Cache\n\n"
         f"Generated: {datetime.now(timezone.utc).isoformat(timespec='seconds')}\n\n"
         "Sources:\n\n"

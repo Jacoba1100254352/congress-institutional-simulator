@@ -2,8 +2,8 @@
 
 The Java catalog preserves historical burden-shifting parameter sweeps as addressable scenario keys, but `--all-scenarios` runs a representative coverage screen: every non-default explicit key plus the small burden-shifting stress-test family used by the paper.
 
-- Historical explicit keys: 196
-- Coverage-screen keys run by `--all-scenarios`: 100
+- Historical explicit keys: 198
+- Coverage-screen keys run by `--all-scenarios`: 102
 - Archived burden-shifting keys excluded from `--all-scenarios`: 96
 
 | Breadth family | Count |
@@ -25,8 +25,8 @@ The Java catalog preserves historical burden-shifting parameter sweeps as addres
 | Independent review | 3 |
 | Influence/campaign finance | 1 |
 | Leadership/procedure | 23 |
-| Other | 5 |
-| Policy tournament | 5 |
+| Other | 6 |
+| Policy tournament | 6 |
 | Portfolio hybrid | 2 |
 | Reversibility | 3 |
 | Selection/retention | 3 |

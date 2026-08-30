@@ -17,6 +17,8 @@ import math
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+from reproducible_metadata import write_reproducible_metadata
 from urllib.request import Request, urlopen
 
 
@@ -627,7 +629,7 @@ def write_metadata(rows: list[dict[str, str]], reused: bool = False) -> None:
         "",
         CLAIM_BOUNDARY,
     ])
-    OUT_METADATA.write_text("\n".join(lines) + "\n")
+    write_reproducible_metadata(OUT_METADATA, "\n".join(lines) + "\n")
 
 
 def parse_args() -> argparse.Namespace:

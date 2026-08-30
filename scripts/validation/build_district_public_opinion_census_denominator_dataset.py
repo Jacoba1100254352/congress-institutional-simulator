@@ -15,6 +15,8 @@ import json
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+
+from reproducible_metadata import write_reproducible_metadata
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -264,7 +266,8 @@ def write_csv(rows: list[dict[str, str]]) -> None:
 def write_metadata(rows: list[dict[str, str]], districts: list[str]) -> None:
     total_pop = sum(parse_int(row["pop100"]) for row in rows)
     total_hu = sum(parse_int(row["hu100"]) for row in rows)
-    OUT_METADATA.write_text(
+    write_reproducible_metadata(
+        OUT_METADATA,
         "# District Public-Opinion Census Denominators\n\n"
         f"Generated: {datetime.now(timezone.utc).isoformat(timespec='seconds')}\n\n"
         "Sources:\n\n"

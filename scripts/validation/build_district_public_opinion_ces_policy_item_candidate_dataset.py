@@ -8,6 +8,8 @@ import json
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+
+from reproducible_metadata import write_reproducible_metadata
 from typing import Any
 
 
@@ -554,7 +556,8 @@ def write_metadata(rows: list[dict[str, str]]) -> None:
     issue_areas = sorted({row["issue_area"] for row in rows})
     now = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     first = rows[0]
-    OUT_METADATA.write_text(
+    write_reproducible_metadata(
+        OUT_METADATA,
         "\n".join([
             "# District Public Opinion CES Policy Item Candidate Metadata",
             "",

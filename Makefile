@@ -625,6 +625,7 @@ test: build
 	mkdir -p out/test
 	javac --release $(JAVA_RELEASE) -cp $(APP_CP) -d out/test $(TEST_SOURCES)
 	java $(JAVA_PROPS) -cp $(APP_CP):out/test congresssim.SimulatorTests
+	python3 scripts/validation/test_reproducible_metadata.py
 
 ci: test calibration-check seed-robustness-check validation-gap-report catalog-breadth paper-checks supplement-anonymous clean-regeneration-check
 

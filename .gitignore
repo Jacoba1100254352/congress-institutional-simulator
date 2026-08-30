@@ -31,3 +31,7 @@ credentials.local.*
 *.mobileprovision
 id_rsa
 id_ed25519
+
+# Python bytecode and caches.
+__pycache__/
+*.pyc

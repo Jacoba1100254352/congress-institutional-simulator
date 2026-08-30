@@ -9,6 +9,8 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+from reproducible_metadata import write_reproducible_metadata
+
 
 ADJUDICATION = Path("reports/statutory-lineage-adjudication.csv")
 TEXT_DIFF = Path("reports/statutory-lineage-olrc-annual-text-diff.csv")
@@ -244,7 +246,8 @@ def write_metadata(rows: list[dict[str, str]], path: Path, adjudication_input: P
         row for row in rows
         if row["target_review_packet_status"] != "target_section_review_packet_needs_manual_source_retrieval"
     ]
-    path.write_text(
+    write_reproducible_metadata(
+        path,
         "\n".join([
             "# Statutory Lineage Target Review Packet Metadata",
             "",
