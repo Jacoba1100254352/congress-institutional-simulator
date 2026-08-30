@@ -16,7 +16,7 @@ Is the simulator sufficiently documented, tested, packaged, and reusable to supp
 
 Not yet.
 
-The simulator has a strong internal artifact workflow: Java 21 enforcement, Makefile-first commands, tests, reproducible campaign targets, paper checks, ODD/ODD+D documentation, and an anonymous supplement builder. The repository is not yet ready for a software publication because the packaging layer is incomplete: no license file, no citation metadata, no clean-clone reproduction log, and no release/archival metadata were found.
+The simulator has a strong internal artifact workflow: Java 21 enforcement, Makefile-first commands, tests, reproducible campaign targets, paper checks, ODD/ODD+D documentation, software-facing architecture/output/extension docs, an anonymous supplement builder, root citation metadata, CodeMeta metadata, and a release checklist. The repository is not yet ready for a software publication because the remaining packaging layer is incomplete: no license file exists, no clean-clone reproduction log exists, and no tagged archive or DOI metadata has been recorded.
 
 ## Required Files
 
@@ -35,7 +35,8 @@ Do not draft a software paper unless the repository passes the reproducibility a
 
 ## Next Concrete Repo Tasks
 
-1. Add a root `LICENSE`, `CITATION.cff`, and optional `codemeta.json`.
-2. Add `docs/architecture.md`, `docs/output-schema.md`, `docs/adding-a-mechanism.md`, `docs/adding-a-campaign.md`, and `docs/reproducibility.md`.
-3. Run a clean-clone audit with `make test`, `make reproduce-paper-offline`, and `make supplement-anonymous`.
-4. Save the clean-clone log and artifact-bundle audit before drafting a software paper.
+1. Choose and add a root `LICENSE`.
+2. Run a clean-clone audit with `make test`, `make reproduce-paper-offline`, and `make supplement-anonymous`.
+3. Save the clean-clone log and artifact-bundle audit before drafting a software paper.
+4. After the clean-clone audit passes, tag and archive a release, then update `CITATION.cff` and `codemeta.json` with final DOI/version metadata.
+5. Keep the software-facing docs synchronized with any future package, campaign, or output-schema changes.

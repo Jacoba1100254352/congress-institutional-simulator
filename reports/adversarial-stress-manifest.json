@@ -1,0 +1,108 @@
+{
+	"manifestVersion": "adversarial-stress-schema-v0",
+	"status": "schema_only_not_experiment_evidence",
+	"claimBoundary": "First-wave adversary specifications are simulator assumptions for bounded synthetic stress tests. They define actor objectives, budgets, information levels, and required outputs; they do not estimate real-world attack rates or validate institutional adoption claims.",
+	"catalogOutputs": ["reports/adversary-catalog.csv", "reports/adversary-catalog.md"],
+	"requiredTraceFields": ["seed", "caseKey", "scenarioKey", "mechanismFamily", "adversaryId", "actorType", "objective", "budgetUnit", "budgetValue", "informationLevel", "attackActionList", "preAttackFeatures", "postAttackFeatures", "institutionalPath", "baselineOutcome", "attackedOutcome", "successFlag", "metricDeltas", "administrativeBurden"],
+	"firstWaveAdversaries": [
+		{
+			"id": "A1",
+			"name": "Clone/decoy proposer",
+			"actorType": "Proposer, party, or lobby-aligned proposer",
+			"objective": "Make content selection choose a worse alternative or dilute support for a good one.",
+			"informationLevels": ["medium", "high"],
+			"budgetUnits": ["proposal_slots", "amendment_slots"],
+			"strategySet": ["add_near_duplicate", "add_dominated_variant", "split_support_with_decoy"],
+			"successMetric": "selected_bill_lower_than_best_available_support_or_benefit",
+			"degradationMetric": "selected_bill_support_or_benefit_loss; low_support_enactment_change"
+		},
+		{
+			"id": "A2",
+			"name": "Poison-pill or sequencing actor",
+			"actorType": "Party, proposer, committee gatekeeper, or lobby group",
+			"objective": "Block a high-benefit bill or pass it with a harmful rider.",
+			"informationLevels": ["medium", "high"],
+			"budgetUnits": ["amendment_slots", "agenda_order_slots"],
+			"strategySet": ["attach_harmful_rider", "add_private_gain_rider", "reorder_substitutes", "sequence_polarizing_amendment_first"],
+			"successMetric": "high_benefit_bill_fails_or_passes_with_increased_harm_or_capture",
+			"degradationMetric": "high_benefit_blockage_rate; enacted_harm_or_capture_added"
+		},
+		{
+			"id": "A3",
+			"name": "Public-input manipulator",
+			"actorType": "Outside campaign, lobby group, or panel manipulator",
+			"objective": "Distort objection, petition, or panel signals.",
+			"informationLevels": ["low", "medium"],
+			"budgetUnits": ["objections_filed", "public_attention_units", "panel_noise_intensity"],
+			"strategySet": ["file_noisy_objections", "coordinate_repetitive_claims", "bias_panel_inputs", "increase_panel_noise"],
+			"successMetric": "review_path_diverges_from_generated_support_or_benefit",
+			"degradationMetric": "administrative_cost_added; false_positive_and_false_negative_public_input_errors"
+		},
+		{
+			"id": "A4",
+			"name": "Bad-faith harm claimant",
+			"actorType": "Outside campaign, party, affected-group proxy, or lobby group",
+			"objective": "Trigger false-positive harm review or evade true harm review.",
+			"informationLevels": ["medium"],
+			"budgetUnits": ["harm_claims_filed", "legal_attention_units"],
+			"strategySet": ["exaggerate_harm", "duplicate_claims", "target_rivals", "understate_ally_harm"],
+			"successMetric": "harm_review_blocks_non_harmful_bill_or_clears_harmful_bill",
+			"degradationMetric": "false_positive_burden; false_negative_concentrated_harm_passage"
+		},
+		{
+			"id": "A5",
+			"name": "Proposal flooder",
+			"actorType": "Proposer, party, or lobby group",
+			"objective": "Exhaust agenda, floor, or review capacity.",
+			"informationLevels": ["low", "medium"],
+			"budgetUnits": ["proposal_slots", "lobbying_support_units"],
+			"strategySet": ["submit_low_value_bills", "clone_bills", "submit_high_salience_noise", "submit_lobby_supported_low_support_bills"],
+			"successMetric": "high_benefit_bills_crowded_out_or_low_support_bills_enacted",
+			"degradationMetric": "floor_or_review_load_added; high_benefit_consideration_decline; low_support_enactment_change"
+		},
+		{
+			"id": "A6",
+			"name": "Lobbying camouflage actor",
+			"actorType": "Lobby group or proxy sponsor network",
+			"objective": "Preserve private gain while evading anti-capture screens.",
+			"informationLevels": ["medium", "high"],
+			"budgetUnits": ["lobbying_money", "proxy_sponsors", "issue_framing_units"],
+			"strategySet": ["split_spend", "route_through_proxies", "mask_private_gain_as_technical_information"],
+			"successMetric": "captured_bill_passes_anti_capture_or_access_screen",
+			"degradationMetric": "capture_among_enacted_bills_added; visible_spend_decline_with_capture_persistence"
+		},
+		{
+			"id": "A7",
+			"name": "Administrative overload coalition",
+			"actorType": "Mixed coalition",
+			"objective": "Saturate layered safeguards.",
+			"informationLevels": ["medium", "high"],
+			"budgetUnits": ["proposals", "objections", "harm_claims", "lobbying_camouflage", "review_demand"],
+			"strategySet": ["combine_flooding_claims_panel_noise_and_camouflage", "target_review_capacity", "force_queue_saturation"],
+			"successMetric": "routing_or_review_capacity_saturated",
+			"degradationMetric": "administrative_cost_added; queue_overflow; risk_control_degradation_after_overload"
+		},
+		{
+			"id": "A8",
+			"name": "Public-support distortion actor",
+			"actorType": "Outside campaign, lobby group, party, or proxy civic campaign",
+			"objective": "Create false consensus, suppress support for a high-benefit bill, or inflate support for a private-gain bill.",
+			"informationLevels": ["low", "medium", "high"],
+			"budgetUnits": ["public_campaign_spend", "attention_capacity", "salience_manipulation", "proxy_endorsements"],
+			"strategySet": ["shift_cheap_public_signals", "amplify_distorted_salience", "target_generated_district_or_affected_group_support_proxies"],
+			"successMetric": "public_support_signal_moves_away_from_generated_benefit_or_burden",
+			"degradationMetric": "public_preference_distortion; low_support_enactment_change; popular_fail_change"
+		},
+		{
+			"id": "A9",
+			"name": "Mixed adversary portfolio",
+			"actorType": "Coordinated outside and inside actors",
+			"objective": "Combine attacks so defenses that handle one stressor fail under interaction.",
+			"informationLevels": ["medium", "high"],
+			"budgetUnits": ["joint_budget_across_attack_actions"],
+			"strategySet": ["allocate_budget_across_two_to_four_attack_types", "compare_to_strongest_same_budget_single_attack"],
+			"successMetric": "joint_attack_succeeds_where_strongest_single_attack_does_not",
+			"degradationMetric": "interaction_degradation; superadditive_loss; overload; recovery_failure"
+		}
+	]
+}

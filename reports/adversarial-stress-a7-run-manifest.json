@@ -1,0 +1,16 @@
+{
+	"manifestVersion": "adversarial-stress-a7-run-v0",
+	"status": "partial_a7_executable_pilot",
+	"adversaryId": "A7",
+	"seed": 20260428,
+	"runs": 5,
+	"legislators": 101,
+	"baseBillsPerRun": 60,
+	"traceRows": 1800,
+	"capacityUnits": 18.000000,
+	"recoveryUnitsPerCycle": 3.600000,
+	"maximumRecoveryCycles": 240,
+	"outputs": ["reports/adversarial-stress-a7-summary.csv", "reports/adversarial-stress-a7-summary.md", "reports/adversarial-failure-traces-a7.jsonl"],
+	"claimBoundary": "A7 executable pilot only. Rows pair the same generated worlds and target bill ids under a portfolio-hybrid safeguard path with a shared synthetic review-capacity budget. The attack injects fixed-budget proposal, objection, harm-claim, panel-noise, camouflage, and review demand before each target; overflow uses an explicitly traced ordinary-majority fallback. Capacity, backlog, and recovery-cycle values are modeling assumptions, not empirical agency or congressional staffing estimates, not a full A1-A9 sweep, and not evidence for real-world institutional ranking.",
+	"gateStatus": "not_manuscript_ready"
+}

@@ -289,17 +289,23 @@ def validate_rulemaking_implementation(results: list[dict[str, str]]) -> None:
         )
         if value is not None
     ]
-    comments = [numeric(row.get("comment_count", "")) for row in data]
-    capacities = [numeric(row.get("enforcement_capacity", "")) for row in data]
+    comments = [numeric(row.get("comment_count", "")) for row in data if row.get("comment_count", "").strip()]
+    capacities = [numeric(row.get("enforcement_capacity", "")) for row in data if row.get("enforcement_capacity", "").strip()]
+    proposed_date_rows = sum(1 for row in data if row.get("proposed_rule_date", "").strip())
+    effective_date_rows = sum(1 for row in data if row.get("effective_date", "").strip())
+    comment_rows = sum(1 for row in data if row.get("comment_count", "").strip())
     nonenforced = sum(1 for row in data if truthy(row.get("nonenforced", "")))
     underfunded = sum(1 for row in data if truthy(row.get("underfunded", "")))
     total = len(data)
+    append(results, path.name, "proposedDateCoverage", proposed_date_rows / total if total else 0.0, "Share of implementation rows with proposed-rule date available.")
+    append(results, path.name, "effectiveDateCoverage", effective_date_rows / total if total else 0.0, "Share of implementation rows with effective date available.")
+    append(results, path.name, "commentCountCoverage", comment_rows / total if total else 0.0, "Share of implementation rows with comment count available.")
     append(results, path.name, "meanProposedToFinalDays", mean(proposed_to_final), "Mean days between proposed and final rule where dates are available.")
     append(results, path.name, "meanFinalToEffectiveDays", mean(final_to_effective), "Mean days between final rule and effective date where dates are available.")
-    append(results, path.name, "meanCommentCount", mean(comments), "Mean public-comment volume by implementation row.")
-    append(results, path.name, "meanEnforcementCapacity", mean(capacities), "Mean encoded implementation or enforcement capacity.")
-    append(results, path.name, "nonEnforcementShare", nonenforced / total if total else 0.0, "Share of implementation rows marked nonenforced.")
-    append(results, path.name, "underfundedShare", underfunded / total if total else 0.0, "Share of implementation rows marked underfunded.")
+    append(results, path.name, "meanCommentCount", mean(comments), "Mean public-comment volume where comment counts are available.")
+    append(results, path.name, "meanEnforcementCapacity", mean(capacities), "Mean encoded implementation-speed or enforcement-capacity proxy where available.")
+    append(results, path.name, "nonEnforcementShare", nonenforced / total if total else 0.0, "Share of implementation rows marked nonenforced by the source extract.")
+    append(results, path.name, "underfundedShare", underfunded / total if total else 0.0, "Share of implementation rows marked underfunded by the source extract.")
 
 
 def validate_law_revision_history(results: list[dict[str, str]]) -> None:
@@ -319,12 +325,12 @@ def validate_law_revision_history(results: list[dict[str, str]]) -> None:
         for row in data
         if any(truthy(row.get(column, "")) for column in ("amended", "reauthorized", "repealed", "expired", "invalidated"))
     )
-    append(results, path.name, "lawAmendmentRate", amended / total if total else 0.0, "Share of tracked laws later amended.")
-    append(results, path.name, "reauthorizationRate", reauthorized / total if total else 0.0, "Share of tracked laws later reauthorized.")
-    append(results, path.name, "repealRate", repealed / total if total else 0.0, "Share of tracked laws later repealed.")
-    append(results, path.name, "expirationRate", expired / total if total else 0.0, "Share of tracked laws that expired.")
-    append(results, path.name, "postEnactmentInvalidationRate", invalidated / total if total else 0.0, "Share of tracked laws later invalidated.")
-    append(results, path.name, "postEnactmentCorrectionRate", correction / total if total else 0.0, "Share of tracked laws with any post-enactment correction event.")
+    append(results, path.name, "lawAmendmentRate", amended / total if total else 0.0, "Share of law rows with amendment text flag.")
+    append(results, path.name, "reauthorizationRate", reauthorized / total if total else 0.0, "Share of law rows with reauthorization or extension text flag.")
+    append(results, path.name, "repealRate", repealed / total if total else 0.0, "Share of law rows with repeal text flag.")
+    append(results, path.name, "expirationRate", expired / total if total else 0.0, "Share of law rows with sunset or expiration text flag.")
+    append(results, path.name, "postEnactmentInvalidationRate", invalidated / total if total else 0.0, "Share of law rows with an invalidation flag available from the source extract.")
+    append(results, path.name, "postEnactmentCorrectionRate", correction / total if total else 0.0, "Share of law rows with any revision or correction text flag.")
 
 
 def validate_comparative_institutions(results: list[dict[str, str]]) -> None:
@@ -342,7 +348,7 @@ def validate_comparative_institutions(results: list[dict[str, str]]) -> None:
     append(results, path.name, "meanDistrictMagnitude", mean(magnitudes), "Mean lower-house district magnitude or equivalent seat magnitude.")
     append(results, path.name, "meanJudicialReviewStrength", mean(review), "Mean encoded judicial-review strength.")
     append(results, path.name, "meanPartyFragmentation", mean(fragmentation), "Mean party-system fragmentation.")
-    append(results, path.name, "meanLegislativeProductivity", mean(productivity), "Mean comparative productivity proxy.")
+    append(results, path.name, "meanLegislativeProductivity", mean(productivity), "Mean comparative legislative-capacity proxy; not observed law-output productivity.")
 
 
 def write_reports(results: list[dict[str, str]]) -> None:

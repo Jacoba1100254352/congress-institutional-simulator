@@ -2,9 +2,9 @@
 
 ## Status
 
-Readiness level: experiments specified, implementation not complete.
+Readiness level: adversary schema, pilot mapping, and first A1/A2/A3/A4/A5/A6/A7 executable pilots implemented; full adversary program not complete.
 
-The current `make manipulation-stress` and `make ablation-analysis` outputs are pilot screens. They are not enough for a standalone paper because they do not yet specify adversary actors, budgets, information levels, attack success rates, worst-case degradation, or failure traces.
+The current `make manipulation-stress`, `make failure-trace-report`, `make adversarial-stress-manifest`, and `make ablation-analysis` outputs include pilot screens, schema artifacts, and bounded executable A1 clone/decoy through A7 administrative-overload stress runs. They are not enough for a standalone paper because A8-A9 do not yet have executable adversary behavior, A1-A7 still lack broader mechanism coverage and seed sensitivity, and recovery/correction metrics remain incomplete beyond A7 queue recovery.
 
 ## Existing Baseline Commands
 
@@ -15,6 +15,8 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 export PATH="$JAVA_HOME/bin:$PATH"
 make ablation-analysis
 make manipulation-stress
+make failure-trace-report
+make adversarial-stress-manifest
 make mechanism-diagnostics
 ```
 
@@ -24,10 +26,45 @@ Existing outputs:
 - `reports/ablation-analysis-summary.md`
 - `reports/simulation-manipulation-stress.csv`
 - `reports/manipulation-stress-summary.md`
+- `reports/adversary-catalog.csv`
+- `reports/adversary-catalog.md`
+- `reports/adversarial-stress-manifest.json`
+- `reports/adversarial-stress-run-manifest.json`
+- `reports/adversarial-stress-summary.csv`
+- `reports/adversarial-stress-summary.md`
+- `reports/adversarial-failure-traces.jsonl`
+- `reports/adversarial-stress-a2-run-manifest.json`
+- `reports/adversarial-stress-a2-summary.csv`
+- `reports/adversarial-stress-a2-summary.md`
+- `reports/adversarial-failure-traces-a2.jsonl`
+- `reports/adversarial-stress-a3-run-manifest.json`
+- `reports/adversarial-stress-a3-summary.csv`
+- `reports/adversarial-stress-a3-summary.md`
+- `reports/adversarial-failure-traces-a3.jsonl`
+- `reports/adversarial-stress-a4-run-manifest.json`
+- `reports/adversarial-stress-a4-summary.csv`
+- `reports/adversarial-stress-a4-summary.md`
+- `reports/adversarial-failure-traces-a4.jsonl`
+- `reports/adversarial-stress-a5-run-manifest.json`
+- `reports/adversarial-stress-a5-summary.csv`
+- `reports/adversarial-stress-a5-summary.md`
+- `reports/adversarial-failure-traces-a5.jsonl`
+- `reports/adversarial-stress-a6-run-manifest.json`
+- `reports/adversarial-stress-a6-summary.csv`
+- `reports/adversarial-stress-a6-summary.md`
+- `reports/adversarial-failure-traces-a6.jsonl`
+- `reports/adversarial-stress-a7-run-manifest.json`
+- `reports/adversarial-stress-a7-summary.csv`
+- `reports/adversarial-stress-a7-summary.md`
+- `reports/adversarial-failure-traces-a7.jsonl`
+- `reports/adversarial-failure-trace-index.csv`
+- `reports/adversarial-failure-trace-index.md`
+- `reports/adversarial-pilot-cell-map.csv`
+- `reports/adversarial-pilot-cell-map.md`
 
 ## Required Implementation Tasks
 
-1. Add explicit adversary records or classes, for example under `src/main/java/congresssim/institution/adversary/`.
+1. Extend the new explicit adversary catalog under `src/main/java/congresssim/institution/adversary/` into executable adversary action records.
 2. Add adversary configuration to campaign and scenario construction.
 3. Add attack-budget and information-level parameters.
 4. Add same-seed baseline pairing for every attacked cell.
@@ -54,14 +91,29 @@ Purpose: create the infrastructure required before substantive attacks.
 
 Required outputs:
 
-- `reports/adversarial-stress-manifest.json`;
-- `reports/adversarial-stress-summary.csv`;
-- `reports/adversarial-stress-summary.md`;
-- `reports/adversarial-failure-traces.jsonl` or equivalent trace artifact.
+- `reports/adversarial-stress-manifest.json` (schema precursor exists);
+- `reports/adversarial-pilot-cell-map.csv` and `.md` (aggregate pilot map exists);
+- `reports/adversarial-stress-summary.csv` and `.md` (A1 executable pilot exists);
+- `reports/adversarial-failure-traces.jsonl` (A1 executable pilot exists);
+- `reports/adversarial-stress-a2-summary.csv` and `.md` (A2 executable pilot exists);
+- `reports/adversarial-failure-traces-a2.jsonl` (A2 executable pilot exists);
+- `reports/adversarial-stress-a3-summary.csv` and `.md` (A3 executable pilot exists);
+- `reports/adversarial-failure-traces-a3.jsonl` (A3 executable pilot exists);
+- `reports/adversarial-stress-a4-summary.csv` and `.md` (A4 executable pilot exists);
+- `reports/adversarial-failure-traces-a4.jsonl` (A4 executable pilot exists);
+- `reports/adversarial-stress-a5-summary.csv` and `.md` (A5 executable pilot exists);
+- `reports/adversarial-failure-traces-a5.jsonl` (A5 executable pilot exists);
+- `reports/adversarial-stress-a6-summary.csv` and `.md` (A6 executable pilot exists);
+- `reports/adversarial-failure-traces-a6.jsonl` (A6 executable pilot exists);
+- `reports/adversarial-stress-a7-summary.csv` and `.md` (A7 executable pilot exists);
+- `reports/adversarial-failure-traces-a7.jsonl` (A7 executable pilot exists).
+
+Pilot precursor already available: `reports/adversarial-failure-trace-index.csv` and `.md` rank seven aggregate manipulation-stress comparisons as trace candidates. `reports/adversarial-pilot-cell-map.csv` joins those candidates and available executable artifacts to the A1-A9 catalog. The A1-A7 executable pilots now write same-generated-world per-bill traces and attack success summaries for clone/decoy pressure, poison-pill/sequencing pressure, public-input manipulation pressure, bad-faith harm-claim pressure, proposal-flooding pressure, lobbying-camouflage pressure, and administrative overload. The full trace requirement remains incomplete for A8-A9, broader mechanism families, seed sensitivity, and recovery/correction events beyond A7 queue recovery.
 
 Acceptance checks:
 
 - every attack row has a same-seed baseline row;
+- every adversary row maps to an explicit A1-A9 catalog entry;
 - signs are consistent, where positive degradation means worse attacked outcome;
 - untested cells are represented as missing or explicitly `not_applicable`, never silently omitted.
 
@@ -91,6 +143,13 @@ Required outputs:
 - worst-case and median degradation;
 - at least one trace where a clone or decoy changes the selected outcome.
 
+Current A1 pilot status:
+
+- `reports/adversarial-stress-summary.csv` reports six A1 budget/information cells.
+- `reports/adversarial-failure-traces.jsonl` contains 3,600 same-generated-world per-bill trace rows.
+- Recovery/correction remains `not_modeled`.
+- The current pilot covers the pairwise policy-tournament mechanism only; it still needs broader mechanism coverage before C3 can become draft-ready.
+
 ## Experiment 2: Poison-Pill and Sequencing Attack
 
 Target family: amendment and tournament systems.
@@ -109,6 +168,13 @@ Required outputs:
 - harm/capture increase among enacted bills;
 - ordering sensitivity;
 - recovery through substitute selection, review, or rollback where applicable.
+
+Current A2 pilot status:
+
+- `reports/adversarial-stress-a2-summary.csv` reports six A2 budget/information cells.
+- `reports/adversarial-failure-traces-a2.jsonl` contains 1,800 same-generated-world per-bill trace rows.
+- Recovery/correction remains `not_modeled`.
+- The current pilot covers the multi-round amendment-majority mechanism only; broader amendment, committee, tournament, and recovery paths remain required before C4 can become draft-ready.
 
 ## Experiment 3: Public-Input and Public-Support Manipulation
 
@@ -132,6 +198,13 @@ Required outputs:
 - review or correction rate;
 - attack success rate by budget and information level.
 
+Current A3 pilot status:
+
+- `reports/adversarial-stress-a3-summary.csv` reports six A3 budget/information cells.
+- `reports/adversarial-failure-traces-a3.jsonl` contains 1,800 same-generated-world per-bill trace rows.
+- Recovery/correction remains `not_modeled`.
+- The current pilot covers a public-objection plus citizen-panel majority path only; petitions, challenge-token variants, A8 public-support distortion, broader mechanism coverage, and external public-comment or panel benchmarks remain required before C5 can become draft-ready.
+
 ## Experiment 4: Bad-Faith Harm Claims
 
 Target family: harm-protection and affected-group systems.
@@ -150,6 +223,13 @@ Required outputs:
 - false-negative concentrated-harm passage;
 - administrative cost under claim pressure;
 - recovery or correction after false review.
+
+Current A4 pilot status:
+
+- `reports/adversarial-stress-a4-summary.csv` reports three medium-information A4 harm-claim budget cells.
+- `reports/adversarial-failure-traces-a4.jsonl` contains 900 same-generated-world per-bill trace rows.
+- Recovery/correction remains `not_modeled`.
+- The current pilot covers the harm-weighted majority path only with targeted synthetic harm-claim cases; compensation, affected-group consent, portfolio review paths, broader mechanism coverage, seed sensitivity, and external claim-process benchmarks remain required before C6 can become draft-ready.
 
 ## Experiment 5: Proposal Flooding
 
@@ -170,6 +250,13 @@ Required outputs:
 - high-benefit bill crowdout;
 - low-support enactment;
 - policy-yield change.
+
+Current A5 pilot status:
+
+- `reports/adversarial-stress-a5-summary.csv` reports six A5 budget/information cells.
+- `reports/adversarial-failure-traces-a5.jsonl` contains 1,800 same-generated-world per-original-bill trace rows.
+- Recovery/correction remains `not_modeled`.
+- The current pilot covers a fixed-capacity weighted agenda-lottery majority path only; open-rule calendars, proposal-cost screens, committee/leadership gatekeeping, review-load pathways, broader seed sensitivity, and external agenda-load benchmarks remain required before C7 can become draft-ready.
 
 Boundary: keep default-pass mechanisms as a small sensitivity check, not the center of this experiment.
 
@@ -193,6 +280,13 @@ Required outputs:
 - cases where visible spend falls but generated capture persists.
 - defensive-lobbying backlash as a separate tagged cell, not a substitute for camouflage.
 
+Current A6 pilot status:
+
+- `reports/adversarial-stress-a6-summary.csv` reports six A6 budget/information cells.
+- `reports/adversarial-failure-traces-a6.jsonl` contains 1,800 same-generated-world per-bill trace rows.
+- Recovery/correction remains `not_modeled`.
+- The current pilot covers a public-interest anti-capture screen plus influence-system majority path only; default-pass anti-capture bundles, audit-trust dynamics across repeated bills, defensive anti-reform lobbying, seed sensitivity, and external lobbying-disclosure or proxy-sponsorship benchmarks remain required before C8 can become draft-ready.
+
 ## Experiment 7: Administrative Overload Integration
 
 Target family: layered portfolio systems.
@@ -212,6 +306,13 @@ Required outputs:
 - risk-control degradation;
 - correction/recovery after overload;
 - robustness/cost frontier inputs.
+
+Current A7 pilot status:
+
+- `reports/adversarial-stress-a7-summary.csv` reports six A7 budget/information cells.
+- `reports/adversarial-failure-traces-a7.jsonl` contains 1,800 same-generated-world per-bill trace rows.
+- The pilot reports review-capacity saturation, queue overflow, ordinary-majority fallback, latent-risk control failure, administrative burden, and no-case recovery cycles after the attack window.
+- The current pilot covers the portfolio-hybrid safeguard path only with synthetic capacity and recovery assumptions; expanded-portfolio and risk-routed comparators, multi-seed sensitivity, calibration to staffing or review-load data, and substantive correction of enacted failures remain required before C9 can become draft-ready.
 
 ## Experiment 8: Mixed Adversary Case
 

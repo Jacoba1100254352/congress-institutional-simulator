@@ -1,0 +1,50 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "Congress Institutional Simulator",
+  "description": "A Java 21 comparative institutional-design simulator and reproducible paper workspace for comparing legislative mechanism bundles under shared synthetic assumptions.",
+  "codeRepository": "https://github.com/Jacoba1100254352/congress-institutional-simulator",
+  "version": "0.1.0-dev",
+  "dateModified": "2026-07-27",
+  "programmingLanguage": [
+    "Java",
+    "Python",
+    "LaTeX"
+  ],
+  "runtimePlatform": [
+    "Java 21"
+  ],
+  "softwareRequirements": [
+    "Java 21",
+    "GNU Make",
+    "Python 3",
+    "LaTeX with latexmk"
+  ],
+  "applicationCategory": "Simulation",
+  "operatingSystem": "Platform independent",
+  "keywords": [
+    "legislative institutions",
+    "institutional design",
+    "computational simulation",
+    "collective decision making",
+    "reproducible research"
+  ],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Jacob",
+      "familyName": "Anderson"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Jacob",
+      "familyName": "Anderson"
+    }
+  ],
+  "isPartOf": {
+    "@type": "CreativeWork",
+    "name": "A Reproducible Simulation Framework for Comparing Legislative Mechanism Bundles"
+  }
+}

@@ -11,9 +11,12 @@ This robustness paper can proceed as a synthetic adversarial-stress study, but i
 | Asset | Current value | Limitation for this paper |
 |---|---|---|
 | `reports/calibration-baseline.md` | Conventional baseline passed 7 of 7 screening checks. | Screens broad legislative-flow plausibility, not adversarial behavior. |
-| `reports/empirical-validation-readiness.md` | 6 of 12 raw validation datasets are present and shaped. | Missing datasets cover several robustness-relevant mechanisms. |
+| `reports/empirical-validation-readiness.md` | 12 of 12 raw validation datasets are present and shaped. | Many datasets are bounded proxies rather than direct validation targets for robustness-relevant mechanisms. |
 | `reports/seed-robustness-summary.md` | Main comparison campaign has multi-seed summaries. | Does not cover new explicit adversary attacks. |
 | `reports/manipulation-stress-summary.md` | Seven pilot stress comparisons exist. | Not budgeted, not actor-specific, and no attack success rates. |
+| `reports/adversary-catalog.md` and `reports/adversarial-stress-manifest.json` | A1-A9 adversary schema is now generated from simulator code. | Defines planned actors and required fields, but does not implement attack behavior. |
+| `reports/adversarial-pilot-cell-map.md` | Maps aggregate pilot cells and executable A1-A7 artifacts to the adversary catalog. | It is a readiness map rather than result evidence; A8-A9 remain without executable artifacts. |
+| A1-A7 adversarial summaries and trace JSONL artifacts under `reports/` | First executable A1 clone/decoy through A7 administrative-overload pilots have budget/information cells, success rates, median/worst degradation, and same-generated-world trace rows. A7 additionally reports queue saturation and no-case recovery cycles. | Each pilot covers one bounded mechanism path; A8-A9, broad mechanism coverage, multi-seed sensitivity, substantive correction beyond A7 queue recovery, and externally validated attack rates remain missing. |
 | `reports/ablation-analysis-summary.md` | Mechanism component effects are summarized. | Ablations are not adversarial validation. |
 
 ## Internal Validation Required Before Drafting
@@ -32,16 +35,16 @@ This robustness paper can proceed as a synthetic adversarial-stress study, but i
 
 ## Empirical Validation Gaps
 
-The current readiness report says 6 of 12 raw validation datasets are present. Missing datasets matter for robustness claims:
+The current readiness report says 12 of 12 raw validation datasets are present. Incomplete proxy coverage still matters for robustness claims:
 
 | Missing or incomplete input | Why it matters |
 |---|---|
-| `district_public_opinion.csv` | Needed to separate public-input manipulation from synthetic public-support assumptions. |
-| `campaign_finance.csv` | Needed for lobbying camouflage, proxy sponsorship, outside spending, and defensive lobbying claims. |
-| `court_review.csv` | Needed for claims about review, invalidation, and correction. |
-| `rulemaking_implementation.csv` | Needed for post-enactment delay, enforcement, and administrative-capacity claims. |
-| `law_revision_history.csv` | Needed for recovery, repeal, sunset, reauthorization, and correction claims. |
-| `comparative_institutions.csv` | Needed before comparing failure modes across chamber or party-system structures externally. |
+| bill-topic public opinion beyond `district_public_opinion.csv` | Needed to separate public-input manipulation from synthetic public-support assumptions; the current CES district aggregate is only a weak proxy. |
+| campaign-finance and lobbying linkage beyond `campaign_finance.csv`, `campaign_finance_linkage.csv`, `reports/campaign-finance-issue-context.csv`, `reports/campaign-finance-member-context.csv`, `reports/campaign-finance-district-context.csv`, `reports/campaign-finance-sponsor-bill-context.csv`, `reports/lobbying-issue-linkage.csv`, and `reports/lobbying-bill-policy-context.csv` | Needed for lobbying camouflage, proxy sponsorship, outside spending, and defensive lobbying claims beyond bounded OpenFEC concentration summaries, FEC recipient metadata, issue-sector context, member context, House-candidate district context, candidate-to-sponsored-bill context, LDA issue taxonomy, and shared-policy-area bill context. |
+| emergency-order court review beyond `court_review.csv` | Needed for emergency-review behavior; SCDB merits-case invalidation and signed-opinion summaries are ready. |
+| implementation feedback beyond `rulemaking_implementation.csv`, `rulemaking_authority_linkage.csv`, `rulemaking_history_linkage.csv`, `rulemaking_comment_metadata.csv`, and `rulemaking_comment_records.csv` | Needed for enforcement, nonenforcement, high-volume comments, comment-text review, Unified Agenda stages, appropriations, and administrative-capacity claims beyond final-rule effective-date delay, authority text, proposed-rule metadata, bounded comment metadata, bounded small/zero-comment comment-record metadata, and timing metadata. |
+| full statutory lineage beyond `law_revision_history.csv`, `law_revision_bill_linkage.csv`, `reports/statutory-lineage-source-scan.csv`, `reports/statutory-lineage-target-section-triage.csv`, `reports/statutory-lineage-olrc-current-scan.csv`, `reports/statutory-lineage-olrc-historical-scan.csv`, `reports/statutory-lineage-olrc-annual-text-diff.csv`, `reports/statutory-lineage-adjudication.csv`, `reports/statutory-lineage-target-review-packets.csv`, `reports/statutory-lineage-target-section-diff-review.csv`, `reports/statutory-lineage-target-lifecycle-bridge.csv`, and bounded rulemaking metadata | Needed for recovery, repeal, sunset, reauthorization, and correction claims beyond bounded Congress.gov title/summary text flags, bill/action metadata, official GovInfo public-law text scans, target-section triage, current OLRC page availability, annual OLRC availability, automated annual section-change/text-diff cues, official OLRC post-only public-law marker evidence, target-section review packets, the thirteen-public-law target-section diff-review pilot, target-section lifecycle bridge context, authority text, proposed-history metadata, comment metadata, and timing metadata. |
+| comparative chamber and party-system data beyond `comparative_institutions.csv` | Needed before comparing failure modes across chamber or party-system structures externally; the current QoG/OWID/V-Dem file is a bounded profile proxy. |
 
 Even after those datasets exist, they should validate observable flow and boundary conditions. They will not directly validate generated public benefit, generated harm, or true adversary intent.
 
@@ -53,7 +56,7 @@ Even after those datasets exist, they should validate observable flow and bounda
 - Parties, committees, courts, media, agencies, and elections do not fully co-evolve.
 - Administrative cost is an index, not a measured staff-time or fiscal-cost estimate.
 - Public-input manipulation is simplified and does not model communication networks.
-- Lobbying camouflage is not yet implemented and would require proxy-sponsor assumptions.
+- Lobbying camouflage is implemented only as a bounded synthetic pilot and still depends on unvalidated proxy-sponsor assumptions.
 - Harm-claim behavior lacks a validated legal or administrative process model.
 - Recovery/correction behavior is partial and may overstate institutional repair capacity if implemented optimistically.
 
@@ -77,7 +80,7 @@ Claims not allowed without further validation:
 
 1. Finish internal adversary trace and summary validation.
 2. Add adversarial seed robustness.
-3. Extend empirical readiness for campaign finance, district opinion, review/courts, implementation, law revision, and comparative institutions.
+3. Extend empirical readiness for bill-topic district opinion beyond sponsor-district bill policy-area context, affected-group mapping, campaign-finance linkage beyond FEC recipient metadata, bounded issue-sector context, matched member context, bounded House-candidate district context, and bounded candidate-to-sponsored-bill context to reviewed targets, committee-action influence, and outcomes, emergency court review, fuller implementation beyond timing and bounded comment metadata, full statutory lineage beyond Congress.gov bill/action metadata, and comparative chamber/productivity sources beyond the current profile proxy.
 4. Map every empirical source to only the simulator quantities it can plausibly check.
 5. Add a validation-boundary table to any future manuscript.
 6. Keep unvalidated constructs labeled as synthetic.

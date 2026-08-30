@@ -9,16 +9,16 @@ This report checks whether optional raw empirical inputs are present and shaped 
 | `lobbying_disclosure.csv` | lobby spending distribution and issue-pressure checks | ready | none |
 | `topic_throughput.csv` | topic-level throughput and agenda distribution checks | ready | none |
 | `sponsor_success.csv` | sponsor success and proposal-access concentration checks | ready | none |
-| `district_public_opinion.csv` | district-level public will, issue intensity, turnout, and affected-group checks | missing | all |
+| `district_public_opinion.csv` | district-level public will, issue intensity, turnout, and affected-group checks | ready | none |
 | `committee_activity.csv` | committee referral, hearing, reporting, amendment, and discharge checks | ready | none |
-| `campaign_finance.csv` | campaign-finance and outside-spending influence checks | missing | all |
-| `court_review.csv` | constitutional review, emergency docket, signed-opinion, and invalidation checks | missing | all |
-| `rulemaking_implementation.csv` | post-enactment implementation delay, enforcement capacity, comment, and nonenforcement checks | missing | all |
-| `law_revision_history.csv` | post-enactment amendment, reauthorization, repeal, expiration, and invalidation checks | missing | all |
-| `comparative_institutions.csv` | cross-national chamber, court, party-system, and productivity checks | missing | all |
+| `campaign_finance.csv` | campaign-finance and outside-spending influence checks | ready | none |
+| `court_review.csv` | constitutional review, emergency docket, signed-opinion, and invalidation checks | ready | none |
+| `rulemaking_implementation.csv` | post-enactment implementation delay, enforcement capacity, comment, and nonenforcement checks | ready | none |
+| `law_revision_history.csv` | law revision text flags and optional invalidation-linkage checks | ready | none |
+| `comparative_institutions.csv` | cross-national chamber, court, party-system, and legislative-capacity checks | ready | none |
 
-- Files present: 6 / 12
-- Files with required columns: 6 / 12
+- Files present: 12 / 12
+- Files with required columns: 12 / 12
 - Adapter fixture CSVs ignored: 4
 
-Next empirical step: add curated raw files and document source-specific transformations. The adapters cover roll calls, bill progress, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.
+Next empirical step: upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The adapters cover roll calls, bill progress, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.

@@ -2,30 +2,30 @@
   "generatedBy": "paper/scripts/write_pdf_manifest.py",
   "pdfs": [
     {
-      "normalizedTextBytes": 38251,
-      "normalizedTextSha256": "440dae2d059ce7dda87c41dbe3d7e609e33871b1504b4fc414808ec9f9cfb49e",
-      "pages": 10,
+      "normalizedTextBytes": 53638,
+      "normalizedTextSha256": "3eabcb9289973d51bc2e70faf2adb31ebcee04ebd9b8d56f99657842fe0ea88c",
+      "pages": 13,
       "path": "paper/acm-ci-framework/acm-ci-framework.pdf",
-      "sizeBytes": 472248
+      "sizeBytes": 484573
     },
     {
-      "normalizedTextBytes": 39636,
-      "normalizedTextSha256": "e5b3a1dab1126522937cb83d0acfb0400819d17ec759e383ef30e098a86b6b0c",
-      "pages": 12,
+      "normalizedTextBytes": 47558,
+      "normalizedTextSha256": "300cdc4efca09953ea348c59b06281c99bf51f01be88042696eec49ae260a93f",
+      "pages": 14,
       "path": "paper/technical-appendix/odd-d-appendix.pdf",
-      "sizeBytes": 480311
+      "sizeBytes": 489688
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "407496438f965f9db403b0a6a5d0e6bc649a8e1562e17e5e538a0fd393e65dc3",
+  "sourceInputSha256": "247461639776276543744ded8123df3c6b02dd8f9ae48a3eecd0c5bb38de9bc1",
   "sourceInputs": [
     {
       "path": "Makefile",
-      "sha256": "e2bef54f0a8f7943f6884656be9a26253d190cfea0ad990d9b3ca04564834753"
+      "sha256": "b5216d3f30ca4968dc371d36b7c196e4eab4e80cedde574926f60f3e7fd57191"
     },
     {
       "path": "data/calibration/empirical-benchmarks.csv",
-      "sha256": "a71f2fcbe0d43db12889ed93bbb13055b3f7bce758140c53f593df3305aa804d"
+      "sha256": "02f2b358b7f74285e2828b0ac20ff1079aedb8531e81b4eac3e4e1a5e5646139"
     },
     {
       "path": "data/validation/fixtures/bill_progression.csv",
@@ -44,28 +44,236 @@
       "sha256": "775d7cd1ef2d8ae7a29baaaa16ab4ebf192e528ed38e1751aceb92722e39f847"
     },
     {
+      "path": "data/validation/raw/bill_finance_lobbying_committee_action_source.csv",
+      "sha256": "036c43e7e0833fda720e1fb538b751d99e2d6e4a4f34699b6a1205a6d96d4f70"
+    },
+    {
+      "path": "data/validation/raw/bill_finance_lobbying_external_lda_mentions.csv",
+      "sha256": "44aee372dbeaebd3bab8973cfcbff2c268454a84398ddd90d1fc56d1f2d52718"
+    },
+    {
+      "path": "data/validation/raw/bill_finance_lobbying_external_lda_searches.csv",
+      "sha256": "c074475faa5ec45e955314f8eb7e9245ae7813a4e3cd57a8f37c665d315bb25a"
+    },
+    {
+      "path": "data/validation/raw/bill_finance_lobbying_local_context_review.csv",
+      "sha256": "138ae5506eeaf6e0742a7a8e07f451584ebfa8f7e919fc014b5ac03eb76df1a2"
+    },
+    {
+      "path": "data/validation/raw/bill_finance_lobbying_member_vote_targets.csv",
+      "sha256": "ffd5071e13553f9a9b452d0cd15204c3a3cc9815f15e5f0d62777425cb73c140"
+    },
+    {
+      "path": "data/validation/raw/bill_finance_lobbying_roll_call_source.csv",
+      "sha256": "c1352a0c37539c1f9f21308ef1581c9eb35e059412414ac696ed08f25fbbbd33"
+    },
+    {
       "path": "data/validation/raw/bill_progression.csv",
       "sha256": "531b87932af70c6ba203b79541ec091cb9b7a86c7ad75769729e4b77799f37ec"
+    },
+    {
+      "path": "data/validation/raw/campaign_finance.csv",
+      "sha256": "8ce8cc88678c2973371c46d8747024c3a8fc697532cac3fc00756c54505a4239"
+    },
+    {
+      "path": "data/validation/raw/campaign_finance_issue_context.csv",
+      "sha256": "eb3d8f83ae6d8f36e1dca16d7bb39c89bc715b33b15fa738606b126e4de2060c"
+    },
+    {
+      "path": "data/validation/raw/campaign_finance_linkage.csv",
+      "sha256": "523895a6c2564c12d15d75941811e96dbd7cc516f73dcbe26c3d0cbaed15188f"
+    },
+    {
+      "path": "data/validation/raw/campaign_finance_member_context.csv",
+      "sha256": "2d1d24c987d192088bdc36893fa650bafd60fe991229daca116d6ef5a5ee6d93"
     },
     {
       "path": "data/validation/raw/committee_activity.csv",
       "sha256": "9ce2f3fcf6beb74429c7d9f94760f18885f46c49c3521c4450dc26c74b990621"
     },
     {
+      "path": "data/validation/raw/comparative_institution_linkage.csv",
+      "sha256": "8c5a002191ba138ffc100c539363609e4be98df4aab2c68dc28c9f7143591665"
+    },
+    {
+      "path": "data/validation/raw/comparative_institutions.csv",
+      "sha256": "a647d1b969f139c4ac6d02b853463e80002d426f1cab2bd8f425a90331d649ce"
+    },
+    {
+      "path": "data/validation/raw/court_law_linkage.csv",
+      "sha256": "d86f091205dfe823bb7a91c7d0b1715b8de592f1403895ab22c2e84066f88b86"
+    },
+    {
+      "path": "data/validation/raw/court_public_law_direct_review.csv",
+      "sha256": "f04bcabfbc926c949bdbe137d2117dcc8a4d9dd1e61ea5d314436125d8be3030"
+    },
+    {
+      "path": "data/validation/raw/court_review.csv",
+      "sha256": "29e5280e1be5d535480e34e6071c6851c28ea211c65063f5ee2d28bf57debf4b"
+    },
+    {
+      "path": "data/validation/raw/district_public_opinion.csv",
+      "sha256": "67c6e1c9429b7878b45c4f3bd6105e2a6ec7d4023f7a53bdc428544ea895f037"
+    },
+    {
+      "path": "data/validation/raw/district_public_opinion_acs_context.csv",
+      "sha256": "a3b77acc6e9ab07f20df7af79787874daf5f71c6a8227171cada95b70281bbee"
+    },
+    {
+      "path": "data/validation/raw/district_public_opinion_census_denominators.csv",
+      "sha256": "d0c00238afcb5d07f9781a35493085db1ba5d706e82b5426b3c9aa77fefbd060"
+    },
+    {
+      "path": "data/validation/raw/district_public_opinion_ces_policy_item_candidates.csv",
+      "sha256": "aaa4e263255a583f83f22160fbaa2048e3f72e4d2495c621569b7a36d1e2ec80"
+    },
+    {
+      "path": "data/validation/raw/district_public_opinion_ces_policy_item_codebook_direction.csv",
+      "sha256": "dd2fca55fe683d1c879431b3542bb9ad7a12b460708b38e55bf8cae950fb3ac6"
+    },
+    {
+      "path": "data/validation/raw/district_public_opinion_ces_policy_item_response_distributions.csv",
+      "sha256": "407ef1c7dd81c5e14f12d856ecd2e3f8433c04d8391607840312ad0f252694ee"
+    },
+    {
+      "path": "data/validation/raw/district_public_opinion_linkage.csv",
+      "sha256": "b0e7ce5c4c1915dec722435fcb9eaf1848bf69eae0b8942868ffd5679152b41f"
+    },
+    {
+      "path": "data/validation/raw/district_public_opinion_policy_context.csv",
+      "sha256": "429728c9b59febc6ee90690241969cdd1302c222a2b295ab9f2feb0700d091eb"
+    },
+    {
+      "path": "data/validation/raw/govinfo_billstatus_linkage.csv",
+      "sha256": "51c1bba1f634d23f172fe3275756c3643a4f6ad577634ffbe1c6c952615045c3"
+    },
+    {
+      "path": "data/validation/raw/law_revision_bill_linkage.csv",
+      "sha256": "aaf9c628cb0614c51c5780b814235df55a48f04f7887ac50bec976e927f2255e"
+    },
+    {
+      "path": "data/validation/raw/law_revision_history.csv",
+      "sha256": "9751356404a92af0ed1197d602f66048bdfc181582d74a83cba653e8a4eed573"
+    },
+    {
+      "path": "data/validation/raw/lobbying_bill_manual_disposition_review.csv",
+      "sha256": "5ef4ccd11a6e1bcfe9481176a2b1ff6eda218327d47d8b6b572cb0110be0af1d"
+    },
+    {
+      "path": "data/validation/raw/lobbying_bill_medium_directional_packet_review.csv",
+      "sha256": "3b96087d03d199f1171393f5569aefb7fc58d9ff9798447fe870d32bc4ac5073"
+    },
+    {
+      "path": "data/validation/raw/lobbying_bill_medium_position_activity_packet_review.csv",
+      "sha256": "64765b4ad72b94eaff482cf24fee39652fb5e5cba41d2d7a178572bb26c1b91e"
+    },
+    {
+      "path": "data/validation/raw/lobbying_bill_mention_searches.csv",
+      "sha256": "d440ec7660d1a5ec5d06a41efda58ac7764263c53c2630263b827f2d3c733a7f"
+    },
+    {
+      "path": "data/validation/raw/lobbying_bill_mentions.csv",
+      "sha256": "3c16fac644673602a9d63b28f36d0a6e2b23c419cd8e53bf5e79c000fc17b71a"
+    },
+    {
       "path": "data/validation/raw/lobbying_disclosure.csv",
       "sha256": "447b0c53533bcd255cab343ddcadc1311adc87d112cf63a43528b579993752f2"
+    },
+    {
+      "path": "data/validation/raw/lobbying_issue_linkage.csv",
+      "sha256": "997a1652b38891d7cc9a7770f6b2761ae88b81d4d200384845ba5523146c945c"
+    },
+    {
+      "path": "data/validation/raw/rulemaking_authority_linkage.csv",
+      "sha256": "536fe654208aeac2505c90b96c5f48816719433e20500a932195204067ee324e"
+    },
+    {
+      "path": "data/validation/raw/rulemaking_comment_metadata.csv",
+      "sha256": "9268e2d961a7ee812b89736f56783e6319ad674d5a175504faad7c6686492bd5"
+    },
+    {
+      "path": "data/validation/raw/rulemaking_comment_records.csv",
+      "sha256": "d7d2b96ab8fa7fa185c6363156f9672c43b905dbf6e58c824cbfd5254038c675"
+    },
+    {
+      "path": "data/validation/raw/rulemaking_comment_text_review.csv",
+      "sha256": "63c84d545968c0a9ef185e8f396374dadf4647a08335b1cf61c5d182dcac2c63"
+    },
+    {
+      "path": "data/validation/raw/rulemaking_history_linkage.csv",
+      "sha256": "eada16986f3fe79d777f4742fe795aa34a46e68355ca646b65d310c5a2f3b893"
+    },
+    {
+      "path": "data/validation/raw/rulemaking_implementation.csv",
+      "sha256": "d3c28162cc0a2c2b8cdffdbeef8c7c7c35e4f4f39d746dae75a8deb659818020"
+    },
+    {
+      "path": "data/validation/raw/rulemaking_implementation_linkage.csv",
+      "sha256": "569a9c23dca8dbc5cbb1051d3b06f0b6cd7b973043a8e3a47b093622380da3aa"
+    },
+    {
+      "path": "data/validation/raw/sponsor_bill_linkage.csv",
+      "sha256": "830c8b9082157d47c02fb3c757eb29c69497811d101fb3389ca664f170a23901"
     },
     {
       "path": "data/validation/raw/sponsor_success.csv",
       "sha256": "83751d8f9e60abb9ff00bdd6d5d9880c175730a62b3b311dc4dd37a75f3773ea"
     },
     {
+      "path": "data/validation/raw/statutory_lineage_adjudication.csv",
+      "sha256": "21cd692028e9cc4192b04438623a63b0d6d377d5d8445454e131ce074e5397b0"
+    },
+    {
+      "path": "data/validation/raw/statutory_lineage_no_target_review.csv",
+      "sha256": "9e4bf9975eb70c4bdacac9131fcecb894cd5d175a37f0bca3d75c8018943c088"
+    },
+    {
+      "path": "data/validation/raw/statutory_lineage_olrc_annual_text_diff.csv",
+      "sha256": "588d168b4e724b2dda7239d05d55a908516934b27859131d0c76f3890bf54534"
+    },
+    {
+      "path": "data/validation/raw/statutory_lineage_olrc_current_scan.csv",
+      "sha256": "e0fff3111c9ced6b89844ee4a4df47e9b2a27c2ac014d6044c0d21cd21d63b65"
+    },
+    {
+      "path": "data/validation/raw/statutory_lineage_olrc_historical_scan.csv",
+      "sha256": "eb26c16cdd6c3d7bd92727c59980209f880589e5d205d44953f4768bac4691ef"
+    },
+    {
+      "path": "data/validation/raw/statutory_lineage_source_scan.csv",
+      "sha256": "01cac5791629056a63b64626b184734213ab9d2852b46dd65173c9a60b17186d"
+    },
+    {
+      "path": "data/validation/raw/statutory_lineage_target_packet_source_gap_review.csv",
+      "sha256": "97c7110d5ca96eeb85b048c52c3506b4c89ed1bc33f3f9e5433eb1772b9e44e1"
+    },
+    {
+      "path": "data/validation/raw/statutory_lineage_target_review_packets.csv",
+      "sha256": "6bbd88162e115382fd65fba7fcdfcd91a28fcfbb11ae96d7ecc47df46c255b7e"
+    },
+    {
+      "path": "data/validation/raw/statutory_lineage_target_section_diff_review.csv",
+      "sha256": "97140622802fe6f567044e330fb6a3821e91967fcf8f1c7c678bb4eb71f081b8"
+    },
+    {
       "path": "data/validation/raw/topic_throughput.csv",
       "sha256": "53a1a6b8940d4061d0e116c35816e1ed5f270934e46118177e391044405e0d87"
     },
     {
+      "path": "data/validation/raw/voteview_bill_linkage.csv",
+      "sha256": "64fecb677a61f4791b23e738ce7886fe434057a7207e980fe351047d3e39bed0"
+    },
+    {
+      "path": "data/validation/raw/voteview_member_context.csv",
+      "sha256": "b697b92693ffb81d937e2fb4b5e51f0e99030d97f6f37bac7306965d3aaab62d"
+    },
+    {
       "path": "data/validation/raw/voteview_rollcalls.csv",
       "sha256": "6f53461b9484b6167299c6529e87e4a73ee7ca0004c4dc5eefdaf04c8d5eb710"
+    },
+    {
+      "path": "data/validation/source-registry.csv",
+      "sha256": "a3338e2dd36b8cb026cb05c41b7cbc7c7b6f5fd08a45fabf0c942a628e9dada0"
     },
     {
       "path": "paper/ACM-Reference-Format.bst",
@@ -73,7 +281,7 @@
     },
     {
       "path": "paper/acm-ci-framework/acm-ci-framework.tex",
-      "sha256": "c644b60ecfe68b700edfbfb0ffac2fe76980f8c79a58faaf1edd35eb4dbe0157"
+      "sha256": "c77359285ae43902a6ae25f4a07ef59052ad7d219d2794982a3700611a3c7781"
     },
     {
       "path": "paper/acmart.cls",
@@ -113,7 +321,7 @@
     },
     {
       "path": "paper/figures/empirical_validation_gap_table.tex",
-      "sha256": "9bf3510536236c01026d04087e40563b44a2dbb4be2399b6ada466e0eb4777f0"
+      "sha256": "7ddd43ab04999f989bc3a626654b28a6557d2b5ea7194e0a3c96e6cab556f67d"
     },
     {
       "path": "paper/figures/mechanism_diagnostics_table.tex",
@@ -157,7 +365,7 @@
     },
     {
       "path": "paper/references.bib",
-      "sha256": "d42bb6a066079b4e42435c7aefae337cf58f82851a43a5c4a8ba6fd764ea5631"
+      "sha256": "3c523681d091a2d3259ee677dc350d154155835fd917b66241a27162734f3872"
     },
     {
       "path": "paper/scripts/check_word_count.py",
@@ -173,7 +381,7 @@
     },
     {
       "path": "paper/technical-appendix/odd-d-appendix.tex",
-      "sha256": "2ce786d6b4a83e78d0bde802c2c28928a3bb665c4f69725d1b2b1b9ad0909c2a"
+      "sha256": "f92e455e259efe37f6b3360401f83e83aface965b51fbc5a1883e482ea2bf04e"
     },
     {
       "path": "reports/ablation-analysis-summary.csv",
@@ -193,15 +401,15 @@
     },
     {
       "path": "reports/empirical-bridge.csv",
-      "sha256": "b0f9eda946f69b2be236090e98307f6d17dcdcd490934bb426606f1e65d64e81"
+      "sha256": "51191ec556bf14cc71bbe3f3fbe3a86d6fb6ff6a9f9c5004b41cce293d0b9d7a"
     },
     {
       "path": "reports/empirical-validation-readiness.md",
-      "sha256": "691611542e758e3729fb448ccd54ebc06d92ba9332fa88751690c8faa520844f"
+      "sha256": "7cfb3e1b1bef5a22f75b8f3460c884a96da3f2ba2d9da5002fc08838f2eaeaf4"
     },
     {
       "path": "reports/empirical-validation-summary.csv",
-      "sha256": "25c29f63099c62d9744e90240c7e3873b1798296a095e3893c1871a7d0e0a78e"
+      "sha256": "e7eac67d22c49f19aeb87c69d3fa39064412086bbd4931bd806ffa1a475b7abd"
     },
     {
       "path": "reports/family-champions.md",
@@ -240,6 +448,10 @@
       "sha256": "05b94b656fc3b00809e1c96cd51e006ff4e13bd9fa2bb6dfccc1077550f1fcc4"
     },
     {
+      "path": "scripts/checks/check_empirical_boundary.py",
+      "sha256": "0ee2648606cba57aadc30f35ddf6eda6ed460f557bb37aedd5ddc95fe0de877f"
+    },
+    {
       "path": "scripts/checks/check_figure_labels.py",
       "sha256": "e06c48af445a8aefe94ff7446b3eb3c0d5926d42718868ff06c988e13ae1b10f"
     },
@@ -261,7 +473,7 @@
     },
     {
       "path": "scripts/packaging/build_anonymous_supplement.py",
-      "sha256": "8774b392f93878d7bd3f9d5c565fef049f48928dfc93869d92890c98ec7e8e99"
+      "sha256": "1f1dc48bb0912dbf1df514c254f5f7d1b3f0de0fd4558b0f9898439804c45c91"
     },
     {
       "path": "scripts/reporting/report_catalog_breadth.py",
@@ -288,6 +500,14 @@
       "sha256": "614c63142deb6ee1bb5027595aac6255070256ca98fd5129c69698c936b0e865"
     },
     {
+      "path": "scripts/reporting/write_adversarial_failure_trace_index.py",
+      "sha256": "1127788f2530242bb941c9ba9cab22db853155fc6d9b335b3a668242e663eace"
+    },
+    {
+      "path": "scripts/reporting/write_adversarial_pilot_cell_map.py",
+      "sha256": "edc204d10e0bd2a4e45c88bc25070e29830bad094ea5af139ce9ba4f10f3e815"
+    },
+    {
       "path": "scripts/reporting/write_paper_diagnostics.py",
       "sha256": "94fe94d4c8af56e7afa98c3454e2dda178fc0dbfb1d947db109dee6831e221b7"
     },
@@ -296,12 +516,184 @@
       "sha256": "7bf97dc7977490e3d888e381c4ee5a6a80710203172d25ec4749591a0632aa8b"
     },
     {
+      "path": "scripts/validation/build_bill_finance_lobbying_committee_action_source_dataset.py",
+      "sha256": "fcb7a419ef684925b749d0f83ea6b89b8cec3565a78c0d79b168b827f6994dd7"
+    },
+    {
+      "path": "scripts/validation/build_bill_finance_lobbying_external_lda_search_dataset.py",
+      "sha256": "7f000b6c4326c3046c6a7ef54e53919b857ac276eb55c16727e87fc63658161e"
+    },
+    {
+      "path": "scripts/validation/build_bill_finance_lobbying_member_vote_target_dataset.py",
+      "sha256": "0135cfa5377fc08d459a911e5ac6841f38a50e42686cee7f7415fe6c6d24fb8e"
+    },
+    {
+      "path": "scripts/validation/build_bill_finance_lobbying_roll_call_source_dataset.py",
+      "sha256": "22e5c6a8f191cbee9b31e58da58ea25aedd3c62cfe9ea1c3181889a1879f77a1"
+    },
+    {
       "path": "scripts/validation/build_bill_progression_dataset.py",
       "sha256": "67725445aa4670589a1769dd11ec2050b3edc18cddf2497a9784be3547691c6c"
     },
     {
+      "path": "scripts/validation/build_campaign_finance_dataset.py",
+      "sha256": "484e091acea7dd220517702ddaf9307647d2a165b7b68b65dd843662c978d03c"
+    },
+    {
+      "path": "scripts/validation/build_campaign_finance_issue_context_dataset.py",
+      "sha256": "f40957ca7caeae2be91030690583c57024743b423fd740bfb1af68ca966bc424"
+    },
+    {
+      "path": "scripts/validation/build_campaign_finance_linkage_dataset.py",
+      "sha256": "254e4a5a64ec5431c13a4c0c5388ee9b83e94ede55d02cda0ea7419c1160c933"
+    },
+    {
+      "path": "scripts/validation/build_campaign_finance_member_context_dataset.py",
+      "sha256": "384977416a323a24a7e33ed608eb438fd0bd82b7bef5b5fee4dd133875d1c122"
+    },
+    {
+      "path": "scripts/validation/build_comparative_institution_linkage_dataset.py",
+      "sha256": "d305f9b4962d355aeacef57705315e00110fbf94dafde9cfcd02e3d043790310"
+    },
+    {
+      "path": "scripts/validation/build_comparative_institutions_dataset.py",
+      "sha256": "09cfdb8ccb93b9096c66ba2ef479396f2ac26d617579a2f8c8585e7ce38c91a7"
+    },
+    {
       "path": "scripts/validation/build_core_raw_validation_datasets.py",
       "sha256": "4c6bf06a70446b443d7b26def434405c724fd4e290832bfa6726ebe949428c4f"
+    },
+    {
+      "path": "scripts/validation/build_court_law_linkage_dataset.py",
+      "sha256": "f62611996d7fc3ebd6f72f323405d81b8de59cf34f6078f0d8fd0612dcbe7431"
+    },
+    {
+      "path": "scripts/validation/build_court_review_dataset.py",
+      "sha256": "b480c2b9a2cd77e387c2ebe145ad2ae941d487a673e6155e257d9ed8f78a49de"
+    },
+    {
+      "path": "scripts/validation/build_district_public_opinion_acs_context_dataset.py",
+      "sha256": "6a6cfb08638e659961f9fb95c54a308e07c05f6f5cc4eca1fb42b4be9af56a68"
+    },
+    {
+      "path": "scripts/validation/build_district_public_opinion_census_denominator_dataset.py",
+      "sha256": "6533899ce840d1ab5402ff74e7066c1e126dfe8e218f8302a8b1f74724f94a24"
+    },
+    {
+      "path": "scripts/validation/build_district_public_opinion_ces_policy_item_candidate_dataset.py",
+      "sha256": "cf026b3a8ae9a2f6773015736189635dfa5534a658c2acc380d83fd40330f43d"
+    },
+    {
+      "path": "scripts/validation/build_district_public_opinion_ces_policy_item_codebook_direction_dataset.py",
+      "sha256": "07a2b09d6a875b0c406419eae5d6f8d10831225b7853b6ca3bf170017895f2a2"
+    },
+    {
+      "path": "scripts/validation/build_district_public_opinion_ces_policy_item_response_distribution_dataset.py",
+      "sha256": "0d6c7776bb70e083e58ae347d361c5704439325acbf598b1bd2529518331b6a2"
+    },
+    {
+      "path": "scripts/validation/build_district_public_opinion_dataset.py",
+      "sha256": "0847aaf8b913aba78f7c467a1a71580da2af65b13831628b72af6d09c80a673e"
+    },
+    {
+      "path": "scripts/validation/build_district_public_opinion_linkage_dataset.py",
+      "sha256": "69874adf75a67970a3fdd7936f02ace19888e8de6b71b6d8c307897e609f3edc"
+    },
+    {
+      "path": "scripts/validation/build_district_public_opinion_policy_context_dataset.py",
+      "sha256": "4d46704911ccec079ad1958718f08984eee3bcf0a12d7bb6cee5ceab8e4cec30"
+    },
+    {
+      "path": "scripts/validation/build_govinfo_billstatus_linkage_dataset.py",
+      "sha256": "a7f91380a26f3150b017e14276e867f2458b95544284ba5bd68c8e5b78b3ea54"
+    },
+    {
+      "path": "scripts/validation/build_law_revision_bill_linkage_dataset.py",
+      "sha256": "87ccdefaf0f8e287e1e0185bb74b8739c92a1ce23e29f56a6326eb0c8fbecf21"
+    },
+    {
+      "path": "scripts/validation/build_law_revision_history_dataset.py",
+      "sha256": "ab90cda8014f2cafab959f748f605a20c813ecd135e1ebf11a5125155fed9956"
+    },
+    {
+      "path": "scripts/validation/build_lobbying_bill_mention_dataset.py",
+      "sha256": "1ab5475c30c5d6f5f0c67bedc9e42ee45c6660dcd1ea255afc6dce90eafe1cf9"
+    },
+    {
+      "path": "scripts/validation/build_lobbying_issue_linkage_dataset.py",
+      "sha256": "88029eb98fc5827565886fa2328edbbb709c0e9888024ad1747edab2a9f63831"
+    },
+    {
+      "path": "scripts/validation/build_rulemaking_authority_linkage_dataset.py",
+      "sha256": "d3c0621e217f87a8cd0d9cfe8b3e802389da62d17a3ac9c70efebeb941ec05e5"
+    },
+    {
+      "path": "scripts/validation/build_rulemaking_comment_metadata_dataset.py",
+      "sha256": "cee919e2e294ab9e0a578b6f27490d9678229a63fe913e46113336184cd6084d"
+    },
+    {
+      "path": "scripts/validation/build_rulemaking_comment_records_dataset.py",
+      "sha256": "16ea1a3c39436372dc1dfda5ea9e0f851cafc1647c270037db0d2d03c0eca5d5"
+    },
+    {
+      "path": "scripts/validation/build_rulemaking_comment_text_review_dataset.py",
+      "sha256": "713c640336d8b38042fb88374a7b9ad8ed121c6510d837cc198f9b5a6b80791d"
+    },
+    {
+      "path": "scripts/validation/build_rulemaking_history_linkage_dataset.py",
+      "sha256": "4493248e0678bcb32aab2777151e442960e5aa3b0ff77f98cdcea3ac6d4d698d"
+    },
+    {
+      "path": "scripts/validation/build_rulemaking_implementation_dataset.py",
+      "sha256": "cc9529a2574b3f9a4d4418c60189af702e28cd3fa11d1d029d926519a0ce9fd0"
+    },
+    {
+      "path": "scripts/validation/build_rulemaking_implementation_linkage_dataset.py",
+      "sha256": "2c04212fc7bb370b9e76aece4eb6f56f2d24397a5017b26c98802b969ef2658e"
+    },
+    {
+      "path": "scripts/validation/build_sponsor_bill_linkage_dataset.py",
+      "sha256": "51bbcd80b4ae669f17e1b4b370ec6b38b0246e59bd88c622682bca1ca29f37ca"
+    },
+    {
+      "path": "scripts/validation/build_statutory_lineage_adjudication_dataset.py",
+      "sha256": "01f52a8e269c25132d97c7a1c4290fb722ceef08ef258cab4b612284edaa9f54"
+    },
+    {
+      "path": "scripts/validation/build_statutory_lineage_no_target_review_dataset.py",
+      "sha256": "d3dc152bfe00e68bc29b9e3c505159b080dd2dee48f957de68797c3022bedeef"
+    },
+    {
+      "path": "scripts/validation/build_statutory_lineage_olrc_annual_text_diff_dataset.py",
+      "sha256": "6098b126659cbf86e803900fa5d0f941bf561f4bda5ef95fa4f402ac815d025e"
+    },
+    {
+      "path": "scripts/validation/build_statutory_lineage_olrc_current_scan_dataset.py",
+      "sha256": "d55e8356bda2c0edeaf7f6b974d0837587d34bad08c77c46ca2848bbf50a4739"
+    },
+    {
+      "path": "scripts/validation/build_statutory_lineage_olrc_historical_scan_dataset.py",
+      "sha256": "dbf1d0c7b91cbd42f3374bb5ab953c23335e430b5a1f3430e6b08f76130170b3"
+    },
+    {
+      "path": "scripts/validation/build_statutory_lineage_source_scan_dataset.py",
+      "sha256": "20ddf48be6e89159754afa8c83aea31938bf437fb3b25e3cf72c72ba301b0fd6"
+    },
+    {
+      "path": "scripts/validation/build_statutory_lineage_target_review_packet_dataset.py",
+      "sha256": "3ebbc5abea7d45d49a987ec291352256334273646489f8e19ddfc1ad7724ba8e"
+    },
+    {
+      "path": "scripts/validation/build_statutory_lineage_target_section_diff_review_dataset.py",
+      "sha256": "d513c0ba83aa50a6a50c770d0715e391bd7503ec91b7a3a5a0a5773dae1cb869"
+    },
+    {
+      "path": "scripts/validation/build_voteview_bill_linkage_dataset.py",
+      "sha256": "9c587bbd8eac431adf9eb6e1433d5be99cb651656065cbb77d20915ed0622639"
+    },
+    {
+      "path": "scripts/validation/build_voteview_member_context_dataset.py",
+      "sha256": "cca2f841929033109c6668448d19ceb63fc14d27f82c55ad9a1f2638281d2ef0"
     },
     {
       "path": "scripts/validation/fetch_public_api_samples.py",
@@ -309,23 +701,335 @@
     },
     {
       "path": "scripts/validation/run_empirical_bridge.py",
-      "sha256": "a9514f12f2dcbe9445676700cc4cee5b803e8611f2e3276a29b6acb9ce653049"
+      "sha256": "0c97434965c555e27dd037bd01db38179eef3133bf1cffda05f5568f4b7e3312"
+    },
+    {
+      "path": "scripts/validation/run_empirical_flow_heldout.py",
+      "sha256": "20fbe22e5baae5219e9b2beab3673c53d48bfb52e60775495bc1d41e5f64273b"
     },
     {
       "path": "scripts/validation/run_empirical_validation.py",
-      "sha256": "f7adf17024f288326befe32a7a9057bc86c10213ec8fee8f23289815846b74f9"
+      "sha256": "8cb6720dbc8693a2712c2e7702923f15f522b178e9cd5ea4ec9ecedfb97df63d"
     },
     {
       "path": "scripts/validation/validate_empirical_inputs.py",
-      "sha256": "dad11640ef03f4a87a02fb25175dc89a0e15f524b1edf68f81c0f1b54228ff45"
+      "sha256": "20fb893f629a1ce397cbf86b38d341d3a07853a8e7564d385128b3190e8dfb56"
+    },
+    {
+      "path": "scripts/validation/write_bill_finance_lobbying_campaign_finance_target_scope_review.py",
+      "sha256": "ce3c6139b0e462bfc8f80fc7e7efabdd02d067e22b259028e432aececd6c6fbb"
+    },
+    {
+      "path": "scripts/validation/write_bill_finance_lobbying_committee_action_context.py",
+      "sha256": "e7c195106f446a990e098d02c9417ca132478096ad493d8f574a162b1a26adac"
+    },
+    {
+      "path": "scripts/validation/write_bill_finance_lobbying_committee_action_source_review.py",
+      "sha256": "d556e720d3246750700bba31a2c8089b8c0b4fcc1bd2ed2730009890a55a3fcc"
+    },
+    {
+      "path": "scripts/validation/write_bill_finance_lobbying_external_lda_mention_review.py",
+      "sha256": "0e0454d45d31806e8bab111ba189df6467f2eb7d6565e7031f77ee1a0c5f8280"
+    },
+    {
+      "path": "scripts/validation/write_bill_finance_lobbying_external_search_review.py",
+      "sha256": "135c934aa289776b4414e2570df3c126c0dc96fd02452a14f839b1e6fe04f2a5"
+    },
+    {
+      "path": "scripts/validation/write_bill_finance_lobbying_local_context_review.py",
+      "sha256": "b73b2d803e1331f6d8b081b6ec02d13d3a86807111174eda87e87f628f3b1007"
+    },
+    {
+      "path": "scripts/validation/write_bill_finance_lobbying_member_vote_target_review.py",
+      "sha256": "eab6ed0ef82596c8d06797347eaef8dfb28aa9d0bf5619c04e02caeb6e2373a2"
+    },
+    {
+      "path": "scripts/validation/write_bill_finance_lobbying_review_queue.py",
+      "sha256": "2ec314bf75899e360f495a7b402bad5985823aa97983287ee648f36560aa8808"
+    },
+    {
+      "path": "scripts/validation/write_bill_finance_lobbying_roll_call_source_review.py",
+      "sha256": "3a5f725d9ed0a9a70ab030d2644fa524f2908a71c43861e2e58cd12e5d11829a"
+    },
+    {
+      "path": "scripts/validation/write_bill_finance_lobbying_source_acquisition_queue.py",
+      "sha256": "1bbb445589e1bd4fda168eef7b1a5e6fa0bf5b213914889006cf7df70b624851"
+    },
+    {
+      "path": "scripts/validation/write_bill_law_evidence_spine.py",
+      "sha256": "f24a438598f16f9a5acfc76c6cc76a1aa44bb9594d6e05f25b6cbde08446de1b"
+    },
+    {
+      "path": "scripts/validation/write_bill_law_lifecycle_corpus.py",
+      "sha256": "e555e5088537eae2544560a7332f637d8ad1ccd075e82e03e820b0fb985488bb"
+    },
+    {
+      "path": "scripts/validation/write_bill_law_lifecycle_next_actions.py",
+      "sha256": "26dee335ae718c309ad8b35597eec00d6f587f44d07b1edb3b7d4a84cfea9efc"
+    },
+    {
+      "path": "scripts/validation/write_bill_law_lifecycle_readiness.py",
+      "sha256": "5357a497fcb5121e37d0b0f37115760f7a37cc2ecca593dad394c6694eafa436"
+    },
+    {
+      "path": "scripts/validation/write_campaign_finance_district_context.py",
+      "sha256": "84b6cb08a45811a24f05bdb98f4ba7bb7677bc95c00807da3dcf9706da0c01ca"
+    },
+    {
+      "path": "scripts/validation/write_campaign_finance_issue_context_report.py",
+      "sha256": "9c950f30c0e2cf044ea1d0f6231cd2129b446c87c4d6a94222a6b35372c2c52b"
+    },
+    {
+      "path": "scripts/validation/write_campaign_finance_member_context_report.py",
+      "sha256": "9aaa1b0b65fa4d93799487ddcc367d0023e3f60041a1ebb8c90ae00ffab2b002"
+    },
+    {
+      "path": "scripts/validation/write_campaign_finance_sponsor_bill_context_report.py",
+      "sha256": "7ff6192f5bef2103e7bfa682ca18550346296a6de6f85d01efe6ceeed79837eb"
+    },
+    {
+      "path": "scripts/validation/write_comparative_institution_linkage_report.py",
+      "sha256": "07a9fa9c31517fe2294c083dcb4145cdd078abdd741f3bc2db784ed474b02711"
+    },
+    {
+      "path": "scripts/validation/write_court_law_linkage_report.py",
+      "sha256": "1d2f3a872381199cc48f37ffcf0b2f9fd8285a96823d5fa4f01c8c257373dcb1"
+    },
+    {
+      "path": "scripts/validation/write_court_public_law_direct_review_report.py",
+      "sha256": "679507debf1622a60f1fff8aedcfd73109aaa22f5ec53b8191d45b765f39aad8"
+    },
+    {
+      "path": "scripts/validation/write_court_public_law_review_queue.py",
+      "sha256": "164290c1049c1fc8f4d18bdfe7195d6c177a7b2435b7d6b268b22380837a872f"
+    },
+    {
+      "path": "scripts/validation/write_court_public_law_temporal_triage.py",
+      "sha256": "f6c883b2f00da2f219ff728a4360c04c5d1e93b7f93f31b717c926ab18895d0d"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_acs_context_report.py",
+      "sha256": "f182cc043b1a51f47a197337321f05b2bb5da9ee712668afdd7e32050935f4d8"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_bill_topic_readiness.py",
+      "sha256": "966e28eab0289ef034f46612a1478db47905857c670828c971a230908ca2ff99"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_census_denominator_report.py",
+      "sha256": "3075277616d43f8919ee6531ec8170931f5eef5dbf01599e734a22c2ab717f97"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_ces_policy_item_candidate_review.py",
+      "sha256": "51dee0686d5c8b3e9705b2ed01fd029ded21f1ae2c4d07e58a2eb0497835769c"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_ces_policy_item_codebook_direction_review.py",
+      "sha256": "dd7488c0a2a89a6ccf10bef9ef40bd7f8374df780f552b89cbbb9cc38b5a8ef6"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_ces_policy_item_response_distribution_review.py",
+      "sha256": "1a1321ca4ee120929928ee9bafe9284eed1a3e41fcd087ae5c4168611d9eb666"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_ces_source_freshness.py",
+      "sha256": "f2b0785a8e7a9efadbb6b78819e48eda77c678f2fbbcd2ecfe4c213391f8aeb5"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_policy_context_report.py",
+      "sha256": "bb2a4a4707c7cdf08df0293669ea124afc8516341599c68b40c60d5f8e78262c"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_source_packets.py",
+      "sha256": "62b42a1b2e91303cb063198bc241b659956801ced9a3ce9b4eae76056f73567d"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_survey_item_proxy_review.py",
+      "sha256": "561fe3ec433e2300d489546d5ee5357d7c9104d310bdfc0c1ff75f5ed1cb5edc"
+    },
+    {
+      "path": "scripts/validation/write_district_public_opinion_survey_source_crosswalk.py",
+      "sha256": "3c7d426e957c0dacf6d130ff04599f2624ea63861d68ab4dc98211a4fc21e9cb"
+    },
+    {
+      "path": "scripts/validation/write_empirical_data_inventory.py",
+      "sha256": "e6a0847afcc8bebfc1896d42db2dd98e07a051b667df104ac2b3dd786fdf8622"
+    },
+    {
+      "path": "scripts/validation/write_empirical_linkage_report.py",
+      "sha256": "d593eb874eaa7cd5e2f613ec62c12894082701dc4ba4c5e46cf03c6ef78431ba"
+    },
+    {
+      "path": "scripts/validation/write_empirical_linkage_roadmap.py",
+      "sha256": "ace73985d1be82b1df7258f4d5312c108f8b8133145c6e04e91a7e052da8f336"
     },
     {
       "path": "scripts/validation/write_findings_validation.py",
       "sha256": "93eb813ed716ceb82e187c046c55a1dcb17b8aed617cbef51a2c4a0363d0fdaa"
     },
     {
+      "path": "scripts/validation/write_govinfo_billstatus_linkage_report.py",
+      "sha256": "87dc2dad3178503d55494dd1142a2f0b077674684f52a4bd321ed1327dce81c7"
+    },
+    {
+      "path": "scripts/validation/write_lobbying_bill_action_context_report.py",
+      "sha256": "475e215b717ad590849f153f8a5561e328e553479181e09f99c2af8a0d0a40b9"
+    },
+    {
+      "path": "scripts/validation/write_lobbying_bill_disposition_review.py",
+      "sha256": "e50e709df76123e31551c7ede83752f20dce5255c6020ae2b76b64c50df41c6c"
+    },
+    {
+      "path": "scripts/validation/write_lobbying_bill_manual_disposition_review.py",
+      "sha256": "d8ab2ccc3c2f500a4c1d6dc4fd5e087eaebfa1c58baf70a25bc7f608aa5d96cd"
+    },
+    {
+      "path": "scripts/validation/write_lobbying_bill_medium_directional_packet_review.py",
+      "sha256": "3c61251b817b13acb5d1d1e261b668c3f3dc409d413099bcf52fdd425172a75a"
+    },
+    {
+      "path": "scripts/validation/write_lobbying_bill_medium_disposition_packets.py",
+      "sha256": "900dd2d259166fc0f3ac4e49a8caebea38a4e1065b4d91d91b933ae493b980dd"
+    },
+    {
+      "path": "scripts/validation/write_lobbying_bill_medium_position_activity_packet_review.py",
+      "sha256": "0c481a736c4cceb047349f43a80368fee69816bcdc4e0cd9188d88ad9724bf0d"
+    },
+    {
+      "path": "scripts/validation/write_lobbying_bill_mention_review_report.py",
+      "sha256": "b4795f6deba2e8d1ac58adde6d6ea12c620749029eb7ff2e4a29060ce617bb35"
+    },
+    {
+      "path": "scripts/validation/write_lobbying_bill_policy_context_report.py",
+      "sha256": "4372ab6732cdb57c0f92b4f4c1af30787586b7798c30fc95dda4399b8b34741d"
+    },
+    {
+      "path": "scripts/validation/write_lobbying_bill_text_review_report.py",
+      "sha256": "b7c3cb6663f6f1ccad62ae113b03ef1f18d383ee01e85541bfa5b1eaddca0a89"
+    },
+    {
+      "path": "scripts/validation/write_lobbying_issue_linkage_report.py",
+      "sha256": "d8a461e5eeccc094c7567cd175102c02cf6876358f1023622752ccb3eb04b2b4"
+    },
+    {
+      "path": "scripts/validation/write_raw_source_manifest.py",
+      "sha256": "f1cbe524df41d086ce3510a1cec51e84dab00eddd954b6c69571278cba6b260a"
+    },
+    {
+      "path": "scripts/validation/write_rulemaking_authority_linkage_report.py",
+      "sha256": "aec71d3275bdc6758e01ea96892cbafb07613f1345c1e57f7ee4a97546d0d766"
+    },
+    {
+      "path": "scripts/validation/write_rulemaking_comment_metadata_report.py",
+      "sha256": "aded01672d374ae8d05ba96f7febc7b5f795fc4f9b65d83f7fed8eec68a7145b"
+    },
+    {
+      "path": "scripts/validation/write_rulemaking_comment_records_report.py",
+      "sha256": "e098717deac602a722c8a5e5f0d7ba4568589c8ae2919eba870991a18cbfbbe9"
+    },
+    {
+      "path": "scripts/validation/write_rulemaking_comment_text_review_report.py",
+      "sha256": "d4fbae87af879f991d142c456ae37bed030a8257ec4073bd84acb91e931dbfc1"
+    },
+    {
+      "path": "scripts/validation/write_rulemaking_history_linkage_report.py",
+      "sha256": "674ea7416d50c4fa04a0bb744422197264d29a33e3e28be97be6bb0b19f85f7f"
+    },
+    {
+      "path": "scripts/validation/write_sponsor_bill_linkage_report.py",
+      "sha256": "02627940c6fa3351daa9ba054c6330a8666526538c587c1517f83f3a70cd3863"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_adjudication_report.py",
+      "sha256": "9d23a4f73fe7eec7be38c1df1bcb3659a9fc23de30f90ec20008c186686a3822"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_codified_progress.py",
+      "sha256": "9a84cc252a1a72b9c7ed5be8dff05c785a7d472f1c6d798b162fce992df70d60"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_complete_lineage_expansion_queue.py",
+      "sha256": "23e9d4a85c76861d3d5ddc6ce28a23fdb7805e80180fcd2ab994f0b46429fe90"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_completion_queue.py",
+      "sha256": "a832dad830f423b78a3b147438577fb0a802464c5371a261b6151344ae8bc401"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_effective_text_review.py",
+      "sha256": "8a76af334a4e5592a3324827909ed19f59888304fd9e6d7e1be6be1e4b14082d"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_no_target_review_report.py",
+      "sha256": "cdc7e8da4248135c65faae355e7e7f0fda1c92ea3d3292a82bf7b0c82a80a006"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_olrc_annual_text_diff_report.py",
+      "sha256": "d67afa567378dced2ddcf6f000ede0470d50356805cbab1618813987695a2dda"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_olrc_current_scan_report.py",
+      "sha256": "daaa0f4bad1142a5f4d3760a657b0f9f3c12d396ece31047c81ad4c8ad97e0d5"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_olrc_historical_scan_report.py",
+      "sha256": "6a806dcc737fab35bff5e3ef3f9c80d0bf8cc0ab740cf277d5236fe0a5470309"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_public_law_attribution_review.py",
+      "sha256": "343d145d708cd924123efc70a72c1c57140177a75d50b5d7983860423f848706"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_review_queue.py",
+      "sha256": "8c584ed183d062153718ba4b33522fe2883c82c18e0f0cd7ade62571f9aeb0b0"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_source_scan_report.py",
+      "sha256": "813e8a9093c6622ec3217c511c90112c91c2f432098a28c9e65dfe2549ea89e7"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_target_lifecycle_bridge.py",
+      "sha256": "54797fb2a80735a2202ec3f3e4aa91b5017bebe234ae1851dfc791eb7f29821a"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_target_packet_expansion_queue.py",
+      "sha256": "bb469e560044f7087f9fd79fb5e938ad03e2d83c291c4bd9be57276f88993f17"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_target_packet_source_gap_queue.py",
+      "sha256": "7a1218410b06b89a148af8eddd1078d6168fa44866ffc427083698c998055398"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_target_packet_source_gap_review.py",
+      "sha256": "7d0781eceb16d2d24ba7d4f9b55055145a67b029017a45db0e9d708e77e1a067"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_target_reference_resolution_candidates.py",
+      "sha256": "971442208bcb95633047ec8a903d17805f550cf6239f558b57182880e3eb8567"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_target_review_packet_report.py",
+      "sha256": "3669fe0e4d2538f80585909a1c4bc1e7600d8dcec91f127d3a7c7aa1d27ae347"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_target_section_diff_review_report.py",
+      "sha256": "334a88f6cfef9f8441fcd62d6a5f90fb1fdb104c163d3ba195ba60357bf0df4c"
+    },
+    {
+      "path": "scripts/validation/write_statutory_lineage_target_section_triage.py",
+      "sha256": "dcc09f27bc26e2db5f68ba3e6d3abd284f458c7a2e00a988832d24ef79c63e16"
+    },
+    {
       "path": "scripts/validation/write_validation_gap_report.py",
-      "sha256": "d74d6527b8208719768cc71f036941236f1ffa48f1fdfceebd7fc30807bdb14b"
+      "sha256": "29a74bc96780c48f121e9990ab855b44b7a8a4fbb2eb66a5ef965da886a04f3d"
+    },
+    {
+      "path": "scripts/validation/write_voteview_bill_linkage_report.py",
+      "sha256": "e3d0c96117d84e66902295d59cb07a5841fe8b18a41ca8c703fc57af933b40d7"
+    },
+    {
+      "path": "scripts/validation/write_voteview_member_context_report.py",
+      "sha256": "12ed32bf95518349efee2853cd7f4dd9cf0d46b2272e2536c59fe4487618ac87"
     }
   ]
 }

@@ -59,7 +59,8 @@ make paper-word-count
 ```
 
 The review checks for word count, anonymous PDF text and metadata, generated
-figure label bounds, table/figure consistency, and rendered-PDF sanity run with:
+figure label bounds, table/figure consistency, empirical-boundary, linkage, and
+linkage-roadmap consistency, and rendered-PDF sanity run with:
 
 ```sh
 make paper-checks

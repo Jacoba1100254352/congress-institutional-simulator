@@ -13,13 +13,39 @@ topic_throughput.csv,topicEnactmentRate,0.016667,computed,Topic-weighted enactme
 sponsor_success.csv,sponsorSuccessRate,0.000000,computed,Mean sponsor enactment rate.
 sponsor_success.csv,sponsorIntroductionGini,0.388636,computed,Gini concentration of introduced bills by sponsor.
 sponsor_success.csv,sponsorSuccessGini,0.000000,computed,Gini concentration of enacted bills by sponsor.
-district_public_opinion.csv,missing,,missing,Add district opinion rows to compute public-will intensity and affected-group representation.
+district_public_opinion.csv,districtSupportMean,0.521815,computed,Mean district-level issue support.
+district_public_opinion.csv,intensityWeightedSupport,0.515156,computed,Support weighted by intensity and turnout.
+district_public_opinion.csv,districtSupportVariance,0.029739,computed,Variance of district public support.
+district_public_opinion.csv,turnoutGini,0.051513,computed,Turnout concentration across districts.
+district_public_opinion.csv,affectedGroupMeanShare,0.090332,computed,Mean affected-group population share.
 committee_activity.csv,committeeReportRate,0.083333,computed,Reported bills per referred bill.
 committee_activity.csv,hearingPerReferral,0.000000,computed,Hearings per referred bill.
 committee_activity.csv,amendmentPerReferral,0.000000,computed,Amendments per referred bill.
 committee_activity.csv,dischargeRate,0.000000,computed,Discharge petitions or bypasses per referred bill.
-campaign_finance.csv,missing,,missing,Add campaign-finance rows to compute private-spending concentration and outside-spending share.
-court_review.csv,missing,,missing,Add constitutional-court review rows to compute emergency-order and invalidation rates.
-rulemaking_implementation.csv,missing,,missing,Add Federal Register/Unified Agenda/Regulations.gov-style rows to compute implementation delay and failure risk.
-law_revision_history.csv,missing,,missing,"Add law-lineage rows to compute amendment, reauthorization, repeal, expiration, and invalidation rates."
-comparative_institutions.csv,missing,,missing,"Add comparative-institution rows to compute chamber, party-system, and productivity benchmarks."
+campaign_finance.csv,recipientFinanceGini,0.935526,computed,Gini concentration of campaign money by recipient.
+campaign_finance.csv,industryFinanceEntropy,0.250806,computed,Issue/industry diversity of campaign money.
+campaign_finance.csv,outsideSpendingShare,0.982998,computed,Share of campaign money marked independent expenditure.
+court_review.csv,emergencyOrderRate,0.000000,computed,Share of reviewed cases using emergency-order posture.
+court_review.csv,invalidationRate,0.071834,computed,Share of reviewed cases invalidating the challenged action.
+court_review.csv,signedOpinionRate,0.783963,computed,Share of reviewed cases with signed opinion disclosure.
+court_review.csv,meanVoteMargin,5.485815,computed,Mean vote margin or coalition margin in court review.
+rulemaking_implementation.csv,proposedDateCoverage,0.000000,computed,Share of implementation rows with proposed-rule date available.
+rulemaking_implementation.csv,effectiveDateCoverage,0.884000,computed,Share of implementation rows with effective date available.
+rulemaking_implementation.csv,commentCountCoverage,0.000000,computed,Share of implementation rows with comment count available.
+rulemaking_implementation.csv,meanProposedToFinalDays,0.000000,computed,Mean days between proposed and final rule where dates are available.
+rulemaking_implementation.csv,meanFinalToEffectiveDays,31.696833,computed,Mean days between final rule and effective date where dates are available.
+rulemaking_implementation.csv,meanCommentCount,0.000000,computed,Mean public-comment volume where comment counts are available.
+rulemaking_implementation.csv,meanEnforcementCapacity,0.834500,computed,Mean encoded implementation-speed or enforcement-capacity proxy where available.
+rulemaking_implementation.csv,nonEnforcementShare,0.000000,computed,Share of implementation rows marked nonenforced by the source extract.
+rulemaking_implementation.csv,underfundedShare,0.000000,computed,Share of implementation rows marked underfunded by the source extract.
+law_revision_history.csv,lawAmendmentRate,0.300000,computed,Share of law rows with amendment text flag.
+law_revision_history.csv,reauthorizationRate,0.166667,computed,Share of law rows with reauthorization or extension text flag.
+law_revision_history.csv,repealRate,0.066667,computed,Share of law rows with repeal text flag.
+law_revision_history.csv,expirationRate,0.050000,computed,Share of law rows with sunset or expiration text flag.
+law_revision_history.csv,postEnactmentInvalidationRate,0.000000,computed,Share of law rows with an invalidation flag available from the source extract.
+law_revision_history.csv,postEnactmentCorrectionRate,0.375000,computed,Share of law rows with any revision or correction text flag.
+comparative_institutions.csv,bicameralShare,0.238462,computed,Share of country-years with two or more chambers.
+comparative_institutions.csv,meanDistrictMagnitude,12.415385,computed,Mean lower-house district magnitude or equivalent seat magnitude.
+comparative_institutions.csv,meanJudicialReviewStrength,0.682777,computed,Mean encoded judicial-review strength.
+comparative_institutions.csv,meanPartyFragmentation,3.760308,computed,Mean party-system fragmentation.
+comparative_institutions.csv,meanLegislativeProductivity,0.693985,computed,Mean comparative legislative-capacity proxy; not observed law-output productivity.

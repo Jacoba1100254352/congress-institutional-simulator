@@ -1,0 +1,13 @@
+{
+	"manifestVersion": "adversarial-stress-a5-run-v0",
+	"status": "partial_a5_executable_pilot",
+	"adversaryId": "A5",
+	"seed": 20260428,
+	"runs": 5,
+	"legislators": 101,
+	"baseBillsPerRun": 60,
+	"traceRows": 1800,
+	"outputs": ["reports/adversarial-stress-a5-summary.csv", "reports/adversarial-stress-a5-summary.md", "reports/adversarial-failure-traces-a5.jsonl"],
+	"claimBoundary": "A5 executable pilot only. Rows use same generated worlds and original bill ids for a fixed-capacity agenda-lottery majority baseline and an attacked agenda pool with synthetic flood proposals. This is not an empirical bill-volume, agenda-control, or lobbying-support estimate, not a full A1-A9 adversarial sweep, and not evidence for real-world institutional ranking.",
+	"gateStatus": "not_manuscript_ready"
+}

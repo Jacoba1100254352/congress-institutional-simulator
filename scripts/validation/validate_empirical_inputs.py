@@ -74,12 +74,12 @@ DATASETS = [
     ),
     DatasetSpec(
         "law_revision_history.csv",
-        "post-enactment amendment, reauthorization, repeal, expiration, and invalidation checks",
+        "law revision text flags and optional invalidation-linkage checks",
         ("law_id", "enacted_date", "amended", "reauthorized", "repealed", "expired", "invalidated"),
     ),
     DatasetSpec(
         "comparative_institutions.csv",
-        "cross-national chamber, court, party-system, and productivity checks",
+        "cross-national chamber, court, party-system, and legislative-capacity checks",
         ("country", "year", "chambers", "district_magnitude", "judicial_review", "party_fragmentation", "legislative_productivity"),
     ),
 ]
@@ -150,7 +150,7 @@ def main() -> int:
         f"- Files with required columns: {complete} / {len(DATASETS)}",
         f"- Adapter fixture CSVs ignored: {fixture_count}",
         "",
-        "Next empirical step: add curated raw files and document source-specific transformations. The adapters cover roll calls, bill progress, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
+        "Next empirical step: upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The adapters cover roll calls, bill progress, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
     ])
     REPORT.write_text("\n".join(lines) + "\n")
     with REPORT_CSV.open("w", newline="") as handle:

@@ -7,6 +7,14 @@ Run:
 ```sh
 make validation-readiness
 make empirical-bridge
+make empirical-linkage-report
+make empirical-linkage-roadmap
+make rulemaking-authority-linkage
+make rulemaking-history-linkage
+make bill-law-evidence-spine
+make campaign-finance-district-context
+make campaign-finance-issue-context
+make campaign-finance-sponsor-bill-context
 make validation-gap-report
 make calibration-check
 ```
@@ -14,10 +22,21 @@ make calibration-check
 Current files:
 
 - `reports/calibration-baseline.csv`
+- `reports/empirical-data-inventory.csv`
 - `reports/empirical-bridge.csv`
+- `reports/empirical-flow-heldout.csv`
+- `reports/empirical-linkage-report.csv`
+- `reports/empirical-linkage-roadmap.csv`
+- `reports/rulemaking-authority-linkage.csv`
+- `reports/rulemaking-history-linkage.csv`
+- `reports/bill-law-evidence-spine.csv`
+- `reports/campaign-finance-district-context.csv`
+- `reports/campaign-finance-issue-context.csv`
+- `reports/campaign-finance-sponsor-bill-context.csv`
 - `reports/empirical-validation-gap-report.csv`
 - `reports/empirical-validation-readiness.csv`
 - `reports/empirical-validation-summary.csv`
+- `reports/validation-boundary-matrix.csv`
 
 ## Stage 1: Data Inventory and Provenance
 
@@ -31,8 +50,10 @@ Output:
 
 - `reports/empirical-data-inventory.csv`
 - `reports/empirical-data-inventory.md`
+- `reports/validation-boundary-matrix.csv`
+- `reports/validation-boundary-matrix.md`
 
-## Stage 2: Flow Validation Targets
+## Stage 2: Flow and Roll-Call Validation Targets
 
 Observable targets:
 
@@ -44,19 +65,30 @@ Observable targets:
 - Sponsor concentration.
 - Topic throughput.
 
-Tasks:
+Implemented v1 task:
 
-- Split samples into calibration and held-out checks.
-- Define error metrics and tolerances.
-- Report failures instead of only pass/fail screens.
+- Split the committed bill-progression sample into deterministic calibration and held-out slices.
+- Report held-out enactment and floor-load checks against current conventional-baseline tolerance ranges.
+- Split the committed Voteview roll-call sample into deterministic calibration and held-out slices by roll-call ID.
+- Report held-out coalition-size behavior against the current coalition/support tolerance range while keeping party unity as a reported proxy.
+- Split the committed sponsor aggregate sample into deterministic calibration and held-out slices by sponsor ID.
+- Report held-out sponsor-introduction concentration against the current proposer-access tolerance range while keeping enacted-success concentration as a reported proxy.
+- Split bounded OpenFEC campaign-finance rows, Cumulative CES district-opinion rows, SCDB merits-case rows, Federal Register final-rule rows, Congress.gov public-law revision rows, and QoG/V-Dem comparative-institution rows into deterministic calibration and held-out slices.
+- Report narrow held-out source-family proxy checks for campaign-finance concentration, outside-spending share, district public-will, turnout skew, merits-case invalidation, final-to-effective delay, implementation-speed proxy, public-law correction text flags, and bicameral context.
+
+Remaining tasks:
+
+- Add separate calibration and held-out extracts rather than a hash split of one bounded sample.
+- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers, expand the bounded govinfo BILLSTATUS cross-check beyond the sampled bill universe, and add independent or held-out checks for topic throughput, lobbying, and committee activity.
+- Report error metrics for more targets instead of only broad tolerance membership.
 
 ## Stage 3: Representation and Public Support
 
-Required data:
+Current data and remaining requirements:
 
-- District-level public opinion or issue preferences.
+- Bounded Cumulative CES district public-opinion aggregates are available for representative approval, presidential-party preference, House-party preference, turnout, and uninsured-share proxy signals.
 - Bill-topic or roll-call mapping.
-- Constituency exposure or affected groups.
+- Constituency exposure or affected-group support/harm mapping.
 
 Tasks:
 
@@ -81,7 +113,7 @@ Tasks:
 Required data:
 
 - Court review or challenge data.
-- Law revision and sunset-review data.
+- Law revision and sunset-review data, beyond the current Congress.gov title/summary text proxy where lineage claims are made.
 - Implementation feedback or administrative burden proxies.
 
 Tasks:
@@ -105,7 +137,7 @@ Do not draft a full empirical-validation/data paper until:
 
 1. The source registry exists and covers every source family in `data-source-map.md`.
 2. Current ready source families have row counts, date ranges, units of observation, and license/access notes.
-3. At least public support, campaign finance, and one correction/implementation source are no longer missing, or a defensible narrowed data-paper scope is chosen.
-4. Held-out flow checks exist and report errors or tolerance misses, not only broad pass/fail screens.
+3. At least public support, campaign-finance linkage beyond FEC recipient metadata, broad issue-sector context, matched member context, bounded House-candidate district context, and bounded candidate-to-sponsored-bill context to reviewed targets/outcomes, and one correction/implementation source are no longer missing, or a defensible narrowed data-paper scope is chosen.
+4. Held-out and independent cross-checks expand beyond the current 13 / 13 linked, metadata-linked, or partially linked source-family coverage by satisfying the linkage-roadmap gates for bill-topic, complete sponsor-history, finance, implementation, direct court, statutory-lineage, and observed comparative-output evidence and reporting errors or tolerance misses, not only broad pass/fail screens.
 5. Every table explicitly labels each signal as validated, sanity-checkable, proxy-only, synthetic-only, or not modeled.
-6. `make validation-readiness`, `make empirical-bridge`, `make validation-gap-report`, and `make calibration-check` pass.
+6. `make validation-readiness`, `make empirical-bridge`, `make empirical-linkage-report`, `make empirical-linkage-roadmap`, `make sponsor-bill-linkage`, `make court-law-linkage`, `make rulemaking-authority-linkage`, `make rulemaking-history-linkage`, `make bill-law-evidence-spine`, `make campaign-finance-district-context`, `make campaign-finance-issue-context`, `make campaign-finance-sponsor-bill-context`, `make validation-gap-report`, and `make calibration-check` pass.

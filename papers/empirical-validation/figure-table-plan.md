@@ -3,7 +3,7 @@
 ## Future Main Figures
 
 1. Validation pipeline diagram
-   - Shows raw data, cached summaries, calibration screen, held-out checks, and gap reporting.
+   - Shows raw data, cached summaries, calibration screen, held-out checks, linkage audit, linkage roadmap, and gap reporting.
 
 2. Flow-target observed versus simulated plot
    - Source: future held-out flow report.
@@ -27,7 +27,7 @@
    - Calibration target, held-out target, error metric, tolerance.
 
 3. Current gap table
-   - Start from `reports/empirical-validation-gap-report.csv`.
+   - Start from `reports/empirical-validation-gap-report.csv`, `reports/empirical-linkage-report.csv`, and `reports/empirical-linkage-roadmap.csv`.
    - Add next data source and priority.
 
 4. Proxy-risk table
@@ -38,7 +38,7 @@
    - Columns: dimension, current status, score, missing upgrade, next command.
 
 6. Missing-data roadmap
-   - Source: `reports/empirical-validation-gap-report.csv`.
+   - Source: `reports/empirical-validation-gap-report.csv`, `reports/empirical-linkage-report.csv`, and `reports/empirical-linkage-roadmap.csv`.
    - Rows: missing source families.
    - Columns: priority, next source, current boundary, dependent future papers.
 
@@ -46,6 +46,9 @@
 
 - Raw sample summaries from `reports/core-raw-validation-build.md`.
 - Full `reports/empirical-bridge.csv`.
+- Full `reports/empirical-linkage-report.csv`.
+- Full `reports/empirical-linkage-roadmap.csv`.
+- Full `reports/bill-law-evidence-spine.csv`.
 - Full readiness/gap reports.
 - Data licenses and access notes.
 

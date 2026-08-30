@@ -33,6 +33,18 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 export PATH="$JAVA_HOME/bin:$PATH"
 make validation-readiness
 make empirical-bridge
+make empirical-linkage-report
+make empirical-linkage-roadmap
+make sponsor-bill-linkage
+make bill-law-evidence-spine
+make campaign-finance-district-context
+make campaign-finance-sponsor-bill-context
+make bill-finance-lobbying-local-context-review
+make bill-finance-lobbying-external-search-review
+make bill-finance-lobbying-external-lda-mention-review
+make bill-finance-lobbying-campaign-finance-target-scope-review
+make bill-finance-lobbying-committee-action-context
+make bill-finance-lobbying-source-acquisition-queue
 make validation-gap-report
 make calibration-check
 ```
@@ -42,7 +54,9 @@ Optional network-dependent rebuilds:
 ```sh
 make fetch-validation-samples
 make build-bill-progression-raw
+make build-govinfo-billstatus-linkage-raw
 make build-core-raw-validation
+make build-sponsor-bill-linkage-raw
 ```
 
 New targets to add before a paper is drafted:

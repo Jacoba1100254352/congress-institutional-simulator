@@ -6,7 +6,7 @@ No-go for a full manuscript.
 
 Go for validation/data work and benchmark fairness-control implementation.
 
-The paper is not ready because the current evidence is still a synthetic mechanism campaign plus flow smoke tests. Political-science claims need stronger empirical boundaries, matched benchmark fairness controls, and uncertainty separation before drafting.
+The paper is not ready because the current evidence is still a synthetic mechanism campaign plus narrow empirical boundary checks. Political-science claims need stronger empirical boundaries, matched benchmark fairness controls, and uncertainty separation before drafting.
 
 ## Readiness Level
 
@@ -44,7 +44,7 @@ Defer:
 
 Move to manuscript drafting only when all of the following are true:
 
-1. The empirical-validation breakout has a source registry and expanded data beyond the current six ready source families.
+1. The empirical-validation breakout has a source registry and expanded data beyond the current ready source-family inventory.
 2. Fairness-control scenarios compare conventional and simple-majority baselines against content-improvement mechanisms under comparable process budgets.
 3. Paired-comparison reports exist for agenda, committee, veto, lobbying, and content-selection families.
 4. Uncertainty reports separate seed variance from scenario variation.

@@ -8,9 +8,11 @@ The current empirical layer supports only flow sanity checks for the conventiona
 
 Existing checks:
 
-- `reports/calibration-baseline.md`: 7/7 flow sanity checks passed.
+- `reports/calibration-baseline.md`: 15/15 flow and proxy sanity checks passed.
 - `reports/empirical-bridge.csv`: empirical comparison signals.
-- `reports/empirical-validation-gap-report.md`: missing data and synthetic-only boundaries.
+- `reports/empirical-linkage-report.md`: source-family linkage audit; currently 13 / 13 families are linked, metadata-linked, or partially linked.
+- `reports/empirical-linkage-roadmap.md`: required join keys and acceptance gates for non-fully-linked families.
+- `reports/empirical-validation-gap-report.md`: proxy-data and synthetic-construct boundaries.
 - `reports/core-raw-validation-build.md`: current raw sample counts.
 
 Current checks cover:
@@ -21,6 +23,9 @@ Current checks cover:
 - veto frequency;
 - sponsor access concentration;
 - lobbying spend observability;
+- merits-case court invalidation and signed-opinion rates;
+- final-rule effective-date delay;
+- campaign-finance concentration and outside-spending share;
 - topic throughput.
 
 Current checks do not validate:
@@ -32,20 +37,21 @@ Current checks do not validate:
 - lobbying capture;
 - administrative cost;
 - correction over time;
-- implementation feedback.
+- implementation feedback beyond final-rule effective-date delay.
 
 ## Missing Data Inventory
 
 | Data need | Why it matters | Candidate source family | Current status |
 |---|---|---|---|
-| District-level public opinion | Needed for representation and public-support claims. | CCES/CES, MRP estimates, ACS demographics. | Missing. |
-| Campaign finance / OpenFEC | Needed to separate campaign-finance influence from lobbying proxies. | FEC/OpenFEC receipts, independent expenditures, industry classifications. | Missing. |
-| Lobbying-to-bill linkage | Needed to connect lobbying pressure to proposal access, committee routing, and outcomes. | LDA filings, bill subjects, client/issue matching, committee referrals. | Missing. |
+| District-level public opinion | Needed for representation and public-support claims. | CCES/CES, MRP estimates, ACS demographics. | Partial: bounded 2024 CES district aggregate ready; bill-topic mapping, MRP/small-area estimates, and affected-group support remain missing. |
+| Campaign finance / OpenFEC | Needed to separate campaign-finance influence from lobbying proxies. | FEC/OpenFEC receipts, independent expenditures, industry classifications. | Partial: bounded OpenFEC concentration and outside-spending extract ready; recipient metadata, issue-topic, member, district, sponsored-bill, and same-policy public-law spine context present; bill-specific finance, committee-action, reviewed outside-spending target, and outcome linkage missing. |
+| Sponsor histories / effectiveness | Needed for proposer-access and legislative-effectiveness claims. | Congress.gov sponsor metadata, CEL-style effectiveness scores. | Partial: bounded sponsor aggregate and sponsor-bill metadata cache ready; complete sponsor histories, CEL-style effectiveness measures, and outcome-linked member histories missing. |
+| Lobbying-to-bill linkage | Needed to connect lobbying pressure to proposal access, committee routing, and outcomes. | LDA filings, bill subjects, client/issue matching, committee referrals. | Partial issue-taxonomy bridge plus shared-policy-area bill/action context; client-specific bill, sponsor, committee-action, roll-call, and outcome linkage missing. |
 | Committee hearings / markups / referrals | Needed to validate committee gatekeeping and information-gain claims. | Congress.gov, committee calendars, hearing records, markup/amendment records. | Partial/referral-ready, hearings/markups incomplete. |
-| Court review / invalidation | Needed for review/veto/correction modules. | Supreme Court Database, shadow-docket/emergency-order datasets, invalidation coding. | Missing. |
-| Implementation and agency enforcement | Needed for administrative burden and implementation feedback. | Federal Register, Regulations.gov, Unified Agenda, agency enforcement rows. | Missing. |
-| Law revision / repeal / sunset / reauthorization | Needed for law-registry, rollback, sunset, and correction claims. | Congress.gov, GovInfo, OLRC/statutory lineage, reauthorization histories. | Missing. |
-| Cross-national parliamentary or bicameral comparisons | Needed for party-system and chamber claims beyond U.S.-like flows. | ParlGov, V-Dem, IPU/chamber data, electoral systems, productivity proxies. | Missing. |
+| Court review / invalidation | Needed for review/veto/correction modules. | Supreme Court Database, shadow-docket/emergency-order datasets, invalidation coding. | Partial: SCDB merits-case extract and bounded U.S.C.-section authority-overlap metadata ready; direct case-to-statute/public-law identifiers, emergency-order data, and simulator calibration proxy missing. |
+| Implementation and agency enforcement | Needed for administrative burden and implementation feedback. | Federal Register, Regulations.gov, Unified Agenda, agency enforcement rows. | Partial: Federal Register final-rule effective-date extract, document metadata, bounded authority-search matches, bounded proposed-history matches, proposed-rule comment-portal metadata, bounded small/zero-comment Regulations.gov comment-record metadata, and timing metadata ready; high-volume comments, comment text, Unified Agenda stages, enforcement, nonenforcement, underfunding, and appropriations capacity missing. |
+| Law revision / repeal / sunset / reauthorization | Needed for law-registry, rollback, sunset, and correction claims. | Congress.gov, GovInfo, OLRC/statutory lineage, reauthorization histories. | Partial: Congress.gov public-law title and CRS-summary text flags, bill/action metadata, authority-search matches, proposed-history/comment-portal/comment-record metadata, timing metadata, and bounded court U.S.C.-section overlaps ready; OLRC/govinfo lineage, codified diffs, observed expiration outcomes, high-volume comments, comment text, and direct court invalidation remain missing. |
+| Cross-national parliamentary or bicameral comparisons | Needed for party-system and chamber claims beyond U.S.-like flows. | QoG DES/POLCON, OWID/V-Dem, ParlGov, IPU/chamber data, electoral systems, productivity proxies. | Partial: bounded QoG/OWID/V-Dem profile and simulator scenario-family metadata anchors ready; IPU/ParlGov chamber details, bicameral disagreement, and observed productivity remain missing. |
 
 ## Validation Sequence
 
@@ -65,21 +71,21 @@ Current checks do not validate:
 
 ### Phase 3: Public Representation Data
 
-- Add district-level opinion or modeled public preference.
+- Extend the bounded district-level CES proxy into modeled public preference where appropriate.
 - Map bills or issue domains to opinion topics.
 - Split national support, district support, affected-group support, and intensity.
 
 ### Phase 4: Influence Linkage
 
-- Link LDA client/issue data to bill topics and committee referrals.
-- Add OpenFEC/FEC data for campaign-finance influence.
+- Link LDA client/issue data beyond the current issue-taxonomy bridge, shared-policy-area bill context, and exact filing-text bill identifiers for a bounded public-law subset to sponsor/member targets, committee referrals, roll calls, influence, and outcomes.
+- Extend OpenFEC/FEC data beyond the current bounded proxy and link campaign-finance rows to candidates, sponsors, committees, issues, and bills where possible.
 - Split lobbying into information, access, private-gain pressure, and public persuasion where possible.
 
 ### Phase 5: Review and Correction Data
 
-- Add court review/invalidation data.
-- Add implementation and rulemaking data.
-- Add law revision, reauthorization, repeal, and sunset histories.
+- Add direct case-to-statute/public-law identifiers, emergency-order/shadow-docket court-review data, and a simulator court-review proxy target.
+- Add Regulations.gov comments, Unified Agenda stages, and agency enforcement/nonenforcement data.
+- Add full law revision, reauthorization, repeal, and sunset histories beyond the bounded Congress.gov text proxy.
 
 ### Phase 6: Held-Out Validation
 
@@ -108,4 +114,4 @@ political-correction-data
 
 ## Dependency On Empirical-Validation Breakout
 
-This paper should wait until the empirical-validation breakout reaches at least its level-3 gate: source registry, expanded raw/cached data, and held-out checks. Until then, political-science claims should use "flow smoke test," "proxy," or "synthetic" language rather than "validation."
+This paper should wait until the empirical-validation breakout moves beyond its current level-3 gate: source registry, expanded raw/cached data, and narrow held-out checks for bill progression, roll-call coalition behavior, and sponsor proposal-access concentration. Until then, political-science claims should use "held-out benchmark," "flow smoke test," "proxy," or "synthetic" language rather than "validation."

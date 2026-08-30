@@ -61,7 +61,7 @@ The artifact produces:
 - It does not forecast real legislative outcomes.
 - It does not prove any mechanism is generally superior.
 - It does not turn synthetic public benefit, harm, support, or capture metrics into empirical facts.
-- It does not yet provide a packaged public software release with license, citation metadata, and archived DOI.
+- It does not yet provide a packaged public software release with a chosen license, clean-clone reproduction log, release tag, archive URL, or DOI.
 
 ## Current Go/No-Go
 
@@ -69,25 +69,23 @@ No-go for full software paper draft.
 
 Go for artifact hardening:
 
-- license and citation metadata;
+- license metadata;
 - clean-clone reproduction;
-- package/module documentation;
-- output schema documentation;
-- extension guides;
-- public release checklist.
+- maintenance of package/module documentation;
+- maintenance of output schema documentation;
+- maintenance of extension guides;
+- public release finalization.
 
 See `go-no-go.md` for the full draft gate.
 
-## Required New Documentation Before Draft
+## Required Metadata And Evidence Before Draft
 
-- `docs/architecture.md`
-- `docs/adding-a-mechanism.md`
-- `docs/adding-a-campaign.md`
-- `docs/output-schema.md`
-- `docs/reproducibility.md`
 - `LICENSE`
-- `CITATION.cff`
-- optional `codemeta.json`
+- `CITATION.cff` updated with final release version, date, and DOI/archive URL
+- `codemeta.json` updated with final release version, license, and DOI/archive URL
+- clean-clone reproduction log;
+- anonymous supplement audit;
+- release/archive record.
 
 ## Paper Draft Gate
 
@@ -96,7 +94,7 @@ Only draft after:
 - clean clone passes `make test`;
 - clean clone passes `make reproduce-paper-offline`;
 - anonymous supplement builds and excludes planning/private files;
-- license/citation metadata exist;
+- license metadata exists and citation/CodeMeta metadata has final release fields;
 - architecture and extension docs exist;
 - dependency/environment requirements are documented;
 - stale drafts and local generated artifacts are absent from release bundle.

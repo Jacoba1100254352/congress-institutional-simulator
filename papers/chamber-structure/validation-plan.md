@@ -10,7 +10,7 @@ The chamber paper cannot claim empirical representation behavior until it has va
 |---|---|---|---|
 | Apportionment data | Needed for population-seat distortion and malapportionment metrics. | Census apportionment, state/district population data, IPU/chamber data for comparative cases. | Missing or not integrated. |
 | District population distributions | Needed for population-weighted support and district magnitude. | ACS, Census, district shapefiles or district-level population tables. | Missing. |
-| District-level public opinion | Needed for district support and representation gaps. | CCES/CES, MRP estimates, issue-level district opinion. | Missing. |
+| District-level public opinion | Needed for district support and representation gaps. | CCES/CES, MRP estimates, issue-level district opinion. | Partial: bounded CES district aggregate exists; chamber-specific issue mapping and MRP/small-area estimates remain missing. |
 | Upper/lower chamber vote patterns | Needed for chamber coalition support and bicameral disagreement. | Voteview, chamber roll-call records, comparative parliamentary roll calls where available. | Partially adjacent through Voteview, not chamber-structure-specific. |
 | Committee assignment records | Needed for committee assignment/capture tests. | Congressional committee rosters, party ratios, chair assignments, seniority/expertise proxies. | Missing or incomplete. |
 | Referral and markup data | Needed for gatekeeping and committee power. | Congress.gov, committee calendars, hearing/markup records, amendment data. | Referral partially inspectable; markup/hearing incomplete. |

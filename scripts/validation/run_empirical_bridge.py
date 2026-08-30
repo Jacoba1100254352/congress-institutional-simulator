@@ -24,14 +24,19 @@ BRIDGE = [
     ("Lobby spending concentration", "lobbying_disclosure.csv", "clientSpendGini", "lobbying-spend-observable"),
     ("Topic throughput", "topic_throughput.csv", "topicEnactmentRate", "topic-throughput-yield"),
     ("District public will", "district_public_opinion.csv", "intensityWeightedSupport", "district-public-will-alignment"),
-    ("District turnout skew", "district_public_opinion.csv", "turnoutGini", "district-public-will-alignment"),
+    ("District turnout skew", "district_public_opinion.csv", "turnoutGini", "district-turnout-skew-proxy"),
     ("Committee reporting", "committee_activity.csv", "committeeReportRate", "current-system-floor-load"),
-    ("Campaign finance concentration", "campaign_finance.csv", "recipientFinanceGini", "lobbying-spend-observable"),
-    ("Outside spending share", "campaign_finance.csv", "outsideSpendingShare", "lobbying-spend-observable"),
+    ("Campaign finance concentration", "campaign_finance.csv", "recipientFinanceGini", "campaign-finance-observable-band"),
+    ("Outside spending share", "campaign_finance.csv", "outsideSpendingShare", "campaign-finance-observable-band"),
     ("Court emergency posture", "court_review.csv", "emergencyOrderRate", "judicial-review-constraint"),
     ("Court invalidation", "court_review.csv", "invalidationRate", "judicial-review-constraint"),
+    ("Rulemaking effective-date coverage", "rulemaking_implementation.csv", "effectiveDateCoverage", "implementation-delay-proxy"),
+    ("Rulemaking final-to-effective delay", "rulemaking_implementation.csv", "meanFinalToEffectiveDays", "implementation-delay-proxy"),
+    ("Rulemaking implementation-speed proxy", "rulemaking_implementation.csv", "meanEnforcementCapacity", "implementation-capacity-proxy"),
+    ("Law revision correction text", "law_revision_history.csv", "postEnactmentCorrectionRate", "law-revision-correction-proxy"),
+    ("Law revision repeal text", "law_revision_history.csv", "repealRate", "law-revision-correction-proxy"),
     ("Comparative bicameralism", "comparative_institutions.csv", "bicameralShare", "bicameral-veto-burden"),
-    ("Comparative productivity", "comparative_institutions.csv", "meanLegislativeProductivity", "topic-throughput-yield"),
+    ("Comparative legislative capacity", "comparative_institutions.csv", "meanLegislativeProductivity", "topic-throughput-yield"),
 ]
 
 
@@ -50,9 +55,14 @@ def read_empirical(path: Path) -> dict[tuple[str, str], dict[str, str]]:
 
 
 def status(raw: dict[str, str] | None, calibration: dict[str, str] | None) -> str:
+    raw_missing = raw is None or raw.get("status") == "missing"
     if calibration is None:
-        return "missing flow-check proxy"
-    if raw is None or raw.get("status") == "missing":
+        if raw_missing:
+            return "missing raw dataset and flow-check proxy"
+        if raw.get("status") == "computed":
+            return "raw summary available; missing flow-check proxy"
+        return f"{raw.get('status', 'unknown')}; missing flow-check proxy"
+    if raw_missing:
         return "needs raw dataset"
     if raw.get("status") != "computed":
         return raw.get("status", "unknown")

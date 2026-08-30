@@ -1,0 +1,13 @@
+{
+	"manifestVersion": "adversarial-stress-a6-run-v0",
+	"status": "partial_a6_executable_pilot",
+	"adversaryId": "A6",
+	"seed": 20260428,
+	"runs": 5,
+	"legislators": 101,
+	"baseBillsPerRun": 60,
+	"traceRows": 1800,
+	"outputs": ["reports/adversarial-stress-a6-summary.csv", "reports/adversarial-stress-a6-summary.md", "reports/adversarial-failure-traces-a6.jsonl"],
+	"claimBoundary": "A6 executable pilot only. Rows use same generated worlds and bill ids for synthetic latent capture targets under a transparent anti-capture influence-system baseline and a camouflaged proxy/shadow-lobbying attack. Latent capture risk is traced separately from observed screen risk. This is not an empirical campaign-finance, lobbying-disclosure, or proxy-sponsorship estimate, not a full A1-A9 adversarial sweep, and not evidence for real-world institutional ranking.",
+	"gateStatus": "not_manuscript_ready"
+}

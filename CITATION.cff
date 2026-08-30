@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+type: software
+title: "Congress Institutional Simulator"
+authors:
+  - family-names: "Anderson"
+    given-names: "Jacob"
+repository-code: "https://github.com/Jacoba1100254352/congress-institutional-simulator"
+version: "0.1.0-dev"
+abstract: "A Java 21 comparative institutional-design simulator and reproducible paper workspace for comparing legislative mechanism bundles under shared synthetic assumptions."
+keywords:
+  - "legislative institutions"
+  - "institutional design"
+  - "computational simulation"
+  - "collective decision making"
+  - "reproducible research"

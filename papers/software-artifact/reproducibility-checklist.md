@@ -24,7 +24,7 @@ Run from outside the repository:
 
 ```sh
 tmpdir=$(mktemp -d)
-git clone /Users/jacobanderson/Documents/simulators/Congress\ Institutional\ Simulator "$tmpdir/congress-institutional-simulator"
+git clone /path/to/congress-institutional-simulator "$tmpdir/congress-institutional-simulator"
 cd "$tmpdir/congress-institutional-simulator"
 export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 export PATH="$JAVA_HOME/bin:$PATH"
@@ -58,16 +58,17 @@ Record:
 |---|---|---|
 | `make test` passes | yes | pass in current checkout; clean clone not yet logged |
 | `make reproduce-paper-offline` passes clean clone | yes | unverified |
-| `make supplement-anonymous` passes clean clone | yes | unverified |
+| `make supplement-anonymous` passes clean clone | yes | current-checkout packager passed on 2026-07-27 after report-whitelist update; clean clone unverified |
 | Fixed seeds documented | yes | pass for core Makefile campaigns and docs |
 | PDF/text manifest check | yes | partial; `paper/pdf-manifest.json` exists, full check not rerun in clean clone |
-| Output schema documented | yes | fail; missing dedicated `docs/output-schema.md` |
-| Source architecture documented | yes | partial; ODD docs exist, missing `docs/architecture.md` |
-| Extension guide | yes | fail; missing adding-mechanism/campaign docs |
+| Output schema documented | yes | pass; `docs/output-schema.md` exists |
+| Source architecture documented | yes | pass; `docs/architecture.md` exists |
+| Extension guide | yes | pass; `docs/adding-a-mechanism.md` and `docs/adding-a-campaign.md` exist |
 | License | yes | fail; missing |
-| Citation metadata | yes | fail; missing |
-| Release/archive metadata | yes | fail; missing |
-| Anonymous bundle excludes notes/private files | yes | unverified; builder exists but bundle needs audit |
+| Citation metadata | yes | pass; root `CITATION.cff` exists, with final DOI/version still pending release |
+| Software metadata | yes | pass; root `codemeta.json` exists, with final DOI/license/version still pending release |
+| Release/archive metadata | yes | partial; root `RELEASE.md` records the release checklist, but no tag, archive, DOI, or final release version exists |
+| Anonymous bundle excludes notes/private files | yes | pass in current-checkout audit on 2026-07-27; archive contains newly whitelisted source-review reports and excludes identity-bearing public metadata, `papers/`, and private/planning folders; clean clone unverified |
 
 ## Reproducibility Claims Allowed Now
 
@@ -76,6 +77,7 @@ Allowed:
 - The repository contains Makefile targets for build, test, campaign generation, paper checks, offline reproduction, and anonymous supplement creation.
 - The current checkout test suite passes under Java 21.
 - The root README documents no-network reproduction and optional network-dependent inputs.
+- Root `CITATION.cff`, `codemeta.json`, and `RELEASE.md` now provide pre-release citation, software, and release-plan metadata.
 
 Not allowed yet:
 
@@ -86,14 +88,13 @@ Not allowed yet:
 
 ## Packaging Tasks
 
-1. Add `LICENSE`.
-2. Add `CITATION.cff`.
-3. Add optional `codemeta.json`.
-4. Add clean-clone reproduction log under a documented location.
-5. Add environment/dependency manifest.
-6. Add output schema documentation.
-7. Add extension documentation.
-8. Run anonymous supplement audit.
+1. Choose and add `LICENSE`.
+2. Add clean-clone reproduction log under a documented location.
+3. Add clean-clone environment/dependency log.
+4. Keep output schema documentation synchronized with report changes.
+5. Keep extension documentation synchronized with catalog and process changes.
+6. Run anonymous supplement audit.
+7. After public release, update `CITATION.cff` and `codemeta.json` with final version, DOI/archive URL, release date, and chosen license.
 
 ## Stop Condition
 

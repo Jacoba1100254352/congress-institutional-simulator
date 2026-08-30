@@ -1,0 +1,13 @@
+{
+	"manifestVersion": "adversarial-stress-run-v0",
+	"status": "partial_a1_executable_pilot",
+	"adversaryId": "A1",
+	"seed": 20260428,
+	"runs": 5,
+	"legislators": 101,
+	"baseBillsPerRun": 60,
+	"traceRows": 3600,
+	"outputs": ["reports/adversarial-stress-summary.csv", "reports/adversarial-stress-summary.md", "reports/adversarial-failure-traces.jsonl"],
+	"claimBoundary": "A1 executable pilot only. Rows use same generated worlds and bill ids for baseline and attacked policy-tournament cells with synthetic clone/decoy budgets. This is not an empirical attack-rate estimate, not a full A1-A9 adversarial sweep, and not evidence for real-world institutional ranking.",
+	"gateStatus": "not_manuscript_ready"
+}

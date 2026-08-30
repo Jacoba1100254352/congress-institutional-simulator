@@ -33,23 +33,26 @@ Tasks:
 
 ## Metadata Work
 
-Add:
+Add or finalize:
 
 - `LICENSE`
-- `CITATION.cff`
-- optional `codemeta.json`
-- release checklist
+- final `CITATION.cff` release fields
+- final `codemeta.json` release fields
+- tagged release/archive metadata
 - artifact bundle checklist
 
 ## Documentation Work
 
-Add:
+Current docs now exist:
 
 - `docs/architecture.md`: major packages and data flow.
 - `docs/adding-a-mechanism.md`: how to add a new institutional mechanism.
 - `docs/adding-a-campaign.md`: how to add a new campaign or scenario family.
 - `docs/output-schema.md`: key CSV columns and metrics.
 - `docs/reproducibility.md`: deterministic seeds, output tolerances, network-dependent targets.
+
+Remaining task: keep these synchronized with any future source, output-schema,
+or Makefile changes.
 
 ## Testing Work
 

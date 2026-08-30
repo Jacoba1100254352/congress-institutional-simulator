@@ -9,9 +9,9 @@
   "bills": 60,
   "seed": 20260428,
   "caseCount": 1,
-  "scenarioCount": 5,
+  "scenarioCount": 9,
   "artifacts": [
-    {"path": "reports/calibration-baseline.csv", "sha256": "e8c65098d65a00f9abd3a514c9f9409bda90ec83cf7e10c2d2c5bee19aa0828c"},
-    {"path": "reports/calibration-baseline.md", "sha256": "da39df8f6ca337c5fb98f9bbbdfffc8353e6d6ea5650b251d923ad9b4e50548b"}
+    {"path": "reports/calibration-baseline.csv", "sha256": "de47da342e68f3c594ff9c67c819b186f12fadea5409699cc32156d320b350e0"},
+    {"path": "reports/calibration-baseline.md", "sha256": "daa02d6daa126e2f211250b5c401722337126d64f68919ca5633045e59b6e47a"}
   ]
 }

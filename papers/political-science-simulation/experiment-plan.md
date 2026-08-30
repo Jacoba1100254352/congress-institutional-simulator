@@ -12,6 +12,10 @@ export PATH="$JAVA_HOME/bin:$PATH"
 make campaign
 make seed-robustness
 make calibration-check
+make empirical-linkage-report
+make empirical-linkage-roadmap
+make bill-law-evidence-spine
+make campaign-finance-district-context
 make validation-gap-report
 ```
 
@@ -21,6 +25,10 @@ Core current outputs:
 - `reports/scenario-selection-manifest.md`
 - `reports/calibration-baseline.csv`
 - `reports/seed-robustness-summary.csv`
+- `reports/empirical-linkage-report.csv`
+- `reports/empirical-linkage-roadmap.csv`
+- `reports/bill-law-evidence-spine.csv`
+- `reports/campaign-finance-district-context.csv`
 - `reports/empirical-validation-gap-report.csv`
 
 ## Experiment 1: Baseline Calibration Targets

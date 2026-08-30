@@ -1,0 +1,24 @@
+# Raw Source Manifest
+
+This registry-backed manifest records the committed raw validation extracts used by the empirical-boundary workflow. It is a reproducibility inventory, not a validation claim.
+
+- Source-family rows: 13
+- Unique raw files: 12
+- Present raw files: 13 / 13
+- Present metadata notes: 13 / 13
+
+| Source family | Dataset | Rows | Metadata | Boundary | Source hash | Claim boundary |
+| --- | --- | ---: | --- | --- | --- | --- |
+| Congress.gov bill histories | `bill_progression.csv` | 180 | `data/validation/raw/bill_progression.metadata.md` | held-out benchmark | `531b87932af7` | Supports held-out legislative-flow benchmarking only; does not validate public benefit or welfare |
+| govinfo bill and action records | `bill_progression.csv` | 180 | `data/validation/raw/bill_progression.metadata.md` | calibration proxy | `531b87932af7` | Supports calibration ranges and source cross-checks; not full validation or a full bill census |
+| Voteview roll-call data | `voteview_rollcalls.csv` | 83636 | `data/validation/raw/voteview_rollcalls.metadata.md` | held-out benchmark | `6f53461b9484` | Supports held-out roll-call coalition benchmark and party-unity plausibility only; not district public opinion representation or public-support validation |
+| Comparative Agendas topic throughput | `topic_throughput.csv` | 28 | `data/validation/raw/congress_derived.metadata.md` | flow sanity check | `53a1a6b8940d` | Supports agenda-flow plausibility; does not validate public value by topic |
+| QoG and V-Dem comparative institutions | `comparative_institutions.csv` | 130 | `data/validation/raw/comparative_institutions.metadata.md` | held-out benchmark | `a647d1b969f1` | Supports held-out comparative bicameral-context plausibility and bounded simulator scenario-family metadata anchoring only; does not validate institutional fit bicameral disagreement or law-output productivity |
+| Senate LDA lobbying disclosures | `lobbying_disclosure.csv` | 146 | `data/validation/raw/lobbying_disclosure.metadata.md` | calibration proxy | `447b0c53533b` | Supports spending observability and concentration only; not bill-level capture validation |
+| OpenFEC campaign finance | `campaign_finance.csv` | 194 | `data/validation/raw/campaign_finance.metadata.md` | held-out benchmark | `8ce8cc88678c` | Supports held-out campaign-finance concentration and outside-spending plausibility only; not bill-level influence or capture validation |
+| Center for Effective Lawmaking and sponsor histories | `sponsor_success.csv` | 22 | `data/validation/raw/congress_derived.metadata.md` | held-out benchmark | `83751d8f9e60` | Supports held-out sponsor proposal-access concentration benchmarking and bounded sponsor-to-bill metadata linkage only; not full member effectiveness or sponsor-success validation |
+| District public opinion and affected groups | `district_public_opinion.csv` | 1305 | `data/validation/raw/district_public_opinion.metadata.md` | held-out benchmark | `67c6e1c9429b` | Supports held-out district-level survey aggregation official population/housing broad ACS district context exact current proxy-variable review official policy-preference candidate-item metadata unweighted raw response-code distributions and official guide item-direction labels only; not acquired bill-topic survey item IDs bill-text-aligned support/opposition MRP bill-topic support bill-text-specific affected-group mapping or validation of generated public benefit |
+| Committee hearing markup referral and discharge records | `committee_activity.csv` | 28 | `data/validation/raw/congress_derived.metadata.md` | flow sanity check | `9ce2f3fcf6be` | Supports rough committee reporting only; hearings markups and amendments remain thin |
+| Court review and invalidation | `court_review.csv` | 9341 | `data/validation/raw/court_review.metadata.md` | held-out benchmark | `29e5280e1be5` | Supports held-out merits-case court-review plausibility and bounded U.S.C.-section authority-overlap metadata only; emergency-order behavior and direct case-to-public-law review remain unvalidated |
+| Rulemaking implementation and enforcement | `rulemaking_implementation.csv` | 500 | `data/validation/raw/rulemaking_implementation.metadata.md` | held-out benchmark | `d3c28162cc0a` | Supports held-out final-rule implementation-delay plausibility only; complete comment records, enforcement, nonenforcement, and underfunding remain unvalidated |
+| Statutory revision and law lineage | `law_revision_history.csv` | 120 | `data/validation/raw/law_revision_history.metadata.md` | held-out benchmark | `9751356404a9` | Supports held-out statutory revision-activity plausibility bounded official OLRC public-law marker review target review packets and a thirteen-public-law source-reviewed target-section diff pilot only; not full target-statute longitudinal lineage observed expiration outcomes effective statutory text or direct court invalidation |

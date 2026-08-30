@@ -18,6 +18,7 @@ import congresssim.institution.lobbying.LobbyTransparencyProcess;
 import congresssim.institution.publicinput.*;
 import congresssim.institution.review.ExAnteReviewMode;
 import congresssim.institution.review.ExAnteReviewProcess;
+import congresssim.institution.review.AdministrativeReviewCapacityProcess;
 import congresssim.institution.review.IndependentInstitutionBundle;
 import congresssim.institution.review.JudicialReviewProcess;
 import congresssim.institution.strategy.InstitutionalNormErosionProcess;
@@ -95,6 +96,7 @@ final class InstitutionProcessTests
 		committeeRolesEmitCaptureAndHearingDiagnostics();
 		eligibilityFiltersEmitRecusalAndExclusionDiagnostics();
 		exAnteReviewCanBlockOrReduceLegalRisk();
+		administrativeReviewCapacityFallsBackAndRecovers();
 		committeeInformationMovesPublicSignalTowardBenefit();
 	}
 	
@@ -2241,6 +2243,34 @@ final class InstitutionProcessTests
 				outcome.bill().publicSupport() < bill.publicBenefit(),
 				"Information review should improve the signal without making it perfectly omniscient."
 		);
+	}
+
+	private static void administrativeReviewCapacityFallsBackAndRecovers() {
+		AdministrativeReviewCapacityProcess process = new AdministrativeReviewCapacityProcess(
+				"capacity test",
+				denyEverything("defended review blocked bill"),
+				enactEverything(),
+				1.0,
+				0.25,
+				0.75
+		);
+		Bill bill = new Bill("B-overload", "Overload Bill", "L-1", 0.0, 0.85, 0.28, 0.22, 0.80, 0.84)
+				.withPublicBenefitUncertainty(0.70);
+		process.submitExternalDemand(2.0);
+		BillOutcome overloaded = process.consider(
+				bill,
+				new VoteContext(Map.of("Test", 0.0), new Random(7L), 0.0)
+		);
+		assertTrue(overloaded.enacted(), "Insufficient review coverage should use the configured overflow path.");
+		assertTrue(
+				overloaded.signals().supplementalMetrics().getOrDefault("administrativeOverflowFallback", 0.0) == 1.0,
+				"Administrative overload should be explicitly traced as an overflow fallback."
+		);
+		assertTrue(process.snapshot().backlogUnits() > 0.0, "Unserved review demand should remain in the queue.");
+		for (int cycle = 0; cycle < 20 && !process.snapshot().fullReviewReady(); cycle++) {
+			process.advanceRecoveryCycle();
+		}
+		assertTrue(process.snapshot().fullReviewReady(), "No-case recovery cycles should restore defended review readiness.");
 	}
 	
 	private static LegislativeProcess denyEverything(String reason) {

@@ -28,9 +28,9 @@ Final decision: BENCHMARK/DATA PIPELINE PLAN ONLY.
 ## 3. Current Pipeline
 
 - Current ready inputs.
-- Current missing inputs.
+- Current weak or missing linkages.
 - Current computed summaries.
-- Current flow sanity checks.
+- Current flow sanity checks and narrow held-out benchmarks.
 - Current calibration screen.
 
 ## 4. Metric Mapping and Claim Boundaries
@@ -87,7 +87,7 @@ Final decision: BENCHMARK/DATA PIPELINE PLAN ONLY.
 - Bounded samples.
 - Missing high-priority data.
 - Proxy risks.
-- No held-out validation yet.
+- Held-out checks are narrow and do not validate representation, welfare, or rankings.
 - No claim that simulator rankings are empirically validated.
 
 ## 10. Conclusion

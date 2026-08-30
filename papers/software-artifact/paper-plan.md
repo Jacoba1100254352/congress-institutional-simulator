@@ -20,7 +20,7 @@ The ACM paper argues for a framework and reports demonstration campaigns. This b
 
 Ready for an artifact-hardening plan and extended outline. Not ready for a full software paper submission.
 
-The repository has strong reproduction infrastructure, but no license, no `CITATION.cff`, no `codemeta.json`, and no public archival release metadata were found in the repository root.
+The repository has strong reproduction infrastructure plus root `CITATION.cff`, `codemeta.json`, and `RELEASE.md` metadata scaffolding. It still has no chosen license, no clean-checkout reproduction log, and no public archival release or DOI metadata.
 
 ## Existing Artifacts and Results It Can Use
 
@@ -34,17 +34,16 @@ The repository has strong reproduction infrastructure, but no license, no `CITAT
 - `paper/pdf-manifest.json`: PDF freshness manifest.
 - `scripts/checks`, `scripts/reporting`, `scripts/validation`, `paper/scripts`: checks, reports, validation, and figure generation scripts.
 - `make test`, `make reproduce-paper-offline`, `make paper-checks`, `make supplement-anonymous`.
+- `docs/architecture.md`, `docs/output-schema.md`, `docs/adding-a-mechanism.md`, `docs/adding-a-campaign.md`, and `docs/reproducibility.md`: software-facing artifact docs.
 
 ## Missing Experiments or Validation Needed Before Submission
 
 This is mostly artifact work, not new scientific experiments:
 
 - Add an explicit open-source license if the project will be submitted as reusable software.
-- Add `CITATION.cff` and optionally `codemeta.json`.
-- Add a public archival release plan, such as Zenodo or an equivalent DOI-bearing archive, if required by the target venue.
-- Add command-line usage examples beyond paper reproduction.
-- Add a short architecture/API guide for adding a new mechanism, metric, or campaign.
-- Add deterministic-output tolerance notes for generated CSV/PDF artifacts.
+- Update `CITATION.cff` and `codemeta.json` with final version, license, release date, and DOI/archive fields after release.
+- Complete a public archival release, such as Zenodo or an equivalent DOI-bearing archive, if required by the target venue.
+- Keep command-line usage examples and software-facing docs synchronized with Makefile and scenario-catalog changes.
 - Confirm offline reproduction on a clean checkout.
 - Confirm that anonymous-submission artifacts do not include strategy notes or stale drafts.
 
@@ -52,7 +51,7 @@ This is mostly artifact work, not new scientific experiments:
 
 No-go for immediate software-paper submission. Go for artifact hardening.
 
-After license/citation/release metadata and clean-checkout reproduction are complete, this could become the strongest breakout candidate.
+After license choice, final citation/release metadata, archival release, and clean-checkout reproduction are complete, this could become the strongest breakout candidate.
 
 See `go-no-go.md` for the strict full-draft conditions.
 
@@ -68,10 +67,8 @@ make supplement-anonymous
 
 Artifact hardening tasks:
 
-1. Add `LICENSE`.
-2. Add `CITATION.cff`.
-3. Add optional `codemeta.json`.
-4. Add `docs/architecture.md`.
-5. Add `docs/adding-a-mechanism.md`.
-6. Add a clean-checkout reproduction log.
-7. Add release checklist for the chosen venue.
+1. Choose and add `LICENSE`.
+2. Add a clean-checkout reproduction log.
+3. Archive a tagged release after clean-checkout reproduction passes.
+4. Update `CITATION.cff` and `codemeta.json` with final release fields.
+5. Audit the public and anonymous artifact bundles for stale/private files.

@@ -13,7 +13,7 @@ Final decision: NEEDS DATA/VALIDATION FIRST.
    - Columns: model representation, metric, validation target, limitation.
 
 3. Empirical validation boundary table
-   - Source: `validation-plan.md`, `reports/empirical-validation-gap-report.md`.
+   - Source: `validation-plan.md`, `reports/empirical-validation-gap-report.md`, `reports/empirical-linkage-report.md`, and `reports/empirical-linkage-roadmap.md`.
    - Must mark synthetic-only metrics clearly.
 
 4. Benchmark fairness-control table

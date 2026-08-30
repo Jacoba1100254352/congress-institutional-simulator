@@ -36,8 +36,43 @@ The repository has useful pilot artifacts:
 - `reports/manipulation-stress-summary.md`
 - `reports/simulation-ablation-analysis.csv`
 - `reports/ablation-analysis-summary.md`
+- `reports/adversary-catalog.csv`
+- `reports/adversary-catalog.md`
+- `reports/adversarial-stress-manifest.json`
+- `reports/adversarial-stress-run-manifest.json`
+- `reports/adversarial-stress-summary.csv`
+- `reports/adversarial-stress-summary.md`
+- `reports/adversarial-failure-traces.jsonl`
+- `reports/adversarial-stress-a2-run-manifest.json`
+- `reports/adversarial-stress-a2-summary.csv`
+- `reports/adversarial-stress-a2-summary.md`
+- `reports/adversarial-failure-traces-a2.jsonl`
+- `reports/adversarial-stress-a3-run-manifest.json`
+- `reports/adversarial-stress-a3-summary.csv`
+- `reports/adversarial-stress-a3-summary.md`
+- `reports/adversarial-failure-traces-a3.jsonl`
+- `reports/adversarial-stress-a4-run-manifest.json`
+- `reports/adversarial-stress-a4-summary.csv`
+- `reports/adversarial-stress-a4-summary.md`
+- `reports/adversarial-failure-traces-a4.jsonl`
+- `reports/adversarial-stress-a5-run-manifest.json`
+- `reports/adversarial-stress-a5-summary.csv`
+- `reports/adversarial-stress-a5-summary.md`
+- `reports/adversarial-failure-traces-a5.jsonl`
+- `reports/adversarial-stress-a6-run-manifest.json`
+- `reports/adversarial-stress-a6-summary.csv`
+- `reports/adversarial-stress-a6-summary.md`
+- `reports/adversarial-failure-traces-a6.jsonl`
+- `reports/adversarial-stress-a7-run-manifest.json`
+- `reports/adversarial-stress-a7-summary.csv`
+- `reports/adversarial-stress-a7-summary.md`
+- `reports/adversarial-failure-traces-a7.jsonl`
+- `reports/adversarial-failure-trace-index.csv`
+- `reports/adversarial-failure-trace-index.md`
+- `reports/adversarial-pilot-cell-map.csv`
+- `reports/adversarial-pilot-cell-map.md`
 
-Those reports are not enough for a standalone failure-mode paper because they do not yet specify explicit adversary actors, budgets, information levels, attack success rates, worst-case degradation, or recovery/correction behavior.
+The adversary catalog and manifest define the first-wave A1-A9 actor schema in the simulator code, and the pilot cell map joins that schema to current aggregate stress evidence. The adversarial-stress summaries and JSONL traces now provide bounded executable A1 clone/decoy, A2 poison-pill/sequencing, A3 public-input manipulation, A4 bad-faith harm-claim, A5 proposal-flooding, A6 lobbying-camouflage, and A7 administrative-overload pilots with budget/information cells, same-generated-world baseline pairing, attack success rates, and per-bill traces. A7 additionally reports queue saturation, overflow fallback, and post-attack recovery cycles. These reports are still not enough for a standalone failure-mode paper because A8-A9 executable sweeps, broader mechanism coverage, recovery/correction behavior beyond A7 queue recovery, seed sensitivity, and external validation remain incomplete.
 
 ## Coverage Check
 

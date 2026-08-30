@@ -21,7 +21,11 @@ public final class CalibrationRunner
 			"bicameral-majority",
 			"presidential-veto",
 			"current-system",
-			"default-pass-budgeted-lobbying"
+			"default-pass-budgeted-lobbying",
+			"district-population-majority",
+			"influence-system-majority",
+			"constitutional-court-architecture-majority",
+			"law-registry-majority"
 	);
 	
 	private CalibrationRunner() {
@@ -94,9 +98,15 @@ public final class CalibrationRunner
 			case "floor" -> report.floorConsiderationRate();
 			case "averageEnactedSupport" -> report.averageEnactedSupport();
 			case "vetoesPerRun" -> (double) report.vetoes() / runs;
+			case "interChamberConflictRate" -> report.interChamberConflictRate();
+			case "districtAlignment" -> report.districtAlignment();
+			case "reversalRate" -> report.reversalRate();
 			case "proposerAccessGini" -> report.proposerAccessGini();
 			case "lobbySpendPerBill" -> report.lobbySpendPerBill();
 			case "welfarePerSubmittedBill" -> report.welfarePerSubmittedBill();
+			case "turnoutSkewIndex", "campaignFinanceCaptureIndex", "constitutionalInvalidationRate",
+					"implementationDelay", "implementationCapacity" ->
+					report.supplementalMetric(metric);
 			default -> throw new IllegalArgumentException("Unsupported calibration metric: " + metric);
 		};
 	}

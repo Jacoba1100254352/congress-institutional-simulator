@@ -69,7 +69,7 @@ Final decision: NEEDS REPRODUCIBILITY AND PACKAGING AUDIT FIRST.
 
 - Synthetic model assumptions.
 - Empirical checks are sanity screens.
-- No license/citation metadata yet.
+- No license metadata yet; citation and CodeMeta metadata exist only as pre-release files.
 - Clean-clone reproduction not yet documented.
 - No public release archive yet.
 - No software-paper claim until packaging audit passes.
@@ -79,6 +79,6 @@ Final decision: NEEDS REPRODUCIBILITY AND PACKAGING AUDIT FIRST.
 This section should remain unwritten until:
 
 - license exists;
-- citation metadata exists;
+- citation metadata has final release version and DOI/archive fields;
 - release/archive URL exists;
 - clean reproduction log exists.

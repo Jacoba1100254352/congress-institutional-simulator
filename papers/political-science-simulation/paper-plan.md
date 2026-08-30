@@ -33,7 +33,7 @@ The ACM CI paper contributes the reusable simulation framework, diagnostic dashb
 | Open floor calendar | `open-rule-calendar-majority` / `OPEN` | `OpenFloorCalendarProcess`, manifest row `OPEN` | Usable agenda-access contrast. |
 | Veto/override systems | `presidential-veto`, `cloture-conference-review` | `PresidentialVetoProcess`, `ConferenceCommitteeProcess`, manifest rows `VETO`, `PROC` | Needs clearer veto-player framing and calibration. |
 | Bicameral systems | `bicameral-majority`, chamber campaign | `BicameralProcess`, `BicameralRoutingProcess`, `reports/simulation-chamber-structure.csv` | Use only selectively; chamber paper owns deeper treatment. |
-| Lobbying/capture mechanisms | `default-pass-budgeted-lobbying`, `influence-system-majority`, capture metrics | `BudgetedLobbyingProcess`, `InfluenceSystemProcess`, `LobbyCaptureScoring` | Needs lobbying-to-bill and campaign-finance validation. |
+| Lobbying/capture mechanisms | `default-pass-budgeted-lobbying`, `influence-system-majority`, capture metrics | `BudgetedLobbyingProcess`, `InfluenceSystemProcess`, `LobbyCaptureScoring` | Needs lobbying-to-bill and bill-linked campaign-finance validation. |
 | Anti-capture access | `anti-capture-access-majority` / `ACG`; `anti-capture-majority-bundle` / `CAP` | `LobbySurchargeProposalAccessRule`, `LobbyAuditProcess`, transparency/audit modules | Usable as synthetic anti-capture scenarios; not empirically validated. |
 | Content-selection mechanisms | `simple-majority-alternatives-pairwise`, `pairwise-amendment-tournament-majority` | `CompetingAlternativesProcess`, `AlternativeSelectionRule`, manifest rows `PAIR`, `AMT` | Must be merged as `SEL` unless new divergence is shown. |
 | Portfolio hybrid | `portfolio-hybrid-legislature` / `PORT` | manifest row `PORT`, source modules across routing/review/access | Include only if theoretically justified as bundled safeguards; do not make it a favored design. |
@@ -57,6 +57,8 @@ This paper should frame implemented modules through political science concepts:
 - `reports/simulation-campaign-v21-paper.md`: run configuration and scenario averages.
 - `reports/scenario-selection-manifest.md`: mechanism labels and selection rationale.
 - `reports/calibration-baseline.md`: current flow sanity checks.
+- `reports/empirical-linkage-report.md`: source-family linkage audit.
+- `reports/empirical-linkage-roadmap.md`: source-family linkage upgrade gates.
 - `reports/empirical-validation-gap-report.md`: empirical boundary and missing data.
 - `reports/seed-robustness-summary.csv`: seed robustness.
 - `reports/family-champions.md` and `reports/representative-vs-family-champions.csv`: family-level checks.
@@ -66,9 +68,9 @@ This paper should frame implemented modules through political science concepts:
 
 ## Missing Validation Data
 
-- District-level public opinion.
-- Campaign finance / OpenFEC.
-- Lobbying-to-bill linkage.
+- Bill-topic district public opinion beyond the bounded CES proxy.
+- Campaign-finance linkage beyond bounded OpenFEC concentration, issue-sector, member-context, district-context, and candidate-to-sponsored-bill summaries.
+- Client-to-specific-bill lobbying linkage beyond LDA issue taxonomy and shared-policy-area bill context.
 - Committee hearings, markups, referrals, amendments, and discharge petitions.
 - Court review and invalidation.
 - Implementation and agency enforcement.
@@ -92,7 +94,7 @@ Before drafting, add or extend:
 2. A political paired-comparison report that uses matched seeds/worlds and reports differences versus `CUR` and `SM`.
 3. A cost-budget accounting layer for review, amendment, information, and attention resources.
 4. A public-benefit/public-support sensitivity report that includes decoupled support-benefit worlds.
-5. Empirical source upgrades identified in `../empirical-validation/go-no-go.md`, especially public opinion, campaign finance, and correction/implementation data.
+5. Empirical source upgrades identified in `../empirical-validation/go-no-go.md`, especially bill-topic public opinion, campaign-finance linkage beyond FEC recipient metadata, bounded issue-sector context, matched member context, bounded House-candidate district context, and bounded candidate-to-sponsored-bill context to reviewed targets, committee-action influence, and outcomes, lobbying linkage beyond LDA issue taxonomy, shared-policy-area bill context, and exact filing-text bill identifiers for a bounded public-law subset to sponsor/member targets, committees, roll calls, influence, and outcomes, and correction/implementation data.
 
 ## Next Concrete Commands
 
@@ -104,6 +106,11 @@ export PATH="$JAVA_HOME/bin:$PATH"
 make campaign
 make seed-robustness
 make calibration-check
+make empirical-linkage-report
+make empirical-linkage-roadmap
+make bill-law-evidence-spine
+make lobbying-bill-mention-review
+make campaign-finance-district-context
 make validation-gap-report
 ```
 

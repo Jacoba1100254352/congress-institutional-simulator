@@ -139,6 +139,94 @@ public final class CalibrationTargetCatalog
 						0.45,
 						"Comparative Agendas Project topic coding",
 						"A coarse screen for generated issue-domain throughput before topic-specific calibration."
+				),
+				new CalibrationBenchmark(
+						"district-public-will-alignment",
+						"Cumulative CES Common Content district aggregates",
+						"district support and turnout signals should be visible in public-will scenarios",
+						"district-population-majority",
+						"districtAlignment",
+						0.20,
+						0.80,
+						"CES district-level survey aggregates",
+						"Abstract public-will alignment screen using district proxy data, not bill-specific support validation."
+				),
+				new CalibrationBenchmark(
+						"district-turnout-skew-proxy",
+						"Cumulative CES Common Content district aggregates",
+						"turnout skew should stay finite in district public-will scenarios",
+						"district-population-majority",
+						"turnoutSkewIndex",
+						0.00,
+						0.40,
+						"CES district-level survey aggregates",
+						"Coarse turnout-skew screen using district proxy data, not a voter-file validation."
+				),
+				new CalibrationBenchmark(
+						"campaign-finance-observable-band",
+						"OpenFEC campaign-finance extracts",
+						"campaign-finance pressure should be visible in influence-system scenarios",
+						"influence-system-majority",
+						"campaignFinanceCaptureIndex",
+						0.00,
+						1.00,
+						"OpenFEC Schedule A and Schedule E bounded extracts",
+						"Unit-scale observability band for campaign-finance influence metrics, not causal capture calibration."
+				),
+				new CalibrationBenchmark(
+						"judicial-review-constraint",
+						"Supreme Court Database merits cases",
+						"constitutional invalidation should stay within a broad merits-case plausibility band",
+						"constitutional-court-architecture-majority",
+						"constitutionalInvalidationRate",
+						0.00,
+						0.20,
+						"Supreme Court Database case-centered release",
+						"Broad upper-bound screen for merits-case invalidation, not emergency-order validation."
+				),
+				new CalibrationBenchmark(
+						"implementation-delay-proxy",
+						"Federal Register final-rule effective-date sample",
+						"implementation-delay proxy should remain finite and nonnegative",
+						"law-registry-majority",
+						"implementationDelay",
+						0.00,
+						100.00,
+						"Federal Register final-rule publication and effective-date extract",
+						"Abstract delay screen linked to final-to-effective-date rows, not full administrative implementation validation."
+				),
+				new CalibrationBenchmark(
+						"implementation-capacity-proxy",
+						"Federal Register final-rule effective-date sample",
+						"implementation-capacity proxy should remain on the unit scale",
+						"law-registry-majority",
+						"implementationCapacity",
+						0.00,
+						1.00,
+						"Federal Register final-rule publication and effective-date extract",
+						"Abstract capacity screen derived from effective-date speed, not enforcement validation."
+				),
+				new CalibrationBenchmark(
+						"law-revision-correction-proxy",
+						"Congress.gov public-law text flags",
+						"post-enactment correction or revision should be represented in law-registry scenarios",
+						"law-registry-majority",
+						"reversalRate",
+						0.00,
+						0.80,
+						"Congress.gov public-law title and summary flags",
+						"Broad correction-rate proxy for amendment, repeal, reauthorization, and sunset language, not statutory-lineage validation."
+				),
+				new CalibrationBenchmark(
+						"bicameral-veto-burden",
+						"QoG and V-Dem comparative institutional profiles",
+						"bicameral conflict should be visible in bicameral scenarios",
+						"bicameral-majority",
+						"interChamberConflictRate",
+						0.05,
+						0.60,
+						"QoG DES POLCON and OWID V-Dem selected profiles",
+						"Coarse bicameral-burden screen, not cross-national productivity validation."
 				)
 		);
 	}

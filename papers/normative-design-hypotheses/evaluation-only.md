@@ -29,7 +29,7 @@ Required before reconsidering a normative paper:
 
 - stronger empirical boundary work that separates validated, sanity-checkable, proxy-only, synthetic-only, and unmodeled claims;
 - district-level public opinion or credible representation proxies;
-- lobbying-to-bill and campaign-finance linkage;
+- lobbying-to-bill and campaign-finance linkage beyond LDA issue taxonomy plus shared-policy-area bill context, FEC recipient metadata, bounded issue-sector context, matched member context, bounded House-candidate district context, and bounded candidate-to-sponsored-bill context;
 - implementation, law revision, court review, repeal, sunset, and reauthorization data where correction/reversibility is discussed;
 - adversarial robustness experiments with explicit actors, budgets, information levels, attack success rates, and worst-case degradation;
 - benchmark fairness controls where conventional and simple-majority baselines receive comparable information, amendment, review, and attention budgets;

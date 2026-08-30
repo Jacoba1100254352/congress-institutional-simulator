@@ -10,6 +10,7 @@ public final class SimulatorTests
 		InstitutionProcessTests.run();
 		WorldGenerationTests.run();
 		ScenarioCatalogTests.run();
+		AdversaryCatalogTests.run();
 		CampaignRunnerTests.run();
 		SimulatorInvariantTests.run();
 		System.out.println("All simulator tests passed.");

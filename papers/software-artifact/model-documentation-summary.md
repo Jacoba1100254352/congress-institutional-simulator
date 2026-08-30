@@ -86,12 +86,17 @@ Normal scenario runs are synthetic. Empirical inputs currently support benchmark
 - Voteview roll calls;
 - Congress.gov/govinfo bill progression;
 - Senate LDA lobbying disclosures;
+- OpenFEC campaign-finance receipts and independent-expenditure summaries;
+- Cumulative CES district public-opinion aggregates;
+- Supreme Court Database merits-case court-review summaries and bounded court-law U.S.C.-section authority-overlap metadata;
+- Federal Register final-rule effective-date, authority-search, proposed-history, proposed-rule comment-portal, bounded small/zero-comment comment-record, and timing metadata;
+- Congress.gov law-revision text flags and bounded bill/action linkage;
 - topic throughput;
-- sponsor success;
+- sponsor success and bounded sponsor-bill metadata by Bioguide ID;
 - committee activity;
 - tracked calibration benchmarks.
 
-Missing or incomplete empirical areas include district public opinion, campaign finance, court review, implementation feedback, law revision, and comparative institutions.
+Missing or incomplete empirical areas include bill-topic district public opinion and affected-group mapping beyond the bounded CES proxy and sponsor-district bill policy-area context, campaign-finance linkage beyond FEC recipient metadata, bounded issue-sector context, matched member context, bounded House-candidate district context, and bounded candidate-to-sponsored-bill context to reviewed targets, committee-action influence, and outcomes, complete sponsor histories or CEL-style effectiveness data beyond bounded sponsor-bill metadata, direct case-to-statute/public-law and emergency-order court review beyond U.S.C.-section overlaps, implementation feedback beyond final-rule effective dates, authority-search matches, proposed-history/comment-portal metadata, bounded small/zero-comment comment-record metadata, and timing metadata, full statutory lineage beyond the bounded Congress.gov revision-text proxy, bill/action metadata, authority-search matches, proposed-history/comment-portal/comment-record metadata, timing metadata, and court-overlap metadata, and comparative chamber/productivity evidence beyond the bounded QoG/OWID/V-Dem profile proxy.
 
 ## Outputs
 
@@ -116,4 +121,4 @@ Outputs include:
 - Empirical inputs are sanity checks, not validation of central model outputs.
 - Administrative cost is a procedural proxy.
 - No claim of real-world institutional ranking.
-- Not yet packaged as public reusable software with license/citation/release metadata.
+- Not yet packaged as public reusable software with a chosen license, clean-clone evidence, final citation/CodeMeta release fields, and archive/DOI metadata.
