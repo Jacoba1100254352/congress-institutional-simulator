@@ -1369,7 +1369,7 @@ public final class A9MixedAdversaryPortfolioStressRunner
 			       .append(format(rate(group, A9MixedAdversaryPortfolioStressRunner::recoveryCorrectionFailure))).append(" | ")
 			       .append(format(mean(group, TraceRow::administrativeBurdenAdded))).append(" |\n");
 		}
-		builder.append("\nGate status: this completes bounded executable coverage for A1-A9 and supplies the required mixed-only comparison design. A separate fixed-specification 30-base-seed replication is available in `reports/adversarial-replication-a9-summary.md`. The robustness breakout remains below manuscript gate until A1-A8 seed replication, broader mechanism and alternative A9 specification sweeps, temporal or substantive correction, and external validation are complete.\n");
+		builder.append("\nGate status: this completes bounded executable coverage for A1-A9 and supplies the required mixed-only comparison design. Separate fixed-specification 30-base-seed replications are available for A1-A8 and A9. The robustness breakout remains below manuscript gate until broader mechanism and alternative A9 specification sweeps, temporal or substantive correction, and external validation are complete.\n");
 		Files.writeString(path, builder.toString());
 	}
 

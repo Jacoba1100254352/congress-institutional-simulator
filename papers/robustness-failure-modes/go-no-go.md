@@ -6,7 +6,7 @@ Go for structured planning and implementation.
 
 No-go for a full manuscript.
 
-The evidence is not ready for manuscript drafting because the repo's bounded executable A1-A9 pilots still need broader mechanism coverage and A1-A8 adversarial seed replication, while temporal or substantive recovery/correction remains incomplete beyond bounded A7-A9 evidence. A9 now has a 30-base-seed fixed-specification replication, but alternative allocation, resource-conversion, interaction, and mechanism specifications remain untested and no attack or resource assumptions are externally calibrated.
+The evidence is not ready for manuscript drafting because the repo's bounded executable A1-A9 pilots still need broader mechanism coverage, while temporal or substantive recovery/correction remains incomplete beyond bounded A7-A9 evidence. A1-A8 and A9 now have separate 30-base-seed fixed-specification replications, but alternative allocation, resource-conversion, interaction, capacity, and mechanism specifications remain untested and no attack or resource assumptions are externally calibrated.
 
 ## Readiness Level
 
@@ -15,14 +15,13 @@ The evidence is not ready for manuscript drafting because the repo's bounded exe
 | 0 | Idea only. | No. |
 | 1 | Stable framework and paper boundary identified. | Yes. |
 | 2 | Pilot evidence, explicit A1-A9 schema, aggregate trace-index output, pilot cell map, and experiment plan exist. | Yes. |
-| 3 | Explicit adversary experiments implemented and run. | Yes for bounded A1-A9 first-wave pilots and fixed-specification A9 multi-seed replication. |
+| 3 | Explicit adversary experiments implemented and run. | Yes for bounded A1-A9 first-wave pilots and fixed-specification 30-base-seed replication for every first-wave adversary. |
 | 4 | Manuscript-ready evidence and validation boundaries complete. | No. |
 
 ## Proceed Now
 
 Proceed with:
 
-- extend multi-seed adversarial replication from A9 to A1-A8 core attack families;
 - broader mechanism-family attack sweeps;
 - alternative A9 allocation, resource-conversion, and interaction specifications;
 - substantive correction or replay after selected failures;
@@ -54,6 +53,8 @@ Move to manuscript drafting only when all of the following are true:
 8. Seed sensitivity is run for the core attack families.
 9. `make test` passes after implementation.
 10. Validation gaps in `validation-needs.md` are reflected in claim wording.
+
+Condition 8 is satisfied for the fixed first-wave specifications. It does not substitute for broader mechanism, parameter, correction, or external-validation conditions.
 
 ## Stop Conditions
 

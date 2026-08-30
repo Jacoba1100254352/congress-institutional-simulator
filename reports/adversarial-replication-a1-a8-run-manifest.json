@@ -1,0 +1,220 @@
+{
+  "adversaries": [
+    {
+      "adversaryId": "A1",
+      "attackCellCount": 6,
+      "attackSuccessRows": 54780,
+      "evaluatedTraceRows": 108000,
+      "name": "Clone/decoy pressure",
+      "primaryMetric": "meanPublicBenefitLoss"
+    },
+    {
+      "adversaryId": "A2",
+      "attackCellCount": 6,
+      "attackSuccessRows": 22580,
+      "evaluatedTraceRows": 54000,
+      "name": "Poison-pill sequencing",
+      "primaryMetric": "meanPublicBenefitLoss"
+    },
+    {
+      "adversaryId": "A3",
+      "attackCellCount": 6,
+      "attackSuccessRows": 50410,
+      "evaluatedTraceRows": 54000,
+      "name": "Public-input manipulation",
+      "primaryMetric": "meanPublicPreferenceDistortionAdded"
+    },
+    {
+      "adversaryId": "A4",
+      "attackCellCount": 3,
+      "attackSuccessRows": 21984,
+      "evaluatedTraceRows": 27000,
+      "name": "Bad-faith harm claims",
+      "primaryMetric": "meanFalsePositiveBurdenAdded"
+    },
+    {
+      "adversaryId": "A5",
+      "attackCellCount": 6,
+      "attackSuccessRows": 54000,
+      "evaluatedTraceRows": 54000,
+      "name": "Proposal flooding",
+      "primaryMetric": "meanPolicyYieldLoss"
+    },
+    {
+      "adversaryId": "A6",
+      "attackCellCount": 6,
+      "attackSuccessRows": 3028,
+      "evaluatedTraceRows": 54000,
+      "name": "Lobbying camouflage",
+      "primaryMetric": "meanObservedScreenRiskDecline"
+    },
+    {
+      "adversaryId": "A7",
+      "attackCellCount": 6,
+      "attackSuccessRows": 34051,
+      "evaluatedTraceRows": 54000,
+      "name": "Administrative overload",
+      "primaryMetric": "meanRiskControlDegradationAdded"
+    },
+    {
+      "adversaryId": "A8",
+      "attackCellCount": 18,
+      "attackSuccessRows": 97441,
+      "evaluatedTraceRows": 162000,
+      "name": "Public-support distortion",
+      "primaryMetric": "meanResidualSignalDistortion"
+    }
+  ],
+  "adversaryIds": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8"
+  ],
+  "attackCellCount": 57,
+  "attackSuccessAggregationBoundary": "cross_family_sum_for_audit_only_not_a_pooled_rate",
+  "attackSuccessRows": 338274,
+  "baseSeeds": [
+    20260428,
+    20260429,
+    20260430,
+    20260431,
+    20260432,
+    20260433,
+    20260434,
+    20260435,
+    20260436,
+    20260437,
+    20260438,
+    20260439,
+    20260440,
+    20260441,
+    20260442,
+    20260443,
+    20260444,
+    20260445,
+    20260446,
+    20260447,
+    20260448,
+    20260449,
+    20260450,
+    20260451,
+    20260452,
+    20260453,
+    20260454,
+    20260455,
+    20260456,
+    20260457
+  ],
+  "billsPerRun": 60,
+  "canonicalSeedCrossCheck": {
+    "adversaries": [
+      {
+        "adversaryId": "A1",
+        "canonicalPath": "reports/adversarial-stress-summary.csv",
+        "sha256": "4c078756129c8fef1694a91980eed9ab39731d8bbbf7228d5beb118fd3013b77",
+        "status": "matched"
+      },
+      {
+        "adversaryId": "A2",
+        "canonicalPath": "reports/adversarial-stress-a2-summary.csv",
+        "sha256": "6ac3a4ed538c4e9614a8aed67fa6176018a68065d3529b3c369a28692acfc500",
+        "status": "matched"
+      },
+      {
+        "adversaryId": "A3",
+        "canonicalPath": "reports/adversarial-stress-a3-summary.csv",
+        "sha256": "a7c7bd7bd4a1b25626c9bfd7ca05bd98e9799b611db49883c9156afdf6248380",
+        "status": "matched"
+      },
+      {
+        "adversaryId": "A4",
+        "canonicalPath": "reports/adversarial-stress-a4-summary.csv",
+        "sha256": "adbde6c2b2b4f79bd9c143d14cfcbc8bc1cd8c84345de02966df0426968d52b3",
+        "status": "matched"
+      },
+      {
+        "adversaryId": "A5",
+        "canonicalPath": "reports/adversarial-stress-a5-summary.csv",
+        "sha256": "e56813bd9603c2b54da3a261fba6c91c56bc9fb4b1dcc22d6b298e754f993f59",
+        "status": "matched"
+      },
+      {
+        "adversaryId": "A6",
+        "canonicalPath": "reports/adversarial-stress-a6-summary.csv",
+        "sha256": "0474294ac5fae62deec9b9141961c0481d1fb85ba100347dadda1bc77b2bafec",
+        "status": "matched"
+      },
+      {
+        "adversaryId": "A7",
+        "canonicalPath": "reports/adversarial-stress-a7-summary.csv",
+        "sha256": "02d4fbe30f6157c9bca2b39e5d59f104453d369328e101c4a2c8444e3df77eb4",
+        "status": "matched"
+      },
+      {
+        "adversaryId": "A8",
+        "canonicalPath": "reports/adversarial-stress-a8-summary.csv",
+        "sha256": "7318c9788565264da828cdf3fa152db936914b30c9699143c0075c68e41a4c72",
+        "status": "matched"
+      }
+    ],
+    "seed": 20260428,
+    "status": "all_matched"
+  },
+  "checkpointPolicy": "reuse only when parameters, Java properties, Java source tree, replication script, common utility, all summary hashes, and all schemas match",
+  "checkpointRoot": "out/adversarial-replication-a1-a8",
+  "claimBoundary": "A1-A8 multi-seed synthetic replication only. The fixed base-seed panel is the uncertainty unit; bills and worlds within a seed are not treated as independent replications. Intervals summarize Monte Carlo sensitivity under the fixed first-wave attack mechanisms, budgets, information levels, institutional paths, and recovery assumptions. They are not population intervals, empirical attack-frequency estimates, general mechanism rankings, or evidence for real-world institutional adoption. Success criteria and evaluated-row units differ by adversary, so the cross-family success total is an audit count rather than a pooled attack rate.",
+  "evaluatedTraceRows": 567000,
+  "gateStatus": "a1_a8_fixed_specification_multiseed_complete_broader_robustness_gate_open",
+  "intervalMethod": "two_sided_student_t_on_base_seed_estimates",
+  "javaProperties": [
+    "-Dcongresssim.javaRelease=21"
+  ],
+  "legislators": 101,
+  "manifestVersion": "adversarial-replication-a1-a8-v1",
+  "outputs": [
+    {
+      "path": "reports/adversarial-replication-a1-a8-seed-metrics.csv",
+      "sha256": "2a29e568a7a87e94358a3cc0d243aea1af6560a83b2fd2972a98993f6f5a22a0"
+    },
+    {
+      "path": "reports/adversarial-replication-a1-a8-summary.csv",
+      "sha256": "335a2fedafdc7d337cc7db7167322c057acf731ff27b2da85fa7573651801399"
+    },
+    {
+      "path": "reports/adversarial-replication-a1-a8-summary.md",
+      "sha256": "0e16065792faaa21f5dbfb73026ce8b1efbaa5346c80e58108414608dbb7fecd"
+    }
+  ],
+  "rawTracePolicy": "not_written_for_replication; canonical single-seed per-bill traces remain under reports",
+  "replicationUnit": "base_seed",
+  "runsPerSeed": 5,
+  "seedCellRows": 1710,
+  "seedCount": 30,
+  "seedMetricRows": 28800,
+  "seedPanelSelection": "fixed_contiguous_integer_panel_starting_at_20260428_before_result_inspection",
+  "sourceInputs": [
+    {
+      "path": "src/main/java/congresssim/institution/adversary/A1A8AdversarialReplicationSeedRunner.java",
+      "sha256": "b86588605ef608924f80fcb4fecb0b4809d6d171a5cb0d8b473527c65a532c0e"
+    },
+    {
+      "path": "scripts/reporting/run_a1_a8_seed_replication.py",
+      "sha256": "38ba005af968349907c551d1863b16c96411f94a2751c5f3c248218c72be5bb1"
+    },
+    {
+      "path": "scripts/reporting/adversarial_replication_common.py",
+      "sha256": "36e7080b090a0258199db90080ed94baf5923f56904162ba45eb66a9908ef3b5"
+    },
+    {
+      "path": "src/main/java/**/*.java",
+      "sha256": "0bf8d44334c04aa37345a9b759e28de557b3416d0479c3bf4a3d296c64abfd1f"
+    }
+  ],
+  "status": "partial_a1_a8_multiseed_replication",
+  "summaryMetricRows": 960
+}

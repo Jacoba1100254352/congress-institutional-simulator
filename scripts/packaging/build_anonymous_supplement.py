@@ -107,6 +107,7 @@ def copy_reports() -> None:
         "adversarial-stress-a8-summary.*",
         "adversarial-stress-a9-run-manifest.*",
         "adversarial-stress-a9-summary.*",
+        "adversarial-replication-a1-a8-*",
         "adversarial-replication-a9-*",
         "adversarial-failure-trace-index.*",
         "adversarial-failure-traces.*",
@@ -324,14 +325,19 @@ def write_readme() -> None:
         "- `reports/adversarial-stress-a9-run-manifest.json`\n"
         "- `reports/adversarial-stress-a9-summary.csv`\n"
         "- `reports/adversarial-failure-traces-a9.jsonl`\n"
+        "- `reports/adversarial-replication-a1-a8-run-manifest.json`\n"
+        "- `reports/adversarial-replication-a1-a8-seed-metrics.csv`\n"
+        "- `reports/adversarial-replication-a1-a8-summary.csv`\n"
+        "- `reports/adversarial-replication-a1-a8-summary.md`\n"
         "- `reports/adversarial-replication-a9-run-manifest.json`\n"
         "- `reports/adversarial-replication-a9-seed-results.csv`\n"
         "- `reports/adversarial-replication-a9-summary.csv`\n"
         "- `reports/adversarial-failure-trace-index.csv`\n"
         "- `reports/adversarial-pilot-cell-map.csv`\n"
         "- generated diagnostic reports under `reports/`\n\n"
-        "The optional `make adversarial-replication-a9` target reproduces the compact multi-seed "
-        "A9 uncertainty reports without writing replication trace files.\n\n"
+        "The optional `make adversarial-replication-a1-a8` and `make adversarial-replication-a9` "
+        "targets reproduce the compact multi-seed uncertainty reports without writing replication "
+        "trace files.\n\n"
         "Optional live-data refresh targets include `make fetch-validation-samples`, "
         "`make build-bill-progression-raw`, `make build-core-raw-validation`, "
         "`make build-govinfo-billstatus-linkage-raw`, "

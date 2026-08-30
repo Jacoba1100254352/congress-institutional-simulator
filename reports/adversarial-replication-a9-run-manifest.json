@@ -56,7 +56,7 @@
     },
     {
       "path": "reports/adversarial-replication-a9-summary.md",
-      "sha256": "957a236c5055c595c6eed80a0e19c26f36d70b15ec77469c2b5cbf6354ed3bab"
+      "sha256": "7f7427bd8b58e60fafe1b7db876cc2bec04465e557b4930d3a78f378609b4573"
     }
   ],
   "portfolioCellCount": 18,
@@ -69,15 +69,15 @@
   "sourceInputs": [
     {
       "path": "src/main/java/congresssim/institution/adversary/A9MixedAdversaryPortfolioStressRunner.java",
-      "sha256": "1964f79ff91982bbb849ec470f489e8d8c7930510acd83915a89be21b89a28e2"
+      "sha256": "bd9bdd9260b30d1c86ae35a02a5135424cf8a8c9f1e795967014c8b6f15364ec"
     },
     {
       "path": "scripts/reporting/run_a9_seed_replication.py",
-      "sha256": "275d2a3cbcbe9b664c10c20051df3e93b9475b137597fe9501f8198f5b1654e8"
+      "sha256": "aabd128229a83e7699b857ca57b03e8ac2afb545dc12352b8dd71625468d8df3"
     },
     {
       "path": "src/main/java/**/*.java",
-      "sha256": "72e0746dcfd268828aea15adf57a91a11629fb04cc06110a866da228eebbb28f"
+      "sha256": "0bf8d44334c04aa37345a9b759e28de557b3416d0479c3bf4a3d296c64abfd1f"
     }
   ],
   "status": "partial_a9_multiseed_replication",

@@ -633,7 +633,7 @@ def write_markdown(
         "",
         f"Claim boundary: {CLAIM_BOUNDARY}",
         "",
-        "Gate status: independent-seed replication is now available for the fixed A9 pilot. The robustness paper remains below manuscript gate because A1-A8 adversarial replication, broader mechanism variants, alternative A9 allocation/resource/interaction specifications, substantive outcome replay, and external validation remain incomplete.",
+        "Gate status: independent-seed replication is available for the fixed A1-A9 pilots. The robustness paper remains below manuscript gate because broader mechanism variants, alternative A9 allocation/resource/interaction specifications, substantive outcome replay, and external validation remain incomplete.",
     ])
     atomic_write_text(SUMMARY_MD, "\n".join(lines) + "\n")
 

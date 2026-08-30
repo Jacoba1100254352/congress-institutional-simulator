@@ -23,6 +23,10 @@ EXECUTABLE_OUTPUTS = {
     "A9": (Path("reports/adversarial-stress-a9-summary.csv"), "reports/adversarial-failure-traces-a9.jsonl"),
 }
 SEED_REPLICATION_OUTPUTS = {
+    **{
+        f"A{index}": Path("reports/adversarial-replication-a1-a8-summary.csv")
+        for index in range(1, 9)
+    },
     "A9": Path("reports/adversarial-replication-a9-summary.csv"),
 }
 
@@ -30,8 +34,8 @@ CLAIM_BOUNDARY = (
     "Catalog-to-pilot map only. Mapped rows identify aggregate manipulation-stress cells "
     "that can seed explicit adversary experiments and bounded executable A1-A9 pilot artifacts. "
     "They complete first-wave catalog coverage but are not mechanism-wide robustness estimates or "
-    "complete recovery/correction evidence. A9 has a fixed-specification 30-base-seed replication; "
-    "A1-A8 do not yet have adversarial seed replication."
+    "complete recovery/correction evidence. A1-A8 and A9 have separate fixed-specification "
+    "30-base-seed replications, but broader mechanisms and external validation remain open."
 )
 
 FIELDNAMES = [
@@ -146,12 +150,12 @@ def next_required_artifact(adversary_id: str, traces: list[dict[str, str]]) -> s
     status, _, _ = executable_status(adversary_id)
     if status == "partial_executable_pilot_available":
         if adversary_id == "A7":
-            return "extend to expanded/risk-routed mechanisms, seed and capacity sensitivity, and substantive correction"
+            return "extend to expanded/risk-routed mechanisms, capacity sensitivity, and substantive correction"
         if adversary_id == "A8":
-            return "extend to additional signal-dependent mechanisms, seed sensitivity, temporal correction, and external district-opinion validation"
+            return "extend to additional signal-dependent mechanisms, temporal correction, and external district-opinion validation"
         if adversary_id == "A9":
             return "vary allocation/resource/interaction specifications, broaden mechanisms, add substantive replay, and externally anchor assumptions"
-        return "extend executable pilot to broader mechanisms, seed sensitivity, and recovery traces"
+        return "extend executable pilot to broader mechanisms and recovery traces"
     if not traces:
         return "implement first explicit attacked cell with paired baseline"
     if adversary_id == "A6":
@@ -236,7 +240,7 @@ def write_outputs(rows: list[dict[str, str]]) -> None:
         )
     lines.extend([
         "",
-        "Gate status: every row remains `not_ready`. A1 through A9 have bounded executable pilots and A9 has fixed-specification 30-base-seed replication, but A1-A8 replication, broader mechanism coverage, alternative A9 specifications, temporal or substantive correction, and external validation remain incomplete.",
+        "Gate status: every row remains `not_ready`. A1 through A9 have bounded executable pilots and fixed-specification 30-base-seed replication, but broader mechanism coverage, alternative A9 specifications, temporal or substantive correction, and external validation remain incomplete.",
     ])
     OUT_MD.write_text("\n".join(lines) + "\n")
 

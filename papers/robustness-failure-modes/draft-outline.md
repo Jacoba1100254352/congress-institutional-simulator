@@ -1,8 +1,8 @@
 # Draft Outline
 
-Status: outline only. Fixed-specification A9 multi-seed evidence is available, but do not draft a full manuscript until A1-A8 seed coverage, broader mechanisms and A9 specifications, stronger correction evidence, and the required validation boundaries have been implemented and run.
+Status: outline only. Fixed-specification multi-seed evidence is available for A1-A9, but do not draft a full manuscript until broader mechanisms and A9 specifications, stronger correction evidence, and the required validation boundaries have been implemented and run.
 
-Final decision: NEEDS A1-A8 REPLICATION, BROADER MECHANISMS, CORRECTION, AND VALIDATION EVIDENCE FIRST.
+Final decision: NEEDS BROADER MECHANISMS, CORRECTION, AND VALIDATION EVIDENCE FIRST.
 
 ## 1. Introduction
 

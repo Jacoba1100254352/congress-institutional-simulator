@@ -17,11 +17,11 @@
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "ff8c7cca32190b194b426a7dd5628c6a429d29140af35a67965a34dfae7d0317",
+  "sourceInputSha256": "bc78d092888a4934606333d22170bc471dccdea49f45e5d3c9a67c33d1bf8c9e",
   "sourceInputs": [
     {
       "path": "Makefile",
-      "sha256": "7b7fd9101c6ce35314bb99c8a7cd0a9c016d4b6c3e9f4f72458f3025c9558826"
+      "sha256": "442c4e9a39cbd85a8e6da06ed6e54c541ed6f1ed23b39d61a9364eb1f0393996"
     },
     {
       "path": "data/calibration/empirical-benchmarks.csv",
@@ -473,15 +473,23 @@
     },
     {
       "path": "scripts/packaging/build_anonymous_supplement.py",
-      "sha256": "333c72e347a776f4adda61fc24cc9769fa46e71357e32e7db134a92a2b1562cc"
+      "sha256": "2a63139c68e9db3131da9e9d074366cea9bb6cf382ec4c7413ac00962eb27ef8"
+    },
+    {
+      "path": "scripts/reporting/adversarial_replication_common.py",
+      "sha256": "36e7080b090a0258199db90080ed94baf5923f56904162ba45eb66a9908ef3b5"
     },
     {
       "path": "scripts/reporting/report_catalog_breadth.py",
       "sha256": "d48d289364364f6b21d08769f070a912a66f71647c72e673e03c10d69e3d288e"
     },
     {
+      "path": "scripts/reporting/run_a1_a8_seed_replication.py",
+      "sha256": "38ba005af968349907c551d1863b16c96411f94a2751c5f3c248218c72be5bb1"
+    },
+    {
       "path": "scripts/reporting/run_a9_seed_replication.py",
-      "sha256": "275d2a3cbcbe9b664c10c20051df3e93b9475b137597fe9501f8198f5b1654e8"
+      "sha256": "aabd128229a83e7699b857ca57b03e8ac2afb545dc12352b8dd71625468d8df3"
     },
     {
       "path": "scripts/reporting/run_family_champions.py",
@@ -504,6 +512,10 @@
       "sha256": "614c63142deb6ee1bb5027595aac6255070256ca98fd5129c69698c936b0e865"
     },
     {
+      "path": "scripts/reporting/test_run_a1_a8_seed_replication.py",
+      "sha256": "d38b6b5744369671338d7138c4e4304eb2d6057f59cc796c49987556fcb95854"
+    },
+    {
       "path": "scripts/reporting/test_run_a9_seed_replication.py",
       "sha256": "a7e36f584eaf98c0f605648e57db43fb374f6caf216308b4d1a980b67e1bd090"
     },
@@ -513,7 +525,7 @@
     },
     {
       "path": "scripts/reporting/write_adversarial_pilot_cell_map.py",
-      "sha256": "753f9190c40d3bfe869e7904849bc42f7a97f51bfe30d5ed937ec63193791cd8"
+      "sha256": "75b2b3e96010260808ca923d45b01a84bcfc00e76c590a7d203f85eeb749bf15"
     },
     {
       "path": "scripts/reporting/write_paper_diagnostics.py",

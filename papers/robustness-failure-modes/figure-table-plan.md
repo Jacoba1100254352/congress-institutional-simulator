@@ -2,7 +2,7 @@
 
 ## Status
 
-Readiness level: table specifications and bounded A1-A9 source data exist; most main figures still require broader mechanism and seed sweeps, plotted artifacts, and validation.
+Readiness level: table specifications and bounded A1-A9 multi-seed source data exist; most main figures still require broader mechanism and parameter sweeps, plotted artifacts, and validation.
 
 ## Main Tables
 
@@ -28,16 +28,17 @@ Readiness level: table specifications and bounded A1-A9 source data exist; most 
 | T18 | A8 public-support-distortion adversarial-stress summary | Report mechanism path, budget, information level, residual signal distortion, generated-support error, decision failures, false consensus/opposition, and same-case signal correction. | `reports/adversarial-stress-a8-summary.md` | Ready as A8 pilot appendix only. |
 | T19 | A9 mixed-adversary adversarial-stress summary | Report exact joint allocation, strongest same-budget single control, mixed-only success, interaction degradation, superadditive loss, administrative burden, and bounded recovery/correction outcomes. | `reports/adversarial-stress-a9-summary.md` | Ready as A9 trace-backed pilot appendix. |
 | T20 | A9 base-seed uncertainty summary | Separate strict mixed-only event recurrence from seed-level mean interaction and superadditive effects. | `reports/adversarial-replication-a9-summary.md` | Ready as a fixed-specification multi-seed appendix table. |
+| T21 | A1-A8 base-seed uncertainty summary | Report exact success recurrence and primary-effect intervals across all 57 fixed first-wave cells. | `reports/adversarial-replication-a1-a8-summary.md` | Ready as a fixed-specification multi-seed appendix table. |
 
 ## Main Figures
 
 | ID | Figure | Purpose | Source | Readiness |
 |---|---|---|---|---|
-| F1 | Attack-budget degradation curves | Show how degradation changes across low, medium, and high budgets. | Future `attack-budget-sweep` output. | Not ready. |
-| F2 | Median versus worst-case degradation | Show whether average/median behavior hides catastrophic cases. | Future `worst-case-degradation-report` output. | Not ready. |
-| F3 | Attack success heatmap | Show success rates by adversary, mechanism family, budget, and information level. | Future adversarial-stress summary. | Not ready. |
+| F1 | Attack-budget degradation curves | Show how degradation changes across low, medium, and high budgets. | `reports/adversarial-replication-a1-a8-summary.csv` | Partial: fixed-mechanism multi-seed source data exist; broader mechanisms and the plotted figure are missing. |
+| F2 | Median versus worst-case degradation | Show whether average/median behavior hides catastrophic cases. | A1-A8 and A9 replication summaries | Partial: fixed-specification source metrics exist; the plotted figure and broader mechanisms are missing. |
+| F3 | Attack success heatmap | Show success rates by adversary, mechanism family, budget, and information level. | `reports/adversarial-replication-a1-a8-summary.csv` and A9 replication summary | Partial: multi-seed source data exist; the plotted figure and broader mechanisms are missing. |
 | F4 | Robustness/cost frontier | Compare risk-control retention against administrative burden under attack. | Future defense-cost sweep. | Not ready. |
-| F5 | Failure trace diagrams | Explain 2-3 concrete paths from adversary action to institutional outcome. | Future failure traces. | Not ready. |
+| F5 | Failure trace diagrams | Explain 2-3 concrete paths from adversary action to institutional outcome. | Canonical A1-A9 JSONL trace artifacts | Partial: auditable paths exist; cases still need selection and figure construction. |
 | F6 | Recovery/correction plot | Show whether review, substitute selection, rollback, or routing correction reduces attack harm. | A7 queue-recovery and A8 same-case signal-correction pilots plus future correction metrics. | Partial: bounded queue recovery and signal correction only. |
 | F7 | Mixed-attack interaction plot | Show whether mixed adversary portfolios create additive, subadditive, or superadditive degradation. | `reports/adversarial-replication-a9-summary.csv` | Partial: multi-seed source data exist; the plotted figure and alternative A9 specifications remain missing. |
 
@@ -67,10 +68,10 @@ Readiness level: table specifications and bounded A1-A9 source data exist; most 
 | A20 | A8 executable per-bill direct-signal and correction traces. | `reports/adversarial-failure-traces-a8.jsonl` |
 | A21 | A9 executable mixed-adversary stress summary. | `reports/adversarial-stress-a9-summary.md` |
 | A22 | A9 executable mixed and single-control traces. | `reports/adversarial-failure-traces-a9.jsonl` |
-| A23 | A9 base-seed replication and uncertainty output. | `reports/adversarial-replication-a9-summary.md` |
-| A24 | Full A1-A9 attack-budget sweep output. | Future expanded adversarial-stress summaries |
-| A25 | Full per-bill failure trace index for A1-A9. | Future expanded trace artifact under `reports/` or `out/` |
-| A26 | Seed robustness for selected adversarial cases. | Future adversarial seed sweep |
+| A23 | A1-A8 base-seed replication and uncertainty output. | `reports/adversarial-replication-a1-a8-summary.md` |
+| A24 | A9 base-seed replication and uncertainty output. | `reports/adversarial-replication-a9-summary.md` |
+| A25 | Full A1-A9 expanded mechanism and parameter sweep output. | Future expanded adversarial-stress summaries |
+| A26 | Full per-bill failure trace index for A1-A9. | Future expanded trace artifact under `reports/` or `out/` |
 | A27 | Validation gap matrix. | `validation-needs.md` plus future validation reports |
 
 ## Required Visual Standards
@@ -92,6 +93,7 @@ Future reporting scripts should produce machine-readable intermediate files befo
 - `reports/adversarial-worst-case-degradation.csv`;
 - `reports/adversarial-recovery-summary.csv`;
 - `reports/adversarial-mixed-attack-summary.csv`;
+- `reports/adversarial-replication-a1-a8-summary.csv`;
 - `reports/adversarial-failure-trace-index.csv`.
 
 After those exist, figures can be generated under `paper/figures/` or a breakout-specific figure folder if this paper becomes a manuscript.

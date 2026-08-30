@@ -2,9 +2,9 @@
 
 ## Status
 
-Readiness level: adversary schema, pilot mapping, and first A1/A2/A3/A4/A5/A6/A7/A8 executable pilots implemented; full adversary program not complete.
+Readiness level: adversary schema, pilot mapping, bounded A1-A9 executable pilots, and fixed-specification 30-base-seed replication implemented; full adversary program not complete.
 
-The current `make manipulation-stress`, `make failure-trace-report`, `make adversarial-stress-manifest`, `make adversarial-replication-a9`, and `make ablation-analysis` outputs include pilot screens, schema artifacts, bounded executable A1 clone/decoy through A9 mixed-adversary stress runs, and fixed-specification A9 multi-seed replication. They are not enough for a standalone paper because A1-A9 still lack broader mechanism coverage, A1-A8 lack adversarial seed replication, alternative A9 specifications are untested, and temporal or substantive recovery/correction remains incomplete beyond bounded A7-A9 evidence.
+The current `make manipulation-stress`, `make failure-trace-report`, `make adversarial-stress-manifest`, `make adversarial-replication-a1-a8`, `make adversarial-replication-a9`, and `make ablation-analysis` outputs include pilot screens, schema artifacts, bounded executable A1 clone/decoy through A9 mixed-adversary stress runs, and fixed-specification multi-seed replication for every first-wave adversary. They are not enough for a standalone paper because A1-A9 still lack broader mechanism coverage, alternative A9 and capacity specifications are untested, and temporal or substantive recovery/correction remains incomplete beyond bounded A7-A9 evidence.
 
 ## Existing Baseline Commands
 
@@ -17,6 +17,8 @@ make ablation-analysis
 make manipulation-stress
 make failure-trace-report
 make adversarial-stress-manifest
+make adversarial-replication-a1-a8
+make adversarial-replication-a9
 make mechanism-diagnostics
 ```
 
@@ -115,11 +117,22 @@ Required outputs:
 - `reports/adversarial-failure-traces-a8.jsonl` (A8 executable pilot exists);
 - `reports/adversarial-stress-a9-summary.csv` and `.md` (A9 executable pilot exists);
 - `reports/adversarial-failure-traces-a9.jsonl` (A9 executable pilot exists);
+- `reports/adversarial-replication-a1-a8-seed-metrics.csv` (30-base-seed long-form cell/metric estimates exist);
+- `reports/adversarial-replication-a1-a8-summary.csv` and `.md` (A1-A8 seed-level uncertainty summary exists);
+- `reports/adversarial-replication-a1-a8-run-manifest.json` (source, hash, seed-panel, and storage provenance exists);
 - `reports/adversarial-replication-a9-seed-results.csv` (30-base-seed cell estimates exist);
 - `reports/adversarial-replication-a9-summary.csv` and `.md` (seed-level uncertainty summary exists);
 - `reports/adversarial-replication-a9-run-manifest.json` (source, hash, seed-panel, and storage provenance exists).
 
-Pilot precursor already available: `reports/adversarial-failure-trace-index.csv` and `.md` rank seven aggregate manipulation-stress comparisons as trace candidates. `reports/adversarial-pilot-cell-map.csv` joins those candidates and available executable artifacts to the A1-A9 catalog. The A1-A9 executable pilots write same-generated-world per-bill traces and attack success summaries for all first-wave entries, including three A9 mixed portfolios with full-budget and allocated-component controls. A9 additionally has compact 30-base-seed replication without persisting another trace corpus. The full evidence requirement remains incomplete for broader mechanism families, A1-A8 adversarial replication, alternative A9 specifications, and temporal or substantive recovery/correction beyond bounded A7-A9 evidence.
+Pilot precursor already available: `reports/adversarial-failure-trace-index.csv` and `.md` rank seven aggregate manipulation-stress comparisons as trace candidates. `reports/adversarial-pilot-cell-map.csv` joins those candidates and available executable artifacts to the A1-A9 catalog. The A1-A9 executable pilots write same-generated-world per-bill traces and attack success summaries for all first-wave entries, including three A9 mixed portfolios with full-budget and allocated-component controls. Separate compact A1-A8 and A9 reports provide 30-base-seed replication without persisting another trace corpus. The full evidence requirement remains incomplete for broader mechanism families, alternative A9 and capacity specifications, and temporal or substantive recovery/correction beyond bounded A7-A9 evidence.
+
+Current A1-A8 replication status:
+
+- 30 fixed base seeds cover 57 cells, 567,000 evaluated rows, and 338,274 exact attack-success rows. The cross-family success total is an audit count, not a pooled rate, because definitions and row units differ by adversary.
+- A1, A2, A4, A6, A7, and A8 primary-effect intervals are positive in every cell; the signed A3 distortion intervals are negative in every cell.
+- A5 records universal binary success, but one low-budget policy-yield interval crosses zero.
+- A7 has one low-budget cell with no binary successes even though its risk-control-degradation interval is positive.
+- These are fixed-specification simulation-uncertainty results, not empirical attack-rate estimates or broad mechanism comparisons.
 
 Acceptance checks:
 
@@ -223,7 +236,7 @@ Current A8 pilot status:
 - Generated support, public benefit, affected-group support, concentrated harm, and private gain remain latent evaluation values while observable support, salience, campaign spend, and attention spend change.
 - Both A8 paths record zero objection-window and citizen-panel activity, preserving the A3/A8 analytical boundary.
 - The constituent-verified path reports same-case signal correction; this is not post-enactment or temporal recovery.
-- Additional signal-dependent mechanisms, seed sensitivity, externally grounded signal-shift magnitudes, and temporal correction remain required before C14 can become draft-ready.
+- Additional signal-dependent mechanisms, parameter sensitivity, externally grounded signal-shift magnitudes, and temporal correction remain required before C14 can become draft-ready.
 
 ## Experiment 4: Bad-Faith Harm Claims
 
@@ -249,7 +262,7 @@ Current A4 pilot status:
 - `reports/adversarial-stress-a4-summary.csv` reports three medium-information A4 harm-claim budget cells.
 - `reports/adversarial-failure-traces-a4.jsonl` contains 900 same-generated-world per-bill trace rows.
 - Recovery/correction remains `not_modeled`.
-- The current pilot covers the harm-weighted majority path only with targeted synthetic harm-claim cases; compensation, affected-group consent, portfolio review paths, broader mechanism coverage, seed sensitivity, and external claim-process benchmarks remain required before C6 can become draft-ready.
+- The current pilot covers the harm-weighted majority path only with targeted synthetic harm-claim cases; compensation, affected-group consent, portfolio review paths, broader mechanism coverage, parameter sensitivity, and external claim-process benchmarks remain required before C6 can become draft-ready.
 
 ## Experiment 5: Proposal Flooding
 
@@ -276,7 +289,7 @@ Current A5 pilot status:
 - `reports/adversarial-stress-a5-summary.csv` reports six A5 budget/information cells.
 - `reports/adversarial-failure-traces-a5.jsonl` contains 1,800 same-generated-world per-original-bill trace rows.
 - Recovery/correction remains `not_modeled`.
-- The current pilot covers a fixed-capacity weighted agenda-lottery majority path only; open-rule calendars, proposal-cost screens, committee/leadership gatekeeping, review-load pathways, broader seed sensitivity, and external agenda-load benchmarks remain required before C7 can become draft-ready.
+- The current pilot covers a fixed-capacity weighted agenda-lottery majority path only; open-rule calendars, proposal-cost screens, committee/leadership gatekeeping, review-load pathways, broader parameter sensitivity, and external agenda-load benchmarks remain required before C7 can become draft-ready.
 
 Boundary: keep default-pass mechanisms as a small sensitivity check, not the center of this experiment.
 
@@ -305,7 +318,7 @@ Current A6 pilot status:
 - `reports/adversarial-stress-a6-summary.csv` reports six A6 budget/information cells.
 - `reports/adversarial-failure-traces-a6.jsonl` contains 1,800 same-generated-world per-bill trace rows.
 - Recovery/correction remains `not_modeled`.
-- The current pilot covers a public-interest anti-capture screen plus influence-system majority path only; default-pass anti-capture bundles, audit-trust dynamics across repeated bills, defensive anti-reform lobbying, seed sensitivity, and external lobbying-disclosure or proxy-sponsorship benchmarks remain required before C8 can become draft-ready.
+- The current pilot covers a public-interest anti-capture screen plus influence-system majority path only; default-pass anti-capture bundles, audit-trust dynamics across repeated bills, defensive anti-reform lobbying, parameter sensitivity, and external lobbying-disclosure or proxy-sponsorship benchmarks remain required before C8 can become draft-ready.
 
 ## Experiment 7: Administrative Overload Integration
 
@@ -332,7 +345,7 @@ Current A7 pilot status:
 - `reports/adversarial-stress-a7-summary.csv` reports six A7 budget/information cells.
 - `reports/adversarial-failure-traces-a7.jsonl` contains 1,800 same-generated-world per-bill trace rows.
 - The pilot reports review-capacity saturation, queue overflow, ordinary-majority fallback, latent-risk control failure, administrative burden, and no-case recovery cycles after the attack window.
-- The current pilot covers the portfolio-hybrid safeguard path only with synthetic capacity and recovery assumptions; expanded-portfolio and risk-routed comparators, multi-seed sensitivity, calibration to staffing or review-load data, and substantive correction of enacted failures remain required before C9 can become draft-ready.
+- The current pilot covers the portfolio-hybrid safeguard path only with synthetic capacity and recovery assumptions; expanded-portfolio and risk-routed comparators, capacity-parameter sensitivity, calibration to staffing or review-load data, and substantive correction of enacted failures remain required before C9 can become draft-ready.
 
 ## Experiment 8: Mixed Adversary Case
 

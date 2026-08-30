@@ -174,6 +174,7 @@ public final class A8PublicSupportDistortionAdversarialStressRunner
 	}
 
 	public static void run(Path outputDir, int runs, int legislators, int bills, long seed) throws IOException {
+		validateRunParameters(runs, legislators, bills);
 		Files.createDirectories(outputDir);
 		List<TraceRow> traces = runTraces(runs, legislators, bills, seed);
 		writeTraceJsonl(outputDir.resolve("adversarial-failure-traces-a8.jsonl"), traces, runs, legislators, bills, seed);
@@ -184,6 +185,20 @@ public final class A8PublicSupportDistortionAdversarialStressRunner
 		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a8-summary.csv"));
 		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a8-summary.md"));
 		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a8-run-manifest.json"));
+	}
+
+	public static void runSummaryOnly(Path outputDir, int runs, int legislators, int bills, long seed) throws IOException {
+		validateRunParameters(runs, legislators, bills);
+		Files.createDirectories(outputDir);
+		List<TraceRow> traces = runTraces(runs, legislators, bills, seed);
+		writeSummaryCsv(outputDir.resolve("adversarial-stress-a8-summary.csv"), traces, runs, legislators, bills);
+		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a8-summary.csv"));
+	}
+
+	private static void validateRunParameters(int runs, int legislators, int bills) {
+		if (runs <= 0 || legislators <= 0 || bills <= 0) {
+			throw new IllegalArgumentException("Runs, legislators, and bills must all be positive.");
+		}
 	}
 
 	private static List<TraceRow> runTraces(int runs, int legislators, int bills, long seed) {
@@ -496,7 +511,7 @@ public final class A8PublicSupportDistortionAdversarialStressRunner
 			int bills
 	) throws IOException {
 		StringBuilder builder = new StringBuilder();
-		builder.append("adversaryId,attackFamily,caseKey,baselineScenario,attackedScenario,mechanismFamily,budgetUnit,budgetValue,informationLevel,runs,legislators,baseBillsPerRun,traceRows,attackSuccessRate,signalDistortionSuccessRate,decisionFailureAddedRate,meanInputSignalDistortion,meanResidualSignalDistortion,medianResidualSignalDistortion,worstResidualSignalDistortion,meanGeneratedSupportErrorAdded,medianGeneratedSupportErrorAdded,worstGeneratedSupportErrorAdded,meanPublicBenefitSignalErrorAdded,worstPublicBenefitSignalErrorAdded,meanPublicPreferenceDistortionAdded,worstPublicPreferenceDistortionAdded,meanSignalCorrection,meanCorrectionShare,falseConsensusSignalRate,falseOppositionSignalRate,lowSupportEnactmentAddedRate,popularFailureAddedRate,highBenefitBlockAddedRate,harmfulEnactmentAddedRate,meanAttackerResourceSpend,meanAdministrativeBurdenAdded,worstAdministrativeBurdenAdded,recoveryStatus,traceArtifact,claimBoundary\n");
+		builder.append("adversaryId,attackFamily,caseKey,baselineScenario,attackedScenario,mechanismFamily,budgetUnit,budgetValue,informationLevel,runs,legislators,baseBillsPerRun,traceRows,attackSuccessCount,attackSuccessRate,signalDistortionSuccessRate,decisionFailureAddedRate,meanInputSignalDistortion,meanResidualSignalDistortion,medianResidualSignalDistortion,worstResidualSignalDistortion,meanGeneratedSupportErrorAdded,medianGeneratedSupportErrorAdded,worstGeneratedSupportErrorAdded,meanPublicBenefitSignalErrorAdded,worstPublicBenefitSignalErrorAdded,meanPublicPreferenceDistortionAdded,worstPublicPreferenceDistortionAdded,meanSignalCorrection,meanCorrectionShare,falseConsensusSignalRate,falseOppositionSignalRate,lowSupportEnactmentAddedRate,popularFailureAddedRate,highBenefitBlockAddedRate,harmfulEnactmentAddedRate,meanAttackerResourceSpend,meanAdministrativeBurdenAdded,worstAdministrativeBurdenAdded,recoveryStatus,traceArtifact,claimBoundary\n");
 		for (MechanismVariant mechanism : MechanismVariant.values()) {
 			for (AttackConfig config : attackConfigs()) {
 				List<TraceRow> group = group(traces, mechanism, config);
@@ -513,6 +528,7 @@ public final class A8PublicSupportDistortionAdversarialStressRunner
 				       .append(legislators).append(',')
 				       .append(bills).append(',')
 				       .append(group.size()).append(',')
+				       .append(group.stream().filter(TraceRow::success).count()).append(',')
 				       .append(format(rate(group, TraceRow::success))).append(',')
 				       .append(format(rate(group, TraceRow::signalDistortionSuccess))).append(',')
 				       .append(format(rate(group, TraceRow::decisionFailureAdded))).append(',')

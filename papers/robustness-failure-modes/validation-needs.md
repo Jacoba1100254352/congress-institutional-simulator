@@ -12,12 +12,13 @@ This robustness paper can proceed as a synthetic adversarial-stress study, but i
 |---|---|---|
 | `reports/calibration-baseline.md` | Conventional baseline passed 7 of 7 screening checks. | Screens broad legislative-flow plausibility, not adversarial behavior. |
 | `reports/empirical-validation-readiness.md` | 12 of 12 raw validation datasets are present and shaped. | Many datasets are bounded proxies rather than direct validation targets for robustness-relevant mechanisms. |
-| `reports/seed-robustness-summary.md` | Main comparison campaign has multi-seed summaries. | Does not cover explicit adversary attacks; A9 now has a separate fixed-specification replication. |
+| `reports/seed-robustness-summary.md` | Main comparison campaign has multi-seed summaries. | Explicit adversary attacks use separate fixed-specification A1-A8 and A9 replication reports. |
+| `reports/adversarial-replication-a1-a8-summary.md` and seed-metrics CSV | Thirty fixed base seeds provide seed-level intervals and exact success counts for 57 A1-A8 cells across 567,000 evaluated rows. | Covers only the implemented first-wave mechanisms, budgets, information levels, capacity, and correction assumptions; it is simulation uncertainty, not empirical validation. |
 | `reports/adversarial-replication-a9-summary.md` and seed-results CSV | Thirty fixed base seeds provide seed-level intervals for success, median/worst degradation, interaction, superadditive loss, recovery failure, and burden across 18 A9 cells. | Covers only the fixed A9 allocations, mechanisms, resource conversion, interaction coefficients, capacity, and recovery assumptions; it is simulation uncertainty, not empirical validation. |
 | `reports/manipulation-stress-summary.md` | Seven pilot stress comparisons exist. | Not budgeted, not actor-specific, and no attack success rates. |
 | `reports/adversary-catalog.md` and `reports/adversarial-stress-manifest.json` | A1-A9 adversary schema is now generated from simulator code. | The catalog is schema-only; implemented behavior and limits are documented in the separate A1-A9 runner artifacts. |
 | `reports/adversarial-pilot-cell-map.md` | Maps aggregate pilot cells and executable A1-A9 artifacts to the adversary catalog. | It is a readiness map rather than result evidence; every row remains below the manuscript gate. |
-| A1-A9 adversarial summaries and trace JSONL artifacts under `reports/` | Bounded executable A1-A9 pilots have budget/information cells, success rates, median/worst degradation, and same-generated-world trace rows. A7 reports queue recovery, A8 reports same-case signal correction, and A9 compares three fixed-budget mixed portfolios with full-budget and allocated-component single controls. | The pilots cover bounded mechanism paths; A1-A8 seed sensitivity, broad mechanism coverage, temporal or substantive correction beyond bounded A7-A9 evidence, and externally validated attack rates remain missing. |
+| A1-A9 adversarial summaries and trace JSONL artifacts under `reports/` | Bounded executable A1-A9 pilots have budget/information cells, success rates, median/worst degradation, same-generated-world trace rows, and fixed-specification seed sensitivity. A7 reports queue recovery, A8 reports same-case signal correction, and A9 compares three fixed-budget mixed portfolios with full-budget and allocated-component single controls. | The pilots cover bounded mechanism paths; broad mechanism and parameter coverage, temporal or substantive correction beyond bounded A7-A9 evidence, and externally validated attack rates remain missing. |
 | `reports/ablation-analysis-summary.md` | Mechanism component effects are summarized. | Ablations are not adversarial validation. |
 
 ## Internal Validation Required Before Drafting
@@ -32,7 +33,7 @@ This robustness paper can proceed as a synthetic adversarial-stress study, but i
 | Trace completeness | Failure traces must include actor, budget, action, path, baseline outcome, attacked outcome, and metric deltas. |
 | Mixed-attack budget accounting | Mixed adversary portfolios must use a fixed total budget and be compared against the strongest same-budget single attack. |
 | Regression tests | Add tests for adversary config parsing, seeded action selection, trace schema, and summary aggregation. |
-| Seed sensitivity | A9 now exceeds the minimum with 30 fixed base seeds. A1-A8 core attack families still need at least five seeds or an explicit reason if a smaller sweep is used. |
+| Seed sensitivity | A1-A9 exceed the minimum with 30 fixed base seeds under their current specifications. Treat this check as complete only for those fixed cells, not for future mechanism or parameter variants. |
 
 ## Empirical Validation Gaps
 
@@ -79,9 +80,8 @@ Claims not allowed without further validation:
 
 ## Validation Roadmap
 
-1. Finish internal adversary trace and summary validation.
-2. Extend adversarial seed robustness from the completed fixed-specification A9 panel to A1-A8 core attack families.
-3. Extend empirical readiness for bill-topic district opinion beyond sponsor-district bill policy-area context, affected-group mapping, campaign-finance linkage beyond FEC recipient metadata, bounded issue-sector context, matched member context, bounded House-candidate district context, and bounded candidate-to-sponsored-bill context to reviewed targets, committee-action influence, and outcomes, emergency court review, fuller implementation beyond timing and bounded comment metadata, full statutory lineage beyond Congress.gov bill/action metadata, and comparative chamber/productivity sources beyond the current profile proxy.
-4. Map every empirical source to only the simulator quantities it can plausibly check.
-5. Add a validation-boundary table to any future manuscript.
-6. Keep unvalidated constructs labeled as synthetic.
+1. Maintain internal adversary trace, summary, checkpoint, and provenance validation as mechanisms expand.
+2. Extend empirical readiness for bill-topic district opinion beyond sponsor-district bill policy-area context, affected-group mapping, campaign-finance linkage beyond FEC recipient metadata, bounded issue-sector context, matched member context, bounded House-candidate district context, and bounded candidate-to-sponsored-bill context to reviewed targets, committee-action influence, and outcomes, emergency court review, fuller implementation beyond timing and bounded comment metadata, full statutory lineage beyond Congress.gov bill/action metadata, and comparative chamber/productivity sources beyond the current profile proxy.
+3. Map every empirical source to only the simulator quantities it can plausibly check.
+4. Add a validation-boundary table to any future manuscript.
+5. Keep unvalidated constructs labeled as synthetic.

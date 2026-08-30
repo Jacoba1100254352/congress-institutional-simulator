@@ -171,6 +171,7 @@ public final class A7AdministrativeOverloadAdversarialStressRunner
 	}
 
 	public static void run(Path outputDir, int runs, int legislators, int bills, long seed) throws IOException {
+		validateRunParameters(runs, legislators, bills);
 		Files.createDirectories(outputDir);
 		List<TraceRow> traces = runTraces(runs, legislators, bills, seed);
 		writeTraceJsonl(outputDir.resolve("adversarial-failure-traces-a7.jsonl"), traces, runs, legislators, bills, seed);
@@ -181,6 +182,20 @@ public final class A7AdministrativeOverloadAdversarialStressRunner
 		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a7-summary.csv"));
 		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a7-summary.md"));
 		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a7-run-manifest.json"));
+	}
+
+	public static void runSummaryOnly(Path outputDir, int runs, int legislators, int bills, long seed) throws IOException {
+		validateRunParameters(runs, legislators, bills);
+		Files.createDirectories(outputDir);
+		List<TraceRow> traces = runTraces(runs, legislators, bills, seed);
+		writeSummaryCsv(outputDir.resolve("adversarial-stress-a7-summary.csv"), traces, runs, legislators, bills, seed);
+		System.out.println("Wrote " + outputDir.resolve("adversarial-stress-a7-summary.csv"));
+	}
+
+	private static void validateRunParameters(int runs, int legislators, int bills) {
+		if (runs <= 0 || legislators <= 0 || bills <= 0) {
+			throw new IllegalArgumentException("Runs, legislators, and bills must all be positive.");
+		}
 	}
 
 	private static List<TraceRow> runTraces(int runs, int legislators, int bills, long seed) {
@@ -519,7 +534,7 @@ public final class A7AdministrativeOverloadAdversarialStressRunner
 			long seed
 	) throws IOException {
 		StringBuilder builder = new StringBuilder();
-		builder.append("adversaryId,attackFamily,caseKey,baselineScenario,attackedScenario,mechanismFamily,budgetUnit,budgetValue,informationLevel,runs,legislators,baseBillsPerRun,traceRows,attackSuccessRate,capacitySaturationRate,overflowFallbackRate,meanQueueOverflowAdded,medianQueueOverflowAdded,worstQueueOverflowAdded,meanReviewCoverageLoss,riskControlFailureAddedRate,highBenefitBlockAddedRate,meanRiskControlDegradationAdded,medianRiskControlDegradationAdded,worstRiskControlDegradationAdded,meanAdministrativeBurdenAdded,worstAdministrativeBurdenAdded,recoveryRate,meanRecoveryCycles,worstRecoveryCycles,recoveryStatus,traceArtifact,claimBoundary\n");
+		builder.append("adversaryId,attackFamily,caseKey,baselineScenario,attackedScenario,mechanismFamily,budgetUnit,budgetValue,informationLevel,runs,legislators,baseBillsPerRun,traceRows,attackSuccessCount,attackSuccessRate,capacitySaturationRate,overflowFallbackRate,meanQueueOverflowAdded,medianQueueOverflowAdded,worstQueueOverflowAdded,meanReviewCoverageLoss,riskControlFailureAddedRate,highBenefitBlockAddedRate,meanRiskControlDegradationAdded,medianRiskControlDegradationAdded,worstRiskControlDegradationAdded,meanAdministrativeBurdenAdded,worstAdministrativeBurdenAdded,recoveryRate,meanRecoveryCycles,worstRecoveryCycles,recoveryStatus,traceArtifact,claimBoundary\n");
 		for (AttackConfig config : attackConfigs()) {
 			List<TraceRow> group = traces.stream().filter(trace -> trace.config().equals(config)).toList();
 			builder.append(csv(ADVERSARY_ID)).append(',')
@@ -535,6 +550,7 @@ public final class A7AdministrativeOverloadAdversarialStressRunner
 			       .append(legislators).append(',')
 			       .append(bills).append(',')
 			       .append(group.size()).append(',')
+			       .append(group.stream().filter(TraceRow::success).count()).append(',')
 			       .append(format(rate(group, TraceRow::success))).append(',')
 			       .append(format(rate(group, TraceRow::capacitySaturated))).append(',')
 			       .append(format(rate(group, TraceRow::overflowFallback))).append(',')

@@ -4,6 +4,7 @@ package congresssim;
 import congresssim.institution.adversary.AdversaryCatalog;
 import congresssim.institution.adversary.AdversaryCatalogExporter;
 import congresssim.institution.adversary.AdversarySpec;
+import congresssim.institution.adversary.A1A8AdversarialReplicationSeedRunner;
 import congresssim.institution.adversary.A1CloneDecoyAdversarialStressRunner;
 import congresssim.institution.adversary.A2PoisonPillAdversarialStressRunner;
 import congresssim.institution.adversary.A3PublicInputAdversarialStressRunner;
@@ -39,6 +40,7 @@ final class AdversaryCatalogTests
 		a6RunnerWritesTraceAndSummaryArtifacts();
 		a7RunnerWritesTraceAndSummaryArtifacts();
 		a8RunnerWritesTraceAndSummaryArtifacts();
+		a1ThroughA8SummaryOnlyModesOmitTraceArtifacts();
 		a9RunnerWritesTraceAndSummaryArtifacts();
 		a9SummaryOnlyModeOmitsTraceArtifacts();
 	}
@@ -382,6 +384,32 @@ final class AdversaryCatalogTests
 			assertTrue(!Files.exists(manifest), "A9 summary-only mode should not write a standalone run manifest.");
 		} catch (Exception exception) {
 			throw new AssertionError("A9 summary-only adversarial stress runner failed.", exception);
+		}
+	}
+
+	private static void a1ThroughA8SummaryOnlyModesOmitTraceArtifacts() {
+		try {
+			Path outputDir = Path.of("out", "test-a1-a8-adversarial-summary-only");
+			Files.createDirectories(outputDir);
+			try (var existing = Files.list(outputDir)) {
+				for (Path path : existing.toList()) {
+					Files.delete(path);
+				}
+			}
+
+			A1A8AdversarialReplicationSeedRunner.run(outputDir, 1, 15, 3, 98765L);
+
+			try (var generated = Files.list(outputDir)) {
+				List<Path> artifacts = generated.sorted().toList();
+				assertTrue(artifacts.size() == 8, "A1-A8 summary-only mode should write exactly eight artifacts.");
+				for (Path artifact : artifacts) {
+					assertTrue(artifact.getFileName().toString().endsWith(".csv"), "A1-A8 summary-only artifacts should all be CSV summaries.");
+					String header = Files.readAllLines(artifact).getFirst();
+					assertTrue(header.contains("attackSuccessCount"), "A1-A8 summaries should report exact success counts.");
+				}
+			}
+		} catch (Exception exception) {
+			throw new AssertionError("A1-A8 summary-only adversarial replication runner failed.", exception);
 		}
 	}
 }

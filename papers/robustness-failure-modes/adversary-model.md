@@ -2,9 +2,9 @@
 
 ## Status
 
-Readiness level: bounded first-wave A1-A9 implementation and fixed-specification A9 seed replication complete; evidence not yet sufficient for manuscript claims.
+Readiness level: bounded first-wave A1-A9 implementation and fixed-specification seed replication complete; evidence not yet sufficient for manuscript claims.
 
-This file defines bounded adversaries for the robustness paper. All first-wave entries have explicit executable pilots. A9 has 30-base-seed replication under one fixed specification; A1-A8 remain single-seed pilots. Every claim remains limited to the named mechanism, budget, information, seed panel, and synthetic assumptions until broader replication and validation are complete.
+This file defines bounded adversaries for the robustness paper. All first-wave entries have explicit executable pilots and 30-base-seed replication under fixed specifications. Every claim remains limited to the named mechanism, budget, information, seed panel, and synthetic assumptions until broader mechanism, parameter, correction, and validation work is complete.
 
 ## Required Fields
 
