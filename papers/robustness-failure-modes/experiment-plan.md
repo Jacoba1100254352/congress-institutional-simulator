@@ -2,9 +2,9 @@
 
 ## Status
 
-Readiness level: adversary schema, pilot mapping, and first A1/A2/A3/A4/A5/A6/A7 executable pilots implemented; full adversary program not complete.
+Readiness level: adversary schema, pilot mapping, and first A1/A2/A3/A4/A5/A6/A7/A8 executable pilots implemented; full adversary program not complete.
 
-The current `make manipulation-stress`, `make failure-trace-report`, `make adversarial-stress-manifest`, and `make ablation-analysis` outputs include pilot screens, schema artifacts, and bounded executable A1 clone/decoy through A7 administrative-overload stress runs. They are not enough for a standalone paper because A8-A9 do not yet have executable adversary behavior, A1-A7 still lack broader mechanism coverage and seed sensitivity, and recovery/correction metrics remain incomplete beyond A7 queue recovery.
+The current `make manipulation-stress`, `make failure-trace-report`, `make adversarial-stress-manifest`, and `make ablation-analysis` outputs include pilot screens, schema artifacts, and bounded executable A1 clone/decoy through A8 public-support-distortion stress runs. They are not enough for a standalone paper because A9 does not yet have executable mixed-adversary behavior, A1-A8 still lack broader mechanism coverage and seed sensitivity, and temporal or substantive recovery/correction remains incomplete beyond bounded A7 queue recovery and A8 same-case signal correction.
 
 ## Existing Baseline Commands
 
@@ -57,6 +57,10 @@ Existing outputs:
 - `reports/adversarial-stress-a7-summary.csv`
 - `reports/adversarial-stress-a7-summary.md`
 - `reports/adversarial-failure-traces-a7.jsonl`
+- `reports/adversarial-stress-a8-run-manifest.json`
+- `reports/adversarial-stress-a8-summary.csv`
+- `reports/adversarial-stress-a8-summary.md`
+- `reports/adversarial-failure-traces-a8.jsonl`
 - `reports/adversarial-failure-trace-index.csv`
 - `reports/adversarial-failure-trace-index.md`
 - `reports/adversarial-pilot-cell-map.csv`
@@ -106,9 +110,11 @@ Required outputs:
 - `reports/adversarial-stress-a6-summary.csv` and `.md` (A6 executable pilot exists);
 - `reports/adversarial-failure-traces-a6.jsonl` (A6 executable pilot exists);
 - `reports/adversarial-stress-a7-summary.csv` and `.md` (A7 executable pilot exists);
-- `reports/adversarial-failure-traces-a7.jsonl` (A7 executable pilot exists).
+- `reports/adversarial-failure-traces-a7.jsonl` (A7 executable pilot exists);
+- `reports/adversarial-stress-a8-summary.csv` and `.md` (A8 executable pilot exists);
+- `reports/adversarial-failure-traces-a8.jsonl` (A8 executable pilot exists).
 
-Pilot precursor already available: `reports/adversarial-failure-trace-index.csv` and `.md` rank seven aggregate manipulation-stress comparisons as trace candidates. `reports/adversarial-pilot-cell-map.csv` joins those candidates and available executable artifacts to the A1-A9 catalog. The A1-A7 executable pilots now write same-generated-world per-bill traces and attack success summaries for clone/decoy pressure, poison-pill/sequencing pressure, public-input manipulation pressure, bad-faith harm-claim pressure, proposal-flooding pressure, lobbying-camouflage pressure, and administrative overload. The full trace requirement remains incomplete for A8-A9, broader mechanism families, seed sensitivity, and recovery/correction events beyond A7 queue recovery.
+Pilot precursor already available: `reports/adversarial-failure-trace-index.csv` and `.md` rank seven aggregate manipulation-stress comparisons as trace candidates. `reports/adversarial-pilot-cell-map.csv` joins those candidates and available executable artifacts to the A1-A9 catalog. The A1-A8 executable pilots now write same-generated-world per-bill traces and attack success summaries for clone/decoy pressure, poison-pill/sequencing pressure, public-input manipulation pressure, bad-faith harm-claim pressure, proposal-flooding pressure, lobbying-camouflage pressure, administrative overload, and public-support distortion. The full trace requirement remains incomplete for A9, broader mechanism families, seed sensitivity, and temporal or substantive recovery/correction beyond bounded A7/A8 evidence.
 
 Acceptance checks:
 
@@ -203,7 +209,16 @@ Current A3 pilot status:
 - `reports/adversarial-stress-a3-summary.csv` reports six A3 budget/information cells.
 - `reports/adversarial-failure-traces-a3.jsonl` contains 1,800 same-generated-world per-bill trace rows.
 - Recovery/correction remains `not_modeled`.
-- The current pilot covers a public-objection plus citizen-panel majority path only; petitions, challenge-token variants, A8 public-support distortion, broader mechanism coverage, and external public-comment or panel benchmarks remain required before C5 can become draft-ready.
+- The current pilot covers a public-objection plus citizen-panel majority path only; petitions, challenge-token variants, broader mechanism coverage, and external public-comment or panel benchmarks remain required before C5 can become draft-ready. A8 now supplies a separate direct-signal pilot rather than extending this formal-input path.
+
+Current A8 pilot status:
+
+- `reports/adversarial-stress-a8-summary.csv` reports 18 mechanism/budget/information cells across signal-reliant and constituent-verified majority paths.
+- `reports/adversarial-failure-traces-a8.jsonl` contains 5,400 same-world, same-bill, same-status-quo, same-vote-random trace rows.
+- Generated support, public benefit, affected-group support, concentrated harm, and private gain remain latent evaluation values while observable support, salience, campaign spend, and attention spend change.
+- Both A8 paths record zero objection-window and citizen-panel activity, preserving the A3/A8 analytical boundary.
+- The constituent-verified path reports same-case signal correction; this is not post-enactment or temporal recovery.
+- Additional signal-dependent mechanisms, seed sensitivity, externally grounded signal-shift magnitudes, and temporal correction remain required before C14 can become draft-ready.
 
 ## Experiment 4: Bad-Faith Harm Claims
 

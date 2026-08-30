@@ -1,8 +1,8 @@
 # Draft Outline
 
-Status: outline only. Do not draft a full manuscript until the explicit adversary experiments have been implemented and run.
+Status: outline only. Do not draft a full manuscript until A9 mixed-adversary evidence, broader mechanism and seed coverage, and the required validation boundaries have been implemented and run.
 
-Final decision: NEEDS ADVERSARY EXPERIMENTS FIRST.
+Final decision: NEEDS MIXED-ADVERSARY AND EXPANDED ROBUSTNESS EVIDENCE FIRST.
 
 ## 1. Introduction
 
@@ -56,12 +56,13 @@ Final decision: NEEDS ADVERSARY EXPERIMENTS FIRST.
 - Proposal flooding.
 - Lobbying camouflage.
 - Administrative overload.
+- Public-support distortion with signal-reliant and constituent-verified paths.
 - Mixed adversary case.
 - Strategic silence under burden-shifting rules.
 
 ## 6. Results
 
-Draft only after experiments.
+Draft only after the A9 experiment and expansion gates in `go-no-go.md` are satisfied.
 
 Planned subsections:
 

@@ -11,6 +11,7 @@ import congresssim.institution.adversary.A4BadFaithHarmClaimAdversarialStressRun
 import congresssim.institution.adversary.A5ProposalFloodingAdversarialStressRunner;
 import congresssim.institution.adversary.A6LobbyingCamouflageAdversarialStressRunner;
 import congresssim.institution.adversary.A7AdministrativeOverloadAdversarialStressRunner;
+import congresssim.institution.adversary.A8PublicSupportDistortionAdversarialStressRunner;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,6 +37,7 @@ final class AdversaryCatalogTests
 		a5RunnerWritesTraceAndSummaryArtifacts();
 		a6RunnerWritesTraceAndSummaryArtifacts();
 		a7RunnerWritesTraceAndSummaryArtifacts();
+		a8RunnerWritesTraceAndSummaryArtifacts();
 	}
 
 	private static void firstWaveAdversaryCatalogHasRequiredSchema() {
@@ -274,6 +276,43 @@ final class AdversaryCatalogTests
 			assertTrue(traceLines.getFirst().contains("\"recoveryMetrics\""), "A7 trace should include recovery metrics.");
 		} catch (Exception exception) {
 			throw new AssertionError("A7 adversarial stress runner failed.", exception);
+		}
+	}
+
+	private static void a8RunnerWritesTraceAndSummaryArtifacts() {
+		try {
+			Path outputDir = Path.of("out", "test-a8-adversarial-stress");
+			Files.createDirectories(outputDir);
+			A8PublicSupportDistortionAdversarialStressRunner.run(outputDir, 1, 15, 3, 12345L);
+			Path summary = outputDir.resolve("adversarial-stress-a8-summary.csv");
+			Path markdown = outputDir.resolve("adversarial-stress-a8-summary.md");
+			Path traces = outputDir.resolve("adversarial-failure-traces-a8.jsonl");
+			Path manifest = outputDir.resolve("adversarial-stress-a8-run-manifest.json");
+			assertTrue(Files.exists(summary), "A8 runner should write summary CSV.");
+			assertTrue(Files.exists(markdown), "A8 runner should write summary Markdown.");
+			assertTrue(Files.exists(traces), "A8 runner should write JSONL traces.");
+			assertTrue(Files.exists(manifest), "A8 runner should write a run manifest.");
+			assertTrue(Files.readString(markdown).contains("partial_a8_executable_pilot"), "A8 Markdown should label pilot status.");
+			assertTrue(Files.readString(manifest).contains("\"summaryRows\": 18"), "A8 run manifest should count summary rows.");
+			assertTrue(Files.readString(manifest).contains("\"traceRows\": 54"), "A8 run manifest should count trace rows.");
+			List<String> summaryLines = Files.readAllLines(summary);
+			List<String> traceLines = Files.readAllLines(traces);
+			assertTrue(summaryLines.size() == 19, "A8 summary should contain one header and eighteen mechanism/budget/information rows.");
+			assertTrue(traceLines.size() == 54, "Tiny A8 run should produce eighteen cells times three generated bills.");
+			String firstTrace = traceLines.getFirst();
+			assertTrue(firstTrace.contains("\"adversaryId\":\"A8\""), "A8 trace should identify the adversary.");
+			assertTrue(firstTrace.contains("\"attackActionList\""), "A8 trace should include attack actions.");
+			assertTrue(firstTrace.contains("\"generatedPublicSupport\""), "A8 trace should preserve generated support for evaluation.");
+			assertTrue(firstTrace.contains("\"attackedInputFeatures\""), "A8 trace should expose the manipulated input signal.");
+			assertTrue(firstTrace.contains("\"correctionMetrics\""), "A8 trace should include signal-correction metrics.");
+			assertTrue(firstTrace.contains("\"attackedObjectionWindows\":0"), "A8 should not invoke A3 objection windows.");
+			assertTrue(firstTrace.contains("\"attackedCitizenReviews\":0"), "A8 should not invoke A3 citizen panels.");
+			assertTrue(traceLines.stream().anyMatch(line -> line.contains("\"mechanismFamily\":\"signal_reliant_majority\"")),
+					"A8 traces should include the signal-reliant path.");
+			assertTrue(traceLines.stream().anyMatch(line -> line.contains("\"mechanismFamily\":\"constituent_verified_majority\"")),
+					"A8 traces should include the constituent-verified path.");
+		} catch (Exception exception) {
+			throw new AssertionError("A8 adversarial stress runner failed.", exception);
 		}
 	}
 }

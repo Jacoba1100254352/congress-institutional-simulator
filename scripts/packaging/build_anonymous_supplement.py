@@ -103,6 +103,8 @@ def copy_reports() -> None:
         "adversarial-stress-a6-summary.*",
         "adversarial-stress-a7-run-manifest.*",
         "adversarial-stress-a7-summary.*",
+        "adversarial-stress-a8-run-manifest.*",
+        "adversarial-stress-a8-summary.*",
         "adversarial-failure-trace-index.*",
         "adversarial-failure-traces.*",
         "adversarial-failure-traces-a2.*",
@@ -111,6 +113,7 @@ def copy_reports() -> None:
         "adversarial-failure-traces-a5.*",
         "adversarial-failure-traces-a6.*",
         "adversarial-failure-traces-a7.*",
+        "adversarial-failure-traces-a8.*",
         "adversarial-pilot-cell-map.*",
         "empirical-bridge.*",
         "empirical-data-inventory.*",
@@ -311,6 +314,9 @@ def write_readme() -> None:
         "- `reports/adversarial-stress-a7-run-manifest.json`\n"
         "- `reports/adversarial-stress-a7-summary.csv`\n"
         "- `reports/adversarial-failure-traces-a7.jsonl`\n"
+        "- `reports/adversarial-stress-a8-run-manifest.json`\n"
+        "- `reports/adversarial-stress-a8-summary.csv`\n"
+        "- `reports/adversarial-failure-traces-a8.jsonl`\n"
         "- `reports/adversarial-failure-trace-index.csv`\n"
         "- `reports/adversarial-pilot-cell-map.csv`\n"
         "- generated diagnostic reports under `reports/`\n\n"

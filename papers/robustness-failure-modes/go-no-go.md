@@ -6,7 +6,7 @@ Go for structured planning and implementation.
 
 No-go for a full manuscript.
 
-The evidence is not ready for manuscript drafting because the repo has pilot manipulation-stress and ablation screens plus an explicit A1-A9 schema, aggregate failure-trace candidate index, pilot cell map, and first executable A1 clone/decoy, A2 poison-pill/sequencing, A3 public-input manipulation, A4 bad-faith harm-claim, A5 proposal-flooding, A6 lobbying-camouflage, and A7 administrative-overload stress pilots. It still lacks A8-A9 executable adversary experiments, and A1-A7 still need broader mechanism coverage and seed sensitivity while recovery/correction remains incomplete beyond A7 queue recovery.
+The evidence is not ready for manuscript drafting because the repo has pilot manipulation-stress and ablation screens plus an explicit A1-A9 schema, aggregate failure-trace candidate index, pilot cell map, and first executable A1 clone/decoy, A2 poison-pill/sequencing, A3 public-input manipulation, A4 bad-faith harm-claim, A5 proposal-flooding, A6 lobbying-camouflage, A7 administrative-overload, and A8 public-support-distortion stress pilots. It still lacks an executable A9 mixed-adversary experiment, and A1-A8 still need broader mechanism coverage and seed sensitivity while temporal or substantive recovery/correction remains incomplete beyond bounded A7 queue recovery and A8 same-case signal correction.
 
 ## Readiness Level
 
@@ -15,7 +15,7 @@ The evidence is not ready for manuscript drafting because the repo has pilot man
 | 0 | Idea only. | No. |
 | 1 | Stable framework and paper boundary identified. | Yes. |
 | 2 | Pilot evidence, explicit A1-A9 schema, aggregate trace-index output, pilot cell map, and experiment plan exist. | Yes. |
-| 3 | Explicit adversary experiments implemented and run. | Partly: bounded A1 clone/decoy through A7 administrative-overload executable pilots only. |
+| 3 | Explicit adversary experiments implemented and run. | Partly: bounded A1 clone/decoy through A8 public-support-distortion executable pilots only. |
 | 4 | Manuscript-ready evidence and validation boundaries complete. | No. |
 
 ## Proceed Now
@@ -23,7 +23,7 @@ The evidence is not ready for manuscript drafting because the repo has pilot man
 Proceed with:
 
 - adversary action implementation beyond the current schema/catalog;
-- executable A8-A9 adversary runs beyond the current A1-A7 pilots;
+- an executable A9 mixed-adversary run beyond the current A1-A8 pilots;
 - attack-budget and information-level sweeps;
 - same-seed baseline pairing;
 - failure trace logging;

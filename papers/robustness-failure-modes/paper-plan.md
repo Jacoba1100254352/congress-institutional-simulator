@@ -4,7 +4,7 @@
 
 Readiness level: 2 of 4, pilot evidence and executable surface available, but no full manuscript yet.
 
-Recommendation: proceed now with adversary-model implementation and targeted experiments; defer manuscript drafting.
+Recommendation: proceed now with A9 mixed-adversary implementation, broader mechanism/seed sweeps, and validation; defer manuscript drafting.
 
 This breakout should become a failure-mode and robustness paper, not a second umbrella paper. The ACM CI framework paper remains the stable core artifact. This paper should only ask how specified legislative mechanisms behave under bounded adversaries with explicit objectives, budgets, information levels, and success metrics.
 
@@ -78,7 +78,13 @@ Existing pilot artifacts can motivate the project but are not publication-ready 
 - `reports/adversarial-stress-a6-run-manifest.json`: machine-readable manifest for the first executable A6 stress run.
 - `reports/adversarial-stress-a6-summary.md`: first executable A6 lobbying-camouflage budget/information summary.
 - `reports/adversarial-failure-traces-a6.jsonl`: same-generated-world A6 per-bill trace rows.
-- `reports/adversarial-pilot-cell-map.md`: map from the A1-A9 schema to current aggregate pilot stress cells.
+- `reports/adversarial-stress-a7-run-manifest.json`: machine-readable manifest for the first executable A7 stress run.
+- `reports/adversarial-stress-a7-summary.md`: first executable A7 administrative-overload budget/information and queue-recovery summary.
+- `reports/adversarial-failure-traces-a7.jsonl`: same-generated-world A7 per-bill overload and recovery trace rows.
+- `reports/adversarial-stress-a8-run-manifest.json`: machine-readable manifest for the first executable A8 stress run.
+- `reports/adversarial-stress-a8-summary.md`: first executable A8 public-support-distortion mechanism/budget/information and same-case correction summary.
+- `reports/adversarial-failure-traces-a8.jsonl`: same-world, same-bill, same-status-quo A8 direct-signal and correction trace rows.
+- `reports/adversarial-pilot-cell-map.md`: map from the A1-A9 schema to current aggregate pilot stress cells and executable A1-A8 artifacts.
 - `reports/adversarial-failure-trace-index.md`: aggregate pilot trace-candidate ranking.
 - `reports/seed-robustness-summary.md`: multi-seed check for the main comparison campaign, not for explicit adversary attacks.
 - `reports/empirical-validation-readiness.md`: empirical readiness screen with 12 of 12 raw validation datasets present.
@@ -102,7 +108,8 @@ First-wave attacks should be limited to cases where the simulator already has re
 - bad-faith harm claims against harm-protection paths;
 - proposal flooding against agenda systems;
 - lobbying camouflage against anti-capture paths;
-- administrative overload against layered portfolio systems.
+- administrative overload against layered portfolio systems;
+- direct public-support distortion against signal-reliant and signal-verification paths;
 - mixed adversary portfolios that combine two or more of the above attacks under one fixed budget.
 
 Strategic silence under burden-shifting rules may remain a later or appendix case. It should not dominate the project.
@@ -136,13 +143,13 @@ Expected future implementation locations:
 | Area | Current state | Readiness |
 |---|---|---|
 | Framework dependency | Stable enough to use as infrastructure. | Ready. |
-| Pilot stress evidence | Useful screens exist, but they are not explicit adversary experiments. | Partial. |
-| Adversary definitions | Planning taxonomy and generated Java-backed A1-A9 catalog exist; A1-A7 executable pilots now exist. | Partial. |
-| Attack-budget sweeps | Implemented for A1 clone/decoy, A2 poison-pill/sequencing, A3 public-input manipulation, A4 bad-faith harm-claim, A5 proposal-flooding, and A6 lobbying-camouflage pilots only. | Partial. |
-| Worst-case degradation | Reported for A1 clone/decoy, A2 poison-pill/sequencing, A3 public-input manipulation, A4 bad-faith harm-claim, A5 proposal-flooding, and A6 lobbying-camouflage pilots only. | Partial. |
-| Attack success rates | Computed for A1 clone/decoy, A2 poison-pill/sequencing, A3 public-input manipulation, A4 bad-faith harm-claim, A5 proposal-flooding, and A6 lobbying-camouflage pilots only. | Partial. |
-| Recovery/correction metrics | Not computed. | Not ready. |
-| Failure traces | A1-A7 trace JSONL artifacts exist; A8-A9 traces and recovery/correction beyond A7 queue recovery are missing. | Partial. |
+| Pilot stress evidence | Aggregate screens and bounded explicit A1-A8 adversary experiments exist, but they do not provide broad or externally validated robustness estimates. | Partial. |
+| Adversary definitions | Planning taxonomy and generated Java-backed A1-A9 catalog exist; A1-A8 executable pilots now exist. | Partial. |
+| Attack-budget sweeps | Implemented for bounded A1-A8 pilots; A9 and broad mechanism/seed sweeps are missing. | Partial. |
+| Worst-case degradation | Reported for bounded A1-A8 pilots; cross-mechanism and multi-seed worst cases are missing. | Partial. |
+| Attack success rates | Computed for bounded A1-A8 pilots; A9 interaction success and externally validated rates are missing. | Partial. |
+| Recovery/correction metrics | A7 queue recovery and A8 same-case signal correction are computed; temporal or substantive correction for other attacks is not. | Partial. |
+| Failure traces | A1-A8 trace JSONL artifacts exist; A9 traces, broader mechanism coverage, and temporal recovery/correction beyond the bounded A7/A8 evidence are missing. | Partial. |
 | Empirical validation | Dataset readiness is partial and attack-rate validation is absent. | Not ready. |
 
 ## Proceed or Defer

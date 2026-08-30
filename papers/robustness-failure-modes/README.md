@@ -67,12 +67,16 @@ The repository has useful pilot artifacts:
 - `reports/adversarial-stress-a7-summary.csv`
 - `reports/adversarial-stress-a7-summary.md`
 - `reports/adversarial-failure-traces-a7.jsonl`
+- `reports/adversarial-stress-a8-run-manifest.json`
+- `reports/adversarial-stress-a8-summary.csv`
+- `reports/adversarial-stress-a8-summary.md`
+- `reports/adversarial-failure-traces-a8.jsonl`
 - `reports/adversarial-failure-trace-index.csv`
 - `reports/adversarial-failure-trace-index.md`
 - `reports/adversarial-pilot-cell-map.csv`
 - `reports/adversarial-pilot-cell-map.md`
 
-The adversary catalog and manifest define the first-wave A1-A9 actor schema in the simulator code, and the pilot cell map joins that schema to current aggregate stress evidence. The adversarial-stress summaries and JSONL traces now provide bounded executable A1 clone/decoy, A2 poison-pill/sequencing, A3 public-input manipulation, A4 bad-faith harm-claim, A5 proposal-flooding, A6 lobbying-camouflage, and A7 administrative-overload pilots with budget/information cells, same-generated-world baseline pairing, attack success rates, and per-bill traces. A7 additionally reports queue saturation, overflow fallback, and post-attack recovery cycles. These reports are still not enough for a standalone failure-mode paper because A8-A9 executable sweeps, broader mechanism coverage, recovery/correction behavior beyond A7 queue recovery, seed sensitivity, and external validation remain incomplete.
+The adversary catalog and manifest define the first-wave A1-A9 actor schema in the simulator code, and the pilot cell map joins that schema to current aggregate stress evidence. The adversarial-stress summaries and JSONL traces now provide bounded executable A1 clone/decoy, A2 poison-pill/sequencing, A3 public-input manipulation, A4 bad-faith harm-claim, A5 proposal-flooding, A6 lobbying-camouflage, A7 administrative-overload, and A8 public-support-distortion pilots with budget/information cells, same-generated-world baseline pairing, attack success rates, and per-bill traces. A7 additionally reports queue saturation, overflow fallback, and post-attack recovery cycles. A8 preserves generated support and policy attributes as latent evaluation values, compares signal-reliant and constituent-verified paths, and reports same-case signal correction without invoking A3 objection or panel mechanisms. These reports are still not enough for a standalone failure-mode paper because the A9 mixed-adversary sweep, broader mechanism coverage, temporal recovery/correction beyond bounded A7 queue recovery and A8 same-case signal correction, seed sensitivity, and external validation remain incomplete.
 
 ## Coverage Check
 
@@ -84,11 +88,11 @@ The current plan covers the requested failure modes as planned experiments or bo
 - bad-faith harm claims: Experiment 4;
 - proposal flooding: Experiment 5;
 - lobbying camouflage and defensive lobbying: Experiment 6;
-- public-support distortion: Experiments 3 and 8;
+- public-support distortion: direct-signal cells in Experiment 3 and a planned mixed portfolio in Experiment 8;
 - administrative overload: Experiment 7;
 - mixed attack portfolios: Experiment 8;
 - strategic silence under burden-shifting rules: deferred boundary case after the first-wave experiments.
 
 ## Full Draft Rule
 
-Do not draft the full paper until explicit adversary experiments have been implemented, run, and validated according to `go-no-go.md`.
+Do not draft the full paper until the A9 mixed-adversary experiment, broader mechanism/seed sweeps, correction evidence, and validation boundaries satisfy `go-no-go.md`.

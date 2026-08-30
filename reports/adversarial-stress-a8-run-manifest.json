@@ -1,0 +1,16 @@
+{
+	"manifestVersion": "adversarial-stress-a8-run-v0",
+	"status": "partial_a8_executable_pilot",
+	"adversaryId": "A8",
+	"seed": 20260428,
+	"runs": 5,
+	"legislators": 101,
+	"baseBillsPerRun": 60,
+	"summaryRows": 18,
+	"traceRows": 5400,
+	"pairingDesign": "same_world_same_bill_same_status_quo_same_vote_random",
+	"mechanismFamilies": ["signal_reliant_majority", "constituent_verified_majority"],
+	"outputs": ["reports/adversarial-stress-a8-summary.csv", "reports/adversarial-stress-a8-summary.md", "reports/adversarial-failure-traces-a8.jsonl"],
+	"claimBoundary": "A8 executable pilot only. Rows pair the same generated world, bill, status quo, formal process, and vote-random stream while an outside campaign changes only the observable public-support and salience signal plus traced campaign/attention spend. Generated support, public benefit, affected-group support, concentrated harm, and private gain remain latent evaluation values. The signal-reliant and constituent-verified paths use no objection window or citizen panel, separating this pilot from A3 formal public-input manipulation. Signal shifts and verification strengths are synthetic assumptions, not empirical campaign effects or district-opinion estimates, not a full A1-A9 sweep, and not evidence for real-world institutional ranking.",
+	"gateStatus": "not_manuscript_ready"
+}

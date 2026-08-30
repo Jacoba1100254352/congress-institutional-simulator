@@ -19,14 +19,15 @@ EXECUTABLE_OUTPUTS = {
     "A5": (Path("reports/adversarial-stress-a5-summary.csv"), "reports/adversarial-failure-traces-a5.jsonl"),
     "A6": (Path("reports/adversarial-stress-a6-summary.csv"), "reports/adversarial-failure-traces-a6.jsonl"),
     "A7": (Path("reports/adversarial-stress-a7-summary.csv"), "reports/adversarial-failure-traces-a7.jsonl"),
+    "A8": (Path("reports/adversarial-stress-a8-summary.csv"), "reports/adversarial-failure-traces-a8.jsonl"),
 }
 
 CLAIM_BOUNDARY = (
     "Catalog-to-pilot map only. Mapped rows identify aggregate manipulation-stress cells "
-    "that can seed explicit adversary experiments and bounded executable A1/A2/A3/A4/A5/A6/A7 pilot "
+    "that can seed explicit adversary experiments and bounded executable A1/A2/A3/A4/A5/A6/A7/A8 pilot "
     "artifacts where present. They are not a complete A1-A9 sweep, not mechanism-wide "
     "robustness estimates, and not complete recovery/correction evidence beyond the bounded "
-    "A7 queue-recovery pilot."
+    "A7 queue-recovery and A8 same-case signal-correction pilots."
 )
 
 FIELDNAMES = [
@@ -102,6 +103,8 @@ def executable_status(adversary_id: str) -> tuple[str, str, str]:
 def information_status(adversary_id: str, has_executable_pilot: bool) -> str:
     if not has_executable_pilot:
         return "not_modeled"
+    if adversary_id == "A8":
+        return "low_medium_high_information_cells_available"
     if adversary_id in {"A3", "A5"}:
         return "low_medium_information_cells_available"
     if adversary_id == "A4":
@@ -112,6 +115,8 @@ def information_status(adversary_id: str, has_executable_pilot: bool) -> str:
 def recovery_status(adversary_id: str, has_executable_pilot: bool) -> str:
     if adversary_id == "A7" and has_executable_pilot:
         return "queue_recovery_computed_for_executable_pilot"
+    if adversary_id == "A8" and has_executable_pilot:
+        return "same_case_signal_correction_computed_for_executable_pilot"
     return "not_computed"
 
 
@@ -127,6 +132,8 @@ def next_required_artifact(adversary_id: str, traces: list[dict[str, str]]) -> s
     if status == "partial_executable_pilot_available":
         if adversary_id == "A7":
             return "extend to expanded/risk-routed mechanisms, seed and capacity sensitivity, and substantive correction"
+        if adversary_id == "A8":
+            return "extend to additional signal-dependent mechanisms, seed sensitivity, temporal correction, and external district-opinion validation"
         return "extend executable pilot to broader mechanisms, seed sensitivity, and recovery traces"
     if not traces:
         return "implement first explicit attacked cell with paired baseline"
@@ -209,7 +216,7 @@ def write_outputs(rows: list[dict[str, str]]) -> None:
         )
     lines.extend([
         "",
-        "Gate status: every row remains `not_ready`. A1 through A7 now have bounded executable pilot artifacts, but the mapped evidence still lacks A8-A9 executable pilots, broader mechanism coverage, recovery metrics beyond A7 queue recovery, seed sensitivity, and external validation.",
+        "Gate status: every row remains `not_ready`. A1 through A8 now have bounded executable pilot artifacts, but the mapped evidence still lacks the A9 mixed-adversary pilot, broader mechanism coverage, temporal recovery/correction beyond bounded A7 queue recovery and A8 same-case signal correction, seed sensitivity, and external validation.",
     ])
     OUT_MD.write_text("\n".join(lines) + "\n")
 
