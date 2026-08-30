@@ -12,6 +12,7 @@ import congresssim.institution.adversary.A5ProposalFloodingAdversarialStressRunn
 import congresssim.institution.adversary.A6LobbyingCamouflageAdversarialStressRunner;
 import congresssim.institution.adversary.A7AdministrativeOverloadAdversarialStressRunner;
 import congresssim.institution.adversary.A8PublicSupportDistortionAdversarialStressRunner;
+import congresssim.institution.adversary.A9MixedAdversaryPortfolioStressRunner;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,6 +39,7 @@ final class AdversaryCatalogTests
 		a6RunnerWritesTraceAndSummaryArtifacts();
 		a7RunnerWritesTraceAndSummaryArtifacts();
 		a8RunnerWritesTraceAndSummaryArtifacts();
+		a9RunnerWritesTraceAndSummaryArtifacts();
 	}
 
 	private static void firstWaveAdversaryCatalogHasRequiredSchema() {
@@ -313,6 +315,46 @@ final class AdversaryCatalogTests
 					"A8 traces should include the constituent-verified path.");
 		} catch (Exception exception) {
 			throw new AssertionError("A8 adversarial stress runner failed.", exception);
+		}
+	}
+
+	private static void a9RunnerWritesTraceAndSummaryArtifacts() {
+		try {
+			Path outputDir = Path.of("out", "test-a9-adversarial-stress");
+			Files.createDirectories(outputDir);
+			A9MixedAdversaryPortfolioStressRunner.run(outputDir, 1, 15, 3, 12345L);
+			Path summary = outputDir.resolve("adversarial-stress-a9-summary.csv");
+			Path markdown = outputDir.resolve("adversarial-stress-a9-summary.md");
+			Path traces = outputDir.resolve("adversarial-failure-traces-a9.jsonl");
+			Path manifest = outputDir.resolve("adversarial-stress-a9-run-manifest.json");
+			assertTrue(Files.exists(summary), "A9 runner should write summary CSV.");
+			assertTrue(Files.exists(markdown), "A9 runner should write summary Markdown.");
+			assertTrue(Files.exists(traces), "A9 runner should write JSONL traces.");
+			assertTrue(Files.exists(manifest), "A9 runner should write a run manifest.");
+			assertTrue(Files.readString(markdown).contains("partial_a9_executable_pilot"), "A9 Markdown should label pilot status.");
+			assertTrue(Files.readString(manifest).contains("\"summaryRows\": 18"), "A9 run manifest should count summary rows.");
+			assertTrue(Files.readString(manifest).contains("\"traceRows\": 54"), "A9 run manifest should count trace rows.");
+			assertTrue(Files.readString(manifest).contains("\"mixedOnlySuccessRows\""), "A9 manifest should count mixed-only successes.");
+			List<String> summaryLines = Files.readAllLines(summary);
+			List<String> traceLines = Files.readAllLines(traces);
+			assertTrue(summaryLines.size() == 19, "A9 summary should contain one header and eighteen portfolio/budget/information rows.");
+			assertTrue(traceLines.size() == 54, "Tiny A9 run should produce eighteen cells times three generated bills.");
+			String firstTrace = traceLines.getFirst();
+			assertTrue(firstTrace.contains("\"adversaryId\":\"A9\""), "A9 trace should identify the adversary.");
+			assertTrue(firstTrace.contains("\"portfolioAllocation\""), "A9 trace should include exact portfolio allocation.");
+			assertTrue(firstTrace.contains("\"sameBudgetSingleControls\""), "A9 trace should include full-budget single controls.");
+			assertTrue(firstTrace.contains("\"allocatedComponentControls\""), "A9 trace should include allocated-component controls.");
+			assertTrue(firstTrace.contains("\"mixedOnlySuccess\""), "A9 trace should label the strict mixed-only success flag consistently.");
+			assertTrue(firstTrace.contains("\"interactionMetrics\""), "A9 trace should include interaction metrics.");
+			assertTrue(firstTrace.contains("\"recoveryMetrics\""), "A9 trace should include correction or recovery metrics.");
+			assertTrue(traceLines.stream().anyMatch(line -> line.contains("\"portfolioKey\":\"clone-decoy-poison-pill\"")),
+					"A9 traces should include the A1+A2 portfolio.");
+			assertTrue(traceLines.stream().anyMatch(line -> line.contains("\"portfolioKey\":\"astroturf-harm-claims\"")),
+					"A9 traces should include the A3+A4 portfolio.");
+			assertTrue(traceLines.stream().anyMatch(line -> line.contains("\"portfolioKey\":\"flood-camouflage-support-distortion\"")),
+					"A9 traces should include the A5+A6+A8 portfolio.");
+		} catch (Exception exception) {
+			throw new AssertionError("A9 adversarial stress runner failed.", exception);
 		}
 	}
 }

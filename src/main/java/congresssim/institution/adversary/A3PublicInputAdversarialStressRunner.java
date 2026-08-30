@@ -489,7 +489,7 @@ public final class A3PublicInputAdversarialStressRunner
 			       .append(format(rate(group, TraceRow::lowSupportEnactmentAdded))).append(" | ")
 			       .append(format(mean(group, TraceRow::administrativeBurdenAdded))).append(" |\n");
 		}
-		builder.append("\nGate status: this moves A3 beyond aggregate pilot mapping, but the robustness breakout remains below manuscript gate because A7-A9 executable sweeps, recovery/correction metrics, broader mechanism coverage, and seed sensitivity remain incomplete.\n");
+		builder.append("\nGate status: this moves A3 beyond aggregate pilot mapping, but the robustness breakout remains below manuscript gate because temporal correction, broader mechanism coverage, multi-seed replication, and external validation remain incomplete.\n");
 		Files.writeString(path, builder.toString());
 	}
 

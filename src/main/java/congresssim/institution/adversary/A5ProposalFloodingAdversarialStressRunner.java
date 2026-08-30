@@ -557,7 +557,7 @@ public final class A5ProposalFloodingAdversarialStressRunner
 			       .append(format(mean(group, row -> row.attackedDiagnostics().proposalPoolSize() - row.baselineDiagnostics().proposalPoolSize()))).append(" | ")
 			       .append(format(mean(group, TraceRow::administrativeBurdenAdded))).append(" |\n");
 		}
-		builder.append("\nGate status: this moves A5 beyond aggregate proposal-flooding mapping, but the robustness breakout remains below manuscript gate because A7-A9 executable sweeps, recovery/correction metrics, broader agenda and review mechanisms, seed sensitivity, and external agenda-load validation remain incomplete.\n");
+		builder.append("\nGate status: this moves A5 beyond aggregate proposal-flooding mapping, but the robustness breakout remains below manuscript gate because recovery/correction metrics, broader agenda and review mechanisms, multi-seed replication, and external agenda-load validation remain incomplete.\n");
 		Files.writeString(path, builder.toString());
 	}
 

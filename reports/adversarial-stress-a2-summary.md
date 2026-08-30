@@ -21,4 +21,4 @@ A2 executable pilot only. Rows use same generated worlds and bill ids for benign
 | high | 3 | 300 | 0.516667 | 0.003301 | 0.176614 | 0.019409 | 0.000000 | 0.196667 | 0.160000 | 0.025263 |
 | high | 6 | 300 | 0.663333 | 0.016452 | 0.350144 | 0.190593 | 0.038334 | 0.333333 | 0.130000 | 0.065794 |
 
-Gate status: this moves A2 beyond unsupported planning, but the robustness breakout remains below manuscript gate because A7-A9 executable sweeps, recovery/correction metrics, broader mechanism coverage, and seed sensitivity remain incomplete.
+Gate status: this moves A2 beyond unsupported planning, but the robustness breakout remains below manuscript gate because recovery/correction metrics, broader mechanism coverage, multi-seed replication, and external validation remain incomplete.

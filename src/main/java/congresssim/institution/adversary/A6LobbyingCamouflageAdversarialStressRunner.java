@@ -640,7 +640,7 @@ public final class A6LobbyingCamouflageAdversarialStressRunner
 			       .append(format(mean(group, TraceRow::observedScreenRiskDecline))).append(" | ")
 			       .append(format(mean(group, TraceRow::administrativeBurdenAdded))).append(" |\n");
 		}
-		builder.append("\nGate status: this moves A6 beyond a defensive-backlash proxy, but the robustness breakout remains below manuscript gate because A7-A9 executable sweeps, recovery/correction metrics, broader anti-capture mechanisms, seed sensitivity, and external lobbying-disclosure validation remain incomplete.\n");
+		builder.append("\nGate status: this moves A6 beyond a defensive-backlash proxy, but the robustness breakout remains below manuscript gate because recovery/correction metrics, broader anti-capture mechanisms, multi-seed replication, and external lobbying-disclosure validation remain incomplete.\n");
 		Files.writeString(path, builder.toString());
 	}
 

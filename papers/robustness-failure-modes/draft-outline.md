@@ -1,6 +1,6 @@
 # Draft Outline
 
-Status: outline only. Do not draft a full manuscript until A9 mixed-adversary evidence, broader mechanism and seed coverage, and the required validation boundaries have been implemented and run.
+Status: outline only. Do not draft a full manuscript until broader mechanism and seed coverage, stronger correction evidence, and the required validation boundaries have been implemented and run.
 
 Final decision: NEEDS MIXED-ADVERSARY AND EXPANDED ROBUSTNESS EVIDENCE FIRST.
 
@@ -62,7 +62,7 @@ Final decision: NEEDS MIXED-ADVERSARY AND EXPANDED ROBUSTNESS EVIDENCE FIRST.
 
 ## 6. Results
 
-Draft only after the A9 experiment and expansion gates in `go-no-go.md` are satisfied.
+Draft only after the expansion, replication, correction, and validation gates in `go-no-go.md` are satisfied.
 
 Planned subsections:
 

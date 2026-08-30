@@ -480,7 +480,7 @@ public final class A4BadFaithHarmClaimAdversarialStressRunner
 			       .append(format(mean(group, TraceRow::concentratedHarmPassageAdded))).append(" | ")
 			       .append(format(mean(group, TraceRow::administrativeBurdenAdded))).append(" |\n");
 		}
-		builder.append("\nGate status: this moves A4 beyond aggregate loose-claims mapping, but the robustness breakout remains below manuscript gate because A7-A9 executable sweeps, recovery/correction metrics, broader mechanism coverage, seed sensitivity, and external harm-claim validation remain incomplete.\n");
+		builder.append("\nGate status: this moves A4 beyond aggregate loose-claims mapping, but the robustness breakout remains below manuscript gate because recovery/correction metrics, broader mechanism coverage, multi-seed replication, and external harm-claim validation remain incomplete.\n");
 		Files.writeString(path, builder.toString());
 	}
 

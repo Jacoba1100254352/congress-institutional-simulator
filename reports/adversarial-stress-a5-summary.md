@@ -21,4 +21,4 @@ A5 executable pilot only. Rows use same generated worlds and original bill ids f
 | medium | 3 | 300 | 1.000000 | 0.326667 | 0.013333 | 4.400000 | 12.200000 | 0.435714 | 60.000000 | 1.271000 |
 | medium | 6 | 300 | 1.000000 | 0.356667 | 0.030000 | 8.400000 | 16.800000 | 0.600000 | 120.000000 | 2.124000 |
 
-Gate status: this moves A5 beyond aggregate proposal-flooding mapping, but the robustness breakout remains below manuscript gate because A7-A9 executable sweeps, recovery/correction metrics, broader agenda and review mechanisms, seed sensitivity, and external agenda-load validation remain incomplete.
+Gate status: this moves A5 beyond aggregate proposal-flooding mapping, but the robustness breakout remains below manuscript gate because recovery/correction metrics, broader agenda and review mechanisms, multi-seed replication, and external agenda-load validation remain incomplete.

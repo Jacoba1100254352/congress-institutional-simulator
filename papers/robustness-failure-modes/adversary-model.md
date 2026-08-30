@@ -2,9 +2,9 @@
 
 ## Status
 
-Readiness level: planning complete enough to guide implementation; evidence not yet sufficient for manuscript claims.
+Readiness level: bounded first-wave A1-A9 implementation complete; evidence not yet sufficient for manuscript claims.
 
-This file defines bounded adversaries for the robustness paper. Each adversary must be implemented as an explicit actor model or campaign configuration before it can support a claim.
+This file defines bounded adversaries for the robustness paper. All first-wave entries now have explicit executable pilots, but each claim remains limited to the named mechanism, budget, information, seed, and synthetic assumptions until replication and validation are complete.
 
 ## Required Fields
 

@@ -22,4 +22,4 @@ A7 executable pilot only. Rows pair the same generated worlds and target bill id
 | high | 3 | 300 | 0.933333 | 0.933333 | 0.930000 | 78.227475 | 168.799979 | 0.410000 | 0.000000 | 13.202838 | 1.000000 | 51.000000 |
 | high | 6 | 300 | 0.983333 | 0.983333 | 0.983333 | 232.495803 | 472.092191 | 0.420000 | 0.000000 | 33.673276 | 1.000000 | 135.000000 |
 
-Gate status: this supplies the first bounded A7 capacity-saturation and recovery pilot, but the robustness breakout remains below manuscript gate because A8-A9 executable sweeps, broader mechanism coverage, multi-seed sensitivity, and external validation remain incomplete.
+Gate status: this supplies the first bounded A7 capacity-saturation and recovery pilot, but the robustness breakout remains below manuscript gate because broader mechanism coverage, multi-seed sensitivity, substantive correction, and external validation remain incomplete.

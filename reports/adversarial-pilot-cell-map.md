@@ -5,10 +5,10 @@ This report maps the Java first-wave adversary catalog to the current aggregate 
 - First-wave adversaries: 9
 - Adversaries with at least one aggregate pilot cell: 7
 - Adversaries without a current pilot cell: 2
-- Adversaries with partial executable pilots: 8
+- Adversaries with partial executable pilots: 9
 - Manuscript-ready adversary rows: 0
 
-Claim boundary: Catalog-to-pilot map only. Mapped rows identify aggregate manipulation-stress cells that can seed explicit adversary experiments and bounded executable A1/A2/A3/A4/A5/A6/A7/A8 pilot artifacts where present. They are not a complete A1-A9 sweep, not mechanism-wide robustness estimates, and not complete recovery/correction evidence beyond the bounded A7 queue-recovery and A8 same-case signal-correction pilots.
+Claim boundary: Catalog-to-pilot map only. Mapped rows identify aggregate manipulation-stress cells that can seed explicit adversary experiments and bounded executable A1-A9 pilot artifacts. They complete first-wave catalog coverage but are not mechanism-wide robustness estimates, multi-seed replications, or complete recovery/correction evidence beyond the bounded A7 queue recovery, A8 same-case signal correction, and A9 mixed-control/recovery comparisons.
 
 | ID | Name | Aggregate cells | Aggregate status | Executable status | Executable rows | Trace artifact | Next required artifact |
 | --- | --- | ---: | --- | --- | ---: | --- | --- |
@@ -20,6 +20,6 @@ Claim boundary: Catalog-to-pilot map only. Mapped rows identify aggregate manipu
 | A6 | Lobbying camouflage actor | 1 | boundary_pilot_cell_not_camouflage | partial_executable_pilot_available | 6 | reports/adversarial-failure-traces-a6.jsonl | extend executable pilot to broader mechanisms, seed sensitivity, and recovery traces |
 | A7 | Administrative overload coalition | 0 | no_current_pilot_cell | partial_executable_pilot_available | 6 | reports/adversarial-failure-traces-a7.jsonl | extend to expanded/risk-routed mechanisms, seed and capacity sensitivity, and substantive correction |
 | A8 | Public-support distortion actor | 1 | aggregate_pilot_cell_mapped | partial_executable_pilot_available | 18 | reports/adversarial-failure-traces-a8.jsonl | extend to additional signal-dependent mechanisms, seed sensitivity, temporal correction, and external district-opinion validation |
-| A9 | Mixed adversary portfolio | 1 | deferred_or_boundary_pilot_cell | not_available | 0 | none | replace open burden-shifting stress proxy with fixed-budget mixed-attack portfolio |
+| A9 | Mixed adversary portfolio | 1 | aggregate_boundary_cell_mapped | partial_executable_pilot_available | 18 | reports/adversarial-failure-traces-a9.jsonl | replicate mixed portfolios across seeds/mechanisms, expand substantive correction, and externally anchor attack/capacity assumptions |
 
-Gate status: every row remains `not_ready`. A1 through A8 now have bounded executable pilot artifacts, but the mapped evidence still lacks the A9 mixed-adversary pilot, broader mechanism coverage, temporal recovery/correction beyond bounded A7 queue recovery and A8 same-case signal correction, seed sensitivity, and external validation.
+Gate status: every row remains `not_ready`. A1 through A9 now have bounded executable pilot artifacts, but the mapped evidence still lacks broader mechanism coverage, multi-seed replication, temporal or substantive recovery/correction beyond the bounded A7-A9 evidence, and external validation.

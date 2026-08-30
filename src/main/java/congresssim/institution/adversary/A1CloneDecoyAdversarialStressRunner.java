@@ -374,7 +374,7 @@ public final class A1CloneDecoyAdversarialStressRunner
 			       .append(format(lowSupportAddedRate(group))).append(" | ")
 			       .append(format(mean(group, TraceRow::adminCostAdded))).append(" |\n");
 		}
-		builder.append("\nGate status: this moves A1 beyond schema-only planning, but the robustness breakout remains below manuscript gate because A7-A9 executable sweeps, recovery/correction metrics, broader mechanism coverage, and seed sensitivity beyond this first A1 pilot remain incomplete.\n");
+		builder.append("\nGate status: this moves A1 beyond schema-only planning, but the robustness breakout remains below manuscript gate because recovery/correction metrics, broader mechanism coverage, multi-seed replication, and external validation remain incomplete.\n");
 		Files.writeString(path, builder.toString());
 	}
 

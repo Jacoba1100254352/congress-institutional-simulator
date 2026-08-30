@@ -36,4 +36,4 @@ A8 executable pilot only. Rows pair the same generated world, bill, status quo, 
 | constituent_verified_majority | high | 3 | 300 | 0.276667 | 0.036667 | 0.041700 | 0.041700 | 0.695333 | 0.033333 | 0.013333 | 0.006667 | 0.000000 |
 | constituent_verified_majority | high | 6 | 300 | 0.280000 | 0.043333 | 0.057900 | 0.057900 | 0.695333 | 0.060000 | 0.013333 | 0.010000 | 0.000000 |
 
-Gate status: this supplies the first bounded A8 direct signal-distortion and same-case correction pilot, but the robustness breakout remains below manuscript gate because A9 mixed portfolios, broad mechanism and seed coverage, temporal recovery/correction, and external validation remain incomplete.
+Gate status: this supplies the first bounded A8 direct signal-distortion and same-case correction pilot, but the robustness breakout remains below manuscript gate because broad mechanism coverage, multi-seed replication, temporal recovery/correction, and external validation remain incomplete.

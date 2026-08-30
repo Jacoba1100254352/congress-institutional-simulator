@@ -600,7 +600,7 @@ public final class A7AdministrativeOverloadAdversarialStressRunner
 			       .append(format(recoveryRate(group))).append(" | ")
 			       .append(format(mean(group, trace -> trace.recovery().recoveryCycles()))).append(" |\n");
 		}
-		builder.append("\nGate status: this supplies the first bounded A7 capacity-saturation and recovery pilot, but the robustness breakout remains below manuscript gate because A8-A9 executable sweeps, broader mechanism coverage, multi-seed sensitivity, and external validation remain incomplete.\n");
+		builder.append("\nGate status: this supplies the first bounded A7 capacity-saturation and recovery pilot, but the robustness breakout remains below manuscript gate because broader mechanism coverage, multi-seed sensitivity, substantive correction, and external validation remain incomplete.\n");
 		Files.writeString(path, builder.toString());
 	}
 

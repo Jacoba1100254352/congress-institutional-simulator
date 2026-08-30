@@ -21,4 +21,4 @@ A6 executable pilot only. Rows use same generated worlds and bill ids for synthe
 | high | 3 | 300 | 0.046667 | 0.046667 | 0.046667 | 0.000000 | 0.389463 | 0.389463 | 0.359886 | 0.258468 |
 | high | 6 | 300 | 0.016667 | 0.016667 | 0.016667 | 0.000000 | 0.498925 | 0.498925 | 0.477647 | 0.447686 |
 
-Gate status: this moves A6 beyond a defensive-backlash proxy, but the robustness breakout remains below manuscript gate because A7-A9 executable sweeps, recovery/correction metrics, broader anti-capture mechanisms, seed sensitivity, and external lobbying-disclosure validation remain incomplete.
+Gate status: this moves A6 beyond a defensive-backlash proxy, but the robustness breakout remains below manuscript gate because recovery/correction metrics, broader anti-capture mechanisms, multi-seed replication, and external lobbying-disclosure validation remain incomplete.

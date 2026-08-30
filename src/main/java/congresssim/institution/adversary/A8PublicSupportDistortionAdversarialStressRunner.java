@@ -587,7 +587,7 @@ public final class A8PublicSupportDistortionAdversarialStressRunner
 				       .append(format(rate(group, TraceRow::popularFailureAdded))).append(" |\n");
 			}
 		}
-		builder.append("\nGate status: this supplies the first bounded A8 direct signal-distortion and same-case correction pilot, but the robustness breakout remains below manuscript gate because A9 mixed portfolios, broad mechanism and seed coverage, temporal recovery/correction, and external validation remain incomplete.\n");
+		builder.append("\nGate status: this supplies the first bounded A8 direct signal-distortion and same-case correction pilot, but the robustness breakout remains below manuscript gate because broad mechanism coverage, multi-seed replication, temporal recovery/correction, and external validation remain incomplete.\n");
 		Files.writeString(path, builder.toString());
 	}
 

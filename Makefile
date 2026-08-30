@@ -546,6 +546,7 @@ adversarial-stress: adversary-catalog
 	java $(JAVA_PROPS) -cp $(APP_CP) congresssim.institution.adversary.A6LobbyingCamouflageAdversarialStressRunner reports
 	java $(JAVA_PROPS) -cp $(APP_CP) congresssim.institution.adversary.A7AdministrativeOverloadAdversarialStressRunner reports
 	java $(JAVA_PROPS) -cp $(APP_CP) congresssim.institution.adversary.A8PublicSupportDistortionAdversarialStressRunner reports
+	java $(JAVA_PROPS) -cp $(APP_CP) congresssim.institution.adversary.A9MixedAdversaryPortfolioStressRunner reports
 
 adversarial-pilot-cell-map: failure-trace-report adversary-catalog adversarial-stress
 	python3 scripts/reporting/write_adversarial_pilot_cell_map.py

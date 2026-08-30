@@ -21,4 +21,4 @@ A3 executable pilot only. Rows use same generated worlds and bill ids for benign
 | medium | 3 | 300 | 1.000000 | -0.021792 | 0.420069 | 0.182000 | 0.150000 | 0.026667 | 0.053333 | 0.652600 |
 | medium | 6 | 300 | 1.000000 | -0.008301 | 0.447036 | 0.254000 | 0.093333 | 0.033333 | 0.073333 | 0.994200 |
 
-Gate status: this moves A3 beyond aggregate pilot mapping, but the robustness breakout remains below manuscript gate because A7-A9 executable sweeps, recovery/correction metrics, broader mechanism coverage, and seed sensitivity remain incomplete.
+Gate status: this moves A3 beyond aggregate pilot mapping, but the robustness breakout remains below manuscript gate because temporal correction, broader mechanism coverage, multi-seed replication, and external validation remain incomplete.

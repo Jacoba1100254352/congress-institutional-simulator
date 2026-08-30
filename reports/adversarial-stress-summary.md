@@ -21,4 +21,4 @@ A1 executable pilot only. Rows use same generated worlds and bill ids for baseli
 | high | 3 | 600 | 0.506667 | 0.000000 | 0.115622 | 0.011712 | 0.278119 | 0.241667 | 0.000000 | 0.050267 |
 | high | 6 | 600 | 0.505000 | 0.020941 | 0.168122 | 0.101543 | 0.362965 | 0.325000 | 0.000000 | 0.026067 |
 
-Gate status: this moves A1 beyond schema-only planning, but the robustness breakout remains below manuscript gate because A7-A9 executable sweeps, recovery/correction metrics, broader mechanism coverage, and seed sensitivity beyond this first A1 pilot remain incomplete.
+Gate status: this moves A1 beyond schema-only planning, but the robustness breakout remains below manuscript gate because recovery/correction metrics, broader mechanism coverage, multi-seed replication, and external validation remain incomplete.

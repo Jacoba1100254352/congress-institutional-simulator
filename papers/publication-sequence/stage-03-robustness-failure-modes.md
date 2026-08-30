@@ -2,13 +2,13 @@
 
 ## Go/No-Go Decision
 
-Go for completion of the A9 mixed-adversary experiment and expansion of the bounded A1-A8 evidence. Conditional go for a full draft only after the remaining mechanism, seed, correction, and validation gates are satisfied.
+Go for expansion and replication of the bounded A1-A9 evidence. Conditional go for a full draft only after the remaining mechanism, seed, correction, and validation gates are satisfied.
 
 This is the cleanest independent technical breakout because it can focus on failure modes rather than validating real institutions or ranking reforms.
 
 Primary workspace: `papers/robustness-failure-modes/`.
 
-Current executable state: A1 clone/decoy through A8 public-support distortion have bounded budget/information pilots and per-bill traces. A7 includes queue recovery and A8 includes same-case signal correction. A9 mixed portfolios, broader mechanism/seed coverage, temporal correction, and external attack validation remain missing.
+Current executable state: A1 clone/decoy through A9 mixed portfolios have bounded budget/information pilots and per-bill traces. A7 includes queue recovery, A8 includes same-case signal correction, and A9 compares three exact-budget portfolios against full-budget and allocated-component single controls. Broader mechanism/seed coverage, temporal or substantive correction, and external attack validation remain missing.
 
 ## Repo Tasks
 
@@ -74,11 +74,11 @@ Appendix:
 
 | Claim | Support | Limitation | Status |
 |---|---|---|---|
-| Current repo has ablation, manipulation-stress, and bounded A1-A8 explicit adversary pilots. | `reports/simulation-ablation-analysis.csv`, `reports/simulation-manipulation-stress.csv`, and A1-A8 adversarial summaries/traces under `reports/`. | Current attacks cover bounded mechanism paths and are not externally validated. | Usable as pilot evidence only. |
+| Current repo has ablation, manipulation-stress, and bounded A1-A9 explicit adversary pilots. | `reports/simulation-ablation-analysis.csv`, `reports/simulation-manipulation-stress.csv`, and A1-A9 adversarial summaries/traces under `reports/`. | Current attacks cover bounded mechanism paths and are not externally validated. | Usable as pilot evidence only. |
 | Failure modes differ by mechanism family. | Plausible from current stress categories and mechanism designs. | Needs budgeted attack sweeps and worst-case results. | Conditional. |
 | Content-selection mechanisms can be attacked by clones/decoys. | Existing clone/decoy stress category. | Needs mechanism-specific attack success criteria. | Conditional. |
 | Harm and objection systems can be overloaded by bad-faith use. | Current loose-harm and astroturf/noise probes. | Need false-positive and admin-burden sweeps. | Conditional. |
-| A robustness paper can stand apart from the ACM framework paper. | Failure modes are a distinct technical object and A1-A8 now provide bounded explicit examples. | Requires A9, broader mechanism/seed sweeps, correction evidence, and validation before drafting. | Conditional. |
+| A robustness paper can stand apart from the ACM framework paper. | Failure modes are a distinct technical object and A1-A9 now provide bounded explicit examples. | Requires broader mechanism/seed sweeps, correction evidence, and validation before drafting. | Conditional. |
 
 ## Paper Outline
 

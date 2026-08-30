@@ -1,0 +1,18 @@
+{
+	"manifestVersion": "adversarial-stress-a9-run-v0",
+	"status": "partial_a9_executable_pilot",
+	"adversaryId": "A9",
+	"seed": 20260428,
+	"runs": 5,
+	"legislators": 101,
+	"baseBillsPerRun": 60,
+	"portfolioCount": 3,
+	"summaryRows": 18,
+	"traceRows": 5400,
+	"mixedOnlySuccessRows": 99,
+	"pairingDesign": "same_world_same_bill_same_status_quo_same_vote_seed_with_full_and_component_single_controls",
+	"portfolioKeys": ["clone-decoy-poison-pill", "astroturf-harm-claims", "flood-camouflage-support-distortion"],
+	"outputs": ["reports/adversarial-stress-a9-summary.csv", "reports/adversarial-stress-a9-summary.md", "reports/adversarial-failure-traces-a9.jsonl"],
+	"claimBoundary": "A9 executable pilot only. Each row pairs the same generated world, target bill, status quo, and vote-random seed across a no-attack baseline, a fixed-total-budget mixed portfolio, full-budget single-attack controls, and single-action controls at the mixed allocation. The three portfolios implement the combinations specified in the experiment plan: A1+A2, A3+A4, and A5+A6+A8. Interaction coefficients, resource conversion, review capacity, and recovery behavior are synthetic stress assumptions, not empirical coordination rates, not a general mechanism ranking, and not evidence for real-world institutional adoption.",
+	"gateStatus": "not_manuscript_ready"
+}

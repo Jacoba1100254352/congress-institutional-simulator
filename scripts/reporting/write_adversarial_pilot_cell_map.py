@@ -20,14 +20,15 @@ EXECUTABLE_OUTPUTS = {
     "A6": (Path("reports/adversarial-stress-a6-summary.csv"), "reports/adversarial-failure-traces-a6.jsonl"),
     "A7": (Path("reports/adversarial-stress-a7-summary.csv"), "reports/adversarial-failure-traces-a7.jsonl"),
     "A8": (Path("reports/adversarial-stress-a8-summary.csv"), "reports/adversarial-failure-traces-a8.jsonl"),
+    "A9": (Path("reports/adversarial-stress-a9-summary.csv"), "reports/adversarial-failure-traces-a9.jsonl"),
 }
 
 CLAIM_BOUNDARY = (
     "Catalog-to-pilot map only. Mapped rows identify aggregate manipulation-stress cells "
-    "that can seed explicit adversary experiments and bounded executable A1/A2/A3/A4/A5/A6/A7/A8 pilot "
-    "artifacts where present. They are not a complete A1-A9 sweep, not mechanism-wide "
-    "robustness estimates, and not complete recovery/correction evidence beyond the bounded "
-    "A7 queue-recovery and A8 same-case signal-correction pilots."
+    "that can seed explicit adversary experiments and bounded executable A1-A9 pilot artifacts. "
+    "They complete first-wave catalog coverage but are not mechanism-wide robustness estimates, "
+    "multi-seed replications, or complete recovery/correction evidence beyond the bounded A7 queue "
+    "recovery, A8 same-case signal correction, and A9 mixed-control/recovery comparisons."
 )
 
 FIELDNAMES = [
@@ -86,7 +87,7 @@ def pilot_status(adversary_id: str, traces: list[dict[str, str]]) -> str:
     if adversary_id == "A6":
         return "boundary_pilot_cell_not_camouflage"
     if adversary_id == "A9":
-        return "deferred_or_boundary_pilot_cell"
+        return "aggregate_boundary_cell_mapped"
     return "aggregate_pilot_cell_mapped"
 
 
@@ -117,6 +118,8 @@ def recovery_status(adversary_id: str, has_executable_pilot: bool) -> str:
         return "queue_recovery_computed_for_executable_pilot"
     if adversary_id == "A8" and has_executable_pilot:
         return "same_case_signal_correction_computed_for_executable_pilot"
+    if adversary_id == "A9" and has_executable_pilot:
+        return "same_case_review_and_queue_recovery_controls_computed_for_executable_pilot"
     return "not_computed"
 
 
@@ -134,6 +137,8 @@ def next_required_artifact(adversary_id: str, traces: list[dict[str, str]]) -> s
             return "extend to expanded/risk-routed mechanisms, seed and capacity sensitivity, and substantive correction"
         if adversary_id == "A8":
             return "extend to additional signal-dependent mechanisms, seed sensitivity, temporal correction, and external district-opinion validation"
+        if adversary_id == "A9":
+            return "replicate mixed portfolios across seeds/mechanisms, expand substantive correction, and externally anchor attack/capacity assumptions"
         return "extend executable pilot to broader mechanisms, seed sensitivity, and recovery traces"
     if not traces:
         return "implement first explicit attacked cell with paired baseline"
@@ -216,7 +221,7 @@ def write_outputs(rows: list[dict[str, str]]) -> None:
         )
     lines.extend([
         "",
-        "Gate status: every row remains `not_ready`. A1 through A8 now have bounded executable pilot artifacts, but the mapped evidence still lacks the A9 mixed-adversary pilot, broader mechanism coverage, temporal recovery/correction beyond bounded A7 queue recovery and A8 same-case signal correction, seed sensitivity, and external validation.",
+        "Gate status: every row remains `not_ready`. A1 through A9 now have bounded executable pilot artifacts, but the mapped evidence still lacks broader mechanism coverage, multi-seed replication, temporal or substantive recovery/correction beyond the bounded A7-A9 evidence, and external validation.",
     ])
     OUT_MD.write_text("\n".join(lines) + "\n")
 
