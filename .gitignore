@@ -7,7 +7,27 @@ paper/build/
 *.iml
 no-include/
 
-# Local credential files.
+# Local credential files. Keep only scrubbed templates tracked.
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+.envrc
+.direnv/
+.secrets
+.secrets/
+credentials.local
+credentials.local/
+credentials.local.*
+.npmrc
+.netrc
+.pypirc
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.mobileprovision
+id_rsa
+id_ed25519
