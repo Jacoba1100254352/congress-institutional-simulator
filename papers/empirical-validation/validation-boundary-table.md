@@ -6,7 +6,8 @@ Final decision: BENCHMARK/DATA PIPELINE PLAN ONLY. DO NOT DRAFT FULL PAPER YET.
 
 | Claim area | Current category | Current evidence | What would upgrade it |
 |---|---|---|---|
-| Bill attrition / enactment rate | temporal transport / sanity-checkable | complete 116th-, 117th-, and 118th-Congress GovInfo censuses plus `reports/legislative-lifecycle-temporal-replication.md`; 5 / 6 external cohort-metric cells pass and 118th-Congress enactment misses by 0.000825 | A longer multi-administration no-refit panel plus source-specific presidential-choice and status-quo-fallback evidence. |
+| Bill attrition / enactment rate | temporal transport / sanity-checkable | complete 116th-, 117th-, and 118th-Congress GovInfo censuses plus `reports/legislative-lifecycle-temporal-replication.md`; 5 / 6 external cohort-metric cells pass and 118th-Congress enactment misses by 0.000825 | A longer multi-administration no-refit panel plus source-specific agenda and status-quo-fallback evidence. |
+| Presidential veto probability | narrow predictive temporal transport | locked post-source-audit/pre-fit M2 study over 4,208 bill and joint-resolution presentments; the 118th-Congress gate passes with log loss 0.026977 versus 0.223369 and calibration-in-the-large 0.003149 | An unchanged future completed-Congress replication with measure-class-specific reporting; causal presidential-choice evidence remains outside this design. |
 | Floor consideration | temporal transport / sanity-checkable | three complete GovInfo censuses; the frozen simulator mean is within both external-Congress floor tolerances | Full floor-rule and calendar-control records plus a longer no-refit panel. |
 | Committee reporting | sanity-checkable / proxy only | `committee_activity.csv` and bill progression report rate | Hearing, markup, amendment, referral, discharge records. |
 | Roll-call coalition behavior | held-out benchmark / proxy boundary | Voteview held-out coalition-size check and party-unity summary | Broader Congress/chamber coverage and continued separation from public support. |
@@ -38,7 +39,7 @@ Final decision: BENCHMARK/DATA PIPELINE PLAN ONLY. DO NOT DRAFT FULL PAPER YET.
 | Implementation/correction data | partial | 2 / 5 | Federal Register final-rule effective-date rows, bounded authority-search matches, bounded proposed-history/comment-portal/timing metadata, bounded complete, zero-comment, and partial Regulations.gov comment-record metadata, bounded court U.S.C.-section overlaps, Congress.gov revision-text flags, official OLRC post-only public-law marker evidence, target-section review packets, a thirteen-public-law target-section diff-review pilot, and a target-section lifecycle bridge are ready; enforcement, high-volume comment records, comment text, full source-reviewed statutory lineage, observed expiration, direct invalidation, and repeal outcomes remain absent. |
 | Comparative institution data | bounded proxy | 2 / 5 | QoG DES/POLCON and OWID/V-Dem country-profile rows and bounded simulator scenario-family anchors are ready; institutional fit, bicameral disagreement, and observed productivity remain absent. |
 | Reproducible offline summaries | partial | 3 / 5 | Current summaries exist; future source caches and manifests need expansion. |
-| Held-out validation design | narrow | 4 / 5 | Nine deterministic source-family held-out proxy benchmarks, two complete external-Congress no-refit temporal tests, and an 11-Congress executive-action diagnostic exist; the next gate is source-specific agenda and status-quo evidence plus joint resolutions, final chamber-vote support, and a frozen low-event presidential-choice design. |
+| Held-out validation design | narrow | 4 / 5 | Nine deterministic source-family held-out proxy benchmarks, two complete external-Congress no-refit lifecycle tests, an 11-Congress executive-action diagnostic, and one locked whole-Congress presidential-choice prediction test exist; the next gate is source-specific agenda and status-quo evidence plus future unchanged presidential-choice replication beyond the joint-resolution-heavy 118th cohort. |
 
 Overall readiness: benchmark-readiness pilot, not validation paper.
 
@@ -57,7 +58,7 @@ Priority 2:
 - direct case-to-statute/public-law identifiers plus emergency docket or shadow-docket court-review data;
 - committee hearings, markups, amendments, discharge petitions;
 - complete sponsor effectiveness and sponsor history data;
-- a longer no-refit GovInfo panel across administrations, plus source-specific referral, floor-rule, calendar-control, presidential-choice, and status-quo-fallback records.
+- a longer no-refit GovInfo panel across administrations plus source-specific referral, floor-rule, calendar-control, and status-quo-fallback records, and an unchanged presidential-choice replication in a future completed Congress.
 
 Priority 3:
 

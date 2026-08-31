@@ -241,12 +241,16 @@ and 118th-Congress H.R./S. lifecycle cohorts with record/action hashes and
 explicit classifier audits. `make legislative-lifecycle-temporal-replication`
 applies the frozen 117th-Congress selection to the 116th and 118th Congresses
 without refitting; five of six cohort-metric cells pass and 118th-Congress
-enactment misses by 0.000825. The separate executive-action diagnostic records
-a 47.266-fold conditional veto-rate mismatch from a compact 108th-118th-Congress
-panel of 4,021 H.R./S. presidential decisions, including 21 vetoes and six
-overrides, and bounds the current veto mechanism as an elevated-propensity
-stress mechanism. This remains narrow
-flow-transport and mechanism-boundary evidence, not causal model validation.
+enactment misses by 0.000825. Separate source-pinned executive panels contain
+4,021 H.R./S. and 187 H.J.Res./S.J.Res. presidential decisions, including 47
+vetoes and six overrides. The frozen simulator veto rate is 22.101 times their
+combined empirical rate, bounding the simulator veto mechanism as an
+elevated-propensity stress mechanism. `make presidential-choice-study-check`
+rebuilds a model locked before fitting: on the complete 118th-Congress test
+cohort it lowers log loss from 0.223369 to 0.026977 and meets its aggregate
+calibration gate. Twelve of the 13 test vetoes occur among only 17 joint
+resolutions, so this remains narrow predictive transport and mechanism-boundary
+evidence, not causal model validation or broad out-of-regime validation.
 The sponsor-bill linkage builder joins the bounded sponsor aggregate to
 public govinfo/Congress.gov bill metadata by Bioguide ID only; it does not
 create full Center for Effective Lawmaking, complete sponsor-history,

@@ -2,26 +2,26 @@
   "generatedBy": "paper/scripts/write_pdf_manifest.py",
   "pdfs": [
     {
-      "normalizedTextBytes": 51392,
-      "normalizedTextSha256": "532ce85dc5af193cf90bf87a60a9da3c4766e3d734f79ee82a48af17bc79ef66",
-      "pages": 13,
+      "normalizedTextBytes": 48853,
+      "normalizedTextSha256": "fe3cc2d6f2a6a1b79354f96d256a4295e29c8de34887a1f65ab388443e9a9c17",
+      "pages": 12,
       "path": "paper/acm-ci-framework/acm-ci-framework.pdf",
-      "sizeBytes": 485630
+      "sizeBytes": 482217
     },
     {
-      "normalizedTextBytes": 51376,
-      "normalizedTextSha256": "cee2a00aca7f75f92ec6c97993f8284f4d1b9d9b00c007d05fe432553cd8262c",
+      "normalizedTextBytes": 53511,
+      "normalizedTextSha256": "0d18f6e55b874ef3765aee3f9af6c0fbf65606ea6a8c6f7184641ccaba03668a",
       "pages": 16,
       "path": "paper/technical-appendix/odd-d-appendix.pdf",
-      "sizeBytes": 492900
+      "sizeBytes": 500090
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "ee7574d6d4cbdf20b8c910cb7909fa69b4bb50831d193060de085a0e0ce7c127",
+  "sourceInputSha256": "41f19c913b90805e492d8f8758bdb6d34cf4eaa3d37d8d1d1a4c966e48e00c8e",
   "sourceInputs": [
     {
       "path": "Makefile",
-      "sha256": "29a4c938daa2a9457451a2059187739260416cf5f50d85d4b8e54ac3fb139021"
+      "sha256": "8ce6ef47773555a08ee344313d2ceb703cea16c503a21cce71d88d9b23983b60"
     },
     {
       "path": "data/calibration/empirical-benchmarks.csv",
@@ -173,7 +173,15 @@
     },
     {
       "path": "data/validation/raw/govinfo_executive_action_panel.csv",
-      "sha256": "3cd5b5b00527409fc446d1b80935238a33ff5dd6bef21c61420df8681e6de132"
+      "sha256": "d9241abd003919841e97464d6d1e5d79a85820517d72215adbdcdd7f17dd3c54"
+    },
+    {
+      "path": "data/validation/raw/govinfo_final_chamber_vote_panel.csv",
+      "sha256": "539c497f8a6f0349fe284048228d652cb43cd9da42bec77da15ba72e63ed149c"
+    },
+    {
+      "path": "data/validation/raw/govinfo_joint_resolution_panel.csv",
+      "sha256": "d834c32834e2bf78e9ff36ab8b3c39016fd08013297a81980ff35c50c4038d57"
     },
     {
       "path": "data/validation/raw/law_revision_bill_linkage.csv",
@@ -304,12 +312,16 @@
       "sha256": "9541f6d943611a463c9bb39a64743d4f1a5b3e51254320333f4ad20208df7b2d"
     },
     {
+      "path": "data/validation/reference/senate_joint_resolution_veto_reference_108_118.csv",
+      "sha256": "bf48af9673df333ae6bc51a105a28c61f31d5f79d58f0aa4bb77f69cb3520f8f"
+    },
+    {
       "path": "data/validation/reference/senate_veto_reference_108_118.csv",
       "sha256": "195ea577cc39569a4e7a632a51f3e11e024eca8e871c1823bf070af84ce7b104"
     },
     {
       "path": "data/validation/source-registry.csv",
-      "sha256": "928935da3ef42ff6d79383d820d1bb0f5b588fbc43afcaa919aa9192462abe1c"
+      "sha256": "221888baadb80060c17a222bd95646ac6cc0553c4dcf288803426f0cd36ff382"
     },
     {
       "path": "paper/ACM-Reference-Format.bst",
@@ -317,7 +329,7 @@
     },
     {
       "path": "paper/acm-ci-framework/acm-ci-framework.tex",
-      "sha256": "57a07b379eceaaab45e3e2797a427266c49dccc018bbd1bc09d5b85d3ed52acb"
+      "sha256": "03c149bf3f66245255457a513cbe367a50aba54d9c04fc181ee72b35e8a1dccd"
     },
     {
       "path": "paper/acmart.cls",
@@ -357,7 +369,7 @@
     },
     {
       "path": "paper/figures/empirical_validation_gap_table.tex",
-      "sha256": "d497a3bd33677ee1a3dd35fae3eed46e284ffbf4660eebeab048e222884e1cdc"
+      "sha256": "7e0764c67113412612aba38f72e2614330a83b4e67d14d7ef8ed2db71fe7b3f0"
     },
     {
       "path": "paper/figures/mechanism_diagnostics_table.tex",
@@ -401,7 +413,7 @@
     },
     {
       "path": "paper/references.bib",
-      "sha256": "5232a7f179f71393fbb42fa2098b256d6b48fbe110601e1dfa7a866f276c8898"
+      "sha256": "baf4247a8204df35a9ed298308ceb5e1cea90ee7a4bf95789f5c21b020e463c3"
     },
     {
       "path": "paper/scripts/check_word_count.py",
@@ -417,7 +429,7 @@
     },
     {
       "path": "paper/technical-appendix/odd-d-appendix.tex",
-      "sha256": "6c3203ce54337af4a2f8296a18c58dc3fce21a31359745b815e38f2ab45d8ad8"
+      "sha256": "18088de4d2a249533b5b87b473e7d48712e05a754edb6fe5e2702f45ac726f3e"
     },
     {
       "path": "reports/ablation-analysis-summary.csv",
@@ -441,7 +453,7 @@
     },
     {
       "path": "reports/empirical-validation-readiness.md",
-      "sha256": "52a40c60152906fcba156ee5bdc16f42f3516ecfc1d93fbb374b17774a469021"
+      "sha256": "d0c6a23bb3c12d9fedb377c35e46818875a4980ecb59aa595bb1e61842f750cc"
     },
     {
       "path": "reports/empirical-validation-summary.csv",
@@ -493,7 +505,7 @@
     },
     {
       "path": "scripts/checks/check_govinfo_bill_census.py",
-      "sha256": "13db051cfd6a4f1992f37a75af7d76a35ef3acba39223b46526f34c783aac32e"
+      "sha256": "6a9daac6bcbabb57efc71d05c0a98217075493a764dc215d45bf9660c909fd5c"
     },
     {
       "path": "scripts/checks/check_paper_anonymity.py",
@@ -502,6 +514,10 @@
     {
       "path": "scripts/checks/check_pdf_render.py",
       "sha256": "c7289c32ebbc13740fbc6350c4440eb80cc3a82ad507b516028978a2e21dc6f4"
+    },
+    {
+      "path": "scripts/checks/check_presidential_choice_study.py",
+      "sha256": "99af6c3818d2663ad813d84085ad9a355f8739cf2ba3cca601712824d531aa8c"
     },
     {
       "path": "scripts/checks/check_seed_robustness.py",
@@ -673,7 +689,7 @@
     },
     {
       "path": "scripts/validation/build_govinfo_bill_census_dataset.py",
-      "sha256": "ff597d729934c04c6ca2964b6383a84c8203f2d69e4a78af97156523bd21f66d"
+      "sha256": "75587c72a049635cea9c70d7cf48adda1e4f7d0a4e7bc468796ef23f199a0422"
     },
     {
       "path": "scripts/validation/build_govinfo_billstatus_linkage_dataset.py",
@@ -681,7 +697,11 @@
     },
     {
       "path": "scripts/validation/build_govinfo_executive_action_panel.py",
-      "sha256": "29cf47478f2a5220ecc9bca2be7051828e5a61427663fd435d0302e7aa384449"
+      "sha256": "86a8308a0125fdd0ba17cefea70d5da230684e992d6847cfef22d114eb69c4be"
+    },
+    {
+      "path": "scripts/validation/build_govinfo_final_vote_panel.py",
+      "sha256": "e2776719986fad1554097cc14733e593ce07dd19808022259e4b92b96181df24"
     },
     {
       "path": "scripts/validation/build_law_revision_bill_linkage_dataset.py",
@@ -805,11 +825,19 @@
     },
     {
       "path": "scripts/validation/test_govinfo_bill_census.py",
-      "sha256": "da4f140f58d7d50051dcacb785f56a7201565d60d92f17755bdfa42b976fd60b"
+      "sha256": "c3132840d11788ee16e3ded6eab5ed7ba19b08228d285db54d9127098275dbe7"
     },
     {
       "path": "scripts/validation/test_govinfo_executive_action_panel.py",
-      "sha256": "4409b64d17c1e2f0ede065b6f0f1a016c74861db4cd195eb68ac6a1220937adf"
+      "sha256": "8b22dcf10e9c2e389b96fe06f658c6dcc035e30de27650aa8e7f07707588be65"
+    },
+    {
+      "path": "scripts/validation/test_govinfo_final_vote_panel.py",
+      "sha256": "ef603cf58090a28bc3a45cf2d2bfee4cf31d39e051c216660b5e764af7b17b73"
+    },
+    {
+      "path": "scripts/validation/test_presidential_choice_study.py",
+      "sha256": "9903572d89acca63a20bd3724f4072a01ff6ad81fcd7ea5b1f2f671b6dab2d3b"
     },
     {
       "path": "scripts/validation/test_reproducible_metadata.py",
@@ -817,7 +845,7 @@
     },
     {
       "path": "scripts/validation/validate_empirical_inputs.py",
-      "sha256": "09b229c50766288907320dc502bc06458ac59eab055c865cc8b9493a34419c59"
+      "sha256": "66ec9e989a2c9d5e52018fd9eaa7acd97f25a6f7f33e9624a30b5facd696992c"
     },
     {
       "path": "scripts/validation/write_bill_finance_lobbying_campaign_finance_target_scope_review.py",
@@ -965,15 +993,15 @@
     },
     {
       "path": "scripts/validation/write_empirical_data_inventory.py",
-      "sha256": "f2deed4b1176f9236218b9e49843fc76de1593e6da67647cdec5c77edcad2d45"
+      "sha256": "bacb578e8a7213c67ea0f43a54260ec77f2c259d5129cd64283efa4573a7a95e"
     },
     {
       "path": "scripts/validation/write_empirical_linkage_report.py",
-      "sha256": "993e31f276bdbc7bebfd55843728b88bf9577868acf5df9433aff40539deac5c"
+      "sha256": "34118ed92169999be08d1da62db9bad4cb3bce2de4042c109c2d82fa0fccea1d"
     },
     {
       "path": "scripts/validation/write_empirical_linkage_roadmap.py",
-      "sha256": "29c1baeff994b1394642d18bd25ef5e1bf2dfd5813eff2e4c2843811e7e6f80e"
+      "sha256": "fc60d42e50f86474cfc2b8c6220cdc83a6ede30d86b11bbfdf0544d52f8ea2d3"
     },
     {
       "path": "scripts/validation/write_findings_validation.py",
@@ -997,7 +1025,7 @@
     },
     {
       "path": "scripts/validation/write_legislative_executive_action_diagnostic.py",
-      "sha256": "c88c15c3d246976065cc41962ddf59e88c9011f861a1e4dfe2b0c1113acca910"
+      "sha256": "b2421b462c34c26f783079da4e11f5053b173fa15513deb222c76c23a5e30f9b"
     },
     {
       "path": "scripts/validation/write_legislative_lifecycle_calibration.py",
@@ -1048,8 +1076,12 @@
       "sha256": "d8a461e5eeccc094c7567cd175102c02cf6876358f1023622752ccb3eb04b2b4"
     },
     {
+      "path": "scripts/validation/write_presidential_choice_study.py",
+      "sha256": "38f22225648704cc7d6a04220aebdaaf5bb8b3e186df2e78a94228cb6068ae7b"
+    },
+    {
       "path": "scripts/validation/write_raw_source_manifest.py",
-      "sha256": "b4f1e96768ca4b9932db724727afae54555c6243aad8b5b40d87a55938bfec4f"
+      "sha256": "35651eaf8247d4493fe340c8a9cd309e44b9097308125d469ebc319144cbc2f9"
     },
     {
       "path": "scripts/validation/write_rulemaking_authority_linkage_report.py",

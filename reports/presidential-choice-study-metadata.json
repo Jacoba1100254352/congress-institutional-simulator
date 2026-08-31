@@ -1,0 +1,211 @@
+{
+  "claimBoundary": "predictive descriptive temporal transport study; not causal or simulator validation",
+  "fullPrecisionResults": {
+    "splits": {
+      "primary_118": {
+        "models": {
+          "M0": {
+            "brier": 0.044585808506370776,
+            "calibration": -0.03662490991507358,
+            "fitGradientInfinityNorm": null,
+            "fitIterations": null,
+            "fitObjective": null,
+            "fitStepInfinityNorm": null,
+            "log_loss": 0.22336907590376287,
+            "maximum_probability": 0.008671257332313186,
+            "mean_probability": 0.008671257332313186,
+            "minimum_probability": 0.008671257332313186,
+            "observed_rate": 0.04529616724738676
+          },
+          "M1": {
+            "brier": 0.015232313351153756,
+            "calibration": -0.011633635794566555,
+            "fitGradientInfinityNorm": 4.909131911742803e-15,
+            "fitIterations": 11,
+            "fitObjective": -105.33597567616937,
+            "fitStepInfinityNorm": 8.324878545483816e-16,
+            "log_loss": 0.058347134086171655,
+            "maximum_probability": 0.5336459917932053,
+            "mean_probability": 0.03366253145282021,
+            "minimum_probability": 0.0003807124420047239,
+            "observed_rate": 0.04529616724738676
+          },
+          "M2": {
+            "brier": 0.00814326097702796,
+            "calibration": 0.003149381507968764,
+            "fitGradientInfinityNorm": 4.401876301004105e-11,
+            "fitIterations": 10,
+            "fitObjective": -76.31621076880636,
+            "fitStepInfinityNorm": 1.2895074313853447e-11,
+            "log_loss": 0.02697696612748808,
+            "maximum_probability": 0.9444632544127893,
+            "mean_probability": 0.048445548755355526,
+            "minimum_probability": 9.419698116142698e-05,
+            "observed_rate": 0.04529616724738676
+          },
+          "SIM": {
+            "brier": 0.08386931784784922,
+            "calibration": 0.20155617918527258,
+            "fitGradientInfinityNorm": null,
+            "fitIterations": null,
+            "fitObjective": null,
+            "fitStepInfinityNorm": null,
+            "log_loss": 0.33402054093068617,
+            "maximum_probability": 0.2468523464326593,
+            "mean_probability": 0.24685234643265933,
+            "minimum_probability": 0.2468523464326593,
+            "observed_rate": 0.04529616724738676
+          }
+        },
+        "primaryGateStatus": "pass",
+        "testRows": 287,
+        "testVetoes": 13,
+        "trainRows": 3921,
+        "trainVetoes": 34
+      },
+      "secondary_116": {
+        "models": {
+          "M0": {
+            "brier": 0.027960225396908702,
+            "calibration": -0.020835636562394143,
+            "fitGradientInfinityNorm": null,
+            "fitIterations": null,
+            "fitObjective": null,
+            "fitStepInfinityNorm": null,
+            "log_loss": 0.14594238219871966,
+            "maximum_probability": 0.007492975335622854,
+            "mean_probability": 0.007492975335622855,
+            "minimum_probability": 0.007492975335622854,
+            "observed_rate": 0.028328611898016998
+          },
+          "M1": {
+            "brier": 0.016533047709621333,
+            "calibration": -0.012114527605333575,
+            "fitGradientInfinityNorm": 3.729662588426892e-14,
+            "fitIterations": 12,
+            "fitObjective": -87.91295187334237,
+            "fitStepInfinityNorm": 7.780106292593187e-15,
+            "log_loss": 0.06296883422698504,
+            "maximum_probability": 0.3719957362546018,
+            "mean_probability": 0.016214084292683423,
+            "minimum_probability": 0.0003948798248782042,
+            "observed_rate": 0.028328611898016998
+          },
+          "M2": {
+            "brier": 0.010357463517648605,
+            "calibration": 0.0009078547540219972,
+            "fitGradientInfinityNorm": 1.5598489606261535e-14,
+            "fitIterations": 12,
+            "fitObjective": -63.57509482298538,
+            "fitStepInfinityNorm": 2.1200772897553698e-14,
+            "log_loss": 0.03873768542886588,
+            "maximum_probability": 0.9252193660186074,
+            "mean_probability": 0.029236466652038995,
+            "minimum_probability": 8.489751452902844e-05,
+            "observed_rate": 0.028328611898016998
+          },
+          "SIM": {
+            "brier": 0.07527872420091535,
+            "calibration": 0.21852373453464227,
+            "fitGradientInfinityNorm": null,
+            "fitIterations": null,
+            "fitObjective": null,
+            "fitStepInfinityNorm": null,
+            "log_loss": 0.31509372626177906,
+            "maximum_probability": 0.2468523464326593,
+            "mean_probability": 0.24685234643265927,
+            "minimum_probability": 0.2468523464326593,
+            "observed_rate": 0.028328611898016998
+          }
+        },
+        "primaryGateStatus": null,
+        "testRows": 353,
+        "testVetoes": 10,
+        "trainRows": 3203,
+        "trainVetoes": 24
+      }
+    }
+  },
+  "implementation": {
+    "path": "scripts/validation/write_presidential_choice_study.py",
+    "runtime": "Python standard library",
+    "sha256": "38f22225648704cc7d6a04220aebdaaf5bb8b3e186df2e78a94228cb6068ae7b"
+  },
+  "outputs": [
+    {
+      "path": "reports/presidential-choice-study-metrics.csv",
+      "sha256": "caade957291ebd7e9f64feba5bc711aa7b47b60f2f6fa61ae4e08c038734f71b"
+    },
+    {
+      "path": "reports/presidential-choice-study-coefficients.csv",
+      "sha256": "ef021f137700ae971b9ebe78c390d8136f94082f90f47b9233b7123a65f09ff1"
+    },
+    {
+      "path": "reports/presidential-choice-study-predictions.csv",
+      "sha256": "51375ff3fc744997d88131d623e69dea5ea02257b8309cc9222686bb5ed2e3d7"
+    },
+    {
+      "path": "reports/presidential-choice-study.md",
+      "sha256": "25d4a3f0722f4850026151178158e9d12bd4f66a17ff2a93af0e1baacd67e394"
+    }
+  ],
+  "postFitConcentrationDiagnostic": {
+    "billMeasures": 270,
+    "billVetoes": 1,
+    "jointResolutionMeasures": 17,
+    "jointResolutionVetoes": 12,
+    "lowestRankedVetoPosition": 16,
+    "primaryMeasures": 287,
+    "primaryVetoes": 13,
+    "status": "post_fit_descriptive_not_gate",
+    "vetoesAmongTop13Predictions": 12
+  },
+  "primaryGate": {
+    "absoluteCalibrationTolerance": 0.02,
+    "calibrationStatus": "pass",
+    "logLossStatus": "pass",
+    "model": "M2",
+    "requiresStrictlyLowerLogLossThanM0": true,
+    "status": "pass",
+    "testCongress": 118
+  },
+  "schemaVersion": 1,
+  "solver": {
+    "armijoConstant": 0.0001,
+    "armijoNumericalSlackUlps": 8,
+    "classWeights": false,
+    "gradientTolerance": 1e-09,
+    "hyperparameterTuning": false,
+    "interceptPenalized": false,
+    "l2Penalty": 0.16,
+    "maximumIterations": 200,
+    "maximumLineSearchHalvings": 50,
+    "pivotTolerance": 1e-14,
+    "resampling": false,
+    "stepTolerance": 1e-10,
+    "type": "damped_newton_irls"
+  },
+  "sources": [
+    {
+      "path": "data/validation/raw/govinfo_executive_action_panel.csv",
+      "rowsExcludingHeader": 4021,
+      "sha256": "d9241abd003919841e97464d6d1e5d79a85820517d72215adbdcdd7f17dd3c54"
+    },
+    {
+      "path": "data/validation/raw/govinfo_joint_resolution_panel.csv",
+      "rowsExcludingHeader": 187,
+      "sha256": "d834c32834e2bf78e9ff36ab8b3c39016fd08013297a81980ff35c50c4038d57"
+    },
+    {
+      "path": "data/validation/raw/govinfo_final_chamber_vote_panel.csv",
+      "rowsExcludingHeader": 8416,
+      "sha256": "539c497f8a6f0349fe284048228d652cb43cd9da42bec77da15ba72e63ed149c"
+    }
+  ],
+  "specification": {
+    "path": "papers/empirical-validation/presidential-choice-study-specification.md",
+    "sha256": "b251e967787c01c8f48385d064d7a82a9e792aba48b1b6d946ba6931772d6256",
+    "status": "locked_post_source_audit_pre_fit"
+  },
+  "studyVersion": "presidential-choice-transport-v1"
+}

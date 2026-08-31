@@ -1,0 +1,641 @@
+splitId,testCongress,billId,billType,measureClass,billNumber,originChamber,president,presidentParty,governmentControl,sponsorParty,vetoed,executiveOutcome,recordedFinalChambers,anyFinalRollCall,bothFinalRollCalls,minimumObservedFinalSupport,minimumObservedOppositionSupport,m0Probability,m1Probability,m2Probability,simulatorConstantProbability
+secondary_116,116,116-hr-133,hr,bill,133,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-150,hr,bill,150,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.000394879825,0.000307443281,0.246852346433
+secondary_116,116,116-hr-221,hr,bill,221,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-251,hr,bill,251,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.992806000000,1.000000000000,0.007492975336,0.003194198129,0.001297778880,0.246852346433
+secondary_116,116,116-hr-259,hr,bill,259,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-263,hr,bill,263,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-266,hr,bill,266,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.572792000000,1.000000000000,0.007492975336,0.003194198129,0.210006445829,0.246852346433
+secondary_116,116,116-hr-276,hr,bill,276,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.953202000000,1.000000000000,0.007492975336,0.003194198129,0.002141548849,0.246852346433
+secondary_116,116,116-hr-299,hr,bill,299,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.003194198129,0.001184867143,0.246852346433
+secondary_116,116,116-hr-430,hr,bill,430,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-434,hr,bill,434,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-439,hr,bill,439,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-473,hr,bill,473,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-504,hr,bill,504,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-540,hr,bill,540,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.983373000000,1.000000000000,0.007492975336,0.003194198129,0.001462271111,0.246852346433
+secondary_116,116,116-hr-559,hr,bill,559,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-561,hr,bill,561,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-583,hr,bill,583,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-639,hr,bill,639,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-724,hr,bill,724,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-748,hr,bill,748,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,Senate,1,0,1.000000000000,1.000000000000,0.007492975336,0.003194198129,0.001184867143,0.246852346433
+secondary_116,116,116-hr-776,hr,bill,776,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-777,hr,bill,777,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.997519000000,1.000000000000,0.007492975336,0.003194198129,0.001222653117,0.246852346433
+secondary_116,116,116-hr-828,hr,bill,828,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-829,hr,bill,829,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.000394879825,0.000307443281,0.246852346433
+secondary_116,116,116-hr-831,hr,bill,831,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.955083000000,1.000000000000,0.007492975336,0.003194198129,0.002091225904,0.246852346433
+secondary_116,116,116-hr-835,hr,bill,835,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-866,hr,bill,866,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-886,hr,bill,886,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-887,hr,bill,887,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-943,hr,bill,943,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.987437000000,1.000000000000,0.007492975336,0.003194198129,0.001388993919,0.246852346433
+secondary_116,116,116-hr-991,hr,bill,991,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1058,hr,bill,1058,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-1079,hr,bill,1079,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.000394879825,0.000307443281,0.246852346433
+secondary_116,116,116-hr-1123,hr,bill,1123,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-1138,hr,bill,1138,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-1158,hr,bill,1158,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,House|Senate,1,1,0.669856000000,0.666667000000,0.007492975336,0.018462851957,0.006421422804,0.246852346433
+secondary_116,116,116-hr-1198,hr,bill,1198,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1200,hr,bill,1200,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1222,hr,bill,1222,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1240,hr,bill,1240,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-1250,hr,bill,1250,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-1252,hr,bill,1252,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1253,hr,bill,1253,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1327,hr,bill,1327,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.971014000000,1.000000000000,0.007492975336,0.132383714390,0.017417554007,0.246852346433
+secondary_116,116,116-hr-1365,hr,bill,1365,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1396,hr,bill,1396,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1418,hr,bill,1418,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1424,hr,bill,1424,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-1449,hr,bill,1449,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1472,hr,bill,1472,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-1492,hr,bill,1492,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-1503,hr,bill,1503,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1520,hr,bill,1520,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1526,hr,bill,1526,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1569,hr,bill,1569,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1590,hr,bill,1590,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.982544000000,0.981395000000,0.007492975336,0.000394879825,0.000315926612,0.246852346433
+secondary_116,116,116-hr-1668,hr,bill,1668,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1773,hr,bill,1773,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1812,hr,bill,1812,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-1830,hr,bill,1830,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1833,hr,bill,1833,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1839,hr,bill,1839,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1844,hr,bill,1844,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1865,hr,bill,1865,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.712230000000,0.951220000000,0.007492975336,0.132383714390,0.220503648946,0.246852346433
+secondary_116,116,116-hr-1923,hr,bill,1923,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1925,hr,bill,1925,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1952,hr,bill,1952,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.000394879825,0.000307443281,0.246852346433
+secondary_116,116,116-hr-1957,hr,bill,1957,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.743405000000,0.991342000000,0.007492975336,0.132383714390,0.224523566858,0.246852346433
+secondary_116,116,116-hr-1966,hr,bill,1966,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-1972,hr,bill,1972,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2030,hr,bill,2030,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-2151,hr,bill,2151,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-2157,hr,bill,2157,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.631450000000,1.000000000000,0.007492975336,0.132383714390,0.566856069758,0.246852346433
+secondary_116,116,116-hr-2196,hr,bill,2196,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2246,hr,bill,2246,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2325,hr,bill,2325,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2333,hr,bill,2333,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,Senate,1,0,1.000000000000,1.000000000000,0.007492975336,0.003194198129,0.001184867143,0.246852346433
+secondary_116,116,116-hr-2334,hr,bill,2334,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2336,hr,bill,2336,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-2359,hr,bill,2359,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-2372,hr,bill,2372,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-2379,hr,bill,2379,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.977995000000,1.000000000000,0.007492975336,0.003194198129,0.001565207620,0.246852346433
+secondary_116,116,116-hr-2385,hr,bill,2385,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.997561000000,1.000000000000,0.007492975336,0.003194198129,0.001222003543,0.246852346433
+secondary_116,116,116-hr-2423,hr,bill,2423,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2444,hr,bill,2444,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2451,hr,bill,2451,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-2454,hr,bill,2454,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2468,hr,bill,2468,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-2476,hr,bill,2476,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-2502,hr,bill,2502,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2695,hr,bill,2695,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2744,hr,bill,2744,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-2938,hr,bill,2938,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-2940,hr,bill,2940,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.866505000000,1.000000000000,0.007492975336,0.003194198129,0.006395353572,0.246852346433
+secondary_116,116,116-hr-2969,hr,bill,2969,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3005,hr,bill,3005,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3055,hr,bill,3055,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.546099000000,0.956332000000,0.007492975336,0.132383714390,0.709954814725,0.246852346433
+secondary_116,116,116-hr-3144,hr,bill,3144,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3151,hr,bill,3151,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3153,hr,bill,3153,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3196,hr,bill,3196,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3207,hr,bill,3207,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3245,hr,bill,3245,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-3250,hr,bill,3250,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.987245000000,1.000000000000,0.007492975336,0.003194198129,0.001392371823,0.246852346433
+secondary_116,116,116-hr-3253,hr,bill,3253,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3275,hr,bill,3275,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-3304,hr,bill,3304,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.997608000000,1.000000000000,0.007492975336,0.003194198129,0.001221277047,0.246852346433
+secondary_116,116,116-hr-3305,hr,bill,3305,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3311,hr,bill,3311,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-3314,hr,bill,3314,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-3317,hr,bill,3317,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-3329,hr,bill,3329,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3349,hr,bill,3349,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3399,hr,bill,3399,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3401,hr,bill,3401,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.749386000000,0.575893000000,0.007492975336,0.132383714390,0.003521573074,0.246852346433
+secondary_116,116,116-hr-3465,hr,bill,3465,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3504,hr,bill,3504,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-3589,hr,bill,3589,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3680,hr,bill,3680,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-3847,hr,bill,3847,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3870,hr,bill,3870,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3877,hr,bill,3877,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.655889000000,0.880952000000,0.007492975336,0.132383714390,0.217319438553,0.246852346433
+secondary_116,116,116-hr-3889,hr,bill,3889,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-3976,hr,bill,3976,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4031,hr,bill,4031,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.892344000000,1.000000000000,0.007492975336,0.000394879825,0.001201382147,0.246852346433
+secondary_116,116,116-hr-4034,hr,bill,4034,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4044,hr,bill,4044,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.851319000000,1.000000000000,0.007492975336,0.003194198129,0.007741524789,0.246852346433
+secondary_116,116,116-hr-4104,hr,bill,4104,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4183,hr,bill,4183,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.997555000000,1.000000000000,0.007492975336,0.003194198129,0.001222096318,0.246852346433
+secondary_116,116,116-hr-4200,hr,bill,4200,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-4258,hr,bill,4258,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4279,hr,bill,4279,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-4285,hr,bill,4285,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.997608000000,1.000000000000,0.007492975336,0.003194198129,0.001221277047,0.246852346433
+secondary_116,116,116-hr-4334,hr,bill,4334,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4356,hr,bill,4356,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4378,hr,bill,4378,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.709906000000,0.986842000000,0.007492975336,0.132383714390,0.296917694429,0.246852346433
+secondary_116,116,116-hr-4508,hr,bill,4508,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.958974000000,1.000000000000,0.007492975336,0.003194198129,0.001990843061,0.246852346433
+secondary_116,116,116-hr-4566,hr,bill,4566,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4672,hr,bill,4672,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4704,hr,bill,4704,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4725,hr,bill,4725,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-4734,hr,bill,4734,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-4761,hr,bill,4761,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.997462000000,1.000000000000,0.007492975336,0.000394879825,0.000317485781,0.246852346433
+secondary_116,116,116-hr-4771,hr,bill,4771,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4779,hr,bill,4779,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-4785,hr,bill,4785,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-4794,hr,bill,4794,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4803,hr,bill,4803,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4875,hr,bill,4875,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-4920,hr,bill,4920,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4971,hr,bill,4971,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4975,hr,bill,4975,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4981,hr,bill,4981,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4983,hr,bill,4983,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-4988,hr,bill,4988,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-4998,hr,bill,4998,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5023,hr,bill,5023,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5037,hr,bill,5037,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-5062,hr,bill,5062,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5123,hr,bill,5123,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5126,hr,bill,5126,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-5214,hr,bill,5214,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5273,hr,bill,5273,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5277,hr,bill,5277,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5307,hr,bill,5307,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5317,hr,bill,5317,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5363,hr,bill,5363,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.768675000000,1.000000000000,0.007492975336,0.003194198129,0.021744380477,0.246852346433
+secondary_116,116,116-hr-5384,hr,bill,5384,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-5430,hr,bill,5430,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.898990000000,0.822222000000,0.007492975336,0.132383714390,0.006873520798,0.246852346433
+secondary_116,116,116-hr-5451,hr,bill,5451,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-5458,hr,bill,5458,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5459,hr,bill,5459,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5472,hr,bill,5472,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5597,hr,bill,5597,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5663,hr,bill,5663,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-5671,hr,bill,5671,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5852,hr,bill,5852,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5901,hr,bill,5901,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5954,hr,bill,5954,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5972,hr,bill,5972,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-5983,hr,bill,5983,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-6016,hr,bill,6016,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-6074,hr,bill,6074,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.989691000000,1.000000000000,0.007492975336,0.132383714390,0.013798322074,0.246852346433
+secondary_116,116,116-hr-6100,hr,bill,6100,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-6161,hr,bill,6161,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-6168,hr,bill,6168,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-6192,hr,bill,6192,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-6201,hr,bill,6201,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.900744000000,1.000000000000,0.007492975336,0.132383714390,0.041387997535,0.246852346433
+secondary_116,116,116-hr-6237,hr,bill,6237,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-6322,hr,bill,6322,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-6395,hr,bill,6395,House,Donald J. Trump,R,divided,D,1,veto_overridden,House|Senate,1,1,0.811138000000,0.840517000000,0.007492975336,0.132383714390,0.024854354260,0.246852346433
+secondary_116,116,116-hr-6418,hr,bill,6418,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-6435,hr,bill,6435,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-6535,hr,bill,6535,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-7010,hr,bill,7010,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.997608000000,1.000000000000,0.007492975336,0.003194198129,0.001221277047,0.246852346433
+secondary_116,116,116-hr-7088,hr,bill,7088,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-7105,hr,bill,7105,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-7259,hr,bill,7259,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-7347,hr,bill,7347,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-7440,hr,bill,7440,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-7460,hr,bill,7460,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-7502,hr,bill,7502,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-7810,hr,bill,7810,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-7898,hr,bill,7898,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-8247,hr,bill,8247,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-8276,hr,bill,8276,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-8337,hr,bill,8337,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.862981000000,1.000000000000,0.007492975336,0.132383714390,0.065125400578,0.246852346433
+secondary_116,116,116-hr-8354,hr,bill,8354,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.997506000000,1.000000000000,0.007492975336,0.003194198129,0.001222854245,0.246852346433
+secondary_116,116,116-hr-8472,hr,bill,8472,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-8611,hr,bill,8611,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hr-8810,hr,bill,8810,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-hr-8900,hr,bill,8900,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.836585000000,1.000000000000,0.007492975336,0.003194198129,0.009315389706,0.246852346433
+secondary_116,116,116-hr-8906,hr,bill,8906,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-24,s,bill,24,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.983254000000,1.000000000000,0.007492975336,0.003194198129,0.001464473979,0.246852346433
+secondary_116,116,116-s-47,s,bill,47,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House|Senate,1,1,0.854118000000,1.000000000000,0.007492975336,0.018462851957,0.019805508755,0.246852346433
+secondary_116,116,116-s-49,s,bill,49,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.000394879825,0.000307443281,0.246852346433
+secondary_116,116,116-s-50,s,bill,50,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-134,s,bill,134,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-151,s,bill,151,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.992857000000,1.000000000000,0.007492975336,0.000394879825,0.000336551795,0.246852346433
+secondary_116,116,116-s-153,s,bill,153,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-163,s,bill,163,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-199,s,bill,199,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-209,s,bill,209,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-212,s,bill,212,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-216,s,bill,216,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-227,s,bill,227,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-239,s,bill,239,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-252,s,bill,252,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-256,s,bill,256,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-294,s,bill,294,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-327,s,bill,327,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.003194198129,0.001184867143,0.246852346433
+secondary_116,116,116-s-371,s,bill,371,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-375,s,bill,375,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-394,s,bill,394,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-457,s,bill,457,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-461,s,bill,461,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.984772000000,1.000000000000,0.007492975336,0.000394879825,0.000372836497,0.246852346433
+secondary_116,116,116-s-483,s,bill,483,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-490,s,bill,490,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-504,s,bill,504,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-578,s,bill,578,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,Senate,1,0,0.989691000000,1.000000000000,0.007492975336,0.003194198129,0.001349945414,0.246852346433
+secondary_116,116,116-s-693,s,bill,693,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-725,s,bill,725,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-737,s,bill,737,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-743,s,bill,743,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-744,s,bill,744,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-760,s,bill,760,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.003194198129,0.001184867143,0.246852346433
+secondary_116,116,116-s-785,s,bill,785,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-832,s,bill,832,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-862,s,bill,862,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-863,s,bill,863,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-881,s,bill,881,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-893,s,bill,893,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-900,s,bill,900,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-906,s,bill,906,Senate,Donald J. Trump,R,divided,D,1,veto_sustained,House,1,0,0.729381000000,1.000000000000,0.007492975336,0.003194198129,0.035276566448,0.246852346433
+secondary_116,116,116-s-910,s,bill,910,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-914,s,bill,914,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-945,s,bill,945,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-979,s,bill,979,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.997416000000,1.000000000000,0.007492975336,0.000394879825,0.000317670791,0.246852346433
+secondary_116,116,116-s-982,s,bill,982,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-998,s,bill,998,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-1014,s,bill,1014,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1069,s,bill,1069,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1130,s,bill,1130,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1153,s,bill,1153,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1196,s,bill,1196,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1310,s,bill,1310,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1321,s,bill,1321,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1342,s,bill,1342,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1379,s,bill,1379,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-1380,s,bill,1380,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-1436,s,bill,1436,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1646,s,bill,1646,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-1678,s,bill,1678,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.000394879825,0.000307443281,0.246852346433
+secondary_116,116,116-s-1689,s,bill,1689,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1693,s,bill,1693,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-1694,s,bill,1694,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1749,s,bill,1749,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1790,s,bill,1790,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House|Senate,1,1,0.887059000000,0.820961000000,0.007492975336,0.018462851957,0.002055556775,0.246852346433
+secondary_116,116,116-s-1822,s,bill,1822,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-1838,s,bill,1838,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.997608000000,1.000000000000,0.007492975336,0.000394879825,0.000316899292,0.246852346433
+secondary_116,116,116-s-1869,s,bill,1869,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-1982,s,bill,1982,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-2047,s,bill,2047,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-2107,s,bill,2107,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-2163,s,bill,2163,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.997290000000,1.000000000000,0.007492975336,0.000394879825,0.000318178107,0.246852346433
+secondary_116,116,116-s-2174,s,bill,2174,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-2193,s,bill,2193,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.995062000000,1.000000000000,0.007492975336,0.003194198129,0.001261259530,0.246852346433
+secondary_116,116,116-s-2216,s,bill,2216,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.003194198129,0.001184867143,0.246852346433
+secondary_116,116,116-s-2249,s,bill,2249,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-2258,s,bill,2258,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-2330,s,bill,2330,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-2472,s,bill,2472,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-2638,s,bill,2638,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-2661,s,bill,2661,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-2683,s,bill,2683,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-2710,s,bill,2710,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.003194198129,0.001184867143,0.246852346433
+secondary_116,116,116-s-2730,s,bill,2730,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-2746,s,bill,2746,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-2904,s,bill,2904,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-2981,s,bill,2981,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.681234000000,1.000000000000,0.007492975336,0.000394879825,0.017146781592,0.246852346433
+secondary_116,116,116-s-3051,s,bill,3051,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3084,s,bill,3084,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3105,s,bill,3105,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3147,s,bill,3147,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.007492975336,0.003194198129,0.001184867143,0.246852346433
+secondary_116,116,116-s-3201,s,bill,3201,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.784314000000,0.614350000000,0.007492975336,0.000394879825,0.000084897515,0.246852346433
+secondary_116,116,116-s-3257,s,bill,3257,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3312,s,bill,3312,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3414,s,bill,3414,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3418,s,bill,3418,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-3461,s,bill,3461,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3462,s,bill,3462,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3503,s,bill,3503,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3587,s,bill,3587,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-3607,s,bill,3607,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3637,s,bill,3637,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-3703,s,bill,3703,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-3744,s,bill,3744,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,House,1,0,0.997585000000,1.000000000000,0.007492975336,0.000394879825,0.000316991612,0.246852346433
+secondary_116,116,116-s-3758,s,bill,3758,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-3989,s,bill,3989,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-4054,s,bill,4054,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-4072,s,bill,4072,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-4075,s,bill,4075,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-4091,s,bill,4091,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-4116,s,bill,4116,Senate,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.004447195069,0.002912030948,0.246852346433
+secondary_116,116,116-s-4126,s,bill,4126,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-4148,s,bill,4148,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-4209,s,bill,4209,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-4684,s,bill,4684,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-4762,s,bill,4762,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-4902,s,bill,4902,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-4996,s,bill,4996,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-5036,s,bill,5036,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-s-5076,s,bill,5076,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.000550386741,0.000756567737,0.246852346433
+secondary_116,116,116-hjres-28,hjres,joint_resolution,28,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.017046042142,0.007699062475,0.246852346433
+secondary_116,116,116-hjres-31,hjres,joint_resolution,31,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House|Senate,1,1,0.700935000000,0.888889000000,0.007492975336,0.371995736255,0.311689245182,0.246852346433
+secondary_116,116,116-hjres-46,hjres,joint_resolution,46,House,Donald J. Trump,R,divided,D,1,veto_sustained,House|Senate,1,1,0.573770000000,1.000000000000,0.007492975336,0.371995736255,0.878340747054,0.246852346433
+secondary_116,116,116-hjres-60,hjres,joint_resolution,60,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.017046042142,0.007699062475,0.246852346433
+secondary_116,116,116-hjres-76,hjres,joint_resolution,76,House,Donald J. Trump,R,divided,D,1,veto_sustained,House|Senate,1,1,0.557895000000,1.000000000000,0.007492975336,0.371995736255,0.898249280643,0.246852346433
+secondary_116,116,116-hjres-80,hjres,joint_resolution,80,House,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.002133281169,0.002007408525,0.246852346433
+secondary_116,116,116-hjres-87,hjres,joint_resolution,87,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.017046042142,0.007699062475,0.246852346433
+secondary_116,116,116-hjres-88,hjres,joint_resolution,88,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,,0,0,,,0.007492975336,0.017046042142,0.007699062475,0.246852346433
+secondary_116,116,116-hjres-107,hjres,joint_resolution,107,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.842105000000,1.000000000000,0.007492975336,0.012287131572,0.022762890474,0.246852346433
+secondary_116,116,116-hjres-110,hjres,joint_resolution,110,House,Donald J. Trump,R,divided,D,0,enacted_without_veto,House,1,0,0.835025000000,1.000000000000,0.007492975336,0.012287131572,0.024845839301,0.246852346433
+secondary_116,116,116-sjres-7,sjres,joint_resolution,7,Senate,Donald J. Trump,R,divided,I,1,veto_sustained,House|Senate,1,1,0.540000000000,1.000000000000,0.007492975336,0.012847652919,0.299349856352,0.246852346433
+secondary_116,116,116-sjres-36,sjres,joint_resolution,36,Senate,Donald J. Trump,R,divided,D,1,veto_sustained,House|Senate,1,1,0.540816000000,1.000000000000,0.007492975336,0.371995736255,0.916390525072,0.246852346433
+secondary_116,116,116-sjres-37,sjres,joint_resolution,37,Senate,Donald J. Trump,R,divided,D,1,veto_sustained,House|Senate,1,1,0.531250000000,1.000000000000,0.007492975336,0.371995736255,0.925219366019,0.246852346433
+secondary_116,116,116-sjres-38,sjres,joint_resolution,38,Senate,Donald J. Trump,R,divided,D,1,veto_sustained,House|Senate,1,1,0.540816000000,1.000000000000,0.007492975336,0.371995736255,0.916390525072,0.246852346433
+secondary_116,116,116-sjres-54,sjres,joint_resolution,54,Senate,Donald J. Trump,R,divided,D,1,veto_sustained,House|Senate,1,1,0.568421000000,1.000000000000,0.007492975336,0.371995736255,0.885398191213,0.246852346433
+secondary_116,116,116-sjres-65,sjres,joint_resolution,65,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.002133281169,0.002007408525,0.246852346433
+secondary_116,116,116-sjres-66,sjres,joint_resolution,66,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.002133281169,0.002007408525,0.246852346433
+secondary_116,116,116-sjres-67,sjres,joint_resolution,67,Senate,Donald J. Trump,R,divided,R,0,enacted_without_veto,,0,0,,,0.007492975336,0.002133281169,0.002007408525,0.246852346433
+secondary_116,116,116-sjres-68,sjres,joint_resolution,68,Senate,Donald J. Trump,R,divided,D,1,veto_sustained,House|Senate,1,1,0.549637000000,0.973451000000,0.007492975336,0.371995736255,0.881407660289,0.246852346433
+primary_118,118,118-hr-82,hr,bill,82,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.791667000000,0.574468000000,0.008671257332,0.133793537265,0.002480730991,0.246852346433
+primary_118,118,118-hr-292,hr,bill,292,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-346,hr,bill,346,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.990654000000,0.981900000000,0.008671257332,0.004572429561,0.001532901625,0.246852346433
+primary_118,118,118-hr-366,hr,bill,366,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-423,hr,bill,423,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-593,hr,bill,593,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-hr-599,hr,bill,599,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-663,hr,bill,663,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.921951000000,0.846890000000,0.008671257332,0.000496154288,0.000256380818,0.246852346433
+primary_118,118,118-hr-670,hr,bill,670,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-807,hr,bill,807,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-815,hr,bill,815,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,Senate,1,0,0.814433000000,0.673913000000,0.008671257332,0.004572429561,0.000695491150,0.246852346433
+primary_118,118,118-hr-996,hr,bill,996,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-1042,hr,bill,1042,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-1060,hr,bill,1060,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-1076,hr,bill,1076,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.995050000000,0.990476000000,0.008671257332,0.004572429561,0.001576869142,0.246852346433
+primary_118,118,118-hr-1096,hr,bill,1096,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.997561000000,0.995192000000,0.008671257332,0.000496154288,0.000420444396,0.246852346433
+primary_118,118,118-hr-1097,hr,bill,1097,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-1098,hr,bill,1098,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-1105,hr,bill,1105,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-hr-1226,hr,bill,1226,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.000496154288,0.000427305356,0.246852346433
+primary_118,118,118-hr-1240,hr,bill,1240,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-1318,hr,bill,1318,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-1432,hr,bill,1432,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-1505,hr,bill,1505,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-1555,hr,bill,1555,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-1568,hr,bill,1568,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-1607,hr,bill,1607,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.997403000000,0.995025000000,0.008671257332,0.004572429561,0.001600282253,0.246852346433
+primary_118,118,118-hr-1722,hr,bill,1722,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-1727,hr,bill,1727,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.995338000000,0.990826000000,0.008671257332,0.000496154288,0.000414351529,0.246852346433
+primary_118,118,118-hr-1734,hr,bill,1734,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-hr-1823,hr,bill,1823,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-2365,hr,bill,2365,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.978365000000,0.956938000000,0.008671257332,0.004572429561,0.001403005106,0.246852346433
+primary_118,118,118-hr-2379,hr,bill,2379,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.000496154288,0.000427305356,0.246852346433
+primary_118,118,118-hr-2468,hr,bill,2468,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-2544,hr,bill,2544,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-2670,hr,bill,2670,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.724299000000,0.668182000000,0.008671257332,0.133793537265,0.013847465332,0.246852346433
+primary_118,118,118-hr-2754,hr,bill,2754,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.000496154288,0.000427305356,0.246852346433
+primary_118,118,118-hr-2839,hr,bill,2839,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-2872,hr,bill,2872,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,Senate,1,0,0.810526000000,0.590909000000,0.008671257332,0.004572429561,0.000328620430,0.246852346433
+primary_118,118,118-hr-2882,hr,bill,2882,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-2950,hr,bill,2950,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-2997,hr,bill,2997,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-3019,hr,bill,3019,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.994924000000,0.989899000000,0.008671257332,0.000496154288,0.000412774438,0.246852346433
+primary_118,118,118-hr-3254,hr,bill,3254,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-3315,hr,bill,3315,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-3324,hr,bill,3324,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.000496154288,0.000427305356,0.246852346433
+primary_118,118,118-hr-3354,hr,bill,3354,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.929825000000,0.865000000000,0.008671257332,0.000496154288,0.000276942342,0.246852346433
+primary_118,118,118-hr-3391,hr,bill,3391,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.989691000000,0.979592000000,0.008671257332,0.000496154288,0.000398718672,0.246852346433
+primary_118,118,118-hr-3608,hr,bill,3608,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-3672,hr,bill,3672,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-hr-3728,hr,bill,3728,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-3746,hr,bill,3746,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.636364000000,0.354167000000,0.008671257332,0.133793537265,0.002020709579,0.246852346433
+primary_118,118,118-hr-3797,hr,bill,3797,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-3801,hr,bill,3801,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-3821,hr,bill,3821,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.983333000000,0.966981000000,0.008671257332,0.000496154288,0.000381959458,0.246852346433
+primary_118,118,118-hr-3865,hr,bill,3865,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-3935,hr,bill,3935,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.835714000000,0.857798000000,0.008671257332,0.133793537265,0.021570300665,0.246852346433
+primary_118,118,118-hr-3944,hr,bill,3944,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-3947,hr,bill,3947,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-4004,hr,bill,4004,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-4094,hr,bill,4094,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-4136,hr,bill,4136,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-4190,hr,bill,4190,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-4366,hr,bill,4366,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,Senate,1,0,0.773196000000,0.553191000000,0.008671257332,0.004572429561,0.000362118024,0.246852346433
+primary_118,118,118-hr-4385,hr,bill,4385,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-4389,hr,bill,4389,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-4467,hr,bill,4467,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-4581,hr,bill,4581,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.992701000000,0.985646000000,0.008671257332,0.004572429561,0.001549535259,0.246852346433
+primary_118,118,118-hr-4955,hr,bill,4955,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-4984,hr,bill,4984,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.863524000000,0.755000000000,0.008671257332,0.004572429561,0.000828465565,0.246852346433
+primary_118,118,118-hr-5009,hr,bill,5009,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.667458000000,0.925926000000,0.008671257332,0.133793537265,0.252188425130,0.246852346433
+primary_118,118,118-hr-5103,hr,bill,5103,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5110,hr,bill,5110,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.997647000000,1.000000000000,0.008671257332,0.004572429561,0.001673543385,0.246852346433
+primary_118,118,118-hr-5301,hr,bill,5301,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-5302,hr,bill,5302,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5443,hr,bill,5443,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-5464,hr,bill,5464,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5476,hr,bill,5476,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5490,hr,bill,5490,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5536,hr,bill,5536,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5640,hr,bill,5640,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5646,hr,bill,5646,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-5712,hr,bill,5712,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5770,hr,bill,5770,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-5799,hr,bill,5799,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5860,hr,bill,5860,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.786385000000,0.583333000000,0.008671257332,0.133793537265,0.002881936699,0.246852346433
+primary_118,118,118-hr-5861,hr,bill,5861,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5863,hr,bill,5863,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.982005000000,0.963918000000,0.008671257332,0.004572429561,0.001434579721,0.246852346433
+primary_118,118,118-hr-5867,hr,bill,5867,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-5887,hr,bill,5887,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-5985,hr,bill,5985,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-6062,hr,bill,6062,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6073,hr,bill,6073,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-6116,hr,bill,6116,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-6162,hr,bill,6162,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6188,hr,bill,6188,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6244,hr,bill,6244,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-6249,hr,bill,6249,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6324,hr,bill,6324,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6363,hr,bill,6363,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.779582000000,0.577273000000,0.008671257332,0.133793537265,0.002956211571,0.246852346433
+primary_118,118,118-hr-6395,hr,bill,6395,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6492,hr,bill,6492,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6503,hr,bill,6503,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.961637000000,0.927184000000,0.008671257332,0.004572429561,0.001295172440,0.246852346433
+primary_118,118,118-hr-6513,hr,bill,6513,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6633,hr,bill,6633,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6651,hr,bill,6651,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6750,hr,bill,6750,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-6810,hr,bill,6810,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6826,hr,bill,6826,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-6829,hr,bill,6829,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-6843,hr,bill,6843,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-6852,hr,bill,6852,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-6960,hr,bill,6960,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.968447000000,0.938095000000,0.008671257332,0.004572429561,0.001322678853,0.246852346433
+primary_118,118,118-hr-6983,hr,bill,6983,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.994609000000,0.989305000000,0.008671257332,0.004572429561,0.001567718903,0.246852346433
+primary_118,118,118-hr-7032,hr,bill,7032,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-7158,hr,bill,7158,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-7177,hr,bill,7177,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7180,hr,bill,7180,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7189,hr,bill,7189,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7192,hr,bill,7192,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-7199,hr,bill,7199,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7213,hr,bill,7213,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.968675000000,0.938389000000,0.008671257332,0.004572429561,0.001322703740,0.246852346433
+primary_118,118,118-hr-7218,hr,bill,7218,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7332,hr,bill,7332,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7333,hr,bill,7333,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7365,hr,bill,7365,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7377,hr,bill,7377,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7385,hr,bill,7385,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-7417,hr,bill,7417,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7423,hr,bill,7423,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-hr-7438,hr,bill,7438,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7454,hr,bill,7454,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.954762000000,0.909524000000,0.008671257332,0.004572429561,0.001189586460,0.246852346433
+primary_118,118,118-hr-7463,hr,bill,7463,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.763723000000,0.538095000000,0.008671257332,0.133793537265,0.002466965500,0.246852346433
+primary_118,118,118-hr-7507,hr,bill,7507,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7508,hr,bill,7508,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-7524,hr,bill,7524,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7606,hr,bill,7606,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7607,hr,bill,7607,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7764,hr,bill,7764,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-7777,hr,bill,7777,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7872,hr,bill,7872,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-7888,hr,bill,7888,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.638298000000,0.588785000000,0.008671257332,0.133793537265,0.018525542883,0.246852346433
+primary_118,118,118-hr-7893,hr,bill,7893,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-7938,hr,bill,7938,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-8012,hr,bill,8012,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-8057,hr,bill,8057,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-hr-8219,hr,bill,8219,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.937965000000,0.876847000000,0.008671257332,0.000496154288,0.000280750675,0.246852346433
+primary_118,118,118-hr-8289,hr,bill,8289,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.941320000000,0.907767000000,0.008671257332,0.004572429561,0.001380011293,0.246852346433
+primary_118,118,118-hr-8413,hr,bill,8413,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-8641,hr,bill,8641,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-8663,hr,bill,8663,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-8666,hr,bill,8666,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-8667,hr,bill,8667,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-8717,hr,bill,8717,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-8841,hr,bill,8841,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-8868,hr,bill,8868,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-8909,hr,bill,8909,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-8919,hr,bill,8919,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-8932,hr,bill,8932,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.997382000000,1.000000000000,0.008671257332,0.004572429561,0.001679005831,0.246852346433
+primary_118,118,118-hr-8976,hr,bill,8976,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-9076,hr,bill,9076,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.975904000000,0.952607000000,0.008671257332,0.004572429561,0.001387213139,0.246852346433
+primary_118,118,118-hr-9106,hr,bill,9106,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-hr-9124,hr,bill,9124,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-9285,hr,bill,9285,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-9322,hr,bill,9322,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-9421,hr,bill,9421,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-9468,hr,bill,9468,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-9487,hr,bill,9487,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-9544,hr,bill,9544,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-9549,hr,bill,9549,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-9566,hr,bill,9566,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-9580,hr,bill,9580,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-hr-9592,hr,bill,9592,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-9600,hr,bill,9600,House,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.962121000000,0.925000000000,0.008671257332,0.000496154288,0.000331270688,0.246852346433
+primary_118,118,118-hr-9747,hr,bill,9747,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.806147000000,0.608696000000,0.008671257332,0.133793537265,0.002883325227,0.246852346433
+primary_118,118,118-hr-9775,hr,bill,9775,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-10065,hr,bill,10065,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hr-10545,hr,bill,10545,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.885417000000,0.787234000000,0.008671257332,0.133793537265,0.006027187388,0.246852346433
+primary_118,118,118-s-30,s,bill,30,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-50,s,bill,50,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-59,s,bill,59,Senate,Joseph R. Biden Jr.,D,divided,I,0,enacted_without_veto,,0,0,,,0.008671257332,0.009317851198,0.003223789732,0.246852346433
+primary_118,118,118-s-91,s,bill,91,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-111,s,bill,111,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-s-112,s,bill,112,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-s-133,s,bill,133,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-134,s,bill,134,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-138,s,bill,138,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.937650000000,0.876777000000,0.008671257332,0.000496154288,0.000281652200,0.246852346433
+primary_118,118,118-s-141,s,bill,141,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.969543000000,0.939698000000,0.008671257332,0.004572429561,0.001325211072,0.246852346433
+primary_118,118,118-s-206,s,bill,206,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-223,s,bill,223,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-227,s,bill,227,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.992629000000,0.985646000000,0.008671257332,0.004572429561,0.001550907965,0.246852346433
+primary_118,118,118-s-265,s,bill,265,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-310,s,bill,310,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-382,s,bill,382,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.963942000000,0.928230000000,0.008671257332,0.000496154288,0.000334141284,0.246852346433
+primary_118,118,118-s-467,s,bill,467,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-474,s,bill,474,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-475,s,bill,475,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.000496154288,0.000427305356,0.246852346433
+primary_118,118,118-s-546,s,bill,546,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.953608000000,0.937824000000,0.008671257332,0.004572429561,0.001583396745,0.246852346433
+primary_118,118,118-s-612,s,bill,612,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-619,s,bill,619,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-s-656,s,bill,656,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-670,s,bill,670,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-679,s,bill,679,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-709,s,bill,709,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.984810000000,0.970297000000,0.008671257332,0.000496154288,0.000387224419,0.246852346433
+primary_118,118,118-s-759,s,bill,759,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.950125000000,0.902913000000,0.008671257332,0.000496154288,0.000310541900,0.246852346433
+primary_118,118,118-s-777,s,bill,777,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-788,s,bill,788,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.952719000000,0.907407000000,0.008671257332,0.004572429561,0.001195311356,0.246852346433
+primary_118,118,118-s-794,s,bill,794,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-870,s,bill,870,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House|Senate,1,1,0.967980000000,0.942029000000,0.008671257332,0.016417961278,0.002544470367,0.246852346433
+primary_118,118,118-s-932,s,bill,932,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-992,s,bill,992,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-1147,s,bill,1147,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-1278,s,bill,1278,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-1351,s,bill,1351,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.918719000000,0.842105000000,0.008671257332,0.000496154288,0.000254795433,0.246852346433
+primary_118,118,118-s-1478,s,bill,1478,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-1510,s,bill,1510,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-1549,s,bill,1549,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-1608,s,bill,1608,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-1648,s,bill,1648,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-1858,s,bill,1858,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-1973,s,bill,1973,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-2051,s,bill,2051,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.000496154288,0.000427305356,0.246852346433
+primary_118,118,118-s-2143,s,bill,2143,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-2181,s,bill,2181,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-2228,s,bill,2228,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.672775000000,0.931937000000,0.008671257332,0.000496154288,0.012352174049,0.246852346433
+primary_118,118,118-s-2274,s,bill,2274,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-2414,s,bill,2414,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-2513,s,bill,2513,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-2685,s,bill,2685,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-2747,s,bill,2747,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-2781,s,bill,2781,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-2787,s,bill,2787,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-2795,s,bill,2795,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-2825,s,bill,2825,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-2861,s,bill,2861,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.779747000000,0.560606000000,0.008671257332,0.000496154288,0.000094196981,0.246852346433
+primary_118,118,118-s-3126,s,bill,3126,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-3222,s,bill,3222,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-3249,s,bill,3249,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-s-3250,s,bill,3250,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.983333000000,0.966981000000,0.008671257332,0.004572429561,0.001453465313,0.246852346433
+primary_118,118,118-s-3267,s,bill,3267,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-3285,s,bill,3285,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-3419,s,bill,3419,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-3427,s,bill,3427,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.949875000000,0.898990000000,0.008671257332,0.004572429561,0.001141735594,0.246852346433
+primary_118,118,118-s-3448,s,bill,3448,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.971014000000,0.943396000000,0.008671257332,0.000496154288,0.000354347280,0.246852346433
+primary_118,118,118-s-3475,s,bill,3475,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-3613,s,bill,3613,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.985577000000,0.971564000000,0.008671257332,0.000496154288,0.000388285101,0.246852346433
+primary_118,118,118-s-3639,s,bill,3639,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-3640,s,bill,3640,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-3706,s,bill,3706,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.995122000000,0.990521000000,0.008671257332,0.004572429561,0.001576154340,0.246852346433
+primary_118,118,118-s-3764,s,bill,3764,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,0.948052000000,0.894737000000,0.008671257332,0.004572429561,0.001120893843,0.246852346433
+primary_118,118,118-s-3791,s,bill,3791,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.945736000000,0.892857000000,0.008671257332,0.000496154288,0.000297582127,0.246852346433
+primary_118,118,118-s-3851,s,bill,3851,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-3857,s,bill,3857,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.908867000000,0.822967000000,0.008671257332,0.000496154288,0.000239316968,0.246852346433
+primary_118,118,118-s-3938,s,bill,3938,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-3946,s,bill,3946,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-3959,s,bill,3959,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-3960,s,bill,3960,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-3998,s,bill,3998,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House,1,0,1.000000000000,1.000000000000,0.008671257332,0.004572429561,0.001625812568,0.246852346433
+primary_118,118,118-s-4077,s,bill,4077,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.899225000000,0.796875000000,0.008671257332,0.000496154288,0.000209698590,0.246852346433
+primary_118,118,118-s-4107,s,bill,4107,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-4199,s,bill,4199,Senate,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House,1,0,0.577017000000,0.990431000000,0.008671257332,0.004572429561,0.213825647053,0.246852346433
+primary_118,118,118-s-4243,s,bill,4243,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-4351,s,bill,4351,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-4367,s,bill,4367,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,House,1,0,0.956835000000,0.914286000000,0.008671257332,0.000496154288,0.000318947915,0.246852346433
+primary_118,118,118-s-4548,s,bill,4548,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-4610,s,bill,4610,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-4698,s,bill,4698,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-4716,s,bill,4716,Senate,Joseph R. Biden Jr.,D,divided,D,0,enacted_without_veto,,0,0,,,0.008671257332,0.000380712442,0.000637565193,0.246852346433
+primary_118,118,118-s-5314,s,bill,5314,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-s-5355,s,bill,5355,Senate,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.003511879833,0.002424379400,0.246852346433
+primary_118,118,118-hjres-7,hjres,joint_resolution,7,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.537559000000,1.000000000000,0.008671257332,0.533645991793,0.922532429987,0.246852346433
+primary_118,118,118-hjres-26,hjres,joint_resolution,26,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,House|Senate,1,1,0.591017000000,1.000000000000,0.008671257332,0.533645991793,0.860420927296,0.246852346433
+primary_118,118,118-hjres-27,hjres,joint_resolution,27,House,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.534118000000,0.995434000000,0.008671257332,0.533645991793,0.922423437226,0.246852346433
+primary_118,118,118-hjres-30,hjres,joint_resolution,30,House,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.514286000000,1.000000000000,0.008671257332,0.533645991793,0.940695256952,0.246852346433
+primary_118,118,118-hjres-39,hjres,joint_resolution,39,House,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.522459000000,0.963134000000,0.008671257332,0.533645991793,0.909598062470,0.246852346433
+primary_118,118,118-hjres-42,hjres,joint_resolution,42,House,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.547847000000,1.000000000000,0.008671257332,0.533645991793,0.912977137469,0.246852346433
+primary_118,118,118-hjres-45,hjres,joint_resolution,45,House,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.517815000000,1.000000000000,0.008671257332,0.533645991793,0.938223273007,0.246852346433
+primary_118,118,118-hjres-62,hjres,joint_resolution,62,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.025444728336,0.008426710927,0.246852346433
+primary_118,118,118-hjres-63,hjres,joint_resolution,63,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.025444728336,0.008426710927,0.246852346433
+primary_118,118,118-hjres-64,hjres,joint_resolution,64,House,Joseph R. Biden Jr.,D,divided,R,0,enacted_without_veto,,0,0,,,0.008671257332,0.025444728336,0.008426710927,0.246852346433
+primary_118,118,118-hjres-98,hjres,joint_resolution,98,House,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.510204000000,0.979167000000,0.008671257332,0.533645991793,0.931748914956,0.246852346433
+primary_118,118,118-hjres-109,hjres,joint_resolution,109,House,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.556098000000,1.000000000000,0.008671257332,0.533645991793,0.904556273316,0.246852346433
+primary_118,118,118-sjres-9,sjres,joint_resolution,9,Senate,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.510204000000,0.995413000000,0.008671257332,0.533645991793,0.941038505118,0.246852346433
+primary_118,118,118-sjres-11,sjres,joint_resolution,11,Senate,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.505051000000,0.995413000000,0.008671257332,0.533645991793,0.944463254413,0.246852346433
+primary_118,118,118-sjres-24,sjres,joint_resolution,24,Senate,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.510000000000,0.995434000000,0.008671257332,0.533645991793,0.941188951821,0.246852346433
+primary_118,118,118-sjres-32,sjres,joint_resolution,32,Senate,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.522459000000,1.000000000000,0.008671257332,0.533645991793,0.934823480487,0.246852346433
+primary_118,118,118-sjres-38,sjres,joint_resolution,38,Senate,Joseph R. Biden Jr.,D,divided,R,1,veto_sustained,House|Senate,1,1,0.510204000000,0.978723000000,0.008671257332,0.533645991793,0.931476890181,0.246852346433

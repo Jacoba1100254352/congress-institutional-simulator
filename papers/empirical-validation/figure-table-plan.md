@@ -12,15 +12,20 @@
 
 3. Executive-action boundary plot
    - Source: `reports/legislative-executive-action-diagnostic.csv`.
-   - Show pooled empirical and frozen simulator conditional veto rates with Wilson intervals.
-   - Label the 47.266-fold difference as a descriptive stress-mechanism boundary, not a post hoc formal test, and label party-control strata as noncausal.
+   - Show H.R./S., joint-resolution, combined empirical, and frozen simulator conditional veto rates with Wilson intervals.
+   - Label the 22.101-fold combined difference as a descriptive stress-mechanism boundary, not a post hoc formal test, and label party-control and support strata as noncausal.
 
-4. Empirical-boundary matrix
+4. Locked presidential-choice transport plot
+   - Source: `reports/presidential-choice-study-predictions.csv` and `reports/presidential-choice-study-metrics.csv`.
+   - Show ranked 118th-Congress M2 probabilities with veto outcomes and measure class, plus a compact M0/M1/M2/SIM scoring table.
+   - Label the display as post-fit descriptive visualization. Make the 12-of-13 veto concentration among 17 joint resolutions explicit and do not imply causal or broad out-of-regime validation.
+
+5. Empirical-boundary matrix
    - Rows: simulator metrics.
    - Columns: observable empirical targets.
    - Cell: direct, proxy, missing, or synthetic-only.
 
-5. Public-support mapping figure
+6. Public-support mapping figure
    - Future only.
    - Shows national, district, and affected-group support mapping if data exists.
 

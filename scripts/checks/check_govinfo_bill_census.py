@@ -1184,7 +1184,9 @@ def check_executive_diagnostic() -> None:
     require("35 of 145 measures" in text and "5 of 165 measures" in text, "Two-thirds support disclosure drifted")
     require("All 40 both-recorded vetoes" in text and "other 111 measures contain 0 vetoes" in text, "Opposition-support disclosure drifted")
     require("informative recording process" in text, "Final-vote missingness boundary is missing")
-    require("low-event estimator" in text and "whole-Congress holdout" in text, "Presidential-choice next gate is missing")
+    require("log loss 0.026977 versus 0.223369" in text, "Locked presidential-choice result is missing")
+    require("12 of 13 test vetoes arise among only 17 joint resolutions" in text, "Presidential-choice concentration boundary is missing")
+    require("unchanged future whole-Congress replication" in text, "Presidential-choice next gate is missing")
     require("| 117 | 358 | 0 | 0.000000" in text and "| 0 | NA |" in text, "Undefined 117th override rate disclosure drifted")
 
 

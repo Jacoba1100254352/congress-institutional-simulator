@@ -82,17 +82,18 @@ Implemented temporal-flow extension:
 - Freeze threshold selection on the 117th calibration split, then apply the selected 0.68 threshold to all 116th and 118th rows without refitting.
 - Preserve the prespecified 0.020 committee, 0.015 floor, and 0.010 enactment tolerances and report the 5 / 6 external cohort-metric result, including the 118th-Congress enactment miss.
 - Audit classifier drift across Congresses; classifier v3 preserves the context-dependent `E30000` veto/signature fix, adds two-chamber veto-override classification, and leaves established 117th- and 118th-Congress funnel counts unchanged.
-- Audit presented-bill accounting and conditional executive-action rates separately from lifecycle-threshold selection. Preserve the 47.266-fold pooled empirical-to-simulator veto-rate mismatch across the compact 108th-118th-Congress panel as a model boundary rather than introducing a post hoc pass/fail tolerance.
+- Audit presented-measure accounting and conditional executive-action rates separately from lifecycle-threshold selection. Preserve the 22.101-fold combined empirical-to-simulator veto-rate mismatch across the 108th-118th-Congress bill and joint-resolution panels as a model boundary rather than introducing a post hoc simulator pass/fail tolerance.
 
-Locked presidential-choice extension:
+Implemented locked presidential-choice extension:
 
 - `presidential-choice-study-specification.md` freezes the combined H.R./S./H.J.Res./S.J.Res. population, explicit final-roll-call missingness pathways, two nested low-dimensional penalized logistic models, fixed L2 penalty, deterministic solver, whole-Congress temporal tests, scoring rules, and 118th-Congress acceptance gate before estimator implementation or fitting.
 - The specification is a post-source-audit, pre-fit analysis plan rather than a blinded preregistration. The 116th-Congress check is secondary and cannot alter the primary 118th-Congress model or gate.
+- `reports/presidential-choice-study.md` preserves the fitted result without retuning. M2 lowers 118th-Congress log loss from 0.223369 to 0.026977 and has calibration-in-the-large 0.003149, passing the fixed gate; the 116th check also improves log loss. The post-fit concentration audit records 12 of 13 primary test vetoes among only 17 joint resolutions.
 
 Remaining tasks:
 
 - Add separate calibration and held-out extracts rather than a hash split of one bounded sample.
-- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers; implement and report the locked low-event presidential-choice study using the completed joint-resolution and final-vote panels; and add independent or held-out checks for topic throughput, lobbying, and committee activity.
+- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers; preserve and later replicate the unchanged presidential-choice study in another completed Congress with measure-class-specific reporting; and add independent or held-out checks for topic throughput, lobbying, and committee activity.
 - Report error metrics for more targets instead of only broad tolerance membership.
 
 ## Stage 3: Representation and Public Support

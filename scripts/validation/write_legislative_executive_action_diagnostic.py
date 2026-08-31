@@ -24,6 +24,7 @@ except ImportError:  # Direct script execution used by the Makefile.
 BILL_PANEL = Path("data/validation/raw/govinfo_executive_action_panel.csv")
 JOINT_PANEL = Path("data/validation/raw/govinfo_joint_resolution_panel.csv")
 FINAL_VOTE_PANEL = Path("data/validation/raw/govinfo_final_chamber_vote_panel.csv")
+PRESIDENTIAL_CHOICE_METRICS = Path("reports/presidential-choice-study-metrics.csv")
 CALIBRATION = Path("reports/legislative-lifecycle-calibration.csv")
 OUT_CSV = Path("reports/legislative-executive-action-diagnostic.csv")
 OUT_MD = Path("reports/legislative-executive-action-diagnostic.md")
@@ -392,6 +393,12 @@ def write_csv(rows: list[dict[str, str]]) -> None:
 
 
 def write_markdown(rows: list[dict[str, str]]) -> None:
+    choice_metrics = {
+        (row["splitId"], row["modelId"]): row
+        for row in read_csv(PRESIDENTIAL_CHOICE_METRICS)
+    }
+    primary_m0 = choice_metrics[("primary_118", "M0")]
+    primary_m2 = choice_metrics[("primary_118", "M2")]
     bill_pooled = next(row for row in rows if row["cohort"] == BILL_POOLED)
     joint_pooled = next(row for row in rows if row["cohort"] == JOINT_POOLED)
     combined = next(row for row in rows if row["cohort"] == COMBINED_POOLED)
@@ -551,7 +558,7 @@ def write_markdown(rows: list[dict[str, str]]) -> None:
         "",
         "The current presidential-veto parameterization should be interpreted as an elevated-propensity veto stress mechanism, not as an empirically calibrated representation of U.S. presidential action. Its aggregate enactment proximity can coexist with a badly mis-scaled executive-action pathway.",
         "",
-        "The next gate is a separately frozen presidential-choice study using the now-committed measure-class and final-vote fields. It must specify the low-event estimator, predictor availability rules, treatment of nonrecorded approvals, calibration loss, and whole-Congress holdout before fitting. The current flow threshold and transport tolerances remain frozen.",
+        f"The separately locked presidential-choice study now trains on 3,921 measures through the 117th Congress and tests all 287 118th-Congress presentments. Its fixed support model has log loss {float(primary_m2['meanLogLoss']):.6f} versus {float(primary_m0['meanLogLoss']):.6f} for the training-prevalence baseline and calibration-in-the-large {float(primary_m2['calibrationInTheLarge']):.6f}, passing the two-part gate. This result does not retroactively convert the descriptive strata above into causal effects or validate the simulator's veto mechanism; 12 of 13 test vetoes arise among only 17 joint resolutions. The next gate is an unchanged future whole-Congress replication with measure-class-specific reporting. The current flow threshold and transport tolerances remain frozen.",
         "",
         f"Claim boundary: {CLAIM_BOUNDARY}",
     ])

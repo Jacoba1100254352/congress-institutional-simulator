@@ -293,7 +293,7 @@ def main() -> int:
         f"- Files with required columns: {complete} / {len(DATASETS)}",
         f"- Adapter fixture CSVs ignored: {fixture_count}",
         "",
-        "Next empirical step: implement the locked low-event presidential-choice estimator, loss, and whole-Congress temporal tests without post-fit changes while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo lifecycle censuses, separate 108th-118th-Congress bill and joint-resolution decision panels, final chamber-vote support, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
+        "Next empirical step: preserve the locked presidential-choice result without post-fit retuning and add a future whole-Congress temporal replication when another completed cohort is available while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo lifecycle censuses, separate 108th-118th-Congress bill and joint-resolution decision panels, final chamber-vote support, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
     ])
     REPORT.write_text("\n".join(lines) + "\n")
     with REPORT_CSV.open("w", newline="") as handle:

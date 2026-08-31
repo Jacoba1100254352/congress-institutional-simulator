@@ -11,7 +11,8 @@ Existing checks:
 - `reports/calibration-baseline.md`: 15/15 flow and proxy sanity checks passed.
 - `reports/govinfo-bill-census-116.md`, `reports/govinfo-bill-census.md`, and `reports/govinfo-bill-census-118.md`: complete, source-pinned H.R./S. lifecycle censuses for the 116th, 117th, and 118th Congresses.
 - `reports/legislative-lifecycle-temporal-replication.md`: threshold selection frozen on the 117th Congress and applied without refitting to the 116th and 118th Congresses; 5 / 6 cohort-metric cells pass, while 118th-Congress enactment misses its 0.010 tolerance by 0.000825.
-- `reports/legislative-executive-action-diagnostic.md`: presented-bill accounting and conditional veto rates across a compact 108th-118th-Congress H.R./S. panel; the simulator rate is 47.266 times the pooled empirical rate, so current veto behavior is treated as a stress mechanism rather than a calibrated presidential-choice model.
+- `reports/legislative-executive-action-diagnostic.md`: presented-measure accounting across separate 108th-118th-Congress bill and joint-resolution panels; the simulator rate is 22.101 times the combined empirical rate, so current simulator veto behavior remains a stress mechanism.
+- `reports/presidential-choice-study.md`: fixed low-event temporal probability study. The 118th-Congress gate passes, but 12 of 13 test vetoes occur among only 17 joint resolutions; this does not calibrate the simulator veto process.
 - `reports/empirical-bridge.csv`: empirical comparison signals.
 - `reports/empirical-linkage-report.md`: source-family linkage audit; currently 13 / 13 families are linked, metadata-linked, or partially linked.
 - `reports/empirical-linkage-roadmap.md`: required join keys and acceptance gates for non-fully-linked families.
@@ -60,9 +61,9 @@ Current checks do not validate:
 
 ### Phase 1: Flow Sanity Expansion
 
-- Preserve the three complete GovInfo lifecycle censuses and the compact 108th-118th-Congress executive panel.
+- Preserve the three complete GovInfo lifecycle censuses, separate 108th-118th-Congress executive panels, final-vote panel, and locked presidential-choice outputs.
 - Add committee referral/reporting/markup coverage.
-- Add joint resolutions, final chamber-vote support, and a pre-specified low-event presidential-choice estimator with a whole-Congress holdout; broaden sponsor-concentration checks across Congresses.
+- Apply the unchanged presidential-choice design to a future completed Congress with measure-class-specific reporting; broaden sponsor-concentration checks across Congresses.
 - Keep pass/fail bands broad and explicit.
 
 ### Phase 2: Proxy Risk Audit
