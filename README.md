@@ -242,8 +242,10 @@ explicit classifier audits. `make legislative-lifecycle-temporal-replication`
 applies the frozen 117th-Congress selection to the 116th and 118th Congresses
 without refitting; five of six cohort-metric cells pass and 118th-Congress
 enactment misses by 0.000825. The separate executive-action diagnostic records
-a 79.157-fold conditional veto-rate mismatch and bounds the current veto
-mechanism as an elevated-propensity stress mechanism. This remains narrow
+a 47.266-fold conditional veto-rate mismatch from a compact 108th-118th-Congress
+panel of 4,021 H.R./S. presidential decisions, including 21 vetoes and six
+overrides, and bounds the current veto mechanism as an elevated-propensity
+stress mechanism. This remains narrow
 flow-transport and mechanism-boundary evidence, not causal model validation.
 The sponsor-bill linkage builder joins the bounded sponsor aggregate to
 public govinfo/Congress.gov bill metadata by Bioguide ID only; it does not

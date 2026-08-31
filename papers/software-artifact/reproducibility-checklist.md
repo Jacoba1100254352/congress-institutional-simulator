@@ -78,7 +78,7 @@ Allowed:
 - The repository contains Makefile targets for build, test, campaign generation, paper checks, offline reproduction, and anonymous supplement creation.
 - The current checkout test suite passes under Java 21.
 - The root README documents no-network reproduction and optional network-dependent inputs.
-- The committed 116th-, 117th-, and 118th-Congress GovInfo censuses, frozen temporal report, and executive-action diagnostic have a deterministic integrity-check target.
+- The committed 116th-, 117th-, and 118th-Congress GovInfo lifecycle censuses, compact 108th-118th-Congress executive panel, frozen temporal report, and executive-action diagnostic have a deterministic integrity-check target.
 - Root `CITATION.cff`, `codemeta.json`, and `RELEASE.md` now provide pre-release citation, software, and release-plan metadata.
 
 Not allowed yet:

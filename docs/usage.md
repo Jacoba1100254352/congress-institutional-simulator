@@ -206,9 +206,11 @@ make mechanism-diagnostics
 ```
 
 Run the frozen legislative-lifecycle calibration, its no-refit 116th- and
-118th-Congress temporal tests, and the executive-action diagnostic:
+118th-Congress temporal tests, and the 108th-118th-Congress executive-action
+diagnostic:
 
 ```sh
+make govinfo-executive-action-panel
 make legislative-lifecycle-temporal-replication
 make govinfo-bill-census-check
 ```
@@ -221,7 +223,7 @@ make clean
 
 ## Research Documentation
 
-- [Empirical flow screening and temporal transport](calibration.md): tracked benchmark extract, three complete GovInfo censuses, fixed calibration, two-cohort no-refit temporal workflow, and executive-action boundary diagnostic.
+- [Empirical flow screening and temporal transport](calibration.md): tracked benchmark extract, three complete GovInfo lifecycle censuses, fixed calibration, two-cohort no-refit temporal workflow, and compact 11-Congress executive-action boundary diagnostic.
 - [ODD model description](odd-model.md): entities, state variables, scheduling, design concepts, initialization, and submodels.
 - [Full ODD+D appendix](odd-d-appendix.md): submission-ready model documentation covering data, adaptation, submodels, assumptions, and outputs.
 

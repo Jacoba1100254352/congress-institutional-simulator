@@ -87,10 +87,15 @@ The current validation pipeline writes:
   intervals, prespecified tolerances, and pass/fail status. The current result
   passes five of six cohort-metric tolerances and retains the 118th-Congress
   enactment miss.
+- `data/validation/raw/govinfo_executive_action_panel.csv`: compact 108th-118th-
+  Congress panel retaining 4,021 presented H.R./S. measures from 126,760 parsed
+  GovInfo records, with presidential outcomes, party context, source/action
+  hashes, and classifier integrity fields.
 - `reports/legislative-executive-action-diagnostic.csv`: empirical presentment,
-  veto, override, and enactment counts for all three censuses plus the frozen
-  simulator panel, with conditional-rate intervals and a descriptive
-  mechanism-boundary comparison.
+  veto, override, and enactment counts by Congress, administration, government
+  control, and sponsor-party relation, plus pooled empirical and frozen
+  simulator rows with conditional-rate intervals and a descriptive
+  mechanism-boundary comparison. Party strata are not causal estimates.
 - `reports/empirical-data-inventory.csv`: source-family inventory joined from
   the registry and current reports.
 - `reports/empirical-linkage-report.csv`: explicit raw-data join coverage by

@@ -60,8 +60,9 @@ make paper-word-count
 
 The review checks for word count, anonymous PDF text and metadata, generated
 figure label bounds, table/figure consistency, empirical-boundary consistency,
-three-Congress GovInfo census integrity, frozen temporal-replication results,
-executive-action diagnostic consistency, and rendered-PDF sanity run with:
+three-Congress GovInfo lifecycle-census integrity, frozen temporal-replication
+results, 11-Congress executive-action diagnostic consistency, and rendered-PDF
+sanity run with:
 
 ```sh
 make paper-checks
@@ -105,10 +106,11 @@ make empirical-bridge
 ```
 
 Regenerate and verify the three complete legislative-lifecycle censuses, the
-two external-Congress no-refit transport results, and the executive-action
-diagnostic with:
+two external-Congress no-refit transport results, and the 11-Congress
+executive-action diagnostic with:
 
 ```sh
+make govinfo-executive-action-panel
 make legislative-lifecycle-temporal-replication
 make govinfo-bill-census-check
 ```

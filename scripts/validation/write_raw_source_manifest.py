@@ -23,6 +23,7 @@ RELATED_RAW = {
     "govinfo_bill_census.csv": (
         RAW_DIR / "govinfo_bill_census_116.csv",
         RAW_DIR / "govinfo_bill_census_118.csv",
+        RAW_DIR / "govinfo_executive_action_panel.csv",
     ),
 }
 

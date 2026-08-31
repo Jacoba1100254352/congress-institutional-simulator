@@ -29,6 +29,11 @@ TEMPORAL_REPLICATION = Path("reports/legislative-lifecycle-temporal-replication.
 TEMPORAL_REPLICATION_MD = Path("reports/legislative-lifecycle-temporal-replication.md")
 EXECUTIVE_DIAGNOSTIC = Path("reports/legislative-executive-action-diagnostic.csv")
 EXECUTIVE_DIAGNOSTIC_MD = Path("reports/legislative-executive-action-diagnostic.md")
+EXECUTIVE_PANEL = Path("data/validation/raw/govinfo_executive_action_panel.csv")
+EXECUTIVE_PANEL_METADATA = Path("data/validation/raw/govinfo_executive_action_panel.metadata.md")
+EXECUTIVE_PANEL_BUILDER = Path("scripts/validation/build_govinfo_executive_action_panel.py")
+EXECUTIVE_CONTEXT = Path("data/validation/reference/congress_executive_context.csv")
+EXECUTIVE_VETO_REFERENCE = Path("data/validation/reference/senate_veto_reference_108_118.csv")
 CALIBRATION_BASELINE = Path("reports/calibration-baseline.csv")
 HELDOUT = Path("reports/empirical-flow-heldout.csv")
 
@@ -109,6 +114,55 @@ EXPECTED_STAGE_COUNTS_118 = {
     "vetoedCount": 1,
     "vetoOverriddenCount": 0,
     "enactedCount": 269,
+}
+EXPECTED_EXECUTIVE_DECISIONS = {
+    "108": 476,
+    "109": 466,
+    "110": 449,
+    "111": 367,
+    "112": 272,
+    "113": 282,
+    "114": 330,
+    "115": 417,
+    "116": 334,
+    "117": 358,
+    "118": 270,
+}
+EXPECTED_EXECUTIVE_VETOES = {
+    "109-hr-810",
+    "110-hr-976",
+    "110-hr-1495",
+    "110-hr-1585",
+    "110-hr-1591",
+    "110-hr-2082",
+    "110-hr-2419",
+    "110-hr-3043",
+    "110-hr-3963",
+    "110-hr-6124",
+    "110-hr-6331",
+    "110-s-5",
+    "111-hr-3808",
+    "114-hr-1735",
+    "114-hr-1777",
+    "114-hr-3762",
+    "114-s-1",
+    "114-s-2040",
+    "116-hr-6395",
+    "116-s-906",
+    "118-s-4199",
+}
+EXPECTED_EXECUTIVE_OVERRIDES = {
+    "110-hr-1495",
+    "110-hr-2419",
+    "110-hr-6124",
+    "110-hr-6331",
+    "114-s-2040",
+    "116-hr-6395",
+}
+EXPECTED_SOURCE_LAW_NUMBER_ANOMALIES = {
+    "109-hr-5441",
+    "110-hr-6124",
+    "110-s-2499",
 }
 EXPECTED_116_SOURCE_DATE_ANOMALIES = {
     "116-hr-2665",
@@ -536,56 +590,205 @@ def check_temporal_replication() -> None:
     require("Both classifier revisions are source corrections, not post-hoc parameter changes" in text, "Classifier correction boundary is missing")
 
 
+def check_executive_panel() -> None:
+    rows = read_csv(EXECUTIVE_PANEL)
+    metadata = metadata_values(EXECUTIVE_PANEL_METADATA)
+    require(len(rows) == 4021, f"Expected 4021 executive decisions; found {len(rows)}")
+    require(len({row["bill_id"] for row in rows}) == len(rows), "Executive panel bill IDs are not unique")
+    require(
+        Counter(row["congress"] for row in rows) == Counter(EXPECTED_EXECUTIVE_DECISIONS),
+        "Executive panel Congress counts drifted",
+    )
+    require(
+        {row["classification_version"] for row in rows} == {"govinfo-bill-lifecycle-v3"},
+        "Executive panel classifier version drifted",
+    )
+    require(
+        not any(row["integrity_status"].startswith("invalid:") for row in rows),
+        "Executive panel contains invalid lifecycle rows",
+    )
+    require(
+        all(len(row["source_xml_sha256"]) == 64 and len(row["actions_sha256"]) == 64 for row in rows),
+        "Executive panel source hashes are incomplete",
+    )
+    require(
+        all(row["executive_decision_date"] for row in rows),
+        "Executive panel contains an undated final decision",
+    )
+    require(
+        {row["bill_id"] for row in rows if truthy(row, "vetoed")} == EXPECTED_EXECUTIVE_VETOES,
+        "Executive panel veto set drifted",
+    )
+    require(
+        {row["bill_id"] for row in rows if truthy(row, "veto_overridden")}
+        == EXPECTED_EXECUTIVE_OVERRIDES,
+        "Executive panel override set drifted",
+    )
+    require(
+        {row["bill_id"] for row in rows if row["source_law_number_status"] == "source_cross_congress_number"}
+        == EXPECTED_SOURCE_LAW_NUMBER_ANOMALIES,
+        "Executive panel source-law-number anomaly set drifted",
+    )
+    require(
+        Counter(row["source_law_number_status"] for row in rows)
+        == Counter({"aligned": 4003, "not_enacted": 15, "source_cross_congress_number": 3}),
+        "Executive panel source-law-number status counts drifted",
+    )
+    require(
+        Counter(row["government_control"] for row in rows)
+        == Counter({"unified": 2084, "divided": 1937}),
+        "Executive panel government-control strata drifted",
+    )
+    require(
+        Counter(row["sponsor_same_party_as_president"] for row in rows)
+        == Counter({"1": 2217, "0": 1790, "NA": 14}),
+        "Executive panel sponsor-party strata drifted",
+    )
+    for congress, expected_count in EXPECTED_EXECUTIVE_DECISIONS.items():
+        cohort = [row for row in rows if row["congress"] == congress]
+        enacted = sum(truthy(row, "enacted") for row in cohort)
+        vetoes = sum(truthy(row, "vetoed") for row in cohort)
+        overrides = sum(truthy(row, "veto_overridden") for row in cohort)
+        require(len(cohort) == expected_count, f"Congress {congress} decision count drifted")
+        require(
+            len(cohort) == enacted + vetoes - overrides,
+            f"Congress {congress} executive-decision identity failed",
+        )
+
+    reference = {row["bill_id"]: row for row in read_csv(EXECUTIVE_VETO_REFERENCE)}
+    require(set(reference) == EXPECTED_EXECUTIVE_VETOES, "Official Senate veto reference set drifted")
+    by_bill = {row["bill_id"]: row for row in rows}
+    for bill_id, expected in reference.items():
+        observed = by_bill[bill_id]
+        require(observed["president"] == expected["president"], f"{bill_id} president reference drifted")
+        require(observed["vetoed_date"] == expected["veto_date"], f"{bill_id} veto-date reference drifted")
+        require(
+            observed["veto_overridden"] == expected["veto_overridden"],
+            f"{bill_id} override reference drifted",
+        )
+        require(
+            observed["veto_kind_reference"] == expected["veto_kind"],
+            f"{bill_id} veto-kind reference drifted",
+        )
+
+    context = {row["congress"]: row for row in read_csv(EXECUTIVE_CONTEXT)}
+    require(set(context) == set(EXPECTED_EXECUTIVE_DECISIONS), "Executive context Congress set drifted")
+    for row in rows:
+        expected = context[row["congress"]]
+        for field in (
+            "president",
+            "president_party",
+            "house_majority_party",
+            "senate_majority_party",
+            "government_control",
+        ):
+            require(row[field] == expected[field], f"{row['bill_id']} {field} context drifted")
+
+    require(metadata.get("classification_version") == "govinfo-bill-lifecycle-v3", "Panel metadata classifier drifted")
+    require(metadata.get("parsed_bill_records") == "126760", "Panel parsed-bill count drifted")
+    require(metadata.get("executive_decisions") == "4021", "Panel decision count metadata drifted")
+    require(metadata.get("vetoed_rows") == "21", "Panel veto count metadata drifted")
+    require(metadata.get("overridden_veto_rows") == "6", "Panel override count metadata drifted")
+    require(metadata.get("output_sha256") == sha256_file(EXECUTIVE_PANEL), "Panel output hash metadata drifted")
+    require(
+        metadata.get("panel_builder_sha256") == sha256_file(EXECUTIVE_PANEL_BUILDER),
+        "Panel builder hash metadata drifted",
+    )
+    require(metadata.get("lifecycle_builder_sha256") == sha256_file(BUILDER), "Panel lifecycle-builder hash drifted")
+    require(metadata.get("context_sha256") == sha256_file(EXECUTIVE_CONTEXT), "Panel context hash drifted")
+    require(
+        metadata.get("veto_reference_sha256") == sha256_file(EXECUTIVE_VETO_REFERENCE),
+        "Panel veto-reference hash drifted",
+    )
+    metadata_text = EXECUTIVE_PANEL_METADATA.read_text()
+    require("unconfigured" not in metadata_text, "Panel metadata retains unpinned archives")
+    require("changed_explicitly_allowed" not in metadata_text, "Panel metadata accepts changed archives")
+    require(
+        metadata_text.count("| matched | https://www.govinfo.gov/bulkdata/BILLSTATUS/") == 22,
+        "Panel metadata does not record 22 matched archive pins",
+    )
+    require(
+        "The exact 21-bill H.R./S. veto set" in metadata_text,
+        "Panel official-veto-reference audit is missing",
+    )
+
+
 def check_executive_diagnostic() -> None:
     rows = read_csv(EXECUTIVE_DIAGNOSTIC)
-    require(len(rows) == 5, f"Expected five executive-action rows; found {len(rows)}")
+    require(len(rows) == 22, f"Expected 22 executive-action rows; found {len(rows)}")
     by_cohort = {row["cohort"]: row for row in rows}
     expected = {
-        "116": ("334", "333", "332", "2", "1", "0.005988", "0.500000", "empirical_reference"),
-        "117": ("358", "358", "358", "0", "0", "0.000000", "NA", "empirical_reference"),
-        "118": ("270", "269", "269", "1", "0", "0.003704", "0.000000", "empirical_reference"),
-        "116-118 pooled": ("962", "960", "959", "3", "1", "0.003119", "0.333333", "empirical_reference_pooled"),
-        "117-selected 50-seed panel": ("2621", "1974", "1974", "647", "0", "0.246852", "0.000000", "large_descriptive_mismatch_no_prespecified_tolerance"),
+        "108": ("congress", 476, 0, 0, "0.000000", "empirical_reference_congress"),
+        "109": ("congress", 466, 1, 0, "0.002146", "empirical_reference_congress"),
+        "110": ("congress", 449, 11, 4, "0.024499", "empirical_reference_congress"),
+        "111": ("congress", 367, 1, 0, "0.002725", "empirical_reference_congress"),
+        "112": ("congress", 272, 0, 0, "0.000000", "empirical_reference_congress"),
+        "113": ("congress", 282, 0, 0, "0.000000", "empirical_reference_congress"),
+        "114": ("congress", 330, 5, 1, "0.015152", "empirical_reference_congress"),
+        "115": ("congress", 417, 0, 0, "0.000000", "empirical_reference_congress"),
+        "116": ("congress", 334, 2, 1, "0.005988", "empirical_reference_congress"),
+        "117": ("congress", 358, 0, 0, "0.000000", "empirical_reference_congress"),
+        "118": ("congress", 270, 1, 0, "0.003704", "empirical_reference_congress"),
+        "George W. Bush": ("administration", 1391, 12, 4, "0.008627", "empirical_reference_administration"),
+        "Barack Obama": ("administration", 1251, 6, 1, "0.004796", "empirical_reference_administration"),
+        "Donald J. Trump": ("administration", 751, 2, 1, "0.002663", "empirical_reference_administration"),
+        "Joseph R. Biden Jr.": ("administration", 628, 1, 0, "0.001592", "empirical_reference_administration"),
+        "unified": ("government_control", 2084, 2, 0, "0.000960", "descriptive_selected_stratum"),
+        "divided": ("government_control", 1937, 19, 6, "0.009809", "descriptive_selected_stratum"),
+        "same-party sponsor": ("sponsor_party", 2217, 1, 0, "0.000451", "descriptive_selected_stratum"),
+        "opposition-party sponsor": ("sponsor_party", 1790, 20, 6, "0.011173", "descriptive_selected_stratum"),
+        "other/unknown sponsor": ("sponsor_party", 14, 0, 0, "0.000000", "descriptive_selected_stratum"),
+        "108-118 pooled": ("pooled", 4021, 21, 6, "0.005223", "empirical_reference_pooled"),
+        "117-selected 50-seed panel": ("simulator", 2621, 647, 0, "0.246852", "large_descriptive_mismatch_no_prespecified_tolerance"),
     }
     require(set(by_cohort) == set(expected), "Executive-action cohort set drifted")
-    fields = (
-        "decisionCount",
-        "enactedBills",
-        "nonVetoEnactments",
-        "vetoes",
-        "overriddenVetoes",
-        "conditionalVetoRate",
-        "overrideRateAmongVetoes",
-        "diagnosticStatus",
-    )
     for cohort, values in expected.items():
+        group_type, decisions, vetoes, overrides, veto_rate, status = values
         row = by_cohort[cohort]
-        for field, value in zip(fields, values):
-            require(row[field] == value, f"Executive diagnostic {cohort} {field} drifted")
+        require(row["groupType"] == group_type, f"Executive diagnostic {cohort} group type drifted")
+        require(row["decisionCount"] == str(decisions), f"Executive diagnostic {cohort} decisions drifted")
+        require(row["enactedBills"] == str(decisions - vetoes + overrides), f"Executive diagnostic {cohort} enactments drifted")
+        require(row["nonVetoEnactments"] == str(decisions - vetoes), f"Executive diagnostic {cohort} non-veto enactments drifted")
+        require(row["vetoes"] == str(vetoes), f"Executive diagnostic {cohort} vetoes drifted")
+        require(row["overriddenVetoes"] == str(overrides), f"Executive diagnostic {cohort} overrides drifted")
+        require(row["conditionalVetoRate"] == veto_rate, f"Executive diagnostic {cohort} veto rate drifted")
+        expected_override_rate = "NA" if vetoes == 0 else f"{overrides / vetoes:.6f}"
+        require(
+            row["overrideRateAmongVetoes"] == expected_override_rate,
+            f"Executive diagnostic {cohort} override rate drifted",
+        )
+        require(row["diagnosticStatus"] == status, f"Executive diagnostic {cohort} status drifted")
         require(
             int(row["decisionCount"])
             == int(row["enactedBills"]) + int(row["vetoes"]) - int(row["overriddenVetoes"]),
             f"Executive-decision identity failed for {cohort}",
         )
     simulator = by_cohort["117-selected 50-seed panel"]
-    pooled = by_cohort["116-118 pooled"]
-    require(simulator["conditionalVetoRateDifferenceFromPooledEmpirical"] == "0.243734", "Veto-rate difference drifted")
-    require(simulator["conditionalVetoRateRatioToPooledEmpirical"] == "79.157", "Veto-rate ratio drifted")
+    pooled = by_cohort["108-118 pooled"]
+    require(simulator["conditionalVetoRateDifferenceFromPooledEmpirical"] == "0.241630", "Veto-rate difference drifted")
+    require(simulator["conditionalVetoRateRatioToPooledEmpirical"] == "47.266", "Veto-rate ratio drifted")
     require(float(pooled["conditionalVetoWilson95High"]) < float(simulator["conditionalVetoWilson95Low"]), "Veto-rate intervals unexpectedly overlap")
-    require(
-        by_cohort["117"]["overrideWilson95Low"] == "NA"
-        and by_cohort["117"]["overrideWilson95High"] == "NA",
-        "Zero-veto cohort must report an undefined override interval",
-    )
+    for row in rows:
+        if row["vetoes"] == "0":
+            require(
+                row["overrideWilson95Low"] == "NA"
+                and row["overrideWilson95High"] == "NA",
+                f"Zero-veto cohort {row['cohort']} must report an undefined override interval",
+            )
 
     text = EXECUTIVE_DIAGNOSTIC_MD.read_text()
-    require("3 vetoes in 962 presentments" in text, "Empirical veto denominator disclosure drifted")
+    require("21 vetoes in 4021 H.R./S. presentments" in text, "Empirical veto denominator disclosure drifted")
     require("647 vetoes in 2621 executive decisions" in text, "Simulator veto denominator disclosure drifted")
-    require("79.157 times the pooled empirical rate" in text, "Veto-rate mismatch disclosure drifted")
+    require("47.266 times the pooled empirical rate" in text, "Veto-rate mismatch disclosure drifted")
     require("computed from the integer event counts before rates are rounded" in text, "Exact-count ratio disclosure is missing")
     require("No veto-specific tolerance was prespecified" in text, "Post-hoc diagnostic boundary is missing")
     require("elevated-propensity veto stress mechanism" in text, "Veto mechanism interpretation boundary is missing")
-    require("| GovInfo census | 117 | 358 | 0 | 0.000000" in text and "| 0 | NA |" in text, "Undefined 117th override rate disclosure drifted")
+    require("19 vetoes in 1937 decisions versus 2 in 2084" in text, "Government-control stratum disclosure drifted")
+    require("20 vetoes in 1790 decisions versus 1 in 2217" in text, "Sponsor-party stratum disclosure drifted")
+    require("do not estimate causal party-control or sponsor-party effects" in text, "Descriptive-strata boundary is missing")
+    require("Joint resolutions are excluded" in text, "Joint-resolution scope boundary is missing")
+    require("low-event estimator and calibration loss before fitting" in text, "Presidential-choice next gate is missing")
+    require("| 117 | 358 | 0 | 0.000000" in text and "| 0 | NA |" in text, "Undefined 117th override rate disclosure drifted")
 
 
 def check_calibration() -> None:
@@ -663,6 +866,7 @@ def main() -> int:
     check_summary_118(rows_118)
     check_calibration()
     check_temporal_replication()
+    check_executive_panel()
     check_executive_diagnostic()
     print("GovInfo bill censuses, lifecycle calibration, temporal replication, and executive-action checks passed.")
     return 0

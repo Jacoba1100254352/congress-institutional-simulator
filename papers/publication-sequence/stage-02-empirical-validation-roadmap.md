@@ -4,7 +4,7 @@
 
 Go for a data roadmap and validation work package. No-go for an empirical-validation paper draft.
 
-This stage creates value because it supports the later political-science and chamber papers. It defines validation boundaries, data sources, held-out targets, and proxy risks before anyone writes stronger mechanism claims. The current implementation now includes complete 116th-, 117th-, and 118th-Congress GovInfo H.R./S. censuses, two frozen external-Congress no-refit temporal tests, and a separate executive-action boundary diagnostic, but remains below the threshold for an empirical-validation paper.
+This stage creates value because it supports the later political-science and chamber papers. It defines validation boundaries, data sources, held-out targets, and proxy risks before anyone writes stronger mechanism claims. The current implementation includes complete 116th-, 117th-, and 118th-Congress GovInfo H.R./S. lifecycle censuses, two frozen external-Congress no-refit temporal tests, and a compact 108th-118th-Congress executive-action boundary diagnostic, but remains below the threshold for an empirical-validation paper.
 
 Primary workspace: `papers/empirical-validation/`.
 
@@ -31,7 +31,7 @@ Current lifecycle milestone:
 - no-refit 116th- and 118th-Congress tests passing 5 / 6 aggregate cohort-metric tolerances;
 - retained enactment miss of 0.000825 beyond the prespecified tolerance;
 - classifier-v3 audit for context-dependent GovInfo presidential-action coding and two-chamber veto overrides;
-- separate conditional-veto diagnostic retaining a 79.157-fold simulator-to-empirical mismatch as a model boundary.
+- compact 108th-118th-Congress conditional-veto diagnostic retaining a 47.266-fold simulator-to-empirical mismatch as a model boundary.
 
 ## Experiments to Run
 
@@ -111,7 +111,7 @@ Future outputs after data integration:
 
 | Claim | Support | Limitation | Status |
 |---|---|---|---|
-| Current empirical material screens conventional flow plausibility and tests narrow temporal transport. | `reports/calibration-baseline.md`, `reports/empirical-bridge.csv`, three GovInfo census reports, `reports/legislative-lifecycle-temporal-replication.md`, and `reports/legislative-executive-action-diagnostic.md`. | The no-refit tests cover only three aggregate rates in two external Congresses; 118th-Congress enactment fails its stricter tolerance, and executive choice shows a large descriptive mismatch. | Usable with explicit miss and stress-mechanism boundary. |
+| Current empirical material screens conventional flow plausibility, tests narrow temporal transport, and audits executive decisions across 11 Congresses. | `reports/calibration-baseline.md`, `reports/empirical-bridge.csv`, three GovInfo lifecycle census reports, the compact executive panel, `reports/legislative-lifecycle-temporal-replication.md`, and `reports/legislative-executive-action-diagnostic.md`. | The no-refit tests cover only three aggregate rates in two external Congresses; 118th-Congress enactment fails its stricter tolerance, and executive choice shows a large descriptive mismatch without a pre-specified low-event model. | Usable with explicit miss and stress-mechanism boundary. |
 | Current empirical material validates public support, public benefit, harm, capture, or correction. | Not supported. | These remain synthetic or unvalidated. | Exclude. |
 | A data roadmap can identify validation targets for later papers. | Gap reports and validation scripts exist. | Requires new data integration before empirical paper. | Usable. |
 | Political-science and chamber papers need stronger empirical boundaries. | Current limitations, gap reports, the two-cohort temporal transport result, and the executive-action diagnostic. | One flow design is implemented, but mechanism-specific and representation validation remain missing. | Usable. |

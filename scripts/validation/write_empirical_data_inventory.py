@@ -23,6 +23,7 @@ RELATED_RAW = {
     "govinfo_bill_census.csv": (
         Path("data/validation/raw/govinfo_bill_census_116.csv"),
         Path("data/validation/raw/govinfo_bill_census_118.csv"),
+        Path("data/validation/raw/govinfo_executive_action_panel.csv"),
     ),
 }
 

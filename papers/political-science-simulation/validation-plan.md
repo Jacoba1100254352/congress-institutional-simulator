@@ -11,7 +11,7 @@ Existing checks:
 - `reports/calibration-baseline.md`: 15/15 flow and proxy sanity checks passed.
 - `reports/govinfo-bill-census-116.md`, `reports/govinfo-bill-census.md`, and `reports/govinfo-bill-census-118.md`: complete, source-pinned H.R./S. lifecycle censuses for the 116th, 117th, and 118th Congresses.
 - `reports/legislative-lifecycle-temporal-replication.md`: threshold selection frozen on the 117th Congress and applied without refitting to the 116th and 118th Congresses; 5 / 6 cohort-metric cells pass, while 118th-Congress enactment misses its 0.010 tolerance by 0.000825.
-- `reports/legislative-executive-action-diagnostic.md`: presented-bill accounting and conditional veto rates across all three censuses; the simulator rate is 79.157 times the pooled empirical rate, so current veto behavior is treated as a stress mechanism rather than a calibrated presidential-choice model.
+- `reports/legislative-executive-action-diagnostic.md`: presented-bill accounting and conditional veto rates across a compact 108th-118th-Congress H.R./S. panel; the simulator rate is 47.266 times the pooled empirical rate, so current veto behavior is treated as a stress mechanism rather than a calibrated presidential-choice model.
 - `reports/empirical-bridge.csv`: empirical comparison signals.
 - `reports/empirical-linkage-report.md`: source-family linkage audit; currently 13 / 13 families are linked, metadata-linked, or partially linked.
 - `reports/empirical-linkage-roadmap.md`: required join keys and acceptance gates for non-fully-linked families.
@@ -60,9 +60,9 @@ Current checks do not validate:
 
 ### Phase 1: Flow Sanity Expansion
 
-- Preserve the three complete GovInfo censuses and extend the no-refit test across a longer multi-administration panel.
+- Preserve the three complete GovInfo lifecycle censuses and the compact 108th-118th-Congress executive panel.
 - Add committee referral/reporting/markup coverage.
-- Add source-specific presidential-choice and sponsor-concentration checks across more Congresses and administrations.
+- Add joint resolutions, final chamber-vote support, and a pre-specified low-event presidential-choice estimator with a whole-Congress holdout; broaden sponsor-concentration checks across Congresses.
 - Keep pass/fail bands broad and explicit.
 
 ### Phase 2: Proxy Risk Audit
@@ -98,7 +98,7 @@ Current checks do not validate:
 
 ## Required Repo Tasks
 
-- Maintain `reports/empirical-data-inventory.csv` and the 15 configured dataset files across 13 source families.
+- Maintain `reports/empirical-data-inventory.csv` and the 16 configured dataset files across 13 source families.
 - Add `reports/political-validation-targets.csv`.
 - Add cached no-network summaries for every empirical input used.
 - Keep validation scripts separated into calibration, flow sanity, proxy checks, within-Congress held-out checks, no-refit temporal transport, and descriptive mechanism-boundary diagnostics.

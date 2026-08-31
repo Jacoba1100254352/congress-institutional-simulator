@@ -82,12 +82,12 @@ Implemented temporal-flow extension:
 - Freeze threshold selection on the 117th calibration split, then apply the selected 0.68 threshold to all 116th and 118th rows without refitting.
 - Preserve the prespecified 0.020 committee, 0.015 floor, and 0.010 enactment tolerances and report the 5 / 6 external cohort-metric result, including the 118th-Congress enactment miss.
 - Audit classifier drift across Congresses; classifier v3 preserves the context-dependent `E30000` veto/signature fix, adds two-chamber veto-override classification, and leaves established 117th- and 118th-Congress funnel counts unchanged.
-- Audit presented-bill accounting and conditional executive-action rates separately from lifecycle-threshold selection. Preserve the 79.157-fold pooled empirical-to-simulator veto-rate mismatch as a model boundary rather than introducing a post hoc pass/fail tolerance.
+- Audit presented-bill accounting and conditional executive-action rates separately from lifecycle-threshold selection. Preserve the 47.266-fold pooled empirical-to-simulator veto-rate mismatch across the compact 108th-118th-Congress panel as a model boundary rather than introducing a post hoc pass/fail tolerance.
 
 Remaining tasks:
 
 - Add separate calibration and held-out extracts rather than a hash split of one bounded sample.
-- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers, extend the no-refit GovInfo panel across more administrations, and add independent or held-out checks for topic throughput, lobbying, and committee activity.
+- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers; add joint resolutions, final chamber-vote support, and a separately frozen low-event presidential-choice design; and add independent or held-out checks for topic throughput, lobbying, and committee activity.
 - Report error metrics for more targets instead of only broad tolerance membership.
 
 ## Stage 3: Representation and Public Support

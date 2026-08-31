@@ -13,7 +13,7 @@
 3. Executive-action boundary plot
    - Source: `reports/legislative-executive-action-diagnostic.csv`.
    - Show pooled empirical and frozen simulator conditional veto rates with Wilson intervals.
-   - Label the 79.157-fold difference as a descriptive stress-mechanism boundary, not a post hoc formal test.
+   - Label the 47.266-fold difference as a descriptive stress-mechanism boundary, not a post hoc formal test, and label party-control strata as noncausal.
 
 4. Empirical-boundary matrix
    - Rows: simulator metrics.

@@ -101,6 +101,28 @@ DATASETS = [
         ),
     ),
     DatasetSpec(
+        "govinfo_executive_action_panel.csv",
+        "108th-118th-Congress presidential-decision mechanism diagnostic",
+        (
+            "bill_id",
+            "congress",
+            "president",
+            "president_party",
+            "government_control",
+            "sponsor_party",
+            "sponsor_same_party_as_president",
+            "presented_to_president_date",
+            "executive_outcome",
+            "vetoed",
+            "veto_overridden",
+            "enacted",
+            "source_xml_sha256",
+            "actions_sha256",
+            "classification_version",
+            "integrity_status",
+        ),
+    ),
+    DatasetSpec(
         "lobbying_disclosure.csv",
         "lobby spending distribution and issue-pressure checks",
         ("client", "issue", "amount", "period"),
@@ -218,7 +240,7 @@ def main() -> int:
         f"- Files with required columns: {complete} / {len(DATASETS)}",
         f"- Adapter fixture CSVs ignored: {fixture_count}",
         "",
-        "Next empirical step: extend mechanism-specific agenda and executive-action evidence beyond aggregate lifecycle rates while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo bill censuses, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
+        "Next empirical step: add final chamber-vote support and a separately frozen low-event presidential-choice model while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo lifecycle censuses, a compact 108th-118th-Congress executive-action panel, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
     ])
     REPORT.write_text("\n".join(lines) + "\n")
     with REPORT_CSV.open("w", newline="") as handle:

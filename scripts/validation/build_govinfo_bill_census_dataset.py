@@ -44,6 +44,70 @@ CLASSIFICATION_VERSION = "govinfo-bill-lifecycle-v3"
 # These pins freeze the completed-Congress source bytes used for the committed
 # publication artifact. A changed upstream archive must be reviewed explicitly.
 KNOWN_ARCHIVE_PINS: dict[tuple[int, str], tuple[str, int]] = {
+    (108, "hr"): (
+        "c0d5d3a5cb2b080d9f1c6621bd303b7b6aa27c687c20ad9abd562cf284f9d326",
+        5429,
+    ),
+    (108, "s"): (
+        "52f1fea91a1ec4efb33a468562e627531db426a9ed2a1337b464350dfa2bdd43",
+        3035,
+    ),
+    (109, "hr"): (
+        "a65885dfb6b495d6384b85274c2c6c41b7480c9f77a30f1915e555575744230b",
+        6432,
+    ),
+    (109, "s"): (
+        "30b5c5145dd7f9e5e428aa1c02d13d421e7b7169b4841dac85f3fd572bbb3a8a",
+        4122,
+    ),
+    (110, "hr"): (
+        "f1f1bd5e418c6fa64761226356e789fd5fbc893e9b417729af4f7aed8fa7696e",
+        7336,
+    ),
+    (110, "s"): (
+        "6bc552c1081764245feeecfea165e49012857c36b0613a76e3729ca6a63f705c",
+        3741,
+    ),
+    (111, "hr"): (
+        "296ddd0d99ab420f56a3579e3895d8bab6f118c35ea31646bb466f746cab23b2",
+        6562,
+    ),
+    (111, "s"): (
+        "abe085e923d194befa5b7ef7a10ddeeabc0f183c58fed1eb4f973b0b756fcf5d",
+        4059,
+    ),
+    (112, "hr"): (
+        "c1c88f2bbea589b5147d487b134e2c3a0612f517715f441572fdd159a2e89f4b",
+        6723,
+    ),
+    (112, "s"): (
+        "9debaafe8c12586274432daf678ccd93bc5eb6fa83777a7c23bcd8257d64a218",
+        3716,
+    ),
+    (113, "hr"): (
+        "0182b94de536510f06828eb33cdfda80d2cf4efb5d8345bc2799c1d63592bbc5",
+        5885,
+    ),
+    (113, "s"): (
+        "674dd3747ff67662cb7ec2310a09b79d128b2f48ae51a47e6a248b2896b4770a",
+        3020,
+    ),
+    (114, "hr"): (
+        "a0e6f66a4b1f13ff4df026fd9c95692caa173b2f1c4510b9d7e0d6db5b784950",
+        6526,
+    ),
+    (114, "s"): (
+        "0ab8114fa49d48d056db920f6841b3d5b8c6a223ee432c7b42b869c078c40331",
+        3548,
+    ),
+    (115, "hr"): (
+        "493b4a6974af962abde28ce49ce0a2f084e4cce8d63fac7acb241fe91c6a45f3",
+        7394,
+    ),
+    (115, "s"): (
+        "e7fc54a07ddf6d796ffba8f83a98e6c33fa0dfeea3c521c6721d5ed98dd27e9a",
+        3805,
+    ),
     (116, "hr"): (
         "b3775e79914a9db29b3a8d55ae13638020c44822dcecb9e4517371e093d01dde",
         9062,

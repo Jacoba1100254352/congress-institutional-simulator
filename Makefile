@@ -13,7 +13,7 @@ PAPER_APPENDIX_PDF := paper/technical-appendix/odd-d-appendix.pdf
 .PHONY: statutory-lineage-olrc-annual-text-diff build-bill-finance-lobbying-roll-call-source-raw build-bill-finance-lobbying-member-vote-target-raw bill-finance-lobbying-roll-call-source-review bill-finance-lobbying-member-vote-target-review failure-trace-report adversary-catalog adversarial-stress adversarial-pilot-cell-map adversarial-stress-manifest
 .PHONY: build-district-public-opinion-ces-policy-item-candidates-raw district-public-opinion-ces-policy-item-candidate-review build-district-public-opinion-ces-policy-item-response-distributions-raw district-public-opinion-ces-policy-item-response-distribution-review build-district-public-opinion-ces-policy-item-codebook-direction-raw district-public-opinion-ces-policy-item-codebook-direction-review
 .PHONY: build-district-public-opinion-bill-text-context-raw district-public-opinion-bill-item-alignment-review build-district-public-opinion-bill-topic-support-raw district-public-opinion-bill-topic-support
-.PHONY: adversarial-replication-a1-a8 adversarial-replication-a9 robustness-evidence legislative-lifecycle-calibration legislative-executive-action-diagnostic legislative-lifecycle-temporal-replication govinfo-bill-census-116 govinfo-bill-census-118 govinfo-bill-census-check build-govinfo-bill-census-116-raw build-govinfo-bill-census-118-raw
+.PHONY: adversarial-replication-a1-a8 adversarial-replication-a9 robustness-evidence legislative-lifecycle-calibration legislative-executive-action-diagnostic legislative-lifecycle-temporal-replication govinfo-executive-action-panel govinfo-bill-census-116 govinfo-bill-census-118 govinfo-bill-census-check build-govinfo-executive-action-panel-raw build-govinfo-bill-census-116-raw build-govinfo-bill-census-118-raw
 
 check-java:
 	@actual="$$(javac -version 2>&1 | awk '{print $$2}' | cut -d. -f1)"; \
@@ -155,6 +155,9 @@ build-bill-progression-raw:
 
 build-govinfo-bill-census-raw:
 	python3 scripts/validation/build_govinfo_bill_census_dataset.py $(ARGS)
+
+build-govinfo-executive-action-panel-raw:
+	python3 scripts/validation/build_govinfo_executive_action_panel.py $(ARGS)
 
 build-govinfo-bill-census-116-raw:
 	python3 scripts/validation/build_govinfo_bill_census_dataset.py --congress 116 --output data/validation/raw/govinfo_bill_census_116.csv --metadata-output data/validation/raw/govinfo_bill_census_116.metadata.md $(ARGS)
@@ -315,10 +318,13 @@ govinfo-bill-census-116:
 govinfo-bill-census-118:
 	python3 scripts/validation/write_govinfo_bill_census_118_report.py
 
+govinfo-executive-action-panel:
+	python3 scripts/validation/build_govinfo_executive_action_panel.py --offline
+
 legislative-lifecycle-calibration: build govinfo-bill-census
 	APP_CP="$(APP_CP)" JAVA_PROPS="$(JAVA_PROPS)" python3 scripts/validation/write_legislative_lifecycle_calibration.py
 
-legislative-executive-action-diagnostic: legislative-lifecycle-calibration govinfo-bill-census-116 govinfo-bill-census-118
+legislative-executive-action-diagnostic: legislative-lifecycle-calibration govinfo-executive-action-panel
 	python3 scripts/validation/write_legislative_executive_action_diagnostic.py
 
 legislative-lifecycle-temporal-replication: legislative-executive-action-diagnostic
@@ -686,6 +692,7 @@ test: build
 	java $(JAVA_PROPS) -cp $(APP_CP):out/test congresssim.SimulatorTests
 	python3 scripts/validation/test_reproducible_metadata.py
 	python3 scripts/validation/test_govinfo_bill_census.py
+	python3 scripts/validation/test_govinfo_executive_action_panel.py
 	python3 scripts/validation/test_district_public_opinion_census_denominator.py
 	python3 scripts/validation/test_district_public_opinion_bill_text_context.py
 	python3 scripts/validation/test_district_public_opinion_bill_topic_support.py

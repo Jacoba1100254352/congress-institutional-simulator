@@ -1,6 +1,23 @@
-sourceType,cohort,decisionDefinition,decisionCount,enactedBills,nonVetoEnactments,vetoes,overriddenVetoes,conditionalVetoRate,conditionalVetoWilson95Low,conditionalVetoWilson95High,overrideRateAmongVetoes,overrideWilson95Low,overrideWilson95High,conditionalVetoRateDifferenceFromPooledEmpirical,conditionalVetoRateRatioToPooledEmpirical,diagnosticStatus
-GovInfo census,116,presented_to_president,334,333,332,2,1,0.005988,0.001644,0.021567,0.500000,0.094531,0.905469,,,empirical_reference
-GovInfo census,117,presented_to_president,358,358,358,0,0,0.000000,0.000000,0.010616,NA,NA,NA,,,empirical_reference
-GovInfo census,118,presented_to_president,270,269,269,1,0,0.003704,0.000654,0.020677,0.000000,0.000000,0.793451,,,empirical_reference
-GovInfo census,116-118 pooled,presented_to_president,962,960,959,3,1,0.003119,0.001061,0.009128,0.333333,0.061492,0.792340,,,empirical_reference_pooled
-frozen simulator,117-selected 50-seed panel,enactedBills + vetoes - overriddenVetoes,2621,1974,1974,647,0,0.246852,0.230724,0.263722,0.000000,0.000000,0.005902,0.243734,79.157,large_descriptive_mismatch_no_prespecified_tolerance
+sourceType,groupType,cohort,decisionDefinition,decisionCount,enactedBills,nonVetoEnactments,vetoes,overriddenVetoes,conditionalVetoRate,conditionalVetoWilson95Low,conditionalVetoWilson95High,overrideRateAmongVetoes,overrideWilson95Low,overrideWilson95High,conditionalVetoRateDifferenceFromPooledEmpirical,conditionalVetoRateRatioToPooledEmpirical,diagnosticStatus
+GovInfo panel,congress,108,presented_to_president,476,476,476,0,0,0.000000,0.000000,0.008006,NA,NA,NA,,,empirical_reference_congress
+GovInfo panel,congress,109,presented_to_president,466,465,465,1,0,0.002146,0.000379,0.012054,0.000000,0.000000,0.793451,,,empirical_reference_congress
+GovInfo panel,congress,110,presented_to_president,449,442,438,11,4,0.024499,0.013734,0.043331,0.363636,0.151665,0.646199,,,empirical_reference_congress
+GovInfo panel,congress,111,presented_to_president,367,366,366,1,0,0.002725,0.000481,0.015271,0.000000,0.000000,0.793451,,,empirical_reference_congress
+GovInfo panel,congress,112,presented_to_president,272,272,272,0,0,0.000000,0.000000,0.013926,NA,NA,NA,,,empirical_reference_congress
+GovInfo panel,congress,113,presented_to_president,282,282,282,0,0,0.000000,0.000000,0.013439,NA,NA,NA,,,empirical_reference_congress
+GovInfo panel,congress,114,presented_to_president,330,326,325,5,1,0.015152,0.006489,0.034972,0.200000,0.036224,0.624465,,,empirical_reference_congress
+GovInfo panel,congress,115,presented_to_president,417,417,417,0,0,0.000000,0.000000,0.009128,NA,NA,NA,,,empirical_reference_congress
+GovInfo panel,congress,116,presented_to_president,334,333,332,2,1,0.005988,0.001644,0.021567,0.500000,0.094531,0.905469,,,empirical_reference_congress
+GovInfo panel,congress,117,presented_to_president,358,358,358,0,0,0.000000,0.000000,0.010616,NA,NA,NA,,,empirical_reference_congress
+GovInfo panel,congress,118,presented_to_president,270,269,269,1,0,0.003704,0.000654,0.020677,0.000000,0.000000,0.793451,,,empirical_reference_congress
+GovInfo panel,administration,George W. Bush,presented_to_president,1391,1383,1379,12,4,0.008627,0.004942,0.015019,0.333333,0.138120,0.609378,,,empirical_reference_administration
+GovInfo panel,administration,Barack Obama,presented_to_president,1251,1246,1245,6,1,0.004796,0.002200,0.010424,0.166667,0.030053,0.563503,,,empirical_reference_administration
+GovInfo panel,administration,Donald J. Trump,presented_to_president,751,750,749,2,1,0.002663,0.000731,0.009658,0.500000,0.094531,0.905469,,,empirical_reference_administration
+GovInfo panel,administration,Joseph R. Biden Jr.,presented_to_president,628,627,627,1,0,0.001592,0.000281,0.008964,0.000000,0.000000,0.793451,,,empirical_reference_administration
+GovInfo panel,government_control,unified,presented_to_president,2084,2082,2082,2,0,0.000960,0.000263,0.003493,0.000000,0.000000,0.657620,,,descriptive_selected_stratum
+GovInfo panel,government_control,divided,presented_to_president,1937,1924,1918,19,6,0.009809,0.006289,0.015270,0.315789,0.153644,0.539896,,,descriptive_selected_stratum
+GovInfo panel,sponsor_party,same-party sponsor,presented_to_president,2217,2216,2216,1,0,0.000451,0.000080,0.002551,0.000000,0.000000,0.793451,,,descriptive_selected_stratum
+GovInfo panel,sponsor_party,opposition-party sponsor,presented_to_president,1790,1776,1770,20,6,0.011173,0.007245,0.017195,0.300000,0.145477,0.518973,,,descriptive_selected_stratum
+GovInfo panel,sponsor_party,other/unknown sponsor,presented_to_president,14,14,14,0,0,0.000000,0.000000,0.215311,NA,NA,NA,,,descriptive_selected_stratum
+GovInfo panel,pooled,108-118 pooled,presented_to_president,4021,4006,4000,21,6,0.005223,0.003419,0.007971,0.285714,0.138139,0.499564,,,empirical_reference_pooled
+frozen simulator,simulator,117-selected 50-seed panel,enactedBills + vetoes - overriddenVetoes,2621,1974,1974,647,0,0.246852,0.230724,0.263722,0.000000,0.000000,0.005902,0.241630,47.266,large_descriptive_mismatch_no_prespecified_tolerance

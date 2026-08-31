@@ -24,10 +24,11 @@ fairness controls, and clearer institutional-theory framing.
 Current validation progress: complete source-pinned 116th-, 117th-, and
 118th-Congress H.R./S. lifecycle censuses now support two external-Congress
 no-refit temporal tests. Five of six cohort-metric cells pass; 118th-Congress
-enactment misses its tolerance. A separate diagnostic shows a 79.157-fold
-conditional veto-rate mismatch, so executive choice remains a stress mechanism
-rather than a U.S.-calibrated model. This strengthens the empirical boundary but
-does not remove the broader drafting gate.
+enactment misses its tolerance. A compact 108th-118th-Congress panel separately
+shows a 47.266-fold conditional veto-rate mismatch across 4,021 H.R./S.
+presidential decisions, so executive choice remains a stress mechanism rather
+than a U.S.-calibrated model. This strengthens the empirical boundary but does
+not remove the broader drafting gate.
 
 ## Robustness And Failure-Mode Paper
 
