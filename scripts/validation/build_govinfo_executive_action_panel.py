@@ -81,6 +81,8 @@ FIELDNAMES = [
     "executive_outcome",
     "executive_decision_date",
     "veto_kind_reference",
+    "veto_date_reference",
+    "veto_date_alignment",
     "vetoed",
     "vetoed_date",
     "vetoed_basis",
@@ -105,12 +107,26 @@ FIELDNAMES = [
     "integrity_status",
 ]
 
-CLAIM_BOUNDARY = (
-    "This panel supports descriptive analysis of H.R./S. presentment, veto, "
-    "override, and enactment decisions from complete GovInfo BILLSTATUS archives. "
-    "Party-control fields are congressional context, not estimates of policy "
-    "distance, causal presidential choice, bill quality, welfare, or institutional rank."
-)
+MEASURE_LABELS = {
+    "hr": "H.R.",
+    "s": "S.",
+    "hjres": "H.J.Res.",
+    "sjres": "S.J.Res.",
+}
+
+
+def measure_scope_label(bill_types: tuple[str, ...]) -> str:
+    return "/".join(MEASURE_LABELS.get(item, item.upper()) for item in bill_types)
+
+
+def claim_boundary(bill_types: tuple[str, ...]) -> str:
+    scope = measure_scope_label(bill_types)
+    return (
+        f"This panel supports descriptive analysis of {scope} presentment, veto, "
+        "override, and enactment decisions from complete GovInfo BILLSTATUS archives. "
+        "Party-control fields are congressional context, not estimates of policy "
+        "distance, causal presidential choice, bill quality, welfare, or institutional rank."
+    )
 
 
 def require(condition: bool, message: str) -> None:
@@ -183,26 +199,26 @@ def read_context(path: Path, congresses: tuple[int, ...]) -> dict[str, dict[str,
 def read_veto_reference(
     path: Path,
     congresses: tuple[int, ...],
+    bill_types: tuple[str, ...] = DEFAULT_BILL_TYPES,
 ) -> dict[str, dict[str, str]]:
     with path.open(newline="", encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
     selected_congresses = {str(congress) for congress in congresses}
-    selected = {
-        row["bill_id"]: row
-        for row in rows
-        if row.get("bill_id", "").split("-", 1)[0] in selected_congresses
-    }
+    selected_types = set(bill_types)
+    selected_rows = []
+    for row in rows:
+        parts = row.get("bill_id", "").split("-")
+        if len(parts) == 3 and parts[0] in selected_congresses and parts[1] in selected_types:
+            selected_rows.append(row)
+    selected = {row["bill_id"]: row for row in selected_rows}
     require(
-        len(selected)
-        == sum(
-            row.get("bill_id", "").split("-", 1)[0] in selected_congresses
-            for row in rows
-        ),
+        len(selected) == len(selected_rows),
         f"{path} contains duplicate bill IDs.",
     )
     for bill_id, row in selected.items():
+        allowed_types = "|".join(re.escape(item) for item in bill_types)
         require(
-            re.fullmatch(r"\d+-(?:hr|s)-\d+", bill_id) is not None,
+            re.fullmatch(rf"\d+-(?:{allowed_types})-\d+", bill_id) is not None,
             f"{path} contains an invalid bill ID: {bill_id}",
         )
         require(row.get("veto_overridden") in {"0", "1"}, f"{bill_id} has an invalid override flag.")
@@ -214,6 +230,32 @@ def read_veto_reference(
             row.get("source_url", "").startswith("https://www.senate.gov/legislative/vetoes/"),
             f"{bill_id} lacks an official Senate veto source.",
         )
+        reference_date = row.get("veto_date", "")
+        govinfo_date = row.get("govinfo_veto_date", "") or reference_date
+        alignment = row.get("veto_date_alignment", "") or (
+            "aligned" if reference_date == govinfo_date else "source_date_discrepancy"
+        )
+        require(
+            re.fullmatch(r"\d{4}-\d{2}-\d{2}", reference_date) is not None,
+            f"{bill_id} has an invalid reference veto date.",
+        )
+        require(
+            re.fullmatch(r"\d{4}-\d{2}-\d{2}", govinfo_date) is not None,
+            f"{bill_id} has an invalid GovInfo veto date.",
+        )
+        require(
+            alignment in {"aligned", "source_date_discrepancy"},
+            f"{bill_id} has an invalid veto-date alignment label.",
+        )
+        require(
+            (alignment == "aligned") == (reference_date == govinfo_date),
+            f"{bill_id} veto-date alignment label is inconsistent.",
+        )
+        if alignment == "source_date_discrepancy":
+            require(
+                row.get("source_note", "").strip(),
+                f"{bill_id} veto-date discrepancy lacks a source note.",
+            )
     return selected
 
 
@@ -254,6 +296,11 @@ def panel_row(
     veto_reference: dict[str, dict[str, str]],
 ) -> dict[str, str]:
     reference = veto_reference.get(row["bill_id"], {})
+    reference_date = reference.get("veto_date", "")
+    govinfo_date = reference.get("govinfo_veto_date", "") or reference_date
+    date_alignment = reference.get("veto_date_alignment", "")
+    if reference_date and not date_alignment:
+        date_alignment = "aligned" if reference_date == govinfo_date else "source_date_discrepancy"
     result = {
         "bill_id": row["bill_id"],
         "congress": row["congress"],
@@ -277,6 +324,8 @@ def panel_row(
         "executive_outcome": executive_outcome(row),
         "executive_decision_date": executive_decision_date(row),
         "veto_kind_reference": reference.get("veto_kind", ""),
+        "veto_date_reference": reference_date,
+        "veto_date_alignment": date_alignment,
         "vetoed": row["vetoed"],
         "vetoed_date": row["vetoed_date"],
         "vetoed_basis": row["vetoed_basis"],
@@ -391,8 +440,25 @@ def validate_panel(
     )
     for bill_id, reference in veto_reference.items():
         observed = observed_vetoes[bill_id]
+        expected_govinfo_date = reference.get("govinfo_veto_date", "") or reference["veto_date"]
+        expected_alignment = reference.get("veto_date_alignment", "") or (
+            "aligned"
+            if reference["veto_date"] == expected_govinfo_date
+            else "source_date_discrepancy"
+        )
         require(observed["president"] == reference["president"], f"{bill_id} president differs from reference.")
-        require(observed["vetoed_date"] == reference["veto_date"], f"{bill_id} veto date differs from reference.")
+        require(
+            observed["vetoed_date"] == expected_govinfo_date,
+            f"{bill_id} GovInfo veto date differs from the audited reference expectation.",
+        )
+        require(
+            observed["veto_date_reference"] == reference["veto_date"],
+            f"{bill_id} source-reported veto date differs from reference.",
+        )
+        require(
+            observed["veto_date_alignment"] == expected_alignment,
+            f"{bill_id} veto-date alignment differs from reference.",
+        )
         require(
             observed["veto_overridden"] == reference["veto_overridden"],
             f"{bill_id} override result differs from reference.",
@@ -409,7 +475,8 @@ def validate_panel(
     expected_law_number_anomalies = {
         bill_id
         for bill_id in EXPECTED_SOURCE_CROSS_CONGRESS_LAW_NUMBERS
-        if bill_id.split("-", 1)[0] in contexts
+        if bill_id.split("-")[0] in contexts
+        and bill_id.split("-")[1] in {row["bill_type"] for row in rows}
     }
     require(
         cross_congress_law_numbers == expected_law_number_anomalies,
@@ -478,6 +545,7 @@ def metadata_content(
     rows: list[dict[str, str]],
     archive_stats: list[dict[str, str]],
     output: Path,
+    veto_reference_path: Path,
     congresses: tuple[int, ...],
     bill_types: tuple[str, ...],
     config_hash: str,
@@ -489,8 +557,17 @@ def metadata_content(
     vetoes = sum(row["vetoed"] == "1" for row in rows)
     overrides = sum(row["veto_overridden"] == "1" for row in rows)
     enacted = sum(row["enacted"] == "1" for row in rows)
+    date_discrepancies = [
+        row for row in rows if row["veto_date_alignment"] == "source_date_discrepancy"
+    ]
+    scope = measure_scope_label(bill_types)
+    title = (
+        "GovInfo Joint-Resolution Executive-Action Panel"
+        if set(bill_types) == {"hjres", "sjres"}
+        else "GovInfo Executive-Action Panel"
+    )
     lines = [
-        "# GovInfo Executive-Action Panel",
+        f"# {title}",
         "",
         f"- generated_at_utc: {datetime.now(timezone.utc).isoformat(timespec='seconds')}",
         f"- classification_version: `{CLASSIFICATION_VERSION}`",
@@ -507,6 +584,7 @@ def metadata_content(
         f"- enacted_rows: {enacted}",
         f"- vetoed_rows: {vetoes}",
         f"- overridden_veto_rows: {overrides}",
+        f"- source_date_discrepancy_rows: {len(date_discrepancies)}",
         "- unresolved_presentments: 0",
         "- structurally_invalid_rows: 0",
         "",
@@ -547,22 +625,24 @@ def metadata_content(
         for row in rows
         if row["source_law_number_status"] == "source_cross_congress_number"
     )
+    anomaly_text = ", ".join(source_law_number_anomalies) or "none"
     lines.extend(
         [
             "",
             "## Operational Definitions",
             "",
-            "- Scope is every H.R. and S. XML record in each listed complete GovInfo BILLSTATUS archive. Joint resolutions and other measure types are excluded.",
+            f"- Scope is every {scope} XML record in each listed complete GovInfo BILLSTATUS archive. All other measure types are excluded from this class-specific artifact.",
             "- Only measures classified as presented to the President are retained in the committed panel; all source records are still parsed and integrity-checked.",
             "- Veto and successful-override classifications use the shared lifecycle classifier. Successful override requires affirmative House and Senate evidence.",
-            f"- The exact {vetoes}-bill H.R./S. veto set, dates, veto kind, and {overrides} override outcomes match `{VETO_REFERENCE}`, compiled from the official Senate presidential-veto histories.",
+            f"- The exact {vetoes}-measure veto set, veto kind, and {overrides} override outcomes match `{veto_reference_path}`, compiled from the official Senate presidential-veto histories.",
+            f"- GovInfo veto-action dates match the audited GovInfo-date column in the reference. {len(date_discrepancies)} row(s) preserve a documented difference between the source-reported veto date and the GovInfo BILLSTATUS action date rather than forcing agreement.",
             "- Executive decisions equal enactments plus vetoes minus successful overrides. Every Congress must satisfy this identity.",
             f"- Final outcomes: {outcome_counts.get('enacted_without_veto', 0)} enacted without veto; {outcome_counts.get('veto_sustained', 0)} sustained vetoes; {outcome_counts.get('veto_overridden', 0)} successful overrides.",
             f"- Party-control context is pinned in `{CONTEXT}` from the official House history table `Party Government Since 1857`.",
-            f"- GovInfo supplies cross-Congress law numbers on {len(source_law_number_anomalies)} enacted source rows ({', '.join(source_law_number_anomalies)}). The panel preserves those values and marks them `source_cross_congress_number` rather than silently correcting official source metadata.",
+            f"- GovInfo supplies cross-Congress law numbers on {len(source_law_number_anomalies)} enacted source rows ({anomaly_text}). The panel preserves any such values and marks them `source_cross_congress_number` rather than silently correcting official source metadata.",
             "- Record-level source XML and canonical action hashes allow any classified decision to be traced back to the source bytes.",
             "",
-            f"Claim boundary: {CLAIM_BOUNDARY}",
+            f"Claim boundary: {claim_boundary(bill_types)}",
         ]
     )
     return "\n".join(lines) + "\n"
@@ -604,7 +684,7 @@ def main() -> int:
         "Bill types must contain only lowercase letters.",
     )
     contexts = read_context(args.context, congresses)
-    veto_reference = read_veto_reference(args.veto_reference, congresses)
+    veto_reference = read_veto_reference(args.veto_reference, congresses, bill_types)
     context_hash = sha256_file(args.context)
     veto_reference_hash = sha256_file(args.veto_reference)
     lifecycle_builder = Path(__file__).with_name("build_govinfo_bill_census_dataset.py")
@@ -657,6 +737,7 @@ def main() -> int:
         rows,
         archive_stats,
         args.output,
+        args.veto_reference,
         congresses,
         bill_types,
         config_hash,

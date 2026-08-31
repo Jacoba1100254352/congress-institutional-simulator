@@ -10,6 +10,8 @@ This report checks whether optional raw empirical inputs are present and shaped 
 | `govinfo_bill_census.csv` | 117th-Congress calibration and within-Congress bill-lifecycle checks | ready | none |
 | `govinfo_bill_census_118.csv` | complete 118th-Congress no-refit temporal bill-lifecycle test | ready | none |
 | `govinfo_executive_action_panel.csv` | 108th-118th-Congress presidential-decision mechanism diagnostic | ready | none |
+| `govinfo_joint_resolution_panel.csv` | separate 108th-118th-Congress joint-resolution presidential decisions | ready | none |
+| `govinfo_final_chamber_vote_panel.csv` | final House and Senate approval support for all retained presidential decisions | ready | none |
 | `lobbying_disclosure.csv` | lobby spending distribution and issue-pressure checks | ready | none |
 | `topic_throughput.csv` | topic-level throughput and agenda distribution checks | ready | none |
 | `sponsor_success.csv` | sponsor success and proposal-access concentration checks | ready | none |
@@ -21,8 +23,8 @@ This report checks whether optional raw empirical inputs are present and shaped 
 | `law_revision_history.csv` | law revision text flags and optional invalidation-linkage checks | ready | none |
 | `comparative_institutions.csv` | cross-national chamber, court, party-system, and legislative-capacity checks | ready | none |
 
-- Files present: 16 / 16
-- Files with required columns: 16 / 16
+- Files present: 18 / 18
+- Files with required columns: 18 / 18
 - Adapter fixture CSVs ignored: 4
 
-Next empirical step: add final chamber-vote support and a separately frozen low-event presidential-choice model while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo lifecycle censuses, a compact 108th-118th-Congress executive-action panel, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.
+Next empirical step: implement the locked low-event presidential-choice estimator, loss, and whole-Congress temporal tests without post-fit changes while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo lifecycle censuses, separate 108th-118th-Congress bill and joint-resolution decision panels, final chamber-vote support, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.

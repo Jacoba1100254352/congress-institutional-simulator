@@ -1,13 +1,13 @@
 # GovInfo Executive-Action Panel
 
-- generated_at_utc: 2026-08-31T01:43:30+00:00
+- generated_at_utc: 2026-08-31T02:29:12+00:00
 - classification_version: `govinfo-bill-lifecycle-v3`
-- configuration_sha256: `7dd7860a56a28bf5bc50cebd85270934eebb6b517f467a25f78da882da91898f`
-- panel_builder_sha256: `29cf47478f2a5220ecc9bca2be7051828e5a61427663fd435d0302e7aa384449`
-- lifecycle_builder_sha256: `ff597d729934c04c6ca2964b6383a84c8203f2d69e4a78af97156523bd21f66d`
+- configuration_sha256: `3888cf513cb86807a9f1440eb857057e30ff526389aa655dd17b1296e2191c53`
+- panel_builder_sha256: `86a8308a0125fdd0ba17cefea70d5da230684e992d6847cfef22d114eb69c4be`
+- lifecycle_builder_sha256: `75587c72a049635cea9c70d7cf48adda1e4f7d0a4e7bc468796ef23f199a0422`
 - context_sha256: `9541f6d943611a463c9bb39a64743d4f1a5b3e51254320333f4ad20208df7b2d`
 - veto_reference_sha256: `195ea577cc39569a4e7a632a51f3e11e024eca8e871c1823bf070af84ce7b104`
-- output_sha256: `3cd5b5b00527409fc446d1b80935238a33ff5dd6bef21c61420df8681e6de132`
+- output_sha256: `d9241abd003919841e97464d6d1e5d79a85820517d72215adbdcdd7f17dd3c54`
 - congresses: 108,109,110,111,112,113,114,115,116,117,118
 - bill_types: hr,s
 - parsed_bill_records: 126760
@@ -15,6 +15,7 @@
 - enacted_rows: 4006
 - vetoed_rows: 21
 - overridden_veto_rows: 6
+- source_date_discrepancy_rows: 0
 - unresolved_presentments: 0
 - structurally_invalid_rows: 0
 
@@ -63,14 +64,15 @@
 
 ## Operational Definitions
 
-- Scope is every H.R. and S. XML record in each listed complete GovInfo BILLSTATUS archive. Joint resolutions and other measure types are excluded.
+- Scope is every H.R./S. XML record in each listed complete GovInfo BILLSTATUS archive. All other measure types are excluded from this class-specific artifact.
 - Only measures classified as presented to the President are retained in the committed panel; all source records are still parsed and integrity-checked.
 - Veto and successful-override classifications use the shared lifecycle classifier. Successful override requires affirmative House and Senate evidence.
-- The exact 21-bill H.R./S. veto set, dates, veto kind, and 6 override outcomes match `data/validation/reference/senate_veto_reference_108_118.csv`, compiled from the official Senate presidential-veto histories.
+- The exact 21-measure veto set, veto kind, and 6 override outcomes match `data/validation/reference/senate_veto_reference_108_118.csv`, compiled from the official Senate presidential-veto histories.
+- GovInfo veto-action dates match the audited GovInfo-date column in the reference. 0 row(s) preserve a documented difference between the source-reported veto date and the GovInfo BILLSTATUS action date rather than forcing agreement.
 - Executive decisions equal enactments plus vetoes minus successful overrides. Every Congress must satisfy this identity.
 - Final outcomes: 4000 enacted without veto; 15 sustained vetoes; 6 successful overrides.
 - Party-control context is pinned in `data/validation/reference/congress_executive_context.csv` from the official House history table `Party Government Since 1857`.
-- GovInfo supplies cross-Congress law numbers on 3 enacted source rows (109-hr-5441, 110-hr-6124, 110-s-2499). The panel preserves those values and marks them `source_cross_congress_number` rather than silently correcting official source metadata.
+- GovInfo supplies cross-Congress law numbers on 3 enacted source rows (109-hr-5441, 110-hr-6124, 110-s-2499). The panel preserves any such values and marks them `source_cross_congress_number` rather than silently correcting official source metadata.
 - Record-level source XML and canonical action hashes allow any classified decision to be traced back to the source bytes.
 
 Claim boundary: This panel supports descriptive analysis of H.R./S. presentment, veto, override, and enactment decisions from complete GovInfo BILLSTATUS archives. Party-control fields are congressional context, not estimates of policy distance, causal presidential choice, bill quality, welfare, or institutional rank.

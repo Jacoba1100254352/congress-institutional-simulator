@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import unittest
+from pathlib import Path
 
 try:
     from .build_govinfo_bill_census_dataset import CLASSIFICATION_VERSION
@@ -71,6 +72,11 @@ def census_row(**overrides: str) -> dict[str, str]:
     return row
 
 
+JOINT_VETO_REFERENCE = Path(
+    "data/validation/reference/senate_joint_resolution_veto_reference_108_118.csv"
+)
+
+
 class GovInfoExecutiveActionPanelTests(unittest.TestCase):
     def test_parse_congresses_accepts_ranges_and_deduplicates(self) -> None:
         self.assertEqual((108, 109, 110, 118), parse_congresses("108-110,118,109"))
@@ -95,7 +101,49 @@ class GovInfoExecutiveActionPanelTests(unittest.TestCase):
         self.assertEqual("veto_overridden", row["executive_outcome"])
         self.assertEqual("0", row["sponsor_same_party_as_president"])
         self.assertEqual("regular", row["veto_kind_reference"])
+        self.assertEqual("2008-06-18", row["veto_date_reference"])
+        self.assertEqual("aligned", row["veto_date_alignment"])
         self.assertEqual("source_cross_congress_number", row["source_law_number_status"])
+
+    def test_joint_reference_preserves_audited_source_date_discrepancy(self) -> None:
+        vetoes = read_veto_reference(
+            JOINT_VETO_REFERENCE,
+            tuple(range(108, 119)),
+            ("hjres", "sjres"),
+        )
+        self.assertEqual(26, len(vetoes))
+        self.assertEqual({"0"}, {row["veto_overridden"] for row in vetoes.values()})
+        reference = vetoes["114-sjres-22"]
+        self.assertEqual("2016-01-19", reference["veto_date"])
+        self.assertEqual("2016-01-20", reference["govinfo_veto_date"])
+        self.assertEqual("source_date_discrepancy", reference["veto_date_alignment"])
+
+        context = read_context(CONTEXT, (114,))["114"]
+        row = panel_row(
+            census_row(
+                bill_id="114-sjres-22",
+                congress="114",
+                bill_type="sjres",
+                bill_number="22",
+                origin_chamber="Senate",
+                president_action_count="2",
+                sponsor_party="R",
+                presented_to_president_date="2016-01-19",
+                vetoed_date="2016-01-20",
+                veto_overridden="0",
+                veto_overridden_date="",
+                veto_overridden_basis="",
+                enacted="0",
+                enacted_date="",
+                enacted_basis="",
+                law_number="",
+            ),
+            context,
+            vetoes,
+        )
+        self.assertEqual("2016-01-19", row["veto_date_reference"])
+        self.assertEqual("2016-01-20", row["vetoed_date"])
+        self.assertEqual("source_date_discrepancy", row["veto_date_alignment"])
 
     def test_unknown_sponsor_party_is_not_forced_into_binary_group(self) -> None:
         context = read_context(CONTEXT, (110,))["110"]

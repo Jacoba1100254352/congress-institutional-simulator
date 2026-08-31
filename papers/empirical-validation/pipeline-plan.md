@@ -900,11 +900,11 @@ metadata.
 
 ### Stage 7: Calibration and Held-Out Validation
 
-Current state: broad calibration/sanity screens, nine narrow source-family held-out checks, a 117th-Congress lifecycle threshold selection applied without refitting to the complete 116th and 118th Congresses, and a compact 108th-118th-Congress executive-action boundary diagnostic. Five of six external cohort-metric tolerances pass; the 118th-Congress enactment miss and 47.266-fold conditional veto-rate mismatch are retained.
+Current state: broad calibration/sanity screens, nine narrow source-family held-out checks, a 117th-Congress lifecycle threshold selection applied without refitting to the complete 116th and 118th Congresses, separate source-pinned 108th-118th-Congress H.R./S. and joint-resolution executive panels, a complete two-chamber final-approval panel, and a locked post-source-audit/pre-fit presidential-choice transport specification. Five of six lifecycle cohort-metric tolerances pass; the 118th-Congress enactment miss is retained. The combined empirical conditional veto rate is 0.011169 versus 0.246852 in the selected simulator panel, a 22.101-fold descriptive mismatch.
 
 Future requirements:
 
-- add joint resolutions as a separate measure class, final chamber-vote support, and a pre-specified low-event presidential-choice estimator with a whole-Congress holdout;
+- implement and report the locked low-event presidential-choice estimator and whole-Congress temporal tests without post-fit changes;
 - preserve separation between target-setting data and external evaluation data;
 - report errors, prespecified tolerance rules, failures, and descriptive diagnostics without post hoc retuning;
 - preserve synthetic-only labels for unsupported metrics.

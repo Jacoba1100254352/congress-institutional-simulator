@@ -25,6 +25,12 @@ GOVINFO_BILL_CENSUS_118 = Path("data/validation/raw/govinfo_bill_census_118.csv"
 GOVINFO_EXECUTIVE_ACTION_PANEL = Path(
     "data/validation/raw/govinfo_executive_action_panel.csv"
 )
+GOVINFO_JOINT_RESOLUTION_PANEL = Path(
+    "data/validation/raw/govinfo_joint_resolution_panel.csv"
+)
+GOVINFO_FINAL_CHAMBER_VOTE_PANEL = Path(
+    "data/validation/raw/govinfo_final_chamber_vote_panel.csv"
+)
 LEGISLATIVE_LIFECYCLE_TEMPORAL_REPLICATION = Path(
     "reports/legislative-lifecycle-temporal-replication.csv"
 )
@@ -339,6 +345,50 @@ def govinfo_executive_action_panel_summary() -> tuple[int, int, int, int, int, i
         overridden,
         reference_checked,
     )
+
+
+def govinfo_joint_resolution_panel_summary() -> tuple[int, int, int, int, int, int, int]:
+    rows = read_csv(GOVINFO_JOINT_RESOLUTION_PANEL)
+    source_backed = [
+        row
+        for row in rows
+        if len(row.get("source_xml_sha256", "")) == 64
+        and len(row.get("actions_sha256", "")) == 64
+        and row.get("source_url", "").startswith(
+            "https://www.govinfo.gov/bulkdata/BILLSTATUS/"
+        )
+        and not row.get("integrity_status", "").startswith("invalid:")
+    ]
+    vetoed = [row for row in source_backed if row.get("vetoed") == "1"]
+    return (
+        len(rows),
+        len(source_backed),
+        len({row.get("congress") for row in source_backed}),
+        len(vetoed),
+        sum(row.get("veto_overridden") == "1" for row in source_backed),
+        sum(bool(row.get("veto_kind_reference")) for row in vetoed),
+        sum(row.get("veto_date_alignment") == "source_date_discrepancy" for row in vetoed),
+    )
+
+
+def govinfo_final_chamber_vote_panel_summary() -> tuple[int, int, int, int, int, int]:
+    rows = read_csv(GOVINFO_FINAL_CHAMBER_VOTE_PANEL)
+    by_bill: dict[str, list[dict[str, str]]] = {}
+    for row in rows:
+        by_bill.setdefault(row.get("bill_id", ""), []).append(row)
+    official = [row for row in rows if row.get("selection_status") == "official_roll_call_selected"]
+    nonrecorded = [
+        row
+        for row in rows
+        if row.get("selection_status") == "final_approval_without_recorded_vote"
+    ]
+    valid = [row for row in rows if row.get("integrity_status", "").startswith("valid_")]
+    both_recorded = sum(
+        len(cohort) == 2
+        and all(row.get("selection_status") == "official_roll_call_selected" for row in cohort)
+        for cohort in by_bill.values()
+    )
+    return len(rows), len(by_bill), len(valid), len(official), len(nonrecorded), both_recorded
 
 
 def legislative_lifecycle_temporal_summary() -> tuple[int, int]:
@@ -2179,6 +2229,23 @@ def linkage_rows(registry: list[dict[str, str]]) -> list[dict[str, str]]:
                 executive_overrides,
                 executive_reference_checked,
             ) = govinfo_executive_action_panel_summary()
+            (
+                joint_rows,
+                joint_source_backed_rows,
+                joint_congresses,
+                joint_vetoes,
+                joint_overrides,
+                joint_reference_checked,
+                joint_date_discrepancies,
+            ) = govinfo_joint_resolution_panel_summary()
+            (
+                final_vote_rows,
+                final_vote_measures,
+                final_vote_valid_rows,
+                final_vote_official_rows,
+                final_vote_nonrecorded_rows,
+                final_vote_both_recorded,
+            ) = govinfo_final_chamber_vote_panel_summary()
             temporal_passes, temporal_metrics = legislative_lifecycle_temporal_summary()
             bounded_linked, action_aligned, policy_aligned = govinfo_billstatus_linkage_summary()
             if (
@@ -2186,16 +2253,18 @@ def linkage_rows(registry: list[dict[str, str]]) -> list[dict[str, str]]:
                 and backcast_source_backed_rows > 0
                 and forecast_source_backed_rows > 0
                 and executive_source_backed_rows > 0
+                and joint_source_backed_rows > 0
+                and final_vote_valid_rows > 0
             ):
                 result.append(build_row(
                     source,
                     rows,
                     source_backed_rows,
                     "linked" if source_backed_rows == census_rows else "partially linked",
-                    "pinned 116th- 117th- and 118th-Congress GovInfo BILLSTATUS lifecycle censuses; compact 108th-118th-Congress executive-action panel; Congress.gov public-law linkage; bounded 118th-Congress source cross-check; no-refit temporal transport and executive-action diagnostic reports",
-                    "census bill_id -> source_url,source_xml_sha256,actions_sha256; census bill_id -> law_revision_bill_linkage.bill_id; 117th selected threshold -> complete 116th and 118th aggregate rates; 108th-118th presentment -> veto -> override/enactment",
-                    f"The normalized 117th calibration census preserves record-level GovInfo source URLs, XML hashes, and canonical action hashes for {source_backed_rows} / {census_rows} bills derived from {action_count} direct bill actions, with {source_date_anomalies} explicit source-date anomaly rows. The 116th backcast preserves the same evidence for {backcast_source_backed_rows} / {backcast_rows} bills and {backcast_action_count} actions, with {backcast_source_date_anomalies} anomalies, {backcast_vetoed} vetoes, {backcast_overridden} override, and {backcast_enacted} enactments. The 118th forecast covers {forecast_source_backed_rows} / {forecast_rows} bills and {forecast_action_count} actions, with {forecast_source_date_anomalies} anomalies, {forecast_vetoed} veto, {forecast_overridden} overrides, and {forecast_enacted} enactments. The frozen no-refit transport test passes {temporal_passes} / {temporal_metrics} external cohort-metric tolerances and preserves the 118th enactment miss. The compact executive panel preserves the same source hashes for {executive_source_backed_rows} / {executive_rows} H.R./S. presidential decisions across {executive_congresses} Congresses, including {executive_vetoes} vetoes, {executive_overrides} successful overrides, and official veto-kind reference coverage for {executive_reference_checked} vetoes. Its diagnostic records a 47.266-fold pooled conditional-veto-rate mismatch; descriptive party-control strata are not causal estimates. The 117th-Congress Congress.gov public-law linkage overlaps {public_law_overlaps} census bills with {public_law_enacted_aligned} enacted flags aligned, while the bounded 118th-Congress cross-check retains {bounded_linked} identifier matches, {action_aligned} coarse action-flag alignments, and {policy_aligned} policy-area alignments. These are provenance, lifecycle, mechanism-diagnostic, and cross-source checks only; they do not provide public-opinion evidence, campaign-finance or lobbying influence, implementation or court outcomes, public benefit, welfare, or causal model validation.",
-                    "Add source-specific referral, floor-rule, calendar, and status-quo evidence; treat joint resolutions as a separate measure class; and pre-specify a low-event presidential-choice model using final chamber-vote support and a whole-Congress holdout.",
+                    "pinned lifecycle censuses; separate 108th-118th-Congress bill and joint-resolution presidential-decision panels; official final chamber-vote support; Congress.gov public-law linkage; bounded source cross-checks; and no-refit temporal transport",
+                    "census bill_id -> source_url,source_xml_sha256,actions_sha256; decision bill_id -> final chamber approval -> official roll-call XML when recorded; 117th selected threshold -> complete 116th and 118th aggregate rates",
+                    f"The normalized 117th calibration census preserves record-level GovInfo source URLs, XML hashes, and canonical action hashes for {source_backed_rows} / {census_rows} bills derived from {action_count} direct bill actions, with {source_date_anomalies} explicit source-date anomaly rows. The 116th backcast preserves the same evidence for {backcast_source_backed_rows} / {backcast_rows} bills and {backcast_action_count} actions, with {backcast_source_date_anomalies} anomalies, {backcast_vetoed} vetoes, {backcast_overridden} override, and {backcast_enacted} enactments. The 118th forecast covers {forecast_source_backed_rows} / {forecast_rows} bills and {forecast_action_count} actions, with {forecast_source_date_anomalies} anomalies, {forecast_vetoed} veto, {forecast_overridden} overrides, and {forecast_enacted} enactments. The frozen no-refit transport test passes {temporal_passes} / {temporal_metrics} external cohort-metric tolerances and preserves the 118th enactment miss. The bill panel preserves source hashes for {executive_source_backed_rows} / {executive_rows} H.R./S. presidential decisions across {executive_congresses} Congresses, including {executive_vetoes} vetoes, {executive_overrides} successful overrides, and reference coverage for {executive_reference_checked} vetoes. The separate joint-resolution panel preserves {joint_source_backed_rows} / {joint_rows} decisions across {joint_congresses} Congresses, including {joint_vetoes} vetoes, {joint_overrides} overrides, reference coverage for {joint_reference_checked} vetoes, and {joint_date_discrepancies} retained source-date discrepancy. The final-vote panel contributes {final_vote_rows} valid chamber rows for {final_vote_measures} presented measures: {final_vote_official_rows} official final roll calls, {final_vote_nonrecorded_rows} explicit nonrecorded approvals, and {final_vote_both_recorded} measures with recorded final votes in both chambers. Final-vote support is post-passage descriptive context and is not a causal estimate. The 117th-Congress Congress.gov public-law linkage overlaps {public_law_overlaps} census bills with {public_law_enacted_aligned} enacted flags aligned, while the bounded 118th-Congress cross-check retains {bounded_linked} identifier matches, {action_aligned} coarse action-flag alignments, and {policy_aligned} policy-area alignments. These are provenance, lifecycle, mechanism-diagnostic, and cross-source checks only; they do not provide public-opinion evidence, campaign-finance or lobbying influence, implementation or court outcomes, public benefit, welfare, or causal model validation.",
+                    "Add source-specific referral, floor-rule, calendar, and status-quo evidence; freeze the low-event presidential-choice estimator, loss, missingness rules, and whole-Congress holdout before fitting.",
                 ))
                 continue
             result.append(build_row(

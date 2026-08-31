@@ -24,6 +24,8 @@ RELATED_RAW = {
         RAW_DIR / "govinfo_bill_census_116.csv",
         RAW_DIR / "govinfo_bill_census_118.csv",
         RAW_DIR / "govinfo_executive_action_panel.csv",
+        RAW_DIR / "govinfo_joint_resolution_panel.csv",
+        RAW_DIR / "govinfo_final_chamber_vote_panel.csv",
     ),
 }
 
@@ -36,6 +38,9 @@ DATE_COLUMNS = (
     "passed_origin_chamber_date",
     "completed_congressional_passage_date",
     "presented_to_president_date",
+    "executive_decision_date",
+    "action_date",
+    "vetoed_date",
     "floor_action_date",
     "enacted_date",
     "transaction_date",

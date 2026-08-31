@@ -490,6 +490,7 @@ class GovInfoBillCensusTests(unittest.TestCase):
         row = diagnostic_row(
             "GovInfo census",
             "test",
+            cohort="test cohort",
             decisions=10,
             enacted=10,
             vetoes=0,

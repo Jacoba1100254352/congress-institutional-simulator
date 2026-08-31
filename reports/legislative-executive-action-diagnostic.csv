@@ -1,23 +1,33 @@
-sourceType,groupType,cohort,decisionDefinition,decisionCount,enactedBills,nonVetoEnactments,vetoes,overriddenVetoes,conditionalVetoRate,conditionalVetoWilson95Low,conditionalVetoWilson95High,overrideRateAmongVetoes,overrideWilson95Low,overrideWilson95High,conditionalVetoRateDifferenceFromPooledEmpirical,conditionalVetoRateRatioToPooledEmpirical,diagnosticStatus
-GovInfo panel,congress,108,presented_to_president,476,476,476,0,0,0.000000,0.000000,0.008006,NA,NA,NA,,,empirical_reference_congress
-GovInfo panel,congress,109,presented_to_president,466,465,465,1,0,0.002146,0.000379,0.012054,0.000000,0.000000,0.793451,,,empirical_reference_congress
-GovInfo panel,congress,110,presented_to_president,449,442,438,11,4,0.024499,0.013734,0.043331,0.363636,0.151665,0.646199,,,empirical_reference_congress
-GovInfo panel,congress,111,presented_to_president,367,366,366,1,0,0.002725,0.000481,0.015271,0.000000,0.000000,0.793451,,,empirical_reference_congress
-GovInfo panel,congress,112,presented_to_president,272,272,272,0,0,0.000000,0.000000,0.013926,NA,NA,NA,,,empirical_reference_congress
-GovInfo panel,congress,113,presented_to_president,282,282,282,0,0,0.000000,0.000000,0.013439,NA,NA,NA,,,empirical_reference_congress
-GovInfo panel,congress,114,presented_to_president,330,326,325,5,1,0.015152,0.006489,0.034972,0.200000,0.036224,0.624465,,,empirical_reference_congress
-GovInfo panel,congress,115,presented_to_president,417,417,417,0,0,0.000000,0.000000,0.009128,NA,NA,NA,,,empirical_reference_congress
-GovInfo panel,congress,116,presented_to_president,334,333,332,2,1,0.005988,0.001644,0.021567,0.500000,0.094531,0.905469,,,empirical_reference_congress
-GovInfo panel,congress,117,presented_to_president,358,358,358,0,0,0.000000,0.000000,0.010616,NA,NA,NA,,,empirical_reference_congress
-GovInfo panel,congress,118,presented_to_president,270,269,269,1,0,0.003704,0.000654,0.020677,0.000000,0.000000,0.793451,,,empirical_reference_congress
-GovInfo panel,administration,George W. Bush,presented_to_president,1391,1383,1379,12,4,0.008627,0.004942,0.015019,0.333333,0.138120,0.609378,,,empirical_reference_administration
-GovInfo panel,administration,Barack Obama,presented_to_president,1251,1246,1245,6,1,0.004796,0.002200,0.010424,0.166667,0.030053,0.563503,,,empirical_reference_administration
-GovInfo panel,administration,Donald J. Trump,presented_to_president,751,750,749,2,1,0.002663,0.000731,0.009658,0.500000,0.094531,0.905469,,,empirical_reference_administration
-GovInfo panel,administration,Joseph R. Biden Jr.,presented_to_president,628,627,627,1,0,0.001592,0.000281,0.008964,0.000000,0.000000,0.793451,,,empirical_reference_administration
-GovInfo panel,government_control,unified,presented_to_president,2084,2082,2082,2,0,0.000960,0.000263,0.003493,0.000000,0.000000,0.657620,,,descriptive_selected_stratum
-GovInfo panel,government_control,divided,presented_to_president,1937,1924,1918,19,6,0.009809,0.006289,0.015270,0.315789,0.153644,0.539896,,,descriptive_selected_stratum
-GovInfo panel,sponsor_party,same-party sponsor,presented_to_president,2217,2216,2216,1,0,0.000451,0.000080,0.002551,0.000000,0.000000,0.793451,,,descriptive_selected_stratum
-GovInfo panel,sponsor_party,opposition-party sponsor,presented_to_president,1790,1776,1770,20,6,0.011173,0.007245,0.017195,0.300000,0.145477,0.518973,,,descriptive_selected_stratum
-GovInfo panel,sponsor_party,other/unknown sponsor,presented_to_president,14,14,14,0,0,0.000000,0.000000,0.215311,NA,NA,NA,,,descriptive_selected_stratum
-GovInfo panel,pooled,108-118 pooled,presented_to_president,4021,4006,4000,21,6,0.005223,0.003419,0.007971,0.285714,0.138139,0.499564,,,empirical_reference_pooled
-frozen simulator,simulator,117-selected 50-seed panel,enactedBills + vetoes - overriddenVetoes,2621,1974,1974,647,0,0.246852,0.230724,0.263722,0.000000,0.000000,0.005902,0.241630,47.266,large_descriptive_mismatch_no_prespecified_tolerance
+sourceType,measureClass,groupType,cohort,subsetDefinition,decisionDefinition,decisionCount,enactedBills,nonVetoEnactments,vetoes,overriddenVetoes,conditionalVetoRate,conditionalVetoWilson95Low,conditionalVetoWilson95High,overrideRateAmongVetoes,overrideWilson95Low,overrideWilson95High,conditionalVetoRateDifferenceFromPooledEmpirical,conditionalVetoRateRatioToPooledEmpirical,diagnosticStatus
+GovInfo panel,bill,congress,108,,presented_to_president,476,476,476,0,0,0.000000,0.000000,0.008006,NA,NA,NA,,,empirical_reference_bill_congress
+GovInfo panel,bill,congress,109,,presented_to_president,466,465,465,1,0,0.002146,0.000379,0.012054,0.000000,0.000000,0.793451,,,empirical_reference_bill_congress
+GovInfo panel,bill,congress,110,,presented_to_president,449,442,438,11,4,0.024499,0.013734,0.043331,0.363636,0.151665,0.646199,,,empirical_reference_bill_congress
+GovInfo panel,bill,congress,111,,presented_to_president,367,366,366,1,0,0.002725,0.000481,0.015271,0.000000,0.000000,0.793451,,,empirical_reference_bill_congress
+GovInfo panel,bill,congress,112,,presented_to_president,272,272,272,0,0,0.000000,0.000000,0.013926,NA,NA,NA,,,empirical_reference_bill_congress
+GovInfo panel,bill,congress,113,,presented_to_president,282,282,282,0,0,0.000000,0.000000,0.013439,NA,NA,NA,,,empirical_reference_bill_congress
+GovInfo panel,bill,congress,114,,presented_to_president,330,326,325,5,1,0.015152,0.006489,0.034972,0.200000,0.036224,0.624465,,,empirical_reference_bill_congress
+GovInfo panel,bill,congress,115,,presented_to_president,417,417,417,0,0,0.000000,0.000000,0.009128,NA,NA,NA,,,empirical_reference_bill_congress
+GovInfo panel,bill,congress,116,,presented_to_president,334,333,332,2,1,0.005988,0.001644,0.021567,0.500000,0.094531,0.905469,,,empirical_reference_bill_congress
+GovInfo panel,bill,congress,117,,presented_to_president,358,358,358,0,0,0.000000,0.000000,0.010616,NA,NA,NA,,,empirical_reference_bill_congress
+GovInfo panel,bill,congress,118,,presented_to_president,270,269,269,1,0,0.003704,0.000654,0.020677,0.000000,0.000000,0.793451,,,empirical_reference_bill_congress
+GovInfo panel,bill,administration,George W. Bush,,presented_to_president,1391,1383,1379,12,4,0.008627,0.004942,0.015019,0.333333,0.138120,0.609378,,,descriptive_bill_stratum
+GovInfo panel,bill,administration,Barack Obama,,presented_to_president,1251,1246,1245,6,1,0.004796,0.002200,0.010424,0.166667,0.030053,0.563503,,,descriptive_bill_stratum
+GovInfo panel,bill,administration,Donald J. Trump,,presented_to_president,751,750,749,2,1,0.002663,0.000731,0.009658,0.500000,0.094531,0.905469,,,descriptive_bill_stratum
+GovInfo panel,bill,administration,Joseph R. Biden Jr.,,presented_to_president,628,627,627,1,0,0.001592,0.000281,0.008964,0.000000,0.000000,0.793451,,,descriptive_bill_stratum
+GovInfo panel,bill,government_control,unified,,presented_to_president,2084,2082,2082,2,0,0.000960,0.000263,0.003493,0.000000,0.000000,0.657620,,,descriptive_bill_stratum
+GovInfo panel,bill,government_control,divided,,presented_to_president,1937,1924,1918,19,6,0.009809,0.006289,0.015270,0.315789,0.153644,0.539896,,,descriptive_bill_stratum
+GovInfo panel,bill,sponsor_party,same-party sponsor,,presented_to_president,2217,2216,2216,1,0,0.000451,0.000080,0.002551,0.000000,0.000000,0.793451,,,descriptive_bill_stratum
+GovInfo panel,bill,sponsor_party,opposition-party sponsor,,presented_to_president,1790,1776,1770,20,6,0.011173,0.007245,0.017195,0.300000,0.145477,0.518973,,,descriptive_bill_stratum
+GovInfo panel,bill,sponsor_party,other/unknown sponsor,,presented_to_president,14,14,14,0,0,0.000000,0.000000,0.215311,NA,NA,NA,,,descriptive_bill_stratum
+GovInfo panel,bill,measure_class,108-118 H.R./S. bills,H.R. and S. measures only,presented_to_president,4021,4006,4000,21,6,0.005223,0.003419,0.007971,0.285714,0.138139,0.499564,,,empirical_reference_bill_class
+GovInfo panel,joint_resolution,measure_class,108-118 joint resolutions,H.J.Res. and S.J.Res. measures presented to the President,presented_to_president,187,161,161,26,0,0.139037,0.096681,0.195925,0.000000,0.000000,0.128729,,,empirical_reference_joint_resolution_class
+GovInfo panel,all_presented_measures,pooled,108-118 all presented measures,H.R. S. H.J.Res. and S.J.Res. presentments,presented_to_president,4208,4167,4161,47,6,0.011169,0.008410,0.014820,0.127660,0.059846,0.251739,,,empirical_reference_combined
+GovInfo panel,all_presented_measures,final_vote_coverage,both final roll calls,both final roll calls,presented_to_president,310,274,270,40,4,0.129032,0.096207,0.170939,0.100000,0.039580,0.230518,,,descriptive_final_vote_coverage
+GovInfo panel,all_presented_measures,final_vote_coverage,House final roll only,House final roll only,presented_to_president,1023,1021,1020,3,1,0.002933,0.000998,0.008586,0.333333,0.061492,0.792340,,,descriptive_final_vote_coverage
+GovInfo panel,all_presented_measures,final_vote_coverage,Senate final roll only,Senate final roll only,presented_to_president,42,42,42,0,0,0.000000,0.000000,0.083799,NA,NA,NA,,,descriptive_final_vote_coverage
+GovInfo panel,all_presented_measures,final_vote_coverage,no final roll calls,no final roll calls,presented_to_president,2833,2830,2829,4,1,0.001412,0.000549,0.003625,0.250000,0.045587,0.699358,,,descriptive_final_vote_coverage
+GovInfo panel,all_presented_measures,both_recorded_minimum_support,both chambers at least two-thirds,both chambers recorded; threshold uses yea divided by yea plus nay,presented_to_president,165,164,160,5,4,0.030303,0.013012,0.068967,0.800000,0.375535,0.963776,,,descriptive_both_recorded_support_stratum
+GovInfo panel,all_presented_measures,both_recorded_minimum_support,one or both chambers below two-thirds,both chambers recorded; threshold uses yea divided by yea plus nay,presented_to_president,145,110,110,35,0,0.241379,0.178985,0.317124,0.000000,0.000000,0.098901,,,descriptive_both_recorded_support_stratum
+GovInfo panel,all_presented_measures,both_recorded_opposition_support,opposition majority in both chambers,both chambers recorded; opposition party is the major party opposite the President,presented_to_president,199,163,159,40,4,0.201005,0.151228,0.262107,0.100000,0.039580,0.230518,,,descriptive_both_recorded_opposition_support_stratum
+GovInfo panel,all_presented_measures,both_recorded_opposition_support,opposition below majority in one or both chambers,both chambers recorded; opposition party is the major party opposite the President,presented_to_president,111,111,111,0,0,0.000000,0.000000,0.033450,NA,NA,NA,,,descriptive_both_recorded_opposition_support_stratum
+frozen simulator,undifferentiated_simulator_measures,simulator,117-selected 50-seed panel,simulator does not separately label bill and joint-resolution measure classes,enactedBills + vetoes - overriddenVetoes,2621,1974,1974,647,0,0.246852,0.230724,0.263722,0.000000,0.000000,0.005902,0.235683,22.101,large_descriptive_mismatch_no_prespecified_tolerance

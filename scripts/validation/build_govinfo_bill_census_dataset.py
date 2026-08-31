@@ -132,6 +132,94 @@ KNOWN_ARCHIVE_PINS: dict[tuple[int, str], tuple[str, int]] = {
         "269261c0989db3ced789680ee2202747df9a7298f1ac8d2b074d3356b06e399c",
         5649,
     ),
+    (108, "hjres"): (
+        "0f1f3cd96bce24e97ab1778ceb3c88921b5ce43b54e4b69450731c05dfdd1e23",
+        115,
+    ),
+    (108, "sjres"): (
+        "13c978a69636ef529d8c2b3877cc77f9226a9af900663118461547689e856540",
+        42,
+    ),
+    (109, "hjres"): (
+        "189d99ae3361ea283fcfb8842388a3851c7762027934c2477d2a863c04c2d46f",
+        102,
+    ),
+    (109, "sjres"): (
+        "fb89bd5d2e8d5a3a773a42298be50a2e7b04becb13518f2f9ecc46f492011549",
+        41,
+    ),
+    (110, "hjres"): (
+        "123692815274b0e43ea15dbf51b666118368d3eb42557de256060aeb06526b92",
+        101,
+    ),
+    (110, "sjres"): (
+        "711c77f0b2f8d4e07fbb82985752f864bfbd69d11fdd10589ea4bc9bf551b10e",
+        46,
+    ),
+    (111, "hjres"): (
+        "94823359899c6a77ec8805bd5b3f86bf36e71779b759f55cef13aebb111dbe41",
+        107,
+    ),
+    (111, "sjres"): (
+        "ee14cb09a375f91edbb4b1c51413d95265961c9bf21cc8d6b3dbed782bbed03a",
+        42,
+    ),
+    (112, "hjres"): (
+        "682165425079d6443741818cb09c869e6bf446c2c3090245e0d027ef910baf74",
+        122,
+    ),
+    (112, "sjres"): (
+        "604ee52dfd3f7100ec37f1c017797b5c8ac043c9f8185ab9a977e44ecd53f2a8",
+        51,
+    ),
+    (113, "hjres"): (
+        "8b3142f0592a111609f5faf390bff876ccd50a19d3c34a14b4a9245e54a3c1af",
+        131,
+    ),
+    (113, "sjres"): (
+        "afe08fc2748804ec630dc65a5e351cbb4e089c871dad999e8afe9b2a3352469a",
+        47,
+    ),
+    (114, "hjres"): (
+        "3c0ba49e4d90a18fba701d8193940204c07491c0a2f3d5c62f9cf9f6880764dc",
+        108,
+    ),
+    (114, "sjres"): (
+        "628bfce49748b2f40310dc761a219a6acddf7e6f784cc0f6482b618e295fca73",
+        41,
+    ),
+    (115, "hjres"): (
+        "9403bf92c16c5c6f6c40163839c828c4f5d8573797bca295d99fda0bb709d135",
+        146,
+    ),
+    (115, "sjres"): (
+        "1e048fd7508a8dd597d35dac323c1e5ff4c36d4fa0bbebbdc0d82b135c129f42",
+        69,
+    ),
+    (116, "hjres"): (
+        "9939bc21d8d8d40718d67e233b94d1075951314d673ffe02c5ba26788e1fdfc3",
+        110,
+    ),
+    (116, "sjres"): (
+        "f039d684b21421613bf4c980525e9a7c5759ab80db8083473da19b20ffdeea54",
+        82,
+    ),
+    (117, "hjres"): (
+        "55855f0441d0e691691e5cd8f12b46375314ab4994e9744575f5e4eb343810f4",
+        106,
+    ),
+    (117, "sjres"): (
+        "857969d43fb4fa63f608bafbe43c297be05b65ffbb5f2c4d7180e7d2cb2f72a9",
+        70,
+    ),
+    (118, "hjres"): (
+        "010db05723a7ae43db92455f0415d9ce5c4be3a89feac56bbbd2a78da4a2af83",
+        230,
+    ),
+    (118, "sjres"): (
+        "da94d59404d5eba1e35939ecc276d012fc56c2b1171a3467fc89456cf9c28569",
+        122,
+    ),
 }
 
 

@@ -13,7 +13,7 @@ PAPER_APPENDIX_PDF := paper/technical-appendix/odd-d-appendix.pdf
 .PHONY: statutory-lineage-olrc-annual-text-diff build-bill-finance-lobbying-roll-call-source-raw build-bill-finance-lobbying-member-vote-target-raw bill-finance-lobbying-roll-call-source-review bill-finance-lobbying-member-vote-target-review failure-trace-report adversary-catalog adversarial-stress adversarial-pilot-cell-map adversarial-stress-manifest
 .PHONY: build-district-public-opinion-ces-policy-item-candidates-raw district-public-opinion-ces-policy-item-candidate-review build-district-public-opinion-ces-policy-item-response-distributions-raw district-public-opinion-ces-policy-item-response-distribution-review build-district-public-opinion-ces-policy-item-codebook-direction-raw district-public-opinion-ces-policy-item-codebook-direction-review
 .PHONY: build-district-public-opinion-bill-text-context-raw district-public-opinion-bill-item-alignment-review build-district-public-opinion-bill-topic-support-raw district-public-opinion-bill-topic-support
-.PHONY: adversarial-replication-a1-a8 adversarial-replication-a9 robustness-evidence legislative-lifecycle-calibration legislative-executive-action-diagnostic legislative-lifecycle-temporal-replication govinfo-executive-action-panel govinfo-bill-census-116 govinfo-bill-census-118 govinfo-bill-census-check build-govinfo-executive-action-panel-raw build-govinfo-bill-census-116-raw build-govinfo-bill-census-118-raw
+.PHONY: adversarial-replication-a1-a8 adversarial-replication-a9 robustness-evidence legislative-lifecycle-calibration legislative-executive-action-diagnostic legislative-lifecycle-temporal-replication govinfo-executive-action-panel govinfo-joint-resolution-panel govinfo-final-chamber-vote-panel govinfo-bill-census-116 govinfo-bill-census-118 govinfo-bill-census-check build-govinfo-executive-action-panel-raw build-govinfo-joint-resolution-panel-raw build-govinfo-final-chamber-vote-panel-raw build-govinfo-bill-census-116-raw build-govinfo-bill-census-118-raw
 
 check-java:
 	@actual="$$(javac -version 2>&1 | awk '{print $$2}' | cut -d. -f1)"; \
@@ -137,7 +137,7 @@ findings-validation: paper-campaign
 validation-readiness:
 	python3 scripts/validation/validate_empirical_inputs.py
 
-validation-gap-report: validation-readiness empirical-bridge empirical-flow-heldout empirical-data-inventory empirical-linkage-report empirical-linkage-roadmap govinfo-bill-census legislative-lifecycle-calibration legislative-lifecycle-temporal-replication govinfo-billstatus-linkage sponsor-bill-linkage court-law-linkage rulemaking-authority-linkage rulemaking-history-linkage rulemaking-comment-metadata rulemaking-comment-records rulemaking-comment-text-review statutory-lineage-adjudication statutory-lineage-target-review-packets statutory-lineage-target-section-diff-review statutory-lineage-no-target-review bill-law-evidence-spine bill-law-lifecycle-readiness court-public-law-review-queue court-public-law-temporal-triage court-public-law-direct-review bill-law-lifecycle-next-actions bill-law-lifecycle-corpus bill-finance-lobbying-review-queue bill-finance-lobbying-local-context-review bill-finance-lobbying-external-search-review bill-finance-lobbying-external-lda-mention-review bill-finance-lobbying-campaign-finance-target-scope-review bill-finance-lobbying-committee-action-context bill-finance-lobbying-source-acquisition-queue bill-finance-lobbying-roll-call-source-review bill-finance-lobbying-member-vote-target-review lobbying-bill-mention-review lobbying-bill-action-context lobbying-bill-text-review lobbying-bill-disposition-review lobbying-bill-manual-disposition-review lobbying-bill-medium-disposition-packets lobbying-bill-medium-directional-packet-review lobbying-bill-medium-position-activity-packet-review statutory-lineage-target-lifecycle-bridge statutory-lineage-review-queue statutory-lineage-source-scan statutory-lineage-target-section-triage statutory-lineage-olrc-current-scan statutory-lineage-olrc-historical-scan statutory-lineage-olrc-annual-text-diff statutory-lineage-codified-progress statutory-lineage-effective-text-review statutory-lineage-public-law-attribution-review statutory-lineage-completion-queue statutory-lineage-complete-lineage-expansion-queue statutory-lineage-target-packet-expansion-queue statutory-lineage-target-packet-source-gap-queue statutory-lineage-target-packet-source-gap-review statutory-lineage-target-reference-resolution-candidates campaign-finance-district-context campaign-finance-member-context campaign-finance-issue-context campaign-finance-sponsor-bill-context district-public-opinion-policy-context district-public-opinion-bill-topic-readiness district-public-opinion-source-packets district-public-opinion-census-denominators district-public-opinion-acs-context district-public-opinion-survey-source-crosswalk district-public-opinion-survey-item-proxy-review district-public-opinion-ces-policy-item-candidate-review district-public-opinion-ces-policy-item-response-distribution-review district-public-opinion-ces-policy-item-codebook-direction-review district-public-opinion-bill-topic-support voteview-member-context voteview-bill-linkage lobbying-issue-linkage lobbying-bill-policy-context raw-source-manifest
+validation-gap-report: validation-readiness empirical-bridge empirical-flow-heldout empirical-data-inventory empirical-linkage-report empirical-linkage-roadmap govinfo-bill-census govinfo-joint-resolution-panel govinfo-final-chamber-vote-panel legislative-lifecycle-calibration legislative-lifecycle-temporal-replication govinfo-billstatus-linkage sponsor-bill-linkage court-law-linkage rulemaking-authority-linkage rulemaking-history-linkage rulemaking-comment-metadata rulemaking-comment-records rulemaking-comment-text-review statutory-lineage-adjudication statutory-lineage-target-review-packets statutory-lineage-target-section-diff-review statutory-lineage-no-target-review bill-law-evidence-spine bill-law-lifecycle-readiness court-public-law-review-queue court-public-law-temporal-triage court-public-law-direct-review bill-law-lifecycle-next-actions bill-law-lifecycle-corpus bill-finance-lobbying-review-queue bill-finance-lobbying-local-context-review bill-finance-lobbying-external-search-review bill-finance-lobbying-external-lda-mention-review bill-finance-lobbying-campaign-finance-target-scope-review bill-finance-lobbying-committee-action-context bill-finance-lobbying-source-acquisition-queue bill-finance-lobbying-roll-call-source-review bill-finance-lobbying-member-vote-target-review lobbying-bill-mention-review lobbying-bill-action-context lobbying-bill-text-review lobbying-bill-disposition-review lobbying-bill-manual-disposition-review lobbying-bill-medium-disposition-packets lobbying-bill-medium-directional-packet-review lobbying-bill-medium-position-activity-packet-review statutory-lineage-target-lifecycle-bridge statutory-lineage-review-queue statutory-lineage-source-scan statutory-lineage-target-section-triage statutory-lineage-olrc-current-scan statutory-lineage-olrc-historical-scan statutory-lineage-olrc-annual-text-diff statutory-lineage-codified-progress statutory-lineage-effective-text-review statutory-lineage-public-law-attribution-review statutory-lineage-completion-queue statutory-lineage-complete-lineage-expansion-queue statutory-lineage-target-packet-expansion-queue statutory-lineage-target-packet-source-gap-queue statutory-lineage-target-packet-source-gap-review statutory-lineage-target-reference-resolution-candidates campaign-finance-district-context campaign-finance-member-context campaign-finance-issue-context campaign-finance-sponsor-bill-context district-public-opinion-policy-context district-public-opinion-bill-topic-readiness district-public-opinion-source-packets district-public-opinion-census-denominators district-public-opinion-acs-context district-public-opinion-survey-source-crosswalk district-public-opinion-survey-item-proxy-review district-public-opinion-ces-policy-item-candidate-review district-public-opinion-ces-policy-item-response-distribution-review district-public-opinion-ces-policy-item-codebook-direction-review district-public-opinion-bill-topic-support voteview-member-context voteview-bill-linkage lobbying-issue-linkage lobbying-bill-policy-context raw-source-manifest
 	python3 scripts/validation/write_bill_finance_lobbying_source_acquisition_queue.py
 	python3 scripts/validation/write_empirical_linkage_report.py
 	python3 scripts/validation/write_empirical_linkage_roadmap.py
@@ -158,6 +158,12 @@ build-govinfo-bill-census-raw:
 
 build-govinfo-executive-action-panel-raw:
 	python3 scripts/validation/build_govinfo_executive_action_panel.py $(ARGS)
+
+build-govinfo-joint-resolution-panel-raw:
+	python3 scripts/validation/build_govinfo_executive_action_panel.py --bill-types hjres,sjres --veto-reference data/validation/reference/senate_joint_resolution_veto_reference_108_118.csv --output data/validation/raw/govinfo_joint_resolution_panel.csv --metadata-output data/validation/raw/govinfo_joint_resolution_panel.metadata.md $(ARGS)
+
+build-govinfo-final-chamber-vote-panel-raw:
+	python3 scripts/validation/build_govinfo_final_vote_panel.py $(ARGS)
 
 build-govinfo-bill-census-116-raw:
 	python3 scripts/validation/build_govinfo_bill_census_dataset.py --congress 116 --output data/validation/raw/govinfo_bill_census_116.csv --metadata-output data/validation/raw/govinfo_bill_census_116.metadata.md $(ARGS)
@@ -321,10 +327,16 @@ govinfo-bill-census-118:
 govinfo-executive-action-panel:
 	python3 scripts/validation/build_govinfo_executive_action_panel.py --offline
 
+govinfo-joint-resolution-panel:
+	python3 scripts/validation/build_govinfo_executive_action_panel.py --bill-types hjres,sjres --veto-reference data/validation/reference/senate_joint_resolution_veto_reference_108_118.csv --output data/validation/raw/govinfo_joint_resolution_panel.csv --metadata-output data/validation/raw/govinfo_joint_resolution_panel.metadata.md --offline
+
+govinfo-final-chamber-vote-panel:
+	python3 scripts/validation/build_govinfo_final_vote_panel.py --offline
+
 legislative-lifecycle-calibration: build govinfo-bill-census
 	APP_CP="$(APP_CP)" JAVA_PROPS="$(JAVA_PROPS)" python3 scripts/validation/write_legislative_lifecycle_calibration.py
 
-legislative-executive-action-diagnostic: legislative-lifecycle-calibration govinfo-executive-action-panel
+legislative-executive-action-diagnostic: legislative-lifecycle-calibration govinfo-executive-action-panel govinfo-joint-resolution-panel govinfo-final-chamber-vote-panel
 	python3 scripts/validation/write_legislative_executive_action_diagnostic.py
 
 legislative-lifecycle-temporal-replication: legislative-executive-action-diagnostic
@@ -693,6 +705,7 @@ test: build
 	python3 scripts/validation/test_reproducible_metadata.py
 	python3 scripts/validation/test_govinfo_bill_census.py
 	python3 scripts/validation/test_govinfo_executive_action_panel.py
+	python3 scripts/validation/test_govinfo_final_vote_panel.py
 	python3 scripts/validation/test_district_public_opinion_census_denominator.py
 	python3 scripts/validation/test_district_public_opinion_bill_text_context.py
 	python3 scripts/validation/test_district_public_opinion_bill_topic_support.py

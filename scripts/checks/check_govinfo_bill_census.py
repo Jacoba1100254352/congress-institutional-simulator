@@ -34,6 +34,16 @@ EXECUTIVE_PANEL_METADATA = Path("data/validation/raw/govinfo_executive_action_pa
 EXECUTIVE_PANEL_BUILDER = Path("scripts/validation/build_govinfo_executive_action_panel.py")
 EXECUTIVE_CONTEXT = Path("data/validation/reference/congress_executive_context.csv")
 EXECUTIVE_VETO_REFERENCE = Path("data/validation/reference/senate_veto_reference_108_118.csv")
+JOINT_PANEL = Path("data/validation/raw/govinfo_joint_resolution_panel.csv")
+JOINT_PANEL_METADATA = Path("data/validation/raw/govinfo_joint_resolution_panel.metadata.md")
+JOINT_VETO_REFERENCE = Path(
+    "data/validation/reference/senate_joint_resolution_veto_reference_108_118.csv"
+)
+FINAL_VOTE_PANEL = Path("data/validation/raw/govinfo_final_chamber_vote_panel.csv")
+FINAL_VOTE_PANEL_METADATA = Path(
+    "data/validation/raw/govinfo_final_chamber_vote_panel.metadata.md"
+)
+FINAL_VOTE_PANEL_BUILDER = Path("scripts/validation/build_govinfo_final_vote_panel.py")
 CALIBRATION_BASELINE = Path("reports/calibration-baseline.csv")
 HELDOUT = Path("reports/empirical-flow-heldout.csv")
 
@@ -158,6 +168,47 @@ EXPECTED_EXECUTIVE_OVERRIDES = {
     "110-hr-6331",
     "114-s-2040",
     "116-hr-6395",
+}
+EXPECTED_JOINT_EXECUTIVE_DECISIONS = {
+    "108": 28,
+    "109": 18,
+    "110": 18,
+    "111": 20,
+    "112": 12,
+    "113": 14,
+    "114": 8,
+    "115": 26,
+    "116": 19,
+    "117": 7,
+    "118": 17,
+}
+EXPECTED_JOINT_VETOES = {
+    "111-hjres-64",
+    "114-hjres-88",
+    "114-sjres-8",
+    "114-sjres-22",
+    "114-sjres-23",
+    "114-sjres-24",
+    "116-hjres-46",
+    "116-hjres-76",
+    "116-sjres-7",
+    "116-sjres-36",
+    "116-sjres-37",
+    "116-sjres-38",
+    "116-sjres-54",
+    "116-sjres-68",
+    "118-hjres-27",
+    "118-hjres-30",
+    "118-hjres-39",
+    "118-hjres-42",
+    "118-hjres-45",
+    "118-hjres-98",
+    "118-hjres-109",
+    "118-sjres-9",
+    "118-sjres-11",
+    "118-sjres-24",
+    "118-sjres-32",
+    "118-sjres-38",
 }
 EXPECTED_SOURCE_LAW_NUMBER_ANOMALIES = {
     "109-hr-5441",
@@ -708,43 +759,372 @@ def check_executive_panel() -> None:
         "Panel metadata does not record 22 matched archive pins",
     )
     require(
-        "The exact 21-bill H.R./S. veto set" in metadata_text,
+        "The exact 21-measure veto set" in metadata_text,
         "Panel official-veto-reference audit is missing",
     )
 
 
+def check_joint_resolution_panel() -> None:
+    rows = read_csv(JOINT_PANEL)
+    metadata = metadata_values(JOINT_PANEL_METADATA)
+    require(len(rows) == 187, f"Expected 187 joint-resolution decisions; found {len(rows)}")
+    require(len({row["bill_id"] for row in rows}) == len(rows), "Joint-resolution panel bill IDs are not unique")
+    require(
+        Counter(row["congress"] for row in rows) == Counter(EXPECTED_JOINT_EXECUTIVE_DECISIONS),
+        "Joint-resolution panel Congress counts drifted",
+    )
+    require(
+        Counter(row["bill_type"] for row in rows) == Counter({"hjres": 123, "sjres": 64}),
+        "Joint-resolution type counts drifted",
+    )
+    require(
+        {row["classification_version"] for row in rows} == {"govinfo-bill-lifecycle-v3"},
+        "Joint-resolution classifier version drifted",
+    )
+    require(
+        Counter(row["integrity_status"].split(":", 1)[0] for row in rows)
+        == Counter({"valid": 186, "source_date_anomaly": 1}),
+        "Joint-resolution lifecycle status counts drifted",
+    )
+    require(
+        {
+            row["bill_id"]
+            for row in rows
+            if row["integrity_status"].startswith("source_date_anomaly:")
+        }
+        == {"109-hjres-47"},
+        "Joint-resolution source-date anomaly set drifted",
+    )
+    require(
+        not any(row["integrity_status"].startswith("invalid:") for row in rows),
+        "Joint-resolution panel contains an invalid lifecycle row",
+    )
+    require(
+        {row["bill_id"] for row in rows if truthy(row, "vetoed")} == EXPECTED_JOINT_VETOES,
+        "Joint-resolution veto set drifted",
+    )
+    require(not any(truthy(row, "veto_overridden") for row in rows), "Unexpected joint-resolution override")
+    require(
+        Counter(row["source_law_number_status"] for row in rows)
+        == Counter({"aligned": 161, "not_enacted": 26}),
+        "Joint-resolution source-law-number status counts drifted",
+    )
+    require(
+        {row["bill_id"] for row in rows if row["veto_date_alignment"] == "source_date_discrepancy"}
+        == {"114-sjres-22"},
+        "Joint-resolution source-date discrepancy set drifted",
+    )
+    by_bill = {row["bill_id"]: row for row in rows}
+    discrepancy = by_bill["114-sjres-22"]
+    require(discrepancy["veto_date_reference"] == "2016-01-19", "S.J.Res. 22 reference veto date drifted")
+    require(discrepancy["vetoed_date"] == "2016-01-20", "S.J.Res. 22 GovInfo veto date drifted")
+
+    for congress, expected_count in EXPECTED_JOINT_EXECUTIVE_DECISIONS.items():
+        cohort = [row for row in rows if row["congress"] == congress]
+        enacted = sum(truthy(row, "enacted") for row in cohort)
+        vetoes = sum(truthy(row, "vetoed") for row in cohort)
+        overrides = sum(truthy(row, "veto_overridden") for row in cohort)
+        require(len(cohort) == expected_count, f"Congress {congress} joint decision count drifted")
+        require(
+            len(cohort) == enacted + vetoes - overrides,
+            f"Congress {congress} joint executive-decision identity failed",
+        )
+
+    reference = {row["bill_id"]: row for row in read_csv(JOINT_VETO_REFERENCE)}
+    require(set(reference) == EXPECTED_JOINT_VETOES, "Official joint-resolution veto reference set drifted")
+    require(
+        Counter(row["veto_date_alignment"] for row in reference.values())
+        == Counter({"aligned": 25, "source_date_discrepancy": 1}),
+        "Joint-resolution reference date-alignment counts drifted",
+    )
+    require(
+        {row["veto_overridden"] for row in reference.values()} == {"0"},
+        "Joint-resolution reference contains an override",
+    )
+    for bill_id, expected in reference.items():
+        observed = by_bill[bill_id]
+        require(observed["president"] == expected["president"], f"{bill_id} president reference drifted")
+        require(
+            observed["veto_date_reference"] == expected["veto_date"],
+            f"{bill_id} reference veto date drifted",
+        )
+        require(
+            observed["veto_date_alignment"] == expected["veto_date_alignment"],
+            f"{bill_id} veto-date alignment drifted",
+        )
+        require(
+            observed["veto_kind_reference"] == expected["veto_kind"],
+            f"{bill_id} veto-kind reference drifted",
+        )
+
+    require(metadata.get("classification_version") == "govinfo-bill-lifecycle-v3", "Joint panel classifier metadata drifted")
+    require(metadata.get("parsed_bill_records") == "2031", "Joint panel parsed-bill count drifted")
+    require(metadata.get("executive_decisions") == "187", "Joint panel decision count metadata drifted")
+    require(metadata.get("enacted_rows") == "161", "Joint panel enactment count metadata drifted")
+    require(metadata.get("vetoed_rows") == "26", "Joint panel veto count metadata drifted")
+    require(metadata.get("overridden_veto_rows") == "0", "Joint panel override count metadata drifted")
+    require(metadata.get("source_date_discrepancy_rows") == "1", "Joint panel date-discrepancy metadata drifted")
+    require(metadata.get("output_sha256") == sha256_file(JOINT_PANEL), "Joint panel output hash metadata drifted")
+    require(
+        metadata.get("panel_builder_sha256") == sha256_file(EXECUTIVE_PANEL_BUILDER),
+        "Joint panel builder hash metadata drifted",
+    )
+    require(metadata.get("lifecycle_builder_sha256") == sha256_file(BUILDER), "Joint panel lifecycle-builder hash drifted")
+    require(metadata.get("context_sha256") == sha256_file(EXECUTIVE_CONTEXT), "Joint panel context hash drifted")
+    require(
+        metadata.get("veto_reference_sha256") == sha256_file(JOINT_VETO_REFERENCE),
+        "Joint panel veto-reference hash drifted",
+    )
+    metadata_text = JOINT_PANEL_METADATA.read_text()
+    require("unconfigured" not in metadata_text, "Joint panel metadata retains unpinned archives")
+    require("changed_explicitly_allowed" not in metadata_text, "Joint panel metadata accepts changed archives")
+    require(
+        metadata_text.count("| matched | https://www.govinfo.gov/bulkdata/BILLSTATUS/") == 22,
+        "Joint panel metadata does not record 22 matched archive pins",
+    )
+    require("The exact 26-measure veto set" in metadata_text, "Joint panel veto-reference audit is missing")
+
+
+def check_final_vote_panel() -> None:
+    rows = read_csv(FINAL_VOTE_PANEL)
+    metadata = metadata_values(FINAL_VOTE_PANEL_METADATA)
+    decisions = read_csv(EXECUTIVE_PANEL) + read_csv(JOINT_PANEL)
+    decision_by_bill = {row["bill_id"]: row for row in decisions}
+    require(len(decision_by_bill) == 4208, "Combined presidential-decision population drifted")
+    require(len(rows) == 8416, f"Expected 8416 final chamber-vote rows; found {len(rows)}")
+
+    by_bill: dict[str, list[dict[str, str]]] = {}
+    for row in rows:
+        by_bill.setdefault(row["bill_id"], []).append(row)
+    require(set(by_bill) == set(decision_by_bill), "Final-vote panel measure population drifted")
+    for bill_id, cohort in by_bill.items():
+        require(len(cohort) == 2, f"{bill_id} does not have exactly two chamber rows")
+        require({row["chamber"] for row in cohort} == {"House", "Senate"}, f"{bill_id} chamber pair drifted")
+
+    require(
+        Counter((row["chamber"], row["selection_status"]) for row in rows)
+        == Counter(
+            {
+                ("House", "official_roll_call_selected"): 1333,
+                ("House", "final_approval_without_recorded_vote"): 2875,
+                ("Senate", "official_roll_call_selected"): 352,
+                ("Senate", "final_approval_without_recorded_vote"): 3856,
+            }
+        ),
+        "Final-vote chamber coverage drifted",
+    )
+    require(
+        Counter((row["measure_class"], row["selection_status"]) for row in rows)
+        == Counter(
+            {
+                ("bill", "official_roll_call_selected"): 1526,
+                ("bill", "final_approval_without_recorded_vote"): 6516,
+                ("joint_resolution", "official_roll_call_selected"): 159,
+                ("joint_resolution", "final_approval_without_recorded_vote"): 215,
+            }
+        ),
+        "Final-vote measure-class coverage drifted",
+    )
+    require(
+        Counter((row["chamber"], row["selection_category"]) for row in rows)
+        == Counter(
+            {
+                ("House", "final_passage"): 3671,
+                ("House", "concurrence"): 427,
+                ("House", "conference_report"): 110,
+                ("Senate", "final_passage"): 3889,
+                ("Senate", "concurrence"): 209,
+                ("Senate", "conference_report"): 110,
+            }
+        ),
+        "Final-vote approval-category counts drifted",
+    )
+    require(
+        Counter(row["integrity_status"] for row in rows)
+        == Counter({"valid_official_roll_call": 1685, "valid_no_recorded_final_approval_vote": 6731}),
+        "Final-vote integrity statuses drifted",
+    )
+    require(
+        Counter(row["official_source_bill_match_status"] for row in rows)
+        == Counter({"matched": 1684, "matched_grouped_question": 1, "": 6731}),
+        "Final-vote official bill-match statuses drifted",
+    )
+    grouped = [row for row in rows if row["official_source_bill_match_status"] == "matched_grouped_question"]
+    require(
+        len(grouped) == 1
+        and grouped[0]["bill_id"] == "116-sjres-37"
+        and grouped[0]["chamber"] == "Senate"
+        and grouped[0]["official_source_bill_id"] == "116-sjres-48"
+        and "S.J.Res. 37" in grouped[0]["vote_question"],
+        "Grouped Senate joint-resolution vote audit drifted",
+    )
+
+    official_urls: set[str] = set()
+    for row in rows:
+        decision = decision_by_bill[row["bill_id"]]
+        for field in (
+            "congress",
+            "bill_type",
+            "president",
+            "president_party",
+            "government_control",
+            "executive_outcome",
+            "vetoed",
+            "enacted",
+        ):
+            require(row[field] == decision[field], f"{row['bill_id']} {field} decision linkage drifted")
+        require(
+            row["decision_source_xml_sha256"] == decision["source_xml_sha256"]
+            and row["decision_actions_sha256"] == decision["actions_sha256"],
+            f"{row['bill_id']} decision source hashes drifted",
+        )
+        require(row["action_date"] <= decision["presented_to_president_date"], f"{row['bill_id']} final vote follows presentment")
+        require(row["classification_version"] == "govinfo-bill-lifecycle-v3", f"{row['bill_id']} lifecycle version drifted")
+        require(row["selection_classifier_version"] == "govinfo-final-chamber-vote-v1", f"{row['bill_id']} selector version drifted")
+
+        if row["selection_status"] == "final_approval_without_recorded_vote":
+            require(
+                row["official_source_status"] == "not_applicable_no_recorded_vote",
+                f"{row['bill_id']} nonrecorded source status drifted",
+            )
+            require(
+                not any(
+                    row[field]
+                    for field in (
+                        "roll_number",
+                        "session_number",
+                        "source_url",
+                        "official_source_sha256",
+                        "yea_count",
+                        "nay_count",
+                        "support_share",
+                    )
+                ),
+                f"{row['bill_id']} nonrecorded approval contains roll-call metrics",
+            )
+            continue
+
+        require(row["source_url"] not in official_urls, f"Official roll call reused: {row['source_url']}")
+        official_urls.add(row["source_url"])
+        require(HASH.fullmatch(row["official_source_sha256"]) is not None, f"{row['bill_id']} official source hash is invalid")
+        require(row["source_count_alignment"] == "aligned", f"{row['bill_id']} official source counts differ")
+        expected_source_status = (
+            "official_house_clerk_xml" if row["chamber"] == "House" else "official_senate_lis_xml"
+        )
+        require(row["official_source_status"] == expected_source_status, f"{row['bill_id']} official source status drifted")
+        expected_prefix = (
+            "https://clerk.house.gov/evs/"
+            if row["chamber"] == "House"
+            else "https://www.senate.gov/legislative/LIS/roll_call_votes/"
+        )
+        require(row["source_url"].startswith(expected_prefix), f"{row['bill_id']} official source URL drifted")
+
+        yea = int(row["yea_count"])
+        nay = int(row["nay_count"])
+        present = int(row["present_count"])
+        not_voting = int(row["not_voting_count"])
+        require(yea + nay == int(row["participating_count"]), f"{row['bill_id']} participating count drifted")
+        require(
+            yea + nay + present + not_voting == int(row["member_vote_count"]),
+            f"{row['bill_id']} member-vote count drifted",
+        )
+        require(
+            sum(int(row[field]) for field in ("democratic_yea", "republican_yea", "independent_yea")) == yea,
+            f"{row['bill_id']} party yea counts drifted",
+        )
+        require(
+            sum(int(row[field]) for field in ("democratic_nay", "republican_nay", "independent_nay")) == nay,
+            f"{row['bill_id']} party nay counts drifted",
+        )
+        require(row["support_share"] == f"{yea / (yea + nay):.6f}", f"{row['bill_id']} support share drifted")
+        president_prefix = "democratic" if row["president_party"] == "D" else "republican"
+        opposition_prefix = "republican" if row["president_party"] == "D" else "democratic"
+        for target, source in (("president_party", president_prefix), ("opposition_party", opposition_prefix)):
+            target_yea = int(row[f"{target}_yea"])
+            target_nay = int(row[f"{target}_nay"])
+            require(target_yea == int(row[f"{source}_yea"]), f"{row['bill_id']} {target} yea count drifted")
+            require(target_nay == int(row[f"{source}_nay"]), f"{row['bill_id']} {target} nay count drifted")
+            expected_share = f"{target_yea / (target_yea + target_nay):.6f}" if target_yea + target_nay else ""
+            require(row[f"{target}_support_share"] == expected_share, f"{row['bill_id']} {target} share drifted")
+
+    require(len(official_urls) == 1685, "Final-vote unique official-source count drifted")
+    require(
+        sum(
+            all(row["selection_status"] == "official_roll_call_selected" for row in cohort)
+            for cohort in by_bill.values()
+        )
+        == 310,
+        "Measures with two recorded final votes drifted",
+    )
+
+    expected_metadata = {
+        "selection_classifier_version": "govinfo-final-chamber-vote-v1",
+        "lifecycle_classification_version": "govinfo-bill-lifecycle-v3",
+        "presented_measures": "4208",
+        "chamber_rows": "8416",
+        "official_roll_call_rows": "1685",
+        "nonrecorded_final_approval_rows": "6731",
+        "measures_with_both_final_roll_calls": "310",
+        "unique_official_vote_sources": "1685",
+    }
+    for key, expected in expected_metadata.items():
+        require(metadata.get(key) == expected, f"Final-vote metadata {key} drifted")
+    require(metadata.get("builder_sha256") == sha256_file(FINAL_VOTE_PANEL_BUILDER), "Final-vote builder hash drifted")
+    require(metadata.get("lifecycle_builder_sha256") == sha256_file(BUILDER), "Final-vote lifecycle-builder hash drifted")
+    require(metadata.get("output_sha256") == sha256_file(FINAL_VOTE_PANEL), "Final-vote output hash drifted")
+    decision_panel_hash = hashlib.sha256(
+        "|".join(sha256_file(path) for path in (EXECUTIVE_PANEL, JOINT_PANEL)).encode()
+    ).hexdigest()
+    require(metadata.get("decision_panel_sha256") == decision_panel_hash, "Final-vote decision-panel hash drifted")
+    metadata_text = FINAL_VOTE_PANEL_METADATA.read_text()
+    require("Earlier roll calls are not substituted" in metadata_text, "Final-vote non-imputation rule is missing")
+    require("post-passage descriptive context" in metadata_text, "Final-vote claim boundary is missing")
+    require("matched_grouped_question" in metadata_text, "Final-vote grouped-question audit is missing")
+
+
 def check_executive_diagnostic() -> None:
     rows = read_csv(EXECUTIVE_DIAGNOSTIC)
-    require(len(rows) == 22, f"Expected 22 executive-action rows; found {len(rows)}")
+    require(len(rows) == 32, f"Expected 32 executive-action rows; found {len(rows)}")
     by_cohort = {row["cohort"]: row for row in rows}
     expected = {
-        "108": ("congress", 476, 0, 0, "0.000000", "empirical_reference_congress"),
-        "109": ("congress", 466, 1, 0, "0.002146", "empirical_reference_congress"),
-        "110": ("congress", 449, 11, 4, "0.024499", "empirical_reference_congress"),
-        "111": ("congress", 367, 1, 0, "0.002725", "empirical_reference_congress"),
-        "112": ("congress", 272, 0, 0, "0.000000", "empirical_reference_congress"),
-        "113": ("congress", 282, 0, 0, "0.000000", "empirical_reference_congress"),
-        "114": ("congress", 330, 5, 1, "0.015152", "empirical_reference_congress"),
-        "115": ("congress", 417, 0, 0, "0.000000", "empirical_reference_congress"),
-        "116": ("congress", 334, 2, 1, "0.005988", "empirical_reference_congress"),
-        "117": ("congress", 358, 0, 0, "0.000000", "empirical_reference_congress"),
-        "118": ("congress", 270, 1, 0, "0.003704", "empirical_reference_congress"),
-        "George W. Bush": ("administration", 1391, 12, 4, "0.008627", "empirical_reference_administration"),
-        "Barack Obama": ("administration", 1251, 6, 1, "0.004796", "empirical_reference_administration"),
-        "Donald J. Trump": ("administration", 751, 2, 1, "0.002663", "empirical_reference_administration"),
-        "Joseph R. Biden Jr.": ("administration", 628, 1, 0, "0.001592", "empirical_reference_administration"),
-        "unified": ("government_control", 2084, 2, 0, "0.000960", "descriptive_selected_stratum"),
-        "divided": ("government_control", 1937, 19, 6, "0.009809", "descriptive_selected_stratum"),
-        "same-party sponsor": ("sponsor_party", 2217, 1, 0, "0.000451", "descriptive_selected_stratum"),
-        "opposition-party sponsor": ("sponsor_party", 1790, 20, 6, "0.011173", "descriptive_selected_stratum"),
-        "other/unknown sponsor": ("sponsor_party", 14, 0, 0, "0.000000", "descriptive_selected_stratum"),
-        "108-118 pooled": ("pooled", 4021, 21, 6, "0.005223", "empirical_reference_pooled"),
-        "117-selected 50-seed panel": ("simulator", 2621, 647, 0, "0.246852", "large_descriptive_mismatch_no_prespecified_tolerance"),
+        "108": ("bill", "congress", 476, 0, 0, "0.000000", "empirical_reference_bill_congress"),
+        "109": ("bill", "congress", 466, 1, 0, "0.002146", "empirical_reference_bill_congress"),
+        "110": ("bill", "congress", 449, 11, 4, "0.024499", "empirical_reference_bill_congress"),
+        "111": ("bill", "congress", 367, 1, 0, "0.002725", "empirical_reference_bill_congress"),
+        "112": ("bill", "congress", 272, 0, 0, "0.000000", "empirical_reference_bill_congress"),
+        "113": ("bill", "congress", 282, 0, 0, "0.000000", "empirical_reference_bill_congress"),
+        "114": ("bill", "congress", 330, 5, 1, "0.015152", "empirical_reference_bill_congress"),
+        "115": ("bill", "congress", 417, 0, 0, "0.000000", "empirical_reference_bill_congress"),
+        "116": ("bill", "congress", 334, 2, 1, "0.005988", "empirical_reference_bill_congress"),
+        "117": ("bill", "congress", 358, 0, 0, "0.000000", "empirical_reference_bill_congress"),
+        "118": ("bill", "congress", 270, 1, 0, "0.003704", "empirical_reference_bill_congress"),
+        "George W. Bush": ("bill", "administration", 1391, 12, 4, "0.008627", "descriptive_bill_stratum"),
+        "Barack Obama": ("bill", "administration", 1251, 6, 1, "0.004796", "descriptive_bill_stratum"),
+        "Donald J. Trump": ("bill", "administration", 751, 2, 1, "0.002663", "descriptive_bill_stratum"),
+        "Joseph R. Biden Jr.": ("bill", "administration", 628, 1, 0, "0.001592", "descriptive_bill_stratum"),
+        "unified": ("bill", "government_control", 2084, 2, 0, "0.000960", "descriptive_bill_stratum"),
+        "divided": ("bill", "government_control", 1937, 19, 6, "0.009809", "descriptive_bill_stratum"),
+        "same-party sponsor": ("bill", "sponsor_party", 2217, 1, 0, "0.000451", "descriptive_bill_stratum"),
+        "opposition-party sponsor": ("bill", "sponsor_party", 1790, 20, 6, "0.011173", "descriptive_bill_stratum"),
+        "other/unknown sponsor": ("bill", "sponsor_party", 14, 0, 0, "0.000000", "descriptive_bill_stratum"),
+        "108-118 H.R./S. bills": ("bill", "measure_class", 4021, 21, 6, "0.005223", "empirical_reference_bill_class"),
+        "108-118 joint resolutions": ("joint_resolution", "measure_class", 187, 26, 0, "0.139037", "empirical_reference_joint_resolution_class"),
+        "108-118 all presented measures": ("all_presented_measures", "pooled", 4208, 47, 6, "0.011169", "empirical_reference_combined"),
+        "both final roll calls": ("all_presented_measures", "final_vote_coverage", 310, 40, 4, "0.129032", "descriptive_final_vote_coverage"),
+        "House final roll only": ("all_presented_measures", "final_vote_coverage", 1023, 3, 1, "0.002933", "descriptive_final_vote_coverage"),
+        "Senate final roll only": ("all_presented_measures", "final_vote_coverage", 42, 0, 0, "0.000000", "descriptive_final_vote_coverage"),
+        "no final roll calls": ("all_presented_measures", "final_vote_coverage", 2833, 4, 1, "0.001412", "descriptive_final_vote_coverage"),
+        "both chambers at least two-thirds": ("all_presented_measures", "both_recorded_minimum_support", 165, 5, 4, "0.030303", "descriptive_both_recorded_support_stratum"),
+        "one or both chambers below two-thirds": ("all_presented_measures", "both_recorded_minimum_support", 145, 35, 0, "0.241379", "descriptive_both_recorded_support_stratum"),
+        "opposition majority in both chambers": ("all_presented_measures", "both_recorded_opposition_support", 199, 40, 4, "0.201005", "descriptive_both_recorded_opposition_support_stratum"),
+        "opposition below majority in one or both chambers": ("all_presented_measures", "both_recorded_opposition_support", 111, 0, 0, "0.000000", "descriptive_both_recorded_opposition_support_stratum"),
+        "117-selected 50-seed panel": ("undifferentiated_simulator_measures", "simulator", 2621, 647, 0, "0.246852", "large_descriptive_mismatch_no_prespecified_tolerance"),
     }
     require(set(by_cohort) == set(expected), "Executive-action cohort set drifted")
     for cohort, values in expected.items():
-        group_type, decisions, vetoes, overrides, veto_rate, status = values
+        measure_class, group_type, decisions, vetoes, overrides, veto_rate, status = values
         row = by_cohort[cohort]
+        require(row["measureClass"] == measure_class, f"Executive diagnostic {cohort} measure class drifted")
         require(row["groupType"] == group_type, f"Executive diagnostic {cohort} group type drifted")
         require(row["decisionCount"] == str(decisions), f"Executive diagnostic {cohort} decisions drifted")
         require(row["enactedBills"] == str(decisions - vetoes + overrides), f"Executive diagnostic {cohort} enactments drifted")
@@ -764,9 +1144,9 @@ def check_executive_diagnostic() -> None:
             f"Executive-decision identity failed for {cohort}",
         )
     simulator = by_cohort["117-selected 50-seed panel"]
-    pooled = by_cohort["108-118 pooled"]
-    require(simulator["conditionalVetoRateDifferenceFromPooledEmpirical"] == "0.241630", "Veto-rate difference drifted")
-    require(simulator["conditionalVetoRateRatioToPooledEmpirical"] == "47.266", "Veto-rate ratio drifted")
+    pooled = by_cohort["108-118 all presented measures"]
+    require(simulator["conditionalVetoRateDifferenceFromPooledEmpirical"] == "0.235683", "Veto-rate difference drifted")
+    require(simulator["conditionalVetoRateRatioToPooledEmpirical"] == "22.101", "Veto-rate ratio drifted")
     require(float(pooled["conditionalVetoWilson95High"]) < float(simulator["conditionalVetoWilson95Low"]), "Veto-rate intervals unexpectedly overlap")
     for row in rows:
         if row["vetoes"] == "0":
@@ -776,18 +1156,35 @@ def check_executive_diagnostic() -> None:
                 f"Zero-veto cohort {row['cohort']} must report an undefined override interval",
             )
 
+    coverage = [row for row in rows if row["groupType"] == "final_vote_coverage"]
+    require(sum(int(row["decisionCount"]) for row in coverage) == 4208, "Final-vote coverage denominator drifted")
+    require(sum(int(row["vetoes"]) for row in coverage) == 47, "Final-vote coverage veto count drifted")
+    minimum_support = [row for row in rows if row["groupType"] == "both_recorded_minimum_support"]
+    opposition_support = [row for row in rows if row["groupType"] == "both_recorded_opposition_support"]
+    for subset in (minimum_support, opposition_support):
+        require(sum(int(row["decisionCount"]) for row in subset) == 310, "Both-recorded support denominator drifted")
+        require(sum(int(row["vetoes"]) for row in subset) == 40, "Both-recorded support veto count drifted")
+
     text = EXECUTIVE_DIAGNOSTIC_MD.read_text()
-    require("21 vetoes in 4021 H.R./S. presentments" in text, "Empirical veto denominator disclosure drifted")
+    require("21 vetoes in 4021 decisions" in text, "Bill veto denominator disclosure drifted")
+    require("26 vetoes in 187 decisions" in text, "Joint-resolution veto denominator disclosure drifted")
+    require("47 vetoes in 4208 presented measures" in text, "Combined veto denominator disclosure drifted")
     require("647 vetoes in 2621 executive decisions" in text, "Simulator veto denominator disclosure drifted")
-    require("47.266 times the pooled empirical rate" in text, "Veto-rate mismatch disclosure drifted")
-    require("computed from the integer event counts before rates are rounded" in text, "Exact-count ratio disclosure is missing")
+    require("22.101 times the combined empirical rate" in text, "Veto-rate mismatch disclosure drifted")
+    require("computed from integer event counts before display rates are rounded" in text, "Exact-count ratio disclosure is missing")
     require("No veto-specific tolerance was prespecified" in text, "Post-hoc diagnostic boundary is missing")
     require("elevated-propensity veto stress mechanism" in text, "Veto mechanism interpretation boundary is missing")
     require("19 vetoes in 1937 decisions versus 2 in 2084" in text, "Government-control stratum disclosure drifted")
     require("20 vetoes in 1790 decisions versus 1 in 2217" in text, "Sponsor-party stratum disclosure drifted")
     require("do not estimate causal party-control or sponsor-party effects" in text, "Descriptive-strata boundary is missing")
-    require("Joint resolutions are excluded" in text, "Joint-resolution scope boundary is missing")
-    require("low-event estimator and calibration loss before fitting" in text, "Presidential-choice next gate is missing")
+    require("Bills and joint resolutions are reported separately" in text, "Measure-class boundary is missing")
+    require("1,685 official final roll calls and 6,731 nonrecorded final approvals" in text, "Final-vote coverage disclosure drifted")
+    require("earlier roll calls are never substituted" in text, "Final-vote non-imputation rule is missing")
+    require("40 of 47 vetoes occur among the 310 measures" in text, "Final-vote selection disclosure drifted")
+    require("35 of 145 measures" in text and "5 of 165 measures" in text, "Two-thirds support disclosure drifted")
+    require("All 40 both-recorded vetoes" in text and "other 111 measures contain 0 vetoes" in text, "Opposition-support disclosure drifted")
+    require("informative recording process" in text, "Final-vote missingness boundary is missing")
+    require("low-event estimator" in text and "whole-Congress holdout" in text, "Presidential-choice next gate is missing")
     require("| 117 | 358 | 0 | 0.000000" in text and "| 0 | NA |" in text, "Undefined 117th override rate disclosure drifted")
 
 
@@ -867,8 +1264,10 @@ def main() -> int:
     check_calibration()
     check_temporal_replication()
     check_executive_panel()
+    check_joint_resolution_panel()
+    check_final_vote_panel()
     check_executive_diagnostic()
-    print("GovInfo bill censuses, lifecycle calibration, temporal replication, and executive-action checks passed.")
+    print("GovInfo censuses, lifecycle calibration, executive panels, and final-vote checks passed.")
     return 0
 
 

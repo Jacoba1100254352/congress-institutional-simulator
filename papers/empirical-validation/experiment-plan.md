@@ -84,10 +84,15 @@ Implemented temporal-flow extension:
 - Audit classifier drift across Congresses; classifier v3 preserves the context-dependent `E30000` veto/signature fix, adds two-chamber veto-override classification, and leaves established 117th- and 118th-Congress funnel counts unchanged.
 - Audit presented-bill accounting and conditional executive-action rates separately from lifecycle-threshold selection. Preserve the 47.266-fold pooled empirical-to-simulator veto-rate mismatch across the compact 108th-118th-Congress panel as a model boundary rather than introducing a post hoc pass/fail tolerance.
 
+Locked presidential-choice extension:
+
+- `presidential-choice-study-specification.md` freezes the combined H.R./S./H.J.Res./S.J.Res. population, explicit final-roll-call missingness pathways, two nested low-dimensional penalized logistic models, fixed L2 penalty, deterministic solver, whole-Congress temporal tests, scoring rules, and 118th-Congress acceptance gate before estimator implementation or fitting.
+- The specification is a post-source-audit, pre-fit analysis plan rather than a blinded preregistration. The 116th-Congress check is secondary and cannot alter the primary 118th-Congress model or gate.
+
 Remaining tasks:
 
 - Add separate calibration and held-out extracts rather than a hash split of one bounded sample.
-- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers; add joint resolutions, final chamber-vote support, and a separately frozen low-event presidential-choice design; and add independent or held-out checks for topic throughput, lobbying, and committee activity.
+- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers; implement and report the locked low-event presidential-choice study using the completed joint-resolution and final-vote panels; and add independent or held-out checks for topic throughput, lobbying, and committee activity.
 - Report error metrics for more targets instead of only broad tolerance membership.
 
 ## Stage 3: Representation and Public Support
