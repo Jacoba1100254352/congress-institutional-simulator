@@ -17,13 +17,13 @@ FULLY_LINKED = {"linked"}
 
 ROADMAP: dict[str, dict[str, str]] = {
     "govinfo bill and action records": {
-        "blockingGap": "The 117th- and 118th-Congress H.R./S. censuses are source-backed and classifier-audited, and the frozen no-refit transport report preserves a narrow enactment miss. A third completed Congress and source-specific agenda-control records are still absent.",
+        "blockingGap": "The complete 116th- 117th- and 118th-Congress H.R./S. censuses are source-backed and classifier-audited. The frozen backcast and forecast pass 5 of 6 aggregate tolerances while preserving the 118th enactment miss. The executive-action diagnostic also exposes a large conditional-veto-rate mismatch. Source-specific agenda-control and presidential-choice records remain absent.",
         "requiredJoinKeys": "congress,bill_type,bill_number,bill_id,action_date,source_xml_sha256,actions_sha256",
         "targetSourceFamilies": "Congress.gov bill histories; additional completed GovInfo BILLSTATUS Congresses; committee and floor-rule records",
-        "minimumViableDataset": "The pinned 117th- and 118th-Congress pair plus a third completed-Congress census produced by the same reviewed classifier and source-specific agenda-control evidence.",
-        "acceptanceGate": "A third completed Congress reproduces the lifecycle schema without refitting and source-specific records test referral jurisdiction, floor-rule openness, calendar control, or status-quo fallback before broader transport claims are made.",
-        "futureTarget": "make build-govinfo-bill-census-raw ARGS='--congress <completed Congress> --allow-unpinned-source'",
-        "claimUpgradeBoundary": "Supports descriptive census-backed legislative flow, within-Congress held-out checks, and one no-refit temporal transport test; it does not validate public welfare, representation, implementation outcomes, or causal mechanisms.",
+        "minimumViableDataset": "The pinned 116th-118th census panel plus source-specific referral floor-rule calendar status-quo-fallback and executive-action evidence produced under a reviewed common protocol.",
+        "acceptanceGate": "Source-specific records test at least one agenda-control mechanism and a longer completed-Congress panel supports a separately frozen presidential-choice calibration before broader mechanism or transport claims are made.",
+        "futureTarget": "make legislative-executive-action-diagnostic and extend the pinned census protocol to additional completed Congresses before fitting a separate presidential-choice model",
+        "claimUpgradeBoundary": "Supports descriptive census-backed legislative flow, within-Congress held-out checks, two no-refit external-cohort transport checks, and a veto mechanism diagnostic; it does not validate public welfare, representation, implementation outcomes, or causal mechanisms.",
     },
     "Voteview roll-call data": {
         "blockingGap": "Roll-call rows now carry Voteview member metadata and a bounded Voteview bill-number crosswalk, but coverage is incomplete and still does not connect roll calls to topic, district public-opinion, public-law, implementation, court, or outcome evidence.",

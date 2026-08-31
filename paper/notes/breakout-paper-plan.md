@@ -21,10 +21,13 @@ lobbying, public-support proxies, and empirical calibration/validation.
 Needed before drafting: stronger validation datasets, tighter benchmark
 fairness controls, and clearer institutional-theory framing.
 
-Current validation progress: complete source-pinned 117th- and 118th-Congress
-H.R./S. lifecycle censuses now support one frozen no-refit temporal test. Two of
-three aggregate rates pass; enactment misses its tolerance. This strengthens the
-empirical boundary but does not remove the broader drafting gate.
+Current validation progress: complete source-pinned 116th-, 117th-, and
+118th-Congress H.R./S. lifecycle censuses now support two external-Congress
+no-refit temporal tests. Five of six cohort-metric cells pass; 118th-Congress
+enactment misses its tolerance. A separate diagnostic shows a 79.157-fold
+conditional veto-rate mismatch, so executive choice remains a stress mechanism
+rather than a U.S.-calibrated model. This strengthens the empirical boundary but
+does not remove the broader drafting gate.
 
 ## Robustness And Failure-Mode Paper
 

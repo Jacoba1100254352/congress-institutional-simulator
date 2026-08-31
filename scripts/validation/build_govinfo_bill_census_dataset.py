@@ -39,11 +39,19 @@ DEFAULT_ARCHIVE_DIR = Path("out/validation-cache/govinfo-billstatus")
 OUT_CSV = Path("data/validation/raw/govinfo_bill_census.csv")
 OUT_METADATA = Path("data/validation/raw/govinfo_bill_census.metadata.md")
 USER_AGENT = "congress-institutional-simulator-validation/0.3"
-CLASSIFICATION_VERSION = "govinfo-bill-lifecycle-v2"
+CLASSIFICATION_VERSION = "govinfo-bill-lifecycle-v3"
 
 # These pins freeze the completed-Congress source bytes used for the committed
 # publication artifact. A changed upstream archive must be reviewed explicitly.
 KNOWN_ARCHIVE_PINS: dict[tuple[int, str], tuple[str, int]] = {
+    (116, "hr"): (
+        "b3775e79914a9db29b3a8d55ae13638020c44822dcecb9e4517371e093d01dde",
+        9062,
+    ),
+    (116, "s"): (
+        "e876253f4e3c8b58b28278c8e6e3b901eff0c336b74dfc6e90834d9d3af98132",
+        5086,
+    ),
     (117, "hr"): (
         "658b2d280e4e7972c86bfd810ebff0c9bb61c115b242de8c8774034dea08de03",
         9709,
@@ -122,6 +130,9 @@ FIELDNAMES = [
     "vetoed",
     "vetoed_date",
     "vetoed_basis",
+    "veto_overridden",
+    "veto_overridden_date",
+    "veto_overridden_basis",
     "enacted",
     "enacted_date",
     "enacted_basis",
@@ -181,6 +192,8 @@ FLOOR_CONSIDERATION_CODES = {
 HOUSE_PASSAGE_CODES = {"8000", "H37100", "H37300"}
 SENATE_PASSAGE_CODES = {"17000"}
 PRESENTED_CODES = {"E20000", "28000"}
+HOUSE_VETO_OVERRIDE_CODES = {"32000"}
+SENATE_VETO_OVERRIDE_CODES = {"34000"}
 # E30000 is deliberately excluded. GovInfo uses it for both presidential
 # signatures and vetoes in different source streams, so its text must disambiguate.
 ENACTED_CODES = {"E40000", "36000", "41000"}
@@ -657,6 +670,24 @@ def vetoed_match(action: Action) -> str:
     return ""
 
 
+def house_veto_override_match(action: Action) -> str:
+    folded = action.text.casefold()
+    if action.code in HOUSE_VETO_OVERRIDE_CODES:
+        return action_basis(action, "house_veto_override", code_triggered=True)
+    if positive_result(action.text) and "passed house over veto" in folded:
+        return action_basis(action, "house_veto_override")
+    return ""
+
+
+def senate_veto_override_match(action: Action) -> str:
+    folded = action.text.casefold()
+    if action.code in SENATE_VETO_OVERRIDE_CODES:
+        return action_basis(action, "senate_veto_override", code_triggered=True)
+    if positive_result(action.text) and "passed senate over veto" in folded:
+        return action_basis(action, "senate_veto_override")
+    return ""
+
+
 def stage_from_activity(
     committees: list[ET.Element],
     name_fragment: str,
@@ -680,6 +711,16 @@ def earliest_stage(*stages: Stage) -> Stage:
     if dated:
         return min(dated, key=lambda stage: (stage.date, stage.basis))
     return reached[0]
+
+
+def latest_stage(*stages: Stage) -> Stage:
+    reached = [stage for stage in stages if stage.reached]
+    if not reached:
+        return Stage(False)
+    dated = [stage for stage in reached if stage.date]
+    if dated:
+        return max(dated, key=lambda stage: (stage.date, stage.basis))
+    return reached[-1]
 
 
 def infer_stage(stage: Stage, source: Stage, label: str) -> Stage:
@@ -734,6 +775,16 @@ def integrity_issues(row: dict[str, str]) -> list[str]:
         issues.append("completed_passage_without_both_chambers")
     if row.get("enacted") == "1" and row.get("completed_congressional_passage") != "1":
         issues.append("enacted_without_completed_passage")
+    if row.get("veto_overridden") == "1" and row.get("vetoed") != "1":
+        issues.append("override_without_veto")
+    if row.get("veto_overridden") == "1" and row.get("enacted") != "1":
+        issues.append("override_without_enactment")
+    if (
+        row.get("vetoed") == "1"
+        and row.get("enacted") == "1"
+        and row.get("veto_overridden") != "1"
+    ):
+        issues.append("vetoed_enactment_without_override")
 
     introduced_date = row.get("introduced_date", "")
     for field in (
@@ -750,6 +801,7 @@ def integrity_issues(row: dict[str, str]) -> list[str]:
         "completed_congressional_passage_date",
         "presented_to_president_date",
         "vetoed_date",
+        "veto_overridden_date",
         "enacted_date",
         "latest_action_date",
     ):
@@ -762,6 +814,12 @@ def integrity_issues(row: dict[str, str]) -> list[str]:
         and row["enacted_date"] < row["completed_congressional_passage_date"]
     ):
         issues.append("enactment_before_completed_passage")
+    if (
+        row.get("vetoed_date")
+        and row.get("veto_overridden_date")
+        and row["veto_overridden_date"] < row["vetoed_date"]
+    ):
+        issues.append("override_before_veto")
     return sorted(set(issues))
 
 
@@ -843,6 +901,13 @@ def parse_bill_xml(
     presented = stage_from_actions(actions, presented_match)
     enacted_action = stage_from_actions(actions, enacted_match)
     vetoed = stage_from_actions(actions, vetoed_match)
+    house_veto_override = stage_from_actions(actions, house_veto_override_match)
+    senate_veto_override = stage_from_actions(actions, senate_veto_override_match)
+    veto_overridden = (
+        latest_stage(house_veto_override, senate_veto_override)
+        if house_veto_override.reached and senate_veto_override.reached
+        else Stage(False)
+    )
 
     law_elements = children(at(bill, "laws"), "item")
     law_types = sorted({text_at(item, "type") for item in law_elements if text_at(item, "type")})
@@ -941,6 +1006,7 @@ def parse_bill_xml(
     stage_columns(row, "completed_congressional_passage", completed)
     stage_columns(row, "presented_to_president", presented)
     stage_columns(row, "vetoed", vetoed)
+    stage_columns(row, "veto_overridden", veto_overridden)
     stage_columns(row, "enacted", enacted)
 
     row["integrity_status"] = integrity_status(integrity_issues(row))
@@ -1124,6 +1190,7 @@ def metadata_content(
         ("Completed congressional passage", "completed_congressional_passage"),
         ("Presented to President", "presented_to_president"),
         ("Vetoed", "vetoed"),
+        ("Veto overridden", "veto_overridden"),
         ("Enacted", "enacted"),
     ):
         count = metric_count(rows, field)
@@ -1135,10 +1202,11 @@ def metadata_content(
         "",
         "- Scope is limited to H.R. and S. measures. Resolutions and joint resolutions are excluded.",
         "- Every direct `bill/actions/item` record is parsed. The committed bill row stores action counts and a canonical action hash; the source XML row stores a byte-level hash.",
-        "- Referral, hearing, markup, reporting, discharge, floor consideration, chamber passage, presentment, veto, and enactment use documented action codes where available and conservative text rules where codes are absent.",
+        "- Referral, hearing, markup, reporting, discharge, floor consideration, chamber passage, presentment, veto, successful override, and enactment use documented action codes where available and conservative text rules where codes are absent.",
         "- `committee_ordered_reported` records a committee vote or action ordering the measure reported; `committee_reported` requires a report action or report citation. `committee_advanced` means ordered reported, reported, or discharged. None of these fields asserts a hearing, favorable recommendation, or committee influence.",
         "- `floor_considered` means substantive consideration or passage evidence. Administrative receipt, message, calendar, and special-rule actions alone do not satisfy it.",
         "- `completed_congressional_passage` requires presentment, final chamber agreement, a second-chamber passage without amendment, or enactment. Separate chamber passage flags can describe passage of nonidentical versions and are not alone treated as completed passage.",
+        "- `veto_overridden` requires affirmative House and Senate override evidence. A vetoed enacted bill without both chamber stages fails the integrity audit.",
         "- Missing explicit intermediate records may be conservatively inferred from completed passage or enactment; each inferred field carries an `inferred_from:` basis and may have only the downstream date.",
         "- The GPO guide states that no complete authoritative action-code list exists and that action type values are processing categories. Therefore every stage remains an operational classification, not an official legal-status determination.",
         "",

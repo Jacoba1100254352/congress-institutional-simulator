@@ -900,13 +900,13 @@ metadata.
 
 ### Stage 7: Calibration and Held-Out Validation
 
-Current state: broad calibration/sanity screens only.
+Current state: broad calibration/sanity screens, nine narrow source-family held-out checks, a 117th-Congress lifecycle threshold selection applied without refitting to the complete 116th and 118th Congresses, and a separate executive-action boundary diagnostic. Five of six external cohort-metric tolerances pass; the 118th-Congress enactment miss and 79.157-fold conditional veto-rate mismatch are retained.
 
 Future requirements:
 
-- define calibration period and held-out period;
-- separate target-setting data from evaluation data;
-- report errors, tolerance rules, and failures;
+- extend the fixed calibration/evaluation design across a longer multi-administration panel and mechanism-specific observables;
+- preserve separation between target-setting data and external evaluation data;
+- report errors, prespecified tolerance rules, failures, and descriptive diagnostics without post hoc retuning;
 - preserve synthetic-only labels for unsupported metrics.
 
 ## Reproducibility Plan
@@ -937,7 +937,7 @@ empirical-heldout-check
 
 Before this can become a data/resource paper:
 
-- all 14 configured dataset files across 13 source families continue to have usable raw or cached summary inputs;
+- all 15 configured dataset files across 13 source families continue to have usable raw or cached summary inputs;
 - public support advances beyond the one historical related-issue pilot to exact or closer contemporaneous questions, validated geography, design-based uncertainty or MRP where needed, and bill-text-specific affected-population evidence, and campaign finance is linked beyond the current bounded concentration, issue-sector, member, district-context, sponsored-bill, local no-exact-match, target-scope, cached bill-action, and source-acquisition queue layers;
 - the linkage report shows bill/topic/statute or actor joins for the high-priority public-opinion, finance, implementation, and statutory-lineage areas;
 - implementation, law-revision, and comparative-institution proxy data are present, with bounded comparative scenario-family metadata anchors added and full lineage, observed productivity, and institutional-fit data still documented as future work;

@@ -7,15 +7,20 @@
 
 2. Flow-target observed versus simulated plot
    - Source: `reports/legislative-lifecycle-temporal-replication.csv` plus future broader held-out flow reports.
-   - Current temporal metrics: committee advancement, floor consideration, and enactment with prespecified tolerance bands.
-   - Preserve the failed enactment point-error check visually.
+   - Current temporal metrics: committee advancement, floor consideration, and enactment for the 116th and 118th Congresses with prespecified tolerance bands.
+   - Preserve the failed 118th-Congress enactment point-error check visually and show the 5 / 6 cohort-metric result.
 
-3. Empirical-boundary matrix
+3. Executive-action boundary plot
+   - Source: `reports/legislative-executive-action-diagnostic.csv`.
+   - Show pooled empirical and frozen simulator conditional veto rates with Wilson intervals.
+   - Label the 79.157-fold difference as a descriptive stress-mechanism boundary, not a post hoc formal test.
+
+4. Empirical-boundary matrix
    - Rows: simulator metrics.
    - Columns: observable empirical targets.
    - Cell: direct, proxy, missing, or synthetic-only.
 
-4. Public-support mapping figure
+5. Public-support mapping figure
    - Future only.
    - Shows national, district, and affected-group support mapping if data exists.
 
@@ -25,7 +30,7 @@
    - Source, license, access, cached offline status, row count, fields, simulator proxy.
 
 2. Calibration versus validation distinction
-   - Calibration target, within-Congress held-out target, later-Congress target, error metric, tolerance, and pass/fail.
+   - Calibration target, within-Congress held-out target, external-Congress targets, error metric, tolerance, and pass/fail.
 
 3. Current gap table
    - Start from `reports/empirical-validation-gap-report.csv`, `reports/empirical-linkage-report.csv`, and `reports/empirical-linkage-roadmap.csv`.

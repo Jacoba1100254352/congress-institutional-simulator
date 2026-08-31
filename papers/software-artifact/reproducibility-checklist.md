@@ -62,7 +62,7 @@ Record:
 | Fixed seeds documented | yes | pass for core Makefile campaigns and docs |
 | PDF/text manifest check | yes | partial; `paper/pdf-manifest.json` exists, full check not rerun in clean clone |
 | Output schema documented | yes | pass; `docs/output-schema.md` exists |
-| Paired census and temporal result integrity | yes | pass in current checkout through `make govinfo-bill-census-check`; clean clone not yet logged |
+| Three-census, temporal, and executive-diagnostic integrity | yes | pass in current checkout through `make govinfo-bill-census-check`; clean clone not yet logged |
 | Source architecture documented | yes | pass; `docs/architecture.md` exists |
 | Extension guide | yes | pass; `docs/adding-a-mechanism.md` and `docs/adding-a-campaign.md` exist |
 | License | yes | fail; missing |
@@ -78,7 +78,7 @@ Allowed:
 - The repository contains Makefile targets for build, test, campaign generation, paper checks, offline reproduction, and anonymous supplement creation.
 - The current checkout test suite passes under Java 21.
 - The root README documents no-network reproduction and optional network-dependent inputs.
-- The committed paired GovInfo censuses and frozen temporal report have a deterministic integrity-check target.
+- The committed 116th-, 117th-, and 118th-Congress GovInfo censuses, frozen temporal report, and executive-action diagnostic have a deterministic integrity-check target.
 - Root `CITATION.cff`, `codemeta.json`, and `RELEASE.md` now provide pre-release citation, software, and release-plan metadata.
 
 Not allowed yet:

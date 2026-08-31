@@ -45,15 +45,22 @@ public final class CurrentCongressWorkflowCalibrationProbe
 		double defaultThreshold = ChamberCommitteeScenarioBuilders.currentCongressCalendarPriority();
 
 		System.out.println(
-				"threshold,seed,runs,bills,defaultThreshold,committeeAdvanceRate,floorConsiderationRate,enactmentRate,calendarCapacityDenialRate"
+				"threshold,seed,runs,bills,defaultThreshold,committeeAdvanceRate,floorConsiderationRate,enactmentRate,calendarCapacityDenialRate,enactedBills,vetoes,overriddenVetoes,executiveDecisions,conditionalVetoRate,overrideRateAmongVetoes"
 		);
 		for (double threshold : thresholds) {
 			for (long seed : seeds) {
 				Scenario scenario = ChamberCommitteeScenarioBuilders.stylizedCurrentCongressWorkflow(threshold);
 				ScenarioReport report = simulator.compare(List.of(scenario), world, runs, seed).getFirst();
+				int executiveDecisions = report.enactedBills() + report.vetoes() - report.overriddenVetoes();
+				double conditionalVetoRate = executiveDecisions == 0
+						? 0.0
+						: (double) report.vetoes() / executiveDecisions;
+				double overrideRateAmongVetoes = report.vetoes() == 0
+						? 0.0
+						: (double) report.overriddenVetoes() / report.vetoes();
 				System.out.printf(
 						Locale.ROOT,
-						"%.3f,%d,%d,%d,%.3f,%.6f,%.6f,%.6f,%.6f%n",
+						"%.3f,%d,%d,%d,%.3f,%.6f,%.6f,%.6f,%.6f,%d,%d,%d,%d,%.6f,%.6f%n",
 						threshold,
 						seed,
 						runs,
@@ -62,7 +69,13 @@ public final class CurrentCongressWorkflowCalibrationProbe
 						report.supplementalMetric("committeeAdvanceRate"),
 						report.floorConsiderationRate(),
 						report.productivity(),
-						report.supplementalMetric("calendarCapacityDenialRate")
+						report.supplementalMetric("calendarCapacityDenialRate"),
+						report.enactedBills(),
+						report.vetoes(),
+						report.overriddenVetoes(),
+						executiveDecisions,
+						conditionalVetoRate,
+						overrideRateAmongVetoes
 				);
 			}
 		}

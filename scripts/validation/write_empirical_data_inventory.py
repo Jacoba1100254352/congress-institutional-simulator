@@ -20,7 +20,10 @@ BOUNDARY_CSV = Path("reports/validation-boundary-matrix.csv")
 BOUNDARY_MD = Path("reports/validation-boundary-matrix.md")
 
 RELATED_RAW = {
-    "govinfo_bill_census.csv": Path("data/validation/raw/govinfo_bill_census_118.csv"),
+    "govinfo_bill_census.csv": (
+        Path("data/validation/raw/govinfo_bill_census_116.csv"),
+        Path("data/validation/raw/govinfo_bill_census_118.csv"),
+    ),
 }
 
 DATE_COLUMNS = (
@@ -155,10 +158,17 @@ def write_inventory(rows: list[dict[str, str]]) -> None:
     for row in rows:
         date_range = row["dateRange"] if row["dateRange"] else "---"
         related = "---"
-        if row["relatedRawPath"]:
-            related = (
-                f"`{row['relatedRawPath']}` ({row['relatedRowCount']} rows; "
-                f"{row['relatedDateRange'] or 'no dates'})"
+        if row["relatedRawPaths"]:
+            related_paths = row["relatedRawPaths"].split(";")
+            related_counts = row["relatedRawRowCounts"].split(";")
+            related_dates = row["relatedRawDateRanges"].split(";")
+            related = "; ".join(
+                f"`{path}` ({count} rows; {date_range or 'no dates'})"
+                for path, count, date_range in zip(
+                    related_paths,
+                    related_counts,
+                    related_dates,
+                )
             )
         lines.append(
             f"| {row['sourceFamily']} | `{row['dataset']}` | {row['inventoryStatus']} | "
@@ -226,10 +236,8 @@ def main() -> int:
         status = inventory_status(readiness_status, source["offline_status"])
         heldout_status = heldout.get(source["source_family"], "")
         bridge_status = bridges.get(dataset, "")
-        related_path = RELATED_RAW.get(dataset)
-        related_count, related_date_range, _ = (
-            raw_profile(str(related_path)) if related_path is not None else ("0", "", "")
-        )
+        related_paths = RELATED_RAW.get(dataset, ())
+        related_profiles = [raw_profile(str(path)) for path in related_paths]
         rows.append({
             "sourceFamily": source["source_family"],
             "sourceName": source["source_name"],
@@ -254,9 +262,9 @@ def main() -> int:
             "networkRequired": source["network_required"],
             "cachePath": source["cache_path"],
             "rawPath": source["raw_path"],
-            "relatedRawPath": str(related_path) if related_path is not None else "",
-            "relatedRowCount": related_count if related_path is not None else "",
-            "relatedDateRange": related_date_range,
+            "relatedRawPaths": ";".join(str(path) for path in related_paths),
+            "relatedRawRowCounts": ";".join(profile[0] for profile in related_profiles),
+            "relatedRawDateRanges": ";".join(profile[1] for profile in related_profiles),
             "transformationScript": source["transformation_script"],
             "columns": columns,
             "limitations": source["limitations"],

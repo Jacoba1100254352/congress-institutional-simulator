@@ -74,16 +74,23 @@ The current validation pipeline writes:
   concentration, OpenFEC campaign-finance concentration, CES district-opinion
   proxies, SCDB court review, Federal Register implementation delay,
   Congress.gov law-revision text, and comparative-institution context.
+- `reports/govinfo-bill-census-116.csv`: complete 116th-Congress H.R./S.
+  lifecycle summary used only as an external no-refit temporal cohort.
 - `reports/govinfo-bill-census.csv`: complete 117th-Congress H.R./S. lifecycle
   summary used for threshold selection and within-Congress stability checks.
 - `reports/govinfo-bill-census-118.csv`: complete 118th-Congress H.R./S.
-  lifecycle summary used only as the later temporal cohort.
+  lifecycle summary used only as an external no-refit temporal cohort.
 - `reports/legislative-lifecycle-calibration.csv`: fixed threshold grid and
   selected 117th-Congress calibration result.
 - `reports/legislative-lifecycle-temporal-replication.csv`: no-refit transport
-  errors against the complete 118th census, including Wilson intervals,
-  prespecified tolerances, and pass/fail status. The current result passes two
-  of three tolerances and retains the enactment miss.
+  errors against the complete 116th and 118th censuses, including Wilson
+  intervals, prespecified tolerances, and pass/fail status. The current result
+  passes five of six cohort-metric tolerances and retains the 118th-Congress
+  enactment miss.
+- `reports/legislative-executive-action-diagnostic.csv`: empirical presentment,
+  veto, override, and enactment counts for all three censuses plus the frozen
+  simulator panel, with conditional-rate intervals and a descriptive
+  mechanism-boundary comparison.
 - `reports/empirical-data-inventory.csv`: source-family inventory joined from
   the registry and current reports.
 - `reports/empirical-linkage-report.csv`: explicit raw-data join coverage by

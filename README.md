@@ -71,9 +71,11 @@ This no-network target regenerates:
 - `reports/lobbying-bill-text-review.csv`
 - `reports/lobbying-bill-disposition-review.csv`
 - `reports/govinfo-billstatus-linkage.csv`
+- `reports/govinfo-bill-census-116.csv`
 - `reports/govinfo-bill-census.csv`
 - `reports/govinfo-bill-census-118.csv`
 - `reports/legislative-lifecycle-calibration.csv`
+- `reports/legislative-executive-action-diagnostic.csv`
 - `reports/legislative-lifecycle-temporal-replication.csv`
 - `reports/rulemaking-authority-linkage.csv`
 - `reports/rulemaking-history-linkage.csv`
@@ -172,6 +174,7 @@ Optional empirical sample rebuilds are separate:
 ```sh
 make fetch-validation-samples
 make build-bill-progression-raw
+make build-govinfo-bill-census-116-raw
 make build-govinfo-bill-census-raw
 make build-govinfo-bill-census-118-raw
 make build-govinfo-billstatus-linkage-raw
@@ -233,12 +236,16 @@ optional Python packages. The govinfo BILLSTATUS linkage builder uses public
 bulk XML records to cross-check the cached Congress.gov bill-progression
 sample by congress, bill type, and bill number; it does not create a full bill
 census, public-opinion, implementation, court, welfare, or model-validation
-dataset. The separate census builder does create complete pinned 117th- and
-118th-Congress H.R./S. lifecycle cohorts with record/action hashes and explicit
-classifier audits. `make legislative-lifecycle-temporal-replication` applies
-the frozen 117th selection to the 118th without refitting; two aggregate rates
-pass their existing tolerances and enactment misses by 0.000825. This remains
-narrow flow-transport evidence, not causal model validation. The sponsor-bill linkage builder joins the bounded sponsor aggregate to
+dataset. The separate census builders create complete pinned 116th-, 117th-,
+and 118th-Congress H.R./S. lifecycle cohorts with record/action hashes and
+explicit classifier audits. `make legislative-lifecycle-temporal-replication`
+applies the frozen 117th-Congress selection to the 116th and 118th Congresses
+without refitting; five of six cohort-metric cells pass and 118th-Congress
+enactment misses by 0.000825. The separate executive-action diagnostic records
+a 79.157-fold conditional veto-rate mismatch and bounds the current veto
+mechanism as an elevated-propensity stress mechanism. This remains narrow
+flow-transport and mechanism-boundary evidence, not causal model validation.
+The sponsor-bill linkage builder joins the bounded sponsor aggregate to
 public govinfo/Congress.gov bill metadata by Bioguide ID only; it does not
 create full Center for Effective Lawmaking, complete sponsor-history,
 legislative-quality, or model-validation evidence. The campaign-finance

@@ -116,6 +116,20 @@ def aggregate(
             if simulator_field in SELECTION_METRICS:
                 fit_error += (error / tolerance) ** 2
         result["calendarCapacityDenialRate"] = f"{mean(float(row['calendarCapacityDenialRate']) for row in candidate_rows):.6f}"
+        enacted_bills = sum(int(row["enactedBills"]) for row in candidate_rows)
+        vetoes = sum(int(row["vetoes"]) for row in candidate_rows)
+        overridden_vetoes = sum(int(row["overriddenVetoes"]) for row in candidate_rows)
+        executive_decisions = sum(int(row["executiveDecisions"]) for row in candidate_rows)
+        result["enactedBills"] = str(enacted_bills)
+        result["vetoes"] = str(vetoes)
+        result["overriddenVetoes"] = str(overridden_vetoes)
+        result["executiveDecisions"] = str(executive_decisions)
+        result["conditionalVetoRate"] = (
+            f"{vetoes / executive_decisions:.6f}" if executive_decisions else "0.000000"
+        )
+        result["overrideRateAmongVetoes"] = (
+            f"{overridden_vetoes / vetoes:.6f}" if vetoes else "0.000000"
+        )
         result["standardizedSquaredError"] = f"{fit_error:.6f}"
         result["selected"] = "0"
         output.append(result)
@@ -206,6 +220,17 @@ def write_markdown(
         )
     lines.extend(
         [
+            "",
+            "## Executive-Action Diagnostic",
+            "",
+            f"- Enacted bills: {selected['enactedBills']}",
+            f"- Veto events: {selected['vetoes']}",
+            f"- Successful overrides: {selected['overriddenVetoes']}",
+            f"- Executive decisions: {selected['executiveDecisions']} (enactments plus vetoes minus overridden vetoes)",
+            f"- Conditional veto rate: {float(selected['conditionalVetoRate']):.6f}",
+            f"- Override rate among vetoes: {float(selected['overrideRateAmongVetoes']):.6f}",
+            "",
+            "These quantities are diagnostics only. They do not enter threshold selection, which remains frozen to floor consideration and enactment on the 117th calibration split.",
             "",
             "## Candidate Grid",
             "",

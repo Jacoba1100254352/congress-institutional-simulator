@@ -34,14 +34,15 @@ STAGES = (
     ),
     ("presented", "presented_to_president", "Presented to President"),
     ("vetoed", "vetoed", "Vetoed"),
+    ("vetoOverridden", "veto_overridden", "Veto overridden"),
     ("enacted", "enacted", "Enacted"),
 )
 
 CLAIM_BOUNDARY = (
     "The census supports descriptive 117th-Congress H.R./S. legislative-flow "
     "benchmarks, calibration, and deterministic within-Congress held-out checks. "
-    "Its use with the complete 118th census supports an aggregate temporal transport "
-    "check, not causal mechanism validity, public support, public benefit, welfare, "
+    "Its use with the complete 116th and 118th censuses supports aggregate temporal "
+    "transport checks, not causal mechanism validity, public support, public benefit, welfare, "
     "or institutional rankings."
 )
 
@@ -164,6 +165,7 @@ def validate_census(rows: list[dict[str, str]], metadata: dict[str, str]) -> Non
         "floor_considered",
         "passed_origin_chamber",
         "completed_congressional_passage",
+        "veto_overridden",
         "enacted",
         "actions_count",
         "source_xml_sha256",
@@ -245,7 +247,7 @@ def write_markdown(
     lines = [
         "# GovInfo Bill Lifecycle Census",
         "",
-        "This report summarizes the provenance-pinned GovInfo BILLSTATUS census for H.R. and S. measures in the completed 117th Congress. It supplies the frozen calibration baseline for the separate 118th-Congress temporal transport report; neither artifact is a causal simulator-validation claim.",
+        "This report summarizes the provenance-pinned GovInfo BILLSTATUS census for H.R. and S. measures in the completed 117th Congress. It supplies the frozen calibration baseline for the separate 116th- and 118th-Congress temporal transport checks; none of these artifacts is a causal simulator-validation claim.",
         "",
         f"- Bills: {all_row['billCount']} ({by_group[('bill_type', 'hr')]['billCount']} H.R.; {by_group[('bill_type', 's')]['billCount']} S.)",
         f"- Parsed direct bill actions: {all_row['actionCount']}",
@@ -299,11 +301,11 @@ def write_markdown(
         "",
         "- The source archives contain both legacy v1 and current v3 XML records; both schemas are parsed, and no record is dropped for schema generation.",
         "- Action codes are used only where their observed meaning is stable in this corpus. Special-rule actions, failed discharge requests, administrative messages, and sponsorship substitutions do not advance the bill lifecycle.",
-        "- Classifier v2 excludes context-dependent action code `E30000` from code-only enactment. Positive signature/enactment text or an unambiguous law record/code is required; this correction leaves every 117th aggregate count unchanged.",
+        "- Classifier v2 excluded context-dependent action code `E30000` from code-only enactment. Classifier v3 adds successful veto-override evidence only when both chambers affirmatively override; neither change alters a 117th aggregate funnel count.",
         "- Committee ordered-reported actions are separate from filed committee reports. Committee advancement is the union of ordered reported, reported, and discharged.",
         "- Completed congressional passage requires presentment, enactment, or second-chamber passage without amendment. Passing nonidentical versions in each chamber is not enough.",
         "- Five official committee-activity dates precede bill introduction. The source dates are retained and labeled rather than corrected locally.",
-        "- The calibration/held-out split is suitable for within-Congress stability only. The complete 118th census supplies the separate no-refit temporal transport test.",
+        "- The calibration/held-out split is suitable for within-Congress stability only. The complete 116th and 118th censuses supply separate no-refit temporal backcast and forecast checks.",
         "",
         f"Claim boundary: {CLAIM_BOUNDARY}",
     ])

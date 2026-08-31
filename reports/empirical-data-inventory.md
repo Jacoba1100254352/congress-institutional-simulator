@@ -15,7 +15,7 @@ Boundary categories:
 | Source family | Dataset | Inventory status | Boundary | Rows | Related cohort | Date range | Evidence |
 | --- | --- | --- | --- | ---: | --- | --- | --- |
 | Congress.gov bill histories | `bill_progression.csv` | ready | calibration proxy | 180 | --- | 2023-01-03..2024-12-23 | raw summary available |
-| govinfo bill and action records | `govinfo_bill_census.csv` | ready | held-out benchmark | 15066 | `data/validation/raw/govinfo_bill_census_118.csv` (16213 rows; 2023-01-03..2025-01-06) | 2021-01-03..2023-01-05 | held-out benchmark: pass; reported |
+| govinfo bill and action records | `govinfo_bill_census.csv` | ready | held-out benchmark | 15066 | `data/validation/raw/govinfo_bill_census_116.csv` (14148 rows; 2019-01-03..2021-01-13); `data/validation/raw/govinfo_bill_census_118.csv` (16213 rows; 2023-01-03..2025-01-06) | 2021-01-03..2023-01-05 | held-out benchmark: pass; reported |
 | Voteview roll-call data | `voteview_rollcalls.csv` | ready | held-out benchmark | 83636 | --- | --- | held-out benchmark: pass; reported |
 | Comparative Agendas topic throughput | `topic_throughput.csv` | ready | flow sanity check | 28 | --- | --- | raw summary bridge: raw summary available |
 | QoG and V-Dem comparative institutions | `comparative_institutions.csv` | ready | held-out benchmark | 130 | --- | 2011..2020 | held-out benchmark: pass; reported |

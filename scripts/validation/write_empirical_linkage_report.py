@@ -20,6 +20,7 @@ VOTEVIEW_MEMBER_CONTEXT = Path("data/validation/raw/voteview_member_context.csv"
 VOTEVIEW_BILL_LINKAGE = Path("data/validation/raw/voteview_bill_linkage.csv")
 GOVINFO_BILLSTATUS_LINKAGE = Path("data/validation/raw/govinfo_billstatus_linkage.csv")
 GOVINFO_BILL_CENSUS = Path("data/validation/raw/govinfo_bill_census.csv")
+GOVINFO_BILL_CENSUS_116 = Path("data/validation/raw/govinfo_bill_census_116.csv")
 GOVINFO_BILL_CENSUS_118 = Path("data/validation/raw/govinfo_bill_census_118.csv")
 LEGISLATIVE_LIFECYCLE_TEMPORAL_REPLICATION = Path(
     "reports/legislative-lifecycle-temporal-replication.csv"
@@ -278,15 +279,18 @@ def govinfo_bill_census_summary() -> tuple[int, int, int, int, int, int]:
     )
 
 
-def govinfo_bill_census_118_summary() -> tuple[int, int, int, int, int, int]:
-    rows = read_csv(GOVINFO_BILL_CENSUS_118)
+def govinfo_external_census_summary(
+    path: Path,
+    congress: str,
+) -> tuple[int, int, int, int, int, int, int]:
+    rows = read_csv(path)
     source_backed = [
         row
         for row in rows
         if len(row.get("source_xml_sha256", "")) == 64
         and len(row.get("actions_sha256", "")) == 64
         and row.get("source_url", "").startswith(
-            "https://www.govinfo.gov/bulkdata/BILLSTATUS/118/"
+            f"https://www.govinfo.gov/bulkdata/BILLSTATUS/{congress}/"
         )
         and not row.get("integrity_status", "").startswith("invalid:")
     ]
@@ -296,6 +300,7 @@ def govinfo_bill_census_118_summary() -> tuple[int, int, int, int, int, int]:
         for row in source_backed
     )
     vetoed = sum(row.get("vetoed") == "1" for row in source_backed)
+    overridden = sum(row.get("veto_overridden") == "1" for row in source_backed)
     enacted = sum(row.get("enacted") == "1" for row in source_backed)
     return (
         len(rows),
@@ -303,6 +308,7 @@ def govinfo_bill_census_118_summary() -> tuple[int, int, int, int, int, int]:
         action_count,
         source_date_anomalies,
         vetoed,
+        overridden,
         enacted,
     )
 
@@ -2120,25 +2126,39 @@ def linkage_rows(registry: list[dict[str, str]]) -> list[dict[str, str]]:
                 public_law_enacted_aligned,
             ) = govinfo_bill_census_summary()
             (
-                temporal_rows,
-                temporal_source_backed_rows,
-                temporal_action_count,
-                temporal_source_date_anomalies,
-                temporal_vetoed,
-                temporal_enacted,
-            ) = govinfo_bill_census_118_summary()
+                backcast_rows,
+                backcast_source_backed_rows,
+                backcast_action_count,
+                backcast_source_date_anomalies,
+                backcast_vetoed,
+                backcast_overridden,
+                backcast_enacted,
+            ) = govinfo_external_census_summary(GOVINFO_BILL_CENSUS_116, "116")
+            (
+                forecast_rows,
+                forecast_source_backed_rows,
+                forecast_action_count,
+                forecast_source_date_anomalies,
+                forecast_vetoed,
+                forecast_overridden,
+                forecast_enacted,
+            ) = govinfo_external_census_summary(GOVINFO_BILL_CENSUS_118, "118")
             temporal_passes, temporal_metrics = legislative_lifecycle_temporal_summary()
             bounded_linked, action_aligned, policy_aligned = govinfo_billstatus_linkage_summary()
-            if source_backed_rows > 0 and temporal_source_backed_rows > 0:
+            if (
+                source_backed_rows > 0
+                and backcast_source_backed_rows > 0
+                and forecast_source_backed_rows > 0
+            ):
                 result.append(build_row(
                     source,
                     rows,
                     source_backed_rows,
                     "linked" if source_backed_rows == census_rows else "partially linked",
-                    "pinned 117th- and 118th-Congress GovInfo BILLSTATUS bulk archives; Congress.gov public-law linkage; bounded 118th-Congress source cross-check; no-refit temporal transport report",
-                    "census bill_id -> source_url,source_xml_sha256,actions_sha256; census bill_id -> law_revision_bill_linkage.bill_id; 117th selected threshold -> complete 118th aggregate rates",
-                    f"The normalized 117th census preserves record-level GovInfo source URLs, XML hashes, and canonical action hashes for {source_backed_rows} / {census_rows} bills derived from {action_count} direct bill actions, with {source_date_anomalies} explicit source-date anomaly rows. The paired 118th temporal cohort preserves the same evidence for {temporal_source_backed_rows} / {temporal_rows} bills derived from {temporal_action_count} actions, with {temporal_source_date_anomalies} source-date anomalies, {temporal_vetoed} veto, and {temporal_enacted} enactments. The frozen no-refit transport test passes {temporal_passes} / {temporal_metrics} aggregate tolerances and preserves the enactment miss. The separate 117th-Congress Congress.gov public-law linkage overlaps {public_law_overlaps} census bills with {public_law_enacted_aligned} enacted flags aligned, while the bounded 118th-Congress cross-check retains {bounded_linked} identifier matches, {action_aligned} coarse action-flag alignments, and {policy_aligned} policy-area alignments. These are provenance, lifecycle, and cross-source checks only; they do not provide public-opinion evidence, campaign-finance or lobbying influence, implementation or court outcomes, public benefit, welfare, or causal model validation.",
-                    "Add a third completed Congress without refitting and add source-specific validation of referral jurisdiction, floor-rule openness, calendar control, and status-quo fallback.",
+                    "pinned 116th- 117th- and 118th-Congress GovInfo BILLSTATUS bulk archives; Congress.gov public-law linkage; bounded 118th-Congress source cross-check; no-refit temporal transport and executive-action diagnostic reports",
+                    "census bill_id -> source_url,source_xml_sha256,actions_sha256; census bill_id -> law_revision_bill_linkage.bill_id; 117th selected threshold -> complete 116th and 118th aggregate rates; presentment -> veto -> override/enactment",
+                    f"The normalized 117th calibration census preserves record-level GovInfo source URLs, XML hashes, and canonical action hashes for {source_backed_rows} / {census_rows} bills derived from {action_count} direct bill actions, with {source_date_anomalies} explicit source-date anomaly rows. The 116th backcast preserves the same evidence for {backcast_source_backed_rows} / {backcast_rows} bills and {backcast_action_count} actions, with {backcast_source_date_anomalies} anomalies, {backcast_vetoed} vetoes, {backcast_overridden} override, and {backcast_enacted} enactments. The 118th forecast covers {forecast_source_backed_rows} / {forecast_rows} bills and {forecast_action_count} actions, with {forecast_source_date_anomalies} anomalies, {forecast_vetoed} veto, {forecast_overridden} overrides, and {forecast_enacted} enactments. The frozen no-refit transport test passes {temporal_passes} / {temporal_metrics} external cohort-metric tolerances and preserves the 118th enactment miss. The executive-action diagnostic separately exposes a large conditional-veto-rate mismatch. The 117th-Congress Congress.gov public-law linkage overlaps {public_law_overlaps} census bills with {public_law_enacted_aligned} enacted flags aligned, while the bounded 118th-Congress cross-check retains {bounded_linked} identifier matches, {action_aligned} coarse action-flag alignments, and {policy_aligned} policy-area alignments. These are provenance, lifecycle, mechanism-diagnostic, and cross-source checks only; they do not provide public-opinion evidence, campaign-finance or lobbying influence, implementation or court outcomes, public benefit, welfare, or causal model validation.",
+                    "Add source-specific validation of referral jurisdiction, floor-rule openness, calendar control, status-quo fallback, and presidential choice across a longer completed-Congress panel.",
                 ))
                 continue
             result.append(build_row(

@@ -64,6 +64,7 @@ def validate(rows: list[dict[str, str]], metadata: dict[str, str]) -> None:
     veto_rows = [row for row in rows if row.get("vetoed") == "1"]
     require([row["bill_id"] for row in veto_rows] == [EXPECTED_VETO_BILL], "118th veto classification drifted.")
     require(veto_rows[0].get("enacted") == "0", "The 118th veto row is incorrectly enacted.")
+    require(not any(row.get("veto_overridden") == "1" for row in rows), "118th override count drifted.")
     presented_not_enacted = {
         row["bill_id"]
         for row in rows
@@ -141,15 +142,15 @@ def write_markdown(
         "",
         "## Bill-Type Strata",
         "",
-        "| Type | Bills | Committee advanced | Floor considered | Origin passage | Completed passage | Vetoed | Enacted |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "| Type | Bills | Committee advanced | Floor considered | Origin passage | Completed passage | Vetoed | Overridden | Enacted |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ])
     for bill_type in ("hr", "s"):
         row = by_group[("bill_type", bill_type)]
         lines.append(
             f"| `{bill_type}` | {row['billCount']} | {row['committeeAdvancedRate']} | "
             f"{row['floorConsideredRate']} | {row['originPassageRate']} | "
-            f"{row['completedCongressionalPassageRate']} | {row['vetoedRate']} | "
+            f"{row['completedCongressionalPassageRate']} | {row['vetoedRate']} | {row['vetoOverriddenRate']} | "
             f"{row['enactedRate']} |"
         )
 
@@ -157,7 +158,8 @@ def write_markdown(
         "",
         "## Classification And Integrity Audit",
         "",
-        "- The temporal audit found that GovInfo action code `E30000` is context-dependent: it labels signatures in most records but labels the presidential veto of `118-s-4199`. Classifier v2 therefore requires positive signature/enactment text or an unambiguous law record/code rather than treating `E30000` alone as enactment.",
+        "- The temporal audit found that GovInfo action code `E30000` is context-dependent: it labels signatures in most records but labels the presidential veto of `118-s-4199`. Classifier v2 therefore required positive signature/enactment text or an unambiguous law record/code rather than treating `E30000` alone as enactment.",
+        "- Classifier v3 adds a successful-override field that requires affirmative evidence from both chambers. No 118th-Congress bill satisfies it, and the lifecycle funnel is otherwise unchanged.",
         "- `118-s-4199` completed passage and was presented, then vetoed; it is the only presented bill in this scope that was not enacted.",
         f"- Both chamber-passage flags are present for {nonidentical_text}, but the conservative classifier does not mark completed passage because the records do not establish agreement on identical text.",
         f"- The {len(anomalies)} preserved source-date anomalies are hearing dates before introduction in official committee-activity metadata: {anomaly_bills}.",

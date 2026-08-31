@@ -116,7 +116,7 @@ public final class CalibrationTargetCatalog
 						0.00,
 						8.00,
 						"Congress.gov action histories and CRS presidential veto summaries",
-						"Loose range because run length is abstract; failures here indicate a wildly implausible veto model."
+						"Legacy broad count screen because run length is abstract; it does not calibrate conditional veto probability."
 				),
 				new CalibrationBenchmark(
 						"sponsor-success-concentration",

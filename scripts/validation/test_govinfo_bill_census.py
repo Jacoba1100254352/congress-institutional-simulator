@@ -20,6 +20,7 @@ try:
         aggregate as aggregate_lifecycle_calibration,
         leave_one_seed_out_selections,
     )
+    from .write_legislative_executive_action_diagnostic import diagnostic_row
     from .write_legislative_lifecycle_temporal_replication import (
         build_rows as build_temporal_rows,
         wilson_interval,
@@ -37,6 +38,7 @@ except ImportError:  # Direct script execution used by the Makefile.
         aggregate as aggregate_lifecycle_calibration,
         leave_one_seed_out_selections,
     )
+    from write_legislative_executive_action_diagnostic import diagnostic_row
     from write_legislative_lifecycle_temporal_replication import (
         build_rows as build_temporal_rows,
         wilson_interval,
@@ -170,6 +172,7 @@ PRESIDENTIAL_ACTION_XML = """<?xml version="1.0" encoding="UTF-8"?>
     <committees><item><systemCode>ssju00</systemCode><name>Committee on the Judiciary</name></item></committees>
     <committeeReports />
     <actions>
+      {override_actions}
       <item><actionDate>2024-12-23</actionDate><text>{presidential_text}</text><type>President</type><actionCode>E30000</actionCode><sourceSystem><code>2</code><name>House floor actions</name></sourceSystem></item>
       <item><actionDate>2024-12-20</actionDate><text>Presented to President.</text><type>President</type><actionCode>E20000</actionCode><sourceSystem><code>2</code><name>House floor actions</name></sourceSystem></item>
       <item><actionDate>2024-12-16</actionDate><text>On passage Passed without objection.</text><type>Floor</type><actionCode>H37300</actionCode><sourceSystem><code>2</code><name>House floor actions</name></sourceSystem></item>
@@ -177,7 +180,7 @@ PRESIDENTIAL_ACTION_XML = """<?xml version="1.0" encoding="UTF-8"?>
       <item><actionDate>2024-04-19</actionDate><text>Referred to the Committee on the Judiciary.</text><type>IntroReferral</type><actionCode>2000</actionCode><sourceSystem><code>9</code><name>Library of Congress</name></sourceSystem></item>
     </actions>
     <sponsors><item><bioguideId>T000002</bioguideId><party>R</party><state>NC</state></item></sponsors>
-    <laws /><policyArea><name>Law</name></policyArea><title>Presidential Action Test Act</title>
+    {laws}<policyArea><name>Law</name></policyArea><title>Presidential Action Test Act</title>
   </bill>
 </billStatus>
 """
@@ -292,7 +295,11 @@ class GovInfoBillCensusTests(unittest.TestCase):
 
     def test_context_dependent_e30000_veto_is_not_enactment(self) -> None:
         row = parse_bill_xml(
-            PRESIDENTIAL_ACTION_XML.format(presidential_text="Vetoed by President.").encode(),
+            PRESIDENTIAL_ACTION_XML.format(
+                presidential_text="Vetoed by President.",
+                override_actions="",
+                laws="<laws />",
+            ).encode(),
             archive("/tmp/BILLSTATUS-118-s.zip", "s"),
             118,
             "s",
@@ -303,12 +310,17 @@ class GovInfoBillCensusTests(unittest.TestCase):
         self.assertEqual("1", row["presented_to_president"])
         self.assertEqual("1", row["vetoed"])
         self.assertEqual("action_text:presidential_veto", row["vetoed_basis"])
+        self.assertEqual("0", row["veto_overridden"])
         self.assertEqual("0", row["enacted"])
         self.assertEqual("valid", row["integrity_status"])
 
     def test_context_dependent_e30000_signature_uses_positive_text(self) -> None:
         row = parse_bill_xml(
-            PRESIDENTIAL_ACTION_XML.format(presidential_text="Signed by President.").encode(),
+            PRESIDENTIAL_ACTION_XML.format(
+                presidential_text="Signed by President.",
+                override_actions="",
+                laws="<laws />",
+            ).encode(),
             archive("/tmp/BILLSTATUS-118-s.zip", "s"),
             118,
             "s",
@@ -318,6 +330,53 @@ class GovInfoBillCensusTests(unittest.TestCase):
         self.assertEqual("1", row["enacted"])
         self.assertEqual("action_text:signed_by_president", row["enacted_basis"])
         self.assertEqual("0", row["vetoed"])
+        self.assertEqual("0", row["veto_overridden"])
+        self.assertEqual("valid", row["integrity_status"])
+
+    def test_successful_veto_override_requires_both_chambers(self) -> None:
+        override_actions = """
+      <item><actionDate>2025-01-02</actionDate><text>Became Public Law No: 118-999.</text><type>BecameLaw</type><actionCode>36000</actionCode><sourceSystem><code>9</code><name>Library of Congress</name></sourceSystem></item>
+      <item><actionDate>2025-01-01</actionDate><text>Passed Senate over veto by Yea-Nay Vote.</text><type>Veto</type><actionCode>34000</actionCode><sourceSystem><code>9</code><name>Library of Congress</name></sourceSystem></item>
+      <item><actionDate>2024-12-30</actionDate><text>Passed House over veto by the Yeas and Nays.</text><type>Veto</type><actionCode>32000</actionCode><sourceSystem><code>9</code><name>Library of Congress</name></sourceSystem></item>
+        """
+        row = parse_bill_xml(
+            PRESIDENTIAL_ACTION_XML.format(
+                presidential_text="Vetoed by President.",
+                override_actions=override_actions,
+                laws="<laws><item><number>118-999</number><type>Public Law</type></item></laws>",
+            ).encode(),
+            archive("/tmp/BILLSTATUS-118-s.zip", "s"),
+            118,
+            "s",
+            "BILLSTATUS-118s4199.xml",
+        )
+
+        self.assertEqual("1", row["vetoed"])
+        self.assertEqual("1", row["veto_overridden"])
+        self.assertEqual("2025-01-01", row["veto_overridden_date"])
+        self.assertEqual("action_code:34000", row["veto_overridden_basis"])
+        self.assertEqual("1", row["enacted"])
+        self.assertEqual("valid", row["integrity_status"])
+
+    def test_one_chamber_override_does_not_count_as_successful(self) -> None:
+        house_override = """
+      <item><actionDate>2024-12-30</actionDate><text>Passed House over veto by the Yeas and Nays.</text><type>Veto</type><actionCode>32000</actionCode><sourceSystem><code>9</code><name>Library of Congress</name></sourceSystem></item>
+        """
+        row = parse_bill_xml(
+            PRESIDENTIAL_ACTION_XML.format(
+                presidential_text="Vetoed by President.",
+                override_actions=house_override,
+                laws="<laws />",
+            ).encode(),
+            archive("/tmp/BILLSTATUS-118-s.zip", "s"),
+            118,
+            "s",
+            "BILLSTATUS-118s4199.xml",
+        )
+
+        self.assertEqual("1", row["vetoed"])
+        self.assertEqual("0", row["veto_overridden"])
+        self.assertEqual("0", row["enacted"])
         self.assertEqual("valid", row["integrity_status"])
 
     def test_claim_boundary_uses_requested_congress(self) -> None:
@@ -381,6 +440,12 @@ class GovInfoBillCensusTests(unittest.TestCase):
                     "floorConsiderationRate": "0.060000",
                     "enactmentRate": "0.030000",
                     "calendarCapacityDenialRate": "0.040000",
+                    "enactedBills": "5",
+                    "vetoes": "2",
+                    "overriddenVetoes": "1",
+                    "executiveDecisions": "6",
+                    "conditionalVetoRate": "0.333333",
+                    "overrideRateAmongVetoes": "0.500000",
                 },
                 {
                     "threshold": "0.680",
@@ -392,6 +457,12 @@ class GovInfoBillCensusTests(unittest.TestCase):
                     "floorConsiderationRate": "0.075000",
                     "enactmentRate": "0.040000",
                     "calendarCapacityDenialRate": "0.050000",
+                    "enactedBills": "7",
+                    "vetoes": "3",
+                    "overriddenVetoes": "1",
+                    "executiveDecisions": "9",
+                    "conditionalVetoRate": "0.333333",
+                    "overrideRateAmongVetoes": "0.333333",
                 },
             ])
         targets = {
@@ -407,10 +478,27 @@ class GovInfoBillCensusTests(unittest.TestCase):
         )
         selected = next(row for row in aggregated if row["selected"] == "1")
         self.assertEqual("0.670", selected["calendarPriorityThreshold"])
+        self.assertEqual("15", selected["enactedBills"])
+        self.assertEqual("6", selected["vetoes"])
+        self.assertEqual("0.333333", selected["conditionalVetoRate"])
         self.assertEqual(
             {"0.670": 3},
             dict(leave_one_seed_out_selections(rows, targets)),
         )
+
+    def test_override_rate_is_undefined_without_vetoes(self) -> None:
+        row = diagnostic_row(
+            "GovInfo census",
+            "test",
+            decisions=10,
+            enacted=10,
+            vetoes=0,
+            overrides=0,
+            status="empirical_reference",
+        )
+        self.assertEqual("NA", row["overrideRateAmongVetoes"])
+        self.assertEqual("NA", row["overrideWilson95Low"])
+        self.assertEqual("NA", row["overrideWilson95High"])
 
     def test_temporal_transport_tolerances_are_inclusive(self) -> None:
         rows_117 = [

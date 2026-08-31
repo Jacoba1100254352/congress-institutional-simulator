@@ -1,10 +1,10 @@
 # GovInfo Bill Lifecycle Census
 
-- generated_at_utc: 2026-08-30T23:31:46+00:00
-- classification_version: `govinfo-bill-lifecycle-v2`
-- configuration_sha256: `2283fb945b7bbc3173e6b7d96c449f741ff861e93e6c84d09ac457258834c9c5`
-- builder_sha256: `0f195c23faac0e0bcacb9d5fcd80ab240f33e44749ab10155bc509e8bf8904be`
-- output_sha256: `5dd533c526597944838088706980f07ac16bda5005ae57e573ed2911a99c7eba`
+- generated_at_utc: 2026-08-31T00:30:57+00:00
+- classification_version: `govinfo-bill-lifecycle-v3`
+- configuration_sha256: `04010f38d64f5541e2919b3aef2ccadaa0ee0df21c1e6f8d5ddfa17e1be1410d`
+- builder_sha256: `6040b63cb735e9d1009396664ced60b263d6c7b4896656a1ead8051cb6a9ff3a`
+- output_sha256: `74f5270b7bd70f6b041fc100e18976a4626eb6aaa20ef1a7deedbf3a1aace747`
 - congress: 117
 - bill_types: hr,s
 - rows: 15066
@@ -38,16 +38,18 @@
 | Completed congressional passage | 358 | 0.023762 |
 | Presented to President | 358 | 0.023762 |
 | Vetoed | 0 | 0.000000 |
+| Veto overridden | 0 | 0.000000 |
 | Enacted | 358 | 0.023762 |
 
 ## Operational Definitions
 
 - Scope is limited to H.R. and S. measures. Resolutions and joint resolutions are excluded.
 - Every direct `bill/actions/item` record is parsed. The committed bill row stores action counts and a canonical action hash; the source XML row stores a byte-level hash.
-- Referral, hearing, markup, reporting, discharge, floor consideration, chamber passage, presentment, veto, and enactment use documented action codes where available and conservative text rules where codes are absent.
+- Referral, hearing, markup, reporting, discharge, floor consideration, chamber passage, presentment, veto, successful override, and enactment use documented action codes where available and conservative text rules where codes are absent.
 - `committee_ordered_reported` records a committee vote or action ordering the measure reported; `committee_reported` requires a report action or report citation. `committee_advanced` means ordered reported, reported, or discharged. None of these fields asserts a hearing, favorable recommendation, or committee influence.
 - `floor_considered` means substantive consideration or passage evidence. Administrative receipt, message, calendar, and special-rule actions alone do not satisfy it.
 - `completed_congressional_passage` requires presentment, final chamber agreement, a second-chamber passage without amendment, or enactment. Separate chamber passage flags can describe passage of nonidentical versions and are not alone treated as completed passage.
+- `veto_overridden` requires affirmative House and Senate override evidence. A vetoed enacted bill without both chamber stages fails the integrity audit.
 - Missing explicit intermediate records may be conservatively inferred from completed passage or enactment; each inferred field carries an `inferred_from:` basis and may have only the downstream date.
 - The GPO guide states that no complete authoritative action-code list exists and that action type values are processing categories. Therefore every stage remains an operational classification, not an official legal-status determination.
 

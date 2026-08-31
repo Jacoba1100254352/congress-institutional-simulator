@@ -78,15 +78,16 @@ Implemented v1 task:
 
 Implemented temporal-flow extension:
 
-- Build complete source-pinned 117th- and 118th-Congress H.R./S. GovInfo censuses with record/action hashes, archive pins, and explicit source-date anomalies.
-- Freeze threshold selection on the 117th calibration split, then apply the selected 0.68 threshold to all 118th rows without refitting.
-- Preserve the prespecified 0.020 committee, 0.015 floor, and 0.010 enactment tolerances and report the 2 / 3 result, including the enactment miss.
-- Audit classifier drift across Congresses; classifier v2 resolves the context-dependent `E30000` veto/signature code while leaving every 117th aggregate count unchanged.
+- Build complete source-pinned 116th-, 117th-, and 118th-Congress H.R./S. GovInfo censuses with record/action hashes, archive pins, and explicit source-date anomalies.
+- Freeze threshold selection on the 117th calibration split, then apply the selected 0.68 threshold to all 116th and 118th rows without refitting.
+- Preserve the prespecified 0.020 committee, 0.015 floor, and 0.010 enactment tolerances and report the 5 / 6 external cohort-metric result, including the 118th-Congress enactment miss.
+- Audit classifier drift across Congresses; classifier v3 preserves the context-dependent `E30000` veto/signature fix, adds two-chamber veto-override classification, and leaves established 117th- and 118th-Congress funnel counts unchanged.
+- Audit presented-bill accounting and conditional executive-action rates separately from lifecycle-threshold selection. Preserve the 79.157-fold pooled empirical-to-simulator veto-rate mismatch as a model boundary rather than introducing a post hoc pass/fail tolerance.
 
 Remaining tasks:
 
 - Add separate calibration and held-out extracts rather than a hash split of one bounded sample.
-- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers, add a third complete GovInfo Congress without refitting, and add independent or held-out checks for topic throughput, lobbying, and committee activity.
+- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers, extend the no-refit GovInfo panel across more administrations, and add independent or held-out checks for topic throughput, lobbying, and committee activity.
 - Report error metrics for more targets instead of only broad tolerance membership.
 
 ## Stage 3: Representation and Public Support

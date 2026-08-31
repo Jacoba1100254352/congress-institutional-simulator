@@ -59,18 +59,21 @@ as ready.
 Pinned legislative-lifecycle replication from committed source extracts:
 
 ```sh
+make govinfo-bill-census-116
 make govinfo-bill-census
 make govinfo-bill-census-118
 make legislative-lifecycle-calibration
+make legislative-executive-action-diagnostic
 make legislative-lifecycle-temporal-replication
 make govinfo-bill-census-check
 ```
 
 The 117th-Congress census supplies the fixed threshold-selection cohort. The
-118th-Congress census is read only after selection as a no-refit temporal test.
-The current frozen result passes the committee-advancement and floor-consideration
-tolerances and misses the enactment tolerance by 0.000825. The failed check is
-retained in the generated report.
+116th- and 118th-Congress censuses are read only after selection as no-refit
+temporal tests. The current frozen result passes all three 116th-Congress cells
+and two of three 118th-Congress cells, retaining the enactment miss of 0.000825.
+The separate executive-action report preserves the 79.157-fold conditional
+veto-rate mismatch as a descriptive model boundary, not a post hoc formal test.
 
 Anonymous supplement:
 
@@ -108,6 +111,7 @@ Optional empirical refreshes are separate from core reproduction:
 ```sh
 make fetch-validation-samples
 make build-bill-progression-raw
+make build-govinfo-bill-census-116-raw
 make build-govinfo-bill-census-raw
 make build-govinfo-bill-census-118-raw
 make build-govinfo-billstatus-linkage-raw
@@ -180,10 +184,10 @@ writing aggregate output.
 Some optional workflows may require API keys or public data access. Adapter
 fixtures are not validation data. Curated raw extracts belong under
 `data/validation/raw/` with source notes.
-The two complete GovInfo census builders fetch the pinned 117th- and
+The three complete GovInfo census builders fetch the pinned 116th-, 117th-, and
 118th-Congress H.R./S. bulk archives. Once the normalized censuses and metadata
-are committed, their reports, calibration, temporal replication, and integrity
-check run without network access.
+are committed, their reports, calibration, temporal replication,
+executive-action diagnostic, and integrity check run without network access.
 `make build-govinfo-billstatus-linkage-raw` refreshes the optional govinfo
 BILLSTATUS cross-check for the cached Congress.gov bill-progression sample. It
 uses public bulk XML, requires no API key, and does not establish a full bill

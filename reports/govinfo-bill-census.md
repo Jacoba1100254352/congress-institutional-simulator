@@ -1,14 +1,14 @@
 # GovInfo Bill Lifecycle Census
 
-This report summarizes the provenance-pinned GovInfo BILLSTATUS census for H.R. and S. measures in the completed 117th Congress. It supplies the frozen calibration baseline for the separate 118th-Congress temporal transport report; neither artifact is a causal simulator-validation claim.
+This report summarizes the provenance-pinned GovInfo BILLSTATUS census for H.R. and S. measures in the completed 117th Congress. It supplies the frozen calibration baseline for the separate 116th- and 118th-Congress temporal transport checks; none of these artifacts is a causal simulator-validation claim.
 
 - Bills: 15066 (9709 H.R.; 5357 S.)
 - Parsed direct bill actions: 72047
 - Public/private law rows: 355 / 3
 - Structurally invalid rows: 0
 - Preserved source-date anomaly rows: 5
-- Classification version: `govinfo-bill-lifecycle-v2`
-- Committed CSV SHA-256: `5dd533c526597944838088706980f07ac16bda5005ae57e573ed2911a99c7eba`
+- Classification version: `govinfo-bill-lifecycle-v3`
+- Committed CSV SHA-256: `74f5270b7bd70f6b041fc100e18976a4626eb6aaa20ef1a7deedbf3a1aace747`
 
 ## Lifecycle Funnel
 
@@ -28,6 +28,7 @@ The split is deterministic: `sha256(bill_id)` first 32 bits modulo 2 equals zero
 | Completed congressional passage | 358 | 0.023762 | 0.022607 | 0.024927 | 0.002320 |
 | Presented to President | 358 | 0.023762 | 0.022607 | 0.024927 | 0.002320 |
 | Vetoed | 0 | 0.000000 | 0.000000 | 0.000000 | 0.000000 |
+| Veto overridden | 0 | 0.000000 | 0.000000 | 0.000000 | 0.000000 |
 | Enacted | 358 | 0.023762 | 0.022607 | 0.024927 | 0.002320 |
 
 ## Bill-Type Strata
@@ -46,10 +47,10 @@ The split is deterministic: `sha256(bill_id)` first 32 bits modulo 2 equals zero
 
 - The source archives contain both legacy v1 and current v3 XML records; both schemas are parsed, and no record is dropped for schema generation.
 - Action codes are used only where their observed meaning is stable in this corpus. Special-rule actions, failed discharge requests, administrative messages, and sponsorship substitutions do not advance the bill lifecycle.
-- Classifier v2 excludes context-dependent action code `E30000` from code-only enactment. Positive signature/enactment text or an unambiguous law record/code is required; this correction leaves every 117th aggregate count unchanged.
+- Classifier v2 excluded context-dependent action code `E30000` from code-only enactment. Classifier v3 adds successful veto-override evidence only when both chambers affirmatively override; neither change alters a 117th aggregate funnel count.
 - Committee ordered-reported actions are separate from filed committee reports. Committee advancement is the union of ordered reported, reported, and discharged.
 - Completed congressional passage requires presentment, enactment, or second-chamber passage without amendment. Passing nonidentical versions in each chamber is not enough.
 - Five official committee-activity dates precede bill introduction. The source dates are retained and labeled rather than corrected locally.
-- The calibration/held-out split is suitable for within-Congress stability only. The complete 118th census supplies the separate no-refit temporal transport test.
+- The calibration/held-out split is suitable for within-Congress stability only. The complete 116th and 118th censuses supply separate no-refit temporal backcast and forecast checks.
 
-Claim boundary: The census supports descriptive 117th-Congress H.R./S. legislative-flow benchmarks, calibration, and deterministic within-Congress held-out checks. Its use with the complete 118th census supports an aggregate temporal transport check, not causal mechanism validity, public support, public benefit, welfare, or institutional rankings.
+Claim boundary: The census supports descriptive 117th-Congress H.R./S. legislative-flow benchmarks, calibration, and deterministic within-Congress held-out checks. Its use with the complete 116th and 118th censuses supports aggregate temporal transport checks, not causal mechanism validity, public support, public benefit, welfare, or institutional rankings.

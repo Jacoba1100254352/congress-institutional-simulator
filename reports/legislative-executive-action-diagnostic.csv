@@ -1,0 +1,6 @@
+sourceType,cohort,decisionDefinition,decisionCount,enactedBills,nonVetoEnactments,vetoes,overriddenVetoes,conditionalVetoRate,conditionalVetoWilson95Low,conditionalVetoWilson95High,overrideRateAmongVetoes,overrideWilson95Low,overrideWilson95High,conditionalVetoRateDifferenceFromPooledEmpirical,conditionalVetoRateRatioToPooledEmpirical,diagnosticStatus
+GovInfo census,116,presented_to_president,334,333,332,2,1,0.005988,0.001644,0.021567,0.500000,0.094531,0.905469,,,empirical_reference
+GovInfo census,117,presented_to_president,358,358,358,0,0,0.000000,0.000000,0.010616,NA,NA,NA,,,empirical_reference
+GovInfo census,118,presented_to_president,270,269,269,1,0,0.003704,0.000654,0.020677,0.000000,0.000000,0.793451,,,empirical_reference
+GovInfo census,116-118 pooled,presented_to_president,962,960,959,3,1,0.003119,0.001061,0.009128,0.333333,0.061492,0.792340,,,empirical_reference_pooled
+frozen simulator,117-selected 50-seed panel,enactedBills + vetoes - overriddenVetoes,2621,1974,1974,647,0,0.246852,0.230724,0.263722,0.000000,0.000000,0.005902,0.243734,79.157,large_descriptive_mismatch_no_prespecified_tolerance

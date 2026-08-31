@@ -33,7 +33,7 @@ This report runs deterministic held-out checks on committed raw empirical sample
 
 Boundary notes:
 
-- The deterministic GovInfo held-out rows remain within the 117th Congress. The separate complete 118th census supplies the no-refit temporal transport test and is reported independently so it cannot enter calibration selection.
+- The deterministic GovInfo held-out rows remain within the 117th Congress. The separate complete 116th and 118th censuses supply external no-refit temporal transport tests and are reported independently so neither can enter calibration selection.
 - Voteview roll-call rows support held-out coalition-size and party-unity plausibility only; they do not validate district public opinion, representation, or generated public benefit.
 - Sponsor rows support held-out proposal-access concentration benchmarking only; they do not validate full member effectiveness or bill-level sponsor success.
 - Campaign-finance rows support held-out concentration and outside-spending observability only; they do not validate bill-level influence or capture.

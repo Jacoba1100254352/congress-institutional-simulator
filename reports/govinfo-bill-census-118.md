@@ -7,8 +7,8 @@ This report summarizes the complete, provenance-pinned GovInfo BILLSTATUS census
 - Public/private law rows: 269 / 0
 - Structurally invalid rows: 0
 - Preserved source-date anomaly rows: 20
-- Classification version: `govinfo-bill-lifecycle-v2`
-- Committed CSV SHA-256: `b5d89515836e7209b6ef0d1d12b86627ebe2b2e6c8914a28a4994ae32278359b`
+- Classification version: `govinfo-bill-lifecycle-v3`
+- Committed CSV SHA-256: `a1d9fee85eb84c8f59bd99bb0c6f71f25fb55c9af10e54415553d851e29edc1b`
 
 ## Lifecycle Funnel
 
@@ -26,18 +26,20 @@ This report summarizes the complete, provenance-pinned GovInfo BILLSTATUS census
 | Completed congressional passage | 270 | 0.016653 |
 | Presented to President | 270 | 0.016653 |
 | Vetoed | 1 | 0.000062 |
+| Veto overridden | 0 | 0.000000 |
 | Enacted | 269 | 0.016592 |
 
 ## Bill-Type Strata
 
-| Type | Bills | Committee advanced | Floor considered | Origin passage | Completed passage | Vetoed | Enacted |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `hr` | 10564 | 0.113783 | 0.063991 | 0.062476 | 0.016850 | 0.000000 | 0.016850 |
-| `s` | 5649 | 0.113471 | 0.049743 | 0.048681 | 0.016286 | 0.000177 | 0.016109 |
+| Type | Bills | Committee advanced | Floor considered | Origin passage | Completed passage | Vetoed | Overridden | Enacted |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hr` | 10564 | 0.113783 | 0.063991 | 0.062476 | 0.016850 | 0.000000 | 0.000000 | 0.016850 |
+| `s` | 5649 | 0.113471 | 0.049743 | 0.048681 | 0.016286 | 0.000177 | 0.000000 | 0.016109 |
 
 ## Classification And Integrity Audit
 
-- The temporal audit found that GovInfo action code `E30000` is context-dependent: it labels signatures in most records but labels the presidential veto of `118-s-4199`. Classifier v2 therefore requires positive signature/enactment text or an unambiguous law record/code rather than treating `E30000` alone as enactment.
+- The temporal audit found that GovInfo action code `E30000` is context-dependent: it labels signatures in most records but labels the presidential veto of `118-s-4199`. Classifier v2 therefore required positive signature/enactment text or an unambiguous law record/code rather than treating `E30000` alone as enactment.
+- Classifier v3 adds a successful-override field that requires affirmative evidence from both chambers. No 118th-Congress bill satisfies it, and the lifecycle funnel is otherwise unchanged.
 - `118-s-4199` completed passage and was presented, then vetoed; it is the only presented bill in this scope that was not enacted.
 - Both chamber-passage flags are present for `118-s-1146`, `118-s-1258`, `118-s-2073`, but the conservative classifier does not mark completed passage because the records do not establish agreement on identical text.
 - The 20 preserved source-date anomalies are hearing dates before introduction in official committee-activity metadata: `118-hr-4821`, `118-hr-6185`, `118-hr-6544`, `118-hr-8771`, `118-hr-8772`, `118-hr-9026`, `118-hr-9027`, `118-hr-9686`, `118-hr-9711`, `118-hr-9714`, `118-hr-9716`, `118-hr-9751`, `118-s-2226`, `118-s-2605`, `118-s-4678`, `118-s-4690`, `118-s-4795`, `118-s-4797`, `118-s-4802`, `118-s-4875`.

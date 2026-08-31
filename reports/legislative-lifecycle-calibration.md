@@ -24,6 +24,17 @@ Selected and model-default threshold: **0.68**.
 | floorConsiderationRate | 0.065442 | 0.061097 | -0.004345 | 0.067715 | -0.006618 |
 | enactmentRate | 0.022607 | 0.027417 | +0.004810 | 0.024927 | +0.002490 |
 
+## Executive-Action Diagnostic
+
+- Enacted bills: 1974
+- Veto events: 647
+- Successful overrides: 0
+- Executive decisions: 2621 (enactments plus vetoes minus overridden vetoes)
+- Conditional veto rate: 0.246852
+- Override rate among vetoes: 0.000000
+
+These quantities are diagnostics only. They do not enter threshold selection, which remains frozen to floor consideration and enactment on the 117th calibration split.
+
 ## Candidate Grid
 
 | Threshold | Committee advance | Floor | Enactment | Calendar denial | Standardized squared error | Selected |

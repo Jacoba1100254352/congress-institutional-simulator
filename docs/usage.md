@@ -205,8 +205,8 @@ Regenerate all paper diagnostics tables:
 make mechanism-diagnostics
 ```
 
-Run the frozen legislative-lifecycle calibration and its no-refit
-118th-Congress temporal test:
+Run the frozen legislative-lifecycle calibration, its no-refit 116th- and
+118th-Congress temporal tests, and the executive-action diagnostic:
 
 ```sh
 make legislative-lifecycle-temporal-replication
@@ -221,7 +221,7 @@ make clean
 
 ## Research Documentation
 
-- [Empirical flow screening and temporal transport](calibration.md): tracked benchmark extract, complete paired GovInfo censuses, fixed calibration, and the no-refit temporal workflow.
+- [Empirical flow screening and temporal transport](calibration.md): tracked benchmark extract, three complete GovInfo censuses, fixed calibration, two-cohort no-refit temporal workflow, and executive-action boundary diagnostic.
 - [ODD model description](odd-model.md): entities, state variables, scheduling, design concepts, initialization, and submodels.
 - [Full ODD+D appendix](odd-d-appendix.md): submission-ready model documentation covering data, adaptation, submodels, assumptions, and outputs.
 

@@ -6,6 +6,7 @@ This report checks whether optional raw empirical inputs are present and shaped 
 | --- | --- | --- | --- |
 | `voteview_rollcalls.csv` | party unity, coalition size, and ideological voting checks | ready | none |
 | `bill_progression.csv` | bounded Congress.gov bill-flow and independent source-cross-check rows | ready | none |
+| `govinfo_bill_census_116.csv` | complete 116th-Congress no-refit temporal bill-lifecycle backcast | ready | none |
 | `govinfo_bill_census.csv` | 117th-Congress calibration and within-Congress bill-lifecycle checks | ready | none |
 | `govinfo_bill_census_118.csv` | complete 118th-Congress no-refit temporal bill-lifecycle test | ready | none |
 | `lobbying_disclosure.csv` | lobby spending distribution and issue-pressure checks | ready | none |
@@ -19,8 +20,8 @@ This report checks whether optional raw empirical inputs are present and shaped 
 | `law_revision_history.csv` | law revision text flags and optional invalidation-linkage checks | ready | none |
 | `comparative_institutions.csv` | cross-national chamber, court, party-system, and legislative-capacity checks | ready | none |
 
-- Files present: 14 / 14
-- Files with required columns: 14 / 14
+- Files present: 15 / 15
+- Files with required columns: 15 / 15
 - Adapter fixture CSVs ignored: 4
 
-Next empirical step: extend the temporal bill-census design to a third completed Congress and continue upgrading bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, paired GovInfo bill censuses, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.
+Next empirical step: extend mechanism-specific agenda and executive-action evidence beyond aggregate lifecycle rates while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo bill censuses, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.
