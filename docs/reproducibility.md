@@ -56,6 +56,22 @@ This includes the PDF, anonymity, figure/table, empirical-boundary, linkage,
 and linkage-roadmap consistency checks used before treating paper-facing output
 as ready.
 
+Pinned legislative-lifecycle replication from committed source extracts:
+
+```sh
+make govinfo-bill-census
+make govinfo-bill-census-118
+make legislative-lifecycle-calibration
+make legislative-lifecycle-temporal-replication
+make govinfo-bill-census-check
+```
+
+The 117th-Congress census supplies the fixed threshold-selection cohort. The
+118th-Congress census is read only after selection as a no-refit temporal test.
+The current frozen result passes the committee-advancement and floor-consideration
+tolerances and misses the enactment tolerance by 0.000825. The failed check is
+retained in the generated report.
+
 Anonymous supplement:
 
 ```sh
@@ -92,6 +108,8 @@ Optional empirical refreshes are separate from core reproduction:
 ```sh
 make fetch-validation-samples
 make build-bill-progression-raw
+make build-govinfo-bill-census-raw
+make build-govinfo-bill-census-118-raw
 make build-govinfo-billstatus-linkage-raw
 make build-core-raw-validation
 make build-sponsor-bill-linkage-raw
@@ -162,6 +180,10 @@ writing aggregate output.
 Some optional workflows may require API keys or public data access. Adapter
 fixtures are not validation data. Curated raw extracts belong under
 `data/validation/raw/` with source notes.
+The two complete GovInfo census builders fetch the pinned 117th- and
+118th-Congress H.R./S. bulk archives. Once the normalized censuses and metadata
+are committed, their reports, calibration, temporal replication, and integrity
+check run without network access.
 `make build-govinfo-billstatus-linkage-raw` refreshes the optional govinfo
 BILLSTATUS cross-check for the cached Congress.gov bill-progression sample. It
 uses public bulk XML, requires no API key, and does not establish a full bill

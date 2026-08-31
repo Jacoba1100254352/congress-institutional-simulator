@@ -1,14 +1,14 @@
 # GovInfo Bill Lifecycle Census
 
-This report summarizes the provenance-pinned GovInfo BILLSTATUS census for H.R. and S. measures in the completed 117th Congress. It is a descriptive legislative-flow benchmark, not a simulator-validation claim.
+This report summarizes the provenance-pinned GovInfo BILLSTATUS census for H.R. and S. measures in the completed 117th Congress. It supplies the frozen calibration baseline for the separate 118th-Congress temporal transport report; neither artifact is a causal simulator-validation claim.
 
 - Bills: 15066 (9709 H.R.; 5357 S.)
 - Parsed direct bill actions: 72047
 - Public/private law rows: 355 / 3
 - Structurally invalid rows: 0
 - Preserved source-date anomaly rows: 5
-- Classification version: `govinfo-bill-lifecycle-v1`
-- Committed CSV SHA-256: `8e43e521148f113e95a2040ec592d7c5470c6303676a534f3d272497cc7bea36`
+- Classification version: `govinfo-bill-lifecycle-v2`
+- Committed CSV SHA-256: `5dd533c526597944838088706980f07ac16bda5005ae57e573ed2911a99c7eba`
 
 ## Lifecycle Funnel
 
@@ -40,15 +40,16 @@ The split is deterministic: `sha256(bill_id)` first 32 bits modulo 2 equals zero
 ## Independent Cross-Checks
 
 - The existing 117th-Congress Congress.gov public-law linkage contributes 40 rows; 40 overlap the census by bill ID, with 40 enacted flags, 40 introduction dates, and 40 policy areas aligned.
-- The separate bounded 118th-Congress Congress.gov/GovInfo sample contains 180 rows; 180 retain GovInfo identifier matches, 180 align on the earlier coarse action flags, and 180 align on policy area. It is a different-Congress source cross-check, not a validation sample for the 117th census.
+- The separate bounded 118th-Congress Congress.gov/GovInfo sample contains 180 rows; 180 retain GovInfo identifier matches, 180 align on the earlier coarse action flags, and 180 align on policy area. It remains a source-translation cross-check; the complete 118th census is the temporal flow test.
 
 ## Interpretation Boundary
 
 - The source archives contain both legacy v1 and current v3 XML records; both schemas are parsed, and no record is dropped for schema generation.
 - Action codes are used only where their observed meaning is stable in this corpus. Special-rule actions, failed discharge requests, administrative messages, and sponsorship substitutions do not advance the bill lifecycle.
+- Classifier v2 excludes context-dependent action code `E30000` from code-only enactment. Positive signature/enactment text or an unambiguous law record/code is required; this correction leaves every 117th aggregate count unchanged.
 - Committee ordered-reported actions are separate from filed committee reports. Committee advancement is the union of ordered reported, reported, and discharged.
 - Completed congressional passage requires presentment, enactment, or second-chamber passage without amendment. Passing nonidentical versions in each chamber is not enough.
 - Five official committee-activity dates precede bill introduction. The source dates are retained and labeled rather than corrected locally.
-- The calibration/held-out split is suitable for stability and tolerance checks only. A later Congress is still required for temporal replication.
+- The calibration/held-out split is suitable for within-Congress stability only. The complete 118th census supplies the separate no-refit temporal transport test.
 
-Claim boundary: The census supports descriptive 117th-Congress H.R./S. legislative-flow benchmarks and deterministic within-Congress held-out checks. It does not establish causal mechanism validity, public support, public benefit, welfare, or institutional rankings.
+Claim boundary: The census supports descriptive 117th-Congress H.R./S. legislative-flow benchmarks, calibration, and deterministic within-Congress held-out checks. Its use with the complete 118th census supports an aggregate temporal transport check, not causal mechanism validity, public support, public benefit, welfare, or institutional rankings.

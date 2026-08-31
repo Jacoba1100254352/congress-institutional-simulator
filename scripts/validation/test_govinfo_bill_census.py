@@ -11,6 +11,7 @@ try:
     from .build_govinfo_bill_census_dataset import (
         ArchiveInfo,
         CLASSIFICATION_VERSION,
+        claim_boundary,
         output_cache_matches,
         parse_bill_xml,
         sha256_file,
@@ -19,10 +20,15 @@ try:
         aggregate as aggregate_lifecycle_calibration,
         leave_one_seed_out_selections,
     )
+    from .write_legislative_lifecycle_temporal_replication import (
+        build_rows as build_temporal_rows,
+        wilson_interval,
+    )
 except ImportError:  # Direct script execution used by the Makefile.
     from build_govinfo_bill_census_dataset import (
         ArchiveInfo,
         CLASSIFICATION_VERSION,
+        claim_boundary,
         output_cache_matches,
         parse_bill_xml,
         sha256_file,
@@ -30,6 +36,10 @@ except ImportError:  # Direct script execution used by the Makefile.
     from write_legislative_lifecycle_calibration import (
         aggregate as aggregate_lifecycle_calibration,
         leave_one_seed_out_selections,
+    )
+    from write_legislative_lifecycle_temporal_replication import (
+        build_rows as build_temporal_rows,
+        wilson_interval,
     )
 
 
@@ -151,9 +161,34 @@ SPECIAL_RULE_XML = """<?xml version="1.0" encoding="UTF-8"?>
 """
 
 
-def archive(path: str = "/tmp/BILLSTATUS-117-hr.zip") -> ArchiveInfo:
+PRESIDENTIAL_ACTION_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<billStatus>
+  <bill>
+    <number>4199</number><updateDate>2025-01-03T00:00:00Z</updateDate>
+    <originChamber>Senate</originChamber><type>S</type>
+    <introducedDate>2024-04-19</introducedDate><congress>118</congress>
+    <committees><item><systemCode>ssju00</systemCode><name>Committee on the Judiciary</name></item></committees>
+    <committeeReports />
+    <actions>
+      <item><actionDate>2024-12-23</actionDate><text>{presidential_text}</text><type>President</type><actionCode>E30000</actionCode><sourceSystem><code>2</code><name>House floor actions</name></sourceSystem></item>
+      <item><actionDate>2024-12-20</actionDate><text>Presented to President.</text><type>President</type><actionCode>E20000</actionCode><sourceSystem><code>2</code><name>House floor actions</name></sourceSystem></item>
+      <item><actionDate>2024-12-16</actionDate><text>On passage Passed without objection.</text><type>Floor</type><actionCode>H37300</actionCode><sourceSystem><code>2</code><name>House floor actions</name></sourceSystem></item>
+      <item><actionDate>2024-06-12</actionDate><text>Passed Senate without amendment by Unanimous Consent.</text><type>Floor</type><actionCode>17000</actionCode><sourceSystem><code>9</code><name>Library of Congress</name></sourceSystem></item>
+      <item><actionDate>2024-04-19</actionDate><text>Referred to the Committee on the Judiciary.</text><type>IntroReferral</type><actionCode>2000</actionCode><sourceSystem><code>9</code><name>Library of Congress</name></sourceSystem></item>
+    </actions>
+    <sponsors><item><bioguideId>T000002</bioguideId><party>R</party><state>NC</state></item></sponsors>
+    <laws /><policyArea><name>Law</name></policyArea><title>Presidential Action Test Act</title>
+  </bill>
+</billStatus>
+"""
+
+
+def archive(
+    path: str = "/tmp/BILLSTATUS-117-hr.zip",
+    bill_type: str = "hr",
+) -> ArchiveInfo:
     return ArchiveInfo(
-        bill_type="hr",
+        bill_type=bill_type,
         path=Path(path),
         url="https://www.govinfo.gov/example.zip",
         sha256="a" * 64,
@@ -255,6 +290,40 @@ class GovInfoBillCensusTests(unittest.TestCase):
         self.assertEqual("0", row["passed_origin_chamber"])
         self.assertEqual("valid", row["integrity_status"])
 
+    def test_context_dependent_e30000_veto_is_not_enactment(self) -> None:
+        row = parse_bill_xml(
+            PRESIDENTIAL_ACTION_XML.format(presidential_text="Vetoed by President.").encode(),
+            archive("/tmp/BILLSTATUS-118-s.zip", "s"),
+            118,
+            "s",
+            "BILLSTATUS-118s4199.xml",
+        )
+
+        self.assertEqual("1", row["completed_congressional_passage"])
+        self.assertEqual("1", row["presented_to_president"])
+        self.assertEqual("1", row["vetoed"])
+        self.assertEqual("action_text:presidential_veto", row["vetoed_basis"])
+        self.assertEqual("0", row["enacted"])
+        self.assertEqual("valid", row["integrity_status"])
+
+    def test_context_dependent_e30000_signature_uses_positive_text(self) -> None:
+        row = parse_bill_xml(
+            PRESIDENTIAL_ACTION_XML.format(presidential_text="Signed by President.").encode(),
+            archive("/tmp/BILLSTATUS-118-s.zip", "s"),
+            118,
+            "s",
+            "BILLSTATUS-118s4199.xml",
+        )
+
+        self.assertEqual("1", row["enacted"])
+        self.assertEqual("action_text:signed_by_president", row["enacted_basis"])
+        self.assertEqual("0", row["vetoed"])
+        self.assertEqual("valid", row["integrity_status"])
+
+    def test_claim_boundary_uses_requested_congress(self) -> None:
+        self.assertIn("Congress 118", claim_boundary(118))
+        self.assertNotIn("117th Congress", claim_boundary(118))
+
     def test_action_hash_normalizes_insignificant_whitespace(self) -> None:
         row = parse_bill_xml(
             V3_XML.encode(), archive(), 117, "hr", "BILLSTATUS-117hr42.xml"
@@ -342,6 +411,50 @@ class GovInfoBillCensusTests(unittest.TestCase):
             {"0.670": 3},
             dict(leave_one_seed_out_selections(rows, targets)),
         )
+
+    def test_temporal_transport_tolerances_are_inclusive(self) -> None:
+        rows_117 = [
+            {"committee_advanced": "1", "floor_considered": "1", "enacted": "1"},
+            {"committee_advanced": "1", "floor_considered": "0", "enacted": "0"},
+            {"committee_advanced": "0", "floor_considered": "1", "enacted": "0"},
+            {"committee_advanced": "0", "floor_considered": "0", "enacted": "0"},
+        ]
+        rows_118 = list(rows_117)
+        selected = {
+            "calendarPriorityThreshold": "0.680",
+            "seedCount": "50",
+            "simulatedBills": "72000",
+            "committeeAdvanceRate": "0.520",
+            "floorConsiderationRate": "0.516",
+            "enactmentRate": "0.260",
+        }
+        selection_summary = {
+            "committeeAdvancedRate": "0.500",
+            "floorConsideredRate": "0.500",
+            "enactedRate": "0.250",
+        }
+        baselines = {
+            "current-congress-committee-advance-rate": {"minimum": "0.0", "maximum": "1.0"},
+            "current-congress-floor-consideration-rate": {"minimum": "0.0", "maximum": "1.0"},
+            "current-congress-enactment-rate": {"minimum": "0.0", "maximum": "1.0"},
+        }
+
+        output = {
+            row["metric"]: row
+            for row in build_temporal_rows(
+                rows_117,
+                rows_118,
+                selected,
+                selection_summary,
+                baselines,
+            )
+        }
+
+        self.assertEqual("pass", output["committeeAdvanceRate"]["toleranceStatus"])
+        self.assertEqual("fail", output["floorConsiderationRate"]["toleranceStatus"])
+        self.assertEqual("pass", output["enactmentRate"]["toleranceStatus"])
+        self.assertEqual("0.500000", output["committeeAdvanceRate"]["testRate"])
+        self.assertEqual((0.0, 0.0), wilson_interval(0, 0))
 
 
 if __name__ == "__main__":

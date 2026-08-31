@@ -7,10 +7,10 @@ This report runs deterministic held-out checks on committed raw empirical sample
 
 | Source family | Metric | Calibration slice | Held-out slice | All rows | Units | Simulator observed | Target range | Status |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| govinfo bill and action records | enactmentRate | 0.022607 | 0.024927 | 0.023762 | 7564 / 7502 bills | 0.027 | 0.012--0.033 | pass |
-| govinfo bill and action records | floorLoad | 0.065442 | 0.067715 | 0.066574 | 7564 / 7502 bills | 0.064 | 0.050--0.081 | pass |
+| govinfo bill and action records | enactmentRate | 0.022607 | 0.024927 | 0.023762 | 7564 / 7502 bills | 0.025 | 0.012--0.033 | pass |
+| govinfo bill and action records | floorLoad | 0.065442 | 0.067715 | 0.066574 | 7564 / 7502 bills | 0.060 | 0.050--0.081 | pass |
 | govinfo bill and action records | committeeReportRate | 0.063194 | 0.065183 | 0.064184 | 7564 / 7502 bills | --- | --- | reported |
-| govinfo bill and action records | committeeAdvanceRate | 0.099154 | 0.101440 | 0.100292 | 7564 / 7502 bills | 0.107 | 0.079--0.120 | pass |
+| govinfo bill and action records | committeeAdvanceRate | 0.099154 | 0.101440 | 0.100292 | 7564 / 7502 bills | 0.108 | 0.079--0.120 | pass |
 | govinfo bill and action records | originPassageRate | 0.064384 | 0.067182 | 0.065777 | 7564 / 7502 bills | --- | --- | reported |
 | govinfo bill and action records | completedCongressionalPassageRate | 0.022607 | 0.024927 | 0.023762 | 7564 / 7502 bills | --- | --- | reported |
 | Voteview roll-call data | coalitionSize | 0.619547 | 0.588782 | 0.604453 | 163 / 157 roll calls | 0.668 | 0.560--0.780 | pass |
@@ -33,7 +33,7 @@ This report runs deterministic held-out checks on committed raw empirical sample
 
 Boundary notes:
 
-- The GovInfo bill census supports deterministic within-117th-Congress legislative-flow benchmarking only; a later Congress is still required for temporal replication.
+- The deterministic GovInfo held-out rows remain within the 117th Congress. The separate complete 118th census supplies the no-refit temporal transport test and is reported independently so it cannot enter calibration selection.
 - Voteview roll-call rows support held-out coalition-size and party-unity plausibility only; they do not validate district public opinion, representation, or generated public benefit.
 - Sponsor rows support held-out proposal-access concentration benchmarking only; they do not validate full member effectiveness or bill-level sponsor success.
 - Campaign-finance rows support held-out concentration and outside-spending observability only; they do not validate bill-level influence or capture.

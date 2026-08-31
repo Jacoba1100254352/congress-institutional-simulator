@@ -205,6 +205,14 @@ Regenerate all paper diagnostics tables:
 make mechanism-diagnostics
 ```
 
+Run the frozen legislative-lifecycle calibration and its no-refit
+118th-Congress temporal test:
+
+```sh
+make legislative-lifecycle-temporal-replication
+make govinfo-bill-census-check
+```
+
 Remove generated build output:
 
 ```sh
@@ -213,7 +221,7 @@ make clean
 
 ## Research Documentation
 
-- [Empirical flow screening](calibration.md): tracked benchmark extract, external comparison targets, and the executable flow-screen workflow.
+- [Empirical flow screening and temporal transport](calibration.md): tracked benchmark extract, complete paired GovInfo censuses, fixed calibration, and the no-refit temporal workflow.
 - [ODD model description](odd-model.md): entities, state variables, scheduling, design concepts, initialization, and submodels.
 - [Full ODD+D appendix](odd-d-appendix.md): submission-ready model documentation covering data, adaptation, submodels, assumptions, and outputs.
 
@@ -320,6 +328,13 @@ Calibration report:
 - `reports/calibration-baseline.csv`
 - `reports/calibration-baseline.md`
 - `reports/calibration-baseline-manifest.json`
+
+Legislative-lifecycle reports:
+
+- `reports/govinfo-bill-census.csv`
+- `reports/govinfo-bill-census-118.csv`
+- `reports/legislative-lifecycle-calibration.csv`
+- `reports/legislative-lifecycle-temporal-replication.csv`
 
 Diagnostic reports:
 

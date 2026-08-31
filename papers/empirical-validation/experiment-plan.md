@@ -76,10 +76,17 @@ Implemented v1 task:
 - Split bounded OpenFEC campaign-finance rows, Cumulative CES district-opinion rows, SCDB merits-case rows, Federal Register final-rule rows, Congress.gov public-law revision rows, and QoG/V-Dem comparative-institution rows into deterministic calibration and held-out slices.
 - Report narrow held-out source-family proxy checks for campaign-finance concentration, outside-spending share, district public-will, turnout skew, merits-case invalidation, final-to-effective delay, implementation-speed proxy, public-law correction text flags, and bicameral context.
 
+Implemented temporal-flow extension:
+
+- Build complete source-pinned 117th- and 118th-Congress H.R./S. GovInfo censuses with record/action hashes, archive pins, and explicit source-date anomalies.
+- Freeze threshold selection on the 117th calibration split, then apply the selected 0.68 threshold to all 118th rows without refitting.
+- Preserve the prespecified 0.020 committee, 0.015 floor, and 0.010 enactment tolerances and report the 2 / 3 result, including the enactment miss.
+- Audit classifier drift across Congresses; classifier v2 resolves the context-dependent `E30000` veto/signature code while leaving every 117th aggregate count unchanged.
+
 Remaining tasks:
 
 - Add separate calibration and held-out extracts rather than a hash split of one bounded sample.
-- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers, expand the bounded govinfo BILLSTATUS cross-check beyond the sampled bill universe, and add independent or held-out checks for topic throughput, lobbying, and committee activity.
+- Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers, add a third complete GovInfo Congress without refitting, and add independent or held-out checks for topic throughput, lobbying, and committee activity.
 - Report error metrics for more targets instead of only broad tolerance membership.
 
 ## Stage 3: Representation and Public Support

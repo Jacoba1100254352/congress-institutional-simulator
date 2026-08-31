@@ -6,8 +6,9 @@
    - Shows raw data, cached summaries, calibration screen, held-out checks, linkage audit, linkage roadmap, and gap reporting.
 
 2. Flow-target observed versus simulated plot
-   - Source: future held-out flow report.
-   - Metrics: attrition, committee reporting, floor consideration, coalition size, veto frequency.
+   - Source: `reports/legislative-lifecycle-temporal-replication.csv` plus future broader held-out flow reports.
+   - Current temporal metrics: committee advancement, floor consideration, and enactment with prespecified tolerance bands.
+   - Preserve the failed enactment point-error check visually.
 
 3. Empirical-boundary matrix
    - Rows: simulator metrics.
@@ -24,7 +25,7 @@
    - Source, license, access, cached offline status, row count, fields, simulator proxy.
 
 2. Calibration versus validation distinction
-   - Calibration target, held-out target, error metric, tolerance.
+   - Calibration target, within-Congress held-out target, later-Congress target, error metric, tolerance, and pass/fail.
 
 3. Current gap table
    - Start from `reports/empirical-validation-gap-report.csv`, `reports/empirical-linkage-report.csv`, and `reports/empirical-linkage-roadmap.csv`.

@@ -20,6 +20,10 @@ VOTEVIEW_MEMBER_CONTEXT = Path("data/validation/raw/voteview_member_context.csv"
 VOTEVIEW_BILL_LINKAGE = Path("data/validation/raw/voteview_bill_linkage.csv")
 GOVINFO_BILLSTATUS_LINKAGE = Path("data/validation/raw/govinfo_billstatus_linkage.csv")
 GOVINFO_BILL_CENSUS = Path("data/validation/raw/govinfo_bill_census.csv")
+GOVINFO_BILL_CENSUS_118 = Path("data/validation/raw/govinfo_bill_census_118.csv")
+LEGISLATIVE_LIFECYCLE_TEMPORAL_REPLICATION = Path(
+    "reports/legislative-lifecycle-temporal-replication.csv"
+)
 SPONSOR_BILL_LINKAGE = Path("data/validation/raw/sponsor_bill_linkage.csv")
 COMPARATIVE_INSTITUTION_LINKAGE = Path("data/validation/raw/comparative_institution_linkage.csv")
 CAMPAIGN_FINANCE_LINKAGE = Path("data/validation/raw/campaign_finance_linkage.csv")
@@ -271,6 +275,43 @@ def govinfo_bill_census_summary() -> tuple[int, int, int, int, int, int]:
         source_date_anomalies,
         len(public_law_overlaps),
         public_law_enacted_aligned,
+    )
+
+
+def govinfo_bill_census_118_summary() -> tuple[int, int, int, int, int, int]:
+    rows = read_csv(GOVINFO_BILL_CENSUS_118)
+    source_backed = [
+        row
+        for row in rows
+        if len(row.get("source_xml_sha256", "")) == 64
+        and len(row.get("actions_sha256", "")) == 64
+        and row.get("source_url", "").startswith(
+            "https://www.govinfo.gov/bulkdata/BILLSTATUS/118/"
+        )
+        and not row.get("integrity_status", "").startswith("invalid:")
+    ]
+    action_count = sum(int(row.get("actions_count") or "0") for row in source_backed)
+    source_date_anomalies = sum(
+        row.get("integrity_status", "").startswith("source_date_anomaly:")
+        for row in source_backed
+    )
+    vetoed = sum(row.get("vetoed") == "1" for row in source_backed)
+    enacted = sum(row.get("enacted") == "1" for row in source_backed)
+    return (
+        len(rows),
+        len(source_backed),
+        action_count,
+        source_date_anomalies,
+        vetoed,
+        enacted,
+    )
+
+
+def legislative_lifecycle_temporal_summary() -> tuple[int, int]:
+    rows = read_csv(LEGISLATIVE_LIFECYCLE_TEMPORAL_REPLICATION)
+    return (
+        sum(row.get("toleranceStatus") == "pass" for row in rows),
+        len(rows),
     )
 
 
@@ -2078,17 +2119,26 @@ def linkage_rows(registry: list[dict[str, str]]) -> list[dict[str, str]]:
                 public_law_overlaps,
                 public_law_enacted_aligned,
             ) = govinfo_bill_census_summary()
+            (
+                temporal_rows,
+                temporal_source_backed_rows,
+                temporal_action_count,
+                temporal_source_date_anomalies,
+                temporal_vetoed,
+                temporal_enacted,
+            ) = govinfo_bill_census_118_summary()
+            temporal_passes, temporal_metrics = legislative_lifecycle_temporal_summary()
             bounded_linked, action_aligned, policy_aligned = govinfo_billstatus_linkage_summary()
-            if source_backed_rows > 0:
+            if source_backed_rows > 0 and temporal_source_backed_rows > 0:
                 result.append(build_row(
                     source,
                     rows,
                     source_backed_rows,
                     "linked" if source_backed_rows == census_rows else "partially linked",
-                    "pinned GovInfo BILLSTATUS bulk archives; Congress.gov public-law linkage; bounded 118th-Congress source cross-check",
-                    "census bill_id -> source_url,source_xml_sha256,actions_sha256; census bill_id -> law_revision_bill_linkage.bill_id",
-                    f"The normalized census preserves record-level GovInfo source URLs, XML hashes, and canonical action hashes for {source_backed_rows} / {census_rows} bills derived from {action_count} direct bill actions. It retains {source_date_anomalies} explicit source-date anomaly rows rather than rewriting them. The separate 117th-Congress Congress.gov public-law linkage overlaps {public_law_overlaps} census bills with {public_law_enacted_aligned} enacted flags aligned, while the bounded 118th-Congress cross-check retains {bounded_linked} identifier matches, {action_aligned} coarse action-flag alignments, and {policy_aligned} policy-area alignments. These are provenance, lifecycle, and cross-source checks only; they do not provide public-opinion evidence, campaign-finance or lobbying influence, implementation or court outcomes, public benefit, welfare, or causal model validation.",
-                    "Add a later completed Congress as a temporal holdout while retaining archive pins, record/action hashes, explicit stage evidence, and source-date anomaly dispositions.",
+                    "pinned 117th- and 118th-Congress GovInfo BILLSTATUS bulk archives; Congress.gov public-law linkage; bounded 118th-Congress source cross-check; no-refit temporal transport report",
+                    "census bill_id -> source_url,source_xml_sha256,actions_sha256; census bill_id -> law_revision_bill_linkage.bill_id; 117th selected threshold -> complete 118th aggregate rates",
+                    f"The normalized 117th census preserves record-level GovInfo source URLs, XML hashes, and canonical action hashes for {source_backed_rows} / {census_rows} bills derived from {action_count} direct bill actions, with {source_date_anomalies} explicit source-date anomaly rows. The paired 118th temporal cohort preserves the same evidence for {temporal_source_backed_rows} / {temporal_rows} bills derived from {temporal_action_count} actions, with {temporal_source_date_anomalies} source-date anomalies, {temporal_vetoed} veto, and {temporal_enacted} enactments. The frozen no-refit transport test passes {temporal_passes} / {temporal_metrics} aggregate tolerances and preserves the enactment miss. The separate 117th-Congress Congress.gov public-law linkage overlaps {public_law_overlaps} census bills with {public_law_enacted_aligned} enacted flags aligned, while the bounded 118th-Congress cross-check retains {bounded_linked} identifier matches, {action_aligned} coarse action-flag alignments, and {policy_aligned} policy-area alignments. These are provenance, lifecycle, and cross-source checks only; they do not provide public-opinion evidence, campaign-finance or lobbying influence, implementation or court outcomes, public benefit, welfare, or causal model validation.",
+                    "Add a third completed Congress without refitting and add source-specific validation of referral jurisdiction, floor-rule openness, calendar control, and status-quo fallback.",
                 ))
                 continue
             result.append(build_row(

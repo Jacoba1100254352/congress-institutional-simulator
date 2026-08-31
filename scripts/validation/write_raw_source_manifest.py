@@ -19,6 +19,12 @@ DERIVED_METADATA = {
     "committee_activity.csv": RAW_DIR / "congress_derived.metadata.md",
 }
 
+RELATED_RAW = {
+    "govinfo_bill_census.csv": (
+        RAW_DIR / "govinfo_bill_census_118.csv",
+    ),
+}
+
 DATE_COLUMNS = (
     "introduced_date",
     "referred_to_committee_date",
@@ -100,6 +106,16 @@ def write_md(rows: list[dict[str, str]]) -> None:
     ready = sum(1 for row in rows if row["rawStatus"] == "present")
     metadata_ready = sum(1 for row in rows if row["metadataStatus"] == "present")
     unique_raw = len({row["rawPath"] for row in rows if row["rawPath"]})
+    related_count = sum(
+        len([path for path in row["relatedRawPaths"].split(";") if path])
+        for row in rows
+    )
+    related_ready = sum(
+        status == "present"
+        for row in rows
+        for status in row["relatedRawStatuses"].split(";")
+        if status
+    )
     lines = [
         "# Raw Source Manifest",
         "",
@@ -109,16 +125,26 @@ def write_md(rows: list[dict[str, str]]) -> None:
         f"- Unique raw files: {unique_raw}",
         f"- Present raw files: {ready} / {len(rows)}",
         f"- Present metadata notes: {metadata_ready} / {len(rows)}",
+        f"- Related temporal-cohort files: {related_ready} / {related_count}",
         "",
-        "| Source family | Dataset | Rows | Metadata | Boundary | Source hash | Claim boundary |",
-        "| --- | --- | ---: | --- | --- | --- | --- |",
+        "| Source family | Dataset | Rows | Related cohort | Metadata | Boundary | Source hash | Claim boundary |",
+        "| --- | --- | ---: | --- | --- | --- | --- | --- |",
     ]
     for row in rows:
         source_hash = row["rawSha256"][:12] if row["rawSha256"] else "---"
         metadata = row["metadataPath"] if row["metadataStatus"] == "present" else "missing"
+        related = "---"
+        if row["relatedRawPaths"]:
+            related_paths = row["relatedRawPaths"].split(";")
+            related_counts = row["relatedRawRowCounts"].split(";")
+            related_hashes = row["relatedRawSha256"].split(";")
+            related = "; ".join(
+                f"`{path}` ({count} rows; `{digest[:12]}`)"
+                for path, count, digest in zip(related_paths, related_counts, related_hashes)
+            )
         lines.append(
             f"| {row['sourceFamily']} | `{row['dataset']}` | {row['rowCount']} | "
-            f"`{metadata}` | {row['boundaryCategory']} | `{source_hash}` | "
+            f"{related} | `{metadata}` | {row['boundaryCategory']} | `{source_hash}` | "
             f"{row['claimBoundary']} |"
         )
     OUT_MD.write_text("\n".join(lines) + "\n")
@@ -136,6 +162,9 @@ def main() -> int:
         row_count, date_range, columns, raw_hash = raw_profile(raw_path)
         meta_path = metadata_path(dataset, raw_path) if raw_path else Path("")
         meta_hash = sha256(meta_path) if meta_path.exists() else ""
+        related_paths = RELATED_RAW.get(dataset, ())
+        related_profiles = [raw_profile(path) for path in related_paths]
+        related_metadata = [metadata_path(path.name, path) for path in related_paths]
         rows.append({
             "sourceFamily": source["source_family"],
             "sourceName": source["source_name"],
@@ -151,6 +180,13 @@ def main() -> int:
             "metadataStatus": "present" if meta_path.exists() else "missing",
             "metadataTitle": metadata_title(meta_path),
             "metadataSha256": meta_hash,
+            "relatedRawPaths": ";".join(str(path) for path in related_paths),
+            "relatedRawStatuses": ";".join("present" if path.exists() else "missing" for path in related_paths),
+            "relatedRawRowCounts": ";".join(str(profile[0]) for profile in related_profiles),
+            "relatedRawSha256": ";".join(profile[3] for profile in related_profiles),
+            "relatedMetadataPaths": ";".join(str(path) for path in related_metadata),
+            "relatedMetadataStatuses": ";".join("present" if path.exists() else "missing" for path in related_metadata),
+            "relatedMetadataSha256": ";".join(sha256(path) if path.exists() else "" for path in related_metadata),
             "transformationScript": source["transformation_script"],
             "networkRequired": source["network_required"],
             "apiKeyRequired": source["api_key_required"],

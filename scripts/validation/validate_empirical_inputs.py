@@ -34,7 +34,7 @@ DATASETS = [
     ),
     DatasetSpec(
         "govinfo_bill_census.csv",
-        "census-backed bill attrition, committee, floor, passage, and enactment checks",
+        "117th-Congress calibration and within-Congress bill-lifecycle checks",
         (
             "bill_id",
             "introduced",
@@ -48,6 +48,28 @@ DATASETS = [
             "actions_count",
             "source_xml_sha256",
             "actions_sha256",
+            "integrity_status",
+        ),
+    ),
+    DatasetSpec(
+        "govinfo_bill_census_118.csv",
+        "complete 118th-Congress no-refit temporal bill-lifecycle test",
+        (
+            "bill_id",
+            "introduced",
+            "committee_ordered_reported",
+            "committee_reported",
+            "committee_advanced",
+            "floor_considered",
+            "passed_origin_chamber",
+            "completed_congressional_passage",
+            "presented_to_president",
+            "vetoed",
+            "enacted",
+            "actions_count",
+            "source_xml_sha256",
+            "actions_sha256",
+            "classification_version",
             "integrity_status",
         ),
     ),
@@ -169,7 +191,7 @@ def main() -> int:
         f"- Files with required columns: {complete} / {len(DATASETS)}",
         f"- Adapter fixture CSVs ignored: {fixture_count}",
         "",
-        "Next empirical step: add temporal bill-census replication and continue upgrading bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The adapters cover roll calls, bounded Congress.gov bill progress, the GovInfo bill census, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
+        "Next empirical step: extend the temporal bill-census design to a third completed Congress and continue upgrading bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, paired GovInfo bill censuses, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
     ])
     REPORT.write_text("\n".join(lines) + "\n")
     with REPORT_CSV.open("w", newline="") as handle:

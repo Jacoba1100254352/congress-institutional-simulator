@@ -73,7 +73,7 @@ Appendix:
 | Content selection changes output diagnostics under the baseline generator. | Current campaign and findings reports. | Moderation-friendly generator may bake in part of the result. | Conditional. |
 | Content selection is superior to conventional systems. | Not sufficiently supported. | Requires cost-budget fairness and validation boundaries. | Exclude for now. |
 | Burden-shifting systems show high-throughput stress behavior. | Current `DP`/`DPM` results. | Stress cases, not reform recommendation. | Usable with caveat. |
-| Political-science claims require stronger empirical framing. | Stage 2 roadmap and current gap reports. | Validation not yet implemented. | Blocking. |
+| Political-science claims require stronger empirical framing. | Stage 2 roadmap, current gap reports, paired complete GovInfo censuses, and the frozen no-refit lifecycle test. | Narrow aggregate temporal transport is implemented, but mechanism-specific, representation, influence, and outcome validation remain missing. | Blocking. |
 
 ## Paper Outline
 

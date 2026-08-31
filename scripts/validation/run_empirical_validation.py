@@ -143,8 +143,11 @@ def validate_bill_progression(results: list[dict[str, str]]) -> None:
     append(results, path.name, "enactmentRate", enacted / denominator if denominator else 0.0, "Share of introduced bills enacted.")
 
 
-def validate_govinfo_bill_census(results: list[dict[str, str]]) -> None:
-    path = RAW_DIR / "govinfo_bill_census.csv"
+def validate_govinfo_bill_census(
+    results: list[dict[str, str]],
+    file_name: str,
+) -> None:
+    path = RAW_DIR / file_name
     if not path.exists():
         append_missing(
             results,
@@ -437,7 +440,8 @@ def main() -> int:
     results: list[dict[str, str]] = []
     validate_voteview(results)
     validate_bill_progression(results)
-    validate_govinfo_bill_census(results)
+    validate_govinfo_bill_census(results, "govinfo_bill_census.csv")
+    validate_govinfo_bill_census(results, "govinfo_bill_census_118.csv")
     validate_lobbying(results)
     validate_topic_throughput(results)
     validate_sponsor_success(results)

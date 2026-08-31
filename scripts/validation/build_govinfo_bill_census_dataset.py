@@ -39,7 +39,7 @@ DEFAULT_ARCHIVE_DIR = Path("out/validation-cache/govinfo-billstatus")
 OUT_CSV = Path("data/validation/raw/govinfo_bill_census.csv")
 OUT_METADATA = Path("data/validation/raw/govinfo_bill_census.metadata.md")
 USER_AGENT = "congress-institutional-simulator-validation/0.3"
-CLASSIFICATION_VERSION = "govinfo-bill-lifecycle-v1"
+CLASSIFICATION_VERSION = "govinfo-bill-lifecycle-v2"
 
 # These pins freeze the completed-Congress source bytes used for the committed
 # publication artifact. A changed upstream archive must be reviewed explicitly.
@@ -52,14 +52,24 @@ KNOWN_ARCHIVE_PINS: dict[tuple[int, str], tuple[str, int]] = {
         "69561f19333de31afd2e288700757f3794ecffa35287b9fb86bb2d5d313a1294",
         5357,
     ),
+    (118, "hr"): (
+        "8e7ca7dab50a7b9b977f021ec1b3231f8fedf82c33494553857b892fadfdba98",
+        10564,
+    ),
+    (118, "s"): (
+        "269261c0989db3ced789680ee2202747df9a7298f1ac8d2b074d3356b06e399c",
+        5649,
+    ),
 }
 
-CLAIM_BOUNDARY = (
-    "Complete GovInfo BILLSTATUS bill/action coverage for H.R. and S. measures "
-    "in the 117th Congress, with conservative operational lifecycle stages. "
-    "This is descriptive legislative-flow evidence, not causal model validation, "
-    "public-opinion evidence, public benefit, welfare, or institutional ranking."
-)
+
+def claim_boundary(congress: int) -> str:
+    return (
+        "Complete GovInfo BILLSTATUS bill/action coverage for H.R. and S. measures "
+        f"in Congress {congress}, with conservative operational lifecycle stages. "
+        "This is descriptive legislative-flow evidence, not causal model validation, "
+        "public-opinion evidence, public benefit, welfare, or institutional ranking."
+    )
 
 FIELDNAMES = [
     "bill_id",
@@ -171,7 +181,9 @@ FLOOR_CONSIDERATION_CODES = {
 HOUSE_PASSAGE_CODES = {"8000", "H37100", "H37300"}
 SENATE_PASSAGE_CODES = {"17000"}
 PRESENTED_CODES = {"E20000", "28000"}
-ENACTED_CODES = {"E30000", "E40000", "36000", "41000"}
+# E30000 is deliberately excluded. GovInfo uses it for both presidential
+# signatures and vetoes in different source streams, so its text must disambiguate.
+ENACTED_CODES = {"E40000", "36000", "41000"}
 SPECIAL_RULE_CODES = {"H1L210", "H1L220"}
 
 NEGATIVE_RESULT_PHRASES = (
@@ -1132,7 +1144,7 @@ def metadata_content(
         "",
         "Official format guide: https://github.com/usgpo/bill-status/blob/main/BILLSTATUS-XML_User_User-Guide.md",
         "",
-        f"Claim boundary: {CLAIM_BOUNDARY}",
+        f"Claim boundary: {claim_boundary(congress)}",
     ])
     return "\n".join(lines) + "\n"
 

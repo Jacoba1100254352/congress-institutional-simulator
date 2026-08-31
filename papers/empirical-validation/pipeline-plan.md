@@ -12,6 +12,11 @@ Build a reproducible benchmark-data pipeline that makes empirical signals availa
 export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 export PATH="$JAVA_HOME/bin:$PATH"
 make validation-readiness
+make govinfo-bill-census
+make govinfo-bill-census-118
+make legislative-lifecycle-calibration
+make legislative-lifecycle-temporal-replication
+make govinfo-bill-census-check
 make empirical-bridge
 make empirical-linkage-report
 make empirical-linkage-roadmap
@@ -82,6 +87,8 @@ Optional network/data rebuilds:
 ```sh
 make fetch-validation-samples
 make build-bill-progression-raw
+make build-govinfo-bill-census-raw
+make build-govinfo-bill-census-118-raw
 make build-core-raw-validation
 make build-campaign-finance-raw
 make build-campaign-finance-linkage-raw
@@ -115,6 +122,8 @@ Inputs under current readiness workflow:
 
 - `voteview_rollcalls.csv`
 - `bill_progression.csv`
+- `govinfo_bill_census.csv`
+- `govinfo_bill_census_118.csv`
 - `lobbying_disclosure.csv`
 - `topic_throughput.csv`
 - `sponsor_success.csv`
@@ -129,6 +138,10 @@ Inputs under current readiness workflow:
 Outputs:
 
 - `reports/empirical-validation-readiness.csv`
+- `reports/govinfo-bill-census.csv`
+- `reports/govinfo-bill-census-118.csv`
+- `reports/legislative-lifecycle-calibration.csv`
+- `reports/legislative-lifecycle-temporal-replication.csv`
 - `reports/empirical-validation-summary.csv`
 - `reports/empirical-bridge.csv`
 - `reports/empirical-flow-heldout.csv`
@@ -924,10 +937,10 @@ empirical-heldout-check
 
 Before this can become a data/resource paper:
 
-- all 12 configured raw inputs have usable raw or cached summary inputs;
+- all 14 configured dataset files across 13 source families continue to have usable raw or cached summary inputs;
 - public support advances beyond the one historical related-issue pilot to exact or closer contemporaneous questions, validated geography, design-based uncertainty or MRP where needed, and bill-text-specific affected-population evidence, and campaign finance is linked beyond the current bounded concentration, issue-sector, member, district-context, sponsored-bill, local no-exact-match, target-scope, cached bill-action, and source-acquisition queue layers;
 - the linkage report shows bill/topic/statute or actor joins for the high-priority public-opinion, finance, implementation, and statutory-lineage areas;
 - implementation, law-revision, and comparative-institution proxy data are present, with bounded comparative scenario-family metadata anchors added and full lineage, observed productivity, and institutional-fit data still documented as future work;
 - source registry documents licensing/access;
-- held-out validation design exists;
+- the current narrow held-out and complete-Congress temporal designs expand to additional cohorts and central constructs;
 - all paper-facing results regenerate offline.

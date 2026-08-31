@@ -1,4 +1,4 @@
-# Empirical Flow Screening
+# Empirical Flow Screening And Temporal Transport
 
 The simulator is a mechanism-comparison model, not a fitted forecast of Congress. It includes an executable empirical-flow screening pass so conventional baselines can be checked against named real-world data sources before counterfactual systems are interpreted.
 
@@ -59,6 +59,20 @@ The current benchmark extract maps named empirical quantities to simulator metri
 5. Use failures as flow-screen prompts before drawing paper-level conclusions from counterfactual mechanisms.
 
 The lifecycle calendar threshold is selected by `make legislative-lifecycle-calibration` from the calibration half of the GovInfo census across a fixed 50-seed simulator panel. Floor consideration and enactment enter threshold selection; committee advancement is an upstream workflow check. The held-out half is reported only after selection, and leave-one-seed-out reselection checks panel stability. Other benchmark rows remain screening ranges rather than fitted parameters.
+
+The paired temporal workflow is:
+
+```sh
+make govinfo-bill-census
+make govinfo-bill-census-118
+make legislative-lifecycle-calibration
+make legislative-lifecycle-temporal-replication
+make govinfo-bill-census-check
+```
+
+The 117th census remains the only selection source. The temporal report reads the already-selected 0.68 threshold and compares its fixed 50-seed means with all 16,213 H.R. and S. bills in the 118th Congress. Committee advancement and substantive floor consideration pass the existing 0.020 and 0.015 absolute-error tolerances. Enactment is 0.027417 in the simulator and 0.016592 in the 118th census, an error of 0.010825 that misses the existing 0.010 tolerance by 0.000825. No tolerance is widened and no parameter is refit on the test Congress.
+
+Full 118th processing also exposed a context-dependent GovInfo `E30000` presidential-action code. Classifier v2 requires positive signature/enactment text or an unambiguous law record/code rather than treating that code alone as enactment. The correction leaves every 117th aggregate lifecycle count unchanged and classifies the 118th as 269 enactments plus one vetoed non-enactment.
 
 ## Non-Goals
 

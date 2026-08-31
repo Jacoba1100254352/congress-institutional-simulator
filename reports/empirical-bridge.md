@@ -4,10 +4,10 @@ These checks make the empirical boundary explicit. They map each desired real-wo
 
 | Signal | Raw input/status | Simulator proxy | Observed | Target range | Bridge status |
 | --- | --- | --- | ---: | --- | --- |
-| Bill attrition | `govinfo_bill_census.csv` / enactmentRate = 0.023762 (computed) | `current-congress-workflow` / productivity | 0.027 | 0.012--0.033 | raw summary available |
-| Floor consideration | `govinfo_bill_census.csv` / floorLoad = 0.066574 (computed) | `current-congress-workflow` / floor | 0.064 | 0.050--0.081 | raw summary available |
+| Bill attrition | `govinfo_bill_census.csv` / enactmentRate = 0.023762 (computed) | `current-congress-workflow` / productivity | 0.025 | 0.012--0.033 | raw summary available |
+| Floor consideration | `govinfo_bill_census.csv` / floorLoad = 0.066574 (computed) | `current-congress-workflow` / floor | 0.060 | 0.050--0.081 | raw summary available |
 | Committee reporting from bill actions | `govinfo_bill_census.csv` / committeeReportRate = 0.064184 (computed) | --- | --- | --- | raw summary available; missing flow-check proxy |
-| Committee advancement from bill actions | `govinfo_bill_census.csv` / committeeAdvanceRate = 0.100292 (computed) | `current-congress-workflow` / committeeAdvanceRate | 0.107 | 0.079--0.120 | raw summary available |
+| Committee advancement from bill actions | `govinfo_bill_census.csv` / committeeAdvanceRate = 0.100292 (computed) | `current-congress-workflow` / committeeAdvanceRate | 0.108 | 0.079--0.120 | raw summary available |
 | Roll-call coalition size | `voteview_rollcalls.csv` / coalitionSize = 0.604453 (computed) | `current-system` / averageEnactedSupport | 0.668 | 0.560--0.780 | raw summary available |
 | Party unity | `voteview_rollcalls.csv` / partyUnity = 0.946078 (computed) | `current-system` / averageEnactedSupport | 0.668 | 0.560--0.780 | raw summary available |
 | Sponsor proposal concentration | `sponsor_success.csv` / sponsorIntroductionGini = 0.388636 (computed) | `current-system` / proposerAccessGini | 0.137 | 0.050--0.550 | raw summary available |

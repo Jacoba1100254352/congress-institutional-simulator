@@ -1,44 +1,44 @@
 # GovInfo Bill Lifecycle Census
 
-- generated_at_utc: 2026-08-30T23:31:46+00:00
+- generated_at_utc: 2026-08-30T23:31:55+00:00
 - classification_version: `govinfo-bill-lifecycle-v2`
-- configuration_sha256: `2283fb945b7bbc3173e6b7d96c449f741ff861e93e6c84d09ac457258834c9c5`
+- configuration_sha256: `ab264648aab606148d408cbf33b7ae77b293688746c1c492280e66f8b08b1c04`
 - builder_sha256: `0f195c23faac0e0bcacb9d5fcd80ab240f33e44749ab10155bc509e8bf8904be`
-- output_sha256: `5dd533c526597944838088706980f07ac16bda5005ae57e573ed2911a99c7eba`
-- congress: 117
+- output_sha256: `b5d89515836e7209b6ef0d1d12b86627ebe2b2e6c8914a28a4994ae32278359b`
+- congress: 118
 - bill_types: hr,s
-- rows: 15066
-- parsed_action_records: 72047
-- enacted_rows: 358
-- public_law_rows: 355
-- private_law_rows: 3
-- integrity_valid_rows: 15061
-- source_date_anomaly_rows: 5
+- rows: 16213
+- parsed_action_records: 75239
+- enacted_rows: 269
+- public_law_rows: 269
+- private_law_rows: 0
+- integrity_valid_rows: 16193
+- source_date_anomaly_rows: 20
 
 ## Source Archives
 
 | Bill type | URL | Bytes | XML members | SHA-256 | Latest member timestamp | Pin status |
 | --- | --- | ---: | ---: | --- | --- | --- |
-| `hr` | https://www.govinfo.gov/bulkdata/BILLSTATUS/117/hr/BILLSTATUS-117-hr.zip | 33733417 | 9709 | `658b2d280e4e7972c86bfd810ebff0c9bb61c115b242de8c8774034dea08de03` | 2024-06-11T13:16:50+00:00 | matched |
-| `s` | https://www.govinfo.gov/bulkdata/BILLSTATUS/117/s/BILLSTATUS-117-s.zip | 14088276 | 5357 | `69561f19333de31afd2e288700757f3794ecffa35287b9fb86bb2d5d313a1294` | 2023-12-24T06:59:16+00:00 | matched |
+| `hr` | https://www.govinfo.gov/bulkdata/BILLSTATUS/118/hr/BILLSTATUS-118-hr.zip | 35522726 | 10564 | `8e7ca7dab50a7b9b977f021ec1b3231f8fedf82c33494553857b892fadfdba98` | 2026-05-15T20:20:26+00:00 | matched |
+| `s` | https://www.govinfo.gov/bulkdata/BILLSTATUS/118/s/BILLSTATUS-118-s.zip | 14410894 | 5649 | `269261c0989db3ced789680ee2202747df9a7298f1ac8d2b074d3356b06e399c` | 2026-05-15T20:20:32+00:00 | matched |
 
 ## Lifecycle Coverage
 
 | Stage | Rows | Share |
 | --- | ---: | ---: |
-| Referred to committee | 14959 | 0.992898 |
-| Committee hearing | 790 | 0.052436 |
-| Committee markup | 1347 | 0.089407 |
-| Committee ordered reported | 1347 | 0.089407 |
-| Committee reported | 967 | 0.064184 |
-| Committee discharged | 573 | 0.038033 |
-| Committee advanced | 1511 | 0.100292 |
-| Substantive floor consideration | 1003 | 0.066574 |
-| Passed origin chamber | 991 | 0.065777 |
-| Completed congressional passage | 358 | 0.023762 |
-| Presented to President | 358 | 0.023762 |
-| Vetoed | 0 | 0.000000 |
-| Enacted | 358 | 0.023762 |
+| Referred to committee | 16155 | 0.996423 |
+| Committee hearing | 664 | 0.040955 |
+| Committee markup | 1683 | 0.103806 |
+| Committee ordered reported | 1677 | 0.103436 |
+| Committee reported | 1426 | 0.087954 |
+| Committee discharged | 510 | 0.031456 |
+| Committee advanced | 1843 | 0.113674 |
+| Substantive floor consideration | 957 | 0.059027 |
+| Passed origin chamber | 935 | 0.057670 |
+| Completed congressional passage | 270 | 0.016653 |
+| Presented to President | 270 | 0.016653 |
+| Vetoed | 1 | 0.000062 |
+| Enacted | 269 | 0.016592 |
 
 ## Operational Definitions
 
@@ -53,4 +53,4 @@
 
 Official format guide: https://github.com/usgpo/bill-status/blob/main/BILLSTATUS-XML_User_User-Guide.md
 
-Claim boundary: Complete GovInfo BILLSTATUS bill/action coverage for H.R. and S. measures in Congress 117, with conservative operational lifecycle stages. This is descriptive legislative-flow evidence, not causal model validation, public-opinion evidence, public benefit, welfare, or institutional ranking.
+Claim boundary: Complete GovInfo BILLSTATUS bill/action coverage for H.R. and S. measures in Congress 118, with conservative operational lifecycle stages. This is descriptive legislative-flow evidence, not causal model validation, public-opinion evidence, public benefit, welfare, or institutional ranking.

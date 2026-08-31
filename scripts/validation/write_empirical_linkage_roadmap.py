@@ -17,13 +17,13 @@ FULLY_LINKED = {"linked"}
 
 ROADMAP: dict[str, dict[str, str]] = {
     "govinfo bill and action records": {
-        "blockingGap": "The 117th-Congress H.R./S. census is source-backed and linked, but its deterministic held-out split remains within one Congress and the operational action classifier still needs temporal replication.",
+        "blockingGap": "The 117th- and 118th-Congress H.R./S. censuses are source-backed and classifier-audited, and the frozen no-refit transport report preserves a narrow enactment miss. A third completed Congress and source-specific agenda-control records are still absent.",
         "requiredJoinKeys": "congress,bill_type,bill_number,bill_id,action_date,source_xml_sha256,actions_sha256",
-        "targetSourceFamilies": "Congress.gov bill histories; later GovInfo BILLSTATUS Congresses",
-        "minimumViableDataset": "The pinned 117th-Congress census plus at least one later completed-Congress census produced by the same reviewed classifier.",
-        "acceptanceGate": "A later completed Congress reproduces the lifecycle schema with archive pins, record/action hashes, integrity checks, and reviewed action-text or source-date differences before any temporal fit claim is made.",
+        "targetSourceFamilies": "Congress.gov bill histories; additional completed GovInfo BILLSTATUS Congresses; committee and floor-rule records",
+        "minimumViableDataset": "The pinned 117th- and 118th-Congress pair plus a third completed-Congress census produced by the same reviewed classifier and source-specific agenda-control evidence.",
+        "acceptanceGate": "A third completed Congress reproduces the lifecycle schema without refitting and source-specific records test referral jurisdiction, floor-rule openness, calendar control, or status-quo fallback before broader transport claims are made.",
         "futureTarget": "make build-govinfo-bill-census-raw ARGS='--congress <completed Congress> --allow-unpinned-source'",
-        "claimUpgradeBoundary": "Supports descriptive census-backed legislative-flow and within-Congress held-out checks; temporal replication would still not validate public welfare, representation, implementation outcomes, or causal model fit.",
+        "claimUpgradeBoundary": "Supports descriptive census-backed legislative flow, within-Congress held-out checks, and one no-refit temporal transport test; it does not validate public welfare, representation, implementation outcomes, or causal mechanisms.",
     },
     "Voteview roll-call data": {
         "blockingGap": "Roll-call rows now carry Voteview member metadata and a bounded Voteview bill-number crosswalk, but coverage is incomplete and still does not connect roll calls to topic, district public-opinion, public-law, implementation, court, or outcome evidence.",

@@ -21,6 +21,11 @@ lobbying, public-support proxies, and empirical calibration/validation.
 Needed before drafting: stronger validation datasets, tighter benchmark
 fairness controls, and clearer institutional-theory framing.
 
+Current validation progress: complete source-pinned 117th- and 118th-Congress
+H.R./S. lifecycle censuses now support one frozen no-refit temporal test. Two of
+three aggregate rates pass; enactment misses its tolerance. This strengthens the
+empirical boundary but does not remove the broader drafting gate.
+
 ## Robustness And Failure-Mode Paper
 
 Focus: clone/decoy attacks, astroturf objection, bad-faith harm claims,
@@ -36,4 +41,3 @@ selection and retention filters, and representation tradeoffs.
 
 Needed before drafting: expanded chamber scenarios and a separate validation
 plan for representation architecture.
-

@@ -2,13 +2,15 @@
 
 Final decision: NEEDS DATA/VALIDATION FIRST.
 
-The current empirical layer supports only flow sanity checks for the conventional benchmark. A political-science paper needs a stronger validation and calibration plan before it can make claims about institutional behavior.
+The current empirical layer supports flow sanity checks and one narrow no-refit temporal transport test for aggregate legislative flow. A political-science paper still needs broader mechanism-specific validation and calibration before it can make claims about institutional behavior.
 
 ## Current Empirical Status
 
 Existing checks:
 
 - `reports/calibration-baseline.md`: 15/15 flow and proxy sanity checks passed.
+- `reports/govinfo-bill-census.md` and `reports/govinfo-bill-census-118.md`: complete, source-pinned H.R./S. lifecycle censuses for the 117th and 118th Congresses.
+- `reports/legislative-lifecycle-temporal-replication.md`: frozen 117th-to-118th no-refit transport; committee advancement and floor consideration pass, while enactment misses its 0.010 tolerance by 0.000825.
 - `reports/empirical-bridge.csv`: empirical comparison signals.
 - `reports/empirical-linkage-report.md`: source-family linkage audit; currently 13 / 13 families are linked, metadata-linked, or partially linked.
 - `reports/empirical-linkage-roadmap.md`: required join keys and acceptance gates for non-fully-linked families.
@@ -57,7 +59,7 @@ Current checks do not validate:
 
 ### Phase 1: Flow Sanity Expansion
 
-- Replace bounded samples with fuller Congress.gov/govinfo bill-progression extracts.
+- Preserve the complete paired 117th/118th GovInfo censuses and add a third completed Congress without refitting.
 - Add committee referral/reporting/markup coverage.
 - Add veto-frequency and sponsor-concentration checks across multiple Congresses.
 - Keep pass/fail bands broad and explicit.
@@ -89,16 +91,16 @@ Current checks do not validate:
 
 ### Phase 6: Held-Out Validation
 
-- Define calibration periods and held-out periods.
-- Report error metrics, tolerance rules, and failures.
+- Extend the implemented 117th-selection/118th-test design to additional temporal cohorts and mechanism-specific observables.
+- Continue reporting error metrics, fixed tolerance rules, and failures without retuning on test cohorts.
 - Only after this phase should the paper use the word validation for central model outputs.
 
 ## Required Repo Tasks
 
-- Add `reports/empirical-data-inventory.csv`.
+- Maintain `reports/empirical-data-inventory.csv` and the 14 configured dataset files across 13 source families.
 - Add `reports/political-validation-targets.csv`.
 - Add cached no-network summaries for every empirical input used.
-- Add validation scripts that separate calibration, flow sanity, proxy checks, and held-out validation.
+- Keep validation scripts separated into calibration, flow sanity, proxy checks, within-Congress held-out checks, and no-refit temporal transport.
 - Reuse the empirical-validation source registry once it exists; do not create a competing source inventory for this paper.
 
 ## Proposed Make Targets
@@ -106,7 +108,7 @@ Current checks do not validate:
 ```make
 empirical-data-inventory
 political-validation-targets
-political-flow-heldout
+legislative-lifecycle-temporal-replication
 political-public-opinion-map
 political-lobbying-linkage
 political-correction-data
@@ -114,4 +116,4 @@ political-correction-data
 
 ## Dependency On Empirical-Validation Breakout
 
-This paper should wait until the empirical-validation breakout moves beyond its current level-3 gate: source registry, expanded raw/cached data, and narrow held-out checks for bill progression, roll-call coalition behavior, and sponsor proposal-access concentration. Until then, political-science claims should use "held-out benchmark," "flow smoke test," "proxy," or "synthetic" language rather than "validation."
+This paper should still wait. The empirical-validation breakout now has a source registry, expanded raw/cached data, narrow source-family held-out checks, and one complete-Congress temporal transport test, but it does not validate the simulator's political mechanisms or central welfare, representation, influence, implementation, or correction constructs. Political-science claims should use "held-out benchmark," "temporal transport," "flow smoke test," "proxy," or "synthetic" language rather than unqualified "validation."

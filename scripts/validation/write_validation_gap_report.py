@@ -181,7 +181,6 @@ def main() -> int:
         if row["priority"] == "high" or row["paperStatus"] in {"held-out benchmark", "flow sanity check", "calibration proxy"}
     ]
     tex_lines = [
-        r"\clearpage",
         r"\begingroup",
         r"\scriptsize",
         r"\setlength{\LTpre}{0pt}",

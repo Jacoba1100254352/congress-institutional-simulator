@@ -19,6 +19,10 @@ OUT_MD = Path("reports/empirical-data-inventory.md")
 BOUNDARY_CSV = Path("reports/validation-boundary-matrix.csv")
 BOUNDARY_MD = Path("reports/validation-boundary-matrix.md")
 
+RELATED_RAW = {
+    "govinfo_bill_census.csv": Path("data/validation/raw/govinfo_bill_census_118.csv"),
+}
+
 DATE_COLUMNS = (
     "introduced_date",
     "referred_to_committee_date",
@@ -145,14 +149,21 @@ def write_inventory(rows: list[dict[str, str]]) -> None:
         lines.append(f"- {boundary}: {count}")
     lines.extend([
         "",
-        "| Source family | Dataset | Inventory status | Boundary | Rows | Date range | Evidence |",
-        "| --- | --- | --- | --- | ---: | --- | --- |",
+        "| Source family | Dataset | Inventory status | Boundary | Rows | Related cohort | Date range | Evidence |",
+        "| --- | --- | --- | --- | ---: | --- | --- | --- |",
     ])
     for row in rows:
         date_range = row["dateRange"] if row["dateRange"] else "---"
+        related = "---"
+        if row["relatedRawPath"]:
+            related = (
+                f"`{row['relatedRawPath']}` ({row['relatedRowCount']} rows; "
+                f"{row['relatedDateRange'] or 'no dates'})"
+            )
         lines.append(
             f"| {row['sourceFamily']} | `{row['dataset']}` | {row['inventoryStatus']} | "
-            f"{row['boundaryCategory']} | {row['rowCount']} | {date_range} | {row['evidenceStatus']} |"
+            f"{row['boundaryCategory']} | {row['rowCount']} | {related} | {date_range} | "
+            f"{row['evidenceStatus']} |"
         )
     OUT_MD.write_text("\n".join(lines) + "\n")
 
@@ -215,6 +226,10 @@ def main() -> int:
         status = inventory_status(readiness_status, source["offline_status"])
         heldout_status = heldout.get(source["source_family"], "")
         bridge_status = bridges.get(dataset, "")
+        related_path = RELATED_RAW.get(dataset)
+        related_count, related_date_range, _ = (
+            raw_profile(str(related_path)) if related_path is not None else ("0", "", "")
+        )
         rows.append({
             "sourceFamily": source["source_family"],
             "sourceName": source["source_name"],
@@ -239,6 +254,9 @@ def main() -> int:
             "networkRequired": source["network_required"],
             "cachePath": source["cache_path"],
             "rawPath": source["raw_path"],
+            "relatedRawPath": str(related_path) if related_path is not None else "",
+            "relatedRowCount": related_count if related_path is not None else "",
+            "relatedDateRange": related_date_range,
             "transformationScript": source["transformation_script"],
             "columns": columns,
             "limitations": source["limitations"],

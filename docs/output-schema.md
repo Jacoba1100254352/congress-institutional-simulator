@@ -74,6 +74,16 @@ The current validation pipeline writes:
   concentration, OpenFEC campaign-finance concentration, CES district-opinion
   proxies, SCDB court review, Federal Register implementation delay,
   Congress.gov law-revision text, and comparative-institution context.
+- `reports/govinfo-bill-census.csv`: complete 117th-Congress H.R./S. lifecycle
+  summary used for threshold selection and within-Congress stability checks.
+- `reports/govinfo-bill-census-118.csv`: complete 118th-Congress H.R./S.
+  lifecycle summary used only as the later temporal cohort.
+- `reports/legislative-lifecycle-calibration.csv`: fixed threshold grid and
+  selected 117th-Congress calibration result.
+- `reports/legislative-lifecycle-temporal-replication.csv`: no-refit transport
+  errors against the complete 118th census, including Wilson intervals,
+  prespecified tolerances, and pass/fail status. The current result passes two
+  of three tolerances and retains the enactment miss.
 - `reports/empirical-data-inventory.csv`: source-family inventory joined from
   the registry and current reports.
 - `reports/empirical-linkage-report.csv`: explicit raw-data join coverage by

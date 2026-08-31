@@ -64,7 +64,7 @@ No new breakout-specific figures belong in this paper.
 |---|---|---|---|
 | The project contributes a reusable simulation framework. | ACM paper, ODD+D appendix, Java source, Make workflow. | Framework is synthetic and not a validated Congress model. | Keep. |
 | The framework makes tradeoffs inspectable under shared synthetic worlds. | Main campaign, figures, metric dashboard. | Tradeoffs depend on generator assumptions. | Keep with caveat. |
-| The empirical layer is a flow sanity check. | `reports/calibration-baseline.*`, `reports/empirical-bridge.*`. | Does not validate welfare, harm, capture, support, or revision moderation. | Keep. |
+| The empirical layer provides flow sanity checks and one narrow temporal transport test. | `reports/calibration-baseline.*`, `reports/empirical-bridge.*`, paired GovInfo census reports, and `reports/legislative-lifecycle-temporal-replication.*`. | Two of three aggregate rates pass the frozen test; enactment misses, and none of this validates welfare, harm, capture, support, revision moderation, or causal mechanisms. | Keep with explicit miss. |
 | Particular legislative designs are generally superior. | Not supported. | Would overclaim beyond synthetic evidence. | Exclude. |
 | Breakout papers are submission-ready. | Current plans only. | Most require new experiments or validation. | Exclude from ACM paper. |
 

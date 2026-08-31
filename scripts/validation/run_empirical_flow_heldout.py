@@ -611,7 +611,7 @@ def write_reports(rows: list[dict[str, str]]) -> None:
         "",
         "Boundary notes:",
         "",
-        "- The GovInfo bill census supports deterministic within-117th-Congress legislative-flow benchmarking only; a later Congress is still required for temporal replication.",
+        "- The deterministic GovInfo held-out rows remain within the 117th Congress. The separate complete 118th census supplies the no-refit temporal transport test and is reported independently so it cannot enter calibration selection.",
         "- Voteview roll-call rows support held-out coalition-size and party-unity plausibility only; they do not validate district public opinion, representation, or generated public benefit.",
         "- Sponsor rows support held-out proposal-access concentration benchmarking only; they do not validate full member effectiveness or bill-level sponsor success.",
         "- Campaign-finance rows support held-out concentration and outside-spending observability only; they do not validate bill-level influence or capture.",
