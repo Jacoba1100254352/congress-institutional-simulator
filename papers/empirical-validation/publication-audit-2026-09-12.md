@@ -7,11 +7,16 @@ failed House-procedure comparison without retuning against held-out data,
 strengthen the highest-priority evidence links, and deliver reproducible
 results with precise data-dependent limitations.
 
-Assessment: **local checks passed; package and hosted CI verification in progress**. The empirical result is suitable
+Assessment: **reproducibility and publication checks passed; empirical findings require the stated caveats**. The empirical result is suitable
 only with the qualifications below. Passing artifact checks does not turn
 the synthetic simulator into an empirically validated model of Congress.
 This audit does not authorize a second-generation fit, loosen tolerances,
 choose a license, or establish an archived software release.
+
+The verified scientific and reviewer-artifact revision is
+`f571bcb615c09763a2cb8f3daf6fbda394e34e6e`. This ledger-only update records the
+completed checks without changing the tested code, inputs, reports, PDFs, or
+reviewer archive.
 
 ## Evidence and corrections
 
@@ -58,7 +63,9 @@ choose a license, or establish an archived software release.
 7. The reviewer packager now includes the required study protocols, new
    calibration and source-audit results, and campaign provenance manifests.
    It continues excluding surrounding planning notes and identity-bearing
-   root release metadata. Actual archive validation is still required.
+   root release metadata. The actual 840-file ZIP passed privacy, member-path,
+   CRC, required-artifact, and source-hash checks; its contents exactly match
+   the original inputs used for the successful clean reproduction.
 8. The implementation review confirms that special-rule and suspension
    thresholds only assign diagnostic labels. They do not alter the inner
    voting threshold or amendment rights. The manuscript and calibration
@@ -97,9 +104,8 @@ choose a license, or establish an archived software release.
     metrics, coefficients, predictions, and substantive report remain
     byte-identical; the hard checker reconciles metadata with all eight CSV
     result rows. Metadata is byte-identical under local Python 3.9 and 3.14;
-    all native and paper checks pass. Hosted CI on `ad35dfb` subsequently
-    passed all gates; the latest packaging correction still requires its
-    own final hosted confirmation.
+    all native and paper checks pass. Hosted CI subsequently passed all gates
+    for both `ad35dfb` and the final artifact revision `f571bcb`.
 14. A network-denied, package-shaped reproduction outside the checkout
     reproduced all five campaign tables (4,646 data rows) and the complete
     locked House grid byte for byte, then exposed unconditional live survey
@@ -122,8 +128,15 @@ choose a license, or establish an archived software release.
     and generated README, preserve anonymity and the original README, and
     confirm rejection when the concentration caveat is removed. The Java
     suite, all 137 Python tests, and the local paper checks pass. No source
-    data, scientific report, model, checker, or PDF content changed. The fixed
-    bundle's complete reproduction and actual ZIP verification remain pending.
+    data, scientific report, model, checker, or PDF content changed. A fresh
+    `f571bcb` package-shaped copy subsequently passed the complete network-denied
+    `make test` and `make reproduce-paper-offline` workflow, without skipped
+    targets. The actual extracted ZIP also passed its native and source checks
+    and then the complete documented offline reproduction. A separate attempt
+    to skip `paper-assets` during an extraction-only freshness check was
+    rejected for missing derived reports; the normal full target regenerates
+    those reports and passes. No checker or package change was made to
+    accommodate that skipped-prerequisite attempt.
 
 ## Verification ledger
 
@@ -131,11 +144,33 @@ choose a license, or establish an archived software release.
 | --- | --- | --- |
 | No retuning or erased failure | Frozen panel, candidate and metric hashes; calibration hard checker | Full grid rerun retains candidate, metric, seed, and Monte Carlo hashes; hard checks pass under Python 3.9 and 3.14 |
 | Source-linkage investigation | 29,335 XML/action hash matches; 7,397-row extract; full resolution and vote snapshots | Nine tests pass; source-audit regeneration checks pass under Python 3.9 and 3.14; pinned resolution-link check passes |
-| Native regression coverage | `make test` with a clean Java 21 build | Java suite and 137 Python tests pass locally; the `8fb4037` isolated copy passed its Java suite and 134 Python tests; final fixed-bundle checks still pending |
-| Isolated offline reproduction | Network-denied `make test` followed by `make reproduce-paper-offline`, outside the source checkout; `8fb4037` initial snapshot contains 840 files and 313 verified paper-source inputs | The fresh run reproduces all five campaign tables (4,646 data rows), four report/provenance pairs, the complete House grid, and stable paper text. All 838 initial non-PDF files remain byte-identical; only raw PDF bytes change. The run stops at the anonymous README publication check. After its correction, the complete clean rerun is pending. |
-| Manuscript/output alignment | Full campaign/grid run, followed by `make -o paper-assets paper-checks` for the reconciled prose | All paper checks pass; 5,815 / 6,000 words; visual review passes for main pages 6, 7, 13 and appendix pages 6, 7, 8, 17; all 30 pages pass automated rendering |
-| Anonymous reviewer reproducibility | Built ZIP, member/CRC/privacy checks, extracted-copy tests | Pending |
-| Publication synchronization | Reviewed diff, redacted staged secret scan, commit/push, final CI result | Diff and secret scan pass; publication and hosted CI verification pending |
+| Native regression coverage | `make test` with a clean Java 21 build | Java suite and 137 Python tests pass locally, in the clean `f571bcb` package-shaped copy, and in the actual ZIP extraction. The extracted copy also passes the frozen empirical snapshot and House source-linkage checks. |
+| Isolated offline reproduction | Complete network-denied native tests and `make reproduce-paper-offline`, outside any Git worktree, from both the clean `f571bcb` package-shaped snapshot and actual ZIP extraction | Both complete workflows pass without skipped targets. All five campaign tables (4,646 data rows), four report/provenance pairs, the complete House grid, and stable paper text reproduce. All 838 initial non-PDF files remain byte-identical; only raw PDF bytes change. Sixteen additional derived lobbying reports are regenerated from retained inputs. |
+| Manuscript/output alignment | Complete isolated `f571bcb` paper rebuild and publication checks, followed by file and rendered-page comparison | All paper checks pass; 5,815 / 6,000 words. The PDF manifest and normalized text are unchanged, and all 30 rendered pages are pixel-identical to the committed papers. Fresh visual review of main page 7 and appendix page 7 passes, supplementing the earlier review of main pages 6, 7, 13 and appendix pages 6, 7, 8, 17. |
+| Anonymous reviewer reproducibility | Actual ZIP, member/CRC/privacy checks, initial-input comparison, and full extracted-copy reproduction | Pass: 840 members, 313 embedded paper-source hashes, all required study artifacts, and 839 copied files matching the source checkout. At extraction, all 840 files, including the generated anonymous README, match the untouched test snapshot. The canonical local ZIP is replaced with this verified artifact; the older generated ZIP is retained in recoverable audit storage. |
+| Publication synchronization | Reviewed diff, redacted staged secret scans, pushed implementation commits, and hosted CI | The tested code/artifact revision `f571bcb` is pushed and [its CI run](https://github.com/Jacoba1100254352/congress-institutional-simulator/actions/runs/34719205752) passes all native, calibration, empirical, paper-freshness, package, and clean-regeneration gates. This subsequent ledger-only update preserves the tested inputs and archive. |
+
+## Verified reviewer artifact
+
+- Generated local archive: `dist/congress-institutional-simulator-anonymous.zip`.
+- SHA-256: `c45849b52b66d3a78acf9c2744297d13c7448d4224391acac5a7583fdf091121`.
+- The adjacent `.zip.sha256` file verifies the delivered archive. This checksum
+  identifies this particular built ZIP; container timestamps need not reproduce.
+  The stable comparisons are member contents, numerical reports, normalized PDF
+  text, and the checked source manifest.
+- Local verification used Microsoft OpenJDK 21.0.11, Python 3.14.7, GNU Make
+  3.81, latexmk 4.88, and Poppler 26.09.0. Hosted CI independently used Java 21
+  on Linux. These checks do not establish support for every runtime version.
+
+The published reproduction commands were exercised with network access denied:
+
+```sh
+make test
+make reproduce-paper-offline
+```
+
+The archive is a verified reviewer artifact, not a tagged or archived software
+release. Its generated files are not committed as a release distribution.
 
 ## Remaining data-dependent limitations
 
