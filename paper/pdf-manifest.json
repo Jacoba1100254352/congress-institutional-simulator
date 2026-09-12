@@ -17,11 +17,11 @@
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "08049d364e7a75aa9811d65a241f36d9382d1a8671a17df8f5d91a4323cd6568",
+  "sourceInputSha256": "34f6df1536f1f846407fa8a797fe6dcf1f32a8f84ddf07d359935f28c7305c84",
   "sourceInputs": [
     {
       "path": "Makefile",
-      "sha256": "512e5c1aa22e71c1b37c006f46b65f9e5b7ba94bb6462e134fb38b0bda24b34b"
+      "sha256": "54b50bc3d6d7fd2771087a09d5552237aa6542e8057ba76e9c2be2ad7f451cb5"
     },
     {
       "path": "data/calibration/empirical-benchmarks.csv",
@@ -532,6 +532,10 @@
       "sha256": "0823aa006b5936b8678e829c70c6ce7a858d1e080f8a4e4ba255b9c033773b4c"
     },
     {
+      "path": "scripts/checks/check_offline_empirical_snapshots.py",
+      "sha256": "f3a92371271559eb1b7f0bbac604834b1e0a0bafc3a2287f879a492df653f5e4"
+    },
+    {
       "path": "scripts/checks/check_paper_anonymity.py",
       "sha256": "4841c16ea652864fb4e0b80c52d25bd8b5d48e7e4d21b04cadc8da23b4572f28"
     },
@@ -550,6 +554,10 @@
     {
       "path": "scripts/checks/check_table_figure_consistency.py",
       "sha256": "f6cb7f28051fc9962c64ee92b9dc6d8d63bc61783f0ee765ea0b42c7f3542c8e"
+    },
+    {
+      "path": "scripts/checks/test_offline_empirical_snapshots.py",
+      "sha256": "5525ac86e5ab99630ffc2d8ff1e62313963e6937490e217f3ef1f4b463cc3668"
     },
     {
       "path": "scripts/checks/test_paper_anonymity.py",

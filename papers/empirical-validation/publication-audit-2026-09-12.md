@@ -99,6 +99,18 @@ choose a license, or establish an archived software release.
     result rows. Metadata is byte-identical under local Python 3.9 and 3.14;
     all native and paper checks pass. Final hosted confirmation is still
     required.
+14. A network-denied, package-shaped reproduction outside the checkout
+    reproduced all five campaign tables (4,646 data rows) and the complete
+    locked House grid byte for byte, then exposed unconditional live survey
+    acquisition. A resumed report check also exposed a live member-vote fetch.
+    Report targets now use four hash- and row-count-checked committed extracts:
+    54 CES candidates, 918 response-distribution rows, 54 codebook rows, and
+    3,435 member-vote/context rows. Explicit acquisition targets remain
+    available. Missing or changed snapshots fail before paper campaigns;
+    no source data or scientific result was changed. Nine regression tests
+    protect snapshot integrity and both offline/report and live/acquisition
+    dependency paths. The network-denied report tail and all paper checks
+    pass; a complete fresh package-shaped rerun is still required.
 
 ## Verification ledger
 
@@ -106,8 +118,8 @@ choose a license, or establish an archived software release.
 | --- | --- | --- |
 | No retuning or erased failure | Frozen panel, candidate and metric hashes; calibration hard checker | Full grid rerun retains candidate, metric, seed, and Monte Carlo hashes; hard checks pass under Python 3.9 and 3.14 |
 | Source-linkage investigation | 29,335 XML/action hash matches; 7,397-row extract; full resolution and vote snapshots | Nine tests pass; source-audit regeneration checks pass under Python 3.9 and 3.14; pinned resolution-link check passes |
-| Native regression coverage | `make test` with a clean Java 21 build | Java suite and 125 Python tests pass; final extracted-copy checks still pending |
-| Isolated offline reproduction | Network-denied `make test` followed by `make reproduce-paper-offline`, outside the source checkout, using the `7981110` package snapshot | Isolated Java suite and 122 Python tests pass; rebuilt JAR matches the pinned hash. Full campaign reproduction is running. The subsequent metadata-only correction is checked separately. |
+| Native regression coverage | `make test` with a clean Java 21 build | Java suite and 134 Python tests pass; final extracted-copy checks still pending |
+| Isolated offline reproduction | Network-denied `make test` followed by `make reproduce-paper-offline`, outside the source checkout, using the `7981110` package snapshot; resumed report checks after the offline-source correction | Isolated Java suite and 122 Python tests pass; rebuilt JAR, five campaign tables, and complete House grid match their pinned bytes. The first run stopped on live source acquisition. Corrected report-tail and paper checks pass without network; the complete clean rerun is pending. |
 | Manuscript/output alignment | Full campaign/grid run, followed by `make -o paper-assets paper-checks` for the reconciled prose | All paper checks pass; 5,815 / 6,000 words; visual review passes for main pages 6, 7, 13 and appendix pages 6, 7, 8, 17; all 30 pages pass automated rendering |
 | Anonymous reviewer reproducibility | Built ZIP, member/CRC/privacy checks, extracted-copy tests | Pending |
 | Publication synchronization | Reviewed diff, redacted staged secret scan, commit/push, final CI result | Diff and secret scan pass; publication and hosted CI verification pending |

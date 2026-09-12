@@ -18,6 +18,7 @@ PAPER_APPENDIX_PDF := paper/technical-appendix/odd-d-appendix.pdf
 .PHONY: build-house-agenda-control-raw house-agenda-control-panel house-agenda-control-study house-agenda-control-study-check house-agenda-control-calibration house-agenda-control-calibration-check
 .PHONY: build-house-procedure-audit-actions house-procedure-source-audit house-procedure-source-audit-check
 .PHONY: build-house-resolution-link-reference house-resolution-link-reference
+.PHONY: ces-policy-snapshot-check member-vote-snapshot-check offline-empirical-snapshot-check
 
 check-java:
 	@actual="$$(javac -version 2>&1 | awk '{print $$2}' | cut -d. -f1)"; \
@@ -462,7 +463,7 @@ bill-finance-lobbying-committee-action-source-review: bill-finance-lobbying-comm
 bill-finance-lobbying-roll-call-source-review: bill-finance-lobbying-committee-action-source-review
 	python3 scripts/validation/write_bill_finance_lobbying_roll_call_source_review.py
 
-bill-finance-lobbying-member-vote-target-review: build-bill-finance-lobbying-member-vote-target-raw
+bill-finance-lobbying-member-vote-target-review: member-vote-snapshot-check bill-finance-lobbying-roll-call-source-review bill-finance-lobbying-campaign-finance-target-scope-review campaign-finance-member-context
 	python3 scripts/validation/write_bill_finance_lobbying_member_vote_target_review.py
 
 bill-finance-lobbying-source-acquisition-queue: bill-finance-lobbying-committee-action-context bill-finance-lobbying-committee-action-source-review bill-finance-lobbying-roll-call-source-review bill-finance-lobbying-member-vote-target-review govinfo-billstatus-linkage voteview-bill-linkage
@@ -564,19 +565,28 @@ district-public-opinion-survey-item-proxy-review: district-public-opinion-survey
 build-district-public-opinion-ces-policy-item-candidates-raw:
 	python3 scripts/validation/build_district_public_opinion_ces_policy_item_candidate_dataset.py $(ARGS)
 
-district-public-opinion-ces-policy-item-candidate-review: district-public-opinion-survey-source-crosswalk build-district-public-opinion-ces-policy-item-candidates-raw
+ces-policy-snapshot-check:
+	python3 scripts/checks/check_offline_empirical_snapshots.py --group ces-policy
+
+member-vote-snapshot-check:
+	python3 scripts/checks/check_offline_empirical_snapshots.py --group member-votes
+
+offline-empirical-snapshot-check:
+	python3 scripts/checks/check_offline_empirical_snapshots.py
+
+district-public-opinion-ces-policy-item-candidate-review: ces-policy-snapshot-check district-public-opinion-survey-source-crosswalk
 	python3 scripts/validation/write_district_public_opinion_ces_policy_item_candidate_review.py
 
 build-district-public-opinion-ces-policy-item-response-distributions-raw: build-district-public-opinion-ces-policy-item-candidates-raw
 	python3 scripts/validation/build_district_public_opinion_ces_policy_item_response_distribution_dataset.py
 
-district-public-opinion-ces-policy-item-response-distribution-review: district-public-opinion-ces-policy-item-candidate-review build-district-public-opinion-ces-policy-item-response-distributions-raw
+district-public-opinion-ces-policy-item-response-distribution-review: district-public-opinion-ces-policy-item-candidate-review ces-policy-snapshot-check
 	python3 scripts/validation/write_district_public_opinion_ces_policy_item_response_distribution_review.py
 
 build-district-public-opinion-ces-policy-item-codebook-direction-raw: build-district-public-opinion-ces-policy-item-response-distributions-raw
 	python3 scripts/validation/build_district_public_opinion_ces_policy_item_codebook_direction_dataset.py
 
-district-public-opinion-ces-policy-item-codebook-direction-review: district-public-opinion-ces-policy-item-response-distribution-review build-district-public-opinion-ces-policy-item-codebook-direction-raw
+district-public-opinion-ces-policy-item-codebook-direction-review: district-public-opinion-ces-policy-item-response-distribution-review ces-policy-snapshot-check
 	python3 scripts/validation/write_district_public_opinion_ces_policy_item_codebook_direction_review.py
 
 build-district-public-opinion-bill-text-context-raw: district-public-opinion-source-packets
@@ -680,7 +690,7 @@ mechanism-diagnostics: empirical-bridge ablation-analysis manipulation-stress
 public-provenance:
 	python3 scripts/reporting/write_public_provenance.py
 
-paper-assets: paper-campaign family-screen mechanism-diagnostics chamber-structure validation-gap-report
+paper-assets: offline-empirical-snapshot-check paper-campaign family-screen mechanism-diagnostics chamber-structure validation-gap-report
 	python3 paper/scripts/generate_figures.py
 
 paper: paper-assets
@@ -766,6 +776,7 @@ test: build
 	python3 scripts/validation/test_house_agenda_control_study.py
 	python3 scripts/validation/test_house_agenda_control_calibration.py
 	python3 scripts/checks/test_paper_anonymity.py
+	python3 scripts/checks/test_offline_empirical_snapshots.py
 	python3 paper/scripts/test_pdf_manifest.py
 	python3 scripts/validation/test_house_procedure_source_audit.py
 	python3 scripts/validation/test_district_public_opinion_census_denominator.py

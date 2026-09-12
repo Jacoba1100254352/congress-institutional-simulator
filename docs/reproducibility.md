@@ -46,6 +46,23 @@ Full no-network paper reproduction:
 make reproduce-paper-offline
 ```
 
+CES policy-item reports use three committed version-3.0 derived extracts:
+54 candidate rows, 918 response-distribution rows, and 54 codebook rows.
+`make ces-policy-snapshot-check` verifies their exact hashes and row counts.
+Missing or changed extracts stop offline reproduction rather than downloading
+data or silently producing empty reviews. This reproduces reports from the
+retained extracts, not the original respondent-level survey or remote guide.
+The `build-district-public-opinion-ces-policy-item-*-raw` targets remain explicit
+network-dependent acquisition commands. A refreshed source snapshot and its
+baseline pins require review before it replaces these paper inputs.
+
+The member-vote review similarly uses the committed 3,435-row House-vote and
+finance-context extract, verified by `make member-vote-snapshot-check`.
+`make build-bill-finance-lobbying-member-vote-target-raw` remains the explicit
+live acquisition command. `make offline-empirical-snapshot-check` checks all
+four extracts before paper campaigns begin. These guards establish snapshot
+integrity, not survey representativeness, causal influence, or model validity.
+
 Paper readiness checks:
 
 ```sh
