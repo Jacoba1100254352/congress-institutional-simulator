@@ -17,6 +17,7 @@ try:
         fit_penalized_logistic,
         objective_gradient_information,
         read_csv,
+        reported_results,
         run_study,
         sigmoid,
         standardize_design,
@@ -33,6 +34,7 @@ except ImportError:  # Direct script execution used by the Makefile.
         fit_penalized_logistic,
         objective_gradient_information,
         read_csv,
+        reported_results,
         run_study,
         sigmoid,
         standardize_design,
@@ -166,6 +168,35 @@ def reference_penalized_objective(
 
 
 class PresidentialChoiceStudyTests(unittest.TestCase):
+    def test_reported_precision_unifies_observed_cross_environment_residuals(self) -> None:
+        # These pairs were recorded by the local and hosted frozen-study runs.
+        pairs = (
+            (4.401876301004105e-11, 4.401876257636018e-11),
+            (3.729662588426892e-14, 2.5736198247397826e-14),
+            (1.5598489606261535e-14, 9.500574799255462e-15),
+            (-0.012114527605333575, -0.012114527605333578),
+            (0.3719957362546018, 0.37199573625460175),
+        )
+        for local, hosted in pairs:
+            with self.subTest(local=local, hosted=hosted):
+                self.assertEqual(reported_results(local), reported_results(hosted))
+        self.assertNotEqual(reported_results(0.001), reported_results(0.002))
+
+    def test_serialization_does_not_change_gate_or_unrounded_input(self) -> None:
+        raw = {"model": {"calibration": 0.0200000000001}, "primaryGateStatus": "fail"}
+        rendered = reported_results(raw)
+        self.assertEqual(rendered["model"]["calibration"], 0.020)
+        self.assertEqual(rendered["primaryGateStatus"], "fail")
+        self.assertGreater(raw["model"]["calibration"], 0.020)
+
+    def test_reported_precision_preserves_counts_and_nulls_and_rejects_nonfinite(self) -> None:
+        raw = {"rows": 287, "fit": None, "flag": False}
+        self.assertEqual(reported_results(raw), raw)
+        self.assertEqual(str(reported_results(-1e-15)), "0.0")
+        for value in (math.nan, math.inf, -math.inf):
+            with self.assertRaises(RuntimeError):
+                reported_results(value)
+
     def test_sigmoid_is_stable_at_extreme_values(self) -> None:
         self.assertEqual(1.0, sigmoid(1000.0))
         self.assertEqual(0.0, sigmoid(-1000.0))

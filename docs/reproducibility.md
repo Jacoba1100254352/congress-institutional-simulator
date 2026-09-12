@@ -131,6 +131,14 @@ the checker never changes or deletes either file. This prevents identical
 local conflict copies from creating false paper-freshness failures without
 silently accepting conflicting research inputs.
 
+Presidential-study metadata schema 2 records `reportedResults` at the same
+12-decimal-place precision as its CSV tables. Cross-environment floating-point
+differences below that display precision do not change the recorded results;
+very small solver residuals can round to zero. Fitting, solver convergence,
+and the locked acceptance gate still use unrounded internal values. Solver
+tolerances and other protocol constants are not rounded. The hard checker
+reconciles each recorded result with the corresponding CSV value.
+
 ## Generated Outputs
 
 Expected generated locations:

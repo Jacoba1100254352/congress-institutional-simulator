@@ -85,6 +85,20 @@ choose a license, or establish an archived software release.
     its input digest, unpaired numbered inputs are retained, and differing
     copies stop for review. The full native suite and paper checks pass after
     this change; both PDF byte hashes are unchanged.
+13. Hosted CI on `62bb85a` independently passed the native, empirical, paper,
+    and package checks, then failed clean regeneration on the stale baseline
+    caveat and last-bit presidential metadata differences. The baseline was
+    already corrected in `e2cc614`. Metadata schema 2 now records explicitly
+    labeled 12-decimal-place results, matching the existing CSV precision;
+    it no longer calls these persisted values full precision. Fitting,
+    unrounded gate evaluation, and all protocol constants are unchanged.
+    Three regression tests cover observed cross-environment differences,
+    preservation of the pre-rounding gate, and invalid numeric values. The
+    metrics, coefficients, predictions, and substantive report remain
+    byte-identical; the hard checker reconciles metadata with all eight CSV
+    result rows. Metadata is byte-identical under local Python 3.9 and 3.14;
+    all native and paper checks pass. Final hosted confirmation is still
+    required.
 
 ## Verification ledger
 
@@ -92,7 +106,8 @@ choose a license, or establish an archived software release.
 | --- | --- | --- |
 | No retuning or erased failure | Frozen panel, candidate and metric hashes; calibration hard checker | Full grid rerun retains candidate, metric, seed, and Monte Carlo hashes; hard checks pass under Python 3.9 and 3.14 |
 | Source-linkage investigation | 29,335 XML/action hash matches; 7,397-row extract; full resolution and vote snapshots | Nine tests pass; source-audit regeneration checks pass under Python 3.9 and 3.14; pinned resolution-link check passes |
-| Native regression coverage | `make test` with a clean Java 21 build | Java suite and 122 Python tests pass; extracted-copy clean build still pending |
+| Native regression coverage | `make test` with a clean Java 21 build | Java suite and 125 Python tests pass; final extracted-copy checks still pending |
+| Isolated offline reproduction | Network-denied `make test` followed by `make reproduce-paper-offline`, outside the source checkout, using the `7981110` package snapshot | Isolated Java suite and 122 Python tests pass; rebuilt JAR matches the pinned hash. Full campaign reproduction is running. The subsequent metadata-only correction is checked separately. |
 | Manuscript/output alignment | Full campaign/grid run, followed by `make -o paper-assets paper-checks` for the reconciled prose | All paper checks pass; 5,815 / 6,000 words; visual review passes for main pages 6, 7, 13 and appendix pages 6, 7, 8, 17; all 30 pages pass automated rendering |
 | Anonymous reviewer reproducibility | Built ZIP, member/CRC/privacy checks, extracted-copy tests | Pending |
 | Publication synchronization | Reviewed diff, redacted staged secret scan, commit/push, final CI result | Diff and secret scan pass; publication and hosted CI verification pending |

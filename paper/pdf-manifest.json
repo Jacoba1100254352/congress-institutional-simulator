@@ -17,7 +17,7 @@
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "f83670d115f9bc656eee96f819e2dc2d15fb37b181be1c0d029662d29897f5b6",
+  "sourceInputSha256": "08049d364e7a75aa9811d65a241f36d9382d1a8671a17df8f5d91a4323cd6568",
   "sourceInputs": [
     {
       "path": "Makefile",
@@ -541,7 +541,7 @@
     },
     {
       "path": "scripts/checks/check_presidential_choice_study.py",
-      "sha256": "d982c0a658f45f7388599c46e8ccab8e0a091f7956d9636fd02987f192b3e408"
+      "sha256": "9209207ede18426399e95b8f7a0c5fc656313a36b812802b13592a13999db216"
     },
     {
       "path": "scripts/checks/check_seed_robustness.py",
@@ -885,7 +885,7 @@
     },
     {
       "path": "scripts/validation/test_presidential_choice_study.py",
-      "sha256": "9903572d89acca63a20bd3724f4072a01ff6ad81fcd7ea5b1f2f671b6dab2d3b"
+      "sha256": "91b06d42c5f526811b523cbed2a76224f8b60ce0539e2323c986bd4a245f3a47"
     },
     {
       "path": "scripts/validation/test_reproducible_metadata.py",
@@ -1141,7 +1141,7 @@
     },
     {
       "path": "scripts/validation/write_presidential_choice_study.py",
-      "sha256": "38f22225648704cc7d6a04220aebdaaf5bb8b3e186df2e78a94228cb6068ae7b"
+      "sha256": "3e254e0e024785da434521648218a754e7f403aa4fe9f5107a2e47449b5557f7"
     },
     {
       "path": "scripts/validation/write_raw_source_manifest.py",

@@ -341,6 +341,38 @@ def check_coefficients() -> None:
 def check_metadata_and_report() -> None:
     require(METADATA.exists(), f"Missing required artifact: {METADATA}")
     metadata = json.loads(METADATA.read_text(encoding="utf-8"))
+    require(metadata["schemaVersion"] == 2, "Metadata schema drifted.")
+    require("fullPrecisionResults" not in metadata, "Rounded results mislabeled as full precision.")
+    require(
+        metadata["resultSerialization"] == {
+            "decimalPlaces": 12,
+            "appliesTo": "reportedResults",
+            "gateEvaluatedBeforeRounding": True,
+            "valuesBelowHalfUnitMayRoundToZero": True,
+        },
+        "Metadata result-precision policy drifted.",
+    )
+    result_fields = {
+        "observed_rate": "testVetoRate",
+        "mean_probability": "meanPredictedProbability",
+        "minimum_probability": "minimumPredictedProbability",
+        "maximum_probability": "maximumPredictedProbability",
+        "log_loss": "meanLogLoss",
+        "brier": "brierScore",
+        "calibration": "calibrationInTheLarge",
+        "fitObjective": "fitObjective",
+        "fitGradientInfinityNorm": "fitGradientInfinityNorm",
+        "fitStepInfinityNorm": "fitStepInfinityNorm",
+    }
+    for row in read_csv(METRICS):
+        result = metadata["reportedResults"]["splits"][row["splitId"]]["models"][row["modelId"]]
+        for result_field, csv_field in result_fields.items():
+            expected = float(row[csv_field]) if row[csv_field] else None
+            require(result[result_field] == expected, f"Metadata/CSV mismatch: {row['splitId']} {row['modelId']} {result_field}")
+        require(
+            result["fitIterations"] == (int(row["fitIterations"]) if row["fitIterations"] else None),
+            "Metadata fit iteration count drifted.",
+        )
     require(metadata["studyVersion"] == "presidential-choice-transport-v1", "Study version drifted.")
     require(
         metadata["specification"]["sha256"] == EXPECTED_SPECIFICATION_SHA256,

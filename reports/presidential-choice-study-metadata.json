@@ -1,135 +1,9 @@
 {
   "claimBoundary": "predictive descriptive temporal transport study; not causal or simulator validation",
-  "fullPrecisionResults": {
-    "splits": {
-      "primary_118": {
-        "models": {
-          "M0": {
-            "brier": 0.044585808506370776,
-            "calibration": -0.03662490991507358,
-            "fitGradientInfinityNorm": null,
-            "fitIterations": null,
-            "fitObjective": null,
-            "fitStepInfinityNorm": null,
-            "log_loss": 0.22336907590376287,
-            "maximum_probability": 0.008671257332313186,
-            "mean_probability": 0.008671257332313186,
-            "minimum_probability": 0.008671257332313186,
-            "observed_rate": 0.04529616724738676
-          },
-          "M1": {
-            "brier": 0.015232313351153756,
-            "calibration": -0.011633635794566555,
-            "fitGradientInfinityNorm": 4.909131911742803e-15,
-            "fitIterations": 11,
-            "fitObjective": -105.33597567616937,
-            "fitStepInfinityNorm": 8.324878545483816e-16,
-            "log_loss": 0.058347134086171655,
-            "maximum_probability": 0.5336459917932053,
-            "mean_probability": 0.03366253145282021,
-            "minimum_probability": 0.0003807124420047239,
-            "observed_rate": 0.04529616724738676
-          },
-          "M2": {
-            "brier": 0.00814326097702796,
-            "calibration": 0.003149381507968764,
-            "fitGradientInfinityNorm": 4.401876301004105e-11,
-            "fitIterations": 10,
-            "fitObjective": -76.31621076880636,
-            "fitStepInfinityNorm": 1.2895074313853447e-11,
-            "log_loss": 0.02697696612748808,
-            "maximum_probability": 0.9444632544127893,
-            "mean_probability": 0.048445548755355526,
-            "minimum_probability": 9.419698116142698e-05,
-            "observed_rate": 0.04529616724738676
-          },
-          "SIM": {
-            "brier": 0.08386931784784922,
-            "calibration": 0.20155617918527258,
-            "fitGradientInfinityNorm": null,
-            "fitIterations": null,
-            "fitObjective": null,
-            "fitStepInfinityNorm": null,
-            "log_loss": 0.33402054093068617,
-            "maximum_probability": 0.2468523464326593,
-            "mean_probability": 0.24685234643265933,
-            "minimum_probability": 0.2468523464326593,
-            "observed_rate": 0.04529616724738676
-          }
-        },
-        "primaryGateStatus": "pass",
-        "testRows": 287,
-        "testVetoes": 13,
-        "trainRows": 3921,
-        "trainVetoes": 34
-      },
-      "secondary_116": {
-        "models": {
-          "M0": {
-            "brier": 0.027960225396908702,
-            "calibration": -0.020835636562394143,
-            "fitGradientInfinityNorm": null,
-            "fitIterations": null,
-            "fitObjective": null,
-            "fitStepInfinityNorm": null,
-            "log_loss": 0.14594238219871966,
-            "maximum_probability": 0.007492975335622854,
-            "mean_probability": 0.007492975335622855,
-            "minimum_probability": 0.007492975335622854,
-            "observed_rate": 0.028328611898016998
-          },
-          "M1": {
-            "brier": 0.016533047709621333,
-            "calibration": -0.012114527605333575,
-            "fitGradientInfinityNorm": 3.729662588426892e-14,
-            "fitIterations": 12,
-            "fitObjective": -87.91295187334237,
-            "fitStepInfinityNorm": 7.780106292593187e-15,
-            "log_loss": 0.06296883422698504,
-            "maximum_probability": 0.3719957362546018,
-            "mean_probability": 0.016214084292683423,
-            "minimum_probability": 0.0003948798248782042,
-            "observed_rate": 0.028328611898016998
-          },
-          "M2": {
-            "brier": 0.010357463517648605,
-            "calibration": 0.0009078547540219972,
-            "fitGradientInfinityNorm": 1.5598489606261535e-14,
-            "fitIterations": 12,
-            "fitObjective": -63.57509482298538,
-            "fitStepInfinityNorm": 2.1200772897553698e-14,
-            "log_loss": 0.03873768542886588,
-            "maximum_probability": 0.9252193660186074,
-            "mean_probability": 0.029236466652038995,
-            "minimum_probability": 8.489751452902844e-05,
-            "observed_rate": 0.028328611898016998
-          },
-          "SIM": {
-            "brier": 0.07527872420091535,
-            "calibration": 0.21852373453464227,
-            "fitGradientInfinityNorm": null,
-            "fitIterations": null,
-            "fitObjective": null,
-            "fitStepInfinityNorm": null,
-            "log_loss": 0.31509372626177906,
-            "maximum_probability": 0.2468523464326593,
-            "mean_probability": 0.24685234643265927,
-            "minimum_probability": 0.2468523464326593,
-            "observed_rate": 0.028328611898016998
-          }
-        },
-        "primaryGateStatus": null,
-        "testRows": 353,
-        "testVetoes": 10,
-        "trainRows": 3203,
-        "trainVetoes": 24
-      }
-    }
-  },
   "implementation": {
     "path": "scripts/validation/write_presidential_choice_study.py",
     "runtime": "Python standard library",
-    "sha256": "38f22225648704cc7d6a04220aebdaaf5bb8b3e186df2e78a94228cb6068ae7b"
+    "sha256": "3e254e0e024785da434521648218a754e7f403aa4fe9f5107a2e47449b5557f7"
   },
   "outputs": [
     {
@@ -169,7 +43,139 @@
     "status": "pass",
     "testCongress": 118
   },
-  "schemaVersion": 1,
+  "reportedResults": {
+    "splits": {
+      "primary_118": {
+        "models": {
+          "M0": {
+            "brier": 0.044585808506,
+            "calibration": -0.036624909915,
+            "fitGradientInfinityNorm": null,
+            "fitIterations": null,
+            "fitObjective": null,
+            "fitStepInfinityNorm": null,
+            "log_loss": 0.223369075904,
+            "maximum_probability": 0.008671257332,
+            "mean_probability": 0.008671257332,
+            "minimum_probability": 0.008671257332,
+            "observed_rate": 0.045296167247
+          },
+          "M1": {
+            "brier": 0.015232313351,
+            "calibration": -0.011633635795,
+            "fitGradientInfinityNorm": 0.0,
+            "fitIterations": 11,
+            "fitObjective": -105.335975676169,
+            "fitStepInfinityNorm": 0.0,
+            "log_loss": 0.058347134086,
+            "maximum_probability": 0.533645991793,
+            "mean_probability": 0.033662531453,
+            "minimum_probability": 0.000380712442,
+            "observed_rate": 0.045296167247
+          },
+          "M2": {
+            "brier": 0.008143260977,
+            "calibration": 0.003149381508,
+            "fitGradientInfinityNorm": 4.4e-11,
+            "fitIterations": 10,
+            "fitObjective": -76.316210768806,
+            "fitStepInfinityNorm": 1.3e-11,
+            "log_loss": 0.026976966127,
+            "maximum_probability": 0.944463254413,
+            "mean_probability": 0.048445548755,
+            "minimum_probability": 9.4196981e-05,
+            "observed_rate": 0.045296167247
+          },
+          "SIM": {
+            "brier": 0.083869317848,
+            "calibration": 0.201556179185,
+            "fitGradientInfinityNorm": null,
+            "fitIterations": null,
+            "fitObjective": null,
+            "fitStepInfinityNorm": null,
+            "log_loss": 0.334020540931,
+            "maximum_probability": 0.246852346433,
+            "mean_probability": 0.246852346433,
+            "minimum_probability": 0.246852346433,
+            "observed_rate": 0.045296167247
+          }
+        },
+        "primaryGateStatus": "pass",
+        "testRows": 287,
+        "testVetoes": 13,
+        "trainRows": 3921,
+        "trainVetoes": 34
+      },
+      "secondary_116": {
+        "models": {
+          "M0": {
+            "brier": 0.027960225397,
+            "calibration": -0.020835636562,
+            "fitGradientInfinityNorm": null,
+            "fitIterations": null,
+            "fitObjective": null,
+            "fitStepInfinityNorm": null,
+            "log_loss": 0.145942382199,
+            "maximum_probability": 0.007492975336,
+            "mean_probability": 0.007492975336,
+            "minimum_probability": 0.007492975336,
+            "observed_rate": 0.028328611898
+          },
+          "M1": {
+            "brier": 0.01653304771,
+            "calibration": -0.012114527605,
+            "fitGradientInfinityNorm": 0.0,
+            "fitIterations": 12,
+            "fitObjective": -87.912951873342,
+            "fitStepInfinityNorm": 0.0,
+            "log_loss": 0.062968834227,
+            "maximum_probability": 0.371995736255,
+            "mean_probability": 0.016214084293,
+            "minimum_probability": 0.000394879825,
+            "observed_rate": 0.028328611898
+          },
+          "M2": {
+            "brier": 0.010357463518,
+            "calibration": 0.000907854754,
+            "fitGradientInfinityNorm": 0.0,
+            "fitIterations": 12,
+            "fitObjective": -63.575094822985,
+            "fitStepInfinityNorm": 0.0,
+            "log_loss": 0.038737685429,
+            "maximum_probability": 0.925219366019,
+            "mean_probability": 0.029236466652,
+            "minimum_probability": 8.4897515e-05,
+            "observed_rate": 0.028328611898
+          },
+          "SIM": {
+            "brier": 0.075278724201,
+            "calibration": 0.218523734535,
+            "fitGradientInfinityNorm": null,
+            "fitIterations": null,
+            "fitObjective": null,
+            "fitStepInfinityNorm": null,
+            "log_loss": 0.315093726262,
+            "maximum_probability": 0.246852346433,
+            "mean_probability": 0.246852346433,
+            "minimum_probability": 0.246852346433,
+            "observed_rate": 0.028328611898
+          }
+        },
+        "primaryGateStatus": null,
+        "testRows": 353,
+        "testVetoes": 10,
+        "trainRows": 3203,
+        "trainVetoes": 24
+      }
+    }
+  },
+  "resultSerialization": {
+    "appliesTo": "reportedResults",
+    "decimalPlaces": 12,
+    "gateEvaluatedBeforeRounding": true,
+    "valuesBelowHalfUnitMayRoundToZero": true
+  },
+  "schemaVersion": 2,
   "solver": {
     "armijoConstant": 0.0001,
     "armijoNumericalSlackUlps": 8,

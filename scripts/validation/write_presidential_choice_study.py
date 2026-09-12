@@ -755,6 +755,17 @@ def format_float(value: float) -> str:
     return f"{value:.12f}"
 
 
+def reported_results(value: object) -> object:
+    """Serialize results at CSV precision, never feed rounding back into fitting."""
+    if isinstance(value, float):
+        require(math.isfinite(value), "Cannot serialize nonfinite study results.")
+        rounded = float(format_float(value))
+        return 0.0 if rounded == 0.0 else rounded
+    if isinstance(value, dict):
+        return {key: reported_results(item) for key, item in value.items()}
+    return value
+
+
 def output_coefficient_rows(
     split: dict[str, int | str],
     model_id: str,
@@ -1199,7 +1210,7 @@ def write_metadata(
     ):
         outputs.append({"path": str(path), "sha256": sha256_file(path)})
     metadata = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "studyVersion": STUDY_VERSION,
         "claimBoundary": "predictive descriptive temporal transport study; not causal or simulator validation",
         "specification": {
@@ -1240,7 +1251,13 @@ def write_metadata(
         "postFitConcentrationDiagnostic": post_fit_concentration_diagnostic(
             prediction_rows
         ),
-        "fullPrecisionResults": full_precision,
+        "resultSerialization": {
+            "decimalPlaces": 12,
+            "appliesTo": "reportedResults",
+            "gateEvaluatedBeforeRounding": True,
+            "valuesBelowHalfUnitMayRoundToZero": True,
+        },
+        "reportedResults": reported_results(full_precision),
         "outputs": outputs,
     }
     METADATA_OUTPUT.write_text(
