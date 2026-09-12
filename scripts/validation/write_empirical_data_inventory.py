@@ -27,6 +27,10 @@ RELATED_RAW = {
         Path("data/validation/raw/govinfo_joint_resolution_panel.csv"),
         Path("data/validation/raw/govinfo_final_chamber_vote_panel.csv"),
     ),
+    "house_agenda_control.csv": (
+        Path("data/validation/raw/house_special_rule_grants.csv"),
+        Path("data/validation/raw/house_procedure_audit_actions.csv"),
+    ),
 }
 
 DATE_COLUMNS = (

@@ -187,7 +187,8 @@ class HouseAgendaControlStudyArtifactTests(unittest.TestCase):
         )
 
     def test_report_preserves_calibration_and_causal_boundaries(self) -> None:
-        self.assertIn("Simulator calibration status: **NOT YET RUN**", self.report)
+        self.assertIn("Source attribution status: **CAVEAT**", self.report)
+        self.assertIn("one Senate action used as House suspension evidence", self.report)
         self.assertIn("No identities or categories are imputed", self.report)
         self.assertIn("not a causal estimate of agenda power", self.report)
         self.assertIn("do not authorize parameter fitting", self.report)

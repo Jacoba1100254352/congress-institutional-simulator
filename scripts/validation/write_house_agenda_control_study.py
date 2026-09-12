@@ -673,7 +673,9 @@ def write_report(metrics_rows: Sequence[dict[str, str]], specification_hash: str
     lines = [
         "# House Agenda-Control Source and Temporal Comparison",
         "",
-        "Source-panel integrity status: **PASS**. Simulator calibration status: **NOT YET RUN**.",
+        "Frozen-artifact integrity status: **PASS**. Source attribution status: **CAVEAT**. Simulator fitting is reported separately.",
+        "",
+        "Post-fit chamber review identifies one Senate action used as House suspension evidence in the frozen v1 panel (H.R. 4366, 118th Congress). The preserved counts below are not corrected census estimates. See [House procedure source audit](house-agenda-control-source-audit.md) for the full-archive review and the fixed-model sensitivity, which retains failure. The source mixed-route category spans a bill's history, not one scheduling decision.",
         "",
         "This report implements the locked source specification in "
         "`papers/empirical-validation/house-agenda-control-panel-specification.md`. "
@@ -919,7 +921,8 @@ def write_metadata(
     metadata = {
         "schemaVersion": 1,
         "studyVersion": STUDY_VERSION,
-        "status": "source_panel_pass_simulator_calibration_not_run",
+        "status": "frozen_v1_artifact_pass_source_attribution_caveat",
+        "sourceAudit": "reports/house-agenda-control-source-audit.md",
         "claimBoundary": CLAIM_BOUNDARY,
         "temporalDesign": {
             "developmentCongresses": [116, 117],

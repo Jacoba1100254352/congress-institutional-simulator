@@ -11,7 +11,7 @@
   "caseCount": 37,
   "scenarioCount": 51,
   "artifacts": [
-    {"path": "reports/simulation-chamber-structure.csv", "sha256": "42e9a430db59c0c67a9e4110b026bd8cd99f6f7159a81df214500974a1cc6da4"},
+    {"path": "reports/simulation-chamber-structure.csv", "sha256": "da4f4b50c61725d3f81cd2871a0c3b523f1ae8872b062f0a140dbc60754d17f6"},
     {"path": "reports/simulation-chamber-structure.md", "sha256": "be9b4fcd58c8bf40700d281ecb822119403c712514747befb754c98c32660d0c"}
   ]
 }

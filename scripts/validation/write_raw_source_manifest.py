@@ -27,6 +27,10 @@ RELATED_RAW = {
         RAW_DIR / "govinfo_joint_resolution_panel.csv",
         RAW_DIR / "govinfo_final_chamber_vote_panel.csv",
     ),
+    "house_agenda_control.csv": (
+        RAW_DIR / "house_special_rule_grants.csv",
+        RAW_DIR / "house_procedure_audit_actions.csv",
+    ),
 }
 
 DATE_COLUMNS = (

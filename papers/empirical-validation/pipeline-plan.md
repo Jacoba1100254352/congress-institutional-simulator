@@ -17,6 +17,10 @@ make govinfo-bill-census-118
 make legislative-lifecycle-calibration
 make legislative-lifecycle-temporal-replication
 make govinfo-bill-census-check
+make house-agenda-control-study
+make house-agenda-control-study-check
+make house-agenda-control-calibration
+make house-agenda-control-calibration-check
 make empirical-bridge
 make empirical-linkage-report
 make empirical-linkage-roadmap
@@ -142,6 +146,10 @@ Outputs:
 - `reports/govinfo-bill-census-118.csv`
 - `reports/legislative-lifecycle-calibration.csv`
 - `reports/legislative-lifecycle-temporal-replication.csv`
+- `reports/house-agenda-control-metrics.csv`
+- `reports/house-agenda-control-calibration-candidates.csv`
+- `reports/house-agenda-control-calibration-metrics.csv`
+- `reports/house-agenda-control-calibration-metadata.json`
 - `reports/empirical-validation-summary.csv`
 - `reports/empirical-bridge.csv`
 - `reports/empirical-flow-heldout.csv`
@@ -623,8 +631,14 @@ For each source family:
   represented through another source-family cache;
 - keep linked evidence separate from source-family held-out benchmark evidence.
 
-Current status: `reports/empirical-linkage-report.md` reports 13 / 13 source
-families as linked, metadata-linked, or partially linked. Govinfo BILLSTATUS
+Current status: `reports/empirical-linkage-report.md` reports 14 / 14 source
+families as linked, metadata-linked, or partially linked. The House
+agenda-control family links all 29,335 H.R. rows and all 458 literal Table 1a
+grant rows to pinned official records. Its separately locked 1,445-candidate
+simulator study passes three of four unchanged 118th-Congress gates but fails
+route composition at total variation 0.110470 versus 0.100. The boundary
+selection and failure remain unretuned, so this is simulator-falsification
+evidence rather than validation. Govinfo BILLSTATUS
 rows now cross-check the bounded Congress.gov bill sample; sponsor aggregate
 rows now join to bounded bill metadata for 22 / 22 sponsor rows; Voteview roll-call
 rows now carry public member metadata plus a bounded bill-number crosswalk for
@@ -663,7 +677,7 @@ Register authority-search, proposed-history, comment metadata,
 comment-record metadata, timing, and court-overlap metadata. No high-priority family is
 wholly unlinked, but all high-priority acceptance gates still require joins
 beyond metadata or proxy boundaries.
-`reports/empirical-linkage-roadmap.md` converts the 10 non-fully-linked
+`reports/empirical-linkage-roadmap.md` converts the 9 non-fully-linked
 families into required join keys, minimum viable datasets, and acceptance gates.
 `reports/bill-law-evidence-spine.md` then exposes the current public-law rows as
 the bill-centered spine available from cached metadata, including same-policy
@@ -900,11 +914,12 @@ metadata.
 
 ### Stage 7: Calibration and Held-Out Validation
 
-Current state: broad calibration/sanity screens, nine narrow source-family held-out checks, a 117th-Congress lifecycle threshold selection applied without refitting to the complete 116th and 118th Congresses, separate source-pinned 108th-118th-Congress H.R./S. and joint-resolution executive panels, a complete two-chamber final-approval panel, and a locked post-source-audit/pre-fit presidential-choice transport specification. Five of six lifecycle cohort-metric tolerances pass; the 118th-Congress enactment miss is retained. The combined empirical conditional veto rate is 0.011169 versus 0.246852 in the selected simulator panel, a 22.101-fold descriptive mismatch.
+Current state: broad calibration/sanity screens, nine narrow source-family held-out checks, a 117th-Congress lifecycle threshold selection applied without refitting to the complete 116th and 118th Congresses, separate source-pinned 108th-118th-Congress H.R./S. and joint-resolution executive panels, a complete two-chamber final-approval panel, a locked post-source-audit/pre-fit presidential-choice transport study, and a locked House route study over 1,445 candidates. Five of six lifecycle cohort-metric tolerances pass; the 118th-Congress enactment miss is retained. The House route study passes three of four test gates but fails route composition at total variation 0.110470 versus 0.100, with a grid-boundary suspension selection. The combined empirical conditional veto rate is 0.011169 versus 0.246852 in the selected simulator panel, a 22.101-fold descriptive mismatch.
 
 Future requirements:
 
-- implement and report the locked low-event presidential-choice estimator and whole-Congress temporal tests without post-fit changes;
+- replicate the locked low-event presidential-choice estimator unchanged in a future completed Congress with measure-class-specific reporting;
+- preserve the House route-composition failure without retuning, add referral-jurisdiction and status-quo-fallback evidence, and lock any richer route mechanism separately;
 - preserve separation between target-setting data and external evaluation data;
 - report errors, prespecified tolerance rules, failures, and descriptive diagnostics without post hoc retuning;
 - preserve synthetic-only labels for unsupported metrics.
@@ -937,7 +952,7 @@ empirical-heldout-check
 
 Before this can become a data/resource paper:
 
-- all 16 configured dataset files across 13 source families continue to have usable raw or cached summary inputs;
+- all 19 configured dataset files across 14 source families continue to have usable raw or cached summary inputs;
 - public support advances beyond the one historical related-issue pilot to exact or closer contemporaneous questions, validated geography, design-based uncertainty or MRP where needed, and bill-text-specific affected-population evidence, and campaign finance is linked beyond the current bounded concentration, issue-sector, member, district-context, sponsored-bill, local no-exact-match, target-scope, cached bill-action, and source-acquisition queue layers;
 - the linkage report shows bill/topic/statute or actor joins for the high-priority public-opinion, finance, implementation, and statutory-lineage areas;
 - implementation, law-revision, and comparative-institution proxy data are present, with bounded comparative scenario-family metadata anchors added and full lineage, observed productivity, and institutional-fit data still documented as future work;

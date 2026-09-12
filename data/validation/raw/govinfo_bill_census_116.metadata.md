@@ -1,9 +1,9 @@
 # GovInfo Bill Lifecycle Census
 
-- generated_at_utc: 2026-08-31T02:58:15+00:00
+- generated_at_utc: 2026-09-12T18:40:07+00:00
 - classification_version: `govinfo-bill-lifecycle-v3`
 - configuration_sha256: `804bbef440e3929eb3f03b20e313d62ab709ac1e84cd527bd2af84e8a6c5e766`
-- builder_sha256: `75587c72a049635cea9c70d7cf48adda1e4f7d0a4e7bc468796ef23f199a0422`
+- builder_sha256: `371121136e580d2911e6f554552496211ce456ca3edda36480fca47fdd7853b1`
 - output_sha256: `422265c48bd344ebd132815f7d711bda9b76ffda7b2d2182d8682ef7fa05e374`
 - congress: 116
 - bill_types: hr,s

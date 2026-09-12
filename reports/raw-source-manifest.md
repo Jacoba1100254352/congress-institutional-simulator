@@ -2,14 +2,15 @@
 
 This registry-backed manifest records the committed raw validation extracts used by the empirical-boundary workflow. It is a reproducibility inventory, not a validation claim.
 
-- Source-family rows: 13
-- Unique raw files: 13
-- Present raw files: 13 / 13
-- Present metadata notes: 13 / 13
-- Related temporal-cohort files: 5 / 5
+- Source-family rows: 14
+- Unique raw files: 14
+- Present raw files: 14 / 14
+- Present metadata notes: 14 / 14
+- Related temporal-cohort files: 7 / 7
 
 | Source family | Dataset | Rows | Related cohort | Metadata | Boundary | Source hash | Claim boundary |
 | --- | --- | ---: | --- | --- | --- | --- | --- |
+| House agenda-control records | `house_agenda_control.csv` | 29335 | `data/validation/raw/house_special_rule_grants.csv` (458 rows; `5b31f228e254`); `data/validation/raw/house_procedure_audit_actions.csv` (7397 rows; `64963ee1708b`) | `data/validation/raw/house_agenda_control.metadata.md` | calibration proxy | `d801a86290d2` | Supports source-pinned descriptive House procedure targets and one locked simulator transport failure: three of four gates pass while route composition fails; not calibrated or causal agenda control unobserved floor demand welfare capture public support or simulator validation |
 | Congress.gov bill histories | `bill_progression.csv` | 180 | --- | `data/validation/raw/bill_progression.metadata.md` | calibration proxy | `531b87932af7` | Supports a bounded 118th-Congress Congress.gov to GovInfo source cross-check only; not a bill census model validation public benefit or welfare |
 | govinfo bill and action records | `govinfo_bill_census.csv` | 15066 | `data/validation/raw/govinfo_bill_census_116.csv` (14148 rows; `422265c48bd3`); `data/validation/raw/govinfo_bill_census_118.csv` (16213 rows; `a1d9fee85eb8`); `data/validation/raw/govinfo_executive_action_panel.csv` (4021 rows; `d9241abd0039`); `data/validation/raw/govinfo_joint_resolution_panel.csv` (187 rows; `d834c32834e2`); `data/validation/raw/govinfo_final_chamber_vote_panel.csv` (8416 rows; `539c497f8a6f`) | `data/validation/raw/govinfo_bill_census.metadata.md` | held-out benchmark | `74f5270b7bd7` | Supports descriptive census-backed H.R./S. legislative-flow benchmarks plus separately labeled decision classes post-passage final-vote support and one locked predictive presidential-choice transport result; not causal presidential-choice validation public opinion public benefit welfare or institutional ranking |
 | Voteview roll-call data | `voteview_rollcalls.csv` | 83636 | --- | `data/validation/raw/voteview_rollcalls.metadata.md` | held-out benchmark | `6f53461b9484` | Supports held-out roll-call coalition benchmark and party-unity plausibility only; not district public opinion representation or public-support validation |

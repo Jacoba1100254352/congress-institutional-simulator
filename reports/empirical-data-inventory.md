@@ -2,18 +2,19 @@
 
 This registry-backed inventory lists each planned empirical source family, its local raw or cached support, and the boundary it can currently support. It is an evidence inventory, not a validation claim.
 
-- Source families: 13
-- Ready or cached source families: 13
+- Source families: 14
+- Ready or cached source families: 14
 - Fixture-only families: 0
 - Missing or schema-gap families: 0
 
 Boundary categories:
-- calibration proxy: 2
+- calibration proxy: 3
 - flow sanity check: 2
 - held-out benchmark: 9
 
 | Source family | Dataset | Inventory status | Boundary | Rows | Related cohort | Date range | Evidence |
 | --- | --- | --- | --- | ---: | --- | --- | --- |
+| House agenda-control records | `house_agenda_control.csv` | ready | calibration proxy | 29335 | `data/validation/raw/house_special_rule_grants.csv` (458 rows; no dates); `data/validation/raw/house_procedure_audit_actions.csv` (7397 rows; 2019-01-08..2024-12-20) | 2019-01-03..2025-01-06 | raw summary available |
 | Congress.gov bill histories | `bill_progression.csv` | ready | calibration proxy | 180 | --- | 2023-01-03..2024-12-23 | raw summary available |
 | govinfo bill and action records | `govinfo_bill_census.csv` | ready | held-out benchmark | 15066 | `data/validation/raw/govinfo_bill_census_116.csv` (14148 rows; 2019-01-03..2021-01-13); `data/validation/raw/govinfo_bill_census_118.csv` (16213 rows; 2023-01-03..2025-01-06); `data/validation/raw/govinfo_executive_action_panel.csv` (4021 rows; 2003-01-08..2025-01-06); `data/validation/raw/govinfo_joint_resolution_panel.csv` (187 rows; 2003-01-09..2024-05-31); `data/validation/raw/govinfo_final_chamber_vote_panel.csv` (8416 rows; 2003-01-07..2024-12-21) | 2021-01-03..2023-01-05 | held-out benchmark: pass; reported |
 | Voteview roll-call data | `voteview_rollcalls.csv` | ready | held-out benchmark | 83636 | --- | --- | held-out benchmark: pass; reported |

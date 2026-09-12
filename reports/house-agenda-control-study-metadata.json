@@ -66,7 +66,7 @@
   "implementation": {
     "path": "scripts/validation/write_house_agenda_control_study.py",
     "runtime": "Python standard library",
-    "sha256": "57bb1bd8abc944acc98402bcae1a0c95753708468c43923a5ce5398de502ae5b"
+    "sha256": "21e69a514206ac784b8bab8be028955e20e76dbb3cfecee4ff55a7ed9e65f0f7"
   },
   "outputs": [
     {
@@ -75,10 +75,11 @@
     },
     {
       "path": "reports/house-agenda-control-study.md",
-      "sha256": "216c47f2fe99942ae827bf045796bdcfe5915959ce2ac38cb57dd37b912a5598"
+      "sha256": "1623dbf0f50a1c60a44f0f03c719cebbcafa64a12e14ac1a793467cac1d1fff3"
     }
   ],
   "schemaVersion": 1,
+  "sourceAudit": "reports/house-agenda-control-source-audit.md",
   "sourceReconciliation": {
     "116": {
       "closed": {
@@ -164,7 +165,7 @@
     "sha256": "28c1b3874fb99a1987f1f8b146517dd4f2be14f74ea93b36bfadbb48591200ec",
     "status": "locked_post_source_audit_pre_hr_metrics"
   },
-  "status": "source_panel_pass_simulator_calibration_not_run",
+  "status": "frozen_v1_artifact_pass_source_attribution_caveat",
   "studyVersion": "house-agenda-control-source-study-v1",
   "temporalDesign": {
     "developmentCongresses": [

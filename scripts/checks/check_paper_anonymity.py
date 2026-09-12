@@ -28,6 +28,20 @@ BANNED_PATTERNS = [
     re.compile(r"/Users/[A-Za-z0-9._-]+", re.IGNORECASE),
 ]
 
+# This exact official source citation is not an author/repository link. Keep
+# every other hosting URL subject to the existing identity checks.
+OFFICIAL_SOURCE_URL = (
+    "https://github.com/usgpo/bill-status/blob/main/BILLSTATUS-XML_User_User-Guide.md"
+)
+OFFICIAL_SOURCE_PATTERN = re.compile(
+    re.escape(OFFICIAL_SOURCE_URL) + r"(?=$|[\s\"'<>`()\[\]{}])",
+    re.IGNORECASE,
+)
+
+
+def without_official_source_citation(text: str) -> str:
+    return OFFICIAL_SOURCE_PATTERN.sub("[official GPO format guide]", text)
+
 
 def pdf_text(path: Path) -> str:
     try:
@@ -66,7 +80,7 @@ def pdf_raw_text(path: Path) -> str:
 
 
 def contains_hashed_banned_term(text: str) -> tuple[int, str] | None:
-    normalized = text.lower()
+    normalized = without_official_source_citation(text).lower()
     for length, expected_hash in HASHED_BANNED_TERMS:
         if len(normalized) < length:
             continue

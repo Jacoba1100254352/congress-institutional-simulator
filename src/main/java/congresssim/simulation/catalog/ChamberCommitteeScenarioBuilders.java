@@ -547,6 +547,14 @@ final class ChamberCommitteeScenarioBuilders
 	}
 
 	static Scenario stylizedCurrentCongressWorkflow(double minimumCalendarPriority) {
+		return stylizedCurrentCongressWorkflow(minimumCalendarPriority, 0.55, 0.50);
+	}
+
+	static Scenario stylizedCurrentCongressWorkflow(
+			double minimumCalendarPriority,
+			double specialRuleThreshold,
+			double suspensionThreshold
+	) {
 		return new Scenario()
 		{
 			@Override
@@ -605,7 +613,9 @@ final class ChamberCommitteeScenarioBuilders
 						0.16,
 						0.68,
 						0.82,
-						minimumCalendarPriority
+						minimumCalendarPriority,
+						specialRuleThreshold,
+						suspensionThreshold
 				);
 				process = new CommitteePowerProcess(
 						name(),

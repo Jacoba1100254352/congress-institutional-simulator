@@ -13,21 +13,33 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts" / "checks"))
+from check_paper_anonymity import without_official_source_citation  # noqa: E402
+
 DIST = ROOT / "dist"
 PACKAGE_NAME = "congress-institutional-simulator-anonymous"
 STAGING_DIR = DIST / "anonymous-supplement"
 PACKAGE_DIR = STAGING_DIR / PACKAGE_NAME
 ZIP_PATH = DIST / f"{PACKAGE_NAME}.zip"
+STUDY_PROTOCOLS = (
+    "papers/empirical-validation/presidential-choice-study-specification.md",
+    "papers/empirical-validation/house-agenda-control-panel-specification.md",
+    "papers/empirical-validation/house-agenda-control-calibration-specification.md",
+    "papers/empirical-validation/house-agenda-control-provenance-amendment.md",
+)
 
 TEXT_SUFFIXES = {
     ".bib",
     ".csv",
     ".java",
+    ".html",
     ".json",
+    ".jsonl",
     ".md",
     ".py",
     ".tex",
     ".txt",
+    ".xml",
     ".yml",
     ".yaml",
     "",
@@ -78,8 +90,8 @@ def copy_reports() -> None:
     target = PACKAGE_DIR / "reports"
     target.mkdir(parents=True, exist_ok=True)
     for pattern in (
-        "calibration-baseline.*",
-        "simulation-campaign-v21-paper.*",
+        "calibration-baseline*",
+        "simulation-campaign-v21-paper*",
         "seed-robustness-summary.*",
         "paper-findings-validation.*",
         "all-scenarios-baseline.*",
@@ -126,6 +138,12 @@ def copy_reports() -> None:
         "empirical-linkage-report.*",
         "empirical-linkage-roadmap.*",
         "govinfo-billstatus-linkage.*",
+        "govinfo-bill-census*",
+        "legislative-lifecycle-calibration.*",
+        "legislative-lifecycle-temporal-replication.*",
+        "legislative-executive-action-diagnostic.*",
+        "presidential-choice-study*",
+        "house-agenda-control-*",
         "sponsor-bill-linkage.*",
         "comparative-institution-linkage.*",
         "court-law-linkage.*",
@@ -194,10 +212,10 @@ def copy_reports() -> None:
         "lobbying-bill-policy-context.*",
         "raw-source-manifest.*",
         "empirical-validation-gap-report.*",
-        "simulation-ablation-analysis.*",
-        "simulation-manipulation-stress.*",
+        "simulation-ablation-analysis*",
+        "simulation-manipulation-stress*",
         "validation-boundary-matrix.*",
-        "simulation-chamber-structure.*",
+        "simulation-chamber-structure*",
         "chamber-family-champions.*",
         "chamber-stress-screen.*",
         "catalog-breadth.*",
@@ -209,6 +227,50 @@ def copy_reports() -> None:
         for path in source.glob(pattern):
             if path.is_file() and not is_conflict_copy_name(path.name):
                 shutil.copy2(path, target / path.name)
+
+
+def copy_study_protocols() -> None:
+    """Include the protocols needed by offline checks, excluding planning notes."""
+    for relative in STUDY_PROTOCOLS:
+        target = PACKAGE_DIR / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(ROOT / relative, target)
+
+
+def check_required_study_artifacts() -> None:
+    required = (
+        *STUDY_PROTOCOLS,
+        "reports/calibration-baseline-manifest.json",
+        "reports/simulation-campaign-v21-paper-manifest.json",
+        "reports/simulation-ablation-analysis-manifest.json",
+        "reports/simulation-manipulation-stress-manifest.json",
+        "reports/simulation-chamber-structure-manifest.json",
+        "reports/legislative-lifecycle-calibration.csv",
+        "reports/legislative-lifecycle-temporal-replication.csv",
+        "reports/legislative-executive-action-diagnostic.csv",
+        "reports/presidential-choice-study-metadata.json",
+        "reports/presidential-choice-study-predictions.csv",
+        "reports/presidential-choice-study-coefficients.csv",
+        "reports/presidential-choice-study-metrics.csv",
+        "reports/house-agenda-control-metrics.csv",
+        "reports/house-agenda-control-study-metadata.json",
+        "reports/house-agenda-control-calibration-metadata.json",
+        "reports/house-agenda-control-calibration-candidates.csv",
+        "reports/house-agenda-control-calibration-metrics.csv",
+        "reports/house-agenda-control-calibration-seeds.csv",
+        "reports/house-agenda-control-calibration-monte-carlo.csv",
+        "data/validation/raw/house_procedure_audit_actions.csv",
+        "data/validation/raw/house_procedure_audit_actions.metadata.json",
+        "reports/house-agenda-control-source-audit.md",
+        "reports/house-agenda-control-source-audit.csv",
+        "reports/house-agenda-control-source-audit-sensitivity.csv",
+        "reports/house-agenda-control-resolution-linkage.json",
+        "data/validation/reference/house-procedure-resolution-sources/hres1061-eh.html",
+        "data/validation/reference/house-procedure-resolution-sources/house-2024-roll064.xml",
+    )
+    missing = [relative for relative in required if not (PACKAGE_DIR / relative).is_file()]
+    if missing:
+        raise SystemExit("Anonymous supplement is missing study artifacts: " + ", ".join(missing))
 
 
 def write_readme() -> None:
@@ -228,9 +290,8 @@ def write_readme() -> None:
         "main campaign, diagnostics, figures, PDFs, and PDF manifest from fixed seeds. "
         "`make paper-checks` adds word-count, anonymity, figure-label, table/figure consistency, "
         "PDF-render, and manifest checks.\n\n"
-        "Expected runtime: `make test` usually runs in under one minute on the authoring workstation. "
-        "`make reproduce-paper-offline` and `make paper-checks` usually take several minutes because "
-        "they rerun the fixed-seed campaign and rebuild PDFs.\n\n"
+        "Runtime depends on the environment. Full paper reproduction reruns campaigns and the "
+        "1,445-candidate House calibration grid; allow substantially longer than the unit tests.\n\n"
         "Main outputs:\n\n"
         "- `paper/acm-ci-framework/acm-ci-framework.pdf`\n"
         "- `paper/technical-appendix/odd-d-appendix.pdf`\n"
@@ -240,6 +301,11 @@ def write_readme() -> None:
         "- `reports/empirical-linkage-report.csv`\n"
         "- `reports/empirical-linkage-roadmap.csv`\n"
         "- `reports/govinfo-billstatus-linkage.csv`\n"
+        "- `reports/legislative-lifecycle-calibration.csv`\n"
+        "- `reports/presidential-choice-study-metrics.csv`\n"
+        "- `reports/house-agenda-control-calibration.md`\n"
+        "- `reports/house-agenda-control-calibration-seeds.csv`\n"
+        "- `reports/house-agenda-control-calibration-monte-carlo.csv`\n"
         "- `reports/sponsor-bill-linkage.csv`\n"
         "- `reports/comparative-institution-linkage.csv`\n"
         "- `reports/court-law-linkage.csv`\n"
@@ -419,7 +485,7 @@ def remove_conflict_copies(settle: bool = False) -> None:
 
 
 def contains_hashed_banned_term(text: str) -> tuple[int, str] | None:
-    normalized = text.lower()
+    normalized = without_official_source_citation(text).lower()
     for length, expected_hash in HASHED_BANNED_TERMS:
         if len(normalized) < length:
             continue
@@ -468,6 +534,8 @@ def main() -> int:
     for directory in ("src", "data", "docs", "paper", "scripts", ".github"):
         copy_tree(directory)
     copy_reports()
+    copy_study_protocols()
+    check_required_study_artifacts()
     copy_files()
     write_readme()
     remove_conflict_copies()

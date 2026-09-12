@@ -87,6 +87,38 @@ The current validation pipeline writes:
   intervals, prespecified tolerances, and pass/fail status. The current result
   passes five of six cohort-metric tolerances and retains the 118th-Congress
   enactment miss.
+- `reports/house-agenda-control-metrics.csv`: denominator-explicit source
+  metrics for the complete 116th-118th-Congress H.R. route, rule, and timing
+  panels.
+- `reports/house-agenda-control-calibration-candidates.csv`: all 1,445 locked
+  development-grid candidates, including fitted route shares, selection loss,
+  and the selected row. The boundary warning appears in the Markdown report.
+- `reports/house-agenda-control-calibration-metrics.csv`: selected development
+  and unchanged 118th-Congress test metrics, errors, tolerances, and gate
+  statuses. The current primary gate fails because route total variation is
+  0.110470 against the locked 0.100 tolerance.
+- `reports/house-agenda-control-calibration-seeds.csv`: the selected candidate's
+  20 development and 30 test seeds, with run and bill denominators and 13
+  per-seed diagnostics.
+- `reports/house-agenda-control-calibration-monte-carlo.csv`: 26 cohort-metric
+  summaries with seed counts, means, sample standard deviations, standard
+  errors of means, and extrema. Conditional seed means do not replace pooled
+  route shares or the original acceptance gate.
+- `reports/house-agenda-control-calibration-metadata.json`: specification,
+  source, implementation, deterministic JAR, output hashes, seed protocol,
+  selected threshold triple, stability result, and primary gate status. It
+  also hashes the provenance amendment and records the unverified pre-fit
+  chronology explicitly.
+- `data/validation/raw/house_procedure_audit_actions.csv`: 7,397 candidate
+  action records with chamber attribution and pinned bill/action provenance.
+  The companion metadata JSON records archive, builder, panel, and extract
+  hashes. This is the evidence extract for a post-fit audit, not a new fit.
+- `reports/house-agenda-control-source-audit.csv`: the one bill whose route
+  changes when direct suspension evidence requires positive House attribution.
+- `reports/house-agenda-control-source-audit-sensitivity.csv`: original and
+  screened route counts and shares, fixed simulator shares, and explicitly
+  separate total-variation columns. The Markdown audit records unresolved
+  resolution-mediated actions and the retained temporal failure.
 - `data/validation/raw/govinfo_executive_action_panel.csv`: compact 108th-118th-
   Congress panel retaining 4,021 presented H.R./S. measures from 126,760 parsed
   GovInfo records, with presidential outcomes, party context, source/action

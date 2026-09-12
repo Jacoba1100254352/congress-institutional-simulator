@@ -6,3 +6,5 @@
 *.jpeg binary
 *.gif binary
 *.zip binary
+# Preserve publisher whitespace in this hash-pinned complete source snapshot.
+data/validation/reference/house-procedure-resolution-sources/hres1061-eh.html -whitespace

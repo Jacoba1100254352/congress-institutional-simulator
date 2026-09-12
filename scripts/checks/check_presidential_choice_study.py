@@ -426,7 +426,8 @@ def check_publication_claims() -> None:
             "log loss 0.026977 versus 0.223369",
             "the locked gate status is pass",
             "12 of the 13 test vetoes among only 17 joint resolutions",
-            "replicate it in a future completed whole-Congress cohort",
+            "replicate it unchanged in a future completed whole-Congress cohort",
+            "measure-class-specific reporting",
         ),
         EXECUTIVE_DIAGNOSTIC: (
             "22.101 times the combined empirical rate",

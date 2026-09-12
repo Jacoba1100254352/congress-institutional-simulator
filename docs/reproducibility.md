@@ -78,6 +78,36 @@ The separate executive-action report uses a compact source-pinned panel of
 preserves the 47.266-fold conditional veto-rate mismatch as a descriptive model
 boundary, not a post hoc formal test or a causal estimate of party effects.
 
+Pinned House agenda-control study and temporal mechanism test:
+
+```sh
+make house-agenda-control-panel
+make house-agenda-control-study
+make house-agenda-control-study-check
+make house-agenda-control-calibration
+make house-agenda-control-calibration-check
+```
+
+The first two targets rebuild the complete source-pinned 116th-118th-Congress
+H.R. and official Table 1a panels and their denominator-explicit descriptive
+study. The calibration target runs the locked 1,445-candidate development
+grid and unchanged 118th-Congress test. The hard checker pins source,
+specification, model, deterministic JAR, and output hashes and requires the
+selected 0.680 / 0.475 / 0.750 boundary triple and retained 3 / 4 gate failure.
+JAR entries use the fixed build date, and the unused default manifest is
+omitted so its Java-vendor/version string cannot change the archive hash.
+The failure is expected and must not be converted into a passing test by
+retuning thresholds or tolerances.
+
+The calibration writer uses explicit `math.fsum` for floating-point
+aggregation. Its complete candidate table was verified byte-identical under
+Python 3.9 and 3.14 with the same Java 21 executable. This is a writer-specific
+check, not a Python 3.9 support claim for the whole project. The original
+specification has no separate pre-fit commit in the available history;
+`papers/empirical-validation/house-agenda-control-provenance-amendment.md`
+records that chronology limit and the numerical correction while preserving
+the original protocol and failed result.
+
 Anonymous supplement:
 
 ```sh

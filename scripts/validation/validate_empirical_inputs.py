@@ -176,6 +176,26 @@ DATASETS = [
         ),
     ),
     DatasetSpec(
+        "house_agenda_control.csv",
+        "source-pinned House floor routes, special rules, and stage timing",
+        (
+            "bill_id",
+            "congress",
+            "referred_to_committee",
+            "committee_advanced",
+            "calendar_placed",
+            "floor_considered",
+            "passed_house",
+            "enacted",
+            "suspension_path_evidence",
+            "adopted_rule_count",
+            "floor_path",
+            "direct_rule_link_status",
+            "agenda_integrity_status",
+            "agenda_classification_version",
+        ),
+    ),
+    DatasetSpec(
         "lobbying_disclosure.csv",
         "lobby spending distribution and issue-pressure checks",
         ("client", "issue", "amount", "period"),
@@ -293,7 +313,7 @@ def main() -> int:
         f"- Files with required columns: {complete} / {len(DATASETS)}",
         f"- Adapter fixture CSVs ignored: {fixture_count}",
         "",
-        "Next empirical step: preserve the locked presidential-choice result without post-fit retuning and add a future whole-Congress temporal replication when another completed cohort is available while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo lifecycle censuses, separate 108th-118th-Congress bill and joint-resolution decision panels, final chamber-vote support, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
+        "Next empirical step: preserve the locked House route-composition failure without retuning, add source-specific referral-jurisdiction and status-quo-fallback evidence, and lock any richer route mechanism separately. Preserve the locked presidential-choice result without post-fit retuning and add a future whole-Congress presidential-choice replication when another completed cohort is available while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo lifecycle censuses, source-pinned House agenda-control routes and official special-rule grants, separate 108th-118th-Congress bill and joint-resolution decision panels, final chamber-vote support, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.",
     ])
     REPORT.write_text("\n".join(lines) + "\n")
     with REPORT_CSV.open("w", newline="") as handle:

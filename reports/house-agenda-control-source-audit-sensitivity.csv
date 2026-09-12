@@ -1,0 +1,11 @@
+cohort,metric,original_count,house_screened_count,denominator,fixed_simulator_value,original_source_value,house_screened_source_value,original_total_variation,house_screened_total_variation
+development,specialRuleOnlyRouteShare,155,155,1500,0.081914893617,0.103333333333,0.103333333333,,
+development,suspensionOnlyRouteShare,1248,1248,1500,0.818085106383,0.832000000000,0.832000000000,,
+development,mixedSpecialRuleAndSuspensionRouteShare,38,38,1500,0.059574468085,0.025333333333,0.025333333333,,
+development,otherFloorRouteShare,59,59,1500,0.040425531915,0.039333333333,0.039333333333,,
+development,routeTotalVariation,,,1500,,,,0.035333333334,0.035333333333
+test,specialRuleOnlyRouteShare,127,128,676,0.077399380805,0.187869822485,0.189349112426,,
+test,suspensionOnlyRouteShare,544,544,676,0.812914639540,0.804733727811,0.804733727811,,
+test,mixedSpecialRuleAndSuspensionRouteShare,4,3,676,0.057054400708,0.005917159763,0.004437869822,,
+test,otherFloorRouteShare,1,1,676,0.052631578947,0.001479289941,0.001479289941,,
+test,routeTotalVariation,,,676,,,,0.110470441680,0.111949731621

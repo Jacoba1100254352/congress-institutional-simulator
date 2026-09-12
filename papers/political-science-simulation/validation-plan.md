@@ -13,8 +13,9 @@ Existing checks:
 - `reports/legislative-lifecycle-temporal-replication.md`: threshold selection frozen on the 117th Congress and applied without refitting to the 116th and 118th Congresses; 5 / 6 cohort-metric cells pass, while 118th-Congress enactment misses its 0.010 tolerance by 0.000825.
 - `reports/legislative-executive-action-diagnostic.md`: presented-measure accounting across separate 108th-118th-Congress bill and joint-resolution panels; the simulator rate is 22.101 times the combined empirical rate, so current simulator veto behavior remains a stress mechanism.
 - `reports/presidential-choice-study.md`: fixed low-event temporal probability study. The 118th-Congress gate passes, but 12 of 13 test vetoes occur among only 17 joint resolutions; this does not calibrate the simulator veto process.
+- `reports/house-agenda-control-study.md` and `reports/house-agenda-control-calibration.md`: source-pinned 116th-118th-Congress H.R. route, rule, and timing evidence plus a locked 1,445-candidate simulator test. The unchanged 118th-Congress cohort passes committee advancement, floor consideration, and restrictive special-rule share, but route total variation is 0.110470 against the locked 0.100 tolerance. The failure and grid-boundary suspension threshold are retained without retuning.
 - `reports/empirical-bridge.csv`: empirical comparison signals.
-- `reports/empirical-linkage-report.md`: source-family linkage audit; currently 13 / 13 families are linked, metadata-linked, or partially linked.
+- `reports/empirical-linkage-report.md`: source-family linkage audit; currently 14 / 14 families are linked, metadata-linked, or partially linked.
 - `reports/empirical-linkage-roadmap.md`: required join keys and acceptance gates for non-fully-linked families.
 - `reports/empirical-validation-gap-report.md`: proxy-data and synthetic-construct boundaries.
 - `reports/core-raw-validation-build.md`: current raw sample counts.
@@ -23,6 +24,7 @@ Current checks cover:
 
 - bill progression;
 - floor load;
+- House floor-route mixture and special-rule structure;
 - roll-call coalition size / party-unity proxy;
 - veto frequency;
 - sponsor access concentration;
@@ -62,6 +64,7 @@ Current checks do not validate:
 ### Phase 1: Flow Sanity Expansion
 
 - Preserve the three complete GovInfo lifecycle censuses, separate 108th-118th-Congress executive panels, final-vote panel, and locked presidential-choice outputs.
+- Preserve the locked House route-composition failure without retuning, add source-specific referral-jurisdiction and status-quo-fallback evidence, and preregister any richer route mechanism as a separate study.
 - Add committee referral/reporting/markup coverage.
 - Apply the unchanged presidential-choice design to a future completed Congress with measure-class-specific reporting; broaden sponsor-concentration checks across Congresses.
 - Keep pass/fail bands broad and explicit.
@@ -93,13 +96,13 @@ Current checks do not validate:
 
 ### Phase 6: Held-Out Validation
 
-- Extend the implemented 117th-selection with 116th/118th external tests to additional temporal cohorts and mechanism-specific observables.
+- Extend the implemented lifecycle and failed House route tests to additional temporal cohorts and mechanism-specific observables under separately locked designs.
 - Continue reporting error metrics, fixed tolerance rules, and failures without retuning on test cohorts.
 - Only after this phase should the paper use the word validation for central model outputs.
 
 ## Required Repo Tasks
 
-- Maintain `reports/empirical-data-inventory.csv` and the 16 configured dataset files across 13 source families.
+- Maintain `reports/empirical-data-inventory.csv` and the 19 configured dataset files across 14 source families.
 - Add `reports/political-validation-targets.csv`.
 - Add cached no-network summaries for every empirical input used.
 - Keep validation scripts separated into calibration, flow sanity, proxy checks, within-Congress held-out checks, no-refit temporal transport, and descriptive mechanism-boundary diagnostics.

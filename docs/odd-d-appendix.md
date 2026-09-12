@@ -112,11 +112,11 @@ The main comparison campaign also supports adversarial proposal-generator profil
 
 ## 6. Input Data
 
-Scenario runs use synthetic generated worlds. Empirical flow screening reads `data/calibration/empirical-benchmarks.csv`, a tracked extract that maps empirical sources to simulator metrics and benchmark ranges.
+Scenario runs use synthetic generated worlds. Empirical flow screening reads `data/calibration/empirical-benchmarks.csv`, a tracked extract that maps empirical sources to simulator metrics and benchmark ranges. Separate source-pinned studies use complete 116th-118th-Congress GovInfo lifecycle censuses and a complete H.R. House agenda-control panel without replacing the synthetic proposal world used by ordinary scenarios.
 
 Current empirical sources named by the benchmark layer include Voteview roll-call data, Congress.gov and govinfo bill histories, Comparative Agendas Project topic data, ParlGov party-system data, U.S. Lobbying Disclosure Act filings, Center for Effective Lawmaking scores, and V-Dem institutional indicators.
 
-The executable checker runs conventional scenarios and writes pass/fail reports to `reports/calibration-baseline.csv` and `reports/calibration-baseline.md`. It is an empirical flow screen, not an automatic parameter fitter.
+The executable checker runs conventional scenarios and writes pass/fail reports to `reports/calibration-baseline.csv` and `reports/calibration-baseline.md`. It is an empirical flow screen, not an automatic parameter fitter. A separately locked lifecycle study passes five of six no-refit external-Congress cells and retains the 118th enactment miss. A separately locked House route study tests 1,445 candidates and retains a 3 / 4 primary-gate failure because 118th-Congress route total variation is 0.110470 against the 0.100 tolerance. Neither result validates the full simulator.
 
 ## 7. Submodels
 
@@ -185,7 +185,7 @@ All campaign rows include scenario labels, case weights, and a stable metric sch
 
 ## 9. Assumptions And Limitations
 
-The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The empirical flow layer screens plausible ranges but does not yet fit raw datasets directly. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment. Several mechanisms are optimistic prototypes: citizen panels, objection windows, tournaments, audits, challenge tokens, package bargaining, and law review include diagnostics for procedural cost and strain, but not full real-world implementation cost or strategic manipulation cost.
+The policy space is one-dimensional. Public benefit is generated rather than empirically estimated. Legislators are synthetic and do not represent named real officials. Lobby groups are abstract collective actors. The empirical layer now supplies narrow source-linked flow and route tests, but it does not estimate the central welfare, representation, capture, implementation, or institutional-ranking outputs. Institutional mechanisms are simplified so they can be compared in bundles without modeling the full legal, administrative, judicial, media, and electoral environment. Several mechanisms are optimistic prototypes: citizen panels, objection windows, tournaments, audits, challenge tokens, package bargaining, and law review include diagnostics for procedural cost and strain, but not full real-world implementation cost or strategic manipulation cost.
 
 These limitations are intentional at this stage. The model is meant to identify which institutional mechanisms deserve deeper modeling, not to prove that one constitutional design would work in the real world.
 
@@ -231,6 +231,8 @@ Run the empirical bridge and mechanism diagnostics:
 
 ```sh
 make empirical-bridge
+make house-agenda-control-study-check
+make house-agenda-control-calibration-check
 make ablation-analysis
 make manipulation-stress
 make mechanism-diagnostics

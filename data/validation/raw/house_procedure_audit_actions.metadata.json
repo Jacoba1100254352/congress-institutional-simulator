@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "claimBoundary": "Complete lexical suspension/other-path candidate extraction, not a complete House procedural history.",
+  "panelSha256": "d801a86290d2eb7127736ef259a44847fe5d19acff2c4dd738d2f00ba0556f7b",
+  "actionExtractSha256": "64963ee1708bb3331de031a8f94fa22a30ff932b278ee640012150add5d74487",
+  "builderSha256": "f234a141e14d694d01ed6d9f3214374f9423441902836aa2d4fcac55f922b70a",
+  "reviewedBillXmlRecords": 29335,
+  "candidateActionRows": 7397,
+  "archives": [
+    {
+      "filename": "BILLSTATUS-116-hr.zip",
+      "sha256": "b3775e79914a9db29b3a8d55ae13638020c44822dcecb9e4517371e093d01dde",
+      "xmlMembers": 9062
+    },
+    {
+      "filename": "BILLSTATUS-117-hr.zip",
+      "sha256": "658b2d280e4e7972c86bfd810ebff0c9bb61c115b242de8c8774034dea08de03",
+      "xmlMembers": 9709
+    },
+    {
+      "filename": "BILLSTATUS-118-hr.zip",
+      "sha256": "8e7ca7dab50a7b9b977f021ec1b3231f8fedf82c33494553857b892fadfdba98",
+      "xmlMembers": 10564
+    }
+  ]
+}

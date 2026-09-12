@@ -1,0 +1,19 @@
+cohortRole,metric,targetNumerator,targetDenominator,targetValue,simulatorValue,error,tolerance,status,definition
+development,committeeAdvanceRate,1912,18771,0.101859250972,0.110555555556,0.008696304584,,reported,Committee-advanced H.R. measures divided by introduced H.R. measures.
+development,floorConsiderationRate,1500,18771,0.079910500240,0.065277777778,-0.014632722462,0.015000000000,selection_metric,Substantively floor-considered H.R. measures divided by introduced H.R. measures.
+development,advanceToFloorRate,1176,1912,0.615062761506,0.590452261307,-0.024610500199,,reported,Floor-considered after committee advancement divided by committee-advanced H.R. measures; simulator ratio is aggregate floor divided by aggregate advancement.
+development,specialRuleOnlyRouteShare,155,1500,0.103333333333,0.081914893617,-0.021418439716,0.040000000000,selection_metric,Special-rule-only route share among floor-considered measures.
+development,suspensionOnlyRouteShare,1248,1500,0.832000000000,0.818085106383,-0.013914893617,0.050000000000,selection_metric,Suspension-only route share among floor-considered measures.
+development,mixedSpecialRuleAndSuspensionRouteShare,38,1500,0.025333333333,0.059574468085,0.034241134752,0.020000000000,selection_metric,Mixed route share among floor-considered measures.
+development,otherFloorRouteShare,59,1500,0.039333333333,0.040425531915,0.001092198582,0.030000000000,selection_metric,Other route share among floor-considered measures.
+development,restrictiveSpecialRuleShare,198,198,1.000000000000,1.000000000000,-0.000000000000,,reported,Restrictive modeled special-rule routes divided by all modeled special-rule-only and mixed routes.
+development,routeTotalVariation,,,0.000000000000,0.035333333334,0.035333333334,,reported,One half of the sum of absolute differences across the four route shares.
+primary_temporal_test,committeeAdvanceRate,1202,10564,0.113782658084,0.107527777778,-0.006254880306,0.020000000000,pass,Committee-advanced H.R. measures divided by introduced H.R. measures.
+primary_temporal_test,floorConsiderationRate,676,10564,0.063990912533,0.062805555556,-0.001185356977,0.020000000000,pass,Substantively floor-considered H.R. measures divided by introduced H.R. measures.
+primary_temporal_test,advanceToFloorRate,600,1202,0.499168053245,0.584086799277,0.084918746032,,reported,Floor-considered after committee advancement divided by committee-advanced H.R. measures; simulator ratio is aggregate floor divided by aggregate advancement.
+primary_temporal_test,specialRuleOnlyRouteShare,127,676,0.187869822485,0.077399380805,-0.110470441680,,reported,Special-rule-only route share among floor-considered measures.
+primary_temporal_test,suspensionOnlyRouteShare,544,676,0.804733727811,0.812914639540,0.008180911729,,reported,Suspension-only route share among floor-considered measures.
+primary_temporal_test,mixedSpecialRuleAndSuspensionRouteShare,4,676,0.005917159763,0.057054400708,0.051137240945,,reported,Mixed route share among floor-considered measures.
+primary_temporal_test,otherFloorRouteShare,1,676,0.001479289941,0.052631578947,0.051152289006,,reported,Other route share among floor-considered measures.
+primary_temporal_test,restrictiveSpecialRuleShare,134,135,0.992592592593,1.000000000000,0.007407407407,0.020000000000,pass,Restrictive modeled special-rule routes divided by all modeled special-rule-only and mixed routes.
+primary_temporal_test,routeTotalVariation,,,0.000000000000,0.110470441680,0.110470441680,0.100000000000,fail,One half of the sum of absolute differences across the four route shares.

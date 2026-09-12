@@ -6,6 +6,9 @@ Run:
 
 ```sh
 make validation-readiness
+make house-agenda-control-study
+make house-agenda-control-calibration
+make house-agenda-control-calibration-check
 make empirical-bridge
 make empirical-linkage-report
 make empirical-linkage-roadmap
@@ -22,6 +25,10 @@ make calibration-check
 Current files:
 
 - `reports/calibration-baseline.csv`
+- `reports/house-agenda-control-metrics.csv`
+- `reports/house-agenda-control-calibration-candidates.csv`
+- `reports/house-agenda-control-calibration-metrics.csv`
+- `reports/house-agenda-control-calibration-metadata.json`
 - `reports/empirical-data-inventory.csv`
 - `reports/empirical-bridge.csv`
 - `reports/empirical-flow-heldout.csv`
@@ -90,10 +97,18 @@ Implemented locked presidential-choice extension:
 - The specification is a post-source-audit, pre-fit analysis plan rather than a blinded preregistration. The 116th-Congress check is secondary and cannot alter the primary 118th-Congress model or gate.
 - `reports/presidential-choice-study.md` preserves the fitted result without retuning. M2 lowers 118th-Congress log loss from 0.223369 to 0.026977 and has calibration-in-the-large 0.003149, passing the fixed gate; the 116th check also improves log loss. The post-fit concentration audit records 12 of 13 primary test vetoes among only 17 joint resolutions.
 
+Implemented locked House agenda-control extension:
+
+- `house-agenda-control-panel-specification.md` freezes the official 116th-118th-Congress H.R. and Table 1a source panel, four mutually exclusive observed floor routes, timing definitions, and source limitations.
+- `house-agenda-control-calibration-specification.md` records a fixed 1,445-candidate threshold grid, 116th-117th development cohorts, fresh 118th test seeds, selection loss, four primary test gates, and failure-retention rule. Its asserted pre-fit chronology is unverified, as recorded in `house-agenda-control-provenance-amendment.md`.
+- The post-fit `reports/house-agenda-control-source-audit.md` checks all 29,335 original XML histories, identifies one Senate action used as House suspension evidence, and reports a separate fixed-model sensitivity. Chamber screening raises the test route distance to 0.111950. The original source panel and failed result remain frozen, and resolution-mediated actions remain unresolved.
+- `reports/house-agenda-control-calibration.md` retains the selected 0.680 / 0.475 / 0.750 threshold triple. Sixteen of twenty leave-one-seed-out panels reselect it. Committee advancement, floor consideration, and restrictive special-rule share pass on the unchanged 118th cohort, but route total variation is 0.110470 against the locked 0.100 tolerance. The boundary selection and 3 / 4 gate failure remain unretuned.
+
 Remaining tasks:
 
 - Add separate calibration and held-out extracts rather than a hash split of one bounded sample.
 - Broaden roll-call and sponsor-access held-out checks across more Congresses and chambers; preserve and later replicate the unchanged presidential-choice study in another completed Congress with measure-class-specific reporting; and add independent or held-out checks for topic throughput, lobbying, and committee activity.
+- Add House referral-jurisdiction and status-quo-fallback evidence, then lock any richer route model as a separate study without changing the retained 118th-Congress failure.
 - Report error metrics for more targets instead of only broad tolerance membership.
 
 ## Stage 3: Representation and Public Support
@@ -152,6 +167,6 @@ Do not draft a full empirical-validation/data paper until:
 1. The source registry exists and covers every source family in `data-source-map.md`.
 2. Current ready source families have row counts, date ranges, units of observation, and license/access notes.
 3. At least public support, campaign-finance linkage beyond FEC recipient metadata, broad issue-sector context, matched member context, bounded House-candidate district context, and bounded candidate-to-sponsored-bill context to reviewed targets/outcomes, and one correction/implementation source are no longer missing, or a defensible narrowed data-paper scope is chosen.
-4. Held-out and independent cross-checks expand beyond the current 13 / 13 linked, metadata-linked, or partially linked source-family coverage by satisfying the linkage-roadmap gates for bill-topic, complete sponsor-history, finance, implementation, direct court, statutory-lineage, and observed comparative-output evidence and reporting errors or tolerance misses, not only broad pass/fail screens.
+4. Held-out and independent cross-checks expand beyond the current 14 / 14 linked, metadata-linked, or partially linked source-family coverage by satisfying the linkage-roadmap gates for bill-topic, complete sponsor-history, finance, implementation, direct court, statutory-lineage, and observed comparative-output evidence and reporting errors or tolerance misses, not only broad pass/fail screens.
 5. Every table explicitly labels each signal as validated, sanity-checkable, proxy-only, synthetic-only, or not modeled.
 6. `make validation-readiness`, `make empirical-bridge`, `make empirical-linkage-report`, `make empirical-linkage-roadmap`, `make sponsor-bill-linkage`, `make court-law-linkage`, `make rulemaking-authority-linkage`, `make rulemaking-history-linkage`, `make bill-law-evidence-spine`, `make campaign-finance-district-context`, `make campaign-finance-issue-context`, `make campaign-finance-sponsor-bill-context`, `make validation-gap-report`, and `make calibration-check` pass.

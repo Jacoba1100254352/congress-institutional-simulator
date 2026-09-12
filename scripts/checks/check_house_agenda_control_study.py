@@ -231,7 +231,7 @@ def check_metadata() -> None:
     metadata = json.loads(STUDY_METADATA.read_text(encoding="utf-8"))
     require(metadata.get("schemaVersion") == 1, "Study metadata schema drifted.")
     require(metadata.get("studyVersion") == "house-agenda-control-source-study-v1", "Study version drifted.")
-    require(metadata.get("status") == "source_panel_pass_simulator_calibration_not_run", "Study status drifted.")
+    require(metadata.get("status") == "frozen_v1_artifact_pass_source_attribution_caveat", "Study status drifted.")
     require(metadata["specification"]["sha256"] == EXPECTED_HASHES["specification"], "Study metadata specification hash drifted.")
     require(metadata["implementation"]["sha256"] == sha256_file(WRITER), "Study metadata writer hash is stale.")
     sources = {row["path"]: row for row in metadata["sources"]}
@@ -249,7 +249,8 @@ def check_metadata() -> None:
 def check_report() -> None:
     text = REPORT.read_text(encoding="utf-8")
     required = (
-        "Source-panel integrity status: **PASS**. Simulator calibration status: **NOT YET RUN**.",
+        "Frozen-artifact integrity status: **PASS**. Source attribution status: **CAVEAT**.",
+        "one Senate action used as House suspension evidence",
         "No identities or categories are imputed for those four rows.",
         "not a causal estimate of agenda power",
         "do not authorize parameter fitting by themselves",

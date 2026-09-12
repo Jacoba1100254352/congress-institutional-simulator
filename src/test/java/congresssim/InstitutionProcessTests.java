@@ -499,6 +499,10 @@ final class InstitutionProcessTests
 				publicOutcome.signals().supplementalMetrics().getOrDefault("dischargeBackstopUse", 0.0) > 0.0,
 				"High public mandate should trigger a discharge or public-pressure backstop."
 		);
+		assertTrue(
+				floorRouteTotal(publicOutcome) == 1.0,
+				"Every floor-considered bill should receive exactly one modeled floor route."
+		);
 		
 		Bill capturedBill = new Bill("B-closed-rule", "Captured Rule Bill", "L-1", 0.0, 0.82, 0.12, 0.24, 0.95, 0.28, 0.95, false);
 		BillOutcome capturedOutcome = process.consider(
@@ -538,6 +542,54 @@ final class InstitutionProcessTests
 				capacityDenied.signals().supplementalMetrics().getOrDefault("calendarCapacityDenialRate", 0.0) == 1.0,
 				"Calendar-capacity exclusion should be observable."
 		);
+		assertTrue(
+				floorRouteTotal(capacityDenied) == 0.0,
+				"A bill denied before floor consideration must not receive a modeled floor route."
+		);
+
+		assertForcedFloorRoute(publicBill, 0.0, 1.0, "specialRuleOnlyRouteRate");
+		assertForcedFloorRoute(publicBill, 1.0, 0.0, "suspensionOnlyRouteRate");
+		assertForcedFloorRoute(publicBill, 0.0, 0.0, "mixedSpecialRuleAndSuspensionRouteRate");
+		assertForcedFloorRoute(publicBill, 1.0, 1.0, "otherFloorRouteRate");
+	}
+
+	private static void assertForcedFloorRoute(
+			Bill bill,
+			double specialThreshold,
+			double suspensionThreshold,
+			String expectedMetric
+	) {
+		FloorRuleSchedulingProcess process = new FloorRuleSchedulingProcess(
+				"forced route",
+				enactEverything(),
+				0.24,
+				0.72,
+				0.14,
+				0.90,
+				1.0,
+				0.0,
+				specialThreshold,
+				suspensionThreshold
+		);
+		BillOutcome outcome = process.consider(
+				bill,
+				new VoteContext(Map.of("Test", 0.0), new Random(20L), 0.0)
+		);
+		Map<String, Double> metrics = outcome.signals().supplementalMetrics();
+		assertTrue(outcome.enacted(), "Forced route fixture should reach its inner process.");
+		assertTrue(
+				metrics.getOrDefault(expectedMetric, 0.0) == 1.0,
+				"Expected modeled floor route was not assigned: " + expectedMetric
+		);
+		assertTrue(floorRouteTotal(outcome) == 1.0, "Forced route assignment must remain exclusive.");
+	}
+
+	private static double floorRouteTotal(BillOutcome outcome) {
+		Map<String, Double> metrics = outcome.signals().supplementalMetrics();
+		return metrics.getOrDefault("specialRuleOnlyRouteRate", 0.0)
+				+ metrics.getOrDefault("suspensionOnlyRouteRate", 0.0)
+				+ metrics.getOrDefault("mixedSpecialRuleAndSuspensionRouteRate", 0.0)
+				+ metrics.getOrDefault("otherFloorRouteRate", 0.0);
 	}
 	
 	private static void normErosionCreatesEndogenousDelay() {

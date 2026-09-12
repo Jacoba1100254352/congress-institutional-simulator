@@ -1,0 +1,75 @@
+{
+  "claimBoundary": "This study calibrates one aggregate synthetic route assignment against one pooled development cohort and applies an unchanged scenario to one later completed Congress. It does not validate bill-level agenda decisions, causal gatekeeping, leadership motives, amendment opportunities, calendar timing, downstream outcomes, welfare, representation, capture, or institutional rankings.",
+  "inputs": {
+    "data/validation/raw/house_agenda_control.csv": "d801a86290d2eb7127736ef259a44847fe5d19acff2c4dd738d2f00ba0556f7b",
+    "data/validation/raw/house_special_rule_grants.csv": "5b31f228e25449f05210234c19a8c9311911c5f75a35d9dd6bb77d6333988a53",
+    "out/congresssim.jar": "c27e9827c717bb2e7f0080cfe7b3bd2e34df5360d3a3c5393b82bfefa913704b",
+    "papers/empirical-validation/house-agenda-control-calibration-specification.md": "d7fdb1b7cd6131077479ed7bacf2c5404706e671e9cf12c200b7580ae99ccc72",
+    "papers/empirical-validation/house-agenda-control-provenance-amendment.md": "6d57e0cd78fcb09d76946a440ef81702343de0c67363f53ea5ab2dc139867ef2",
+    "reports/house-agenda-control-metrics.csv": "8b90b8a5e0ee48898de46acdb8d81061cd18546849181691a725016157542c09",
+    "reports/legislative-lifecycle-calibration.csv": "ac0191d27f5ea08ebeda7bcf33a9b510df59afc1883008c4f4e1e69047d66f5a",
+    "scripts/validation/write_house_agenda_control_calibration.py": "62ad8596d5337e8f1dce6bd318db8d00698941086cd43f040ffbbe904e6817c5",
+    "src/main/java/congresssim/institution/agenda/FloorRuleSchedulingProcess.java": "f4ac1fee47b093c33f79121c397ce8de9311d9f887eabbc8bbb49763728a9395",
+    "src/main/java/congresssim/simulation/catalog/HouseAgendaControlCalibrationProbe.java": "c1e23822d4c542591628e6dafa7899224847f404d92c835dca65fac77834900c"
+  },
+  "lockStatus": "post-source-audit-prefit-chronology-unverified",
+  "outputs": {
+    "reports/house-agenda-control-calibration-candidates.csv": "8574e596907390c5e6991ae81e0b17724912f685034f13c69868d8d5a5047797",
+    "reports/house-agenda-control-calibration-metrics.csv": "09084f95ce1331be4c776669b31fd58d2da5650e22b53f6b65d336d308750b5c",
+    "reports/house-agenda-control-calibration-monte-carlo.csv": "be1221d144ccf220b103d20642ea2594f5964329e7c7362f708a87c56bf0ff2b",
+    "reports/house-agenda-control-calibration-seeds.csv": "018ee8dab0c7467b798543a47ca5a358ff94ac66b372f9162acfaaca987b5036",
+    "reports/house-agenda-control-calibration.md": "e941e8e48964d743a6d7f521ddcd2402f08ab14880fb6fa676b3220fc43315d3"
+  },
+  "primaryTemporalGate": {
+    "checks": {
+      "committeeAdvanceRate": true,
+      "floorConsiderationRate": true,
+      "restrictiveSpecialRuleShare": true,
+      "routeTotalVariation": false
+    },
+    "committeeAdvanceError": -0.0062548803062222325,
+    "floorConsiderationError": -0.0011853569774444295,
+    "restrictiveSpecialRuleShareError": 0.007407407406972655,
+    "routeTotalVariation": 0.11047044168004684,
+    "status": "fail"
+  },
+  "protocol": {
+    "candidateCount": 1445,
+    "developmentBillsPerCandidate": 14400,
+    "developmentRunsPerSeed": 12,
+    "developmentSeedBase": 1161170001,
+    "developmentSeedCount": 20,
+    "developmentSeedStep": 104729,
+    "selectionTolerances": {
+      "floorConsiderationRate": 0.015,
+      "mixedSpecialRuleAndSuspensionRouteShare": 0.02,
+      "otherFloorRouteShare": 0.03,
+      "specialRuleOnlyRouteShare": 0.04,
+      "suspensionOnlyRouteShare": 0.05
+    },
+    "testBills": 36000,
+    "testRunsPerSeed": 20,
+    "testSeedBase": 1180000001,
+    "testSeedCount": 30,
+    "testSeedStep": 130363,
+    "testTolerances": {
+      "committeeAdvanceRate": 0.02,
+      "floorConsiderationRate": 0.02,
+      "restrictiveSpecialRuleShare": 0.02,
+      "routeTotalVariation": 0.1
+    }
+  },
+  "runtime": {
+    "javaMajorVersion": 21
+  },
+  "selected": {
+    "calendarPriorityThreshold": 0.68,
+    "leaveOneSeedOutPanels": 20,
+    "leaveOneSeedOutReselections": 16,
+    "maximumAbsoluteStandardizedError": 1.7120567376054392,
+    "selectionLoss": 4.2482610805217895,
+    "specialRuleThreshold": 0.475,
+    "suspensionThreshold": 0.75
+  },
+  "study": "house-agenda-control-calibration-v1"
+}

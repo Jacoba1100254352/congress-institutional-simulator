@@ -54,7 +54,8 @@ Expected result: Java sources compile and the simulator test suite passes.
 make reproduce-paper-offline
 ```
 
-Expected runtime: several minutes on the authoring workstation.
+Allow tens of minutes or longer, depending on the environment. Full reproduction
+reruns the campaigns and the 1,445-candidate House calibration grid.
 
 This no-network target regenerates:
 
@@ -77,6 +78,13 @@ This no-network target regenerates:
 - `reports/legislative-lifecycle-calibration.csv`
 - `reports/legislative-executive-action-diagnostic.csv`
 - `reports/legislative-lifecycle-temporal-replication.csv`
+- `reports/house-agenda-control-metrics.csv`
+- `reports/house-agenda-control-study.md`
+- `reports/house-agenda-control-calibration-candidates.csv`
+- `reports/house-agenda-control-calibration-metrics.csv`
+- `reports/house-agenda-control-calibration-seeds.csv`
+- `reports/house-agenda-control-calibration-monte-carlo.csv`
+- `reports/house-agenda-control-calibration.md`
 - `reports/rulemaking-authority-linkage.csv`
 - `reports/rulemaking-history-linkage.csv`
 - `reports/rulemaking-comment-metadata.csv`
@@ -143,6 +151,12 @@ hashes should match `paper/pdf-manifest.json` within the tracked manifest
 checks.
 
 ## Paper Checks
+
+The preserved House route study has a known source-attribution caveat.
+[The post-fit source audit](reports/house-agenda-control-source-audit.md)
+screens one Senate action without retuning the simulator and retains the
+failed comparison. Run `make house-procedure-source-audit-check` to verify
+the committed evidence and sensitivity tables without rebuilding campaigns.
 
 Before treating paper-facing output as ready, run:
 
@@ -251,6 +265,16 @@ cohort it lowers log loss from 0.223369 to 0.026977 and meets its aggregate
 calibration gate. Twelve of the 13 test vetoes occur among only 17 joint
 resolutions, so this remains narrow predictive transport and mechanism-boundary
 evidence, not causal model validation or broad out-of-regime validation.
+The source-pinned House agenda-control panel adds 29,335 116th-118th-Congress
+H.R. rows, 458 literal House Rules Committee Table 1a grant rows, and four
+mutually exclusive observed floor routes. `make
+house-agenda-control-calibration-check` verifies the locked 1,445-candidate
+route study. On the unchanged 118th-Congress cohort, committee advancement,
+floor consideration, and restrictive special-rule share pass, but route total
+variation is 0.110470 against the locked 0.100 tolerance. The boundary
+suspension threshold and 3 / 4 gate failure are retained without retuning, so
+the result is simulator-falsification evidence rather than a calibrated model
+of House agenda control.
 The sponsor-bill linkage builder joins the bounded sponsor aggregate to
 public govinfo/Congress.gov bill metadata by Bioguide ID only; it does not
 create full Center for Effective Lawmaking, complete sponsor-history,

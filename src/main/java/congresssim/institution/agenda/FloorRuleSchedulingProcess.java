@@ -10,11 +10,15 @@ import congresssim.institution.lobbying.LobbyCaptureScoring;
 import congresssim.model.Bill;
 import congresssim.util.Values;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
 public final class FloorRuleSchedulingProcess implements LegislativeProcess
 {
+	private static final double DEFAULT_SPECIAL_RULE_THRESHOLD = 0.55;
+	private static final double DEFAULT_SUSPENSION_THRESHOLD = 0.50;
+
 	private final String name;
 	private final LegislativeProcess innerProcess;
 	private final double openRuleNorm;
@@ -23,6 +27,8 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 	private final double dischargeMandateThreshold;
 	private final double fallbackBlockThreshold;
 	private final double minimumCalendarPriority;
+	private final double specialRuleThreshold;
+	private final double suspensionThreshold;
 	
 	public FloorRuleSchedulingProcess(
 			String name,
@@ -41,7 +47,9 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 				queueDelayBase,
 				dischargeMandateThreshold,
 				fallbackBlockThreshold,
-				0.0
+				0.0,
+				DEFAULT_SPECIAL_RULE_THRESHOLD,
+				DEFAULT_SUSPENSION_THRESHOLD
 		);
 	}
 
@@ -55,12 +63,40 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 			double fallbackBlockThreshold,
 			double minimumCalendarPriority
 	) {
+		this(
+				name,
+				innerProcess,
+				openRuleNorm,
+				leadershipClosurePressure,
+				queueDelayBase,
+				dischargeMandateThreshold,
+				fallbackBlockThreshold,
+				minimumCalendarPriority,
+				DEFAULT_SPECIAL_RULE_THRESHOLD,
+				DEFAULT_SUSPENSION_THRESHOLD
+		);
+	}
+
+	public FloorRuleSchedulingProcess(
+			String name,
+			LegislativeProcess innerProcess,
+			double openRuleNorm,
+			double leadershipClosurePressure,
+			double queueDelayBase,
+			double dischargeMandateThreshold,
+			double fallbackBlockThreshold,
+			double minimumCalendarPriority,
+			double specialRuleThreshold,
+			double suspensionThreshold
+	) {
 		Values.requireRange("openRuleNorm", openRuleNorm, 0.0, 1.0);
 		Values.requireRange("leadershipClosurePressure", leadershipClosurePressure, 0.0, 1.0);
 		Values.requireRange("queueDelayBase", queueDelayBase, 0.0, 1.0);
 		Values.requireRange("dischargeMandateThreshold", dischargeMandateThreshold, 0.0, 1.0);
 		Values.requireRange("fallbackBlockThreshold", fallbackBlockThreshold, 0.0, 1.0);
 		Values.requireRange("minimumCalendarPriority", minimumCalendarPriority, 0.0, 1.0);
+		Values.requireRange("specialRuleThreshold", specialRuleThreshold, 0.0, 1.0);
+		Values.requireRange("suspensionThreshold", suspensionThreshold, 0.0, 1.0);
 		this.name = name;
 		this.innerProcess = innerProcess;
 		this.openRuleNorm = openRuleNorm;
@@ -69,6 +105,8 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 		this.dischargeMandateThreshold = dischargeMandateThreshold;
 		this.fallbackBlockThreshold = fallbackBlockThreshold;
 		this.minimumCalendarPriority = minimumCalendarPriority;
+		this.specialRuleThreshold = specialRuleThreshold;
+		this.suspensionThreshold = suspensionThreshold;
 	}
 	
 	private static double mandateScore(Bill bill) {
@@ -92,6 +130,44 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 						+ (0.14 * LobbyCaptureScoring.captureRisk(bill))
 						+ (0.12 * Math.abs(bill.ideologyPosition() - context.currentPolicyPosition()) / 2.0)
 						+ (0.10 * bill.salience()),
+				0.0,
+				1.0
+		);
+	}
+
+	private static double ideologicalDistance(Bill bill, VoteContext context) {
+		return Math.abs(bill.ideologyPosition() - context.currentPolicyPosition()) / 2.0;
+	}
+
+	private static double specialRuleScore(
+			Bill bill,
+			VoteContext context,
+			double closureScore,
+			double risk
+	) {
+		return Values.clamp(
+				(0.42 * closureScore)
+						+ (0.23 * risk)
+						+ (0.20 * bill.salience())
+						+ (0.15 * ideologicalDistance(bill, context)),
+				0.0,
+				1.0
+		);
+	}
+
+	private static double suspensionScore(
+			Bill bill,
+			VoteContext context,
+			double mandate,
+			double risk,
+			double capture
+	) {
+		return Values.clamp(
+				(0.42 * mandate)
+						+ (0.24 * (1.0 - risk))
+						+ (0.18 * (1.0 - capture))
+						+ (0.10 * (1.0 - ideologicalDistance(bill, context)))
+						+ (0.06 * (1.0 - bill.publicBenefitUncertainty())),
 				0.0,
 				1.0
 		);
@@ -148,26 +224,33 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 				1.0
 		);
 		boolean calendarCapacityDenied = !dischargeBackstop && calendarPriority < minimumCalendarPriority;
-		OutcomeSignals signals = OutcomeSignals.diagnostics(Map.of(
-				"floorSchedulingDelay",
-				delay,
-				"closedRuleRate",
-				closedRule ? 1.0 : 0.0,
-				"openRuleRate",
-				closedRule ? 0.0 : 1.0,
-				"dischargeBackstopUse",
-				dischargeBackstop ? 1.0 : 0.0,
-				"statusQuoFallbackPressure",
-				statusQuoFallbackPressure,
+		double specialScore = specialRuleScore(bill, context, closureScore, risk);
+		double suspensionScore = suspensionScore(bill, context, mandate, risk, capture);
+		Map<String, Double> diagnosticValues = new HashMap<>();
+		diagnosticValues.put("floorSchedulingDelay", delay);
+		diagnosticValues.put("closedRuleRate", closedRule ? 1.0 : 0.0);
+		diagnosticValues.put("openRuleRate", closedRule ? 0.0 : 1.0);
+		diagnosticValues.put("dischargeBackstopUse", dischargeBackstop ? 1.0 : 0.0);
+		diagnosticValues.put("statusQuoFallbackPressure", statusQuoFallbackPressure);
+		diagnosticValues.put(
 				"leadershipSchedulingBias",
-				Values.clamp(closureScore * leadershipClosurePressure, 0.0, 1.0),
+				Values.clamp(closureScore * leadershipClosurePressure, 0.0, 1.0)
+		);
+		diagnosticValues.put(
 				"rulesCommitteeCaptureIndex",
-				Values.clamp(capture * leadershipClosurePressure * (closedRule ? 1.0 : 0.55), 0.0, 1.0),
-				"calendarPriorityScore",
-				calendarPriority,
-				"calendarCapacityDenialRate",
-				calendarCapacityDenied ? 1.0 : 0.0
-		));
+				Values.clamp(capture * leadershipClosurePressure * (closedRule ? 1.0 : 0.55), 0.0, 1.0)
+		);
+		diagnosticValues.put("calendarPriorityScore", calendarPriority);
+		diagnosticValues.put("calendarCapacityDenialRate", calendarCapacityDenied ? 1.0 : 0.0);
+		diagnosticValues.put("specialRuleRouteScore", specialScore);
+		diagnosticValues.put("suspensionRouteScore", suspensionScore);
+		diagnosticValues.put("specialRuleOnlyRouteRate", 0.0);
+		diagnosticValues.put("suspensionOnlyRouteRate", 0.0);
+		diagnosticValues.put("mixedSpecialRuleAndSuspensionRouteRate", 0.0);
+		diagnosticValues.put("otherFloorRouteRate", 0.0);
+		diagnosticValues.put("restrictiveSpecialRuleRouteRate", 0.0);
+		diagnosticValues.put("floorRouteAssignmentRate", 0.0);
+		OutcomeSignals signals = OutcomeSignals.diagnostics(diagnosticValues);
 
 		if (calendarCapacityDenied) {
 			return BillOutcome.accessDenied(
@@ -184,6 +267,22 @@ public final class FloorRuleSchedulingProcess implements LegislativeProcess
 					"floor calendar fallback to status quo"
 			).withSignals(signals);
 		}
+
+		boolean specialRoute = specialScore >= specialRuleThreshold;
+		boolean suspensionRoute = suspensionScore >= suspensionThreshold;
+		boolean mixedRoute = specialRoute && suspensionRoute;
+		boolean specialOnlyRoute = specialRoute && !suspensionRoute;
+		boolean suspensionOnlyRoute = !specialRoute && suspensionRoute;
+		boolean otherRoute = !specialRoute && !suspensionRoute;
+		boolean restrictiveSpecialRule = specialRoute
+				&& closureScore >= Math.max(0.34, openRuleNorm);
+		diagnosticValues.put("specialRuleOnlyRouteRate", specialOnlyRoute ? 1.0 : 0.0);
+		diagnosticValues.put("suspensionOnlyRouteRate", suspensionOnlyRoute ? 1.0 : 0.0);
+		diagnosticValues.put("mixedSpecialRuleAndSuspensionRouteRate", mixedRoute ? 1.0 : 0.0);
+		diagnosticValues.put("otherFloorRouteRate", otherRoute ? 1.0 : 0.0);
+		diagnosticValues.put("restrictiveSpecialRuleRouteRate", restrictiveSpecialRule ? 1.0 : 0.0);
+		diagnosticValues.put("floorRouteAssignmentRate", 1.0);
+		signals = OutcomeSignals.diagnostics(diagnosticValues);
 		
 		double opennessPenalty = closedRule ? 0.0 : 0.04 * (mandate - risk);
 		Bill scheduled = bill.withAttentionSpend(delay + Math.max(0.0, -opennessPenalty));

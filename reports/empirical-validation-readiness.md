@@ -12,6 +12,7 @@ This report checks whether optional raw empirical inputs are present and shaped 
 | `govinfo_executive_action_panel.csv` | 108th-118th-Congress presidential-decision mechanism diagnostic | ready | none |
 | `govinfo_joint_resolution_panel.csv` | separate 108th-118th-Congress joint-resolution presidential decisions | ready | none |
 | `govinfo_final_chamber_vote_panel.csv` | final House and Senate approval support for all retained presidential decisions | ready | none |
+| `house_agenda_control.csv` | source-pinned House floor routes, special rules, and stage timing | ready | none |
 | `lobbying_disclosure.csv` | lobby spending distribution and issue-pressure checks | ready | none |
 | `topic_throughput.csv` | topic-level throughput and agenda distribution checks | ready | none |
 | `sponsor_success.csv` | sponsor success and proposal-access concentration checks | ready | none |
@@ -23,8 +24,8 @@ This report checks whether optional raw empirical inputs are present and shaped 
 | `law_revision_history.csv` | law revision text flags and optional invalidation-linkage checks | ready | none |
 | `comparative_institutions.csv` | cross-national chamber, court, party-system, and legislative-capacity checks | ready | none |
 
-- Files present: 18 / 18
-- Files with required columns: 18 / 18
+- Files present: 19 / 19
+- Files with required columns: 19 / 19
 - Adapter fixture CSVs ignored: 4
 
-Next empirical step: preserve the locked presidential-choice result without post-fit retuning and add a future whole-Congress temporal replication when another completed cohort is available while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo lifecycle censuses, separate 108th-118th-Congress bill and joint-resolution decision panels, final chamber-vote support, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.
+Next empirical step: preserve the locked House route-composition failure without retuning, add source-specific referral-jurisdiction and status-quo-fallback evidence, and lock any richer route mechanism separately. Preserve the locked presidential-choice result without post-fit retuning and add a future whole-Congress presidential-choice replication when another completed cohort is available while continuing to upgrade bounded source-family checks into linked bill-topic, sponsor, finance, implementation, court, and statutory-lineage evidence. The configured datasets cover roll calls, bounded Congress.gov bill progress, three complete GovInfo lifecycle censuses, source-pinned House agenda-control routes and official special-rule grants, separate 108th-118th-Congress bill and joint-resolution decision panels, final chamber-vote support, lobbying, topics, sponsor success, district opinion, committee activity, campaign finance, court review, post-enactment implementation, law revision, and comparative institutions.

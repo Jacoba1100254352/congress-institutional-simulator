@@ -76,7 +76,62 @@ The 117th census remains the only selection source. The temporal report reads th
 
 Full 118th processing exposed a context-dependent GovInfo `E30000` presidential-action code. Classifier v2 requires positive signature/enactment text or an unambiguous law record/code rather than treating that code alone as enactment. Classifier v3 adds successful override classification only when both chambers affirmatively override. It identifies the veto override and enactment of 116th-Congress H.R.6395 without changing any established funnel count.
 
-The separate executive-action diagnostic aligns empirical presentments with simulator executive decisions, defined as enactments plus vetoes minus overrides. A compact panel parses all 126,760 H.R./S. records in the pinned 108th-118th-Congress GovInfo archives and retains 4,021 presidential decisions, including 21 vetoes and six successful overrides. Its pooled conditional veto rate is 0.005223, compared with 647 vetoes in 2,621 frozen simulator decisions, or 0.246852. The nonoverlapping Wilson intervals and exact-count 47.266-fold rate difference expose a mechanism discrepancy that the legacy `veto-frequency-band` did not catch. Because no veto-specific tolerance was prespecified, the comparison is descriptive rather than a post-hoc pass/fail rule. Government-control and sponsor-party strata are selected after congressional passage and are not causal estimates. The current presidential-veto parameterization remains an elevated-propensity stress mechanism pending a separately frozen low-event presidential-choice model with final chamber-vote support and a whole-Congress holdout.
+The separate executive-action diagnostic aligns empirical presentments with simulator executive decisions, defined as enactments plus vetoes minus overrides. A compact panel parses all 126,760 H.R./S. records in the pinned 108th-118th-Congress GovInfo archives and retains 4,021 presidential decisions, including 21 vetoes and six successful overrides. Its pooled conditional veto rate is 0.005223, compared with 647 vetoes in 2,621 frozen simulator decisions, or 0.246852. The nonoverlapping Wilson intervals and exact-count 47.266-fold rate difference expose a mechanism discrepancy that the legacy `veto-frequency-band` did not catch. Because no veto-specific tolerance was prespecified, the comparison is descriptive rather than a post-hoc pass/fail rule. Government-control and sponsor-party strata are selected after congressional passage and are not causal estimates. A separately locked low-event presidential-choice model passes its 118th-Congress log-loss and aggregate-calibration gate, but 12 of 13 test vetoes occur among only 17 joint resolutions. That predictor does not calibrate the elevated-propensity simulator mechanism.
+
+## House Agenda-Control Mechanism Test
+
+The calendar threshold controls admission. The special-rule and suspension
+thresholds add diagnostic labels to admitted bills; they do not change the
+inner voting rule, enforce the House's two-thirds suspension requirement, or
+change amendment rights. Their fitted shares are not evidence that those
+procedural mechanisms have been implemented or validated.
+
+The frozen v1 panel has one known chamber-attribution defect: the suspension
+evidence for 118th-Congress H.R. 4366 is a Senate action. The separate
+`reports/house-agenda-control-source-audit.md` rechecks all 29,335 pinned bill
+histories and retains 7,397 matching actions. House screening changes one
+route and raises the fixed-model test distance to 0.111950, without changing
+the original fit or failed gate. Retained House Clerk and engrossed-resolution
+sources independently establish the H. Res. 1061-mediated suspension path for
+this bill; the direct-only screen is not a complete procedural correction.
+History-wide source routes are not equivalent to the model's single-decision
+overlap, and panel-wide resolution-mediated coverage remains incomplete.
+Reproduce this audit with
+`make house-procedure-source-audit-check`.
+
+The source workflow builds a complete H.R. panel for the 116th-118th
+Congresses and joins direct bill and rule-resolution actions to literal Table
+1a entries in the official House Rules Committee activity surveys:
+
+```sh
+make house-agenda-control-panel
+make house-agenda-control-study
+make house-agenda-control-study-check
+```
+
+The panel contains 29,335 H.R. rows, 458 literal grant rows, and four mutually
+exclusive observed floor routes. It is descriptive procedure evidence. It
+does not identify leadership demand, causal gatekeeping, or the counterfactual
+status quo for bills that receive no floor action.
+
+The separate locked simulator test is:
+
+```sh
+make house-agenda-control-calibration
+make house-agenda-control-calibration-check
+```
+
+The specification fixes 1,445 calendar, special-rule, and suspension
+threshold triples. The 116th and 117th Congresses form the development cohort;
+the unchanged 118th-Congress test uses fresh simulation seeds. The selected
+triple is 0.680 / 0.475 / 0.750 and is reselected in 16 of 20
+leave-one-seed-out panels. Committee advancement, floor consideration, and
+restrictive special-rule share pass their test tolerances. Four-route total
+variation is 0.110470 against the locked 0.100 tolerance, so the primary gate
+fails. The suspension threshold is at the upper grid boundary. The grid is not
+expanded and the test cohort is not used for retuning. This result falsifies
+the current aggregate route construction and does not overwrite the separate
+lifecycle threshold or validate House agenda control.
 
 ## Non-Goals
 

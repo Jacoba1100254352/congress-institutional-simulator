@@ -1,6 +1,8 @@
 # House Agenda-Control Source and Temporal Comparison
 
-Source-panel integrity status: **PASS**. Simulator calibration status: **NOT YET RUN**.
+Frozen-artifact integrity status: **PASS**. Source attribution status: **CAVEAT**. Simulator fitting is reported separately.
+
+Post-fit chamber review identifies one Senate action used as House suspension evidence in the frozen v1 panel (H.R. 4366, 118th Congress). The preserved counts below are not corrected census estimates. See [House procedure source audit](house-agenda-control-source-audit.md) for the full-archive review and the fixed-model sensitivity, which retains failure. The source mixed-route category spans a bill's history, not one scheduling decision.
 
 This report implements the locked source specification in `papers/empirical-validation/house-agenda-control-panel-specification.md`. Specification SHA-256: `28c1b3874fb99a1987f1f8b146517dd4f2be14f74ea93b36bfadbb48591200ec`.
 

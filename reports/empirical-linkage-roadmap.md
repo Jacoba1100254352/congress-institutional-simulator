@@ -2,7 +2,7 @@
 
 This roadmap turns the current linkage audit into source-family-specific upgrade gates. It is not validation evidence; it records the minimum joins needed before stronger empirical claims can be considered.
 
-- Source families needing linkage upgrades: 9 / 13
+- Source families needing linkage upgrades: 9 / 14
 - High-priority linkage upgrades: 4 / 9
 
 Current linkage statuses among roadmap rows:

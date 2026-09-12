@@ -1,7 +1,8 @@
-MAIN_SOURCES := $(shell find src/main/java -name '*.java')
-TEST_SOURCES := $(shell find src/test/java -name '*.java')
+MAIN_SOURCES := $(sort $(shell find src/main/java -name '*.java'))
+TEST_SOURCES := $(sort $(shell find src/test/java -name '*.java'))
 JAVA_RELEASE ?= 21
 JAVA_PROPS ?= -Dcongresssim.javaRelease=$(JAVA_RELEASE)
+JAR_DATE ?= 2026-01-01T00:00:00Z
 APP_JAR := out/congresssim.jar
 APP_CP := $(APP_JAR)
 PAPER_MAIN_TEX := paper/acm-ci-framework/acm-ci-framework.tex
@@ -14,6 +15,9 @@ PAPER_APPENDIX_PDF := paper/technical-appendix/odd-d-appendix.pdf
 .PHONY: build-district-public-opinion-ces-policy-item-candidates-raw district-public-opinion-ces-policy-item-candidate-review build-district-public-opinion-ces-policy-item-response-distributions-raw district-public-opinion-ces-policy-item-response-distribution-review build-district-public-opinion-ces-policy-item-codebook-direction-raw district-public-opinion-ces-policy-item-codebook-direction-review
 .PHONY: build-district-public-opinion-bill-text-context-raw district-public-opinion-bill-item-alignment-review build-district-public-opinion-bill-topic-support-raw district-public-opinion-bill-topic-support
 .PHONY: adversarial-replication-a1-a8 adversarial-replication-a9 robustness-evidence legislative-lifecycle-calibration legislative-executive-action-diagnostic legislative-lifecycle-temporal-replication presidential-choice-study presidential-choice-study-check govinfo-executive-action-panel govinfo-joint-resolution-panel govinfo-final-chamber-vote-panel govinfo-bill-census-116 govinfo-bill-census-118 govinfo-bill-census-check build-govinfo-executive-action-panel-raw build-govinfo-joint-resolution-panel-raw build-govinfo-final-chamber-vote-panel-raw build-govinfo-bill-census-116-raw build-govinfo-bill-census-118-raw
+.PHONY: build-house-agenda-control-raw house-agenda-control-panel house-agenda-control-study house-agenda-control-study-check house-agenda-control-calibration house-agenda-control-calibration-check
+.PHONY: build-house-procedure-audit-actions house-procedure-source-audit house-procedure-source-audit-check
+.PHONY: build-house-resolution-link-reference house-resolution-link-reference
 
 check-java:
 	@actual="$$(javac -version 2>&1 | awk '{print $$2}' | cut -d. -f1)"; \
@@ -27,7 +31,7 @@ build: check-java
 	rm -rf out/main $(APP_JAR)
 	mkdir -p out/main
 	javac --release $(JAVA_RELEASE) -d out/main $(MAIN_SOURCES)
-	jar --create --file $(APP_JAR) -C out/main .
+	jar --create --file $(APP_JAR) --no-manifest --date=$(JAR_DATE) -C out/main .
 
 run: build
 	java $(JAVA_PROPS) -cp $(APP_CP) congresssim.Main $(ARGS)
@@ -155,6 +159,25 @@ build-bill-progression-raw:
 
 build-govinfo-bill-census-raw:
 	python3 scripts/validation/build_govinfo_bill_census_dataset.py $(ARGS)
+
+build-house-agenda-control-raw:
+	python3 scripts/validation/build_house_agenda_control_panel.py $(ARGS)
+
+build-house-procedure-audit-actions:
+	python3 scripts/validation/write_house_procedure_source_audit.py --rebuild-actions $(ARGS)
+
+build-house-resolution-link-reference:
+	python3 scripts/validation/write_house_resolution_link_reference.py --fetch
+
+house-resolution-link-reference:
+	python3 scripts/validation/write_house_resolution_link_reference.py
+
+house-procedure-source-audit: house-resolution-link-reference
+	python3 scripts/validation/write_house_procedure_source_audit.py
+
+house-procedure-source-audit-check:
+	python3 scripts/validation/write_house_resolution_link_reference.py --check
+	python3 scripts/validation/write_house_procedure_source_audit.py --check
 
 build-govinfo-executive-action-panel-raw:
 	python3 scripts/validation/build_govinfo_executive_action_panel.py $(ARGS)
@@ -306,7 +329,9 @@ empirical-flow-heldout:
 empirical-data-inventory: validation-readiness empirical-bridge empirical-flow-heldout
 	python3 scripts/validation/write_empirical_data_inventory.py
 
-empirical-linkage-report: empirical-data-inventory sponsor-bill-linkage court-law-linkage comparative-institution-linkage campaign-finance-issue-context campaign-finance-sponsor-bill-context district-public-opinion-policy-context lobbying-bill-policy-context statutory-lineage-target-section-diff-review presidential-choice-study
+empirical-linkage-report: empirical-data-inventory sponsor-bill-linkage court-law-linkage comparative-institution-linkage campaign-finance-issue-context campaign-finance-sponsor-bill-context district-public-opinion-policy-context lobbying-bill-policy-context statutory-lineage-target-section-diff-review presidential-choice-study house-agenda-control-study house-agenda-control-calibration
+	python3 scripts/validation/write_house_resolution_link_reference.py
+	python3 scripts/validation/write_house_procedure_source_audit.py
 	python3 scripts/validation/write_empirical_linkage_report.py
 
 empirical-linkage-roadmap: empirical-linkage-report
@@ -323,6 +348,21 @@ govinfo-bill-census-116:
 
 govinfo-bill-census-118:
 	python3 scripts/validation/write_govinfo_bill_census_118_report.py
+
+house-agenda-control-panel:
+	python3 scripts/validation/build_house_agenda_control_panel.py --offline
+
+house-agenda-control-study: house-agenda-control-panel
+	python3 scripts/validation/write_house_agenda_control_study.py
+
+house-agenda-control-study-check: house-agenda-control-study
+	python3 scripts/checks/check_house_agenda_control_study.py
+
+house-agenda-control-calibration: build house-agenda-control-study
+	python3 scripts/validation/write_house_agenda_control_calibration.py
+
+house-agenda-control-calibration-check:
+	python3 scripts/checks/check_house_agenda_control_calibration.py
 
 govinfo-executive-action-panel:
 	python3 scripts/validation/build_govinfo_executive_action_panel.py --offline
@@ -661,6 +701,9 @@ paper-checks: paper
 	python3 scripts/checks/check_empirical_boundary.py
 	python3 scripts/checks/check_govinfo_bill_census.py
 	python3 scripts/checks/check_presidential_choice_study.py
+	python3 scripts/checks/check_house_agenda_control_study.py
+	python3 scripts/checks/check_house_agenda_control_calibration.py
+	python3 scripts/validation/write_house_procedure_source_audit.py --check
 	python3 scripts/checks/check_pdf_render.py $(PAPER_MAIN_PDF) $(PAPER_APPENDIX_PDF)
 	python3 paper/scripts/write_pdf_manifest.py --check
 
@@ -674,6 +717,9 @@ paper-freshness-check: paper-assets
 	python3 scripts/checks/check_empirical_boundary.py
 	python3 scripts/checks/check_govinfo_bill_census.py
 	python3 scripts/checks/check_presidential_choice_study.py
+	python3 scripts/checks/check_house_agenda_control_study.py
+	python3 scripts/checks/check_house_agenda_control_calibration.py
+	python3 scripts/validation/write_house_procedure_source_audit.py --check
 	python3 scripts/checks/check_pdf_render.py $(PAPER_MAIN_PDF) $(PAPER_APPENDIX_PDF)
 	python3 paper/scripts/write_pdf_manifest.py --check
 
@@ -716,6 +762,11 @@ test: build
 	python3 scripts/validation/test_govinfo_executive_action_panel.py
 	python3 scripts/validation/test_govinfo_final_vote_panel.py
 	python3 scripts/validation/test_presidential_choice_study.py
+	python3 scripts/validation/test_house_agenda_control_panel.py
+	python3 scripts/validation/test_house_agenda_control_study.py
+	python3 scripts/validation/test_house_agenda_control_calibration.py
+	python3 scripts/checks/test_paper_anonymity.py
+	python3 scripts/validation/test_house_procedure_source_audit.py
 	python3 scripts/validation/test_district_public_opinion_census_denominator.py
 	python3 scripts/validation/test_district_public_opinion_bill_text_context.py
 	python3 scripts/validation/test_district_public_opinion_bill_topic_support.py
