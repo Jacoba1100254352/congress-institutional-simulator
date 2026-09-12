@@ -39,7 +39,7 @@ Executable empirical-screening run for the conventional simulator baseline. This
 - current-congress-floor-consideration-rate: GovInfo BILLSTATUS 117th-Congress H.R. and S. census. Range centered on the deterministic calibration split with a 0.015 abstraction tolerance; held-out rows were not used to select the threshold
 - current-congress-enactment-rate: GovInfo BILLSTATUS 117th-Congress H.R. and S. census. Range centered on the deterministic calibration split with a 0.010 abstraction tolerance; held-out rows were not used to select the threshold
 - party-unity-support-band: Voteview roll-call and party-unity data. Screens winning coalition size against the committed Voteview roll-call sample
-- veto-frequency-band: Congress.gov action histories and CRS presidential veto summaries. Loose range because run length is abstract
+- veto-frequency-band: Congress.gov action histories and CRS presidential veto summaries. Legacy broad count screen because run length is abstract; does not calibrate conditional veto probability
 - sponsor-success-concentration: Center for Effective Lawmaking and Congress.gov sponsor samples. Screens whether proposer access is neither perfectly equal nor fully concentrated
 - lobbying-spend-observable: U.S. Senate Lobbying Disclosure Act filings. Abstract budget-unit observability check rather than dollar calibration
 - topic-throughput-yield: Comparative Agendas Project topic coding. Coarse screen for generated issue-domain throughput before topic-specific calibration

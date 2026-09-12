@@ -11,7 +11,7 @@
   "caseCount": 1,
   "scenarioCount": 10,
   "artifacts": [
-    {"path": "reports/calibration-baseline.csv", "sha256": "b038371f1dacd34e02e92e680d6aa4255930f0485e8b7d850e686ebd9c9929de"},
-    {"path": "reports/calibration-baseline.md", "sha256": "bbf4c1e7e2498bcc7c4368ed505802416c849e7ff52b9d4c420d69159e4ac1cd"}
+    {"path": "reports/calibration-baseline.csv", "sha256": "1980a6712ec5a9b6902f01811cbf942f95d04b50db50b62cc0cf0b8dffd432ee"},
+    {"path": "reports/calibration-baseline.md", "sha256": "88fff37cc7dc5d561cd9b240de9c70e4d3060d0717c97508c9612d361b39f879"}
   ]
 }
