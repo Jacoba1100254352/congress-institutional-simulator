@@ -132,6 +132,18 @@ KNOWN_ARCHIVE_PINS: dict[tuple[int, str], tuple[str, int]] = {
         "269261c0989db3ced789680ee2202747df9a7298f1ac8d2b074d3356b06e399c",
         5649,
     ),
+    (116, "hres"): (
+        "dc79a72dea6c2ad6ff4e4065a2f44b9f954e0f3880ad9e86e1740ef69d71772a",
+        1273,
+    ),
+    (117, "hres"): (
+        "2a915021d570e1de5592d5126be42ce3f02251a9252961c7ac98eb51d6796e72",
+        1532,
+    ),
+    (118, "hres"): (
+        "b71a85e04d980fde4c4ad95919f214c4154575ddb874afb365b547e82b634e43",
+        1627,
+    ),
     (108, "hjres"): (
         "0f1f3cd96bce24e97ab1778ceb3c88921b5ce43b54e4b69450731c05dfdd1e23",
         115,

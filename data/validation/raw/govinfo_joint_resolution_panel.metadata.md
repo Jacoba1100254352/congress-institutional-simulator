@@ -1,10 +1,10 @@
 # GovInfo Joint-Resolution Executive-Action Panel
 
-- generated_at_utc: 2026-08-31T02:27:57+00:00
+- generated_at_utc: 2026-08-31T06:08:36+00:00
 - classification_version: `govinfo-bill-lifecycle-v3`
-- configuration_sha256: `12252f1927f1e96ab2bf3931d6291a9a8861c205ba661a71105a222e517007dd`
+- configuration_sha256: `af04dac95793f569e9160971211255475c8b7e4d44161736fff0fa0c40339bdd`
 - panel_builder_sha256: `86a8308a0125fdd0ba17cefea70d5da230684e992d6847cfef22d114eb69c4be`
-- lifecycle_builder_sha256: `75587c72a049635cea9c70d7cf48adda1e4f7d0a4e7bc468796ef23f199a0422`
+- lifecycle_builder_sha256: `371121136e580d2911e6f554552496211ce456ca3edda36480fca47fdd7853b1`
 - context_sha256: `9541f6d943611a463c9bb39a64743d4f1a5b3e51254320333f4ad20208df7b2d`
 - veto_reference_sha256: `bf48af9673df333ae6bc51a105a28c61f31d5f79d58f0aa4bb77f69cb3520f8f`
 - output_sha256: `d834c32834e2bf78e9ff36ab8b3c39016fd08013297a81980ff35c50c4038d57`

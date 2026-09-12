@@ -1,0 +1,470 @@
+cohortId,cohortRole,congresses,section,metricId,category,numerator,denominator,value,unit,definition
+116,development_component,116,population,agenda_hr_count,,9062,,9062,bills,Complete H.R. census rows.
+116,development_component,116,lifecycle,stage_introduced_count,,9062,,9062,bills,H.R. measures observed at stage: Introduced.
+116,development_component,116,lifecycle,stage_introduced_rate,,9062,9062,1.000000000000,proportion,Introduced count divided by all H.R. rows.
+116,development_component,116,lifecycle,stage_referred_count,,9062,,9062,bills,H.R. measures observed at stage: Referred.
+116,development_component,116,lifecycle,stage_referred_rate,,9062,9062,1.000000000000,proportion,Referred count divided by all H.R. rows.
+116,development_component,116,lifecycle,stage_committee_advanced_count,,956,,956,bills,H.R. measures observed at stage: Committee advanced.
+116,development_component,116,lifecycle,stage_committee_advanced_rate,,956,9062,0.105495475612,proportion,Committee advanced count divided by all H.R. rows.
+116,development_component,116,lifecycle,stage_calendar_placed_count,,570,,570,bills,H.R. measures observed at stage: Calendar placed.
+116,development_component,116,lifecycle,stage_calendar_placed_rate,,570,9062,0.062900022070,proportion,Calendar placed count divided by all H.R. rows.
+116,development_component,116,lifecycle,stage_floor_considered_count,,778,,778,bills,H.R. measures observed at stage: Floor considered.
+116,development_component,116,lifecycle,stage_floor_considered_rate,,778,9062,0.085853012580,proportion,Floor considered count divided by all H.R. rows.
+116,development_component,116,lifecycle,stage_passed_house_count,,777,,777,bills,H.R. measures observed at stage: Passed House.
+116,development_component,116,lifecycle,stage_passed_house_rate,,777,9062,0.085742661664,proportion,Passed House count divided by all H.R. rows.
+116,development_component,116,lifecycle,stage_enacted_count,,214,,214,bills,H.R. measures observed at stage: Enacted.
+116,development_component,116,lifecycle,stage_enacted_rate,,214,9062,0.023615096005,proportion,Enacted count divided by all H.R. rows.
+116,development_component,116,transitions,transition_referred_to_committee_advanced_rate,,956,9062,0.105495475612,proportion,"Referred H.R. measures also observed committee-advanced, divided by referred H.R. measures."
+116,development_component,116,transitions,transition_committee_advanced_to_floor_rate,,614,956,0.642259414226,proportion,"Committee-advanced H.R. measures also observed floor-considered, divided by committee-advanced H.R. measures."
+116,development_component,116,floor_routes,calendar_coverage_among_floor_rate,,359,778,0.461439588689,proportion,"Floor-considered H.R. measures with a direct House, Union, or Private Calendar placement, divided by floor-considered H.R. measures."
+116,development_component,116,floor_routes,floor_path_count,adopted_special_rule,69,,69,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+116,development_component,116,floor_routes,floor_path_share,adopted_special_rule,69,778,0.088688946015,proportion,Path count divided by floor-considered H.R. measures.
+116,development_component,116,amendment_actions,amendment_offer_evidence_bill_count,adopted_special_rule,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+116,development_component,116,amendment_actions,amendment_offer_evidence_bill_rate,adopted_special_rule,0,69,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+116,development_component,116,amendment_actions,amendment_disposition_evidence_bill_count,adopted_special_rule,33,,33,bills,Bills with at least one matched direct House floor amendment-disposition action.
+116,development_component,116,amendment_actions,amendment_disposition_evidence_bill_rate,adopted_special_rule,33,69,0.478260869565,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+116,development_component,116,amendment_actions,amendment_offer_action_count,adopted_special_rule,0,,0,actions,Matched direct House floor amendment-offer actions.
+116,development_component,116,amendment_actions,amendment_disposition_action_count,adopted_special_rule,187,,187,actions,Matched direct House floor amendment-disposition actions.
+116,development_component,116,floor_routes,floor_path_count,suspension,644,,644,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+116,development_component,116,floor_routes,floor_path_share,suspension,644,778,0.827763496144,proportion,Path count divided by floor-considered H.R. measures.
+116,development_component,116,amendment_actions,amendment_offer_evidence_bill_count,suspension,1,,1,bills,Bills with at least one matched direct House floor amendment-offer action.
+116,development_component,116,amendment_actions,amendment_offer_evidence_bill_rate,suspension,1,644,0.001552795031,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+116,development_component,116,amendment_actions,amendment_disposition_evidence_bill_count,suspension,2,,2,bills,Bills with at least one matched direct House floor amendment-disposition action.
+116,development_component,116,amendment_actions,amendment_disposition_evidence_bill_rate,suspension,2,644,0.003105590062,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+116,development_component,116,amendment_actions,amendment_offer_action_count,suspension,1,,1,actions,Matched direct House floor amendment-offer actions.
+116,development_component,116,amendment_actions,amendment_disposition_action_count,suspension,2,,2,actions,Matched direct House floor amendment-disposition actions.
+116,development_component,116,floor_routes,floor_path_count,mixed_special_rule_and_suspension,17,,17,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+116,development_component,116,floor_routes,floor_path_share,mixed_special_rule_and_suspension,17,778,0.021850899743,proportion,Path count divided by floor-considered H.R. measures.
+116,development_component,116,amendment_actions,amendment_offer_evidence_bill_count,mixed_special_rule_and_suspension,1,,1,bills,Bills with at least one matched direct House floor amendment-offer action.
+116,development_component,116,amendment_actions,amendment_offer_evidence_bill_rate,mixed_special_rule_and_suspension,1,17,0.058823529412,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+116,development_component,116,amendment_actions,amendment_disposition_evidence_bill_count,mixed_special_rule_and_suspension,9,,9,bills,Bills with at least one matched direct House floor amendment-disposition action.
+116,development_component,116,amendment_actions,amendment_disposition_evidence_bill_rate,mixed_special_rule_and_suspension,9,17,0.529411764706,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+116,development_component,116,amendment_actions,amendment_offer_action_count,mixed_special_rule_and_suspension,1,,1,actions,Matched direct House floor amendment-offer actions.
+116,development_component,116,amendment_actions,amendment_disposition_action_count,mixed_special_rule_and_suspension,66,,66,actions,Matched direct House floor amendment-disposition actions.
+116,development_component,116,floor_routes,floor_path_count,other_detected_floor_path,48,,48,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+116,development_component,116,floor_routes,floor_path_share,other_detected_floor_path,48,778,0.061696658098,proportion,Path count divided by floor-considered H.R. measures.
+116,development_component,116,amendment_actions,amendment_offer_evidence_bill_count,other_detected_floor_path,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+116,development_component,116,amendment_actions,amendment_offer_evidence_bill_rate,other_detected_floor_path,0,48,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+116,development_component,116,amendment_actions,amendment_disposition_evidence_bill_count,other_detected_floor_path,1,,1,bills,Bills with at least one matched direct House floor amendment-disposition action.
+116,development_component,116,amendment_actions,amendment_disposition_evidence_bill_rate,other_detected_floor_path,1,48,0.020833333333,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+116,development_component,116,amendment_actions,amendment_offer_action_count,other_detected_floor_path,0,,0,actions,Matched direct House floor amendment-offer actions.
+116,development_component,116,amendment_actions,amendment_disposition_action_count,other_detected_floor_path,1,,1,actions,Matched direct House floor amendment-disposition actions.
+116,development_component,116,timing,interval_observed_count,introduction_to_referral,9041,,9041,intervals,"Nonmissing, nonnegative introduction to referral intervals."
+116,development_component,116,timing,interval_p50_days,introduction_to_referral,9041,,0,days,Nearest-rank 50th percentile for introduction to referral among observed intervals.
+116,development_component,116,timing,interval_p90_days,introduction_to_referral,9041,,0,days,Nearest-rank 90th percentile for introduction to referral among observed intervals.
+116,development_component,116,timing,interval_observed_count,referral_to_committee_advance,932,,932,intervals,"Nonmissing, nonnegative referral to committee advance intervals."
+116,development_component,116,timing,interval_p50_days,referral_to_committee_advance,932,,78,days,Nearest-rank 50th percentile for referral to committee advance among observed intervals.
+116,development_component,116,timing,interval_p90_days,referral_to_committee_advance,932,,371,days,Nearest-rank 90th percentile for referral to committee advance among observed intervals.
+116,development_component,116,timing,interval_observed_count,committee_advance_to_floor,547,,547,intervals,"Nonmissing, nonnegative committee advance to floor intervals."
+116,development_component,116,timing,interval_p50_days,committee_advance_to_floor,547,,60,days,Nearest-rank 50th percentile for committee advance to floor among observed intervals.
+116,development_component,116,timing,interval_p90_days,committee_advance_to_floor,547,,208,days,Nearest-rank 90th percentile for committee advance to floor among observed intervals.
+116,development_component,116,timing,interval_observed_count,introduction_to_floor,778,,778,intervals,"Nonmissing, nonnegative introduction to floor intervals."
+116,development_component,116,timing,interval_p50_days,introduction_to_floor,778,,126,days,Nearest-rank 50th percentile for introduction to floor among observed intervals.
+116,development_component,116,timing,interval_p90_days,introduction_to_floor,778,,419,days,Nearest-rank 90th percentile for introduction to floor among observed intervals.
+116,development_component,116,special_rules,survey_grant_count,,115,,115,grants,Literal Table 1a rule-to-measure rows.
+116,development_component,116,special_rules,adopted_survey_grant_count,,115,,115,grants,Literal Table 1a grant rows whose H. Res. passed the House.
+116,development_component,116,special_rules,survey_unique_resolution_count,,69,,69,resolutions,Unique H. Res. identifiers in literal Table 1a.
+116,development_component,116,special_rules,adopted_unique_resolution_count,,69,,69,resolutions,Unique Table 1a H. Res. identifiers that passed the House.
+116,development_component,116,special_rules,survey_unique_hr_measure_count,,88,,88,bills,Unique H.R. measures in literal Table 1a.
+116,development_component,116,special_rules,adopted_unique_hr_measure_count,,88,,88,bills,Unique H.R. measures linked to an adopted Table 1a rule.
+116,development_component,116,special_rules,survey_grant_category_count,open,0,,0,grants,Literal Table 1a grant rows in the source category.
+116,development_component,116,special_rules,adopted_grant_category_count,open,0,,0,grants,Adopted literal Table 1a grant rows in the source category.
+116,development_component,116,special_rules,survey_unique_resolution_category_presence_count,open,0,,0,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+116,development_component,116,special_rules,adopted_unique_resolution_category_presence_count,open,0,,0,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+116,development_component,116,special_rules,survey_unique_hr_measure_category_presence_count,open,0,,0,bills,Unique Table 1a H.R. measures with at least one row in the category.
+116,development_component,116,special_rules,adopted_unique_hr_measure_category_presence_count,open,0,,0,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+116,development_component,116,special_rules,survey_grant_category_count,modified_open,0,,0,grants,Literal Table 1a grant rows in the source category.
+116,development_component,116,special_rules,adopted_grant_category_count,modified_open,0,,0,grants,Adopted literal Table 1a grant rows in the source category.
+116,development_component,116,special_rules,survey_unique_resolution_category_presence_count,modified_open,0,,0,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+116,development_component,116,special_rules,adopted_unique_resolution_category_presence_count,modified_open,0,,0,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+116,development_component,116,special_rules,survey_unique_hr_measure_category_presence_count,modified_open,0,,0,bills,Unique Table 1a H.R. measures with at least one row in the category.
+116,development_component,116,special_rules,adopted_unique_hr_measure_category_presence_count,modified_open,0,,0,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+116,development_component,116,special_rules,survey_grant_category_count,structured,55,,55,grants,Literal Table 1a grant rows in the source category.
+116,development_component,116,special_rules,adopted_grant_category_count,structured,55,,55,grants,Adopted literal Table 1a grant rows in the source category.
+116,development_component,116,special_rules,survey_unique_resolution_category_presence_count,structured,45,,45,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+116,development_component,116,special_rules,adopted_unique_resolution_category_presence_count,structured,45,,45,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+116,development_component,116,special_rules,survey_unique_hr_measure_category_presence_count,structured,53,,53,bills,Unique Table 1a H.R. measures with at least one row in the category.
+116,development_component,116,special_rules,adopted_unique_hr_measure_category_presence_count,structured,53,,53,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+116,development_component,116,special_rules,survey_grant_category_count,closed,60,,60,grants,Literal Table 1a grant rows in the source category.
+116,development_component,116,special_rules,adopted_grant_category_count,closed,60,,60,grants,Adopted literal Table 1a grant rows in the source category.
+116,development_component,116,special_rules,survey_unique_resolution_category_presence_count,closed,37,,37,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+116,development_component,116,special_rules,adopted_unique_resolution_category_presence_count,closed,37,,37,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+116,development_component,116,special_rules,survey_unique_hr_measure_category_presence_count,closed,35,,35,bills,Unique Table 1a H.R. measures with at least one row in the category.
+116,development_component,116,special_rules,adopted_unique_hr_measure_category_presence_count,closed,35,,35,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+116,development_component,116,special_rules,adopted_restrictive_grant_share,,115,115,1.000000000000,proportion,Adopted structured or closed grant rows divided by all adopted Table 1a grant rows.
+116,development_component,116,special_rules,adopted_restrictive_hr_measure_share,,88,88,1.000000000000,proportion,Unique H.R. measures with any adopted structured or closed rule divided by unique H.R. measures with an adopted Table 1a rule.
+116,development_component,116,special_rules,adopted_mixed_category_resolution_count,,13,,13,resolutions,Adopted resolutions with grant rows in more than one category.
+116,development_component,116,special_rules,adopted_mixed_category_hr_measure_count,,0,,0,bills,H.R. measures with adopted grant rows in more than one category.
+116,development_component,116,integrity,stage_order_anomaly_count,,70,,70,bills,Rows with at least one non-linear stage-date sequence; affected elapsed intervals are blank.
+116,development_component,116,integrity,lifecycle_source_date_anomaly_count,,15,,15,bills,Rows carrying a preserved source-date anomaly from the underlying lifecycle census.
+116,development_component,116,integrity,unidentified_floor_path_count,,0,,0,bills,Floor-considered rows without an allowed direct path classification.
+116,development_component,116,integrity,mixed_floor_path_count,,17,,17,bills,Rows with both adopted Table 1a special-rule and direct suspension evidence.
+116,development_component,116,integrity,direct_rule_link_status_count,no_direct_or_adopted_rule_link,8966,,8966,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+116,development_component,116,integrity,direct_rule_link_status_count,direct_and_adopted_rule_links_match,85,,85,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+116,development_component,116,integrity,direct_rule_link_status_count,direct_actions_include_all_adopted_rule_links,1,,1,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+116,development_component,116,integrity,direct_rule_link_status_count,adopted_survey_rule_without_direct_action_id,2,,2,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+116,development_component,116,integrity,direct_rule_link_status_count,direct_rule_action_without_adopted_table1a_link,8,,8,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+116,development_component,116,integrity,direct_rule_link_status_count,direct_and_adopted_rule_links_differ,0,,0,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+116,development_component,116,integrity,table1a_resolution_disposition_count,adopted,69,,69,resolutions,Unique literal Table 1a resolutions by direct House disposition.
+117,development_component,117,population,agenda_hr_count,,9709,,9709,bills,Complete H.R. census rows.
+117,development_component,117,lifecycle,stage_introduced_count,,9709,,9709,bills,H.R. measures observed at stage: Introduced.
+117,development_component,117,lifecycle,stage_introduced_rate,,9709,9709,1.000000000000,proportion,Introduced count divided by all H.R. rows.
+117,development_component,117,lifecycle,stage_referred_count,,9698,,9698,bills,H.R. measures observed at stage: Referred.
+117,development_component,117,lifecycle,stage_referred_rate,,9698,9709,0.998867030590,proportion,Referred count divided by all H.R. rows.
+117,development_component,117,lifecycle,stage_committee_advanced_count,,956,,956,bills,H.R. measures observed at stage: Committee advanced.
+117,development_component,117,lifecycle,stage_committee_advanced_rate,,956,9709,0.098465341436,proportion,Committee advanced count divided by all H.R. rows.
+117,development_component,117,lifecycle,stage_calendar_placed_count,,497,,497,bills,H.R. measures observed at stage: Calendar placed.
+117,development_component,117,lifecycle,stage_calendar_placed_rate,,497,9709,0.051189617880,proportion,Calendar placed count divided by all H.R. rows.
+117,development_component,117,lifecycle,stage_floor_considered_count,,722,,722,bills,H.R. measures observed at stage: Floor considered.
+117,development_component,117,lifecycle,stage_floor_considered_rate,,722,9709,0.074363992172,proportion,Floor considered count divided by all H.R. rows.
+117,development_component,117,lifecycle,stage_passed_house_count,,719,,719,bills,H.R. measures observed at stage: Passed House.
+117,development_component,117,lifecycle,stage_passed_house_rate,,719,9709,0.074055000515,proportion,Passed House count divided by all H.R. rows.
+117,development_component,117,lifecycle,stage_enacted_count,,198,,198,bills,H.R. measures observed at stage: Enacted.
+117,development_component,117,lifecycle,stage_enacted_rate,,198,9709,0.020393449377,proportion,Enacted count divided by all H.R. rows.
+117,development_component,117,transitions,transition_referred_to_committee_advanced_rate,,956,9698,0.098577026191,proportion,"Referred H.R. measures also observed committee-advanced, divided by referred H.R. measures."
+117,development_component,117,transitions,transition_committee_advanced_to_floor_rate,,562,956,0.587866108787,proportion,"Committee-advanced H.R. measures also observed floor-considered, divided by committee-advanced H.R. measures."
+117,development_component,117,floor_routes,calendar_coverage_among_floor_rate,,329,722,0.455678670360,proportion,"Floor-considered H.R. measures with a direct House, Union, or Private Calendar placement, divided by floor-considered H.R. measures."
+117,development_component,117,floor_routes,floor_path_count,adopted_special_rule,86,,86,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+117,development_component,117,floor_routes,floor_path_share,adopted_special_rule,86,722,0.119113573407,proportion,Path count divided by floor-considered H.R. measures.
+117,development_component,117,amendment_actions,amendment_offer_evidence_bill_count,adopted_special_rule,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+117,development_component,117,amendment_actions,amendment_offer_evidence_bill_rate,adopted_special_rule,0,86,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+117,development_component,117,amendment_actions,amendment_disposition_evidence_bill_count,adopted_special_rule,13,,13,bills,Bills with at least one matched direct House floor amendment-disposition action.
+117,development_component,117,amendment_actions,amendment_disposition_evidence_bill_rate,adopted_special_rule,13,86,0.151162790698,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+117,development_component,117,amendment_actions,amendment_offer_action_count,adopted_special_rule,0,,0,actions,Matched direct House floor amendment-offer actions.
+117,development_component,117,amendment_actions,amendment_disposition_action_count,adopted_special_rule,57,,57,actions,Matched direct House floor amendment-disposition actions.
+117,development_component,117,floor_routes,floor_path_count,suspension,604,,604,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+117,development_component,117,floor_routes,floor_path_share,suspension,604,722,0.836565096953,proportion,Path count divided by floor-considered H.R. measures.
+117,development_component,117,amendment_actions,amendment_offer_evidence_bill_count,suspension,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+117,development_component,117,amendment_actions,amendment_offer_evidence_bill_rate,suspension,0,604,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+117,development_component,117,amendment_actions,amendment_disposition_evidence_bill_count,suspension,14,,14,bills,Bills with at least one matched direct House floor amendment-disposition action.
+117,development_component,117,amendment_actions,amendment_disposition_evidence_bill_rate,suspension,14,604,0.023178807947,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+117,development_component,117,amendment_actions,amendment_offer_action_count,suspension,0,,0,actions,Matched direct House floor amendment-offer actions.
+117,development_component,117,amendment_actions,amendment_disposition_action_count,suspension,15,,15,actions,Matched direct House floor amendment-disposition actions.
+117,development_component,117,floor_routes,floor_path_count,mixed_special_rule_and_suspension,21,,21,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+117,development_component,117,floor_routes,floor_path_share,mixed_special_rule_and_suspension,21,722,0.029085872576,proportion,Path count divided by floor-considered H.R. measures.
+117,development_component,117,amendment_actions,amendment_offer_evidence_bill_count,mixed_special_rule_and_suspension,1,,1,bills,Bills with at least one matched direct House floor amendment-offer action.
+117,development_component,117,amendment_actions,amendment_offer_evidence_bill_rate,mixed_special_rule_and_suspension,1,21,0.047619047619,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+117,development_component,117,amendment_actions,amendment_disposition_evidence_bill_count,mixed_special_rule_and_suspension,2,,2,bills,Bills with at least one matched direct House floor amendment-disposition action.
+117,development_component,117,amendment_actions,amendment_disposition_evidence_bill_rate,mixed_special_rule_and_suspension,2,21,0.095238095238,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+117,development_component,117,amendment_actions,amendment_offer_action_count,mixed_special_rule_and_suspension,1,,1,actions,Matched direct House floor amendment-offer actions.
+117,development_component,117,amendment_actions,amendment_disposition_action_count,mixed_special_rule_and_suspension,13,,13,actions,Matched direct House floor amendment-disposition actions.
+117,development_component,117,floor_routes,floor_path_count,other_detected_floor_path,11,,11,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+117,development_component,117,floor_routes,floor_path_share,other_detected_floor_path,11,722,0.015235457064,proportion,Path count divided by floor-considered H.R. measures.
+117,development_component,117,amendment_actions,amendment_offer_evidence_bill_count,other_detected_floor_path,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+117,development_component,117,amendment_actions,amendment_offer_evidence_bill_rate,other_detected_floor_path,0,11,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+117,development_component,117,amendment_actions,amendment_disposition_evidence_bill_count,other_detected_floor_path,2,,2,bills,Bills with at least one matched direct House floor amendment-disposition action.
+117,development_component,117,amendment_actions,amendment_disposition_evidence_bill_rate,other_detected_floor_path,2,11,0.181818181818,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+117,development_component,117,amendment_actions,amendment_offer_action_count,other_detected_floor_path,0,,0,actions,Matched direct House floor amendment-offer actions.
+117,development_component,117,amendment_actions,amendment_disposition_action_count,other_detected_floor_path,2,,2,actions,Matched direct House floor amendment-disposition actions.
+117,development_component,117,timing,interval_observed_count,introduction_to_referral,9674,,9674,intervals,"Nonmissing, nonnegative introduction to referral intervals."
+117,development_component,117,timing,interval_p50_days,introduction_to_referral,9674,,0,days,Nearest-rank 50th percentile for introduction to referral among observed intervals.
+117,development_component,117,timing,interval_p90_days,introduction_to_referral,9674,,0,days,Nearest-rank 90th percentile for introduction to referral among observed intervals.
+117,development_component,117,timing,interval_observed_count,referral_to_committee_advance,929,,929,intervals,"Nonmissing, nonnegative referral to committee advance intervals."
+117,development_component,117,timing,interval_p50_days,referral_to_committee_advance,929,,70,days,Nearest-rank 50th percentile for referral to committee advance among observed intervals.
+117,development_component,117,timing,interval_p90_days,referral_to_committee_advance,929,,337,days,Nearest-rank 90th percentile for referral to committee advance among observed intervals.
+117,development_component,117,timing,interval_observed_count,committee_advance_to_floor,532,,532,intervals,"Nonmissing, nonnegative committee advance to floor intervals."
+117,development_component,117,timing,interval_p50_days,committee_advance_to_floor,532,,69,days,Nearest-rank 50th percentile for committee advance to floor among observed intervals.
+117,development_component,117,timing,interval_p90_days,committee_advance_to_floor,532,,231,days,Nearest-rank 90th percentile for committee advance to floor among observed intervals.
+117,development_component,117,timing,interval_observed_count,introduction_to_floor,722,,722,intervals,"Nonmissing, nonnegative introduction to floor intervals."
+117,development_component,117,timing,interval_p50_days,introduction_to_floor,722,,128,days,Nearest-rank 50th percentile for introduction to floor among observed intervals.
+117,development_component,117,timing,interval_p90_days,introduction_to_floor,722,,427,days,Nearest-rank 90th percentile for introduction to floor among observed intervals.
+117,development_component,117,special_rules,survey_grant_count,,144,,144,grants,Literal Table 1a rule-to-measure rows.
+117,development_component,117,special_rules,adopted_survey_grant_count,,140,,140,grants,Literal Table 1a grant rows whose H. Res. passed the House.
+117,development_component,117,special_rules,survey_unique_resolution_count,,69,,69,resolutions,Unique H. Res. identifiers in literal Table 1a.
+117,development_component,117,special_rules,adopted_unique_resolution_count,,66,,66,resolutions,Unique Table 1a H. Res. identifiers that passed the House.
+117,development_component,117,special_rules,survey_unique_hr_measure_count,,110,,110,bills,Unique H.R. measures in literal Table 1a.
+117,development_component,117,special_rules,adopted_unique_hr_measure_count,,110,,110,bills,Unique H.R. measures linked to an adopted Table 1a rule.
+117,development_component,117,special_rules,survey_grant_category_count,open,0,,0,grants,Literal Table 1a grant rows in the source category.
+117,development_component,117,special_rules,adopted_grant_category_count,open,0,,0,grants,Adopted literal Table 1a grant rows in the source category.
+117,development_component,117,special_rules,survey_unique_resolution_category_presence_count,open,0,,0,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+117,development_component,117,special_rules,adopted_unique_resolution_category_presence_count,open,0,,0,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+117,development_component,117,special_rules,survey_unique_hr_measure_category_presence_count,open,0,,0,bills,Unique Table 1a H.R. measures with at least one row in the category.
+117,development_component,117,special_rules,adopted_unique_hr_measure_category_presence_count,open,0,,0,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+117,development_component,117,special_rules,survey_grant_category_count,modified_open,0,,0,grants,Literal Table 1a grant rows in the source category.
+117,development_component,117,special_rules,adopted_grant_category_count,modified_open,0,,0,grants,Adopted literal Table 1a grant rows in the source category.
+117,development_component,117,special_rules,survey_unique_resolution_category_presence_count,modified_open,0,,0,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+117,development_component,117,special_rules,adopted_unique_resolution_category_presence_count,modified_open,0,,0,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+117,development_component,117,special_rules,survey_unique_hr_measure_category_presence_count,modified_open,0,,0,bills,Unique Table 1a H.R. measures with at least one row in the category.
+117,development_component,117,special_rules,adopted_unique_hr_measure_category_presence_count,modified_open,0,,0,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+117,development_component,117,special_rules,survey_grant_category_count,structured,57,,57,grants,Literal Table 1a grant rows in the source category.
+117,development_component,117,special_rules,adopted_grant_category_count,structured,57,,57,grants,Adopted literal Table 1a grant rows in the source category.
+117,development_component,117,special_rules,survey_unique_resolution_category_presence_count,structured,35,,35,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+117,development_component,117,special_rules,adopted_unique_resolution_category_presence_count,structured,35,,35,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+117,development_component,117,special_rules,survey_unique_hr_measure_category_presence_count,structured,57,,57,bills,Unique Table 1a H.R. measures with at least one row in the category.
+117,development_component,117,special_rules,adopted_unique_hr_measure_category_presence_count,structured,57,,57,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+117,development_component,117,special_rules,survey_grant_category_count,closed,87,,87,grants,Literal Table 1a grant rows in the source category.
+117,development_component,117,special_rules,adopted_grant_category_count,closed,83,,83,grants,Adopted literal Table 1a grant rows in the source category.
+117,development_component,117,special_rules,survey_unique_resolution_category_presence_count,closed,54,,54,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+117,development_component,117,special_rules,adopted_unique_resolution_category_presence_count,closed,51,,51,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+117,development_component,117,special_rules,survey_unique_hr_measure_category_presence_count,closed,53,,53,bills,Unique Table 1a H.R. measures with at least one row in the category.
+117,development_component,117,special_rules,adopted_unique_hr_measure_category_presence_count,closed,53,,53,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+117,development_component,117,special_rules,adopted_restrictive_grant_share,,140,140,1.000000000000,proportion,Adopted structured or closed grant rows divided by all adopted Table 1a grant rows.
+117,development_component,117,special_rules,adopted_restrictive_hr_measure_share,,110,110,1.000000000000,proportion,Unique H.R. measures with any adopted structured or closed rule divided by unique H.R. measures with an adopted Table 1a rule.
+117,development_component,117,special_rules,adopted_mixed_category_resolution_count,,20,,20,resolutions,Adopted resolutions with grant rows in more than one category.
+117,development_component,117,special_rules,adopted_mixed_category_hr_measure_count,,0,,0,bills,H.R. measures with adopted grant rows in more than one category.
+117,development_component,117,integrity,stage_order_anomaly_count,,32,,32,bills,Rows with at least one non-linear stage-date sequence; affected elapsed intervals are blank.
+117,development_component,117,integrity,lifecycle_source_date_anomaly_count,,2,,2,bills,Rows carrying a preserved source-date anomaly from the underlying lifecycle census.
+117,development_component,117,integrity,unidentified_floor_path_count,,0,,0,bills,Floor-considered rows without an allowed direct path classification.
+117,development_component,117,integrity,mixed_floor_path_count,,21,,21,bills,Rows with both adopted Table 1a special-rule and direct suspension evidence.
+117,development_component,117,integrity,direct_rule_link_status_count,no_direct_or_adopted_rule_link,9417,,9417,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+117,development_component,117,integrity,direct_rule_link_status_count,direct_and_adopted_rule_links_match,100,,100,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+117,development_component,117,integrity,direct_rule_link_status_count,direct_actions_include_all_adopted_rule_links,7,,7,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+117,development_component,117,integrity,direct_rule_link_status_count,adopted_survey_rule_without_direct_action_id,3,,3,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+117,development_component,117,integrity,direct_rule_link_status_count,direct_rule_action_without_adopted_table1a_link,182,,182,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+117,development_component,117,integrity,direct_rule_link_status_count,direct_and_adopted_rule_links_differ,0,,0,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+117,development_component,117,integrity,table1a_resolution_disposition_count,adopted,66,,66,resolutions,Unique literal Table 1a resolutions by direct House disposition.
+117,development_component,117,integrity,table1a_resolution_disposition_count,tabled,3,,3,resolutions,Unique literal Table 1a resolutions by direct House disposition.
+development_116_117,development,116;117,population,agenda_hr_count,,18771,,18771,bills,Complete H.R. census rows.
+development_116_117,development,116;117,lifecycle,stage_introduced_count,,18771,,18771,bills,H.R. measures observed at stage: Introduced.
+development_116_117,development,116;117,lifecycle,stage_introduced_rate,,18771,18771,1.000000000000,proportion,Introduced count divided by all H.R. rows.
+development_116_117,development,116;117,lifecycle,stage_referred_count,,18760,,18760,bills,H.R. measures observed at stage: Referred.
+development_116_117,development,116;117,lifecycle,stage_referred_rate,,18760,18771,0.999413989665,proportion,Referred count divided by all H.R. rows.
+development_116_117,development,116;117,lifecycle,stage_committee_advanced_count,,1912,,1912,bills,H.R. measures observed at stage: Committee advanced.
+development_116_117,development,116;117,lifecycle,stage_committee_advanced_rate,,1912,18771,0.101859250972,proportion,Committee advanced count divided by all H.R. rows.
+development_116_117,development,116;117,lifecycle,stage_calendar_placed_count,,1067,,1067,bills,H.R. measures observed at stage: Calendar placed.
+development_116_117,development,116;117,lifecycle,stage_calendar_placed_rate,,1067,18771,0.056843002504,proportion,Calendar placed count divided by all H.R. rows.
+development_116_117,development,116;117,lifecycle,stage_floor_considered_count,,1500,,1500,bills,H.R. measures observed at stage: Floor considered.
+development_116_117,development,116;117,lifecycle,stage_floor_considered_rate,,1500,18771,0.079910500240,proportion,Floor considered count divided by all H.R. rows.
+development_116_117,development,116;117,lifecycle,stage_passed_house_count,,1496,,1496,bills,H.R. measures observed at stage: Passed House.
+development_116_117,development,116;117,lifecycle,stage_passed_house_rate,,1496,18771,0.079697405572,proportion,Passed House count divided by all H.R. rows.
+development_116_117,development,116;117,lifecycle,stage_enacted_count,,412,,412,bills,H.R. measures observed at stage: Enacted.
+development_116_117,development,116;117,lifecycle,stage_enacted_rate,,412,18771,0.021948750733,proportion,Enacted count divided by all H.R. rows.
+development_116_117,development,116;117,transitions,transition_referred_to_committee_advanced_rate,,1912,18760,0.101918976546,proportion,"Referred H.R. measures also observed committee-advanced, divided by referred H.R. measures."
+development_116_117,development,116;117,transitions,transition_committee_advanced_to_floor_rate,,1176,1912,0.615062761506,proportion,"Committee-advanced H.R. measures also observed floor-considered, divided by committee-advanced H.R. measures."
+development_116_117,development,116;117,floor_routes,calendar_coverage_among_floor_rate,,688,1500,0.458666666667,proportion,"Floor-considered H.R. measures with a direct House, Union, or Private Calendar placement, divided by floor-considered H.R. measures."
+development_116_117,development,116;117,floor_routes,floor_path_count,adopted_special_rule,155,,155,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+development_116_117,development,116;117,floor_routes,floor_path_share,adopted_special_rule,155,1500,0.103333333333,proportion,Path count divided by floor-considered H.R. measures.
+development_116_117,development,116;117,amendment_actions,amendment_offer_evidence_bill_count,adopted_special_rule,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+development_116_117,development,116;117,amendment_actions,amendment_offer_evidence_bill_rate,adopted_special_rule,0,155,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_evidence_bill_count,adopted_special_rule,46,,46,bills,Bills with at least one matched direct House floor amendment-disposition action.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_evidence_bill_rate,adopted_special_rule,46,155,0.296774193548,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+development_116_117,development,116;117,amendment_actions,amendment_offer_action_count,adopted_special_rule,0,,0,actions,Matched direct House floor amendment-offer actions.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_action_count,adopted_special_rule,244,,244,actions,Matched direct House floor amendment-disposition actions.
+development_116_117,development,116;117,floor_routes,floor_path_count,suspension,1248,,1248,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+development_116_117,development,116;117,floor_routes,floor_path_share,suspension,1248,1500,0.832000000000,proportion,Path count divided by floor-considered H.R. measures.
+development_116_117,development,116;117,amendment_actions,amendment_offer_evidence_bill_count,suspension,1,,1,bills,Bills with at least one matched direct House floor amendment-offer action.
+development_116_117,development,116;117,amendment_actions,amendment_offer_evidence_bill_rate,suspension,1,1248,0.000801282051,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_evidence_bill_count,suspension,16,,16,bills,Bills with at least one matched direct House floor amendment-disposition action.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_evidence_bill_rate,suspension,16,1248,0.012820512821,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+development_116_117,development,116;117,amendment_actions,amendment_offer_action_count,suspension,1,,1,actions,Matched direct House floor amendment-offer actions.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_action_count,suspension,17,,17,actions,Matched direct House floor amendment-disposition actions.
+development_116_117,development,116;117,floor_routes,floor_path_count,mixed_special_rule_and_suspension,38,,38,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+development_116_117,development,116;117,floor_routes,floor_path_share,mixed_special_rule_and_suspension,38,1500,0.025333333333,proportion,Path count divided by floor-considered H.R. measures.
+development_116_117,development,116;117,amendment_actions,amendment_offer_evidence_bill_count,mixed_special_rule_and_suspension,2,,2,bills,Bills with at least one matched direct House floor amendment-offer action.
+development_116_117,development,116;117,amendment_actions,amendment_offer_evidence_bill_rate,mixed_special_rule_and_suspension,2,38,0.052631578947,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_evidence_bill_count,mixed_special_rule_and_suspension,11,,11,bills,Bills with at least one matched direct House floor amendment-disposition action.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_evidence_bill_rate,mixed_special_rule_and_suspension,11,38,0.289473684211,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+development_116_117,development,116;117,amendment_actions,amendment_offer_action_count,mixed_special_rule_and_suspension,2,,2,actions,Matched direct House floor amendment-offer actions.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_action_count,mixed_special_rule_and_suspension,79,,79,actions,Matched direct House floor amendment-disposition actions.
+development_116_117,development,116;117,floor_routes,floor_path_count,other_detected_floor_path,59,,59,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+development_116_117,development,116;117,floor_routes,floor_path_share,other_detected_floor_path,59,1500,0.039333333333,proportion,Path count divided by floor-considered H.R. measures.
+development_116_117,development,116;117,amendment_actions,amendment_offer_evidence_bill_count,other_detected_floor_path,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+development_116_117,development,116;117,amendment_actions,amendment_offer_evidence_bill_rate,other_detected_floor_path,0,59,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_evidence_bill_count,other_detected_floor_path,3,,3,bills,Bills with at least one matched direct House floor amendment-disposition action.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_evidence_bill_rate,other_detected_floor_path,3,59,0.050847457627,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+development_116_117,development,116;117,amendment_actions,amendment_offer_action_count,other_detected_floor_path,0,,0,actions,Matched direct House floor amendment-offer actions.
+development_116_117,development,116;117,amendment_actions,amendment_disposition_action_count,other_detected_floor_path,3,,3,actions,Matched direct House floor amendment-disposition actions.
+development_116_117,development,116;117,timing,interval_observed_count,introduction_to_referral,18715,,18715,intervals,"Nonmissing, nonnegative introduction to referral intervals."
+development_116_117,development,116;117,timing,interval_p50_days,introduction_to_referral,18715,,0,days,Nearest-rank 50th percentile for introduction to referral among observed intervals.
+development_116_117,development,116;117,timing,interval_p90_days,introduction_to_referral,18715,,0,days,Nearest-rank 90th percentile for introduction to referral among observed intervals.
+development_116_117,development,116;117,timing,interval_observed_count,referral_to_committee_advance,1861,,1861,intervals,"Nonmissing, nonnegative referral to committee advance intervals."
+development_116_117,development,116;117,timing,interval_p50_days,referral_to_committee_advance,1861,,75,days,Nearest-rank 50th percentile for referral to committee advance among observed intervals.
+development_116_117,development,116;117,timing,interval_p90_days,referral_to_committee_advance,1861,,355,days,Nearest-rank 90th percentile for referral to committee advance among observed intervals.
+development_116_117,development,116;117,timing,interval_observed_count,committee_advance_to_floor,1079,,1079,intervals,"Nonmissing, nonnegative committee advance to floor intervals."
+development_116_117,development,116;117,timing,interval_p50_days,committee_advance_to_floor,1079,,63,days,Nearest-rank 50th percentile for committee advance to floor among observed intervals.
+development_116_117,development,116;117,timing,interval_p90_days,committee_advance_to_floor,1079,,218,days,Nearest-rank 90th percentile for committee advance to floor among observed intervals.
+development_116_117,development,116;117,timing,interval_observed_count,introduction_to_floor,1500,,1500,intervals,"Nonmissing, nonnegative introduction to floor intervals."
+development_116_117,development,116;117,timing,interval_p50_days,introduction_to_floor,1500,,127,days,Nearest-rank 50th percentile for introduction to floor among observed intervals.
+development_116_117,development,116;117,timing,interval_p90_days,introduction_to_floor,1500,,424,days,Nearest-rank 90th percentile for introduction to floor among observed intervals.
+development_116_117,development,116;117,special_rules,survey_grant_count,,259,,259,grants,Literal Table 1a rule-to-measure rows.
+development_116_117,development,116;117,special_rules,adopted_survey_grant_count,,255,,255,grants,Literal Table 1a grant rows whose H. Res. passed the House.
+development_116_117,development,116;117,special_rules,survey_unique_resolution_count,,138,,138,resolutions,Unique H. Res. identifiers in literal Table 1a.
+development_116_117,development,116;117,special_rules,adopted_unique_resolution_count,,135,,135,resolutions,Unique Table 1a H. Res. identifiers that passed the House.
+development_116_117,development,116;117,special_rules,survey_unique_hr_measure_count,,198,,198,bills,Unique H.R. measures in literal Table 1a.
+development_116_117,development,116;117,special_rules,adopted_unique_hr_measure_count,,198,,198,bills,Unique H.R. measures linked to an adopted Table 1a rule.
+development_116_117,development,116;117,special_rules,survey_grant_category_count,open,0,,0,grants,Literal Table 1a grant rows in the source category.
+development_116_117,development,116;117,special_rules,adopted_grant_category_count,open,0,,0,grants,Adopted literal Table 1a grant rows in the source category.
+development_116_117,development,116;117,special_rules,survey_unique_resolution_category_presence_count,open,0,,0,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+development_116_117,development,116;117,special_rules,adopted_unique_resolution_category_presence_count,open,0,,0,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+development_116_117,development,116;117,special_rules,survey_unique_hr_measure_category_presence_count,open,0,,0,bills,Unique Table 1a H.R. measures with at least one row in the category.
+development_116_117,development,116;117,special_rules,adopted_unique_hr_measure_category_presence_count,open,0,,0,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+development_116_117,development,116;117,special_rules,survey_grant_category_count,modified_open,0,,0,grants,Literal Table 1a grant rows in the source category.
+development_116_117,development,116;117,special_rules,adopted_grant_category_count,modified_open,0,,0,grants,Adopted literal Table 1a grant rows in the source category.
+development_116_117,development,116;117,special_rules,survey_unique_resolution_category_presence_count,modified_open,0,,0,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+development_116_117,development,116;117,special_rules,adopted_unique_resolution_category_presence_count,modified_open,0,,0,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+development_116_117,development,116;117,special_rules,survey_unique_hr_measure_category_presence_count,modified_open,0,,0,bills,Unique Table 1a H.R. measures with at least one row in the category.
+development_116_117,development,116;117,special_rules,adopted_unique_hr_measure_category_presence_count,modified_open,0,,0,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+development_116_117,development,116;117,special_rules,survey_grant_category_count,structured,112,,112,grants,Literal Table 1a grant rows in the source category.
+development_116_117,development,116;117,special_rules,adopted_grant_category_count,structured,112,,112,grants,Adopted literal Table 1a grant rows in the source category.
+development_116_117,development,116;117,special_rules,survey_unique_resolution_category_presence_count,structured,80,,80,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+development_116_117,development,116;117,special_rules,adopted_unique_resolution_category_presence_count,structured,80,,80,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+development_116_117,development,116;117,special_rules,survey_unique_hr_measure_category_presence_count,structured,110,,110,bills,Unique Table 1a H.R. measures with at least one row in the category.
+development_116_117,development,116;117,special_rules,adopted_unique_hr_measure_category_presence_count,structured,110,,110,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+development_116_117,development,116;117,special_rules,survey_grant_category_count,closed,147,,147,grants,Literal Table 1a grant rows in the source category.
+development_116_117,development,116;117,special_rules,adopted_grant_category_count,closed,143,,143,grants,Adopted literal Table 1a grant rows in the source category.
+development_116_117,development,116;117,special_rules,survey_unique_resolution_category_presence_count,closed,91,,91,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+development_116_117,development,116;117,special_rules,adopted_unique_resolution_category_presence_count,closed,88,,88,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+development_116_117,development,116;117,special_rules,survey_unique_hr_measure_category_presence_count,closed,88,,88,bills,Unique Table 1a H.R. measures with at least one row in the category.
+development_116_117,development,116;117,special_rules,adopted_unique_hr_measure_category_presence_count,closed,88,,88,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+development_116_117,development,116;117,special_rules,adopted_restrictive_grant_share,,255,255,1.000000000000,proportion,Adopted structured or closed grant rows divided by all adopted Table 1a grant rows.
+development_116_117,development,116;117,special_rules,adopted_restrictive_hr_measure_share,,198,198,1.000000000000,proportion,Unique H.R. measures with any adopted structured or closed rule divided by unique H.R. measures with an adopted Table 1a rule.
+development_116_117,development,116;117,special_rules,adopted_mixed_category_resolution_count,,33,,33,resolutions,Adopted resolutions with grant rows in more than one category.
+development_116_117,development,116;117,special_rules,adopted_mixed_category_hr_measure_count,,0,,0,bills,H.R. measures with adopted grant rows in more than one category.
+development_116_117,development,116;117,integrity,stage_order_anomaly_count,,102,,102,bills,Rows with at least one non-linear stage-date sequence; affected elapsed intervals are blank.
+development_116_117,development,116;117,integrity,lifecycle_source_date_anomaly_count,,17,,17,bills,Rows carrying a preserved source-date anomaly from the underlying lifecycle census.
+development_116_117,development,116;117,integrity,unidentified_floor_path_count,,0,,0,bills,Floor-considered rows without an allowed direct path classification.
+development_116_117,development,116;117,integrity,mixed_floor_path_count,,38,,38,bills,Rows with both adopted Table 1a special-rule and direct suspension evidence.
+development_116_117,development,116;117,integrity,direct_rule_link_status_count,no_direct_or_adopted_rule_link,18383,,18383,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+development_116_117,development,116;117,integrity,direct_rule_link_status_count,direct_and_adopted_rule_links_match,185,,185,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+development_116_117,development,116;117,integrity,direct_rule_link_status_count,direct_actions_include_all_adopted_rule_links,8,,8,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+development_116_117,development,116;117,integrity,direct_rule_link_status_count,adopted_survey_rule_without_direct_action_id,5,,5,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+development_116_117,development,116;117,integrity,direct_rule_link_status_count,direct_rule_action_without_adopted_table1a_link,190,,190,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+development_116_117,development,116;117,integrity,direct_rule_link_status_count,direct_and_adopted_rule_links_differ,0,,0,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+development_116_117,development,116;117,integrity,table1a_resolution_disposition_count,adopted,135,,135,resolutions,Unique literal Table 1a resolutions by direct House disposition.
+development_116_117,development,116;117,integrity,table1a_resolution_disposition_count,tabled,3,,3,resolutions,Unique literal Table 1a resolutions by direct House disposition.
+118,primary_temporal_test,118,population,agenda_hr_count,,10564,,10564,bills,Complete H.R. census rows.
+118,primary_temporal_test,118,lifecycle,stage_introduced_count,,10564,,10564,bills,H.R. measures observed at stage: Introduced.
+118,primary_temporal_test,118,lifecycle,stage_introduced_rate,,10564,10564,1.000000000000,proportion,Introduced count divided by all H.R. rows.
+118,primary_temporal_test,118,lifecycle,stage_referred_count,,10555,,10555,bills,H.R. measures observed at stage: Referred.
+118,primary_temporal_test,118,lifecycle,stage_referred_rate,,10555,10564,0.999148049981,proportion,Referred count divided by all H.R. rows.
+118,primary_temporal_test,118,lifecycle,stage_committee_advanced_count,,1202,,1202,bills,H.R. measures observed at stage: Committee advanced.
+118,primary_temporal_test,118,lifecycle,stage_committee_advanced_rate,,1202,10564,0.113782658084,proportion,Committee advanced count divided by all H.R. rows.
+118,primary_temporal_test,118,lifecycle,stage_calendar_placed_count,,781,,781,bills,H.R. measures observed at stage: Calendar placed.
+118,primary_temporal_test,118,lifecycle,stage_calendar_placed_rate,,781,10564,0.073930329421,proportion,Calendar placed count divided by all H.R. rows.
+118,primary_temporal_test,118,lifecycle,stage_floor_considered_count,,676,,676,bills,H.R. measures observed at stage: Floor considered.
+118,primary_temporal_test,118,lifecycle,stage_floor_considered_rate,,676,10564,0.063990912533,proportion,Floor considered count divided by all H.R. rows.
+118,primary_temporal_test,118,lifecycle,stage_passed_house_count,,660,,660,bills,H.R. measures observed at stage: Passed House.
+118,primary_temporal_test,118,lifecycle,stage_passed_house_rate,,660,10564,0.062476334722,proportion,Passed House count divided by all H.R. rows.
+118,primary_temporal_test,118,lifecycle,stage_enacted_count,,178,,178,bills,H.R. measures observed at stage: Enacted.
+118,primary_temporal_test,118,lifecycle,stage_enacted_rate,,178,10564,0.016849678152,proportion,Enacted count divided by all H.R. rows.
+118,primary_temporal_test,118,transitions,transition_referred_to_committee_advanced_rate,,1202,10555,0.113879677878,proportion,"Referred H.R. measures also observed committee-advanced, divided by referred H.R. measures."
+118,primary_temporal_test,118,transitions,transition_committee_advanced_to_floor_rate,,600,1202,0.499168053245,proportion,"Committee-advanced H.R. measures also observed floor-considered, divided by committee-advanced H.R. measures."
+118,primary_temporal_test,118,floor_routes,calendar_coverage_among_floor_rate,,425,676,0.628698224852,proportion,"Floor-considered H.R. measures with a direct House, Union, or Private Calendar placement, divided by floor-considered H.R. measures."
+118,primary_temporal_test,118,floor_routes,floor_path_count,adopted_special_rule,127,,127,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+118,primary_temporal_test,118,floor_routes,floor_path_share,adopted_special_rule,127,676,0.187869822485,proportion,Path count divided by floor-considered H.R. measures.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_evidence_bill_count,adopted_special_rule,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_evidence_bill_rate,adopted_special_rule,0,127,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_evidence_bill_count,adopted_special_rule,60,,60,bills,Bills with at least one matched direct House floor amendment-disposition action.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_evidence_bill_rate,adopted_special_rule,60,127,0.472440944882,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_action_count,adopted_special_rule,0,,0,actions,Matched direct House floor amendment-offer actions.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_action_count,adopted_special_rule,452,,452,actions,Matched direct House floor amendment-disposition actions.
+118,primary_temporal_test,118,floor_routes,floor_path_count,suspension,544,,544,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+118,primary_temporal_test,118,floor_routes,floor_path_share,suspension,544,676,0.804733727811,proportion,Path count divided by floor-considered H.R. measures.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_evidence_bill_count,suspension,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_evidence_bill_rate,suspension,0,544,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_evidence_bill_count,suspension,3,,3,bills,Bills with at least one matched direct House floor amendment-disposition action.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_evidence_bill_rate,suspension,3,544,0.005514705882,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_action_count,suspension,0,,0,actions,Matched direct House floor amendment-offer actions.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_action_count,suspension,3,,3,actions,Matched direct House floor amendment-disposition actions.
+118,primary_temporal_test,118,floor_routes,floor_path_count,mixed_special_rule_and_suspension,4,,4,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+118,primary_temporal_test,118,floor_routes,floor_path_share,mixed_special_rule_and_suspension,4,676,0.005917159763,proportion,Path count divided by floor-considered H.R. measures.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_evidence_bill_count,mixed_special_rule_and_suspension,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_evidence_bill_rate,mixed_special_rule_and_suspension,0,4,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_evidence_bill_count,mixed_special_rule_and_suspension,3,,3,bills,Bills with at least one matched direct House floor amendment-disposition action.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_evidence_bill_rate,mixed_special_rule_and_suspension,3,4,0.750000000000,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_action_count,mixed_special_rule_and_suspension,0,,0,actions,Matched direct House floor amendment-offer actions.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_action_count,mixed_special_rule_and_suspension,68,,68,actions,Matched direct House floor amendment-disposition actions.
+118,primary_temporal_test,118,floor_routes,floor_path_count,other_detected_floor_path,1,,1,bills,Floor-considered H.R. measures in the mutually exclusive source path.
+118,primary_temporal_test,118,floor_routes,floor_path_share,other_detected_floor_path,1,676,0.001479289941,proportion,Path count divided by floor-considered H.R. measures.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_evidence_bill_count,other_detected_floor_path,0,,0,bills,Bills with at least one matched direct House floor amendment-offer action.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_evidence_bill_rate,other_detected_floor_path,0,1,0.000000000000,proportion,Bills with matched amendment-offer actions divided by bills in the path.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_evidence_bill_count,other_detected_floor_path,0,,0,bills,Bills with at least one matched direct House floor amendment-disposition action.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_evidence_bill_rate,other_detected_floor_path,0,1,0.000000000000,proportion,Bills with matched amendment-disposition actions divided by bills in the path.
+118,primary_temporal_test,118,amendment_actions,amendment_offer_action_count,other_detected_floor_path,0,,0,actions,Matched direct House floor amendment-offer actions.
+118,primary_temporal_test,118,amendment_actions,amendment_disposition_action_count,other_detected_floor_path,0,,0,actions,Matched direct House floor amendment-disposition actions.
+118,primary_temporal_test,118,timing,interval_observed_count,introduction_to_referral,10533,,10533,intervals,"Nonmissing, nonnegative introduction to referral intervals."
+118,primary_temporal_test,118,timing,interval_p50_days,introduction_to_referral,10533,,0,days,Nearest-rank 50th percentile for introduction to referral among observed intervals.
+118,primary_temporal_test,118,timing,interval_p90_days,introduction_to_referral,10533,,0,days,Nearest-rank 90th percentile for introduction to referral among observed intervals.
+118,primary_temporal_test,118,timing,interval_observed_count,referral_to_committee_advance,1180,,1180,intervals,"Nonmissing, nonnegative referral to committee advance intervals."
+118,primary_temporal_test,118,timing,interval_p50_days,referral_to_committee_advance,1180,,49,days,Nearest-rank 50th percentile for referral to committee advance among observed intervals.
+118,primary_temporal_test,118,timing,interval_p90_days,referral_to_committee_advance,1180,,309,days,Nearest-rank 90th percentile for referral to committee advance among observed intervals.
+118,primary_temporal_test,118,timing,interval_observed_count,committee_advance_to_floor,585,,585,intervals,"Nonmissing, nonnegative committee advance to floor intervals."
+118,primary_temporal_test,118,timing,interval_p50_days,committee_advance_to_floor,585,,105,days,Nearest-rank 50th percentile for committee advance to floor among observed intervals.
+118,primary_temporal_test,118,timing,interval_p90_days,committee_advance_to_floor,585,,292,days,Nearest-rank 90th percentile for committee advance to floor among observed intervals.
+118,primary_temporal_test,118,timing,interval_observed_count,introduction_to_floor,676,,676,intervals,"Nonmissing, nonnegative introduction to floor intervals."
+118,primary_temporal_test,118,timing,interval_p50_days,introduction_to_floor,676,,178,days,Nearest-rank 50th percentile for introduction to floor among observed intervals.
+118,primary_temporal_test,118,timing,interval_p90_days,introduction_to_floor,676,,440,days,Nearest-rank 90th percentile for introduction to floor among observed intervals.
+118,primary_temporal_test,118,special_rules,survey_grant_count,,199,,199,grants,Literal Table 1a rule-to-measure rows.
+118,primary_temporal_test,118,special_rules,adopted_survey_grant_count,,179,,179,grants,Literal Table 1a grant rows whose H. Res. passed the House.
+118,primary_temporal_test,118,special_rules,survey_unique_resolution_count,,67,,67,resolutions,Unique H. Res. identifiers in literal Table 1a.
+118,primary_temporal_test,118,special_rules,adopted_unique_resolution_count,,60,,60,resolutions,Unique Table 1a H. Res. identifiers that passed the House.
+118,primary_temporal_test,118,special_rules,survey_unique_hr_measure_count,,138,,138,bills,Unique H.R. measures in literal Table 1a.
+118,primary_temporal_test,118,special_rules,adopted_unique_hr_measure_count,,135,,135,bills,Unique H.R. measures linked to an adopted Table 1a rule.
+118,primary_temporal_test,118,special_rules,survey_grant_category_count,open,0,,0,grants,Literal Table 1a grant rows in the source category.
+118,primary_temporal_test,118,special_rules,adopted_grant_category_count,open,0,,0,grants,Adopted literal Table 1a grant rows in the source category.
+118,primary_temporal_test,118,special_rules,survey_unique_resolution_category_presence_count,open,0,,0,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+118,primary_temporal_test,118,special_rules,adopted_unique_resolution_category_presence_count,open,0,,0,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+118,primary_temporal_test,118,special_rules,survey_unique_hr_measure_category_presence_count,open,0,,0,bills,Unique Table 1a H.R. measures with at least one row in the category.
+118,primary_temporal_test,118,special_rules,adopted_unique_hr_measure_category_presence_count,open,0,,0,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+118,primary_temporal_test,118,special_rules,survey_grant_category_count,modified_open,1,,1,grants,Literal Table 1a grant rows in the source category.
+118,primary_temporal_test,118,special_rules,adopted_grant_category_count,modified_open,1,,1,grants,Adopted literal Table 1a grant rows in the source category.
+118,primary_temporal_test,118,special_rules,survey_unique_resolution_category_presence_count,modified_open,1,,1,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+118,primary_temporal_test,118,special_rules,adopted_unique_resolution_category_presence_count,modified_open,1,,1,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+118,primary_temporal_test,118,special_rules,survey_unique_hr_measure_category_presence_count,modified_open,1,,1,bills,Unique Table 1a H.R. measures with at least one row in the category.
+118,primary_temporal_test,118,special_rules,adopted_unique_hr_measure_category_presence_count,modified_open,1,,1,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+118,primary_temporal_test,118,special_rules,survey_grant_category_count,structured,83,,83,grants,Literal Table 1a grant rows in the source category.
+118,primary_temporal_test,118,special_rules,adopted_grant_category_count,structured,73,,73,grants,Adopted literal Table 1a grant rows in the source category.
+118,primary_temporal_test,118,special_rules,survey_unique_resolution_category_presence_count,structured,51,,51,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+118,primary_temporal_test,118,special_rules,adopted_unique_resolution_category_presence_count,structured,45,,45,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+118,primary_temporal_test,118,special_rules,survey_unique_hr_measure_category_presence_count,structured,73,,73,bills,Unique Table 1a H.R. measures with at least one row in the category.
+118,primary_temporal_test,118,special_rules,adopted_unique_hr_measure_category_presence_count,structured,71,,71,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+118,primary_temporal_test,118,special_rules,survey_grant_category_count,closed,115,,115,grants,Literal Table 1a grant rows in the source category.
+118,primary_temporal_test,118,special_rules,adopted_grant_category_count,closed,105,,105,grants,Adopted literal Table 1a grant rows in the source category.
+118,primary_temporal_test,118,special_rules,survey_unique_resolution_category_presence_count,closed,53,,53,resolutions,Unique Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+118,primary_temporal_test,118,special_rules,adopted_unique_resolution_category_presence_count,closed,47,,47,resolutions,Unique adopted Table 1a resolutions with at least one row in the category; mixed resolutions contribute to each present category.
+118,primary_temporal_test,118,special_rules,survey_unique_hr_measure_category_presence_count,closed,65,,65,bills,Unique Table 1a H.R. measures with at least one row in the category.
+118,primary_temporal_test,118,special_rules,adopted_unique_hr_measure_category_presence_count,closed,63,,63,bills,Unique H.R. measures with at least one adopted Table 1a rule in the category.
+118,primary_temporal_test,118,special_rules,adopted_restrictive_grant_share,,178,179,0.994413407821,proportion,Adopted structured or closed grant rows divided by all adopted Table 1a grant rows.
+118,primary_temporal_test,118,special_rules,adopted_restrictive_hr_measure_share,,134,135,0.992592592593,proportion,Unique H.R. measures with any adopted structured or closed rule divided by unique H.R. measures with an adopted Table 1a rule.
+118,primary_temporal_test,118,special_rules,adopted_mixed_category_resolution_count,,33,,33,resolutions,Adopted resolutions with grant rows in more than one category.
+118,primary_temporal_test,118,special_rules,adopted_mixed_category_hr_measure_count,,0,,0,bills,H.R. measures with adopted grant rows in more than one category.
+118,primary_temporal_test,118,integrity,stage_order_anomaly_count,,15,,15,bills,Rows with at least one non-linear stage-date sequence; affected elapsed intervals are blank.
+118,primary_temporal_test,118,integrity,lifecycle_source_date_anomaly_count,,12,,12,bills,Rows carrying a preserved source-date anomaly from the underlying lifecycle census.
+118,primary_temporal_test,118,integrity,unidentified_floor_path_count,,0,,0,bills,Floor-considered rows without an allowed direct path classification.
+118,primary_temporal_test,118,integrity,mixed_floor_path_count,,4,,4,bills,Rows with both adopted Table 1a special-rule and direct suspension evidence.
+118,primary_temporal_test,118,integrity,direct_rule_link_status_count,no_direct_or_adopted_rule_link,10426,,10426,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+118,primary_temporal_test,118,integrity,direct_rule_link_status_count,direct_and_adopted_rule_links_match,130,,130,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+118,primary_temporal_test,118,integrity,direct_rule_link_status_count,direct_actions_include_all_adopted_rule_links,1,,1,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+118,primary_temporal_test,118,integrity,direct_rule_link_status_count,adopted_survey_rule_without_direct_action_id,4,,4,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+118,primary_temporal_test,118,integrity,direct_rule_link_status_count,direct_rule_action_without_adopted_table1a_link,3,,3,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+118,primary_temporal_test,118,integrity,direct_rule_link_status_count,direct_and_adopted_rule_links_differ,0,,0,bills,Count by conservative direct-rule-use versus adopted-Table-1a linkage status.
+118,primary_temporal_test,118,integrity,table1a_resolution_disposition_count,adopted,56,,56,resolutions,Unique literal Table 1a resolutions by direct House disposition.
+118,primary_temporal_test,118,integrity,table1a_resolution_disposition_count,adopted_amended,4,,4,resolutions,Unique literal Table 1a resolutions by direct House disposition.
+118,primary_temporal_test,118,integrity,table1a_resolution_disposition_count,rejected,6,,6,resolutions,Unique literal Table 1a resolutions by direct House disposition.
+118,primary_temporal_test,118,integrity,table1a_resolution_disposition_count,tabled,1,,1,resolutions,Unique literal Table 1a resolutions by direct House disposition.
+116,development_component,116,source_reconciliation,survey_narrative_category_count,open,0,,0,grants,Official survey narrative amendment-structure count.
+116,development_component,116,source_reconciliation,survey_literal_table_category_count,open,0,,0,grants,Identifiable literal Table 1a rule-to-measure rows.
+116,development_component,116,source_reconciliation,survey_literal_minus_narrative,open,0,0,0,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+116,development_component,116,source_reconciliation,survey_narrative_category_count,modified_open,0,,0,grants,Official survey narrative amendment-structure count.
+116,development_component,116,source_reconciliation,survey_literal_table_category_count,modified_open,0,,0,grants,Identifiable literal Table 1a rule-to-measure rows.
+116,development_component,116,source_reconciliation,survey_literal_minus_narrative,modified_open,0,0,0,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+116,development_component,116,source_reconciliation,survey_narrative_category_count,structured,55,,55,grants,Official survey narrative amendment-structure count.
+116,development_component,116,source_reconciliation,survey_literal_table_category_count,structured,55,,55,grants,Identifiable literal Table 1a rule-to-measure rows.
+116,development_component,116,source_reconciliation,survey_literal_minus_narrative,structured,55,55,0,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+116,development_component,116,source_reconciliation,survey_narrative_category_count,closed,60,,60,grants,Official survey narrative amendment-structure count.
+116,development_component,116,source_reconciliation,survey_literal_table_category_count,closed,60,,60,grants,Identifiable literal Table 1a rule-to-measure rows.
+116,development_component,116,source_reconciliation,survey_literal_minus_narrative,closed,60,60,0,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+117,development_component,117,source_reconciliation,survey_narrative_category_count,open,0,,0,grants,Official survey narrative amendment-structure count.
+117,development_component,117,source_reconciliation,survey_literal_table_category_count,open,0,,0,grants,Identifiable literal Table 1a rule-to-measure rows.
+117,development_component,117,source_reconciliation,survey_literal_minus_narrative,open,0,0,0,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+117,development_component,117,source_reconciliation,survey_narrative_category_count,modified_open,0,,0,grants,Official survey narrative amendment-structure count.
+117,development_component,117,source_reconciliation,survey_literal_table_category_count,modified_open,0,,0,grants,Identifiable literal Table 1a rule-to-measure rows.
+117,development_component,117,source_reconciliation,survey_literal_minus_narrative,modified_open,0,0,0,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+117,development_component,117,source_reconciliation,survey_narrative_category_count,structured,59,,59,grants,Official survey narrative amendment-structure count.
+117,development_component,117,source_reconciliation,survey_literal_table_category_count,structured,57,,57,grants,Identifiable literal Table 1a rule-to-measure rows.
+117,development_component,117,source_reconciliation,survey_literal_minus_narrative,structured,57,59,-2,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+117,development_component,117,source_reconciliation,survey_narrative_category_count,closed,89,,89,grants,Official survey narrative amendment-structure count.
+117,development_component,117,source_reconciliation,survey_literal_table_category_count,closed,87,,87,grants,Identifiable literal Table 1a rule-to-measure rows.
+117,development_component,117,source_reconciliation,survey_literal_minus_narrative,closed,87,89,-2,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+118,primary_temporal_test,118,source_reconciliation,survey_narrative_category_count,open,0,,0,grants,Official survey narrative amendment-structure count.
+118,primary_temporal_test,118,source_reconciliation,survey_literal_table_category_count,open,0,,0,grants,Identifiable literal Table 1a rule-to-measure rows.
+118,primary_temporal_test,118,source_reconciliation,survey_literal_minus_narrative,open,0,0,0,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+118,primary_temporal_test,118,source_reconciliation,survey_narrative_category_count,modified_open,1,,1,grants,Official survey narrative amendment-structure count.
+118,primary_temporal_test,118,source_reconciliation,survey_literal_table_category_count,modified_open,1,,1,grants,Identifiable literal Table 1a rule-to-measure rows.
+118,primary_temporal_test,118,source_reconciliation,survey_literal_minus_narrative,modified_open,1,1,0,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+118,primary_temporal_test,118,source_reconciliation,survey_narrative_category_count,structured,83,,83,grants,Official survey narrative amendment-structure count.
+118,primary_temporal_test,118,source_reconciliation,survey_literal_table_category_count,structured,83,,83,grants,Identifiable literal Table 1a rule-to-measure rows.
+118,primary_temporal_test,118,source_reconciliation,survey_literal_minus_narrative,structured,83,83,0,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."
+118,primary_temporal_test,118,source_reconciliation,survey_narrative_category_count,closed,115,,115,grants,Official survey narrative amendment-structure count.
+118,primary_temporal_test,118,source_reconciliation,survey_literal_table_category_count,closed,115,,115,grants,Identifiable literal Table 1a rule-to-measure rows.
+118,primary_temporal_test,118,source_reconciliation,survey_literal_minus_narrative,closed,115,115,0,grants,"Literal Table 1a count minus official narrative count; this is reconciliation, not a rate."

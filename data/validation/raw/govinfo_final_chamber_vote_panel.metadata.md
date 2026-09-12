@@ -1,11 +1,11 @@
 # GovInfo Final Chamber-Vote Panel
 
-- generated_at_utc: 2026-08-31T02:54:17+00:00
+- generated_at_utc: 2026-08-31T06:08:47+00:00
 - selection_classifier_version: `govinfo-final-chamber-vote-v1`
 - lifecycle_classification_version: `govinfo-bill-lifecycle-v3`
-- configuration_sha256: `dcf503aeb2d808696d7e59451c42a70ccf2c7bef569f94cb6679e776798416d5`
+- configuration_sha256: `e3d33fc1584298a73e5014d0d37051efab8d6cd7983d3924aec3692073007f65`
 - builder_sha256: `e2776719986fad1554097cc14733e593ce07dd19808022259e4b92b96181df24`
-- lifecycle_builder_sha256: `75587c72a049635cea9c70d7cf48adda1e4f7d0a4e7bc468796ef23f199a0422`
+- lifecycle_builder_sha256: `371121136e580d2911e6f554552496211ce456ca3edda36480fca47fdd7853b1`
 - output_sha256: `539c497f8a6f0349fe284048228d652cb43cd9da42bec77da15ba72e63ed149c`
 - official_source_manifest_sha256: `4a3e6ba5cd7235575422ac26222eee8a4b9d9a42ba4f1d38fa21a17e37e09ff2`
 - decision_panel_sha256: `5ca526f1036d47bd8e5249e8f716063f493ee0060fb99604cccc01d265702795`

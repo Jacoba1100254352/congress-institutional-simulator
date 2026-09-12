@@ -1,0 +1,178 @@
+{
+  "claimBoundary": "Official-source descriptive House procedure and timing evidence only; not causal agenda-control, unobserved floor-demand, public-benefit, welfare, capture, or simulator-validation evidence.",
+  "cohortResults": {
+    "116": {
+      "agendaRows": 9062,
+      "congresses": [
+        116
+      ],
+      "floorConsidered": 778,
+      "floorPaths": {
+        "adopted_special_rule": 69,
+        "mixed_special_rule_and_suspension": 17,
+        "other_detected_floor_path": 48,
+        "suspension": 644
+      },
+      "stageOrderAnomalies": 70,
+      "unidentifiedFloorPaths": 0
+    },
+    "117": {
+      "agendaRows": 9709,
+      "congresses": [
+        117
+      ],
+      "floorConsidered": 722,
+      "floorPaths": {
+        "adopted_special_rule": 86,
+        "mixed_special_rule_and_suspension": 21,
+        "other_detected_floor_path": 11,
+        "suspension": 604
+      },
+      "stageOrderAnomalies": 32,
+      "unidentifiedFloorPaths": 0
+    },
+    "118": {
+      "agendaRows": 10564,
+      "congresses": [
+        118
+      ],
+      "floorConsidered": 676,
+      "floorPaths": {
+        "adopted_special_rule": 127,
+        "mixed_special_rule_and_suspension": 4,
+        "other_detected_floor_path": 1,
+        "suspension": 544
+      },
+      "stageOrderAnomalies": 15,
+      "unidentifiedFloorPaths": 0
+    },
+    "development_116_117": {
+      "agendaRows": 18771,
+      "congresses": [
+        116,
+        117
+      ],
+      "floorConsidered": 1500,
+      "floorPaths": {
+        "adopted_special_rule": 155,
+        "mixed_special_rule_and_suspension": 38,
+        "other_detected_floor_path": 59,
+        "suspension": 1248
+      },
+      "stageOrderAnomalies": 102,
+      "unidentifiedFloorPaths": 0
+    }
+  },
+  "implementation": {
+    "path": "scripts/validation/write_house_agenda_control_study.py",
+    "runtime": "Python standard library",
+    "sha256": "57bb1bd8abc944acc98402bcae1a0c95753708468c43923a5ce5398de502ae5b"
+  },
+  "outputs": [
+    {
+      "path": "reports/house-agenda-control-metrics.csv",
+      "sha256": "8b90b8a5e0ee48898de46acdb8d81061cd18546849181691a725016157542c09"
+    },
+    {
+      "path": "reports/house-agenda-control-study.md",
+      "sha256": "216c47f2fe99942ae827bf045796bdcfe5915959ce2ac38cb57dd37b912a5598"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceReconciliation": {
+    "116": {
+      "closed": {
+        "literalMinusNarrative": 0,
+        "literalTable": 60,
+        "narrative": 60
+      },
+      "modified_open": {
+        "literalMinusNarrative": 0,
+        "literalTable": 0,
+        "narrative": 0
+      },
+      "open": {
+        "literalMinusNarrative": 0,
+        "literalTable": 0,
+        "narrative": 0
+      },
+      "structured": {
+        "literalMinusNarrative": 0,
+        "literalTable": 55,
+        "narrative": 55
+      }
+    },
+    "117": {
+      "closed": {
+        "literalMinusNarrative": -2,
+        "literalTable": 87,
+        "narrative": 89
+      },
+      "modified_open": {
+        "literalMinusNarrative": 0,
+        "literalTable": 0,
+        "narrative": 0
+      },
+      "open": {
+        "literalMinusNarrative": 0,
+        "literalTable": 0,
+        "narrative": 0
+      },
+      "structured": {
+        "literalMinusNarrative": -2,
+        "literalTable": 57,
+        "narrative": 59
+      }
+    },
+    "118": {
+      "closed": {
+        "literalMinusNarrative": 0,
+        "literalTable": 115,
+        "narrative": 115
+      },
+      "modified_open": {
+        "literalMinusNarrative": 0,
+        "literalTable": 1,
+        "narrative": 1
+      },
+      "open": {
+        "literalMinusNarrative": 0,
+        "literalTable": 0,
+        "narrative": 0
+      },
+      "structured": {
+        "literalMinusNarrative": 0,
+        "literalTable": 83,
+        "narrative": 83
+      }
+    }
+  },
+  "sources": [
+    {
+      "path": "data/validation/raw/house_agenda_control.csv",
+      "rowsExcludingHeader": 29335,
+      "sha256": "d801a86290d2eb7127736ef259a44847fe5d19acff2c4dd738d2f00ba0556f7b"
+    },
+    {
+      "path": "data/validation/raw/house_special_rule_grants.csv",
+      "rowsExcludingHeader": 458,
+      "sha256": "5b31f228e25449f05210234c19a8c9311911c5f75a35d9dd6bb77d6333988a53"
+    }
+  ],
+  "specification": {
+    "path": "papers/empirical-validation/house-agenda-control-panel-specification.md",
+    "sha256": "28c1b3874fb99a1987f1f8b146517dd4f2be14f74ea93b36bfadbb48591200ec",
+    "status": "locked_post_source_audit_pre_hr_metrics"
+  },
+  "status": "source_panel_pass_simulator_calibration_not_run",
+  "studyVersion": "house-agenda-control-source-study-v1",
+  "temporalDesign": {
+    "developmentCongresses": [
+      116,
+      117
+    ],
+    "outcomeBlind": false,
+    "percentileMethod": "nearest_rank_ceiling",
+    "primaryTestCongress": 118
+  }
+}

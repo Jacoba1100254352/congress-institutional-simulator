@@ -1,10 +1,10 @@
 # GovInfo Executive-Action Panel
 
-- generated_at_utc: 2026-08-31T02:29:12+00:00
+- generated_at_utc: 2026-08-31T06:08:36+00:00
 - classification_version: `govinfo-bill-lifecycle-v3`
-- configuration_sha256: `3888cf513cb86807a9f1440eb857057e30ff526389aa655dd17b1296e2191c53`
+- configuration_sha256: `19c032d9240d85bdc89b60d01e7a6d7a9412fe93edadd2c9c648d44ed4b3c690`
 - panel_builder_sha256: `86a8308a0125fdd0ba17cefea70d5da230684e992d6847cfef22d114eb69c4be`
-- lifecycle_builder_sha256: `75587c72a049635cea9c70d7cf48adda1e4f7d0a4e7bc468796ef23f199a0422`
+- lifecycle_builder_sha256: `371121136e580d2911e6f554552496211ce456ca3edda36480fca47fdd7853b1`
 - context_sha256: `9541f6d943611a463c9bb39a64743d4f1a5b3e51254320333f4ad20208df7b2d`
 - veto_reference_sha256: `195ea577cc39569a4e7a632a51f3e11e024eca8e871c1823bf070af84ce7b104`
 - output_sha256: `d9241abd003919841e97464d6d1e5d79a85820517d72215adbdcdd7f17dd3c54`
