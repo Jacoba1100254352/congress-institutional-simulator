@@ -8,6 +8,7 @@ import importlib.util
 import tempfile
 import unittest
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 
 SCRIPT = Path(__file__).with_name(
@@ -67,6 +68,15 @@ class DistrictDenominatorCacheTest(unittest.TestCase):
         rows[1]["denominator_status"] = "stale"
         self.write_rows(rows)
         self.assertFalse(BUILDER.existing_output_matches(["NY-10", "OR-03"]))
+
+    def test_tigerweb_request_url_preserves_query_fields(self) -> None:
+        url = BUILDER.tigerweb_request_url("36", "10")
+        parsed = urlparse(url)
+        query = parse_qs(parsed.query)
+        self.assertEqual(["STATE='36' AND BASENAME='10'"], query["where"])
+        self.assertEqual(["*"], query["outFields"])
+        self.assertEqual(["false"], query["returnGeometry"])
+        self.assertEqual(["json"], query["f"])
 
 
 if __name__ == "__main__":

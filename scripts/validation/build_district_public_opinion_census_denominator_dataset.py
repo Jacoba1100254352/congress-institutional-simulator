@@ -186,12 +186,13 @@ def district_parts(district_id: str) -> tuple[str, str, str]:
 
 def tigerweb_request_url(state_fips: str, district_code: str) -> str:
     where = f"STATE='{state_fips}' AND BASENAME='{int(district_code)}'"
-    return f"{TIGERWEB_LAYER_URL}?{urlencode({
+    query = urlencode({
         'where': where,
         'outFields': '*',
         'returnGeometry': 'false',
         'f': 'json',
-    })}"
+    })
+    return f"{TIGERWEB_LAYER_URL}?{query}"
 
 
 def fetch_district(district_id: str) -> dict[str, object]:
