@@ -9,6 +9,7 @@ source-input and extracted-text hashes for the checked-in review PDFs.
 from __future__ import annotations
 
 import argparse
+import filecmp
 import hashlib
 import json
 import re
@@ -77,7 +78,24 @@ def unique_paths(patterns: Iterable[str]) -> list[Path]:
         for path in ROOT.glob(pattern):
             if path.is_file():
                 paths[rel(path)] = path
-    return [paths[key] for key in sorted(paths)]
+    inputs = []
+    for key in sorted(paths):
+        path = paths[key]
+        if path.stem.endswith(" 2"):
+            original = path.with_name(path.stem[:-2] + path.suffix)
+            if original.is_file():
+                # Never treat a naming convention alone as proof of duplication.
+                # Clear filecmp's stat cache so repeated checks read current bytes.
+                filecmp.clear_cache()
+                if not filecmp.cmp(path, original, shallow=False):
+                    raise RuntimeError(
+                        f"Conflicting source copies: {rel(original)} and {key}; "
+                        "contents differ. Review both files before rebuilding."
+                    )
+                if rel(original) in paths:
+                    continue
+        inputs.append(path)
+    return inputs
 
 
 def pdf_text(path: Path) -> str:

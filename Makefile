@@ -766,6 +766,7 @@ test: build
 	python3 scripts/validation/test_house_agenda_control_study.py
 	python3 scripts/validation/test_house_agenda_control_calibration.py
 	python3 scripts/checks/test_paper_anonymity.py
+	python3 paper/scripts/test_pdf_manifest.py
 	python3 scripts/validation/test_house_procedure_source_audit.py
 	python3 scripts/validation/test_district_public_opinion_census_denominator.py
 	python3 scripts/validation/test_district_public_opinion_bill_text_context.py

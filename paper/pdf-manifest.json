@@ -17,11 +17,11 @@
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "6c44daec31a4f628ac1f3bbcf2f242788cd5d76dcbdfb1f5765d6d34f5322c08",
+  "sourceInputSha256": "f83670d115f9bc656eee96f819e2dc2d15fb37b181be1c0d029662d29897f5b6",
   "sourceInputs": [
     {
       "path": "Makefile",
-      "sha256": "f89752b89bc2725643d268cd5fc06150ad5890ab12d4e0814ef5d7ecb6e40340"
+      "sha256": "512e5c1aa22e71c1b37c006f46b65f9e5b7ba94bb6462e134fb38b0bda24b34b"
     },
     {
       "path": "data/calibration/empirical-benchmarks.csv",
@@ -436,8 +436,12 @@
       "sha256": "5665bbb7af6fe226f975d1913efba4c7b0206fc1931baefb3dfc7a4a76745912"
     },
     {
+      "path": "paper/scripts/test_pdf_manifest.py",
+      "sha256": "d821816c3f41c5dd8c9d8f759bd212a9422a08a2ffaa8fa2e29d31b798516270"
+    },
+    {
       "path": "paper/scripts/write_pdf_manifest.py",
-      "sha256": "bba3228446847233ad72bdcd2ab456ae7aaf647eb0d1ff578d0fa7370760756d"
+      "sha256": "0691374ffa1d357a96f850281da90328516eabcd090326750468262d1d8a2cc1"
     },
     {
       "path": "paper/technical-appendix/odd-d-appendix.tex",

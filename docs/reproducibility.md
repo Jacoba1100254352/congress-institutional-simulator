@@ -124,6 +124,13 @@ PDF bytes can vary by TeX distribution, fonts, and build metadata. The paper
 workflow therefore checks stable extracted-text and manifest metadata through
 `paper/pdf-manifest.json`.
 
+The PDF source manifest ignores a local file whose stem ends in ` 2` only
+when its bytes exactly match an included, unsuffixed sibling. An unpaired
+numbered file remains an input. Differing copies stop the check for review;
+the checker never changes or deletes either file. This prevents identical
+local conflict copies from creating false paper-freshness failures without
+silently accepting conflicting research inputs.
+
 ## Generated Outputs
 
 Expected generated locations:

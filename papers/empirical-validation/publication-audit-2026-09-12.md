@@ -74,6 +74,17 @@ choose a license, or establish an archived software release.
     not staged secrets. Only `.env.example` is tracked. The exact pinned
     GovInfo HTML snapshot retains publisher trailing spaces, with a
     file-specific whitespace-check exception rather than content alteration.
+11. The baseline regeneration retained all 16 numerical screens and tolerances
+    but exposed an outdated veto-count caveat. The CSV, Markdown, and provenance
+    manifest now call it a legacy broad count screen, not a calibration of
+    conditional veto probability. Seed robustness and catalog checks pass.
+12. Two untracked numbered source copies appeared during local verification.
+    Each matched its original byte for byte and was moved to recoverable local
+    audit storage without changing the original. Six new regression tests
+    protect the PDF source manifest: identical numbered copies do not alter
+    its input digest, unpaired numbered inputs are retained, and differing
+    copies stop for review. The full native suite and paper checks pass after
+    this change; both PDF byte hashes are unchanged.
 
 ## Verification ledger
 
@@ -81,7 +92,7 @@ choose a license, or establish an archived software release.
 | --- | --- | --- |
 | No retuning or erased failure | Frozen panel, candidate and metric hashes; calibration hard checker | Full grid rerun retains candidate, metric, seed, and Monte Carlo hashes; hard checks pass under Python 3.9 and 3.14 |
 | Source-linkage investigation | 29,335 XML/action hash matches; 7,397-row extract; full resolution and vote snapshots | Nine tests pass; source-audit regeneration checks pass under Python 3.9 and 3.14; pinned resolution-link check passes |
-| Native regression coverage | `make test` with a clean Java 21 build | Java suite and 116 Python tests pass; extracted-copy clean build still pending |
+| Native regression coverage | `make test` with a clean Java 21 build | Java suite and 122 Python tests pass; extracted-copy clean build still pending |
 | Manuscript/output alignment | Full campaign/grid run, followed by `make -o paper-assets paper-checks` for the reconciled prose | All paper checks pass; 5,815 / 6,000 words; visual review passes for main pages 6, 7, 13 and appendix pages 6, 7, 8, 17; all 30 pages pass automated rendering |
 | Anonymous reviewer reproducibility | Built ZIP, member/CRC/privacy checks, extracted-copy tests | Pending |
 | Publication synchronization | Reviewed diff, redacted staged secret scan, commit/push, final CI result | Diff and secret scan pass; publication and hosted CI verification pending |
