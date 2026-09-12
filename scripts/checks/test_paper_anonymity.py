@@ -2,8 +2,10 @@
 """Regression checks for narrowly allowing an official source citation."""
 
 import sys
+import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts/checks"))
@@ -11,6 +13,40 @@ sys.path.insert(0, str(ROOT / "scripts/packaging"))
 
 from check_paper_anonymity import OFFICIAL_SOURCE_URL, contains_hashed_banned_term
 from build_anonymous_supplement import contains_hashed_banned_term as package_match
+import build_anonymous_supplement as builder
+import check_presidential_choice_study as presidential_checker
+
+
+class AnonymousReadmeTests(unittest.TestCase):
+    def test_current_readme_passes_publication_claim_checks(self):
+        # Also runs inside the extracted supplement, before long campaigns.
+        presidential_checker.check_publication_claims()
+
+    def test_generated_readme_preserves_claim_checks_and_anonymity(self):
+        original = (ROOT / "README.md").read_bytes()
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            with patch.object(builder, "PACKAGE_DIR", target):
+                builder.write_readme()
+            readme = target / "README.md"
+            with patch.object(presidential_checker, "README", readme):
+                presidential_checker.check_publication_claims()
+            text = readme.read_text()
+            self.assertIsNone(package_match(text))
+            self.assertFalse(any(pattern.search(text) for pattern in builder.BANNED_REGEXES))
+        self.assertEqual((ROOT / "README.md").read_bytes(), original)
+
+    def test_missing_test_concentration_caveat_remains_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            with patch.object(builder, "PACKAGE_DIR", target):
+                builder.write_readme()
+            readme = target / "README.md"
+            readme.write_text(readme.read_text().replace(
+                "Twelve of the 13 test vetoes occur among only 17 joint resolutions. ", ""))
+            with patch.object(presidential_checker, "README", readme):
+                with self.assertRaisesRegex(SystemExit, "Publication integration text drifted"):
+                    presidential_checker.check_publication_claims()
 
 
 class OfficialCitationTests(unittest.TestCase):

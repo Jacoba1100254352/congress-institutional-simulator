@@ -97,8 +97,9 @@ choose a license, or establish an archived software release.
     metrics, coefficients, predictions, and substantive report remain
     byte-identical; the hard checker reconciles metadata with all eight CSV
     result rows. Metadata is byte-identical under local Python 3.9 and 3.14;
-    all native and paper checks pass. Final hosted confirmation is still
-    required.
+    all native and paper checks pass. Hosted CI on `ad35dfb` subsequently
+    passed all gates; the latest packaging correction still requires its
+    own final hosted confirmation.
 14. A network-denied, package-shaped reproduction outside the checkout
     reproduced all five campaign tables (4,646 data rows) and the complete
     locked House grid byte for byte, then exposed unconditional live survey
@@ -109,8 +110,20 @@ choose a license, or establish an archived software release.
     available. Missing or changed snapshots fail before paper campaigns;
     no source data or scientific result was changed. Nine regression tests
     protect snapshot integrity and both offline/report and live/acquisition
-    dependency paths. The network-denied report tail and all paper checks
-    pass; a complete fresh package-shaped rerun is still required.
+    dependency paths. A fresh `8fb4037` package-shaped run reproduced all
+    five campaign tables, the complete House grid, and the paper text with
+    network access denied, then exposed the final README check in item 15.
+15. The generated anonymous README omitted presidential-study claims and
+    caveats required by the unchanged publication checker. The full isolated
+    run therefore stopped at that checker after regenerating the scientific
+    outputs and PDFs. The anonymous README now includes the narrow predictive
+    result, test-event concentration, simulator scale mismatch, and House
+    failure/claim boundaries. Three regression tests check both the current
+    and generated README, preserve anonymity and the original README, and
+    confirm rejection when the concentration caveat is removed. The Java
+    suite, all 137 Python tests, and the local paper checks pass. No source
+    data, scientific report, model, checker, or PDF content changed. The fixed
+    bundle's complete reproduction and actual ZIP verification remain pending.
 
 ## Verification ledger
 
@@ -118,8 +131,8 @@ choose a license, or establish an archived software release.
 | --- | --- | --- |
 | No retuning or erased failure | Frozen panel, candidate and metric hashes; calibration hard checker | Full grid rerun retains candidate, metric, seed, and Monte Carlo hashes; hard checks pass under Python 3.9 and 3.14 |
 | Source-linkage investigation | 29,335 XML/action hash matches; 7,397-row extract; full resolution and vote snapshots | Nine tests pass; source-audit regeneration checks pass under Python 3.9 and 3.14; pinned resolution-link check passes |
-| Native regression coverage | `make test` with a clean Java 21 build | Java suite and 134 Python tests pass; final extracted-copy checks still pending |
-| Isolated offline reproduction | Network-denied `make test` followed by `make reproduce-paper-offline`, outside the source checkout, using the `7981110` package snapshot; resumed report checks after the offline-source correction | Isolated Java suite and 122 Python tests pass; rebuilt JAR, five campaign tables, and complete House grid match their pinned bytes. The first run stopped on live source acquisition. Corrected report-tail and paper checks pass without network; the complete clean rerun is pending. |
+| Native regression coverage | `make test` with a clean Java 21 build | Java suite and 137 Python tests pass locally; the `8fb4037` isolated copy passed its Java suite and 134 Python tests; final fixed-bundle checks still pending |
+| Isolated offline reproduction | Network-denied `make test` followed by `make reproduce-paper-offline`, outside the source checkout; `8fb4037` initial snapshot contains 840 files and 313 verified paper-source inputs | The fresh run reproduces all five campaign tables (4,646 data rows), four report/provenance pairs, the complete House grid, and stable paper text. All 838 initial non-PDF files remain byte-identical; only raw PDF bytes change. The run stops at the anonymous README publication check. After its correction, the complete clean rerun is pending. |
 | Manuscript/output alignment | Full campaign/grid run, followed by `make -o paper-assets paper-checks` for the reconciled prose | All paper checks pass; 5,815 / 6,000 words; visual review passes for main pages 6, 7, 13 and appendix pages 6, 7, 8, 17; all 30 pages pass automated rendering |
 | Anonymous reviewer reproducibility | Built ZIP, member/CRC/privacy checks, extracted-copy tests | Pending |
 | Publication synchronization | Reviewed diff, redacted staged secret scan, commit/push, final CI result | Diff and secret scan pass; publication and hosted CI verification pending |
@@ -130,8 +143,8 @@ choose a license, or establish an archived software release.
 | --- | --- | --- |
 | House procedure | Complete frozen bill/action panel, official Table 1a grants, chamber-screened direct-action sensitivity, and verified H. Res. 1061-to-H.R. 4366 linkage | Systematic resolution-mediated/deemed-action coverage beyond the reviewed link, full route-event sequences, referral-jurisdiction behavior, calendar demand and status-quo fallback evidence. No causal agenda-control, timing, or amendment-opportunity validation; diagnostic route labels do not enforce real House voting rules. |
 | District opinion | One retained historical related-issue alignment out of 22 reviewed bill packets; two separate NY-10 estimates (2012 and 2016), with 92 and 280 responses | Exact or closer contemporaneous bill wording, validated district-boundary correspondence, survey-design uncertainty or a justified small-area model, and bill-specific affected-population links. No contemporaneous bill-support or representation validation. |
-| Campaign finance and lobbying | Public recipient/member context, exact activity-text bill mentions, bounded position reviews, and official committee/roll-call context | Direct target/contact or outside-spending evidence connected to a specific bill, exposure timing, and a defensible outcome/influence design. Metadata overlap and contributions are not evidence of causal influence or capture. |
-| Implementation feedback | Federal Register authority/history links; 48 public-law/docket rows with 19 complete and 29 partial/skipped/blocked metadata dispositions; 2,501 retrieved comment metadata records | Complete bounded high-volume comments where required, Unified Agenda stages, enforcement/nonenforcement, appropriations capacity, and observed implementation outcomes. A zero-comment or completed metadata retrieval is not successful implementation. |
+| Campaign finance and lobbying | Public recipient/member context, exact activity-text bill mentions, bounded position reviews, and official committee/roll-call context. The member-vote review contains 3,435 rows across eight roll calls, zero same-bill reviewed campaign-target overlaps, and 40 broad FEC member-context overlaps | Direct target/contact or outside-spending evidence connected to a specific bill, exposure timing, and a defensible outcome/influence design. Metadata overlap and contributions are not evidence of causal influence or capture. |
+| Implementation feedback | Federal Register authority/history links; 48 public-law/docket rows covering 46 distinct dockets, with 19 complete metadata dispositions (18 have zero expected comments) and 29 partial/skipped/blocked dispositions; 2,501 retrieved comment metadata records against 52,860 expected comments in Federal Register metadata | Complete bounded high-volume comments where required, Unified Agenda stages, enforcement/nonenforcement, appropriations capacity, and observed implementation outcomes. Expected counts are source metadata, not independently verified complete comment populations. A zero-comment or completed metadata retrieval is not successful implementation. |
 | Statutory revision | 73 reviewed target-section differences across 13 public laws, with effective-text and bounded public-law attribution review; two no-structured-target dispositions | Complete codified lineage including notes, exceptions, redesignations and cross-references; implementation and outcome links. Reviewed attribution of text changes is not a causal policy-effect estimate. |
 | Court review | 34 court/public-law queue dispositions: 33 temporally excluded, one reviewed not-direct, zero direct public-law reviews | Positive direct case-to-public-law or target-section identifiers, lower-court/emergency coverage, and disposition/effect evidence. Shared U.S.C. references do not establish direct review or invalidation of the named law. |
 | Transport and institutional comparisons | Lifecycle tests pass 5 of 6 external cohort-metric tolerances; presidential predictor passes one primary gate, but 12 of 13 test vetoes occur among 17 joint resolutions | Unchanged replication on another completed cohort not used for model development; measure-class-specific tests; observed comparable institutional outputs. Synthetic welfare, harm, capture, and institution rankings remain unvalidated. |

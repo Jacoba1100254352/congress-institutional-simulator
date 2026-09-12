@@ -17,7 +17,7 @@
     }
   ],
   "schema": 1,
-  "sourceInputSha256": "34f6df1536f1f846407fa8a797fe6dcf1f32a8f84ddf07d359935f28c7305c84",
+  "sourceInputSha256": "237da0ddbb80b5f4e23f81534e6aa591415716da6340bb8f9d4b8d5c8efc7bea",
   "sourceInputs": [
     {
       "path": "Makefile",
@@ -561,11 +561,11 @@
     },
     {
       "path": "scripts/checks/test_paper_anonymity.py",
-      "sha256": "50bb554ac65c636a45e536eddb2c9317b40f5caf9ff925b103dddf33ff10b242"
+      "sha256": "ae5aa7ca2d29fa08b848bba9fa4be62f220ae6b7c6949bd5049ebda17f033ef8"
     },
     {
       "path": "scripts/packaging/build_anonymous_supplement.py",
-      "sha256": "2c87327e24a1c77996a4c02bfbb866fdb59a35dd7bc5d9c37f831a4a1329e9fa"
+      "sha256": "c212c8b167136124091bd307e4e6018bae97d34de8dbabff895a55b65425e1f5"
     },
     {
       "path": "scripts/reporting/adversarial_replication_common.py",
